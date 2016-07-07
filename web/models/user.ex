@@ -1,3 +1,13 @@
 defmodule Eecrit.User do
-  defstruct [:id, :display_name, :login_name, :password, :organizational_scope]
+  use Eecrit.Web, :model
+
+  schema "users" do
+    field :display_name, :string
+    field :login_name, :string
+    field :password, :string, virtual: true
+    field :password_hash, :string
+    field :organizational_scope, :string
+
+    timestamps
+  end
 end

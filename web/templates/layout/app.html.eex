@@ -15,9 +15,18 @@
     <div class="container">
       <header class="header">
         <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="/reserve">Admin</a></li>
-          </ul>
+          <ol class="breadcrumb text-right">
+            <%= if @current_user do %>
+              <li><%= @current_user.display_name %></li>
+              <li>
+                <%= link "Log out", to: session_path(@conn, :delete, @current_user),
+                                    method: "delete" %>
+              </li>
+            <% else %>
+              <li> <%= link "Register", to: user_path(@conn, :new) %> </li>
+              <li> <%= link "Log in", to: session_path(@conn, :new) %></li>
+            <% end %>
+          </ol>
         </nav>
         <span class="logo"></span>
       </header>

@@ -23,7 +23,7 @@ defmodule Eecrit.SessionController do
 
   def delete(conn, _) do
     conn
-    |> Auth.logout()
+    |> Auth.destroy_session()
     |> redirect(to: page_path(conn, :index))
   end
 end

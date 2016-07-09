@@ -1,0 +1,26 @@
+<h2>Listing organizations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Full name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for organization <- @organizations do %>
+    <tr>
+      <td><%= organization.full_name %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: organization_path(@conn, :show, organization), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: organization_path(@conn, :edit, organization), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: organization_path(@conn, :delete, organization), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New organization", to: organization_path(@conn, :new) %>

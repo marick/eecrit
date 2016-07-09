@@ -22,11 +22,6 @@
   <%= error_tag form, :display_name %>
 </div>
 
-<div class="form-group">
-  <%= text_input form, :organizational_scope, placeholder: "Organization", class: "form-control" %>
-  <%= error_tag form, :organizational_scope %>
-</div>
-
 <%= submit "Create User", class: "btn btn-primary" %>
 
 <% end %>

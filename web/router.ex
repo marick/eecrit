@@ -22,6 +22,12 @@ defmodule Eecrit.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
+  scope "/critter4us", Eecrit do
+    pipe_through [:browser, :authenticate_user]
+
+    resources "/organizations", OrganizationController
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", Eecrit do
   #   pipe_through :api

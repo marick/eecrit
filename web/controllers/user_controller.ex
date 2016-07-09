@@ -1,6 +1,6 @@
 defmodule Eecrit.UserController do
   use Eecrit.Web, :controller
-  plug :authenticate when not action in [:new, :create]
+  plug :authenticate_user when not action in [:new, :create]
   alias Eecrit.User
   alias Eecrit.Repo
 
@@ -32,14 +32,4 @@ defmodule Eecrit.UserController do
     end
   end
 
-  def authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to see that page.")
-      |> redirect(to: page_path(conn, :index))
-      |> halt
-    end
-  end
 end

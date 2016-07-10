@@ -9,6 +9,9 @@ defmodule Eecrit.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
+    belongs_to :current_organization, Eecrit.Organization
+    many_to_many :organizations, Eecrit.Organization, join_through: "users_organizations"
+
     timestamps
   end
 

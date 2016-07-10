@@ -3,9 +3,9 @@ defmodule Eecrit.Repo.Migrations.CreateUser do
 
   def change do
     create table(:users) do
-      add :display_name, :string
-      add :login_name, :string, null: false
-      add :password_hash, :string
+      add :display_name,    :string,   null: false
+      add :login_name,      :string,   null: false
+      add :password_hash,   :string
 
       timestamps
     end

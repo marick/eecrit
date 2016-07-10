@@ -5,6 +5,8 @@ defmodule Eecrit.Organization do
     field :short_name, :string
     field :full_name, :string
 
+    many_to_many :users, Eecrit.User, join_through: "users_organizations"
+
     timestamps()
   end
 

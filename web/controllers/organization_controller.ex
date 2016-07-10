@@ -1,6 +1,5 @@
 defmodule Eecrit.OrganizationController do
   use Eecrit.Web, :controller
-
   alias Eecrit.Organization
 
   def index(conn, _params) do

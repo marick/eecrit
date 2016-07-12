@@ -21,6 +21,7 @@ defmodule Eecrit.User do
     |> validate_length(:display_name, min: 1, max: @default_string_max)
     |> validate_length(:login_name, min: 7, max: @default_string_max)
     |> unique_constraint(:login_name)
+    |> assoc_constraint(:current_organization)
   end
 
   def password_setting_changeset(starting_value, additions) do

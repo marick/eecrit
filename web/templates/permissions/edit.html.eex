@@ -1,0 +1,6 @@
+<h2>Edit permissions</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: permissions_path(@conn, :update, @permissions) %>
+
+<%= link "Back", to: permissions_path(@conn, :index) %>

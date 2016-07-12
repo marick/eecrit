@@ -1,0 +1,32 @@
+<h2>Listing permissions</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Tag</th>
+      <th>In all organizations</th>
+      <th>Can add users</th>
+      <th>Can see admin page</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for permissions <- @permissions do %>
+    <tr>
+      <td><%= permissions.tag %></td>
+      <td><%= permissions.in_all_organizations %></td>
+      <td><%= permissions.can_add_users %></td>
+      <td><%= permissions.can_see_admin_page %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: permissions_path(@conn, :show, permissions), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: permissions_path(@conn, :edit, permissions), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: permissions_path(@conn, :delete, permissions), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New permissions", to: permissions_path(@conn, :new) %>

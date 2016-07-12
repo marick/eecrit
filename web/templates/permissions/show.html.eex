@@ -1,0 +1,28 @@
+<h2>Show permissions</h2>
+
+<ul>
+
+  <li>
+    <strong>Tag:</strong>
+    <%= @permissions.tag %>
+  </li>
+
+  <li>
+    <strong>In all organizations:</strong>
+    <%= @permissions.in_all_organizations %>
+  </li>
+
+  <li>
+    <strong>Can add users:</strong>
+    <%= @permissions.can_add_users %>
+  </li>
+
+  <li>
+    <strong>Can see admin page:</strong>
+    <%= @permissions.can_see_admin_page %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: permissions_path(@conn, :edit, @permissions) %>
+<%= link "Back", to: permissions_path(@conn, :index) %>

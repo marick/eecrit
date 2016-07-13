@@ -1,0 +1,43 @@
+# Some checks to stop some human errors:
+# - checking in AWS secrets, private keys, and other suspicious patterns.
+# - ditto for suspicious files, like `.ssh`.
+#
+# To use:
+# - brew install pre-commit
+# - cd <git root>
+# - pre-commit install                       # protect commits
+# - pre-commit install --hook-type pre-push  # suspenders *and* belt
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks.git
+    sha: e306ff3b7d0d9a6fc7d128ef9ca2e0b6e6e76e8f
+    stages:
+    - commit
+    - push
+    hooks:
+    -   id: detect-aws-credentials
+    -   id: detect-private-key
+
+-   repo: git://github.com/marick/pre-commit-hooks
+    sha: a4bfe84e14025ee174a48cbe3069b14f9421efb6
+    stages: [commit, push]
+    hooks:
+    -   id: prohibit-suspicious-patterns
+        # Arguments are Ruby regular expressions.
+        # So, for example, you can prohibit "todo" with any case with:
+        # "(?i-mx:TODO)"
+        args:
+        - AKIA[[:alnum:]]{14}         # git commit ok - so this doesn't prevent itself.
+        - NOCOMMIT                    # git commit ok
+        - --
+
+    -   id: prohibit-suspicious-files
+        # Arguments are Ruby regular expressions.
+        args:
+        - ^\.ssh$
+        - ^\.npmrc$
+        - ^\.muttrc$
+        - ^\.gitconfig$
+        - ^\.netrc$
+        - ^\.lein-env$
+        - .log$
+        - -- 

@@ -1,9 +1,9 @@
-<h2>Listing permissions</h2>
+<h2>Groups of User Permissions</h2>
 
 <table class="table">
   <thead>
     <tr>
-      <th>Tag</th>
+      <th>Group name</th>
       <th>In all organizations</th>
       <th>Can add users</th>
       <th>Can see admin page</th>
@@ -29,4 +29,4 @@
   </tbody>
 </table>
 
-<%= link "New permissions", to: permissions_path(@conn, :new) %>
+<%= link "New group", to: permissions_path(@conn, :new) %>

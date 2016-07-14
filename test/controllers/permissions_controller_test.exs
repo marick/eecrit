@@ -5,10 +5,32 @@ defmodule Eecrit.PermissionsControllerTest do
   @valid_attrs %{can_add_users: true, can_see_admin_page: true, in_all_organizations: true, tag: "some content"}
   @invalid_attrs %{}
 
-  @tag :skip
-  test "lists all entries on index", %{conn: conn} do
+  setup do
+    user = insert_user(display_name: "Logged In")
+    conn = assign(build_conn, :current_user, user)
+    {:ok, conn: conn, user: user}
+  end
+  
+  test "all actions must be authenticated" do
+    Enum.each([
+      get(build_conn, permissions_path(build_conn, :new)),
+      get(build_conn, permissions_path(build_conn, :index)),
+      get(build_conn, permissions_path(build_conn, :show, "123")),
+      get(build_conn, permissions_path(build_conn, :edit, "123")),
+      put(build_conn, permissions_path(build_conn, :update, "123", %{})),
+      post(build_conn, permissions_path(build_conn, :create, %{})),
+      delete(build_conn, permissions_path(build_conn, :delete, "123")),
+    ], fn conn ->
+      assert html_response(conn, 302)
+      assert conn.halted
+    end)
+  end
+
+  test "lists all entries on :index", %{conn: conn} do
+    insert_permissions(tag: "This is a tag")
     conn = get conn, permissions_path(conn, :index)
     assert html_response(conn, 200) =~ "Listing permissions"
+    assert String.contains?(conn.resp_body, "This is a tag")
   end
 
   @tag :skip

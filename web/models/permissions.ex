@@ -10,12 +10,13 @@ defmodule Eecrit.Permissions do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:tag, :in_all_organizations, :can_add_users, :can_see_admin_page])
     |> validate_required([:tag, :in_all_organizations, :can_add_users, :can_see_admin_page])
+  end
+
+  def fresh_changeset(params) do
+    %Eecrit.Permissions{} |> changeset(params)
   end
 end

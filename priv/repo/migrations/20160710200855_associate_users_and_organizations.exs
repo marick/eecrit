@@ -11,6 +11,6 @@ defmodule Eecrit.Repo.Migrations.AssociateUsersAndOrganizations do
       add :organization_id, references(:organizations, on_delete: :delete_all)
     end
 
-    create unique_index(:users_organizations, [:user_id])
+    create index(:users_organizations, [:user_id])
   end
 end

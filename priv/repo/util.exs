@@ -36,6 +36,11 @@ defmodule Eecrit.U do
                             (user.current_organization || org).id)
     |> Repo.update!
 
+    Changeset.change(user)
+    |> Changeset.put_assoc(:organizations,
+                           Enum.map([org | user.organizations], &Changeset.change/1))
+    |> Repo.update
+
     perms = Repo.get_by(Permissions, tag: permission_tag)
     Repo.insert!(%UserPermissions{user_id: user.id,
                                   organization_id: org.id,

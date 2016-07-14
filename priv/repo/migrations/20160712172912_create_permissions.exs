@@ -5,10 +5,8 @@ defmodule Eecrit.Repo.Migrations.CreatePermissions do
     create table(:permissions) do
       add :tag, :string
 
-      add :in_all_organizations, :boolean, default: false, null: false
-      add :can_add_users, :boolean, default: false, null: false
-      add :can_see_admin_page, :boolean, default: false, null: false
-      add :is_turned_off, :boolean, default: false, null: false
+      add :is_superuser, :boolean, default: false, null: false
+      add :is_admin,  :boolean, default: false, null: false
       
       timestamps()
     end

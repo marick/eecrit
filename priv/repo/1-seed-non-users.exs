@@ -16,10 +16,9 @@ alias Eecrit.U
 U.fresh_start!
 
 # Permissions
-U.add_permissions! tag: "superuser",
-  in_all_organizations: true, can_add_users: true, can_see_admin_page: true
-U.add_permissions! tag: "admin",
-  can_add_users: true, can_see_admin_page: true
+# TODO: These will be split into finer granularity
+U.add_permissions! tag: "superuser", is_superuser: true, is_admin: true
+U.add_permissions! tag: "admin", is_admin: true
 
 # Organizations
 U.add_org! short_name: "test org", full_name: "Critter4Us Test Organization"

@@ -3,7 +3,7 @@ defmodule Eecrit.PermissionsTest do
 
   alias Eecrit.Permissions
 
-  @valid_attrs %{can_add_users: true, can_see_admin_page: true, in_all_organizations: true, tag: "some content"}
+  @valid_attrs %{is_superuser: true, is_admin: true, tag: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

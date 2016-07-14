@@ -16,9 +16,8 @@ defmodule Eecrit.TestHelpers do
 
   def insert_permissions(overrides \\ %{}) do 
     defaults = %{tag: "test permissions",
-                 in_all_organizations: false,
-                 can_add_users: false,
-                 can_see_admin_page: false}
+                 is_superuser: false,
+                 is_admin: false}
     params = Dict.merge(defaults, overrides)
 
     Permissions.fresh_changeset(params) |> Repo.insert!

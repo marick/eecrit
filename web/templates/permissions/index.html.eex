@@ -15,9 +15,8 @@
 <%= for permissions <- @permissions do %>
     <tr>
       <td><%= permissions.tag %></td>
-      <td><%= permissions.in_all_organizations %></td>
-      <td><%= permissions.can_add_users %></td>
-      <td><%= permissions.can_see_admin_page %></td>
+      <td><%= permissions.is_superuser %></td>
+      <td><%= permissions.is_admin %></td>
 
       <td class="text-right">
         <%= link "Show", to: permissions_path(@conn, :show, permissions), class: "btn btn-default btn-xs" %>

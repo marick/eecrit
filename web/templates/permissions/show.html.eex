@@ -3,23 +3,18 @@
 <ul>
 
   <li>
-    <strong>Tag:</strong>
+    <strong>Group name</strong>
     <%= @permissions.tag %>
   </li>
 
   <li>
-    <strong>In all organizations:</strong>
-    <%= @permissions.in_all_organizations %>
+    <strong>Superuser?</strong>
+    <%= @permissions.is_superuser %>
   </li>
 
   <li>
-    <strong>Can add users:</strong>
-    <%= @permissions.can_add_users %>
-  </li>
-
-  <li>
-    <strong>Can see admin page:</strong>
-    <%= @permissions.can_see_admin_page %>
+    <strong>Admin?:</strong>
+    <%= @permissions.is_admin %>
   </li>
 
 </ul>

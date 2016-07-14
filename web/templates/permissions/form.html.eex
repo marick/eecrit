@@ -12,21 +12,15 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :in_all_organizations, class: "control-label" %>
-    <%= checkbox f, :in_all_organizations, class: "form-control" %>
-    <%= error_tag f, :in_all_organizations %>
+    <%= label f, :is_superuser, class: "control-label" %>
+    <%= checkbox f, :is_superuser, class: "form-control" %>
+    <%= error_tag f, :is_superuser %>
   </div>
 
   <div class="form-group">
-    <%= label f, :can_add_users, class: "control-label" %>
-    <%= checkbox f, :can_add_users, class: "form-control" %>
-    <%= error_tag f, :can_add_users %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :can_see_admin_page, class: "control-label" %>
-    <%= checkbox f, :can_see_admin_page, class: "form-control" %>
-    <%= error_tag f, :can_see_admin_page %>
+    <%= label f, :is_admin, class: "control-label" %>
+    <%= checkbox f, :is_admin, class: "form-control" %>
+    <%= error_tag f, :is_admin %>
   </div>
 
   <div class="form-group">

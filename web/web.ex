@@ -36,7 +36,7 @@ defmodule Eecrit.Web do
 
       import Eecrit.Router.Helpers
       import Eecrit.Gettext
-      import Eecrit.Auth, only: [authenticate_user: 2,
+      import Eecrit.SessionPlugs, only: [authenticate_user: 2,
 #                                 authenticate_permission: 2
                                 ]
     end
@@ -62,7 +62,8 @@ defmodule Eecrit.Web do
     quote do
       use Phoenix.Router
 
-      import Eecrit.Auth, only: [authenticate_user: 2]
+      import Eecrit.SessionPlugs, only: [add_user_state: 2,
+                                         authenticate_user: 2]
     end
   end
 

@@ -7,7 +7,7 @@ defmodule Eecrit.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Eecrit.Auth, repo: Eecrit.Repo
+    plug :add_user_state, Eecrit.Repo
   end
 
   pipeline :api do

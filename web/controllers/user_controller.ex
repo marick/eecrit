@@ -24,12 +24,10 @@ defmodule Eecrit.UserController do
     case Repo.insert(changeset) do
       {:ok, user} -> 
         conn
-        |> Eecrit.Auth.login(user)
         |> put_flash(:info, "#{user.display_name} created.")
-        |> redirect(to: user_path(conn, :index))
+        |> redirect(to: page_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 end

@@ -1,6 +1,7 @@
 defmodule Eecrit.TestHelpers do
   alias Eecrit.Repo
   alias Eecrit.User
+  import ExUnit.Assertions
 #  alias Eecrit.Permissions
 
   def insert_user(overrides \\ %{}) do
@@ -27,4 +28,12 @@ defmodule Eecrit.TestHelpers do
     Base.encode16(:crypto.rand_bytes(8))
   end
 
+  # Use of assert in following is a quick and dirty way to get good error messages.
+  # It's still used with the assert macro in the test, just for consistency.
+  
+  def renders_template(conn, which) do
+    assert conn.private.phoenix_template == which
+    true
+  end
+  
 end

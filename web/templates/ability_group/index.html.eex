@@ -1,0 +1,30 @@
+<h2>Listing ability groups</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Is superuser</th>
+      <th>Is admin</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for ability_group <- @ability_groups do %>
+    <tr>
+      <td><%= ability_group.name %></td>
+      <td><%= ability_group.is_superuser %></td>
+      <td><%= ability_group.is_admin %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: ability_group_path(@conn, :show, ability_group), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: ability_group_path(@conn, :edit, ability_group), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: ability_group_path(@conn, :delete, ability_group), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New ability group", to: ability_group_path(@conn, :new) %>

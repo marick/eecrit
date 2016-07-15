@@ -25,12 +25,7 @@ defmodule Eecrit.Router do
   scope "/admin", Eecrit do
     pipe_through [:browser, :authenticate_user]
 
-    resources "/permissions", PermissionsController
-  end
-
-  scope "/critter4us", Eecrit do
-    pipe_through [:browser, :authenticate_user]
-
+    resources "/ability_groups", AbilityGroupController
     resources "/organizations", OrganizationController
   end
 

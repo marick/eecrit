@@ -1,0 +1,6 @@
+<h2>Edit ability group</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: ability_group_path(@conn, :update, @ability_group) %>
+
+<%= link "Back", to: ability_group_path(@conn, :index) %>

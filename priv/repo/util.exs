@@ -1,13 +1,13 @@
 alias Eecrit.Organization
-alias Eecrit.Permissions
-alias Eecrit.UserPermissions
+alias Eecrit.AbilityGroup
+alias Eecrit.AbilityGroupChooser
 alias Eecrit.User
 alias Ecto.Changeset
 alias Eecrit.Repo
 
 defmodule Eecrit.U do
   def fresh_start!() do
-    Repo.delete_all(Permissions)
+    Repo.delete_all(AbilityGroup)
     Repo.delete_all(Organization)
     Repo.delete_all(User)
   end
@@ -22,9 +22,9 @@ defmodule Eecrit.U do
   end
 
   def add_org!(kwlist), do: add_x!(Organization, kwlist)
-  def add_permissions!(kwlist), do: add_x!(Permissions, kwlist)
+  def add_ability_group!(kwlist), do: add_x!(AbilityGroup, kwlist)
 
-  def put_user_in_org!(login_name, org_short_name, permission_tag) do
+  def put_user_in_org!(login_name, org_short_name, ability_group_name) do
     user =
       existing_user(login_name)
       |> Repo.preload([:organizations, :current_organization])
@@ -41,10 +41,10 @@ defmodule Eecrit.U do
                            Enum.map([org | user.organizations], &Changeset.change/1))
     |> Repo.update
 
-    perms = Repo.get_by(Permissions, tag: permission_tag)
-    Repo.insert!(%UserPermissions{user_id: user.id,
-                                  organization_id: org.id,
-                                  permissions_id: perms.id})
+    group = Repo.get_by(AbilityGroup, name: ability_group_name)
+    Repo.insert!(%AbilityGroupChooser{user_id: user.id,
+                                      organization_id: org.id,
+                                      ability_group_id: group.id})
   end
 
   defp existing_user(login_name), do: Repo.get_by(User, login_name: login_name)

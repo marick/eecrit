@@ -37,7 +37,8 @@ defmodule Eecrit.Web do
       import Eecrit.Router.Helpers
       import Eecrit.Gettext
       import Eecrit.Auth, only: [authenticate_user: 2,
-                                 authenticate_permission: 2]
+#                                 authenticate_permission: 2
+                                ]
     end
   end
 

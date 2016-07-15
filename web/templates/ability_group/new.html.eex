@@ -1,0 +1,6 @@
+<h2>New ability group</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: ability_group_path(@conn, :create) %>
+
+<%= link "Back", to: ability_group_path(@conn, :index) %>

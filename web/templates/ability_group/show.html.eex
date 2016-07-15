@@ -1,0 +1,23 @@
+<h2>Show ability group</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @ability_group.name %>
+  </li>
+
+  <li>
+    <strong>Is superuser:</strong>
+    <%= @ability_group.is_superuser %>
+  </li>
+
+  <li>
+    <strong>Is admin:</strong>
+    <%= @ability_group.is_admin %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: ability_group_path(@conn, :edit, @ability_group) %>
+<%= link "Back", to: ability_group_path(@conn, :index) %>

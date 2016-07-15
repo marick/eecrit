@@ -1,7 +1,8 @@
 defmodule Eecrit.PermissionsController do
   use Eecrit.Web, :controller
-
   alias Eecrit.Permissions
+
+  plug :authenticate_permission, :is_superuser
 
   def index(conn, _params) do
     permissions = Repo.all(Permissions)

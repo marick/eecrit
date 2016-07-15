@@ -3,6 +3,7 @@ defmodule Eecrit.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Phoenix.Controller
   alias Eecrit.User
+  alias Eecrit.UserPermissions
   alias Eecrit.Router.Helpers
 
   def init(opts) do
@@ -15,8 +16,13 @@ defmodule Eecrit.Auth do
     cond do
       user = conn.assigns[:current_user] ->
         conn # Allows tests to bypass authentication
+
       user = user_id && repo.get(User, user_id) ->
-        assign(conn, :current_user, user)
+        IO.puts("In Auth.call #{user_id}")
+        conn
+        |> assign(:current_user, user)
+        |> assign(:permissions, repo.get_by(UserPermissions, user_id: user.id,
+                                            organization_id: user.current_organization_id))
       true ->
         assign(conn, :current_user, nil)
     end
@@ -31,6 +37,25 @@ defmodule Eecrit.Auth do
       |> redirect(to: Helpers.page_path(conn, :index))
       |> halt()
     end
+  end
+
+  def authenticate_permission(conn = %{:assigns => %{:permissions => permissions}}, key) do
+    if Map.get(permissions, key) do 
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not have permission to visit that page.")
+      |> redirect(to: Helpers.page_path(conn, :index))
+      |> halt()
+    end
+  end
+
+  def authenticate_permission(conn, _key) do
+    IO.puts("FAIL")
+    conn
+    |> put_flash(:error, "You do not have permission to visit that page.")
+    |> redirect(to: Helpers.page_path(conn, :index))
+    |> halt()
   end
 
   def login(conn, user) do

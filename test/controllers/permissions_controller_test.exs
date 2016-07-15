@@ -2,34 +2,60 @@ defmodule Eecrit.PermissionsControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.Permissions
-  @valid_attrs %{can_add_users: true, can_see_admin_page: true, in_all_organizations: true, tag: "some content"}
+  @valid_attrs %{is_superuser: true, is_admin: true, tag: "some content"}
   @invalid_attrs %{}
 
-  setup do
-    user = insert_user(display_name: "Logged In")
-    conn = assign(build_conn, :current_user, user)
-    {:ok, conn: conn, user: user}
+  setup %{conn: conn} = config do
+    if user_type = config[:who] do 
+      user = insert_user(display_name: "Logged In")
+      perms = insert_permissions(is_admin: true, is_superuser: (user_type=="superuser"))
+      conn = build_conn
+      |> assign(:current_user, user) 
+      |> assign(:permissions, perms)
+      {:ok, conn: conn, user: user}
+    else
+      {:ok, conn: conn}
+    end
   end
-  
-  test "all actions must be authenticated" do
+
+  @tag who: nil
+  test "all actions require an authenticated user", %{conn: conn} do
     Enum.each([
-      get(build_conn, permissions_path(build_conn, :new)),
-      get(build_conn, permissions_path(build_conn, :index)),
-      get(build_conn, permissions_path(build_conn, :show, "123")),
-      get(build_conn, permissions_path(build_conn, :edit, "123")),
-      put(build_conn, permissions_path(build_conn, :update, "123", %{})),
-      post(build_conn, permissions_path(build_conn, :create, %{})),
-      delete(build_conn, permissions_path(build_conn, :delete, "123")),
+      get(conn, permissions_path(conn, :new)),
+      get(conn, permissions_path(conn, :index)),
+      get(conn, permissions_path(conn, :show, "123")),
+      get(conn, permissions_path(conn, :edit, "123")),
+      put(conn, permissions_path(conn, :update, "123", %{})),
+      post(conn, permissions_path(conn, :create, %{})),
+      delete(conn, permissions_path(conn, :delete, "123")),
     ], fn conn ->
       assert html_response(conn, 302)
       assert conn.halted
     end)
   end
 
+  @tag who: "admin"
+  test "the user can't be an ordinary admin", %{conn: conn} do
+    Enum.each([
+      get(conn, permissions_path(conn, :new)),
+      get(conn, permissions_path(conn, :index)),
+      get(conn, permissions_path(conn, :show, "123")),
+      get(conn, permissions_path(conn, :edit, "123")),
+      put(conn, permissions_path(conn, :update, "123", %{})),
+      post(conn, permissions_path(conn, :create, %{})),
+      delete(conn, permissions_path(conn, :delete, "123")),
+    ], fn conn ->
+      assert html_response(conn, 302)
+      assert conn.halted
+    end)
+  end
+
+  @tag who: "superuser"
   test "lists all entries on :index", %{conn: conn} do
     insert_permissions(tag: "This is a tag")
+
     conn = get conn, permissions_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing permissions"
+    assert html_response(conn, 200) =~ "Groups of User Permissions"
     assert String.contains?(conn.resp_body, "This is a tag")
   end
 

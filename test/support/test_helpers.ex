@@ -9,10 +9,9 @@ defmodule Eecrit.TestHelpers do
     defaults = %{display_name: "Test User #{suffix}",
                  login_name: "user#{suffix}@example.com",
                  password: "password"}
-    params = Dict.merge(defaults, overrides)
-    %User{}
-    |> User.password_setting_changeset(params)
-    |> Repo.insert!
+    Dict.merge(defaults, overrides)
+    |> User.checking_creation_changeset()
+    |> Repo.insert!()
   end
 
   # def insert_permissions(overrides \\ %{}) do 

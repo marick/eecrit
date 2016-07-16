@@ -1,7 +1,7 @@
 defmodule Eecrit.User do
   use Eecrit.Web, :model
 
-  @default_string_max 50
+  @postgres_string_max 255
 
   schema "users" do
     field :display_name, :string
@@ -15,20 +15,35 @@ defmodule Eecrit.User do
     timestamps
   end
 
-  def changeset(struct, params \\ %{}) do
+  # By (my) convention, `changeset` creates a minimal changeset that
+  # does nothing but filter out unwanted params. No fields are
+  # required.
+  defp changeset(struct, params) do 
     struct
-    |> cast(params, ~w(display_name login_name))
-    |> validate_length(:display_name, min: 1, max: @default_string_max)
-    |> validate_length(:login_name, min: 7, max: @default_string_max)
+    |> cast(params, [:display_name, :login_name, :password])
+  end
+
+  # By (my) convention, `check_field_descriptions` bundles all the
+  # validations and constraints *other than* `validate_required`. That
+  # is: these are the checks that are done if a field is present.
+  defp check_field_descriptions(changeset) do
+    changeset
+    |> validate_length(:display_name, max: @postgres_string_max)
+    |> validate_length(:login_name, max: @postgres_string_max)
+    |> validate_length(:password, min: 6)
     |> unique_constraint(:login_name)
     |> assoc_constraint(:current_organization)
   end
 
-  def password_setting_changeset(starting_value, additions) do
-    starting_value
-    |> changeset(additions)
-    |> cast(additions, ~w(password), [])
-    |> validate_length(:password, min: 6)
+  def empty_creation_changeset do
+    changeset(%Eecrit.User{}, %{})
+  end
+  
+  def checking_creation_changeset(params) do
+    empty_creation_changeset
+    |> changeset(params)
+    |> validate_required([:display_name, :login_name, :password])
+    |> check_field_descriptions
     |> add_hashed_password
   end
 

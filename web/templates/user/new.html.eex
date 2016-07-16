@@ -19,7 +19,7 @@
 
 <div class="form-group">
   <%= password_input form, :password, placeholder: "Password", class: "form-control" %>
-  <%= error_tag form, :display_name %>
+  <%= error_tag form, :password %>
 </div>
 
 <%= submit "Create User", class: "btn btn-primary" %>

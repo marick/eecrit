@@ -34,6 +34,7 @@ defmodule Eecrit.Mixfile do
   defp deps do
     [{:comeonin, "~> 2.0"},
      {:apex, "~>0.5.0"},
+     {:canary, "~> 0.14.2"},
      
      {:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},

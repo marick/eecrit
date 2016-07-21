@@ -24,7 +24,7 @@ defmodule Eecrit.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
-  scope "/admin", Eecrit do
+  scope "/", Eecrit do
     pipe_through [:browser, :require_login]
 
     resources "/ability_groups", AbilityGroupController

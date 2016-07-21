@@ -70,6 +70,4 @@ defmodule Eecrit.ModelCase do
     |> Ecto.Changeset.traverse_errors(&Eecrit.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
-
-
 end

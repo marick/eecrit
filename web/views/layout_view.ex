@@ -12,7 +12,7 @@ defmodule Eecrit.LayoutView do
     content_tag(:li, content)
   end
 
-  def li_salutation(conn, current_user) do
+  def li_salutation(_conn, current_user) do
     if current_user, do: content_tag(:li, current_user.display_name)
   end
 end

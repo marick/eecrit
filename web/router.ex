@@ -1,5 +1,7 @@
 defmodule Eecrit.Router do
   use Eecrit.Web, :router
+  import Eecrit.SessionPlugs, only: [add_current_user: 2,
+                                     require_login: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -7,7 +9,7 @@ defmodule Eecrit.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :add_user_state, Eecrit.Repo
+    plug :add_current_user, Eecrit.Repo
   end
 
   pipeline :api do
@@ -23,7 +25,7 @@ defmodule Eecrit.Router do
   end
 
   scope "/admin", Eecrit do
-    pipe_through [:browser, :authenticate_user]
+    pipe_through [:browser, :require_login]
 
     resources "/ability_groups", AbilityGroupController
     resources "/organizations", OrganizationController

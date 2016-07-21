@@ -5,7 +5,7 @@ defmodule Eecrit.SessionPlugs do
 #  alias Eecrit.UserPermissions
   alias Eecrit.Router.Helpers
 
-  def add_user_state(conn, repo) do
+  def add_current_user(conn, repo) do
     user_id = get_session(conn, :user_id)
 
     cond do
@@ -22,7 +22,7 @@ defmodule Eecrit.SessionPlugs do
     end
   end
 
-  def authenticate_user(conn, _opts) do
+  def require_login(conn, _opts) do
     if conn.assigns.current_user do
       conn
     else

@@ -1,6 +1,8 @@
 defmodule Eecrit.UserController do
   use Eecrit.Web, :controller
-  plug :authenticate_user when not action in [:new, :create]
+  import Eecrit.SessionPlugs, only: [require_login: 2]
+  plug :require_login when not action in [:new, :create]
+
   alias Eecrit.User
   alias Eecrit.Repo
 

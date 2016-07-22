@@ -9,6 +9,11 @@ defmodule Eecrit.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
+    # The following is really virtual, I guess, but I don't know the
+    # right way to express it. It's currently attached to the User via
+    # an independent lookup, (not `preload`) because the "primary key"
+    # of AbilityGroupChooser is a {userid, organizationid} pair.
+    has_one :ability_group, Eecrit.AbilityGroup
     belongs_to :current_organization, Eecrit.Organization
     many_to_many :organizations, Eecrit.Organization, join_through: "users_organizations"
 

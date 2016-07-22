@@ -43,13 +43,18 @@ defmodule Eecrit.User do
   def empty_creation_changeset do
     changeset(%Eecrit.User{}, %{})
   end
-  
-  def checking_creation_changeset(params) do
-    empty_creation_changeset
+
+  def checking_creation_changeset(start, params) do
+    start
     |> changeset(params)
     |> validate_required([:display_name, :login_name, :password])
     |> check_field_descriptions
     |> add_hashed_password
+  end
+  
+  def checking_creation_changeset(params) do
+    empty_creation_changeset
+    |> checking_creation_changeset(params)
   end
 
   def add_hashed_password(changeset) do

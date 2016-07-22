@@ -29,12 +29,31 @@ defmodule Eecrit.SessionPlugs do
     Map.put(user, :abilities, choice.ability_group)
   end
 
-  def require_login(conn, _opts) do
-    if conn.assigns.current_user do
+  def require_login(conn, _opts \\ %{}) do
+    require_X(conn, conn.assigns.current_user, "Please log in.")
+  end
+
+  def require_admin(conn, _opts) do
+    IO.puts("Here I am in require_admin")
+    conn
+    |> require_login
+    |> require_X(conn.assigns.current_user.abilities.is_admin,
+                 "You aren't permitted to see that page.")
+  end
+
+  def require_superuser(conn, _opts) do
+    conn
+    |> require_login
+    |> require_X(conn.assigns.current_user.abilities.is_superuser,
+                 "You aren't permitted to see that page.")
+  end
+
+  defp require_X(conn, permitted?, flash) do
+    if permitted? do
       conn
     else
       conn
-      |> put_flash(:error, "You must be logged in to see that page.")
+      |> put_flash(:error, flash)
       |> redirect(to: Helpers.page_path(conn, :index))
       |> halt()
     end

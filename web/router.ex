@@ -1,7 +1,9 @@
 defmodule Eecrit.Router do
   use Eecrit.Web, :router
   import Eecrit.SessionPlugs, only: [add_current_user: 2,
-                                     require_login: 2]
+                                     require_login: 2,
+                                     require_admin: 2,
+                                     require_superuser: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -16,16 +18,31 @@ defmodule Eecrit.Router do
     plug :accepts, ["json"]
   end
 
+  # Not-logged-in users
   scope "/", Eecrit do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
+  # Only for logged-in users
   scope "/", Eecrit do
     pipe_through [:browser, :require_login]
+
+    resources "/users", UserController, only: [:show]
+  end
+
+  # Controllers that require Admin permissions.
+  scope "/", Eecrit do
+    pipe_through [:browser, :require_admin]
+
+    resources "/users", UserController, only: [:index, :new, :create]
+  end
+
+  # Controllers that require superuser permissions.
+  scope "/", Eecrit do
+    pipe_through [:browser, :require_superuser]
 
     resources "/ability_groups", AbilityGroupController
     resources "/organizations", OrganizationController

@@ -17,6 +17,7 @@
         <nav role="navigation">
           <ol class="breadcrumb text-right">
             <%= li_salutation(@conn, @current_user) %>
+            <%= li_organization(@conn, @current_user) %>
             <%= li_log_in_out(@conn, @current_user) %>
           </ol>
         </nav>

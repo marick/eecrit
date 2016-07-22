@@ -1,9 +1,11 @@
 defmodule Eecrit.SessionPlugs do
   import Plug.Conn
   import Phoenix.Controller
+  import Ecto.Query
   alias Eecrit.User
   alias Eecrit.Repo
   alias Eecrit.AbilityGroupChooser
+  alias Eecrit.AbilityGroup
   alias Eecrit.Router.Helpers
 
   def add_current_user(conn, _opts) do
@@ -13,20 +15,36 @@ defmodule Eecrit.SessionPlugs do
       user = conn.assigns[:current_user] ->
         conn # Allows tests to bypass authentication
 
-      user = user_id && Repo.get(User, user_id) ->
-        assign(conn, :current_user, add_abilities(user))
+      user = user_id && fetch_user(user_id) ->
+        assign(conn, :current_user, user)
       true ->
         assign(conn, :current_user, nil)
     end
   end
 
-  defp add_abilities(user) do
-    choice =
-      AbilityGroupChooser
-      |> Repo.get_by(user_id: user.id, organization_id: user.current_organization_id)
-      |> Repo.preload(:ability_group)
-    IO.puts("Fetched abilities: #{inspect choice.ability_group}")
-    Map.put(user, :abilities, choice.ability_group)
+  @precompiled_part_of_query from u in User,
+    preload: [:current_organization],
+
+    # Find id of ability group for user X organization
+    join: c in AbilityGroupChooser,
+    where: u.id == c.user_id and u.current_organization_id == c.organization_id,
+    
+    # Don't think there's a way to preload multi-key join table
+    join: a in AbilityGroup,
+    where: c.ability_group_id == a.id,
+    
+    select: {u, a}, limit: 1
+
+
+  def fetch_user(user_id) do
+    query = @precompiled_part_of_query |> where([u], u.id == ^user_id)
+
+    case Repo.one(query) do 
+      {user, abilities} ->
+        Map.put(user, :abilities, abilities)
+      _ ->
+        nil
+    end
   end
 
   def require_login(conn, _opts \\ %{}) do

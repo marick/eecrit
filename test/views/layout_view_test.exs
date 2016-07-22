@@ -4,6 +4,7 @@ defmodule Eecrit.LayoutViewTest do
   import Eecrit.Router.Helpers
   alias Eecrit.LayoutView
   alias Eecrit.User
+  alias Eecrit.Organization
 
   setup %{conn: conn} do
     conn =
@@ -55,5 +56,16 @@ defmodule Eecrit.LayoutViewTest do
 
   test "anonymous users produce no salutation HTML", %{conn: conn} do
     assert LayoutView.li_salutation(conn, nil) == nil
+  end
+
+  test "an organization for a logged-in user", %{conn: conn} do
+    organization = %Organization{short_name: "..short.."}
+    user = %User{id: "..id..", current_organization: organization}
+    assert_substring(LayoutView.li_organization(conn, user),
+                     "<li>..short..</li>")
+  end
+
+  test "anonymous users produce no organization HTML", %{conn: conn} do
+    assert LayoutView.li_organization(conn, nil) == nil
   end
 end

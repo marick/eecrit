@@ -26,7 +26,8 @@ defmodule Eecrit.ConnCase do
       import Ecto.Query
 
       import Eecrit.Router.Helpers
-      import Eecrit.TestHelpers
+      import Eecrit.Test.Makers
+      import Eecrit.Test.Assertions
 
       # The default endpoint for testing
       @endpoint Eecrit.Endpoint

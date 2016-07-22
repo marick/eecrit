@@ -19,6 +19,7 @@ U.fresh_start!
 # TODO: These will be split into finer granularity
 U.add_ability_group! name: "superuser", is_superuser: true, is_admin: true
 U.add_ability_group! name: "admin", is_admin: true
+U.add_ability_group! name: "user"
 
 # Organizations
 U.add_org! short_name: "test org", full_name: "Critter4Us Test Organization"

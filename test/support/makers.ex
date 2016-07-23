@@ -27,12 +27,19 @@ defmodule Eecrit.Test.Makers do
     struct(Organization, Dict.merge(defaults, overrides))
   end
 
+  def insert_organization(overrides \\ %{}) do
+    make_organization(overrides)
+    |> Organization.changeset()
+    |> Repo.insert!()
+  end
+
   ## Users
   def make_user(overrides \\ %{}) do
     defaults = %{id: next_id,
                  display_name: "Test User",
                  login_name: "user@example.com",
-                 password: "password"}
+                 password: "password",
+                 current_organization: make_organization()}
     struct(User, Dict.merge(defaults, overrides))
   end
 

@@ -41,6 +41,10 @@ defmodule Eecrit.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(Eecrit.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Eecrit.Test.Makers.obey_tags(tags)
+
+    {:ok, conn: conn}
   end
 end

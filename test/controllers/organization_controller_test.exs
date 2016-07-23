@@ -5,16 +5,6 @@ defmodule Eecrit.OrganizationControllerTest do
   @valid_attrs %{full_name: "some content", short_name: "sn"}
   @invalid_attrs %{}
 
-  setup %{conn: conn} = config do
-    if Map.has_key?(config, :accessed_by) do
-      user = make_user(ability_group: make_ability_group(config.accessed_by))
-      conn = assign(conn, :current_user, user)
-      {:ok, conn: conn}
-    else
-      {:ok, conn: conn}
-    end
-  end
-
   ### Authorization 
 
   @tag accessed_by: "admin"

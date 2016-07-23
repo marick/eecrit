@@ -42,6 +42,12 @@ defmodule Eecrit.Test.Makers do
     |> Repo.insert!()
   end
 
-  def obey_tags() do
+  def obey_tags(conn, tags) do
+    if Map.has_key?(tags, :accessed_by) do
+      user = make_user(ability_group: make_ability_group(tags.accessed_by))
+      Plug.Conn.assign(conn, :current_user, user)
+    else
+      conn
+    end
   end
 end

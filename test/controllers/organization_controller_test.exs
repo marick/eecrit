@@ -2,8 +2,41 @@ defmodule Eecrit.OrganizationControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.Organization
-  @valid_attrs %{full_name: "some content"}
+  @valid_attrs %{full_name: "some content", short_name: "sn"}
   @invalid_attrs %{}
+
+  setup %{conn: conn} = config do
+    if Map.has_key?(config, :accessed_by) do
+      user = make_user(ability_group: make_ability_group(config.accessed_by))
+      conn = assign(conn, :current_user, user)
+      {:ok, conn: conn}
+    else
+      {:ok, conn: conn}
+    end
+  end
+
+  ### Authorization 
+
+  @tag accessed_by: "admin"
+  test "anyone less than superuser does not have access", %{conn: conn} do
+    conn = get conn, organization_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
+  test "that includes someone not logged in", %{conn: conn} do
+    conn = get conn, organization_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
+  # @tag accessed_by: "superuser"
+  # test "anyone less than superuser does not have access", %{conn: conn} do
+  #   conn = get conn, organization_path(conn, :index)
+  #   assert redirected_to(conn) == page_path(conn, :index)
+  # end
+
+
+  #### 
+
 
   @tag :skip
   test "lists all entries on index", %{conn: conn} do

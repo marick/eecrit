@@ -13,7 +13,7 @@ defmodule Eecrit.SessionPlugs do
 
     cond do
       user = conn.assigns[:current_user] ->
-        conn # Allows tests to bypass authentication
+        conn # Allows tests to fake a logged-in user
 
       user = user_id && fetch_user(user_id) ->
         assign(conn, :current_user, user)
@@ -41,7 +41,7 @@ defmodule Eecrit.SessionPlugs do
 
     case Repo.one(query) do 
       {user, abilities} ->
-        Map.put(user, :abilities, abilities)
+        Map.put(user, :ability_group, abilities)
       _ ->
         nil
     end
@@ -52,18 +52,13 @@ defmodule Eecrit.SessionPlugs do
   end
 
   def require_admin(conn, _opts) do
-    IO.puts("Here I am in require_admin")
-    conn
-    |> require_login
-    |> require_X(conn.assigns.current_user.abilities.is_admin,
-                 "You aren't permitted to see that page.")
+    require_X(conn, conn.assigns.current_user.ability_group.is_admin,
+                    "You aren't permitted to see that page.")
   end
 
   def require_superuser(conn, _opts) do
-    conn
-    |> require_login
-    |> require_X(conn.assigns.current_user.abilities.is_superuser,
-                 "You aren't permitted to see that page.")
+    require_X(conn, conn.assigns.current_user.ability_group.is_superuser,
+                    "You aren't permitted to see that page.")
   end
 
   defp require_X(conn, permitted?, flash) do

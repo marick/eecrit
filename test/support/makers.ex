@@ -2,35 +2,37 @@ defmodule Eecrit.Test.Makers do
   alias Eecrit.Repo
   alias Eecrit.User
   alias Eecrit.Organization
+  alias Eecrit.AbilityGroup
 
   # TODO: simplify this with macros or higher-level functions
 
-  ## Ability Groups
-  def make_ability_group(overrides \\ %{}) do
+  defp next_id do
+    :random.uniform(1_000_000_000)
   end
 
-  def insert_ability_group(overrides \\ %{}) do
+  ## Ability Groups
+  def make_ability_group("superuser") do
+    %AbilityGroup{id: next_id, name: "superuser", is_superuser: true, is_admin: true}
   end
+
+  def make_ability_group("admin") do 
+    %AbilityGroup{id: next_id, name: "admin", is_superuser: false, is_admin: true}
+  end  
 
   ## Organizations
   def make_organization(overrides \\ %{}) do
-    defaults = %{short_name: "to",
+    defaults = %{id: next_id,
+                 short_name: "to",
                  full_name: "Test Organization"}
     struct(Organization, Dict.merge(defaults, overrides))
   end
 
-  def insert_organization(overrides \\ %{}) do
-    make_organization(overrides)
-    |> Organization.changeset()
-    |> Repo.insert!()
-  end
-
   ## Users
   def make_user(overrides \\ %{}) do
-    defaults = %{display_name: "Test User",
+    defaults = %{id: next_id,
+                 display_name: "Test User",
                  login_name: "user@example.com",
-                 password: "password",
-                 organization: make_organization
+                 password: "password"}
     struct(User, Dict.merge(defaults, overrides))
   end
 
@@ -38,5 +40,8 @@ defmodule Eecrit.Test.Makers do
     make_user(overrides)
     |> User.checking_creation_changeset(%{})
     |> Repo.insert!()
+  end
+
+  def obey_tags() do
   end
 end

@@ -29,21 +29,18 @@ defmodule Eecrit.Router do
   # Only for logged-in users
   scope "/", Eecrit do
     pipe_through [:browser, :require_login]
-
-    resources "/users", UserController, only: [:show]
   end
 
   # Controllers that require Admin permissions.
   scope "/", Eecrit do
     pipe_through [:browser, :require_login, :require_admin]
-
-    resources "/users", UserController, only: [:index, :new, :create]
   end
 
   # Controllers that require superuser permissions.
   scope "/", Eecrit do
     pipe_through [:browser, :require_login, :require_superuser]
 
+    resources "/users", UserController
     resources "/ability_groups", AbilityGroupController
     resources "/organizations", OrganizationController
   end

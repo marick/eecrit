@@ -6,9 +6,10 @@ defmodule Eecrit.UserTest do
   @valid_attrs %{display_name: "Dawn Marick",
                  login_name: "dster@critter4us.com",
                  password: "password"}
-  @empty_attrs %{}
-  @invalid_attrs %{password: "12345"}
-
+  @blank_attrs %{login_name: "", display_name: "", password: ""}
+  @invalid_attrs %{display_name: String.duplicate("d", 256),
+                   login_name: String.duplicate("l", 256),
+                   password: "12345"}
 
   ### New
   test "a changeset for the `new` action" do
@@ -29,7 +30,7 @@ defmodule Eecrit.UserTest do
   end
 
   test "a changeset for the `create` action rejects missing attributes" do 
-    changeset = User.create_action_changeset(@empty_attrs)
+    changeset = User.create_action_changeset(@blank_attrs)
     errors = flattened_errors(changeset)
     assert {:display_name, "can't be blank"} in errors
     assert {:login_name, "can't be blank"} in errors

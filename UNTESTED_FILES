@@ -1,0 +1,23 @@
+|-- controllers
+|   |-- session_controller.ex
+|   |-- session_plugs.ex
+|-- models
+|-- router.ex
+|-- templates
+|   |-- ability_group
+|   |   |-- edit.html.eex
+|   |   |-- form.html.eex
+|   |   |-- index.html.eex
+|   |   |-- new.html.eex
+|   |   `-- show.html.eex
+|   |-- session
+|   |   `-- new.html.eex
+|   `-- user
+|       |-- index.html.eex
+|       |-- new.html.eex
+|       |-- show.html.eex
+|       `-- user.html.eex
+|-- views
+|   |-- ability_group_view.ex
+|   |-- session_view.ex
+|   `-- user_view.ex

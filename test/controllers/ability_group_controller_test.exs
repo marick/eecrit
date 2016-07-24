@@ -3,8 +3,7 @@ defmodule Eecrit.AbilityGroupControllerTest do
 
   alias Eecrit.AbilityGroup
   @valid_attrs %{is_admin: true, is_superuser: true, name: "some content"}
-  @empty_attrs %{name: ""}
-  @missing_attrs %{}
+  @invalid_attrs %{name: ""}
 
   ### Authorization 
 
@@ -42,7 +41,7 @@ defmodule Eecrit.AbilityGroupControllerTest do
 
   @tag accessed_by: "superuser"
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, ability_group_path(conn, :create), ability_group: @missing_attrs
+    conn = post conn, ability_group_path(conn, :create), ability_group: @invalid_attrs
     assert html_response(conn, 200) =~ "New ability group"
   end
 
@@ -78,7 +77,7 @@ defmodule Eecrit.AbilityGroupControllerTest do
   @tag accessed_by: "superuser"
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     ability_group = insert_ability_group()
-    conn = put conn, ability_group_path(conn, :update, ability_group), ability_group: @empty_attrs
+    conn = put conn, ability_group_path(conn, :update, ability_group), ability_group: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit ability group"
   end
 

@@ -13,8 +13,8 @@ defmodule Eecrit.AbilityGroup do
     timestamps()
   end
 
-  defp changeset(starting_group, updates) do
-    starting_group
+  defp changeset(base_struct, updates) do
+    base_struct
     |> cast(updates, @visible_fields)
     |> validate_required(@visible_fields)
   end
@@ -34,5 +34,4 @@ defmodule Eecrit.AbilityGroup do
   def update_action_changeset(ability_group, updates) do
     changeset(ability_group, updates)
   end
-
 end

@@ -14,8 +14,8 @@ defmodule Eecrit.Organization do
     timestamps()
   end
 
-  defp changeset(starting_organization, updates) do
-    starting_organization
+  defp changeset(base_struct, updates) do
+    base_struct
     |> cast(updates, @visible_fields)
     |> validate_required(@visible_fields)
   end

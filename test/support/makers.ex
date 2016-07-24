@@ -19,6 +19,10 @@ defmodule Eecrit.Test.Makers do
     %AbilityGroup{id: next_id, name: "admin", is_superuser: false, is_admin: true}
   end
 
+  def make_ability_group("user") do 
+    %AbilityGroup{id: next_id, name: "user", is_superuser: false, is_admin: false}
+  end
+
   def insert_ability_group(overrides \\ %{}) do
     defaults = %{id: next_id, name: "org name",
                  is_superuser: true, is_admin: false}
@@ -53,7 +57,7 @@ defmodule Eecrit.Test.Makers do
 
   def insert_user(overrides \\ %{}) do
     make_user(overrides)
-    |> User.checking_creation_changeset(%{})
+    |> User.update_action_changeset(%{})
     |> Repo.insert!()
   end
 

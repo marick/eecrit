@@ -9,8 +9,16 @@ defmodule Eecrit.UserRepoTest do
   test "there is a unique constraint on the username" do
     insert_user(login_name: @valid_attrs.login_name)
 
-    changeset = User.checking_creation_changeset(@valid_attrs)
+    changeset = User.create_action_changeset(@valid_attrs)
     assert {:error, changeset} = Repo.insert(changeset)
     assert {:login_name, "has already been taken"} in flattened_errors(changeset)
+  end
+
+  @tag :skip
+  test "the same is true of creation" do
+  end
+
+  @tag :skip
+  test "constaints on current organization?" do
   end
 end

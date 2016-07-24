@@ -2,7 +2,8 @@ defmodule Eecrit.User do
   use Eecrit.Web, :model
 
   @postgres_string_max 255
-
+  @visible_fields [:display_name, :login_name, :password]
+  
   schema "users" do
     field :display_name, :string
     field :login_name, :string
@@ -20,14 +21,12 @@ defmodule Eecrit.User do
     timestamps
   end
 
-  # By (my) convention, `changeset` creates a minimal changeset that
-  # does nothing but filter out unwanted params. No fields are
-  # required.
-  defp changeset(struct, params) do 
-    struct
-    |> cast(params, [:display_name, :login_name, :password])
+  defp changeset(base_struct, updates) do
+    base_struct
+    |> cast(updates, @visible_fields)
+    |> validate_required(@visible_fields)
   end
-
+  
   # By (my) convention, `check_field_descriptions` bundles all the
   # validations and constraints *other than* `validate_required`. That
   # is: these are the checks that are done if a field is present.
@@ -40,22 +39,43 @@ defmodule Eecrit.User do
     |> assoc_constraint(:current_organization)
   end
 
-  def empty_creation_changeset do
+  def new_action_changeset do   # Start empty
     changeset(%Eecrit.User{}, %{})
   end
 
-  def checking_creation_changeset(start, params) do
-    start
-    |> changeset(params)
-    |> validate_required([:display_name, :login_name, :password])
-    |> check_field_descriptions
-    |> add_hashed_password
+  def create_action_changeset(params) do
+    changeset(%Eecrit.User{}, params)
+    |> check_field_descriptions()
+    |> add_hashed_password()
   end
+
+  def edit_action_changeset(ability_group) do
+    changeset(ability_group, %{})
+  end
+
+  def update_action_changeset(ability_group, updates) do
+    changeset(ability_group, updates)
+    |> check_field_descriptions()
+    |> add_hashed_password()
+  end
+
+
+  # def empty_creation_changeset do
+  #   changeset(%Eecrit.User{}, %{})
+  # end
+
+  # def checking_creation_changeset(start, params) do
+  #   start
+  #   |> changeset(params)
+  #   |> validate_required([:display_name, :login_name, :password])
+  #   |> check_field_descriptions
+  #   |> add_hashed_password
+  # end
   
-  def checking_creation_changeset(params) do
-    empty_creation_changeset
-    |> checking_creation_changeset(params)
-  end
+  # def checking_creation_changeset(params) do
+  #   empty_creation_changeset
+  #   |> checking_creation_changeset(params)
+  # end
 
   def add_hashed_password(changeset) do
     case changeset do

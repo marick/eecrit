@@ -9,12 +9,11 @@ defmodule Eecrit.AbilityGroupController do
   end
 
   def new(conn, _params) do
-    changeset = AbilityGroup.changeset(%AbilityGroup{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: AbilityGroup.new_action_changeset)
   end
 
   def create(conn, %{"ability_group" => ability_group_params}) do
-    changeset = AbilityGroup.changeset(%AbilityGroup{}, ability_group_params)
+    changeset = AbilityGroup.create_action_changeset(ability_group_params)
 
     case Repo.insert(changeset) do
       {:ok, _ability_group} ->
@@ -33,13 +32,13 @@ defmodule Eecrit.AbilityGroupController do
 
   def edit(conn, %{"id" => id}) do
     ability_group = Repo.get!(AbilityGroup, id)
-    changeset = AbilityGroup.changeset(ability_group)
+    changeset = AbilityGroup.edit_action_changeset(ability_group)
     render(conn, "edit.html", ability_group: ability_group, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "ability_group" => ability_group_params}) do
     ability_group = Repo.get!(AbilityGroup, id)
-    changeset = AbilityGroup.changeset(ability_group, ability_group_params)
+    changeset = AbilityGroup.update_action_changeset(ability_group, ability_group_params)
 
     case Repo.update(changeset) do
       {:ok, ability_group} ->

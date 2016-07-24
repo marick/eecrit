@@ -28,7 +28,7 @@ defmodule Eecrit.OrganizationControllerTest do
   end
 
   @tag accessed_by: "superuser"
-  test "renders form for new organization", %{conn: conn} do
+  test "renders form for new resource", %{conn: conn} do
     conn = get conn, organization_path(conn, :new)
     assert html_response(conn, 200) =~ "New organization"
   end

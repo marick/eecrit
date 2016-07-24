@@ -17,7 +17,15 @@ defmodule Eecrit.Test.Makers do
 
   def make_ability_group("admin") do 
     %AbilityGroup{id: next_id, name: "admin", is_superuser: false, is_admin: true}
-  end  
+  end
+
+  def insert_ability_group(overrides \\ %{}) do
+    defaults = %{id: next_id, name: "org name",
+                 is_superuser: true, is_admin: false}
+    struct(AbilityGroup, Dict.merge(defaults, overrides))
+    |> AbilityGroup.edit_action_changeset()
+    |> Repo.insert!()
+  end
 
   ## Organizations
   def make_organization(overrides \\ %{}) do

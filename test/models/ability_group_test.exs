@@ -11,12 +11,12 @@ defmodule Eecrit.AbilityGroupTest do
     refute changeset.valid?
   end
 
-  test "a changeset for the `new` action accepts valid attributes" do 
+  test "a changeset for the `create` action accepts valid attributes" do 
     changeset = AbilityGroup.create_action_changeset(@valid_attrs)
     assert changeset.valid?
   end
   
-  test "a changeset for the `new` action rejects missing attributes" do 
+  test "a changeset for the `create` action rejects missing attributes" do 
     changeset = AbilityGroup.create_action_changeset(@empty_attrs)
     refute changeset.valid?
   end

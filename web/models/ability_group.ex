@@ -1,6 +1,10 @@
 defmodule Eecrit.AbilityGroup do
   use Eecrit.Web, :model
 
+  # Fields the outside world is able to set. NOT necessarily the same
+  # as the fields in the schema.
+  @visible_fields [:name, :is_superuser, :is_admin]
+  
   schema "ability_groups" do
     field :name, :string
     field :is_superuser, :boolean, default: false
@@ -9,12 +13,26 @@ defmodule Eecrit.AbilityGroup do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, [:name, :is_superuser, :is_admin])
-    |> validate_required([:name, :is_superuser, :is_admin])
+  defp changeset(starting_group, updates) do
+    starting_group
+    |> cast(updates, @visible_fields)
+    |> validate_required(@visible_fields)
   end
+
+  def new_action_changeset do   # Start empty
+    changeset(%Eecrit.AbilityGroup{}, %{})
+  end
+
+  def create_action_changeset(params) do
+    changeset(%Eecrit.AbilityGroup{}, params)
+  end
+
+  def edit_action_changeset(ability_group) do
+    changeset(ability_group, %{})
+  end
+
+  def update_action_changeset(ability_group, updates) do
+    changeset(ability_group, updates)
+  end
+
 end

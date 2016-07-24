@@ -1,4 +1,4 @@
-<h1>Listing Users</h1>
+<h1>Listing users</h1>
 
 <table class="table">
   <%= for user <- @users do %>

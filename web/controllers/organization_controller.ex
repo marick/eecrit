@@ -8,12 +8,11 @@ defmodule Eecrit.OrganizationController do
   end
 
   def new(conn, _params) do
-    changeset = Organization.changeset(%Organization{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: Organization.new_action_changeset)
   end
 
-  def create(conn, %{"organization" => organization_params}) do
-    changeset = Organization.changeset(%Organization{}, organization_params)
+  def create(conn, %{"organization" => params}) do
+    changeset = Organization.create_action_changeset(params)
 
     case Repo.insert(changeset) do
       {:ok, _organization} ->
@@ -32,13 +31,13 @@ defmodule Eecrit.OrganizationController do
 
   def edit(conn, %{"id" => id}) do
     organization = Repo.get!(Organization, id)
-    changeset = Organization.changeset(organization)
+    changeset = Organization.edit_action_changeset(organization)
     render(conn, "edit.html", organization: organization, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "organization" => organization_params}) do
     organization = Repo.get!(Organization, id)
-    changeset = Organization.changeset(organization, organization_params)
+    changeset = Organization.update_action_changeset(organization, organization_params)
 
     case Repo.update(changeset) do
       {:ok, organization} ->

@@ -29,7 +29,7 @@ defmodule Eecrit.Test.Makers do
 
   def insert_organization(overrides \\ %{}) do
     make_organization(overrides)
-    |> Organization.changeset()
+    |> Organization.edit_action_changeset()
     |> Repo.insert!()
   end
 

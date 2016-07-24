@@ -81,7 +81,7 @@ defmodule Eecrit.AbilityGroupControllerTest do
     assert html_response(conn, 200) =~ "Edit ability group"
   end
 
-  @tag :skip
+  @tag accessed_by: "superuser"
   test "deletes chosen resource", %{conn: conn} do
     ability_group = insert_ability_group()
     conn = delete conn, ability_group_path(conn, :delete, ability_group)

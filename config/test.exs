@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :eecrit, Eecrit.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  # password: "postgres",
   database: "eecrit_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

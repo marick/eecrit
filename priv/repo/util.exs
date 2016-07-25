@@ -16,7 +16,7 @@ defmodule Eecrit.U do
     existing = existing_user(kwlist[:login_name])
     if existing, do: Repo.delete(existing)
       
-    User.checking_creation_changeset(as_map(kwlist))
+    User.create_action_changeset(as_map(kwlist))
     |> Repo.insert!
   end
 

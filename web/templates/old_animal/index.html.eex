@@ -1,0 +1,34 @@
+<h2>Listing animals</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nickname</th>
+      <th>Kind</th>
+      <th>Procedure description kind</th>
+      <th>Date removed from service</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for old_animal <- @animals do %>
+    <tr>
+      <td><%= old_animal.name %></td>
+      <td><%= old_animal.nickname %></td>
+      <td><%= old_animal.kind %></td>
+      <td><%= old_animal.procedure_description_kind %></td>
+      <td><%= old_animal.date_removed_from_service %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: old_animal_path(@conn, :show, old_animal), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: old_animal_path(@conn, :edit, old_animal), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: old_animal_path(@conn, :delete, old_animal), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New old animal", to: old_animal_path(@conn, :new) %>

@@ -1,0 +1,6 @@
+<h2>New old animal</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: old_animal_path(@conn, :create) %>
+
+<%= link "Back", to: old_animal_path(@conn, :index) %>

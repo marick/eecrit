@@ -1,0 +1,33 @@
+<h2>Show old animal</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @old_animal.name %>
+  </li>
+
+  <li>
+    <strong>Nickname:</strong>
+    <%= @old_animal.nickname %>
+  </li>
+
+  <li>
+    <strong>Kind:</strong>
+    <%= @old_animal.kind %>
+  </li>
+
+  <li>
+    <strong>Procedure description kind:</strong>
+    <%= @old_animal.procedure_description_kind %>
+  </li>
+
+  <li>
+    <strong>Date removed from service:</strong>
+    <%= @old_animal.date_removed_from_service %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: old_animal_path(@conn, :edit, @old_animal) %>
+<%= link "Back", to: old_animal_path(@conn, :index) %>

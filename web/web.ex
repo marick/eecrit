@@ -31,6 +31,7 @@ defmodule Eecrit.Web do
       use Phoenix.Controller
 
       alias Eecrit.Repo
+      alias Eecrit.OldRepo
       import Ecto
       import Ecto.Query
 
@@ -66,6 +67,7 @@ defmodule Eecrit.Web do
       use Phoenix.Channel
 
       alias Eecrit.Repo
+      alias Eecrit.OldRepo
       import Ecto
       import Ecto.Query
       import Eecrit.Gettext

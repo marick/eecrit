@@ -41,3 +41,12 @@ config :eecrit, Eecrit.Repo,
   database: "eecrit_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :eecrit, Eecrit.OldRepo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "critter4us_dev",
+  hostname: "localhost",
+  pool_size: 10
+

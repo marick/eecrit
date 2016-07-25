@@ -1,5 +1,6 @@
 defmodule Eecrit.Test.Makers do
   alias Eecrit.Repo
+  alias Eecrit.OldRepo
   alias Eecrit.User
   alias Eecrit.Organization
   alias Eecrit.AbilityGroup

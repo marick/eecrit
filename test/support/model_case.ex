@@ -17,6 +17,7 @@ defmodule Eecrit.ModelCase do
   using do
     quote do
       alias Eecrit.Repo
+      alias Eecrit.OldRepo
 
       import Ecto
       import Ecto.Changeset

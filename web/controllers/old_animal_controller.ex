@@ -1,10 +1,11 @@
 defmodule Eecrit.OldAnimalController do
   use Eecrit.Web, :controller
 
+  import Ecto.Query
   alias Eecrit.OldAnimal
 
   def index(conn, _params) do
-    animals = OldRepo.all(OldAnimal)
+    animals = OldRepo.all(from a in OldAnimal, where: is_nil(a.date_removed_from_service))
     render(conn, "index.html", animals: animals)
   end
 

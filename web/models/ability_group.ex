@@ -1,10 +1,6 @@
 defmodule Eecrit.AbilityGroup do
   use Eecrit.Web, :model
 
-  # Fields the outside world is able to set. NOT necessarily the same
-  # as the fields in the schema.
-  @visible_fields [:name, :is_superuser, :is_admin]
-  
   schema "ability_groups" do
     field :name, :string
     field :is_superuser, :boolean, default: false
@@ -13,6 +9,10 @@ defmodule Eecrit.AbilityGroup do
     timestamps()
   end
 
+  # Fields the outside world is able to set. NOT necessarily the same
+  # as the fields in the schema.
+  @visible_fields [:name, :is_superuser, :is_admin]
+  
   defp changeset(base_struct, updates) do
     base_struct
     |> cast(updates, @visible_fields)

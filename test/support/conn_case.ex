@@ -37,9 +37,11 @@ defmodule Eecrit.ConnCase do
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Eecrit.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Eecrit.OldRepo)
 
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Eecrit.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Eecrit.OldRepo, {:shared, self()})
     end
 
     conn =

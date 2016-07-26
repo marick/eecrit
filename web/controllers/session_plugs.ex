@@ -10,8 +10,6 @@ defmodule Eecrit.SessionPlugs do
 
   def add_current_user(conn, _opts) do
     user_id = get_session(conn, :user_id)
-    IO.puts "SESSION"
-    Apex.ap conn.private[:plug_session]
 
     cond do
       user = conn.assigns[:current_user] ->

@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :eecrit, Eecrit.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "morning-coast-86807.herokuapp.com", port: 443],
+  url: [scheme: "https", host: "new.critter4us.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
@@ -26,7 +26,7 @@ config :eecrit, Eecrit.Repo,
 
 config :eecrit, Eecrit.OldRepo,
   adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
+  url: System.get_env("OLD_DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
 

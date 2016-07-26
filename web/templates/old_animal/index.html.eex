@@ -1,4 +1,11 @@
-<h2>Listing animals</h2>
+
+<h2><%= page_description(@params) %> </h2>
+<div class="input-group">
+  <span class="input-group-btn">
+<%= toggle_link(@conn, @params) %>
+<%= link "Add new animal", to: old_animal_path(@conn, :new), class: "btn btn-default" %>
+  </span>
+</div>
 
 <table class="table">
   <thead>
@@ -7,8 +14,7 @@
       <th>Nickname</th>
       <th>Kind (anything special about this animal?)</th>
       <th>Species (to pick a procedure description)</th>
-      <th>Date removed from service</th>
-
+      <%= maybe_out_of_service_column(:head, @params) %>
       <th></th>
     </tr>
   </thead>
@@ -19,7 +25,7 @@
       <td><%= old_animal.nickname %></td>
       <td><%= old_animal.kind %></td>
       <td><%= old_animal.procedure_description_kind %></td>
-      <td><%= old_animal.date_removed_from_service %></td>
+      <%= maybe_out_of_service_column(old_animal, @params) %>
 
       <td class="text-right">
         <%= link "Show", to: old_animal_path(@conn, :show, old_animal), class: "btn btn-default btn-xs" %>

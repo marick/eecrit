@@ -4,9 +4,14 @@ defmodule Eecrit.OldAnimalController do
   import Ecto.Query
   alias Eecrit.OldAnimal
 
-  def index(conn, _params) do
-    animals = OldRepo.all(from a in OldAnimal, where: is_nil(a.date_removed_from_service))
-    render(conn, "index.html", animals: animals)
+  def index(conn, params) do
+    base_query = from a in OldAnimal
+    animals = OldRepo.all(if params["include_out_of_service"] do
+      base_query
+    else
+      base_query |> where([a], is_nil(a.date_removed_from_service))
+    end)
+    render(conn, "index.html", animals: animals, params: params)
   end
 
   def new(conn, _params) do

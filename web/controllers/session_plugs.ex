@@ -41,6 +41,7 @@ defmodule Eecrit.SessionPlugs do
   def fetch_user(user_id) do
     query = @precompiled_part_of_query |> where([u], u.id == ^user_id)
 
+    Apex.ap Repo.all(User)
     case Repo.one(query) do 
       {user, abilities} ->
         Map.put(user, :ability_group, abilities)

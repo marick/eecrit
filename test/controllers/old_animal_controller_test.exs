@@ -51,7 +51,7 @@ defmodule Eecrit.OldAnimalControllerTest do
     assert html_response(conn, 200) =~ "Edit old animal"
   end
 
-  @tag accessed_by: "admin"
+  @tag accessed_by: "admin", skip: true
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     old_animal = OldRepo.insert! %OldAnimal{}
     conn = put conn, old_animal_path(conn, :update, old_animal), old_animal: @valid_attrs

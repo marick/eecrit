@@ -8,7 +8,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   ## Index
   
   @tag accessed_by: "admin"
-  test "lists all UNDELETED entries by default", %{conn: conn} do
+  test "lists only currently-in-service entries by default", %{conn: conn} do
     retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
     {:ok, removed_at} = Ecto.Date.cast("2012-03-05")
     deleted = insert_old_animal(name: "removed", date_removed_from_service: removed_at)
@@ -19,19 +19,38 @@ defmodule Eecrit.OldAnimalControllerTest do
   end
 
   @tag accessed_by: "admin"
-  test "Can be made to list deleted entries", %{conn: conn} do
+  test "animals with future removal dates are still shown", %{conn: conn} do
     retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
-    {:ok, removed_at} = Ecto.Date.cast("2012-03-05")
-    deleted = insert_old_animal(name: "removed", date_removed_from_service: removed_at)
+    deleted = insert_old_animal(
+      name: "removed",
+      date_removed_from_service: Ecto.Date.cast!("2092-03-05"))
+    conn = get conn, old_animal_path(conn, :index)
+    assert html_response(conn, 200) =~ "All animals currently in service"
+    assert Enum.find(conn.assigns.animals, &(&1.name == "retained"))
+    assert Enum.find(conn.assigns.animals, &(&1.name == "removed"))
+  end
+
+  @tag accessed_by: "admin"
+  test "Can be made to list out-of-service entries", %{conn: conn} do
+    retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
+    
+    deleted = insert_old_animal(
+      name: "removed",
+      date_removed_from_service: Ecto.Date.cast!("2012-03-05"))
     conn = get conn, old_animal_path(conn, :index, include_out_of_service: true)
     assert html_response(conn, 200) =~ "All animals"
     refute html_response(conn, 200) =~ "All animals currently in service"
     assert Enum.find(conn.assigns.animals, &(&1.name == "retained"))
     assert Enum.find(conn.assigns.animals, &(&1.name == "removed"))
   end
-
   
-
+  @tag accessed_by: "admin"
+  test "entries are listed in alphabetical order", %{conn: conn} do
+    unordered = ~w{s d l b a m o}
+    Enum.map(unordered, &(insert_old_animal(name: &1)))
+    conn = get conn, old_animal_path(conn, :index)
+    assert Enum.map(conn.assigns.animals, &(&1.name)) == Enum.sort(unordered)
+  end
 
 
 

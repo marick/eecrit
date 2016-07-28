@@ -1,3 +1,6 @@
 <div class="jumbotron">
   <h2>Welcome to the new Critter4Us</h2>
+
+
+  <div id="elm-main"></div>
 </div>

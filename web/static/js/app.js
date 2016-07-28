@@ -31,3 +31,7 @@ global.bootstrap = require("bootstrap")
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+
+const elmDiv = document.getElementById('elm-main');
+const elmApp = Elm.Critter4Us.embed(elmDiv);

@@ -45,6 +45,7 @@ exports.config = {
   paths: {
     // Dependencies and current project directories to watch
     watched: [
+      "web/elm/Critter4Us.elm",
       "web/static",
       "test/static"
     ],
@@ -58,6 +59,12 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
+    },
+    elmBrunch: {
+      elmFolder: 'web/elm',
+      mainModules: ['Critter4Us.elm'],
+      // If specified, all mainModules will be compiled to a single file (optional and merged with outputFolder)
+      outputFolder: '../static/vendor'
     }
   },
 

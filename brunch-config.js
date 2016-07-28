@@ -22,6 +22,10 @@ exports.config = {
     stylesheets: {
       joinTo: "css/app.css",
       order: {
+        before: [
+          "dist/css/bootstrap.min.css",
+          "dist/css/bootstrap-select.min.css",
+        ],
         after: ["web/static/css/app.css"] // concat app.css last
       }
     },
@@ -71,5 +75,8 @@ exports.config = {
       "bootstrap-select",
       "phoenix",
       "phoenix_html"],
+    styles: {
+      bootstrap: ["dist/css/bootstrap.min.css"],
+    }
   }
 };

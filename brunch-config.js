@@ -64,6 +64,12 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    whitelist: [
+      "jquery",
+      "bootstrap",
+      "bootstrap-select",
+      "phoenix",
+      "phoenix_html"],
   }
 };

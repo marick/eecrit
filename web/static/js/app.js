@@ -13,6 +13,18 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 
+import $ from "jquery"
+import "jquery"
+import "bootstrap-select"
+
+// Original version had this note about next line:
+// "Needed for tether or bootstrap..."
+// Because I don't know how/when the problem would
+// show up if it's required for bootstrap, I'm leaving
+// it in.
+global.jQuery = require("jquery")
+global.bootstrap = require("bootstrap")
+
 // Import local files
 //
 // Local files can be imported directly using relative

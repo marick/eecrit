@@ -52,13 +52,12 @@ defmodule Eecrit.OldAnimalControllerTest do
     assert Enum.map(conn.assigns.animals, &(&1.name)) == Enum.sort(unordered)
   end
 
-
-
+  ## NEW
   
   @tag accessed_by: "admin", skip: true
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_animal_path(conn, :new)
-    assert html_response(conn, 200) =~ "New old animal"
+    assert html_response(conn, 200) =~ "New animal"
   end
 
   @tag accessed_by: "admin", skip: true

@@ -2,5 +2,6 @@ module Critter4Us exposing(..)
 
 import Html
 
+main : Html.Html a
 main =
-    Html.text "This little bit of text represents a promise of future beauty"
+    Html.text "Consider this text a promise of future beauty"

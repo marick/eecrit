@@ -45,7 +45,7 @@ exports.config = {
   paths: {
     // Dependencies and current project directories to watch
     watched: [
-      "web/elm/Critter4Us.elm",
+      "web/elm",
       "web/static",
       "test/static"
     ],
@@ -63,8 +63,10 @@ exports.config = {
     elmBrunch: {
       elmFolder: 'web/elm',
       mainModules: ['Critter4Us.elm'],
-      // If specified, all mainModules will be compiled to a single file (optional and merged with outputFolder)
-      outputFolder: '../static/vendor'
+      // TODO: Why doesn't this work if changed to '../static/js'?
+      outputFolder: '../static/vendor',
+      outputFile: 'critter4us-elm-generated.js',
+      makeParameters: ['--warn']
     }
   },
 

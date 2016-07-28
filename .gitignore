@@ -28,3 +28,4 @@ erl_crash.dump
 
 /priv/repo/*secret*
 web/elm/elm-stuff
+web/static/vendor/critter4us-elm-generated.js

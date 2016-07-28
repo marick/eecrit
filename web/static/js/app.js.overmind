@@ -1,0 +1,68 @@
+import "phoenix_html"
+
+import $ from "jquery"
+import "jquery"
+import moment from "moment"
+import "bootstrap-select"
+
+
+// Ugh...
+global.jQuery = require("jquery")  // Needed for tether or bootstrap...
+global.Tether = require("tether")
+global.bootstrap = require("bootstrap")
+global.moment = moment
+
+
+import socket from "./socket"
+
+import setup_help from './components/help'
+import setup_elm_messenger_app from './elm_apps/messenger'
+import setup_elm_notifications_app from './elm_apps/notifications'
+
+$(document).ready(() => {
+  $('.dropdown-toggle').dropdown()
+  $('[data-toggle="tooltip"]').tooltip()
+
+  setInterval(() => {
+    $.each($('.rel-time-display'), (index, val) => {
+      let elem = $(val)
+      let old_time = elem.text()
+      let new_time = moment(elem.attr('data-time')).fromNow()
+      if(old_time != new_time) {
+        elem.text(new_time)
+      }
+    })
+  },5000);
+
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+    $('.selectpicker').selectpicker('mobile');
+  }
+  else {
+    $('.selectpicker').selectpicker()
+  }
+})
+
+
+let socket_setup_once = false
+socket.onOpen(() => {
+  $(document).ready(function(){
+    if(socket_setup_once) return
+    socket_setup_once = true
+
+    setup_help(socket)
+
+    setup_elm_notifications_app(document.querySelector('#notifications-container'), socket)
+
+    if(setup_elm_messenger_app(undefined, socket)) {
+      $("#messenger-popup-dropdown").remove()
+      $("#messenger-popup-button").removeClass('dropdown-toggle')
+      $("#messenger-popup-button").addClass('disabled')
+    }
+    else {
+      setup_elm_messenger_app(document.querySelector('#messenger-popup-container'), socket)
+    }
+
+  })
+})
+
+socket.connect()

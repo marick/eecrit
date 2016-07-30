@@ -17,12 +17,7 @@ import $ from "jquery"
 import "jquery"
 import "bootstrap-select"
 
-// Original version had this note about next line:
-// "Needed for tether or bootstrap..."
-// Because I don't know how/when the problem would
-// show up if it's required for bootstrap, I'm leaving
-// it in.
-global.jQuery = require("jquery")
+global.jQuery = require("jquery") // Needed for bootstrap.
 global.bootstrap = require("bootstrap")
 
 // Import local files
@@ -33,5 +28,19 @@ global.bootstrap = require("bootstrap")
 // import socket from "./socket"
 
 
-const elmDiv = document.getElementById('elm-main');
-const elmApp = Elm.Critter4Us.embed(elmDiv);
+import Elm from "./elm"
+
+$(document).ready(() => {
+    let frontPageForUsPlace = document.querySelector('#FrontPageForUs');
+    let frontPageForUsApp;
+    if (frontPageForUsPlace) {
+        frontPageForUsApp = Elm.FrontPage4Us.embed(frontPageForUsPlace);
+    }
+
+    let onePageForUsPlace = document.querySelector('#OnePageForUs');
+    let onePageForUsApp;
+    if (onePageForUsPlace) {
+        onePageForUsApp = Elm.OnePage4Us.embed(onePageForUsPlace);
+    }
+})
+

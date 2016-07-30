@@ -1,4 +1,4 @@
-module Critter4Us exposing(..)
+module FrontPage4Us exposing(..)
 
 import Html
 

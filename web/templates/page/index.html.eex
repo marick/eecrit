@@ -2,5 +2,8 @@
   <h2>Welcome to the new Critter4Us</h2>
 
 
-  <div id="elm-main"></div>
+  <div id="FrontPageForUs"></div>
+  <div id="OnePageForUs"></div>
 </div>
+
+

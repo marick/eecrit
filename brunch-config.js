@@ -62,10 +62,12 @@ exports.config = {
     },
     elmBrunch: {
       elmFolder: 'web/elm',
-      mainModules: ['Critter4Us.elm'],
-      // TODO: Why doesn't this work if changed to '../static/js'?
-      outputFolder: '../static/vendor',
-      outputFile: 'critter4us-elm-generated.js',
+      mainModules: [
+          'FrontPage4Us.elm',
+          'OnePage4Us.elm',
+      ],
+      outputFolder: '../static/js',
+      outputFile: 'elm.js',
       makeParameters: ['--warn']
     }
   },

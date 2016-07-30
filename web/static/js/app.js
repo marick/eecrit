@@ -31,16 +31,16 @@ global.bootstrap = require("bootstrap")
 import Elm from "./elm"
 
 $(document).ready(() => {
-    let frontPageForUsPlace = document.querySelector('#FrontPageForUs');
-    let frontPageForUsApp;
-    if (frontPageForUsPlace) {
-        frontPageForUsApp = Elm.FrontPage4Us.embed(frontPageForUsPlace);
+    let FrontPage4UsPlace = document.querySelector('#FrontPage4Us');
+    let FrontPage4UsApp;
+    if (FrontPage4UsPlace) {
+        FrontPage4UsApp = Elm.FrontPage4Us.embed(FrontPage4UsPlace);
     }
 
-    let onePageForUsPlace = document.querySelector('#OnePageForUs');
-    let onePageForUsApp;
-    if (onePageForUsPlace) {
-        onePageForUsApp = Elm.OnePage4Us.embed(onePageForUsPlace);
+    let OnePage4UsPlace = document.querySelector('#OnePage4Us');
+    let OnePage4UsApp;
+    if (OnePage4UsPlace) {
+        OnePage4UsApp = Elm.OnePage4Us.embed(OnePage4UsPlace);
     }
 })
 

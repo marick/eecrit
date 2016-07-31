@@ -15,7 +15,7 @@ import "phoenix_html"
 
 import $ from "jquery"
 import "jquery"
-import "bootstrap-select"
+// import "bootstrap-datepicker"
 
 global.jQuery = require("jquery") // Needed for bootstrap.
 global.bootstrap = require("bootstrap")
@@ -28,19 +28,7 @@ global.bootstrap = require("bootstrap")
 // import socket from "./socket"
 
 
-import Elm from "./elm"
-
 $(document).ready(() => {
-    let FrontPage4UsPlace = document.querySelector('#FrontPage4Us');
-    let FrontPage4UsApp;
-    if (FrontPage4UsPlace) {
-        FrontPage4UsApp = Elm.FrontPage4Us.embed(FrontPage4UsPlace);
-    }
-
-    let OnePage4UsPlace = document.querySelector('#OnePage4Us');
-    let OnePage4UsApp;
-    if (OnePage4UsPlace) {
-        OnePage4UsApp = Elm.OnePage4Us.embed(OnePage4UsPlace);
-    }
+//    $('#datepicker').datepicker();
 })
 

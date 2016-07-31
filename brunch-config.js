@@ -21,13 +21,6 @@ exports.config = {
     },
     stylesheets: {
       joinTo: "css/app.css",
-      order: {
-        before: [
-          "dist/css/bootstrap.min.css",
-          "dist/css/bootstrap-select.min.css",
-        ],
-        after: ["web/static/css/app.css"] // concat app.css last
-      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -45,7 +38,6 @@ exports.config = {
   paths: {
     // Dependencies and current project directories to watch
     watched: [
-      "web/elm",
       "web/static",
       "test/static"
     ],
@@ -60,16 +52,6 @@ exports.config = {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
     },
-    elmBrunch: {
-      elmFolder: 'web/elm',
-      mainModules: [
-          'FrontPage4Us.elm',
-          'OnePage4Us.elm',
-      ],
-      outputFolder: '../static/js',
-      outputFile: 'elm.js',
-      makeParameters: ['--warn']
-    }
   },
 
   modules: {
@@ -80,14 +62,9 @@ exports.config = {
 
   npm: {
     enabled: true,
-    whitelist: [
-      "jquery",
-      "bootstrap",
-      "bootstrap-select",
-      "phoenix",
-      "phoenix_html"],
     styles: {
       bootstrap: ["dist/css/bootstrap.min.css"],
+//      "bootstrap-datepicker": ["dist/css/bootstrap-datepicker3.min.css"],
     }
   }
 };

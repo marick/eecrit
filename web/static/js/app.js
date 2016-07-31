@@ -15,7 +15,7 @@ import "phoenix_html"
 
 import $ from "jquery"
 import "jquery"
-// import "bootstrap-datepicker"
+import "bootstrap-datepicker"
 
 global.jQuery = require("jquery") // Needed for bootstrap.
 global.bootstrap = require("bootstrap")
@@ -29,6 +29,6 @@ global.bootstrap = require("bootstrap")
 
 
 $(document).ready(() => {
-//    $('#datepicker').datepicker();
+    $('.datepicker').datepicker();
 })
 

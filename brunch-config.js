@@ -64,7 +64,7 @@ exports.config = {
     enabled: true,
     styles: {
       bootstrap: ["dist/css/bootstrap.min.css"],
-//      "bootstrap-datepicker": ["dist/css/bootstrap-datepicker3.min.css"],
+      "bootstrap-datepicker": ["dist/css/bootstrap-datepicker3.min.css"],
     }
   }
 };

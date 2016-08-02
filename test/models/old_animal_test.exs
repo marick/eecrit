@@ -3,8 +3,8 @@ defmodule Eecrit.OldAnimalTest do
 
   alias Eecrit.OldAnimal
 
-  @valid_date "2012-01-01"
-  @invalid_date "2012-01-32"
+  @valid_date "2012-02-29"
+  @invalid_date "2011-01-32"
 
   @valid_attrs %{kind: "kind", name: "name", procedure_description_kind: "species"}
   @optional_attrs %{nickname: "nickname", date_removed_from_service: @valid_date}

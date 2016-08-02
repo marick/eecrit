@@ -25,9 +25,7 @@
 
   <div class="form-group">
     <%= label f, :procedure_description_kind, "Species", class: "control-label" %>
-    <%= select f, :procedure_description_kind,
-        ~w{bovine caprine equine},
-        class: "form-control" %>
+    <%= select f, :procedure_description_kind, @valid_species, class: "form-control" %>
     <%= error_tag f, :procedure_description_kind %>
   </div>
 

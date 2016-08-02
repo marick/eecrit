@@ -15,8 +15,13 @@ defmodule Eecrit.OldAnimalController do
     render(conn, "index.html", animals: animals, params: params)
   end
 
+  defp render_new(conn, changeset) do
+    render(conn, "new.html", changeset: changeset,
+                             valid_species: OldAnimal.valid_species)
+  end
+
   def new(conn, _params) do
-    render(conn, "new.html", changeset: OldAnimal.new_action_changeset)
+    render_new(conn, OldAnimal.new_action_changeset)
   end
 
   def create(conn, %{"old_animal" => old_animal_params}) do
@@ -28,7 +33,7 @@ defmodule Eecrit.OldAnimalController do
         |> put_flash(:info, "#{animal.name} was created.")
         |> redirect(to: old_animal_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render_new(conn, changeset)
     end
   end
 
@@ -40,7 +45,9 @@ defmodule Eecrit.OldAnimalController do
   def edit(conn, %{"id" => id}) do
     old_animal = OldRepo.get!(OldAnimal, id)
     changeset = OldAnimal.changeset(old_animal)
-    render(conn, "edit.html", old_animal: old_animal, changeset: changeset)
+    render(conn, "edit.html", old_animal: old_animal,
+                              valid_species: OldAnimal.valid_species,
+                              changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "old_animal" => old_animal_params}) do

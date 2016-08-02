@@ -1,6 +1,10 @@
 defmodule Eecrit.OldAnimal do
   use Eecrit.Web, :model
 
+  @valid_species ~w{bovine caprine equine}
+  def valid_species, do: @valid_species
+
+
   schema "animals" do
     field :name, :string
     field :nickname, :string
@@ -17,6 +21,7 @@ defmodule Eecrit.OldAnimal do
     base_struct
     |> cast(updates, @visible_fields)
     |> validate_required(@fields_always_required)
+    |> validate_inclusion(:procedure_description_kind, @valid_species)
   end
 
   def new_action_changeset do   # Start empty

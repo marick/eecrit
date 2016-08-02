@@ -2,7 +2,8 @@ defmodule Eecrit.OldAnimalControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.OldAnimal
-  @valid_attrs %{kind: "some content", name: "ANIMAL NAME", procedure_description_kind: "some content"}
+  @valid_attrs %{kind: "some content", name: "ANIMAL NAME",
+                 procedure_description_kind: hd(OldAnimal.valid_species)}
   @invalid_attrs %{}
 
   ### Authorization 
@@ -69,6 +70,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_animal_path(conn, :new)
     assert html_response(conn, 200) =~ "New animal"
+    assert conn.assigns.valid_species == OldAnimal.valid_species()
   end
 
   ## CREATE

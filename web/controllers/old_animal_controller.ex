@@ -5,7 +5,7 @@ defmodule Eecrit.OldAnimalController do
   alias Eecrit.OldAnimal
 
   def index(conn, params) do
-    base_query = from a in OldAnimal, order_by: a.name
+    base_query = from a in OldAnimal, order_by: fragment("lower(?)", a.name)
     query = if params["include_out_of_service"] do
       base_query
     else

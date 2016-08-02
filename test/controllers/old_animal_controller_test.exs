@@ -57,10 +57,10 @@ defmodule Eecrit.OldAnimalControllerTest do
   
   @tag accessed_by: "admin"
   test "entries are listed in alphabetical order", %{conn: conn} do
-    unordered = ~w{s d l b a m o}
+    unordered = ~w{s d l1 0 b a L2 m o}
     Enum.map(unordered, &(insert_old_animal(name: &1)))
     conn = get conn, old_animal_path(conn, :index)
-    assert Enum.map(conn.assigns.animals, &(&1.name)) == Enum.sort(unordered)
+    assert Enum.map(conn.assigns.animals, &(&1.name)) == ~w{0 a b d l1 L2 m o s}
   end
 
   ## NEW

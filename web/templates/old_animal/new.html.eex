@@ -1,4 +1,4 @@
-<h2>New old animal</h2>
+<h2>New animal</h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: old_animal_path(@conn, :create) %>

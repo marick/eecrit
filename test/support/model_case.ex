@@ -24,7 +24,6 @@ defmodule Eecrit.ModelCase do
       import Ecto.Query
       import Eecrit.ModelCase
       import Eecrit.Test.Makers
-      import Eecrit.Test.Assertions
     end
   end
 

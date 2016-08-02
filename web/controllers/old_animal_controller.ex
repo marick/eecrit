@@ -16,17 +16,16 @@ defmodule Eecrit.OldAnimalController do
   end
 
   def new(conn, _params) do
-    changeset = OldAnimal.changeset(%OldAnimal{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: OldAnimal.new_action_changeset)
   end
 
   def create(conn, %{"old_animal" => old_animal_params}) do
-    changeset = OldAnimal.changeset(%OldAnimal{}, old_animal_params)
+    changeset = OldAnimal.create_action_changeset(old_animal_params)
 
     case OldRepo.insert(changeset) do
-      {:ok, _old_animal} ->
+      {:ok, animal} ->
         conn
-        |> put_flash(:info, "Old animal created successfully.")
+        |> put_flash(:info, "#{animal.name} was created.")
         |> redirect(to: old_animal_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)

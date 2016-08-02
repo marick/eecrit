@@ -36,4 +36,4 @@
   </tbody>
 </table>
 
-<%= link "New old animal", to: old_animal_path(@conn, :new) %>
+<%= link "New animal", to: old_animal_path(@conn, :new) %>

@@ -3,16 +3,37 @@ defmodule Eecrit.OldAnimalTest do
 
   alias Eecrit.OldAnimal
 
-  @valid_attrs %{date_removed_from_service: %{day: 17, month: 4, year: 2010}, kind: "some content", name: "some content", nickname: "some content", procedure_description_kind: "some content"}
+  @valid_date "2012-01-01"
+  @invalid_date "2012-01-32"
+
+  @valid_attrs %{kind: "kind", name: "name", procedure_description_kind: "species"}
+  @optional_attrs %{nickname: "nickname", date_removed_from_service: @valid_date}
   @invalid_attrs %{}
 
-  test "changeset with valid attributes" do
-    changeset = OldAnimal.changeset(%OldAnimal{}, @valid_attrs)
-    assert changeset.valid?
+  test "a starting changeset" do
+    changeset = OldAnimal.new_action_changeset()
+    refute changeset.valid?
   end
 
-  test "changeset with invalid attributes" do
-    changeset = OldAnimal.changeset(%OldAnimal{}, @invalid_attrs)
+  # Creation
+
+  test "changeset with only required attributes" do
+    changeset = OldAnimal.create_action_changeset(@valid_attrs)
+    assert changeset.valid?
+    assert changeset.changes == @valid_attrs
+  end
+
+  test "changeset with all attributes" do
+    attrs = Map.merge(@valid_attrs, @optional_attrs)
+    changeset = OldAnimal.create_action_changeset(attrs)
+    assert changeset.valid?
+    assert changeset.changes.date_removed_from_service == Ecto.Date.cast!(@valid_date)
+  end
+
+  test "an invalid changeset" do
+    attrs = Map.put(@valid_attrs, :date_removed_from_service, @invalid_date)
+    changeset = OldAnimal.create_action_changeset(attrs)
     refute changeset.valid?
+    assert Keyword.get(changeset.errors, :date_removed_from_service)
   end
 end

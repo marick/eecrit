@@ -1,4 +1,4 @@
-defmodule Eecrit.Test.Assertions do
+defmodule Eecrit.Test.ConnHelpers do
   import ExUnit.Assertions
 
   # Use of assert in following is a quick and dirty way to get good error messages.
@@ -10,4 +10,9 @@ defmodule Eecrit.Test.Assertions do
     assert conn.private.phoenix_template == which
     true
   end
+
+  def flash_matches(conn, key, regexp) do
+    assert conn.private.phoenix_flash[key] =~ regexp
+  end
 end
+

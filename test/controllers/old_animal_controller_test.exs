@@ -2,7 +2,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.OldAnimal
-  @valid_attrs %{date_removed_from_service: %{day: 17, month: 4, year: 2010}, kind: "some content", name: "some content", nickname: "some content", procedure_description_kind: "some content"}
+  @valid_attrs %{kind: "some content", name: "ANIMAL NAME", procedure_description_kind: "some content"}
   @invalid_attrs %{}
 
   ### Authorization 
@@ -22,9 +22,9 @@ defmodule Eecrit.OldAnimalControllerTest do
   
   @tag accessed_by: "admin"
   test "lists only currently-in-service entries by default", %{conn: conn} do
-    retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
-    {:ok, removed_at} = Ecto.Date.cast("2012-03-05")
-    deleted = insert_old_animal(name: "removed", date_removed_from_service: removed_at)
+    insert_old_animal(name: "retained", date_removed_from_service: nil)
+    removed_at = Ecto.Date.cast!("2012-03-05")
+    insert_old_animal(name: "removed", date_removed_from_service: removed_at)
     conn = get conn, old_animal_path(conn, :index)
     assert html_response(conn, 200) =~ "All animals currently in service"
     assert Enum.find(conn.assigns.animals, &(&1.name == "retained"))
@@ -33,10 +33,9 @@ defmodule Eecrit.OldAnimalControllerTest do
 
   @tag accessed_by: "admin"
   test "animals with future removal dates are still shown", %{conn: conn} do
-    retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
-    deleted = insert_old_animal(
-      name: "removed",
-      date_removed_from_service: Ecto.Date.cast!("2092-03-05"))
+    insert_old_animal(name: "retained", date_removed_from_service: nil)
+    insert_old_animal(name: "removed",
+                      date_removed_from_service: Ecto.Date.cast!("2092-03-05"))
     conn = get conn, old_animal_path(conn, :index)
     assert html_response(conn, 200) =~ "All animals currently in service"
     assert Enum.find(conn.assigns.animals, &(&1.name == "retained"))
@@ -45,11 +44,10 @@ defmodule Eecrit.OldAnimalControllerTest do
 
   @tag accessed_by: "admin"
   test "Can be made to list out-of-service entries", %{conn: conn} do
-    retained = insert_old_animal(name: "retained", date_removed_from_service: nil)
+    insert_old_animal(name: "retained", date_removed_from_service: nil)
     
-    deleted = insert_old_animal(
-      name: "removed",
-      date_removed_from_service: Ecto.Date.cast!("2012-03-05"))
+    insert_old_animal(name: "removed",
+                      date_removed_from_service: Ecto.Date.cast!("2012-03-05"))
     conn = get conn, old_animal_path(conn, :index, include_out_of_service: true)
     assert html_response(conn, 200) =~ "All animals"
     refute html_response(conn, 200) =~ "All animals currently in service"
@@ -73,21 +71,30 @@ defmodule Eecrit.OldAnimalControllerTest do
     assert html_response(conn, 200) =~ "New animal"
   end
 
-  ## 
+  ## CREATE
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, old_animal_path(conn, :create), old_animal: @valid_attrs
     assert redirected_to(conn) == old_animal_path(conn, :index)
     assert OldRepo.get_by(OldAnimal, @valid_attrs)
+    assert html_response(conn, 302)
+    assert flash_matches(conn, "info", ~r{ANIMAL NAME was created})
   end
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, old_animal_path(conn, :create), old_animal: @invalid_attrs
-    assert html_response(conn, 200) =~ "New old animal"
+    assert html_response(conn, 200) =~ "New animal"
+    assert html_response(conn, 200) =~ "be blank"
   end
 
+
+
+
+
+
+  
   @tag accessed_by: "admin", skip: true
   test "shows chosen resource", %{conn: conn} do
     old_animal = OldRepo.insert! %OldAnimal{}

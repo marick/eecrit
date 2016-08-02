@@ -1,7 +1,6 @@
 defmodule Eecrit.OldAnimalViewTest do
   use Eecrit.ConnCase, async: true
   import Phoenix.View
-  import Eecrit.Router.Helpers
   alias Eecrit.OldAnimalView
 
   ## :index has two cases: show animals out of service, or just those in service.

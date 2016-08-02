@@ -5,6 +5,19 @@ defmodule Eecrit.OldAnimalControllerTest do
   @valid_attrs %{date_removed_from_service: %{day: 17, month: 4, year: 2010}, kind: "some content", name: "some content", nickname: "some content", procedure_description_kind: "some content"}
   @invalid_attrs %{}
 
+  ### Authorization 
+
+  @tag accessed_by: "user"
+  test "anyone less than superuser does not have access", %{conn: conn} do
+    conn = get conn, old_animal_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
+  test "that includes someone not logged in", %{conn: conn} do
+    conn = get conn, old_animal_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
   ## Index
   
   @tag accessed_by: "admin"
@@ -54,11 +67,13 @@ defmodule Eecrit.OldAnimalControllerTest do
 
   ## NEW
   
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_animal_path(conn, :new)
     assert html_response(conn, 200) =~ "New animal"
   end
+
+  ## 
 
   @tag accessed_by: "admin", skip: true
   test "creates resource and redirects when data is valid", %{conn: conn} do

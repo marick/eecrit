@@ -1,5 +1,6 @@
 defmodule Eecrit.User do
   use Eecrit.Web, :model
+  use Eecrit.ModelDefaults, model: __MODULE__
 
   @postgres_string_max 255
   @visible_fields [:display_name, :login_name, :password]
@@ -39,18 +40,10 @@ defmodule Eecrit.User do
     |> assoc_constraint(:current_organization)
   end
 
-  def new_action_changeset do   # Start empty
-    changeset(%Eecrit.User{}, %{})
-  end
-
   def create_action_changeset(params) do
     changeset(%Eecrit.User{}, params)
     |> check_field_descriptions()
     |> add_hashed_password()
-  end
-
-  def edit_action_changeset(ability_group) do
-    changeset(ability_group, %{})
   end
 
   def update_action_changeset(ability_group, updates) do
@@ -58,24 +51,6 @@ defmodule Eecrit.User do
     |> check_field_descriptions()
     |> add_hashed_password()
   end
-
-
-  # def empty_creation_changeset do
-  #   changeset(%Eecrit.User{}, %{})
-  # end
-
-  # def checking_creation_changeset(start, params) do
-  #   start
-  #   |> changeset(params)
-  #   |> validate_required([:display_name, :login_name, :password])
-  #   |> check_field_descriptions
-  #   |> add_hashed_password
-  # end
-  
-  # def checking_creation_changeset(params) do
-  #   empty_creation_changeset
-  #   |> checking_creation_changeset(params)
-  # end
 
   def add_hashed_password(changeset) do
     case changeset do

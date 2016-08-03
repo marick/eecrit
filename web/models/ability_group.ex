@@ -1,5 +1,7 @@
 defmodule Eecrit.AbilityGroup do
   use Eecrit.Web, :model
+  use Eecrit.ModelDefaults, model: __MODULE__
+
 
   schema "ability_groups" do
     field :name, :string
@@ -17,21 +19,5 @@ defmodule Eecrit.AbilityGroup do
     base_struct
     |> cast(updates, @visible_fields)
     |> validate_required(@visible_fields)
-  end
-
-  def new_action_changeset do   # Start empty
-    changeset(%Eecrit.AbilityGroup{}, %{})
-  end
-
-  def create_action_changeset(params) do
-    changeset(%Eecrit.AbilityGroup{}, params)
-  end
-
-  def edit_action_changeset(ability_group) do
-    changeset(ability_group, %{})
-  end
-
-  def update_action_changeset(ability_group, updates) do
-    changeset(ability_group, updates)
   end
 end

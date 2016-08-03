@@ -40,8 +40,7 @@ defmodule Eecrit.Test.Makers do
                  kind: "gelding",
                  procedure_description_kind: "equine",
                  date_removed_from_service: nil}
-    x = struct(OldAnimal, Dict.merge(defaults, overrides))
-    x
+    struct(OldAnimal, Dict.merge(defaults, overrides))
   end
 
   def insert_old_animal(overrides \\ %{}) do

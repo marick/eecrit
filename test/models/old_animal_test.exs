@@ -47,4 +47,22 @@ defmodule Eecrit.OldAnimalTest do
     assert Keyword.get(changeset.errors, :procedure_description_kind)
   end
 
+
+  test "the notion of 'already out of service'" do
+    today = ~D[2016-08-03]
+    e_yesterday = Ecto.Date.cast!(~D[2016-08-02])
+    e_today = Ecto.Date.cast!(today)
+    e_tomorrow = Ecto.Date.cast!(~D[2016-08-04])
+    
+    out_before_today = make_old_animal(date_removed_from_service: e_yesterday)
+    out_today = make_old_animal(date_removed_from_service: e_today)
+    out_after_today = make_old_animal(date_removed_from_service: e_tomorrow)
+    assert OldAnimal.already_out_of_service?(out_before_today, today)
+    assert OldAnimal.already_out_of_service?(out_today, today)
+    refute OldAnimal.already_out_of_service?(out_after_today, today)
+
+    # Really uses a default argument for today
+    animal = make_old_animal(date_removed_from_service: Ecto.Date.cast!("2000-01-01"))
+    assert OldAnimal.already_out_of_service?(animal)
+  end
 end

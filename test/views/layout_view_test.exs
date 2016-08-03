@@ -2,6 +2,7 @@ defmodule Eecrit.LayoutViewTest do
   use Eecrit.ConnCase, async: true
   import Phoenix.View
   import Eecrit.Router.Helpers
+  import Eecrit.Test.ViewHelpers
   alias Eecrit.LayoutView
   alias Eecrit.User
   alias Eecrit.Organization
@@ -32,25 +33,20 @@ defmodule Eecrit.LayoutViewTest do
 
   ### Helpers
 
-  defp assert_substring(safe_result, substring) do
-    content = Phoenix.HTML.safe_to_string(safe_result)
-    assert String.contains?(content, substring)
-  end
-
   test "an anonymous user provokes a login link", %{conn: conn} do
-    assert_substring(LayoutView.li_log_in_out(conn, nil),
+    assert safe_substring(LayoutView.li_log_in_out(conn, nil),
                      session_path(conn, :new))
   end
   
   test "an logged-in user provokes a logout link", %{conn: conn} do
     user = %User{id: "..id.."}
-    assert_substring(LayoutView.li_log_in_out(conn, user),
+    assert safe_substring(LayoutView.li_log_in_out(conn, user),
                      session_path(conn, :delete, user))
   end
 
   test "a salutation for a logged-in user", %{conn: conn} do
     user = %User{id: "..id..", display_name: "..name.."}
-    assert_substring(LayoutView.li_salutation(conn, user),
+    assert safe_substring(LayoutView.li_salutation(conn, user),
                      "<li>..name..</li>")
   end
 
@@ -61,7 +57,7 @@ defmodule Eecrit.LayoutViewTest do
   test "an organization for a logged-in user", %{conn: conn} do
     organization = %Organization{short_name: "..short.."}
     user = %User{id: "..id..", current_organization: organization}
-    assert_substring(LayoutView.li_organization(conn, user),
+    assert safe_substring(LayoutView.li_organization(conn, user),
                      "<li>..short..</li>")
   end
 

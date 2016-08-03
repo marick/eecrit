@@ -1,5 +1,7 @@
 defmodule Eecrit.OldAnimal do
   use Eecrit.Web, :model
+  use Timex
+  alias Eecrit.TimeUtil
 
   @valid_species ~w{bovine caprine equine}
   def valid_species, do: @valid_species
@@ -38,6 +40,12 @@ defmodule Eecrit.OldAnimal do
 
   def update_action_changeset(old_animal, updates) do
     changeset(old_animal, updates)
+  end
+
+
+  def already_out_of_service?(old_animal, today \\ Timex.today) do
+    db_date = TimeUtil.ecto_date_to_date(old_animal.date_removed_from_service)
+    ! Timex.after?(db_date, today)
   end
   
 end

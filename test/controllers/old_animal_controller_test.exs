@@ -91,26 +91,27 @@ defmodule Eecrit.OldAnimalControllerTest do
     assert html_response(conn, 200) =~ "be blank"
   end
 
-
-
-
-
-
+  ## SHOW
   
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
-    old_animal = OldRepo.insert! %OldAnimal{}
+    old_animal = insert_old_animal(name: "Betsy")
     conn = get conn, old_animal_path(conn, :show, old_animal)
-    assert html_response(conn, 200) =~ "Show old animal"
+    assert html_response(conn, 200) =~ "The animal named \"Betsy\""
   end
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "renders page not found when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
       get conn, old_animal_path(conn, :show, -1)
     end
   end
 
+
+
+
+
+  
   @tag accessed_by: "admin", skip: true
   test "renders form for editing chosen resource", %{conn: conn} do
     old_animal = OldRepo.insert! %OldAnimal{}

@@ -33,7 +33,7 @@
     <%= label f, :date_removed_from_service, class: "control-label" %>
 
     <div class="input-group date" data-provide="datepicker">
-      <input type="text" class="form-control">
+      <%= text_input f, :date_removed_from_service, class: "form-control" %>
       <div class="input-group-addon">
         <span>...</span>
       </div>

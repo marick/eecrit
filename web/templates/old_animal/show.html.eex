@@ -25,7 +25,7 @@
 <div class="input-group">
   <span class="input-group-btn">
     <%= link "Edit this animal", to: old_animal_path(@conn, :edit, @old_animal), class: "btn btn-default" %>
-    <%= link "Animal list", to: old_animal_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "Back to animal list", to: old_animal_path(@conn, :index), class: "btn btn-default" %>
   </span>
 </div>
 

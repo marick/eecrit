@@ -20,6 +20,12 @@ defmodule Eecrit.OldAnimalController do
                              valid_species: OldAnimal.valid_species)
   end
 
+  defp render_edit(conn, old_animal, changeset) do
+    render(conn, "edit.html", old_animal: old_animal,
+                              valid_species: OldAnimal.valid_species,
+                              changeset: changeset)
+  end
+
   def new(conn, _params) do
     render_new(conn, OldAnimal.new_action_changeset)
   end
@@ -44,23 +50,20 @@ defmodule Eecrit.OldAnimalController do
 
   def edit(conn, %{"id" => id}) do
     old_animal = OldRepo.get!(OldAnimal, id)
-    changeset = OldAnimal.changeset(old_animal)
-    render(conn, "edit.html", old_animal: old_animal,
-                              valid_species: OldAnimal.valid_species,
-                              changeset: changeset)
+    changeset = OldAnimal.edit_action_changeset(old_animal)
+    render_edit(conn, old_animal, changeset)
   end
 
   def update(conn, %{"id" => id, "old_animal" => old_animal_params}) do
     old_animal = OldRepo.get!(OldAnimal, id)
-    changeset = OldAnimal.changeset(old_animal, old_animal_params)
-
+    changeset = OldAnimal.update_action_changeset(old_animal, old_animal_params)
     case OldRepo.update(changeset) do
       {:ok, old_animal} ->
         conn
-        |> put_flash(:info, "Old animal updated successfully.")
+        |> put_flash(:info, "#{old_animal.name} has been changed.")
         |> redirect(to: old_animal_path(conn, :show, old_animal))
       {:error, changeset} ->
-        render(conn, "edit.html", old_animal: old_animal, changeset: changeset)
+        render_edit(conn, old_animal, changeset)
     end
   end
 end

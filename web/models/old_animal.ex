@@ -18,8 +18,7 @@ defmodule Eecrit.OldAnimal do
   @visible_fields [:name, :nickname, :kind, :procedure_description_kind, :date_removed_from_service]
   @fields_always_required [:name, :kind, :procedure_description_kind]
 
-  ### TODO: Make this private 
-  def changeset(base_struct, updates \\ %{}) do
+  defp changeset(base_struct, updates \\ %{}) do
     base_struct
     |> cast(updates, @visible_fields)
     |> validate_required(@fields_always_required)
@@ -45,7 +44,7 @@ defmodule Eecrit.OldAnimal do
 
   def already_out_of_service?(old_animal, today \\ Timex.today) do
     db_date = TimeUtil.ecto_date_to_date(old_animal.date_removed_from_service)
-    ! Timex.after?(db_date, today)
+    not Timex.after?(db_date, today)
   end
   
 end

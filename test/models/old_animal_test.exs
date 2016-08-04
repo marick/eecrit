@@ -47,6 +47,12 @@ defmodule Eecrit.OldAnimalTest do
     assert Keyword.get(changeset.errors, :procedure_description_kind)
   end
 
+  test "a blank date is *not* an invalid changeset: null is allowed" do
+    attrs = Map.put(@valid_attrs, :date_removed_from_service, "")
+    changeset = OldAnimal.create_action_changeset(attrs)
+    assert changeset.valid?
+    assert changeset.changes[:date_removed_from_service] == nil
+  end
 
   test "the notion of 'already out of service'" do
     today = ~D[2016-08-03]

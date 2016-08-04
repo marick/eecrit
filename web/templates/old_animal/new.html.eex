@@ -4,4 +4,4 @@
                         valid_species: @valid_species,
                         action: old_animal_path(@conn, :create) %>
 
-<%= link "Back", to: old_animal_path(@conn, :index) %>
+<%= link "Back to animal list", to: old_animal_path(@conn, :index) %>

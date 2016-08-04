@@ -7,30 +7,31 @@
 
   <div class="form-group">
     <%= label f, :name, class: "control-label" %>
-    <%= textarea f, :name, class: "form-control" %>
     <%= error_tag f, :name %>
+    <%= textarea f, :name, class: "form-control" %>
   </div>
 
   <div class="form-group">
     <%= label f, :nickname, "Nickname (optional)", class: "control-label" %>
-    <%= textarea f, :nickname, class: "form-control" %>
     <%= error_tag f, :nickname %>
+    <%= textarea f, :nickname, class: "form-control" %>
   </div>
 
   <div class="form-group">
     <%= label f, :kind, "Kind (anything you might want to know when picking this animal)", class: "control-label" %>
-    <%= textarea f, :kind, class: "form-control" %>
     <%= error_tag f, :kind %>
+    <%= textarea f, :kind, class: "form-control" %>
   </div>
 
   <div class="form-group">
     <%= label f, :procedure_description_kind, "Species", class: "control-label" %>
-    <%= select f, :procedure_description_kind, @valid_species, class: "form-control" %>
     <%= error_tag f, :procedure_description_kind %>
+    <%= select f, :procedure_description_kind, @valid_species, class: "form-control" %>
   </div>
 
   <div class="form-group">
     <%= label f, :date_removed_from_service, class: "control-label" %>
+    <%= error_tag f, :date_removed_from_service %>
 
     <div class="input-group date" data-provide="datepicker">
       <%= text_input f, :date_removed_from_service, class: "form-control" %>
@@ -38,7 +39,6 @@
         <span>...</span>
       </div>
     </div>
-    <%= error_tag f, :date_removed_from_service %>
   </div>
 
   <div class="form-group">

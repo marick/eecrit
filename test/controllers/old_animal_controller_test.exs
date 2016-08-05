@@ -130,4 +130,15 @@ defmodule Eecrit.OldAnimalControllerTest do
     conn = put conn, old_animal_path(conn, :update, old_animal), old_animal: @invalid_attrs
     assert html_response(conn, 200) =~ ~s{Edit "Betsy"}
   end
+
+  # :delete
+  
+  @tag accessed_by: "admin"
+  test "deletes chosen resource", %{conn: conn} do
+    animal = insert_old_animal()
+    conn = delete conn, old_animal_path(conn, :delete, animal)
+    assert redirected_to(conn) == old_animal_path(conn, :index)
+    refute OldRepo.get(OldAnimal, animal.id)
+  end
+
 end

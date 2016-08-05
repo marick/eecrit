@@ -30,6 +30,7 @@
       <td class="text-right">
         <%= link "Show", to: old_animal_path(@conn, :show, old_animal), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: old_animal_path(@conn, :edit, old_animal), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: old_animal_path(@conn, :delete, old_animal), method: :delete, data: [confirm: "Are you sure? DO NOT delete an animal that has ever been reserved."], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>

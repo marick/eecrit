@@ -4,8 +4,6 @@ defmodule Eecrit.LayoutViewTest do
   import Eecrit.Router.Helpers
   import Eecrit.Test.ViewHelpers
   alias Eecrit.LayoutView
-  alias Eecrit.User
-  alias Eecrit.Organization
 
   setup %{conn: conn} do
     conn =
@@ -39,13 +37,13 @@ defmodule Eecrit.LayoutViewTest do
   end
   
   test "an logged-in user provokes a logout link", %{conn: conn} do
-    user = %User{id: "..id.."}
+    user = make_user()
     assert safe_substring(LayoutView.li_log_in_out(conn, user),
                      session_path(conn, :delete, user))
   end
 
   test "a salutation for a logged-in user", %{conn: conn} do
-    user = %User{id: "..id..", display_name: "..name.."}
+    user = make_user(display_name: "..name..")
     assert safe_substring(LayoutView.li_salutation(conn, user),
                      "<li>..name..</li>")
   end
@@ -55,13 +53,25 @@ defmodule Eecrit.LayoutViewTest do
   end
 
   test "an organization for a logged-in user", %{conn: conn} do
-    organization = %Organization{short_name: "..short.."}
-    user = %User{id: "..id..", current_organization: organization}
+    user = make_user(current_organization: make_organization(short_name: "..short.."))
     assert safe_substring(LayoutView.li_organization(conn, user),
                      "<li>..short..</li>")
   end
 
   test "anonymous users produce no organization HTML", %{conn: conn} do
     assert LayoutView.li_organization(conn, nil) == nil
+  end
+
+  @plain_user make_user(ability_group: make_ability_group("user"))
+  @admin make_user(ability_group: make_ability_group("admin"))
+  @superuser make_user(ability_group: make_ability_group("superuser"))
+  
+  # Showing options
+  test "work with animals", %{conn: conn} do
+    path = old_animal_path(conn, :index)
+    assert LayoutView.li_animals(conn, nil) == nil
+    assert LayoutView.li_animals(conn, @plain_user) == nil
+    assert LayoutView.li_animals(conn, @admin) |> safe_substring(path)
+    assert LayoutView.li_animals(conn, @superuser) |> safe_substring(path)
   end
 end

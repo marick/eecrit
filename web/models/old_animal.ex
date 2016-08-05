@@ -3,6 +3,7 @@ defmodule Eecrit.OldAnimal do
   use Eecrit.ModelDefaults, model: __MODULE__
   use Timex
   alias Eecrit.TimeUtil
+  alias Eecrit.User
 
   @valid_species ~w{bovine caprine equine}
   def valid_species, do: @valid_species
@@ -29,5 +30,9 @@ defmodule Eecrit.OldAnimal do
     db_date = TimeUtil.ecto_date_to_date(old_animal.date_removed_from_service)
     not Timex.after?(db_date, today)
   end
-  
+
+  defimpl Canada.Can, for: __MODULE__ do
+    def can?(nil, _, _), do: false
+    def can?(user = %User{}, _, _), do: user.ability_group.is_admin
+  end
 end

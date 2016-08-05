@@ -1,5 +1,7 @@
 # Eecrit
 
+![build status](https://travis-ci.org/marick/eecrit.svg?branch=master)
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`

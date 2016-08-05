@@ -27,7 +27,7 @@ defmodule Eecrit.OldAnimalControllerTest do
     removed_at = Ecto.Date.cast!("2012-03-05")
     insert_old_animal(name: "removed", date_removed_from_service: removed_at)
     conn = get conn, old_animal_path(conn, :index)
-    assert html_response(conn, 200) =~ "All animals currently in service"
+    assert html_response(conn, 200) =~ "All animals currently in serviceX"
     assert Enum.find(conn.assigns.animals, &(&1.name == "retained"))
     refute Enum.find(conn.assigns.animals, &(&1.name == "removed"))
   end

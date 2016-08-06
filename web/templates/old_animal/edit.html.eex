@@ -1,7 +1,7 @@
-<h2>Edit "<%= @old_animal.name %>"</h2>
+<h2>Edit <%= @old_animal.name %></h2>
 
 <%= render "form.html", changeset: @changeset,
                         valid_species: @valid_species,
                         action: old_animal_path(@conn, :update, @old_animal) %>
 
-<%= link "Back to animal list", to: old_animal_path(@conn, :index) %>
+    <%= link "Back to animal list", to: old_animal_path(@conn, :index), class: "btn btn-default" %>

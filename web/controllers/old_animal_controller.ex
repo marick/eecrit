@@ -15,17 +15,6 @@ defmodule Eecrit.OldAnimalController do
     render(conn, "index.html", animals: animals, params: params)
   end
 
-  defp render_new(conn, changeset) do
-    render(conn, "new.html", changeset: changeset,
-                             valid_species: OldAnimal.valid_species)
-  end
-
-  defp render_edit(conn, old_animal, changeset) do
-    render(conn, "edit.html", old_animal: old_animal,
-                              valid_species: OldAnimal.valid_species,
-                              changeset: changeset)
-  end
-
   def new(conn, _params) do
     render_new(conn, OldAnimal.new_action_changeset)
   end
@@ -69,13 +58,22 @@ defmodule Eecrit.OldAnimalController do
 
   def delete(conn, %{"id" => id}) do
     old_animal = OldRepo.get!(OldAnimal, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     OldRepo.delete!(old_animal)
 
     conn
     |> put_flash(:info, "Animal deleted successfully.")
     |> redirect(to: old_animal_path(conn, :index))
+  end
+
+
+  defp render_new(conn, changeset) do
+    render(conn, "new.html", changeset: changeset,
+                             valid_species: OldAnimal.valid_species)
+  end
+
+  defp render_edit(conn, old_animal, changeset) do
+    render(conn, "edit.html", old_animal: old_animal,
+                              valid_species: OldAnimal.valid_species,
+                              changeset: changeset)
   end
 end

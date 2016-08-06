@@ -95,9 +95,9 @@ defmodule Eecrit.OldAnimalControllerTest do
   
   @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
-    old_animal = insert_old_animal(name: "Betsy")
+    old_animal = insert_old_animal(name: "Betsy", procedure_description_kind: "bovine")
     conn = get conn, old_animal_path(conn, :show, old_animal)
-    assert html_response(conn, 200) =~ ~s{The animal named "Betsy"}
+    assert html_response(conn, 200) =~ ~s{Betsy (bovine)}
   end
 
   @tag accessed_by: "admin"
@@ -113,7 +113,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   test "renders form for editing chosen resource", %{conn: conn} do
     old_animal = insert_old_animal(name: "Betsy")
     conn = get conn, old_animal_path(conn, :edit, old_animal)
-    assert html_response(conn, 200) =~ ~s{Edit "Betsy"}
+    assert html_response(conn, 200) =~ ~s{Edit Betsy}
   end
 
   @tag accessed_by: "admin"
@@ -128,7 +128,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     old_animal = insert_old_animal(name: "Betsy")
     conn = put conn, old_animal_path(conn, :update, old_animal), old_animal: @invalid_attrs
-    assert html_response(conn, 200) =~ ~s{Edit "Betsy"}
+    assert html_response(conn, 200) =~ ~s{Edit Betsy}
   end
 
   # :delete

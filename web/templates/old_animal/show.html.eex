@@ -1,4 +1,4 @@
-<h2>The animal named "<%= @old_animal.name %>"</h2>
+<h2><%= @old_animal.name %> (<%= @old_animal.procedure_description_kind %>)</h2>
 
 <ul>
   <li>

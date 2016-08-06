@@ -6,6 +6,8 @@ defmodule Eecrit.OldProcedure do
   schema "procedures" do
     field :name, :string
     field :days_delay, :integer
+
+    has_many :procedure_descriptions, Eecrit.OldProcedureDescription
   end
 
   @visible_fields [:name, :days_delay]

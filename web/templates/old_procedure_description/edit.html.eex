@@ -1,6 +1,6 @@
-<h2>Edit old procedure description</h2>
+<h2>Edit procedure description for #{@old_procedure_description.animal_kind } </h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: old_procedure_description_path(@conn, :update, @old_procedure_description) %>
 
-<%= link "Back", to: old_procedure_description_path(@conn, :index) %>
+<%= link "Back", to: old_procedure_description_path(@conn, :index), class: "btn btn-default" %>

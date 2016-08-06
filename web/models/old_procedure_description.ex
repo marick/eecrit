@@ -1,5 +1,6 @@
 defmodule Eecrit.OldProcedureDescription do
   use Eecrit.Web, :model
+  use Eecrit.ModelDefaults, model: __MODULE__
 
   schema "procedure_descriptions" do
     field :animal_kind, :string
@@ -7,12 +8,12 @@ defmodule Eecrit.OldProcedureDescription do
     belongs_to :procedure, Eecrit.Procedure
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
-  def changeset(struct, params \\ %{}) do
+  @visible_fields [:animal_kind, :description]
+  @fields_always_required [:animal_kind]
+
+  defp changeset(struct, params) do
     struct
-    |> cast(params, [:animal_kind, :description])
-    |> validate_required([:animal_kind, :description])
+    |> cast(params, @visible_fields)
+    |> validate_required(@fields_always_required)
   end
 end

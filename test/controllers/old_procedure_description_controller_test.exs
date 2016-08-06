@@ -8,13 +8,13 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   @tag accessed_by: "admin"
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, old_procedure_description_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing procedure descriptions"
+    assert html_response(conn, 200) =~ "Procedure descriptions"
   end
 
   @tag accessed_by: "admin"
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_procedure_description_path(conn, :new)
-    assert html_response(conn, 200) =~ "New old procedure description"
+    assert html_response(conn, 200) =~ "New procedure description"
   end
 
   @tag accessed_by: "admin"
@@ -27,14 +27,14 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   @tag accessed_by: "admin"
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, old_procedure_description_path(conn, :create), old_procedure_description: @invalid_attrs
-    assert html_response(conn, 200) =~ "New old procedure description"
+    assert html_response(conn, 200) =~ "New procedure description"
   end
 
   @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
     old_procedure_description = OldRepo.insert! %OldProcedureDescription{}
     conn = get conn, old_procedure_description_path(conn, :show, old_procedure_description)
-    assert html_response(conn, 200) =~ "Show old procedure description"
+    assert html_response(conn, 200) =~ "Show procedure description"
   end
 
   @tag accessed_by: "admin"
@@ -48,7 +48,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "renders form for editing chosen resource", %{conn: conn} do
     old_procedure_description = OldRepo.insert! %OldProcedureDescription{}
     conn = get conn, old_procedure_description_path(conn, :edit, old_procedure_description)
-    assert html_response(conn, 200) =~ "Edit old procedure description"
+    assert html_response(conn, 200) =~ "Edit procedure description"
   end
 
   @tag accessed_by: "admin"
@@ -63,7 +63,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     old_procedure_description = OldRepo.insert! %OldProcedureDescription{}
     conn = put conn, old_procedure_description_path(conn, :update, old_procedure_description), old_procedure_description: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit old procedure description"
+    assert html_response(conn, 200) =~ "Edit procedure description"
   end
 
   @tag accessed_by: "admin"

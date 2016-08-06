@@ -1,6 +1,5 @@
 defmodule Eecrit.OldProcedureController do
   use Eecrit.Web, :controller
-
   alias Eecrit.OldProcedure
 
   def index(conn, _params) do
@@ -56,7 +55,7 @@ defmodule Eecrit.OldProcedureController do
     OldRepo.delete!(old_procedure)
 
     conn
-    |> put_flash(:info, "Old procedure deleted successfully.")
+    |> put_flash(:info, "Procedure deleted successfully.")
     |> redirect(to: old_procedure_path(conn, :index))
   end
 

@@ -65,6 +65,24 @@ defmodule Eecrit.Test.Makers do
     |> OldRepo.insert!()
   end
 
+  ## Old Procedure Descriptions
+  def make_old_procedure_description(overrides \\ %{}) do
+    defaults = %{id: next_id,
+                 animal_kind: "bovine",
+                 description: "<p>Some html</p>",
+                 procedure: make_old_procedure()}
+    struct(OldProcedure, Dict.merge(defaults, overrides))
+  end
+
+  def insert_old_procedure_description(overrides \\ %{}) do
+    description = make_old_procedure_description(overrides)
+    insert_old_procedure(description.old_procedure)
+
+    description
+    |> OldProcedure.edit_action_changeset()
+    |> OldRepo.insert!()
+  end
+
 
   ## Organizations
   def make_organization(overrides \\ %{}) do

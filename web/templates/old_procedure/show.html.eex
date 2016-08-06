@@ -1,4 +1,4 @@
-<h2>Show old procedure</h2>
+<h2>Procedure</h2>
 
 <ul>
 
@@ -14,5 +14,9 @@
 
 </ul>
 
-<%= link "Edit", to: old_procedure_path(@conn, :edit, @old_procedure) %>
-<%= link "Back", to: old_procedure_path(@conn, :index) %>
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= link "Edit this procedure", to: old_procedure_path(@conn, :edit, @old_procedure), class: "btn btn-default" %>
+    <%= link "Back to procedure list", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+  </span>
+</div>

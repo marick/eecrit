@@ -4,25 +4,26 @@ defmodule Eecrit.OldProcedureController do
   alias Eecrit.OldProcedure
 
   def index(conn, _params) do
-    procedures = OldRepo.all(OldProcedure)
+    IO.puts("HERE I AM IN THE INDEX")
+    procedures = OldRepo.all(from a in OldProcedure,
+                             order_by: fragment("lower(?)", a.name))
     render(conn, "index.html", procedures: procedures)
   end
 
   def new(conn, _params) do
-    changeset = OldProcedure.changeset(%OldProcedure{})
-    render(conn, "new.html", changeset: changeset)
+    render_new(conn, OldProcedure.new_action_changeset)
   end
 
   def create(conn, %{"old_procedure" => old_procedure_params}) do
-    changeset = OldProcedure.changeset(%OldProcedure{}, old_procedure_params)
+    changeset = OldProcedure.create_action_changeset(old_procedure_params)
 
     case OldRepo.insert(changeset) do
-      {:ok, _old_procedure} ->
+      {:ok, old_procedure} ->
         conn
-        |> put_flash(:info, "Old procedure created successfully.")
+        |> put_flash(:info, "#{old_procedure.name} was created.")
         |> redirect(to: old_procedure_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render_new(conn, changeset)
     end
   end
 
@@ -33,33 +34,39 @@ defmodule Eecrit.OldProcedureController do
 
   def edit(conn, %{"id" => id}) do
     old_procedure = OldRepo.get!(OldProcedure, id)
-    changeset = OldProcedure.changeset(old_procedure)
-    render(conn, "edit.html", old_procedure: old_procedure, changeset: changeset)
+    changeset = OldProcedure.edit_action_changeset(old_procedure)
+    render_edit(conn, old_procedure, changeset)
   end
 
   def update(conn, %{"id" => id, "old_procedure" => old_procedure_params}) do
     old_procedure = OldRepo.get!(OldProcedure, id)
-    changeset = OldProcedure.changeset(old_procedure, old_procedure_params)
+    changeset = OldProcedure.update_action_changeset(old_procedure, old_procedure_params)
 
     case OldRepo.update(changeset) do
       {:ok, old_procedure} ->
         conn
-        |> put_flash(:info, "Old procedure updated successfully.")
+        |> put_flash(:info, "#{old_procedure.name} has been changed.")
         |> redirect(to: old_procedure_path(conn, :show, old_procedure))
       {:error, changeset} ->
-        render(conn, "edit.html", old_procedure: old_procedure, changeset: changeset)
+        render_edit(conn, old_procedure, changeset)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     old_procedure = OldRepo.get!(OldProcedure, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     OldRepo.delete!(old_procedure)
 
     conn
     |> put_flash(:info, "Old procedure deleted successfully.")
     |> redirect(to: old_procedure_path(conn, :index))
+  end
+
+
+  defp render_new(conn, changeset) do
+    render(conn, "new.html", changeset: changeset)
+  end
+
+  defp render_edit(conn, old_procedure, changeset) do
+    render(conn, "edit.html", old_procedure: old_procedure, changeset: changeset)
   end
 end

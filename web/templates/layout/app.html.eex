@@ -17,6 +17,7 @@
         <nav role="navigation">
           <ol class="breadcrumb text-right">
             <%= li_animals(@conn, @current_user) %>
+            <%= li_procedures(@conn, @current_user) %>
             <%= li_salutation(@conn, @current_user) %>
             <%= li_organization(@conn, @current_user) %>
             <%= li_log_in_out(@conn, @current_user) %>
@@ -31,7 +32,6 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
-
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>

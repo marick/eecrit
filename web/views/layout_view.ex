@@ -23,5 +23,12 @@ defmodule Eecrit.LayoutView do
     end
   end
 
+  def li_procedures(_conn, nil), do: nil
+  def li_procedures(conn, user) do
+    if user.ability_group.is_admin do
+      link("Procedures", to: old_procedure_path(conn, :index)) |> li()
+    end
+  end
+  
   defp li(content), do: content_tag(:li, content)
 end

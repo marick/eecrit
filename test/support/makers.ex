@@ -4,6 +4,7 @@ defmodule Eecrit.Test.Makers do
   alias Eecrit.User
   alias Eecrit.Organization
   alias Eecrit.OldAnimal
+  alias Eecrit.OldProcedure
   alias Eecrit.AbilityGroup
 
   # TODO: simplify this with macros or higher-level functions
@@ -48,6 +49,22 @@ defmodule Eecrit.Test.Makers do
     |> OldAnimal.edit_action_changeset()
     |> OldRepo.insert!()
   end
+
+
+  ## Old Procedures
+  def make_old_procedure(overrides \\ %{}) do
+    defaults = %{id: next_id,
+                 name: "Bandage demonstration",
+                 days_delay: 0}
+    struct(OldProcedure, Dict.merge(defaults, overrides))
+  end
+
+  def insert_old_procedure(overrides \\ %{}) do
+    make_old_procedure(overrides)
+    |> OldProcedure.edit_action_changeset()
+    |> OldRepo.insert!()
+  end
+
 
   ## Organizations
   def make_organization(overrides \\ %{}) do

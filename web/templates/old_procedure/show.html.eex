@@ -1,0 +1,18 @@
+<h2>Show old procedure</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @old_procedure.name %>
+  </li>
+
+  <li>
+    <strong>Days delay:</strong>
+    <%= @old_procedure.days_delay %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: old_procedure_path(@conn, :edit, @old_procedure) %>
+<%= link "Back", to: old_procedure_path(@conn, :index) %>

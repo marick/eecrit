@@ -36,6 +36,7 @@ defmodule Eecrit.Router do
     pipe_through [:browser, :require_login, :require_admin]
 
     resources "/animals", OldAnimalController
+    resources "/procedures", OldProcedureController
   end
 
   # Controllers that require superuser permissions.

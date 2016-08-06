@@ -1,0 +1,23 @@
+<h2>Show old procedure description</h2>
+
+<ul>
+
+  <li>
+    <strong>Animal kind:</strong>
+    <%= @old_procedure_description.animal_kind %>
+  </li>
+
+  <li>
+    <strong>Procedure:</strong>
+    <%= @old_procedure_description.procedure_id %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @old_procedure_description.description %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: old_procedure_description_path(@conn, :edit, @old_procedure_description) %>
+<%= link "Back", to: old_procedure_description_path(@conn, :index) %>

@@ -4,7 +4,6 @@ defmodule Eecrit.OldProcedureController do
   alias Eecrit.OldProcedure
 
   def index(conn, _params) do
-    IO.puts("HERE I AM IN THE INDEX")
     procedures = OldRepo.all(from a in OldProcedure,
                              order_by: fragment("lower(?)", a.name))
     render(conn, "index.html", procedures: procedures)

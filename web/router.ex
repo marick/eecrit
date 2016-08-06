@@ -37,6 +37,7 @@ defmodule Eecrit.Router do
 
     resources "/animals", OldAnimalController
     resources "/procedures", OldProcedureController
+    resources "/procedure_descriptions", OldProcedureDescriptionController
   end
 
   # Controllers that require superuser permissions.

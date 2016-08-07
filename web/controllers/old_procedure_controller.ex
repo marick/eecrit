@@ -58,7 +58,7 @@ defmodule Eecrit.OldProcedureController do
   end
 
   defp get(id) do 
-    OldRepo.get!(OldProcedure, id)
+    OldRepo.get!(OldProcedure, id) |> OldRepo.preload(:procedure_descriptions)
   end
   
   defp render_new(conn, changeset) do

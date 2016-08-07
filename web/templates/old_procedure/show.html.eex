@@ -1,12 +1,6 @@
-<h2>Procedure</h2>
+<h2><%= String.capitalize(@old_procedure.name) %></h2>
 
 <ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @old_procedure.name %>
-  </li>
-
   <li>
     <strong>Days delay:</strong>
     <%= @old_procedure.days_delay %>
@@ -16,7 +10,20 @@
 
 <div class="input-group">
   <span class="input-group-btn">
-    <%= link "Edit this procedure", to: old_procedure_path(@conn, :edit, @old_procedure), class: "btn btn-default" %>
-    <%= link "Back to procedure list", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "Add a description", to: old_procedure_description_path(@conn, :new, procedure: @old_procedure.id), class: "btn btn-default" %>
+    <%= link "Change the name or delay", to: old_procedure_path(@conn, :edit, @old_procedure), class: "btn btn-default" %>
+    <%= link "Show list of procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
   </span>
 </div>
+
+<table class="table">
+  <tbody>
+<%= for description <- @old_procedure.procedure_descriptions do %>
+    <tr>
+      <td><%= raw(description.description) %></td>
+      <td><%= link "Edit this description", to: old_procedure_description_path(@conn, :edit, description.id), class: "btn btn-default" %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

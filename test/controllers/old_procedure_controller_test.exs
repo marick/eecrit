@@ -57,9 +57,12 @@ defmodule Eecrit.OldProcedureControllerTest do
   
   @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
-    old_procedure = insert_old_procedure()
+    old_procedure = insert_old_procedure(name: "Some procedure")
+    insert_old_procedure_description(procedure: old_procedure,
+                                     description: "DO STUFF")
     conn = get conn, old_procedure_path(conn, :show, old_procedure)
-    assert html_response(conn, 200) =~ "Procedure"
+    assert html_response(conn, 200) =~ "Some procedure"
+    assert html_response(conn, 200) =~ "DO STUFF"
   end
 
   @tag accessed_by: "admin"

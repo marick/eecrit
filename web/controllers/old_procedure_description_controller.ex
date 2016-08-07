@@ -12,11 +12,14 @@ defmodule Eecrit.OldProcedureDescriptionController do
     render(conn, "index.html", procedure_descriptions: OldRepo.all(query))
   end
 
-  def new(conn, _params) do
-    render_new(conn, OldProcedureDescription.new_action_changeset)
+  def new(conn, %{"procedure" => procedure_id}) do
+    procedure = get_procedure(procedure_id)
+    changeset = OldProcedureDescription.new_action_changeset
+    render_new(conn, procedure, changeset)
   end
 
   def create(conn, %{"old_procedure_description" => old_procedure_description_params}) do
+    procedure = get_procedure(old_procedure_description_params["procedure_id"])
     changeset = OldProcedureDescription.create_action_changeset(old_procedure_description_params)
 
     case OldRepo.insert(changeset) do
@@ -25,7 +28,7 @@ defmodule Eecrit.OldProcedureDescriptionController do
         |> put_flash(:info, "Procedure description was created.")
         |> redirect(to: old_procedure_description_path(conn, :index))
       {:error, changeset} ->
-        render_new(conn, changeset)
+        render_new(conn, procedure, changeset)
     end
   end
 
@@ -61,13 +64,15 @@ defmodule Eecrit.OldProcedureDescriptionController do
     |> redirect(to: old_procedure_description_path(conn, :index))
   end
 
+  defp get_procedure(id), do: OldRepo.get(OldProcedure, id)
+
   defp get(id) do
     OldRepo.get!(OldProcedureDescription, id)
     |> OldRepo.preload(:procedure)
   end
 
-  defp render_new(conn, changeset) do
-    render(conn, "new.html", changeset: changeset)
+  defp render_new(conn, procedure, changeset) do
+    render(conn, "new.html", procedure: procedure, changeset: changeset)
   end
 
   defp render_edit(conn, old_procedure_description, changeset) do

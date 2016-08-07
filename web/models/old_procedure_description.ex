@@ -8,12 +8,12 @@ defmodule Eecrit.OldProcedureDescription do
     belongs_to :procedure, Eecrit.OldProcedure
   end
 
-  @visible_fields [:animal_kind, :description]
-  @fields_always_required [:animal_kind]
+  @form_fields [:animal_kind, :description, :procedure_id]
+  @fields_always_required [:animal_kind, :procedure_id]
 
   defp changeset(struct, params) do
     struct
-    |> cast(params, @visible_fields)
+    |> cast(params, @form_fields)
     |> validate_required(@fields_always_required)
   end
 end

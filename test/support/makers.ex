@@ -73,7 +73,8 @@ defmodule Eecrit.Test.Makers do
     defaults = %{id: next_id,
                  animal_kind: "bovine",
                  description: "<p>Some html</p>",
-                 procedure: owning_procedure}
+                 procedure: owning_procedure,
+                 procedure_id: owning_procedure.id}
     struct(OldProcedureDescription, Dict.merge(defaults, overrides))
   end
 

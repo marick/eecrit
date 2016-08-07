@@ -5,6 +5,8 @@
     </div>
   <% end %>
 
+  <%= hidden_input f, :procedure_id, value: @procedure_id %>
+
   <div class="form-group">
     <%= label f, :animal_kind, class: "control-label" %>
     <%= error_tag f, :animal_kind %>

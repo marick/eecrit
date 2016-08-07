@@ -2,7 +2,7 @@ defmodule Eecrit.OldProcedureDescriptionTest do
   use Eecrit.ModelCase
   alias Eecrit.OldProcedureDescription
 
-  @valid_attrs %{animal_kind: "bovine", description: "<html/>"}
+  @valid_attrs %{animal_kind: "bovine", description: "<html/>", procedure_id: 43}
   @invalid_attrs %{}
 
   test "a starting changeset" do

@@ -1,6 +1,7 @@
-<h2>New procedure description</h2>
+<h2>New description for <%= @procedure.name %></h2>
 
 <%= render "form.html", changeset: @changeset,
+                        procedure_id: @procedure.id,
                         action: old_procedure_description_path(@conn, :create) %>
 
 <%= link "Back", to: old_procedure_description_path(@conn, :index) %>

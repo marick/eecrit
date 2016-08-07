@@ -2,7 +2,7 @@
 
 <div class="input-group">
   <span class="input-group-btn">
-<%= link "Add new procedure", to: old_animal_path(@conn, :new), class: "btn btn-default" %>
+<%= link "Add new procedure", to: old_procedure_path(@conn, :new), class: "btn btn-default" %>
   </span>
 </div>
 
@@ -32,4 +32,4 @@
   </tbody>
 </table>
 
-<%= link "Add new procedure", to: old_animal_path(@conn, :new), class: "btn btn-default" %>
+<%= link "Add new procedure", to: old_procedure_path(@conn, :new), class: "btn btn-default" %>

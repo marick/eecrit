@@ -40,8 +40,9 @@ defmodule Eecrit.OldProcedureControllerTest do
   @tag accessed_by: "admin"
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, old_procedure_path(conn, :create), old_procedure: @valid_attrs
-    assert redirected_to(conn) == old_procedure_path(conn, :index)
-    assert OldRepo.get_by(OldProcedure, @valid_attrs)
+    created = OldRepo.get_by(OldProcedure, @valid_attrs)
+    assert created
+    assert redirected_to(conn) == old_procedure_path(conn, :edit, created.id)
     assert flash_matches(conn, "info", ~r{PROCEDURE NAME was created})
   end
 

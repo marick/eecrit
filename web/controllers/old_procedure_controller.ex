@@ -19,7 +19,7 @@ defmodule Eecrit.OldProcedureController do
       {:ok, old_procedure} ->
         conn
         |> put_flash(:info, "#{old_procedure.name} was created.")
-        |> redirect(to: old_procedure_path(conn, :index))
+        |> redirect(to: old_procedure_path(conn, :edit, old_procedure.id))
       {:error, changeset} ->
         render_new(conn, changeset)
     end

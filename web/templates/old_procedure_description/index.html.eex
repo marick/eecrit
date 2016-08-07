@@ -1,24 +1,19 @@
-<h2>Procedure descriptions</h2>
+<h2>All procedures, descriptions by species</h2>
 
-<table class="table">
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Animal kind</th>
       <th>Procedure</th>
-      <th>Description</th>
-
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for old_procedure_description <- @procedure_descriptions do %>
     <tr>
-      <td><%= old_procedure_description.animal_kind %></td>
-      <td><%= old_procedure_description.procedure_id %></td>
-      <td><%= old_procedure_description.description %></td>
+      <td><%= old_procedure_description.procedure.name %> | <%= old_procedure_description.animal_kind %> </td>
 
       <td class="text-right">
-        <%= link "Show", to: old_procedure_description_path(@conn, :show, old_procedure_description), class: "btn btn-default btn-xs" %>
+        <%= show_link_or_disclaimer @conn, old_procedure_description %>
         <%= link "Edit", to: old_procedure_description_path(@conn, :edit, old_procedure_description), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: old_procedure_description_path(@conn, :delete, old_procedure_description), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
@@ -27,4 +22,5 @@
   </tbody>
 </table>
 
-<%= link "New old procedure description", to: old_procedure_description_path(@conn, :new) %>
+<%= link "Add new description", to: old_procedure_description_path(@conn, :new),
+    class: "btn btn-default" %>

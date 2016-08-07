@@ -1,23 +1,11 @@
-<h2>Show procedure description</h2>
+<h2> Description</h2>
 
-<ul>
+<%= raw(@old_procedure_description.description) %>
 
-  <li>
-    <strong>Animal kind:</strong>
-    <%= @old_procedure_description.animal_kind %>
-  </li>
-
-  <li>
-    <strong>Procedure:</strong>
-    <%= @old_procedure_description.procedure_id %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @old_procedure_description.description %>
-  </li>
-
-</ul>
-
-<%= link "Edit", to: old_procedure_description_path(@conn, :edit, @old_procedure_description) %>
-<%= link "Back", to: old_procedure_description_path(@conn, :index) %>
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= link "Edit this description", to: old_procedure_description_path(@conn, :edit, @old_procedure_description), class: "btn btn-default" %>
+    <%= link "Back to procedures by species", to: old_procedure_description_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "Back to procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+  </span>
+</div>

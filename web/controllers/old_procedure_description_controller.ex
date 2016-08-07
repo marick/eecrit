@@ -1,9 +1,16 @@
 defmodule Eecrit.OldProcedureDescriptionController do
   use Eecrit.Web, :controller
   alias Eecrit.OldProcedureDescription
+  alias Eecrit.OldProcedure
 
   def index(conn, _params) do
-    procedure_descriptions = OldRepo.all(OldProcedureDescription)
+    query = from pd in OldProcedureDescription,
+      preload: [:procedure],
+      join: p in OldProcedure, where: p.id == pd.procedure_id,
+      order_by: fragment("lower(?)", p.name),
+      order_by: fragment("lower(?)", pd.animal_kind)
+    Apex.ap Ecto.Adapters.SQL.to_sql(:all, OldRepo, query)
+    procedure_descriptions = OldRepo.all(query)
     render(conn, "index.html", procedure_descriptions: procedure_descriptions)
   end
 
@@ -25,18 +32,17 @@ defmodule Eecrit.OldProcedureDescriptionController do
   end
 
   def show(conn, %{"id" => id}) do
-    old_procedure_description = OldRepo.get!(OldProcedureDescription, id)
-    render(conn, "show.html", old_procedure_description: old_procedure_description)
+    render(conn, "show.html", old_procedure_description: get(id))
   end
 
   def edit(conn, %{"id" => id}) do
-    old_procedure_description = OldRepo.get!(OldProcedureDescription, id)
+    old_procedure_description = get(id)
     changeset = OldProcedureDescription.edit_action_changeset(old_procedure_description)
     render_edit(conn, old_procedure_description, changeset)
   end
 
   def update(conn, %{"id" => id, "old_procedure_description" => old_procedure_description_params}) do
-    old_procedure_description = OldRepo.get!(OldProcedureDescription, id)
+    old_procedure_description = get(id)
     changeset = OldProcedureDescription.update_action_changeset(old_procedure_description, old_procedure_description_params)
 
     case OldRepo.update(changeset) do
@@ -50,12 +56,16 @@ defmodule Eecrit.OldProcedureDescriptionController do
   end
 
   def delete(conn, %{"id" => id}) do
-    old_procedure_description = OldRepo.get!(OldProcedureDescription, id)
-    OldRepo.delete!(old_procedure_description)
+    OldRepo.delete!(get(id))
 
     conn
     |> put_flash(:info, "Procedure description deleted successfully.")
     |> redirect(to: old_procedure_description_path(conn, :index))
+  end
+
+  defp get(id) do
+    OldRepo.get!(OldProcedureDescription, id)
+    |> OldRepo.preload(:procedure)
   end
 
   defp render_new(conn, changeset) do

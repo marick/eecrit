@@ -5,7 +5,7 @@ defmodule Eecrit.OldProcedureDescription do
   schema "procedure_descriptions" do
     field :animal_kind, :string
     field :description, :string
-    belongs_to :procedure, Eecrit.Procedure
+    belongs_to :procedure, Eecrit.OldProcedure
   end
 
   @visible_fields [:animal_kind, :description]

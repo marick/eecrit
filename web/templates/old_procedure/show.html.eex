@@ -12,7 +12,7 @@
   <span class="input-group-btn">
     <%= link "Add a description", to: old_procedure_description_path(@conn, :new, procedure: @old_procedure.id), class: "btn btn-default" %>
     <%= link "Change the name or delay", to: old_procedure_path(@conn, :edit, @old_procedure), class: "btn btn-default" %>
-    <%= link "Show list of procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "Show all procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
   </span>
 </div>
 

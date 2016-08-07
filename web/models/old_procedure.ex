@@ -7,7 +7,7 @@ defmodule Eecrit.OldProcedure do
     field :name, :string
     field :days_delay, :integer
 
-    has_many :procedure_descriptions, Eecrit.OldProcedureDescription
+    has_many :procedure_descriptions, Eecrit.OldProcedureDescription, foreign_key: :procedure_id
   end
 
   @visible_fields [:name, :days_delay]

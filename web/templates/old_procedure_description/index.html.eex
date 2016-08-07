@@ -1,4 +1,6 @@
-<h2>All procedures, descriptions by species</h2>
+<h2>All procedure descriptions (by procedure and species)</h2>
+
+<p>You add a new procedure description by editing the procedure.</p>
 
 <table class="table table-striped">
   <thead>
@@ -15,12 +17,10 @@
       <td class="text-right">
         <%= show_link_or_disclaimer @conn, old_procedure_description %>
         <%= link "Edit", to: old_procedure_description_path(@conn, :edit, old_procedure_description), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: old_procedure_description_path(@conn, :delete, old_procedure_description), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Delete", to: old_procedure_description_path(@conn, :delete, old_procedure_description), method: :delete, data: [confirm: "Are you sure? (Note: It is safe to delete descriptions, even for procedures that have been used in reservations.)"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "Add new description", to: old_procedure_description_path(@conn, :new),
-    class: "btn btn-default" %>

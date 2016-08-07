@@ -9,9 +9,7 @@ defmodule Eecrit.OldProcedureDescriptionController do
       join: p in OldProcedure, where: p.id == pd.procedure_id,
       order_by: fragment("lower(?)", p.name),
       order_by: fragment("lower(?)", pd.animal_kind)
-    Apex.ap Ecto.Adapters.SQL.to_sql(:all, OldRepo, query)
-    procedure_descriptions = OldRepo.all(query)
-    render(conn, "index.html", procedure_descriptions: procedure_descriptions)
+    render(conn, "index.html", procedure_descriptions: OldRepo.all(query))
   end
 
   def new(conn, _params) do

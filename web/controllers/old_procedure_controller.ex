@@ -26,18 +26,17 @@ defmodule Eecrit.OldProcedureController do
   end
 
   def show(conn, %{"id" => id}) do
-    old_procedure = OldRepo.get!(OldProcedure, id)
-    render(conn, "show.html", old_procedure: old_procedure)
+    render(conn, "show.html", old_procedure: get(id))
   end
 
   def edit(conn, %{"id" => id}) do
-    old_procedure = OldRepo.get!(OldProcedure, id)
+    old_procedure = get(id)
     changeset = OldProcedure.edit_action_changeset(old_procedure)
     render_edit(conn, old_procedure, changeset)
   end
 
   def update(conn, %{"id" => id, "old_procedure" => old_procedure_params}) do
-    old_procedure = OldRepo.get!(OldProcedure, id)
+    old_procedure = get(id)
     changeset = OldProcedure.update_action_changeset(old_procedure, old_procedure_params)
 
     case OldRepo.update(changeset) do
@@ -51,15 +50,17 @@ defmodule Eecrit.OldProcedureController do
   end
 
   def delete(conn, %{"id" => id}) do
-    old_procedure = OldRepo.get!(OldProcedure, id)
-    OldRepo.delete!(old_procedure)
+    OldRepo.delete!(get(id))
 
     conn
     |> put_flash(:info, "Procedure deleted successfully.")
     |> redirect(to: old_procedure_path(conn, :index))
   end
 
-
+  defp get(id) do 
+    OldRepo.get!(OldProcedure, id)
+  end
+  
   defp render_new(conn, changeset) do
     render(conn, "new.html", changeset: changeset)
   end

@@ -2,7 +2,7 @@ defmodule Eecrit.OldProcedureTest do
   use Eecrit.ModelCase
   alias Eecrit.OldProcedure
 
-  @valid_attrs %{days_delay: 42, name: "some content"}
+  @valid_attrs %{days_delay: 42, name: "procedure name"}
   @invalid_attrs %{}
 
   test "a starting changeset" do

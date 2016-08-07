@@ -1,6 +1,5 @@
 defmodule Eecrit.OldProcedureDescriptionTest do
   use Eecrit.ModelCase
-
   alias Eecrit.OldProcedureDescription
 
   @valid_attrs %{animal_kind: "bovine", description: "<html/>"}

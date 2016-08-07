@@ -1,5 +1,8 @@
 <h2>New procedure</h2>
 
+<p>You will be able to add species-specific descriptions of the
+procedure on the next page. </p>
+
 <%= render "form.html", changeset: @changeset,
                         action: old_procedure_path(@conn, :create) %>
 

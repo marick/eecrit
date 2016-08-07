@@ -5,6 +5,7 @@ defmodule Eecrit.Test.Makers do
   alias Eecrit.Organization
   alias Eecrit.OldAnimal
   alias Eecrit.OldProcedure
+  alias Eecrit.OldProcedureDescription
   alias Eecrit.AbilityGroup
 
   # TODO: simplify this with macros or higher-level functions
@@ -56,30 +57,37 @@ defmodule Eecrit.Test.Makers do
     defaults = %{id: next_id,
                  name: "Bandage demonstration",
                  days_delay: 0}
+    
     struct(OldProcedure, Dict.merge(defaults, overrides))
   end
 
-  def insert_old_procedure(overrides \\ %{}) do
-    make_old_procedure(overrides)
+  def insert_old_procedure(overrides \\ %{})
+  def insert_old_procedure(struct = %OldProcedure{}) do
+    struct
     |> OldProcedure.edit_action_changeset()
     |> OldRepo.insert!()
   end
 
+  def insert_old_procedure(overrides) do
+    make_old_procedure(overrides)
+    |> insert_old_procedure()
+  end
+
   ## Old Procedure Descriptions
   def make_old_procedure_description(overrides \\ %{}) do
+    owning_procedure = make_old_procedure()
     defaults = %{id: next_id,
                  animal_kind: "bovine",
                  description: "<p>Some html</p>",
-                 procedure: make_old_procedure()}
-    struct(OldProcedure, Dict.merge(defaults, overrides))
+                 procedure: owning_procedure}
+    struct(OldProcedureDescription, Dict.merge(defaults, overrides))
   end
 
   def insert_old_procedure_description(overrides \\ %{}) do
     description = make_old_procedure_description(overrides)
-    insert_old_procedure(description.old_procedure)
 
     description
-    |> OldProcedure.edit_action_changeset()
+    |> OldProcedureDescription.edit_action_changeset()
     |> OldRepo.insert!()
   end
 

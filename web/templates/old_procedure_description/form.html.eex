@@ -8,7 +8,7 @@
   <%= hidden_input f, :procedure_id, value: @procedure_id %>
 
   <div class="form-group">
-    <%= label f, :animal_kind, class: "control-label" %>
+    <%= label f, :animal_kind, "Species", class: "control-label" %>
     <%= error_tag f, :animal_kind %>
     <%= textarea f, :animal_kind, class: "form-control" %>
   </div>

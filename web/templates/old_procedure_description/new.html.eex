@@ -4,4 +4,4 @@
                         procedure_id: @procedure.id,
                         action: old_procedure_description_path(@conn, :create) %>
 
-<%= link "Back", to: old_procedure_description_path(@conn, :index) %>
+<%= link "Jump to procedure", to: old_procedure_path(@conn, :show, @procedure.id), class: "btn btn-default" %>

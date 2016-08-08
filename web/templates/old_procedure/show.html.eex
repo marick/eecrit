@@ -21,7 +21,9 @@
 <%= for description <- @old_procedure.procedure_descriptions do %>
     <tr>
       <td><%= raw(description.description) %></td>
-      <td><%= link "Edit this description", to: old_procedure_description_path(@conn, :edit, description.id), class: "btn btn-default" %></td>
+      <td><%= link "Edit this description",
+              to: old_procedure_description_path(@conn, :edit, description.id, procedure: @old_procedure.id),
+              class: "btn btn-default" %></td>
     </tr>
 <% end %>
   </tbody>

@@ -29,6 +29,7 @@ defmodule Eecrit.ConnCase do
       import Eecrit.Router.Helpers
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
+      import Eecrit.Test.ViewHelpers
 
       # The default endpoint for testing
       @endpoint Eecrit.Endpoint

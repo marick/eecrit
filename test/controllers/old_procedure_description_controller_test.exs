@@ -43,7 +43,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     insert_old_procedure(id: @valid_attrs.procedure_id)
     conn = post conn, old_procedure_description_path(conn, :create), old_procedure_description: @valid_attrs
-    assert redirected_to(conn) == old_procedure_description_path(conn, :index)
+    assert redirected_to(conn) == old_procedure_path(conn, :show, @valid_attrs.procedure_id)
     assert OldRepo.get_by(OldProcedureDescription, @valid_attrs)
   end
 

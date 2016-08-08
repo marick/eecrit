@@ -26,7 +26,7 @@ defmodule Eecrit.OldProcedureDescriptionController do
       {:ok, _old_procedure_description} ->
         conn
         |> put_flash(:info, "Procedure description was created.")
-        |> redirect(to: old_procedure_description_path(conn, :index))
+        |> redirect(to: old_procedure_path(conn, :show, procedure.id))
       {:error, changeset} ->
         render_new(conn, procedure, changeset)
     end

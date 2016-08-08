@@ -23,8 +23,17 @@ defmodule Eecrit.OldProcedureControllerTest do
 
   @tag accessed_by: "admin"
   test "lists all entries on index", %{conn: conn} do
+    old_procedure = insert_old_procedure(name: "Some procedure")
     conn = get conn, old_procedure_path(conn, :index)
     assert html_response(conn, 200) =~ "Procedures"
+    assert_outgoing_links(conn,
+      [{"Add new procedure", old_procedure_path(conn, :new)},
+
+       # Table row
+       {"Show", old_procedure_path(conn, :show, old_procedure.id)},
+       {"Edit", old_procedure_path(conn, :edit, old_procedure.id)},
+       {"Show", old_procedure_path(conn, :delete, old_procedure.id)},
+       ])
   end
 
   # NEW
@@ -33,6 +42,9 @@ defmodule Eecrit.OldProcedureControllerTest do
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_procedure_path(conn, :new)
     assert html_response(conn, 200) =~ "New procedure"
+
+    assert_outgoing_links(conn,
+      [{"Back to procedure list", old_procedure_path(conn, :index)}])
   end
 
   # CREATE
@@ -54,15 +66,25 @@ defmodule Eecrit.OldProcedureControllerTest do
   end
 
   # SHOW
-  
+
   @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
-    old_procedure = insert_old_procedure(name: "Some procedure")
-    insert_old_procedure_description(procedure: old_procedure,
-                                     description: "DO STUFF")
-    conn = get conn, old_procedure_path(conn, :show, old_procedure)
-    assert html_response(conn, 200) =~ "Some procedure"
-    assert html_response(conn, 200) =~ "DO STUFF"
+    procedure = insert_old_procedure(name: "Some procedure")
+    description = insert_old_procedure_description(procedure: procedure,
+                                                   description: "Instructions")
+    conn = get conn, old_procedure_path(conn, :show, procedure)
+    response = html_response(conn, 200)
+    assert response =~ "Some procedure"
+    assert response =~ "Instructions"
+    assert_outgoing_links(conn,
+      [      # General commands 
+        {"Add a description", old_procedure_description_path(conn, :new, procedure: procedure.id)},
+        {"Change the name or delay", old_procedure_path(conn, :edit, procedure.id)},
+        {"Show all procedures", old_procedure_path(conn, :index)},
+
+        # There is one description
+        {"Edit this description", old_procedure_description_path(conn, :edit, description.id, procedure: procedure.id)},
+      ])
   end
 
   @tag accessed_by: "admin"
@@ -76,9 +98,19 @@ defmodule Eecrit.OldProcedureControllerTest do
 
   @tag accessed_by: "admin"
   test "renders form for editing chosen resource", %{conn: conn} do
-    old_procedure = insert_old_procedure(name: "Caslick's procedure")
-    conn = get conn, old_procedure_path(conn, :edit, old_procedure)
-    assert html_response(conn, 200) =~ "Edit Caslick&#39;s procedure"
+    procedure = insert_old_procedure(name: "Caslick's procedure")
+    insert_old_procedure_description(procedure: procedure,
+                                     description: "Procedure Instructions")
+    
+    conn = get conn, old_procedure_path(conn, :edit, procedure)
+    response = html_response(conn, 200)
+    assert response =~ "Edit Caslick&#39;s procedure"
+    # descriptions not edited here
+    refute response =~ "Procedure Instructions"
+
+    assert_outgoing_links(conn,
+      [{"Show Caslick&#39;s procedure", old_procedure_path(conn, :show, procedure.id)},
+       {"Show all procedures", old_procedure_path(conn, :index)}])
   end
 
   # UPDATE

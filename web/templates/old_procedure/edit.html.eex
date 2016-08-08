@@ -1,6 +1,27 @@
 <h2>Edit <%= @old_procedure.name %></h2>
 
+<p>To edit one of the procedure's per-species descriptions,
+  <%= link "show them all",
+      to: old_procedure_path(@conn, :show, @old_procedure.id),
+      class: "btn btn-default" %>
+  and choose one there.</p>
+
+
 <%= render "form.html", changeset: @changeset,
                         action: old_procedure_path(@conn, :update, @old_procedure) %>
 
-<%= link "Back to procedure list", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+Or abandon editing in one of these two ways:
+
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= link "Show #{@old_procedure.name}",
+        to: old_procedure_path(@conn, :show, @old_procedure.id),
+        class: "btn btn-default" %>
+    <%= link "Show all procedures",
+        to: old_procedure_path(@conn, :index),
+        class: "btn btn-default" %>
+  </span>
+</div>
+
+
+

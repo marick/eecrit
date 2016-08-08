@@ -128,7 +128,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "deletes chosen resource", %{conn: conn} do
     old_procedure_description = insert_old_procedure_description()
     conn = delete conn, old_procedure_description_path(conn, :delete, old_procedure_description)
-    assert redirected_to(conn) == old_procedure_description_path(conn, :index)
+    assert redirected_to(conn) == old_procedure_path(conn, :show, old_procedure_description.procedure)
     refute OldRepo.get(OldProcedureDescription, old_procedure_description.id)
   end
 end

@@ -58,11 +58,12 @@ defmodule Eecrit.OldProcedureDescriptionController do
   end
 
   def delete(conn, %{"id" => id}) do
-    OldRepo.delete!(get(id))
+    old_procedure_description = get(id)
+    OldRepo.delete!(old_procedure_description)
 
     conn
     |> put_flash(:info, "Procedure description deleted successfully.")
-    |> redirect(to: old_procedure_description_path(conn, :index))
+    |> redirect(to: old_procedure_path(conn, :show, old_procedure_description.procedure))
   end
 
   defp get_procedure(id), do: OldRepo.get(OldProcedure, id)

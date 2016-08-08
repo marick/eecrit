@@ -84,6 +84,7 @@ defmodule Eecrit.OldProcedureControllerTest do
 
         # There is one description
         {"Edit this description", old_procedure_description_path(conn, :edit, description.id, procedure: procedure.id)},
+        old_procedure_description_path(conn, :delete, description),
       ])
   end
 

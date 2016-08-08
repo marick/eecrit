@@ -51,7 +51,7 @@ defmodule Eecrit.OldProcedureDescriptionController do
       {:ok, old_procedure_description} ->
         conn
         |> put_flash(:info, "Procedure description updated successfully.")
-        |> redirect(to: old_procedure_description_path(conn, :show, old_procedure_description))
+        |> redirect(to: old_procedure_path(conn, :show, old_procedure_description.procedure_id))
       {:error, changeset} ->
         render_edit(conn, old_procedure_description, changeset)
     end
@@ -77,6 +77,6 @@ defmodule Eecrit.OldProcedureDescriptionController do
   end
 
   defp render_edit(conn, old_procedure_description, changeset) do
-    render(conn, "edit.html", old_procedure_description: old_procedure_description, changeset: changeset)
+    render(conn, "edit.html", old_procedure_description: old_procedure_description, changeset: changeset, procedure: old_procedure_description.procedure)
   end
 end

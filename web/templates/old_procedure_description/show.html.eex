@@ -2,10 +2,12 @@
 
 <%= raw(@old_procedure_description.description) %>
 
+<hr/>
+
 <div class="input-group">
   <span class="input-group-btn">
-    <%= link "Edit this description", to: old_procedure_description_path(@conn, :edit, @old_procedure_description), class: "btn btn-default" %>
-    <%= link "Back to procedures by species", to: old_procedure_description_path(@conn, :index), class: "btn btn-default" %>
-    <%= link "Back to procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "View the procedure this belongs to", to: old_procedure_path(@conn, :show, @old_procedure_description.procedure.id), class: "btn btn-default" %>
+    <%= link "View all descriptions", to: old_procedure_description_path(@conn, :index), class: "btn btn-default" %>
+    <%= link "View all procedures", to: old_procedure_path(@conn, :index), class: "btn btn-default" %>
   </span>
 </div>

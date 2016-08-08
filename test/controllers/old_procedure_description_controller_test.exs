@@ -35,6 +35,9 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
     procedure = insert_old_procedure(name: "exsanguination")
     conn = get conn, old_procedure_description_path(conn, :new, procedure: procedure.id)
     assert html_response(conn, 200) =~ "New description for exsanguination"
+    assert_outgoing_links(conn,
+      [{"Abandon new description and return to procedure", old_procedure_path(conn, :show, procedure.id)}])
+    
   end
 
   # CREATE
@@ -68,6 +71,11 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
     old_procedure_description = insert_old_procedure_description()
     conn = get conn, old_procedure_description_path(conn, :show, old_procedure_description)
     assert html_response(conn, 200) =~ "Description"
+    assert_outgoing_links(conn,
+      [old_procedure_path(conn, :show, old_procedure_description.procedure),
+       old_procedure_path(conn, :index),
+       old_procedure_description_path(conn, :index)
+      ])
   end
 
   @tag accessed_by: "admin"
@@ -79,29 +87,39 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
 
   # EDIT
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "renders form for editing chosen resource", %{conn: conn} do
     old_procedure_description = insert_old_procedure_description()
-    conn = get conn, old_procedure_description_path(conn, :edit, old_procedure_description)
+    conn = get conn, old_procedure_description_path(conn, :edit, old_procedure_description, procedure: old_procedure_description.procedure.id)
 
-    assert html_response(conn, 200) =~ old_procedure_description.procedure.name
+    response = html_response(conn, 200)
+    assert response =~ old_procedure_description.procedure.name
+    assert response =~ old_procedure_description.animal_kind
+    assert_outgoing_links(conn,
+      [{"Abandon change and return to procedure", old_procedure_path(conn, :show, old_procedure_description.procedure.id)}])
   end
 
   # UPDATE
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    old_procedure_description = insert_old_procedure_description()
+    procedure = insert_old_procedure(id: @valid_attrs.procedure_id)
+    old_procedure_description = insert_old_procedure_description(procedure: procedure)
     conn = put conn, old_procedure_description_path(conn, :update, old_procedure_description), old_procedure_description: @valid_attrs
-    assert redirected_to(conn) == old_procedure_description_path(conn, :show, old_procedure_description)
+    assert redirected_to(conn) == old_procedure_path(conn, :show, procedure.id)
     assert OldRepo.get_by(OldProcedureDescription, @valid_attrs)
   end
 
-  @tag accessed_by: "admin", skip: true
+  @tag accessed_by: "admin"
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    old_procedure_description = insert_old_procedure_description()
+    procedure = insert_old_procedure(id: @valid_attrs.procedure_id)
+    old_procedure_description = insert_old_procedure_description(procedure: procedure)
     conn = put conn, old_procedure_description_path(conn, :update, old_procedure_description), old_procedure_description: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit #{old_procedure_description.procedure.name}"
+    response = html_response(conn, 200)
+    # Confirm that we're back to editing.
+    assert response =~ "Edit"
+    assert response =~ old_procedure_description.procedure.name
+    assert response =~ old_procedure_description.animal_kind
   end
 
   # DELETE

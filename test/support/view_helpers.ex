@@ -6,10 +6,15 @@ defmodule Eecrit.Test.ViewHelpers do
     assert String.contains?(content, substring)
   end
 
-  def assert_outgoing_links(conn, tuples) do
+  def assert_outgoing_links(conn, instructions) do
     response = conn.resp_body
-    for {link_text, link_path} <- tuples do
-      assert response =~ (link_path <> ~s{">} <> link_text)
+    for instruction <- instructions do
+      case instruction do
+        {link_text, link_path} -> 
+          assert response =~ (link_path <> ~s{">} <> link_text)
+        link_path ->
+          assert response =~ link_path
+      end
     end
   end
 end

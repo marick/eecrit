@@ -2,6 +2,7 @@
 
 <%= render "form.html", changeset: @changeset,
                         procedure_id: @procedure.id,
+                        valid_animal_kinds: @valid_animal_kinds,
                         action: old_procedure_description_path(@conn, :update, @old_procedure_description) %>
 
 <%= link "Abandon change and return to procedure", to: old_procedure_path(@conn, :show, @procedure.id), class: "btn btn-default" %>

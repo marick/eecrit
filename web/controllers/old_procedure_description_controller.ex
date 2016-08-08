@@ -74,10 +74,17 @@ defmodule Eecrit.OldProcedureDescriptionController do
   end
 
   defp render_new(conn, procedure, changeset) do
-    render(conn, "new.html", procedure: procedure, changeset: changeset)
+    render(conn, "new.html",
+           procedure: procedure,
+           valid_animal_kinds: OldProcedureDescription.valid_animal_kinds, 
+           changeset: changeset)
   end
 
   defp render_edit(conn, old_procedure_description, changeset) do
-    render(conn, "edit.html", old_procedure_description: old_procedure_description, changeset: changeset, procedure: old_procedure_description.procedure)
+    render(conn, "edit.html",
+           old_procedure_description: old_procedure_description,
+           procedure: old_procedure_description.procedure,
+           valid_animal_kinds: OldProcedureDescription.valid_animal_kinds, 
+           changeset: changeset)
   end
 end

@@ -113,6 +113,7 @@ defmodule Eecrit.OldAnimalControllerTest do
   test "renders form for editing chosen resource", %{conn: conn} do
     old_animal = insert_old_animal(name: "Betsy")
     conn = get conn, old_animal_path(conn, :edit, old_animal)
+    assert conn.assigns.valid_species == OldAnimal.valid_species()
     assert html_response(conn, 200) =~ ~s{Edit Betsy}
   end
 

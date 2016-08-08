@@ -34,6 +34,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "renders form for new resources", %{conn: conn} do
     procedure = insert_old_procedure(name: "exsanguination")
     conn = get conn, old_procedure_description_path(conn, :new, procedure: procedure.id)
+    assert conn.assigns.valid_animal_kinds == OldProcedureDescription.valid_animal_kinds
     assert html_response(conn, 200) =~ "New description for exsanguination"
     assert_outgoing_links(conn,
       [{"Abandon new description and return to procedure", old_procedure_path(conn, :show, procedure.id)}])
@@ -92,6 +93,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
     old_procedure_description = insert_old_procedure_description()
     conn = get conn, old_procedure_description_path(conn, :edit, old_procedure_description, procedure: old_procedure_description.procedure.id)
 
+    assert conn.assigns.valid_animal_kinds == OldProcedureDescription.valid_animal_kinds
     response = html_response(conn, 200)
     assert response =~ old_procedure_description.procedure.name
     assert response =~ old_procedure_description.animal_kind

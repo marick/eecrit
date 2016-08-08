@@ -2,6 +2,9 @@ defmodule Eecrit.OldProcedureDescription do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
 
+  @valid_animal_kinds ["any species" | Eecrit.OldAnimal.valid_species]
+  def valid_animal_kinds, do: @valid_animal_kinds
+
   schema "procedure_descriptions" do
     field :animal_kind, :string
     field :description, :string
@@ -15,5 +18,6 @@ defmodule Eecrit.OldProcedureDescription do
     struct
     |> cast(params, @form_fields)
     |> validate_required(@fields_always_required)
+    |> validate_inclusion(:animal_kind, @valid_animal_kinds)
   end
 end

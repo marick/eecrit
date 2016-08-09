@@ -16,7 +16,6 @@ defmodule Eecrit.SessionController do
     case authenticate(conn, login_name, password) do
       {:ok, conn} ->
         conn
-        |> put_flash(:info, "Welcome")
         |> redirect(to: page_path(conn, :index))
       {:error, _reason, conn} ->
         conn

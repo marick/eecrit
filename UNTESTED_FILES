@@ -1,6 +1,5 @@
 |-- controllers
 |   |-- session_controller.ex
-|   |-- session_plugs.ex
 |-- models
 |-- router.ex
 |-- templates

@@ -36,6 +36,7 @@ defmodule Eecrit.Mixfile do
      {:apex, "~>0.5.0"},
      {:canary, "~> 0.14.2"},
      {:timex, "~> 3.0"},
+     {:shouldi, ">= 0.3.2", only: :test},
      
      {:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},

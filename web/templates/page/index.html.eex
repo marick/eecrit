@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <h2>Welcome to the new Critter4Us</h2>
-
+  <%= commands(@conn, @conn.assigns.current_user) %>
 </div>
 
 

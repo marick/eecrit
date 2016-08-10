@@ -36,7 +36,7 @@ defmodule Eecrit.SessionPlugs do
     end
   end
 
-  def require_login(conn, _opts \\ %{}) do
+  def require_login(conn, _opts) do
     require_X(conn, conn.assigns.current_user, "Please log in.")
   end
 

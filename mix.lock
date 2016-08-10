@@ -29,4 +29,5 @@
   "shouldi": {:hex, :shouldi, "0.3.2", "971f614669b5f37c03507ba643bb8e59aa165ac50ca66d726c9db53be255e440", [:mix], []},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.0", "edee20847c42e379bf91261db474ffbe373f8acb56e9079acb6038d4e0bf414f", [:rebar, :make], []},
   "timex": {:hex, :timex, "3.0.5", "b9e4651a54ec8191bf9ea65e1e6488582015c4937d61b951ae317bb102b1b2cc", [:mix], [{:combine, "~> 0.7", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
-  "tzdata": {:hex, :tzdata, "0.5.8", "a4ffe564783c6519e4df230a5d0e1cf44b7db7f576bcae76d05540b5da5b6143", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]}}
+  "tzdata": {:hex, :tzdata, "0.5.8", "a4ffe564783c6519e4df230a5d0e1cf44b7db7f576bcae76d05540b5da5b6143", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
+  "webassembly": {:hex, :webassembly, "0.6.1", "e94f593187cb31fa847fb8a4e787be44f4ffd782ffa754173dea913889be9f9f", [:mix], []}}

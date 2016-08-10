@@ -19,8 +19,4 @@ defmodule Eecrit.OldProcedure do
     |> validate_required(@fields_always_required)
   end
 
-  defimpl Canada.Can, for: __MODULE__ do
-    def can?(nil, _, _), do: false
-    def can?(user = %User{}, _, _), do: user.ability_group.is_admin
-  end
 end

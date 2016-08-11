@@ -10,7 +10,7 @@ end
 
 defmodule Eecrit.UserAbilities do
   alias Eecrit.User
-  import Eecrit.Abilities.Macros
+  import Eecrit.UserAbilities.Macros
   
   defimpl Canada.Can, for: User do
     requires(Eecrit.OldAnimal, :is_admin)

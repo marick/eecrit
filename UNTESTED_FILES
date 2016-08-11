@@ -19,4 +19,5 @@
 |-- views
 |   |-- ability_group_view.ex
 |   |-- session_view.ex
+        page_view.ex
 |   `-- user_view.ex

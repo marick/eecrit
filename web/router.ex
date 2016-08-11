@@ -18,6 +18,16 @@ defmodule Eecrit.Router do
     plug :accepts, ["json"]
   end
 
+  # TODO: I'm not sure where to store the fact that a user must have
+  # ability X to access resource Y. Should it be here, to give a broad
+  # overview? Or should it be attached to the resource (which would make
+  # sense for finer-granularity permissions)?
+  #
+  # A related issue: we need not only to prevent a pipeline from delivering
+  # the user to a page, we also need views to not display links to that page.
+  # So it's more than just about controllers.
+  
+
   # Not-logged-in users
   scope "/", Eecrit do
     pipe_through :browser

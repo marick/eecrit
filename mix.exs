@@ -37,6 +37,7 @@ defmodule Eecrit.Mixfile do
      {:timex, "~> 3.0"},
      {:shouldi, ">= 0.3.2", only: :test},
      {:webassembly, "~> 0.6"},
+     {:canada, "~> 1.0.0"},
      
      {:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},

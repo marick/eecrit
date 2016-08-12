@@ -1,6 +1,7 @@
 defmodule Eecrit.Organization do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_superuser
 
   # Fields the outside world is able to set. NOT necessarily the same
   # as the fields in the schema.

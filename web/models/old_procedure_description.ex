@@ -1,6 +1,7 @@
 defmodule Eecrit.OldProcedureDescription do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_admin
 
   @valid_animal_kinds ["any species" | Eecrit.OldAnimal.valid_species]
   def valid_animal_kinds, do: @valid_animal_kinds

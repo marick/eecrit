@@ -1,6 +1,8 @@
 defmodule Eecrit.OldProcedure do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_admin
+
   alias Eecrit.User
 
   schema "procedures" do
@@ -18,5 +20,4 @@ defmodule Eecrit.OldProcedure do
     |> cast(params, @visible_fields)
     |> validate_required(@fields_always_required)
   end
-
 end

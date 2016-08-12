@@ -1,6 +1,7 @@
 defmodule Eecrit.OldAnimal do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_admin
 
   use Timex
   alias Eecrit.TimeUtil

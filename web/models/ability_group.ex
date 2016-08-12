@@ -1,6 +1,7 @@
 defmodule Eecrit.AbilityGroup do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_superuser
 
 
   schema "ability_groups" do

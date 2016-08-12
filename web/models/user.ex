@@ -1,6 +1,7 @@
 defmodule Eecrit.User do
   use Eecrit.Web, :model
   use Eecrit.ModelDefaults, model: __MODULE__
+  resource_requires_ability :is_superuser
 
   @postgres_string_max 255
   @visible_fields [:display_name, :login_name, :password]

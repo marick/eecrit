@@ -1,43 +1,59 @@
 defmodule Eecrit.PageView do
   use Eecrit.Web, :view
   use Eecrit.WebAssembly
+  alias Eecrit.OldAnimal
+  alias Eecrit.OldProcedure
+  alias Eecrit.User
+  alias Eecrit.Organization
+  alias Eecrit.AbilityGroup
+  import Eecrit.TagHelpers
 
   def commands(conn, current_user) do
     raw_builder do
       unless current_user do
-        build_commands([{"Please log in", session_path(conn, :new)}])
-      end
-      
-      if empowered?(current_user, :is_admin) do
-        build_commands([{"Work With Animals", old_animal_path(conn, :index)},
-                        {"Work With Procedures", old_procedure_path(conn, :index)}])
+        big_button_iolist("Please log in", session_path(conn, :new))
+        |> wrap_in_section
       end
 
-      if empowered?(current_user, :is_superuser) do 
-        build_commands([{"Users", user_path(conn, :index)},
-                        {"Organizations", organization_path(conn, :index)},
-                        {"Ability Groups", ability_group_path(conn, :index)}])
-      end 
+      section_of_resource_commands(conn, current_user,
+        [{"Work With Animals", :old_animal_path, OldAnimal},
+         {"Work With Procedures", :old_procedure_path, OldProcedure}])
+
+      section_of_resource_commands(conn, current_user, 
+        [{"Users", :user_path, User},
+         {"Organizations", :organization_path, Organization},
+         {"Ability Groups", :ability_group_path, AbilityGroup}])
     end
   end
 
-  defp empowered?(current_user, ability) do
-    current_user && Map.get(current_user.ability_group, ability)
+  def section_of_resource_commands(conn, current_user, possibilities) do
+    possibilities
+    |> filter_by_resource_ability(current_user)
+    |> build_commands(conn)
+    |> wrap_in_section
   end
 
-  defp build_commands(tuples) do
+  defp filter_by_resource_ability(tuples, current_user) do
+    Enum.filter(tuples, fn {_, _, resource} ->
+      can?(current_user, :work_with, resource)
+    end)
+  end
+
+  def wrap_in_section(iolists) when is_list(iolists) and length(iolists) == 0, do: nil
+  def wrap_in_section(iolists) when is_list(iolists) do
     hr
     p [class: "lead"] do
-      for {text, path} <- tuples do
-        text button_link(text, path)
-        text " "
-      end
+      for iolist <- iolists, do: text(iolist)
     end
   end
 
-  defp button_link(text, path) do
-    text
-    |> link(to: path, class: "btn btn-primary btn-lg")
-    |> safe_to_string
+  defp build_commands(tuples, conn) do
+    for {text, path_builder, _} <- tuples do 
+      big_button_iolist(text, resource_path(conn, path_builder))
+    end
+  end
+
+  defp resource_path(conn, path_builder) do
+    apply(Eecrit.Router.Helpers, path_builder, [conn, :index])
   end
 end

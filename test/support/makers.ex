@@ -100,6 +100,12 @@ defmodule Eecrit.Test.Makers do
   end
 
   ## Users
+
+  # TODO: TEMP: put back null user object
+  def make_user_kind("anonymous"), do: nil
+  def make_user_kind(kind) when is_binary(kind),
+    do: make_user(ability_group: make_ability_group(kind))
+
   def make_user(overrides \\ %{}) do
     defaults = %{id: next_id,
                  display_name: "Test User",
@@ -117,8 +123,7 @@ defmodule Eecrit.Test.Makers do
 
   def obey_tags(conn, tags) do
     if Map.has_key?(tags, :accessed_by) do
-      user = make_user(ability_group: make_ability_group(tags.accessed_by))
-      Plug.Conn.assign(conn, :current_user, user)
+      Plug.Conn.assign(conn, :current_user, make_user_kind(tags.accessed_by))
     else
       conn
     end

@@ -1,77 +1,109 @@
 defmodule Eecrit.LayoutViewTest do
-  use Eecrit.ConnCase, async: true
-  import Phoenix.View
-  import Eecrit.Router.Helpers
-  import Eecrit.Test.ViewHelpers
+  use Eecrit.ViewCase
   alias Eecrit.LayoutView
 
-  setup %{conn: conn} do
-    conn =
-      conn
-      |> bypass_through(Eecrit.Router, :browser)
-      |> get("..irrelevant..")
-    {:ok, %{conn: conn}}
+
+  having "a complete page (layout plus empty content)" do 
+    should "not blow up", %{conn: conn} do
+      assert render_layout(conn) =~ "Critter4Us"
+    end
   end
-
-  ### The Whole View
-
-  def render_default_layout(conn, assigns \\ []) do
-    updated_assigns =
-      assigns
-      |> Keyword.put(:layout, {Eecrit.LayoutView, "app.html"})
-      |> Keyword.put(:conn, conn)
     
-    render_to_string(Eecrit.EmptyView, "index.html", updated_assigns)
+  having("a navigation bar") do
+    # TODO: Interesting that the `context` argument for `setup` can't be like
+    #        setup(%{conn: conn} = context) do
+    # It works, but you get a "warning: variable conn is unused"
+    setup context do
+      html = render_view_helper(context.conn, &LayoutView.navigation/1)
+      assign context, html: html
+    end
+
+    @tag accessed_by: "anonymous"
+    should "provide a login link for an anonymous user", %{conn: conn, html: html} do
+      {conn, html}
+      |> should_allow_login
+      |> should_show_no_user_information
+      |> should_allow_no_admin_actions
+    end
+
+    @tag accessed_by: "user"
+    should "let a plain user do nothing but log out", %{conn: conn, html: html} do
+      {conn, html}
+      |> should_allow_logout
+      |> should_show_user_information
+      |> should_allow_no_admin_actions
+    end
+    
+    @tag accessed_by: "admin"
+    should "give admins quick links to do their job", %{conn: conn, html: html} do
+      {conn, html}
+      |> should_allow_logout
+      |> should_show_user_information
+      |> should_allow_admin_work
+    end
+
+    @tag accessed_by: "superuser"
+    should "give a superuser has same powers as admin", %{conn: conn, html: html} do
+      {conn, html}
+      |> should_allow_logout
+      |> should_show_user_information
+      |> should_allow_admin_work
+    end
   end
 
-  test "app.html: nothing blows up", %{conn: conn} do
-    content = render_default_layout(conn, current_user: nil)
-    assert String.contains?(content, "Critter4Us")
+  defp current_user(conn), do: conn.assigns.current_user
+  defp current_user_display_name(conn), do: current_user(conn).display_name
+  defp current_user_org_short_name(conn),
+    do: current_user(conn).current_organization.short_name
+
+  ## File-specific assertions
+  defp should_allow_login({conn, html}) do
+    login_path = session_path(conn, :new)
+    
+    html
+    |> should_contain_link({"Log in", login_path})
+    |> should_not_contain_link_text("Log out")
+    {conn, html}
   end
 
-  ### Helpers
+  defp should_allow_logout({conn, html}) do
+    login_path = session_path(conn, :new)
 
-  test "an anonymous user provokes a login link", %{conn: conn} do
-    assert safe_substring(LayoutView.li_log_in_out(conn, nil),
-                     session_path(conn, :new))
-  end
-  
-  test "an logged-in user provokes a logout link", %{conn: conn} do
-    user = make_user()
-    assert safe_substring(LayoutView.li_log_in_out(conn, user),
-                     session_path(conn, :delete, user))
+    html
+    |> should_not_contain_link({"Log in", login_path})
+    |> should_contain_link_text("Log out")
+    {conn, html}
   end
 
-  test "a salutation for a logged-in user", %{conn: conn} do
-    user = make_user(display_name: "..name..")
-    assert safe_substring(LayoutView.li_salutation(conn, user),
-                     "<li>..name..</li>")
+  defp should_allow_no_admin_actions({conn, html}) do
+    animal_path = old_animal_path(conn, :index)
+    procedure_path = old_procedure_path(conn, :index)
+
+    html
+    |> should_not_contain_link({"Animals", animal_path})
+    |> should_not_contain_link({"Procedures", procedure_path})
+    {conn, html}
   end
 
-  test "anonymous users produce no salutation HTML", %{conn: conn} do
-    assert LayoutView.li_salutation(conn, nil) == nil
+  defp should_allow_admin_work({conn, html}) do
+    animal_path = old_animal_path(conn, :index)
+    procedure_path = old_procedure_path(conn, :index)
+
+    html
+    |> should_contain_link({"Animals", animal_path})
+    |> should_contain_link({"Procedures", procedure_path})
+    {conn, html}
+  end    
+
+  defp should_show_no_user_information({conn, html}) do
+    # Pretty indirect way to test this.
+    assert length(Floki.find(html, "li")) == 1
+    {conn, html}
   end
 
-  test "an organization for a logged-in user", %{conn: conn} do
-    user = make_user(current_organization: make_organization(short_name: "..short.."))
-    assert safe_substring(LayoutView.li_organization(conn, user),
-                     "<li>..short..</li>")
-  end
-
-  test "anonymous users produce no organization HTML", %{conn: conn} do
-    assert LayoutView.li_organization(conn, nil) == nil
-  end
-
-  @plain_user make_user(ability_group: make_ability_group("user"))
-  @admin make_user(ability_group: make_ability_group("admin"))
-  @superuser make_user(ability_group: make_ability_group("superuser"))
-  
-  # Showing options
-  test "work with animals", %{conn: conn} do
-    path = old_animal_path(conn, :index)
-    assert LayoutView.li_animals(conn, nil) == nil
-    assert LayoutView.li_animals(conn, @plain_user) == nil
-    assert LayoutView.li_animals(conn, @admin) |> safe_substring(path)
-    assert LayoutView.li_animals(conn, @superuser) |> safe_substring(path)
+  defp should_show_user_information({conn, html}) do
+    assert html =~ current_user_display_name(conn)
+    assert html =~ current_user_org_short_name(conn)
+    {conn, html}
   end
 end

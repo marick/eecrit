@@ -1,34 +1,36 @@
 defmodule Eecrit.LayoutView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
+  use Eecrit.TagHelpers
 
-  
-  def li_log_in_out(conn, nil) do
-    link("Log in", to: session_path(conn, :new)) |> li()
+  def navigation(conn) do
+    iolists = [
+      m_resource_link(conn, "Animals", Eecrit.OldAnimal),
+      m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
+      salutation(conn),
+      organization(conn),
+      log_in_out(conn),
+    ]
+
+    Enum.map(iolists, &li/1)
   end
-  def li_log_in_out(conn, user) do
-    link("Log out", to: session_path(conn, :delete, user), method: "delete") |> li()
-  end
 
-  def li_salutation(_conn, nil), do: nil
-  def li_salutation(_conn, user), do: user.display_name |> li()
-
-  def li_organization(_conn, nil), do: nil
-  def li_organization(_conn, user), do: user.current_organization.short_name |> li()
-
-  def li_animals(_conn, nil), do: nil
-  def li_animals(conn, user) do
-    if user.ability_group.is_admin do
-      link("Animals", to: old_animal_path(conn, :index)) |> li()
+  def log_in_out(conn) do
+    current_user = conn.assigns.current_user
+    if current_user == nil do
+      link("Log in", to: session_path(conn, :new))
+    else
+      link("Log out", to: session_path(conn, :delete, current_user), method: "delete")
     end
   end
-
-  def li_procedures(_conn, nil), do: nil
-  def li_procedures(conn, user) do
-    if user.ability_group.is_admin do
-      link("Procedures", to: old_procedure_path(conn, :index)) |> li()
-    end
+    
+  def salutation(conn) do
+    current_user = conn.assigns.current_user
+    build_if current_user, do: current_user.display_name
   end
-  
-  defp li(content), do: content_tag(:li, content)
+
+  def organization(conn) do
+    current_user = conn.assigns.current_user
+    build_if current_user, do: current_user.current_organization.short_name
+  end
 end

@@ -79,7 +79,6 @@ defmodule Eecrit.Test.ViewHelpers do
   def assert_outgoing_links(conn, instructions) do
     html = only_main_html(conn.resp_body)
     for instruction <- instructions do
-      IO.puts(inspect instruction)
       if is_binary(instruction) do
         should_contain_link_path(html, instruction)
       else
@@ -97,7 +96,6 @@ defmodule Eecrit.Test.ViewHelpers do
 
   defp find_one_href(html, link_path) do
     nodes = Floki.find(html, "a[href='#{link_path}']")
-    Apex.ap nodes
     if length(nodes) == 0 do 
       flunk("No link to #{link_path}")
     else

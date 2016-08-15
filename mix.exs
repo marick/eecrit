@@ -36,6 +36,7 @@ defmodule Eecrit.Mixfile do
      {:apex, "~>0.5.0"},
      {:timex, "~> 3.0"},
      {:shouldi, ">= 0.3.2", only: :test},
+     {:floki, "~> 0.10.0", only: [:test, :dev]},
      {:webassembly, "~> 0.6"},
      {:canada, "~> 1.0.0"},
      

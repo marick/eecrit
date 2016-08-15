@@ -1,22 +1,12 @@
-defmodule Eecrit.UserAbilities.Macros do
-  defmacro requires(model, ability) do
-      quote do
-        def can?(%Eecrit.User{ability_group: %{unquote(ability) => val}},
-                 _,
-                unquote(model)), do: val
-      end
-    end
-end
-
 defmodule Eecrit.UserAbilities do
   alias Eecrit.User
-  import Eecrit.UserAbilities.Macros
-  
+
   defimpl Canada.Can, for: User do
-    requires(Eecrit.OldAnimal, :is_admin)
-    requires(Eecrit.OldProcedure, :is_admin)
-    requires(Eecrit.OldProcedureDescription, :is_admin)
-    
+    def can?(user = %User{}, :work_with, module) when is_atom(module) do
+      needed_ability = apply(module, :required_ability, [])
+      Map.get(user.ability_group, needed_ability)
+    end
+
     def can?(%User{}, _, _), do: false
   end
 

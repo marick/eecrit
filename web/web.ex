@@ -23,6 +23,16 @@ defmodule Eecrit.Web do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      # TODO: Wanted to put this in UserAbilities, but I get a bizarre
+      # error when I do the include:
+      #
+      #       == Compilation error on file web/views/old_procedure_description_view.ex ==
+      # ** (CompileError) web/views/old_procedure_description_view.ex:2: module Eecrit.Router.Helpers is not loaded and could not be found
+      #     expanding macro: Eecrit.Web.__using__/1
+      #     web/views/old_procedure_description_view.ex:2: Eecrit.OldProcedureDescriptionView (module)
+      #     (elixir) expanding macro: Kernel.use/2
+      #     web/views/old_procedure_description_view.ex:2: Eecrit.OldProcedureDescriptionView (module)
+      import Eecrit.ModelMacros
     end
   end
 
@@ -37,6 +47,7 @@ defmodule Eecrit.Web do
 
       import Eecrit.Router.Helpers
       import Eecrit.Gettext
+      import Canada.Can, only: [can?: 3]
     end
   end
 
@@ -53,6 +64,7 @@ defmodule Eecrit.Web do
       import Eecrit.Router.Helpers
       import Eecrit.ErrorHelpers
       import Eecrit.Gettext
+      import Canada.Can, only: [can?: 3]
     end
   end
 

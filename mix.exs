@@ -35,7 +35,9 @@ defmodule Eecrit.Mixfile do
     [{:comeonin, "~> 2.0"},
      {:apex, "~>0.5.0"},
      {:timex, "~> 3.0"},
-     {:shouldi, ">= 0.3.2", only: :test},
+     # TODO: This should be only: :test, but I can't figure out where
+     # to put the test support code.
+     {:shouldi, ">= 0.3.2"},
      {:floki, "~> 0.10.0", only: [:test, :dev]},
      {:webassembly, "~> 0.6"},
      {:canada, "~> 1.0.0"},

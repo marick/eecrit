@@ -62,4 +62,7 @@ defmodule Eecrit.User do
         changeset
     end
   end
+
+  # Indirect attributes
+  def org_short_name(user), do: user.current_organization.short_name
 end

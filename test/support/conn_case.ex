@@ -17,7 +17,7 @@ defmodule Eecrit.ConnCase do
 
   using do
     quote do
-      # Import conveniences for testing with connections
+      use ShouldI
       use Phoenix.ConnTest
 
       alias Eecrit.Repo

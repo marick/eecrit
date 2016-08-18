@@ -1,109 +1,100 @@
 defmodule Eecrit.LayoutViewTest do
-  use Eecrit.ViewCase
+  use Eecrit.ViewCase, async: true
   alias Eecrit.LayoutView
+  alias Eecrit.User
 
-
-  having "a complete page (layout plus empty content)" do 
-    should "not blow up", %{conn: conn} do
-      assert render_layout(conn) =~ "Critter4Us"
-    end
+  test "a page renders without blowing up", %{conn: conn} do
+    assert render_layout(conn) =~ "Critter4Us"
   end
-    
-  having("a navigation bar") do
-    # TODO: Interesting that the `context` argument for `setup` can't be like
-    #        setup(%{conn: conn} = context) do
-    # It works, but you get a "warning: variable conn is unused"
-    setup context do
-      html = render_view_helper(context.conn, &LayoutView.navigation/1)
-      assign context, html: html
+
+  describe "a navigation bar" do
+    setup context = %{conn: conn} do
+      html = render_view_helper(conn, &LayoutView.navigation/1)
+      assign context, html: html, user: conn.assigns.current_user
     end
 
     @tag accessed_by: "anonymous"
-    should "provide a login link for an anonymous user", %{conn: conn, html: html} do
-      {conn, html}
-      |> should_allow_login
-      |> should_show_no_user_information
-      |> should_allow_no_admin_actions
+    test "the anonymous user has a login link and nothing more", %{html: html} do
+      html
+      |> login_allowed!
+      |> no_user_information_shows!
+      |> no_admin_actions!
     end
 
     @tag accessed_by: "user"
-    should "let a plain user do nothing but log out", %{conn: conn, html: html} do
-      {conn, html}
-      |> should_allow_logout
-      |> should_show_user_information
-      |> should_allow_no_admin_actions
+    test "a plain user can really only log out", %{user: user, html: html} do
+      html
+      |> logout_allowed!(user)
+      |> user_information_shows!(user)
+      |> no_admin_actions!
     end
     
     @tag accessed_by: "admin"
-    should "give admins quick links to do their job", %{conn: conn, html: html} do
-      {conn, html}
-      |> should_allow_logout
-      |> should_show_user_information
-      |> should_allow_admin_work
+    test "admins have quick links to do their job", %{user: user, html: html} do
+      html
+      |> logout_allowed!(user)
+      |> user_information_shows!(user)
+      |> can_go_to_admin_work!
     end
 
     @tag accessed_by: "superuser"
-    should "give a superuser has same powers as admin", %{conn: conn, html: html} do
-      {conn, html}
-      |> should_allow_logout
-      |> should_show_user_information
-      |> should_allow_admin_work
+    test "superusers also have admin links", %{user: user, html: html} do
+      html
+      |> logout_allowed!(user)
+      |> user_information_shows!(user)
+      |> can_go_to_admin_work!
     end
   end
 
-  defp current_user(conn), do: conn.assigns.current_user
-  defp current_user_display_name(conn), do: current_user(conn).display_name
-  defp current_user_org_short_name(conn),
-    do: current_user(conn).current_organization.short_name
+  ## Rendering support
+  def render_view_with_layout(conn, view_module, template) do
+    assigns = %{layout: {Eecrit.LayoutView, "app.html"},
+                conn: conn}
+    Phoenix.View.render(view_module, template, assigns) |> to_view_string
+  end    
+  
+  def render_layout(conn),
+    do: render_view_with_layout(conn, Eecrit.EmptyView, "index.html")
+
 
   ## File-specific assertions
-  defp should_allow_login({conn, html}) do
-    login_path = session_path(conn, :new)
-    
+  defp login_allowed!(html) do
     html
-    |> should_contain_link({"Log in", login_path})
-    |> should_not_contain_link_text("Log out")
-    {conn, html}
+    |> allows_new!({"Log in", Eecrit.Session})
+    |> disallows_any_delete!(Eecrit.Session)
+    html
   end
 
-  defp should_allow_logout({conn, html}) do
-    login_path = session_path(conn, :new)
-
+  defp logout_allowed!(html, user) do
     html
-    |> should_not_contain_link({"Log in", login_path})
-    |> should_contain_link_text("Log out")
-    {conn, html}
+    |> disallows_new!(Eecrit.Session)
+    |> allows_delete!(Eecrit.Session, user)
+    html
   end
 
-  defp should_allow_no_admin_actions({conn, html}) do
-    animal_path = old_animal_path(conn, :index)
-    procedure_path = old_procedure_path(conn, :index)
-
+  defp no_admin_actions!(html) do
     html
-    |> should_not_contain_link({"Animals", animal_path})
-    |> should_not_contain_link({"Procedures", procedure_path})
-    {conn, html}
+    |> disallows_index!(Eecrit.OldAnimal)
+    |> disallows_index!(Eecrit.OldAnimal)
+    html
   end
 
-  defp should_allow_admin_work({conn, html}) do
-    animal_path = old_animal_path(conn, :index)
-    procedure_path = old_procedure_path(conn, :index)
-
+  defp can_go_to_admin_work!(html) do
     html
-    |> should_contain_link({"Animals", animal_path})
-    |> should_contain_link({"Procedures", procedure_path})
-    {conn, html}
+    |> allows_index!({"Animals", Eecrit.OldAnimal})
+    |> allows_index!({"Procedures", Eecrit.OldProcedure})
+    html
   end    
 
-  defp should_show_no_user_information({conn, html}) do
+  defp no_user_information_shows!(html) do
     # Pretty indirect way to test this.
     assert length(Floki.find(html, "li")) == 1
-    {conn, html}
+    html
   end
 
-  defp should_show_user_information({conn, html}) do
-    assert html =~ current_user_display_name(conn)
-    assert html =~ current_user_org_short_name(conn)
-    {conn, html}
+  defp user_information_shows!(html, user) do
+    assert html =~ user.display_name
+    assert html =~ User.org_short_name(user)
+    html
   end
 end

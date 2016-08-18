@@ -3,27 +3,8 @@ defmodule Eecrit.Test.ViewHelpers do
   require Phoenix.ConnTest
   require ShouldI
 
-  @doc"""
-  Preferable to render_to_string because also works with helpers that
-  produce Phoenix-style iodata (which can contain `{:safe}` tuples.
-  """
-  def to_view_string(phoenix_iodata) do
-    phoenix_iodata |> Phoenix.HTML.Safe.to_iodata |> IO.iodata_to_binary
-  end
-
-  def render_view_with_layout(conn, view_module, template) do
-    assigns = %{layout: {Eecrit.LayoutView, "app.html"},
-                conn: conn}
-    Phoenix.View.render(view_module, template, assigns) |> to_view_string
-  end    
-
-  def render_layout(conn),
-      do: render_view_with_layout(conn, Eecrit.EmptyView, "index.html")
-
-  def render_view_helper(conn, f, args \\ []) do
-    apply(f, [conn | args]) |> to_view_string
-  end
-
+  # Used for path generation
+  @endpoint Eecrit.Endpoint
 
   # TODO: get rid of this
   def safe_substring(safe_result, substring) do
@@ -32,7 +13,6 @@ defmodule Eecrit.Test.ViewHelpers do
   end
 
 
-  # Working with links
 
   def should_contain_link(html, {link_text, link_path}) do
     node = find_one_href(html, link_path)
@@ -107,9 +87,6 @@ defmodule Eecrit.Test.ViewHelpers do
   end
 
   defp only_main_html(html), do: Floki.find(html, "main") |> Floki.raw_html
-
-
-  @endpoint Eecrit.Endpoint
 
   def simulate_routing(conn) do
     conn

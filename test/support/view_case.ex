@@ -4,7 +4,6 @@ defmodule Eecrit.ViewCase do
   using do
     quote do
       use ShouldI
-      # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import Phoenix.View
 
@@ -12,8 +11,10 @@ defmodule Eecrit.ViewCase do
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
       import Eecrit.Test.ViewHelpers
-
-      # The default endpoint for testing
+      import RoundingPegs.ExUnit.View
+      import RoundingPegs.ExUnit.ViewCheckers
+      
+      # The default endpoint for testing (for constructing paths)
       @endpoint Eecrit.Endpoint
     end
   end

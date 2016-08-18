@@ -16,6 +16,7 @@ defmodule Eecrit.ModelCase do
 
   using do
     quote do
+      use ShouldI
       alias Eecrit.Repo
       alias Eecrit.OldRepo
 

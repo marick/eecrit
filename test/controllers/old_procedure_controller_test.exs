@@ -21,7 +21,7 @@ defmodule Eecrit.OldProcedureControllerTest do
 
   # INDEX
 
-  @tag accessed_by: "admin"
+  @tag accessed_by: "admin", skip: true
   test "lists all entries on index", %{conn: conn} do
     old_procedure = insert_old_procedure(name: "Some procedure")
     conn = get conn, old_procedure_path(conn, :index)
@@ -32,8 +32,8 @@ defmodule Eecrit.OldProcedureControllerTest do
        # Table row
        {"Show", old_procedure_path(conn, :show, old_procedure.id)},
        {"Edit", old_procedure_path(conn, :edit, old_procedure.id)},
-      ])
-    assert_outgoing_link_texts(conn, ["Delete"])
+       {"Delete", old_procedure_path(conn, :delete, old_procedure.id)},
+       ])
   end
 
   # NEW

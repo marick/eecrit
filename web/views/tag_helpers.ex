@@ -43,7 +43,11 @@ defmodule Eecrit.TagHelpers do
     Eecrit.User => :user_path,
     Eecrit.Organization => :organization_path,
     Eecrit.AbilityGroup => :ability_group_path,
+    Eecrit.Session => :session_path,
   }
+  def resource_path_maker(model) do 
+    Map.get(@resource_paths, model, "tag_helpers doesn't have a path for #{inspect model}")
+  end
 
   def empty_content?(content) do
     # Enum.empty? won't work because top-level elements of an iolist can be chars.
@@ -96,7 +100,7 @@ defmodule Eecrit.TagHelpers do
   end
 
   defp correlates_of(conn, model),
-    do: {conn.assigns.current_user, Map.get(@resource_paths, model, :MISSING_MODEL)}
+    do: {conn.assigns.current_user, resource_path_maker(model)}
 
   defmacro __using__(_arg) do
     quote do

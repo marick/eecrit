@@ -10,7 +10,7 @@ defmodule Eecrit.PageView do
   def commands(conn, current_user) do
     button_groups = [
       # No user
-      [m_no_user_button(conn, "Please log in", session_path(conn, :new)),
+      [m_no_user_button(conn, "Please Log In", session_path(conn, :new)),
       ],
 
       # Daily admin work

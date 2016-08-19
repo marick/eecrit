@@ -11,6 +11,7 @@ defmodule Eecrit.ViewCase do
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
       import Eecrit.Test.ViewHelpers
+      import RoundingPegs.ExUnit.CheckStyle
       import RoundingPegs.ExUnit.View
       import RoundingPegs.ExUnit.ViewCheckers
       

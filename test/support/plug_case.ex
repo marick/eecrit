@@ -23,6 +23,7 @@ defmodule Eecrit.PlugCase do
       alias Eecrit.Test.PlugHelpers
       alias Plug.Conn
       alias Phoenix.ConnTest 
+      import RoundingPegs.ExUnit.CheckStyle
 
       # The default endpoint for testing
       @opts Eecrit.Router.init([])

@@ -3,6 +3,7 @@ defmodule RoundingPegs.ExUnit.ViewCheckers.Util do
   require Phoenix.ConnTest
   require ShouldI
   alias Eecrit.TagHelpers
+  import RoundingPegs.ExUnit.CheckStyle
 
   # Used for path generation
   @endpoint Eecrit.Endpoint
@@ -28,18 +29,16 @@ defmodule RoundingPegs.ExUnit.ViewCheckers.Util do
   def pretty_path(path), do: path
   def pretty_text(text), do: inspect text
 
-  def allows_anchor_x!(html, {link_text, model}, action, arg_or_arglist, params) do 
+  defchecker allows_anchor_x!(html, {link_text, model}, action, arg_or_arglist, params) do 
     link_path = path_to(model, action, arg_or_arglist, params)
     result = find_anchor(html, {link_text, link_path})
     refute result == [], "No #{pretty_action action} link to #{pretty_path link_path} and #{pretty_text link_text} in\n#{html}"
-    html
   end
 
-  def disallows_anchor_x!(html, model, action, arg_or_arglist, params) do
+  defchecker disallows_anchor_x!(html, model, action, arg_or_arglist, params) do
     link_path = path_to(model, action, arg_or_arglist, params)
     result = Floki.find(html, "a[href='#{link_path}']")
     assert result == [], "Observe the #{pretty_action action} link to #{pretty_path link_path} in\n#{html}"
-    html
   end
 
   defp check_names(action) do
@@ -83,25 +82,22 @@ defmodule RoundingPegs.ExUnit.ViewCheckers.Util do
     |> Enum.filter(&(true_rest_verb(&1) == Map.get(@actions_to_methods, action)))
   end
 
-  def allows_form_x!(html, model, action, arg_or_arglist, params) do 
+  defchecker allows_form_x!(html, model, action, arg_or_arglist, params) do 
     link_path = path_to(model, action, arg_or_arglist, params)
     result = find_form(html, link_path, action)
     refute result == [], "No #{pretty_action action} form for #{pretty_path link_path} in\n#{html}"
-    html
   end
 
-  def disallows_form_x!(html, model, action, arg_or_arglist, params) do
+  defchecker disallows_form_x!(html, model, action, arg_or_arglist, params) do
     link_path = path_to(model, action, arg_or_arglist, params)
     result = find_form(html, link_path, action)
     assert result == [], "Observe the #{pretty_action action} form for #{pretty_path link_path} in\n#{html}"
-    html
   end
 
-  def disallows_any_form_x!(html, model, action) do
+  defchecker disallows_any_form_x!(html, model, action) do
     link_path = path_to(model, :create, [], [])
     result = find_form(html, "^" <> link_path, action)
     assert result == [], "Observe the #{pretty_action action} form for #{pretty_path link_path} in\n#{html}"
-    html
   end
 
   defmacro make_form_check(action) do

@@ -53,25 +53,25 @@ defmodule Eecrit.PageViewTest do
 
   # Helpers
 
-  defp login_allowed!(html),
+  defchecker login_allowed!(html),
     do: allows_new!(html, {"Please Log In", Eecrit.Session})
-  defp animal_button!(html),
+  defchecker animal_button!(html),
     do: allows_index!(html, {"Work With Animals", Eecrit.OldAnimal})
-  defp procedure_button!(html),
+  defchecker procedure_button!(html),
     do: allows_index!(html, {"Work With Procedures", Eecrit.OldProcedure})
-  defp user_button!(html),
+  defchecker user_button!(html),
     do: allows_index!(html, {"Users", Eecrit.User})
-  defp organization_button!(html),
+  defchecker organization_button!(html),
     do: allows_index!(html, {"Organizations", Eecrit.Organization})
-  defp ability_group_button!(html),
+  defchecker ability_group_button!(html),
     do: allows_index!(html, {"Ability Groups", Eecrit.AbilityGroup})
 
-  defp no_login_allowed!(html), do: disallows_new!(html, Eecrit.Session);
-  defp no_animal_button!(html), do: disallows_index!(html, Eecrit.OldAnimal)
-  defp no_procedure_button!(html), do: disallows_index!(html, Eecrit.OldProcedure)
-  defp no_user_button!(html), do: disallows_index!(html, Eecrit.User)
-  defp no_organization_button!(html), do: disallows_index!(html, Eecrit.Organization)
-  defp no_ability_group_button!(html), do: disallows_index!(html, Eecrit.AbilityGroup)
+  defchecker no_login_allowed!(html), do: disallows_new!(html, Eecrit.Session);
+  defchecker no_animal_button!(html), do: disallows_index!(html, Eecrit.OldAnimal)
+  defchecker no_procedure_button!(html), do: disallows_index!(html, Eecrit.OldProcedure)
+  defchecker no_user_button!(html), do: disallows_index!(html, Eecrit.User)
+  defchecker no_organization_button!(html), do: disallows_index!(html, Eecrit.Organization)
+  defchecker no_ability_group_button!(html), do: disallows_index!(html, Eecrit.AbilityGroup)
 
 
 end

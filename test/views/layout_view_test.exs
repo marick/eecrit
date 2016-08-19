@@ -58,43 +58,37 @@ defmodule Eecrit.LayoutViewTest do
 
 
   ## File-specific assertions
-  defp login_allowed!(html) do
+  defchecker login_allowed!(html) do
     html
     |> allows_new!({"Log in", Eecrit.Session})
     |> disallows_any_delete!(Eecrit.Session)
-    html
   end
 
-  defp logout_allowed!(html, user) do
+  defchecker logout_allowed!(html, user) do
     html
     |> disallows_new!(Eecrit.Session)
     |> allows_delete!(Eecrit.Session, user)
-    html
   end
 
-  defp no_admin_actions!(html) do
+  defchecker no_admin_actions!(html) do
     html
     |> disallows_index!(Eecrit.OldAnimal)
     |> disallows_index!(Eecrit.OldAnimal)
-    html
   end
 
-  defp can_go_to_admin_work!(html) do
+  defchecker can_go_to_admin_work!(html) do
     html
     |> allows_index!({"Animals", Eecrit.OldAnimal})
     |> allows_index!({"Procedures", Eecrit.OldProcedure})
-    html
   end    
 
-  defp no_user_information_shows!(html) do
+  defchecker no_user_information_shows!(html) do
     # Pretty indirect way to test this.
     assert length(Floki.find(html, "li")) == 1
-    html
   end
 
-  defp user_information_shows!(html, user) do
+  defchecker user_information_shows!(html, user) do
     assert html =~ user.display_name
     assert html =~ User.org_short_name(user)
-    html
   end
 end

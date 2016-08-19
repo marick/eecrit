@@ -23,7 +23,7 @@ defmodule Eecrit.ViewCase do
     conn =
       Phoenix.ConnTest.build_conn()
       |> Eecrit.Test.Makers.obey_tags(tags)
-      |> Eecrit.Test.ViewHelpers.simulate_routing
+      |> RoundingPegs.ExUnit.View.simulate_routing
     {:ok, conn: conn}
   end
 end

@@ -31,24 +31,27 @@ defmodule Eecrit.ConnCase do
       import Eecrit.Test.ConnHelpers
       import Eecrit.Test.ViewHelpers
 
+      import RoundingPegs.ExUnit.View
+      import RoundingPegs.ExUnit.ViewCheckers
+
       # The default endpoint for testing
       @endpoint Eecrit.Endpoint
     end
   end
 
-  setup tags do
+  setup context do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Eecrit.Repo)
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Eecrit.OldRepo)
 
-    unless tags[:async] do
+    unless context[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Eecrit.Repo, {:shared, self()})
       Ecto.Adapters.SQL.Sandbox.mode(Eecrit.OldRepo, {:shared, self()})
     end
 
     conn =
       Phoenix.ConnTest.build_conn()
-      |> Eecrit.Test.Makers.obey_tags(tags)
+      |> Eecrit.Test.Makers.obey_tags(context)
 
-    {:ok, conn: conn}
+    ShouldI.assign context, conn: conn
   end
 end

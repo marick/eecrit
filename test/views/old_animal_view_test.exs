@@ -1,48 +1,52 @@
 defmodule Eecrit.OldAnimalViewTest do
-  use Eecrit.ConnCase, async: true
-  import Eecrit.Test.ViewHelpers
-  import Phoenix.View
+  use Eecrit.ViewCase, async: true
   alias Eecrit.OldAnimalView
-
-  ## :index has two cases: show animals out of service, or just those in service.
-
-  test "only-in-service has affects on the view", %{conn: conn}  do
-    content = render_to_string(OldAnimalView, "index.html",
-                               conn: conn, animals: [], params: %{})
-    assert String.contains?(content, "All animals currently in service")
-    assert String.contains?(content, "Include animals out of service")
-    assert String.contains?(content, "Date animal will be removed from service")
-  end
-  
-  test "... as does showing out of service animals", %{conn: conn}  do
-    content = render_to_string(OldAnimalView, "index.html",
-                               conn: conn, animals: [], params: %{"include_out_of_service" => "true"})
-    assert String.contains?(content, "All animals, past and present")
-    refute String.contains?(content, "Don't show animals that are out of service")
-    assert String.contains?(content, "Date animal was or will be removed from service")
-  end
+  alias Eecrit.OldAnimal
 
 
-  defp removal_message(date_string) do
-    make_old_animal(name: "Betsy",
-                    date_removed_from_service: date_string && Ecto.Date.cast!(date_string))
-    |> OldAnimalView.out_of_service_description()
+  describe ":index has two cases: show animals out of service, or just those in service." do 
+    
+    test "only-in-service has affects on the view", %{conn: conn}  do
+      html = render_to_string(OldAnimalView, "index.html",
+        conn: conn, animals: [], params: %{})
+      assert html =~ "All animals currently in service"
+      allows_index!(html, {"Include animals out of service", OldAnimal}, [], include_out_of_service: true)
+      # Has appropriate text in removal-from-service column
+      assert html =~ "Date animal will be removed from service"
+    end
+    
+    test "... as does showing out of service animals", %{conn: conn}  do
+      html = render_to_string(OldAnimalView, "index.html",
+        conn: conn, animals: [], params: %{"include_out_of_service" => "true"})
+      assert html =~ "All animals, past and present"
+      allows_index!(html, {"Don't show animals that are out of service", OldAnimal})
+      assert html =~ "Date animal was or will be removed from service"
+    end
   end
 
-  test "displaying when the animal was removed from service" do
-    content = removal_message("2012-03-05")
-    assert safe_substring(content, "Betsy was removed from service on")
-    assert safe_substring(content, "March 5, 2012")
-  end
+  describe "the variant descriptions of when the animal was removed" do
+    setup %{removal_date: date_string} = context do
+      date_arg = date_string && Ecto.Date.cast!(date_string)
+      animal = make_old_animal(name: "Betsy", date_removed_from_service: date_arg)
+      html = OldAnimalView.out_of_service_description(animal) |> to_view_string
+      assign context, html: html
+    end
 
-  test "displaying when the animal will be removed from service" do
-    content = removal_message("2092-03-05")
-    assert safe_substring(content, "Betsy will be removed from service on")
-    assert safe_substring(content, "March 5, 2092")
-  end
+    @tag removal_date: "2012-03-05" # long ago
+    test "displaying when the animal was removed from service", %{html: html} do
+      assert html =~ "Betsy was removed from service on"
+      assert html =~ "March 5, 2012"
+    end
 
-  test "displaying when the animal has no removal date" do
-    content = removal_message(nil)
-    assert safe_substring(content, "Betsy is not scheduled to be removed from service")
+    @tag removal_date: "2092-03-05" # far future
+    test "displaying when the animal will be removed from service", %{html: html} do
+      assert html =~ "Betsy will be removed from service on"
+      assert html =~ "March 5, 2092"
+    end
+
+    @tag removal_date: nil  # none
+    test "displaying when the animal has no removal date", %{html: html} do
+      assert html =~ "Betsy is not scheduled to be removed from service"
+    end
   end
 end

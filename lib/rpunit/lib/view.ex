@@ -8,7 +8,13 @@ defmodule RoundingPegs.ExUnit.View do
     phoenix_iodata |> Phoenix.HTML.Safe.to_iodata |> IO.iodata_to_binary
   end
 
-  def render_view_helper(conn, f, args \\ []) do
-    apply(f, [conn | args]) |> to_view_string
+  # The default endpoint for testing (for constructing paths)
+  @endpoint Eecrit.Endpoint
+  
+  def simulate_routing(conn) do
+    conn
+    |> Phoenix.ConnTest.bypass_through(Eecrit.Router, :browser)
+    |> Phoenix.ConnTest.get("..irrelevant..")
   end
+  
 end

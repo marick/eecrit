@@ -9,7 +9,7 @@ defmodule Eecrit.LayoutViewTest do
 
   describe "a navigation bar" do
     setup context = %{conn: conn} do
-      html = render_view_helper(conn, &LayoutView.navigation/1)
+      html = LayoutView.navigation(conn) |> to_view_string
       assign context, html: html, user: conn.assigns.current_user
     end
 

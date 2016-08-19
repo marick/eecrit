@@ -7,7 +7,7 @@ defmodule Eecrit.PageView do
   alias Eecrit.AbilityGroup
   use Eecrit.TagHelpers
 
-  def commands(conn, current_user) do
+  def commands(conn) do
     button_groups = [
       # No user
       [m_no_user_button(conn, "Please Log In", session_path(conn, :new)),

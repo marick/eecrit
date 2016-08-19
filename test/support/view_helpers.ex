@@ -6,13 +6,6 @@ defmodule Eecrit.Test.ViewHelpers do
   # Used for path generation
   @endpoint Eecrit.Endpoint
 
-  # TODO: get rid of this
-  def safe_substring(safe_result, substring) do
-    content = Phoenix.HTML.safe_to_string(safe_result)
-    assert String.contains?(content, substring)
-  end
-
-
 
   def should_contain_link(html, {link_text, link_path}) do
     node = find_one_href(html, link_path)
@@ -32,26 +25,6 @@ defmodule Eecrit.Test.ViewHelpers do
     html
   end
 
-
-  def should_not_contain_link(html, {link_text, link_path}) do
-    html
-    |> should_not_contain_link_path(link_path)
-    |> should_not_contain_link_text(link_text)
-    html
-  end
-
-  def should_not_contain_link_path(html, link_path) do
-    nodes = Floki.find(html, "a[href='#{link_path}']")
-    assert length(nodes) == 0, "There are links to #{link_path}"
-    html
-  end
-
-  def should_not_contain_link_text(html, link_text) do
-    # Collect all link texts and check whether they contain text
-    nodes = Floki.find(html, "a") 
-    refute Floki.text(nodes) =~ link_text
-    html
-  end
 
 
 
@@ -88,10 +61,5 @@ defmodule Eecrit.Test.ViewHelpers do
 
   defp only_main_html(html), do: Floki.find(html, "main") |> Floki.raw_html
 
-  def simulate_routing(conn) do
-    conn
-    |> Phoenix.ConnTest.bypass_through(Eecrit.Router, :browser)
-    |> Phoenix.ConnTest.get("..irrelevant..")
-  end
 end
 

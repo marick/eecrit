@@ -39,6 +39,7 @@ defmodule Eecrit.TagHelpers do
   # TODO: Investigate if this table can be generated automatically.
   @resource_paths %{
     Eecrit.OldProcedure => :old_procedure_path,
+    Eecrit.OldProcedureDescription => :old_procedure_description_path,
     Eecrit.OldAnimal => :old_animal_path,
     Eecrit.User => :user_path,
     Eecrit.Organization => :organization_path,
@@ -46,7 +47,7 @@ defmodule Eecrit.TagHelpers do
     Eecrit.Session => :session_path,
   }
   def resource_path_maker(model) do 
-    Map.get(@resource_paths, model, "tag_helpers doesn't have a path for #{inspect model}")
+    Map.get(@resource_paths, model, "Eecrit.TagHelpers doesn't have a path registered for #{inspect model}")
   end
 
   def empty_content?(content) do

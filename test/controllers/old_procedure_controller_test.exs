@@ -2,6 +2,7 @@ defmodule Eecrit.OldProcedureControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.OldProcedure
+  alias Eecrit.OldProcedureDescription
   @valid_attrs %{days_delay: 42, name: "PROCEDURE NAME"}
   @invalid_attrs %{name: ""}
 
@@ -73,12 +74,16 @@ defmodule Eecrit.OldProcedureControllerTest do
     description = insert_old_procedure_description(procedure: procedure,
                                                    description: "Instructions")
     conn = get conn, old_procedure_path(conn, :show, procedure)
-    response = html_response(conn, 200)
-    assert response =~ "Some procedure"
-    assert response =~ "Instructions"
+    html = html_response(conn, 200)
+    assert html =~ "Some procedure"
+    assert html =~ "Instructions"
+
+    html
+    |> allows_new!({"Add a description", OldProcedureDescription}, [], procedure: procedure.id)
+    # TODO: Convert the rest of these.
+    
     assert_outgoing_links(conn,
       [      # General commands 
-        {"Add a description", old_procedure_description_path(conn, :new, procedure: procedure.id)},
         {"Change the name or delay", old_procedure_path(conn, :edit, procedure.id)},
         {"Show all procedures", old_procedure_path(conn, :index)},
 
@@ -86,6 +91,7 @@ defmodule Eecrit.OldProcedureControllerTest do
         {"Edit this description", old_procedure_description_path(conn, :edit, description.id, procedure: procedure.id)},
       ])
 
+    
     assert_outgoing_link_texts(conn, ["Delete"]) # Sigh
   end
 
@@ -105,10 +111,10 @@ defmodule Eecrit.OldProcedureControllerTest do
                                      description: "Procedure Instructions")
     
     conn = get conn, old_procedure_path(conn, :edit, procedure)
-    response = html_response(conn, 200)
-    assert response =~ "Edit Caslick&#39;s procedure"
+    html = html_response(conn, 200)
+    assert html =~ "Edit Caslick&#39;s procedure"
     # descriptions not edited here
-    refute response =~ "Procedure Instructions"
+    refute html =~ "Procedure Instructions"
 
     assert_outgoing_links(conn,
       [{"Show Caslick&#39;s procedure", old_procedure_path(conn, :show, procedure.id)},

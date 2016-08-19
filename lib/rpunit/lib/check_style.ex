@@ -3,7 +3,7 @@ defmodule RoundingPegs.CheckStyle do
   Maybe someday this will be support for Midje-style checkers in ExUnit.
   """
 
-  def evenish?(actual), do: 3
+  def evenish?(actual), do: 3 + actual
 
   def do_call(module, method, actual) do
     apply(module, method, [actual])

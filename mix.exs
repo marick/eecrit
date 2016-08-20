@@ -18,7 +18,7 @@ defmodule Eecrit.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Eecrit, []},
-     applications: [:comeonin, :timex, :webassembly,
+     applications: [:comeonin, :timex,
 
                     :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex]]
@@ -39,7 +39,6 @@ defmodule Eecrit.Mixfile do
      # to put the test support code.
      {:shouldi, ">= 0.3.2"},
      {:floki, "~> 0.10.0", only: [:test, :dev]},
-     {:webassembly, "~> 0.6"},
      {:canada, "~> 1.0.0"},
      
      {:phoenix, "~> 1.2.0"},

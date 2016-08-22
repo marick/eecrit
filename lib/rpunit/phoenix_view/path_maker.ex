@@ -1,4 +1,4 @@
-defmodule RoundingPegs.ExUnit.PhoenixView.ResourcePath do
+defmodule RoundingPegs.ExUnit.PhoenixView.PathMaker do
   @moduledoc """
   Converts data in one of a variety of formats into a path using
   the path functions in Router.Helpers module.

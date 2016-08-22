@@ -1,8 +1,8 @@
-defmodule RoundingPegs.ExUnit.PhoenixView.ResourcePathTest do
+defmodule RoundingPegs.ExUnit.PhoenixView.PathMakerTest do
   use RoundingPegs.ExUnit.Case
   require Eecrit.Router.Helpers
   require Eecrit.Endpoint
-  alias RoundingPegs.ExUnit.PhoenixView.ResourcePath, as: S
+  alias RoundingPegs.ExUnit.PhoenixView.PathMaker, as: S
 
   @path_fn :old_animal_path
   @model Eecrit.OldAnimal

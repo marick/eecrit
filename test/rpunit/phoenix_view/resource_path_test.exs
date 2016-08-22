@@ -1,61 +1,64 @@
 defmodule RoundingPegs.ExUnit.PhoenixView.ResourcePathTest do
-  use ExUnit.Case
+  use RoundingPegs.ExUnit.Case
   require Eecrit.Router.Helpers
   require Eecrit.Endpoint
   alias Eecrit.OldAnimal
   alias RoundingPegs.ExUnit.PhoenixView.ResourcePath
 
-  @subject &ResourcePath.cast_to_path/2
   @path_fn :old_animal_path
   @model Eecrit.OldAnimal
 
-  test "the fn-canonical format with args and params" do
-    input_with_arg = %{fn: @path_fn,
-                       args: [1],
-                       params: [param1: "p1", param2: 8]}
+  describe "the two types of canonical formats" do
 
-    input_no_arg = %{fn: @path_fn,
-                     args: [],
-                     params: [param1: "p1"]}
+    setup context, do: assign context, subject: &ResourcePath.cast_to_path/2
 
-    # anchors
-    assert @subject.(:index, input_no_arg) == "/animals?param1=p1"
-    assert @subject.(:new, input_no_arg) == "/animals/new?param1=p1"
-    assert @subject.(:show, input_with_arg) == "/animals/1?param1=p1&param2=8"
-    assert @subject.(:edit, input_with_arg) == "/animals/1/edit?param1=p1&param2=8"
+    test "the fn-canonical format with args and params", %{subject: subject}  do
+      input_with_arg = %{fn: @path_fn,
+                         args: [1],
+                         params: [param1: "p1", param2: 8]}
 
-    # forms
-    assert @subject.(:create, input_no_arg) == "/animals?param1=p1"
-    assert @subject.(:delete, input_with_arg) == "/animals/1?param1=p1&param2=8"
-    assert @subject.(:update, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      input_no_arg = %{fn: @path_fn,
+                       args: [],
+                       params: [param1: "p1"]}
+
+      # anchors
+      assert subject.(:index, input_no_arg) == "/animals?param1=p1"
+      assert subject.(:new, input_no_arg) == "/animals/new?param1=p1"
+      assert subject.(:show, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      assert subject.(:edit, input_with_arg) == "/animals/1/edit?param1=p1&param2=8"
+
+      # forms
+      assert subject.(:create, input_no_arg) == "/animals?param1=p1"
+      assert subject.(:delete, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      assert subject.(:update, input_with_arg) == "/animals/1?param1=p1&param2=8"
+    end
+
+    test "the fn-canonical format without params", %{subject: subject}  do
+      input_with_arg = %{fn: @path_fn, args: [1], params: []}
+      input_no_arg = %{fn: @path_fn, args: [], params: []}
+
+      # anchors
+      assert subject.(:index, input_no_arg) == "/animals"
+      assert subject.(:new, input_no_arg) == "/animals/new"
+      assert subject.(:show, input_with_arg) == "/animals/1"
+      assert subject.(:edit, input_with_arg) == "/animals/1/edit"
+
+      # forms
+      assert subject.(:create, input_no_arg) == "/animals"
+      assert subject.(:delete, input_with_arg) == "/animals/1"
+      assert subject.(:update, input_with_arg) == "/animals/1"
+    end
+
+    test "the model-canonical format", %{subject: subject} do
+      input_with_arg = %{model: @model, args: [1], params: [param1: "p1"]}
+      input_no_arg = %{model: @model, args: [], params: []}
+
+      assert subject.(:index, input_no_arg) == "/animals"
+      assert subject.(:show, input_with_arg) == "/animals/1?param1=p1"
+      assert subject.(:create, input_no_arg) == "/animals"
+    end    
   end
-
-  test "the fn-canonical format without params" do
-    input_with_arg = %{fn: @path_fn, args: [1], params: []}
-    input_no_arg = %{fn: @path_fn, args: [], params: []}
-
-    # anchors
-    assert @subject.(:index, input_no_arg) == "/animals"
-    assert @subject.(:new, input_no_arg) == "/animals/new"
-    assert @subject.(:show, input_with_arg) == "/animals/1"
-    assert @subject.(:edit, input_with_arg) == "/animals/1/edit"
-
-    # forms
-    assert @subject.(:create, input_no_arg) == "/animals"
-    assert @subject.(:delete, input_with_arg) == "/animals/1"
-    assert @subject.(:update, input_with_arg) == "/animals/1"
-  end
-
-  test "the model-canonical format" do
-    input_with_arg = %{model: @model, args: [1], params: [param1: "p1"]}
-    input_no_arg = %{model: @model, args: [], params: []}
-
-    assert @subject.(:index, input_no_arg) == "/animals"
-    assert @subject.(:show, input_with_arg) == "/animals/1?param1=p1"
-    assert @subject.(:create, input_no_arg) == "/animals"
-  end    
 end
-
 
 
     # test "most expansive format - the different actions" do

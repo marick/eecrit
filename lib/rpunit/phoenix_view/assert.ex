@@ -7,6 +7,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     html
     |> allows_index!(Eecrit.Animal, "View all animals")
     |> disallows_update!(%Eecrit.Animal{...})
-    |> allows_create!({Eecrit.Animal, 1})
+    |> allows_create!([Eecrit.Animal, 1])
+    |> allows_create!([Eecrit.Animal, foo: 3])
   """
 end

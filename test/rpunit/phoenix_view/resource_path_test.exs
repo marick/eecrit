@@ -2,17 +2,13 @@ defmodule RoundingPegs.ExUnit.PhoenixView.ResourcePathTest do
   use RoundingPegs.ExUnit.Case
   require Eecrit.Router.Helpers
   require Eecrit.Endpoint
-  alias Eecrit.OldAnimal
-  alias RoundingPegs.ExUnit.PhoenixView.ResourcePath
+  alias RoundingPegs.ExUnit.PhoenixView.ResourcePath, as: S
 
   @path_fn :old_animal_path
   @model Eecrit.OldAnimal
 
   describe "the two types of canonical formats" do
-
-    setup context, do: assign context, subject: &ResourcePath.cast_to_path/2
-
-    test "the fn-canonical format with args and params", %{subject: subject}  do
+    test "the fn-canonical format with args and params" do
       input_with_arg = %{fn: @path_fn,
                          args: [1],
                          params: [param1: "p1", param2: 8]}
@@ -22,83 +18,92 @@ defmodule RoundingPegs.ExUnit.PhoenixView.ResourcePathTest do
                        params: [param1: "p1"]}
 
       # anchors
-      assert subject.(:index, input_no_arg) == "/animals?param1=p1"
-      assert subject.(:new, input_no_arg) == "/animals/new?param1=p1"
-      assert subject.(:show, input_with_arg) == "/animals/1?param1=p1&param2=8"
-      assert subject.(:edit, input_with_arg) == "/animals/1/edit?param1=p1&param2=8"
+      assert S.cast_to_path(:index, input_no_arg) == "/animals?param1=p1"
+      assert S.cast_to_path(:new, input_no_arg) == "/animals/new?param1=p1"
+      assert S.cast_to_path(:show, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      assert S.cast_to_path(:edit, input_with_arg) == "/animals/1/edit?param1=p1&param2=8"
 
       # forms
-      assert subject.(:create, input_no_arg) == "/animals?param1=p1"
-      assert subject.(:delete, input_with_arg) == "/animals/1?param1=p1&param2=8"
-      assert subject.(:update, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      assert S.cast_to_path(:create, input_no_arg) == "/animals?param1=p1"
+      assert S.cast_to_path(:delete, input_with_arg) == "/animals/1?param1=p1&param2=8"
+      assert S.cast_to_path(:update, input_with_arg) == "/animals/1?param1=p1&param2=8"
     end
 
-    test "the fn-canonical format without params", %{subject: subject}  do
+    test "the fn-canonical format without params" do
       input_with_arg = %{fn: @path_fn, args: [1], params: []}
       input_no_arg = %{fn: @path_fn, args: [], params: []}
 
       # anchors
-      assert subject.(:index, input_no_arg) == "/animals"
-      assert subject.(:new, input_no_arg) == "/animals/new"
-      assert subject.(:show, input_with_arg) == "/animals/1"
-      assert subject.(:edit, input_with_arg) == "/animals/1/edit"
+      assert S.cast_to_path(:index, input_no_arg) == "/animals"
+      assert S.cast_to_path(:new, input_no_arg) == "/animals/new"
+      assert S.cast_to_path(:show, input_with_arg) == "/animals/1"
+      assert S.cast_to_path(:edit, input_with_arg) == "/animals/1/edit"
 
       # forms
-      assert subject.(:create, input_no_arg) == "/animals"
-      assert subject.(:delete, input_with_arg) == "/animals/1"
-      assert subject.(:update, input_with_arg) == "/animals/1"
+      assert S.cast_to_path(:create, input_no_arg) == "/animals"
+      assert S.cast_to_path(:delete, input_with_arg) == "/animals/1"
+      assert S.cast_to_path(:update, input_with_arg) == "/animals/1"
     end
 
-    test "the model-canonical format", %{subject: subject} do
+    test "the model-canonical format" do
       input_with_arg = %{model: @model, args: [1], params: [param1: "p1"]}
       input_no_arg = %{model: @model, args: [], params: []}
 
-      assert subject.(:index, input_no_arg) == "/animals"
-      assert subject.(:show, input_with_arg) == "/animals/1?param1=p1"
-      assert subject.(:create, input_no_arg) == "/animals"
-    end    
+      assert S.cast_to_path(:index, input_no_arg) == "/animals"
+      assert S.cast_to_path(:show, input_with_arg) == "/animals/1?param1=p1"
+      assert S.cast_to_path(:create, input_no_arg) == "/animals"
+    end
+  end
+
+  describe "noncanonical forms" do
+    test "a lone structure" do
+      animal = struct(@model, id: 383)
+      assert S.canonicalize(animal) == %{model: @model, args: [animal], params: []}
+      assert S.cast_to_path(:show, animal) == "/animals/383"
+    end
+
+    test "a structure with parameters" do
+      animal = struct(@model, id: 383)
+      input = [animal, param: 33]
+      assert S.canonicalize(input) ==
+        %{model: @model, args: [animal], params: [param: 33]}
+      assert S.cast_to_path(:delete, input) == "/animals/383?param=33"
+    end
+
+    test "a model alone" do
+      assert S.canonicalize(@model) == %{model: @model, args: [], params: []}
+      assert S.cast_to_path(:new, @model) == "/animals/new"
+    end
+
+    test "a model with arguments and/or params" do
+      empty_rest = [@model]
+      assert S.canonicalize(empty_rest) == %{model: @model, args: [], params: []}
+      assert S.cast_to_path(:index, empty_rest) == "/animals"
+
+      just_args = [@model, 1]
+      assert S.canonicalize(just_args) == %{model: @model, args: [1], params: []}
+      assert S.cast_to_path(:update, just_args) == "/animals/1"
+
+      just_params = [@model, p: "foo"]
+      assert S.canonicalize(just_params) == %{model: @model, args: [], params: [p: "foo"]}
+      assert S.cast_to_path(:new, just_params) == "/animals/new?p=foo"
+
+      animal = struct(@model, id: 383)
+      both = [@model, animal, p: "q", q: "p"]
+      assert S.canonicalize(both) ==
+        %{model: @model, args: [animal], params: [p: "q", q: "p"]}
+      assert S.cast_to_path(:update, both) == "/animals/383?p=q&q=p"
+    end
+
+    test "an atom naming a path function" do
+      assert S.canonicalize(@path_fn) == %{fn: @path_fn, args: [], params: []}
+      assert S.cast_to_path(:new, @path_fn) == "/animals/new"
+    end
+
+    test "path functions can have args and params" do
+      input = [@path_fn, 1, two: 2]
+      assert S.canonicalize(input) == %{fn: @path_fn, args: [1], params: [two: 2]}
+      assert S.cast_to_path(:edit, input) == "/animals/1/edit?two=2"
+    end
   end
 end
-
-
-    # test "most expansive format - the different actions" do
-    #   # These are anchors.
-    #   # index
-    #   input = [OldAnimal, :index, [], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals?param1=1&param2=param2"
-
-    #   # show
-    #   input = [OldAnimal, :show, [1001], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/1001?param1=1&param2=param2"
-
-    #   # new
-    #   input = [OldAnimal, :new, [], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/new?param1=1&param2=param2"
-
-    #   # edit
-    #   input = [OldAnimal, :edit, [1001], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/1001/edit?param1=1&param2=param2"
-
-    #   # These are forms - the paths are only a part of what needs checking
-    #   # create
-    #   input = [OldAnimal, :create, [], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals?param1=1&param2=param2"
-
-    #   # update
-    #   input = [OldAnimal, :update, [1001], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/1001?param1=1&param2=param2"
-
-    #   # delete 
-    #   input = [OldAnimal, :delete, [1001], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/1001?param1=1&param2=param2"
-    # end
-
-    # @tag :skip
-    # test "most expansive format - special-case values for args" do 
-    #   # instances can be used instead of specific path values
-    #   input = [OldAnimal, :show, [%OldAnimal{id: 1001}], [param1: 1, param2: "param2"]]
-    #   assert run(input) == "/animals/1001?param1=1&param2=param2"
-
-    #   # empty parameters
-    #   input = [OldAnimal, :edit, [%OldAnimal{id: 1001}], []]
-    #   assert run(input) == "/animals/1001/edit"

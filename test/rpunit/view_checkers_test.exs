@@ -45,25 +45,6 @@ defmodule RoundingPegs.ExUnit.ViewCheckersTest do
       refute_found find_anchor("", {"Animal", '/animals'})
     end
 
-    test "querying a form for the rest verb - allowing standard kludge" do
-      just_post = "{<form accept-charset='UTF-8' action='/foo' method='post'>
-                        stuff
-                    </form>"
-      assert true_rest_verb(just_post) == "post"
-
-      has_fake = "<form action='/foo' method='post'>
-                    <input name='_method' type='hidden' value='put'>
-                    stuff
-                  </form>"
-      assert true_rest_verb(has_fake) == "put"
-
-      no_method = "<form action='/foo' method='post'>
-                    <input name='fred' type='hidden' value='put'>
-                    stuff
-                  </form>"
-      assert true_rest_verb(no_method) == "post"
-    end
-
     having "a form" do 
       test "a plain POST can be found by path and action" do
         just_post = "{<form accept-charset='UTF-8' action='/animals' method='post'>

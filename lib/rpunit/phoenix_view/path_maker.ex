@@ -14,6 +14,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.PathMaker do
 
   def cast_to_path(action, %{model: model} = descriptor) do
     fn_name = PhoenixState.get(:path_fns) |> Map.get(model)
+    unless fn_name, do: throw "#{model} is not in the PhoenixState :path_fns map."
     cast_to_path(action, Map.put(descriptor, :fn, fn_name))
   end
 

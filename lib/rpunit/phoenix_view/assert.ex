@@ -46,7 +46,8 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     end
     arg
   end
-   
+
+  # TODO: why can't these both be defcheckers?
   def allows_anchor!(html, action, path_shorthand) do
     anchor_trees_with_source(html, action, path_shorthand)
     |> some_anchor_trees!
@@ -62,28 +63,53 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     html
   end
 
-  def disallows_anchor!(html, action, path_shorthand) do
+  defchecker disallows_anchor!(html, action, path_shorthand) do
     anchor_trees_with_source(html, action, path_shorthand)
     |> no_anchor_trees!
-
-    html
   end
 
   ### Forms
 
-  def true_rest_verb(form_tree) do
+  def has_true_rest_verb?(form_tree, desired_verb) do
     relevant_input = Floki.find(form_tree, "input[name='_method']")
-    if Enum.empty?(relevant_input) do
-      "post"
-    else
-      relevant_input |> Floki.attribute("value") |> List.first
-    end
+    true_rest_verb =
+      if Enum.empty?(relevant_input) do
+        "post"
+      else
+        relevant_input |> Floki.attribute("value") |> List.first
+      end
+    true_rest_verb == desired_verb
+  end
+
+  def action_to_rest_verb(action) do
+    %{delete: "delete",
+      create: "post",
+      update: "put"}
+    |> Map.get(action)
+  end
+  
+  defp form_trees_with_source(html, action, path_shorthand) do 
+    path = PathMaker.cast_to_path(action, path_shorthand)
+    trees =
+      html
+      |> Floki.find("form[method='post']")
+      |> Floki.find("form[action='#{path}']")
+      |> Enum.filter(&(has_true_rest_verb?(&1, action_to_rest_verb(action))))
+    {trees, path, action}
+  end
+
+  defp some_form_trees!({trees, path, action} = arg) do 
+    if Enum.empty?(trees), do: flunk("No #{pretty_action action} <form> matching #{pretty_path path}")
+    arg
+  end
+
+  defchecker allows_form!(html, action, path_shorthand) do
+    form_trees_with_source(html, action, path_shorthand)
+    |> some_form_trees!
   end
 
   
   # Misc
-
-  defp trimmed_text(floki_tree), do: Floki.text(floki_tree) |> String.trim
 
   defp pretty_action(action), do: ":#{action}"
   defp pretty_path(path), do: path

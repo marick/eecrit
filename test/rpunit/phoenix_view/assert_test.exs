@@ -62,32 +62,85 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
     end
   end
 
+  
+  def create_form,
+    do: "<form accept-charset='UTF-8' action='/animals' method='post'>
+            stuff
+         </form>"
+
+  def update_form,
+    do: "<form action='/animals/id' method='post'>
+           <input name='_method' type='hidden' value='put'>
+              stuff
+         </form>"
+
+  def delete_form,
+    do: "<form action='/animals/id' method='post'>
+           <input name='_method' type='hidden' value='delete'>
+           stuff
+         </form>"
+
+
   describe "allows_form!" do
-    test "the simple success case" do
-      html = "<a class='irrelevant' href='/animals'>Animals</a>"
-      assert S.allows_anchor!(html, :index, @model) =~ html
+    test "creation" do
+      two_forms = delete_form <> create_form
+      assert S.allows_form!(two_forms, :create, @model) =~ two_forms
+
+      # No form
+      html = ""
+      assert_exception "No :create <form> matching /animals",
+        do: S.allows_form!(html, :create, @model)
+
+      # Wrong kind
+      html = delete_form
+      assert_exception "No :create <form> matching /animals",
+        do: S.allows_form!(html, :create, @model)
+    end
+
+    test "update" do
+      assert S.allows_form!(update_form, :update, [@model, "id"]) =~ update_form
+    end
+
+    test "deletion" do
+      assert S.allows_form!(delete_form, :delete, [@model, "id"]) =~ delete_form
+    end
+  end
+
+  describe "disallows_form!" do
+    test "creation" do
+      two_forms = delete_form <> create_form
+      assert S.allows_form!(two_forms, :create, @model) =~ two_forms
+
+      # No form
+      html = ""
+      assert_exception "No :create <form> matching /animals",
+        do: S.allows_form!(html, :create, @model)
+
+      # Wrong kind
+      html = delete_form
+      assert_exception "No :create <form> matching /animals",
+        do: S.allows_form!(html, :create, @model)
+    end
+
+    test "update" do
+      assert S.allows_form!(update_form, :update, [@model, "id"]) =~ update_form
+    end
+
+    test "deletion" do
+      assert S.allows_form!(delete_form, :delete, [@model, "id"]) =~ delete_form
     end
   end
 
 
 
   test "querying a form for the rest verb - allowing standard kludge" do
-    just_post = "<form accept-charset='UTF-8' action='/foo' method='post'>
-                    stuff
-                 </form>"
-    assert S.true_rest_verb(just_post) == "post"
-    
-    has_fake = "<form action='/foo' method='post'>
-                  <input name='_method' type='hidden' value='put'>
-                  stuff
-                </form>"
-    assert S.true_rest_verb(has_fake) == "put"
+    assert S.has_true_rest_verb?(create_form, "post")
+    assert S.has_true_rest_verb?(update_form, "put")
+    assert S.has_true_rest_verb?(delete_form, "delete")
 
-    no_method = "<form action='/foo' method='post'>
-                   <input name='fred' type='hidden' value='put'>
-                     stuff
-                 </form>"
-    assert S.true_rest_verb(no_method) == "post"
+    refute S.has_true_rest_verb?(create_form, "put")
+    refute S.has_true_rest_verb?(update_form, "delete")
+    refute S.has_true_rest_verb?(delete_form, "post")
   end
 
 end

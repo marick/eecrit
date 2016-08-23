@@ -85,12 +85,12 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
     test "creation" do
       two_forms = delete_form <> create_form
       assert S.allows_form!(two_forms, :create, @model) =~ two_forms
-
+      
       # No form
       html = ""
       assert_exception "No :create <form> matching /animals",
         do: S.allows_form!(html, :create, @model)
-
+      
       # Wrong kind
       html = delete_form
       assert_exception "No :create <form> matching /animals",
@@ -99,39 +99,55 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
     test "update" do
       assert S.allows_form!(update_form, :update, [@model, "id"]) =~ update_form
+
+      # Wrong kind
+      html = create_form
+      assert_exception "No :update <form> matching /animals/1",
+        do: S.allows_form!(html, :update, [@model, 1])
     end
 
     test "deletion" do
       assert S.allows_form!(delete_form, :delete, [@model, "id"]) =~ delete_form
+
+      # Wrong kind
+      html = update_form
+      assert_exception "No :delete <form> matching /animals/1",
+        do: S.allows_form!(html, :delete, [@model, 1])
     end
   end
 
   describe "disallows_form!" do
     test "creation" do
-      two_forms = delete_form <> create_form
-      assert S.allows_form!(two_forms, :create, @model) =~ two_forms
+      html = delete_form <> update_form
+      assert S.disallows_form!(html, :create, @model) == html
 
-      # No form
-      html = ""
-      assert_exception "No :create <form> matching /animals",
-        do: S.allows_form!(html, :create, @model)
-
-      # Wrong kind
-      html = delete_form
-      assert_exception "No :create <form> matching /animals",
-        do: S.allows_form!(html, :create, @model)
+      html = delete_form <> create_form
+      assert_exception "Disallowed :create <form> for /animals",
+        do: S.disallows_form!(html, :create, @model)
     end
 
     test "update" do
-      assert S.allows_form!(update_form, :update, [@model, "id"]) =~ update_form
+      html = update_form
+
+      # Note different id
+      assert S.disallows_form!(html, :update, [@model, "diff_id"]) == html
+
+      assert_exception "Disallowed :update <form> for /animals/id",
+        do: S.disallows_form!(html, :update, [@model, "id"])
     end
 
     test "deletion" do
-      assert S.allows_form!(delete_form, :delete, [@model, "id"]) =~ delete_form
+      html = ""
+      assert S.disallows_form!(html, :delete, [@model, "id"]) == html
+
+      html = update_form
+      assert S.disallows_form!(html, :delete, [@model, "id"]) == html
+
+      html = update_form <> delete_form
+      assert_exception "Disallowed :delete <form> for /animals/id",
+        do: S.disallows_form!(html, :delete, [@model, "id"])
     end
   end
-
-
 
   test "querying a form for the rest verb - allowing standard kludge" do
     assert S.has_true_rest_verb?(create_form, "post")

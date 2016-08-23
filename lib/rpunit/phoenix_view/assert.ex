@@ -103,9 +103,21 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     arg
   end
 
+  def no_form_trees!({trees, path, action} = arg) do
+    unless Enum.empty?(trees), do: flunk("Disallowed #{pretty_action action} <form> for #{pretty_path path}")
+    arg
+  end
+
+
+
   defchecker allows_form!(html, action, path_shorthand) do
     form_trees_with_source(html, action, path_shorthand)
     |> some_form_trees!
+  end
+
+  defchecker disallows_form!(html, action, path_shorthand) do
+    form_trees_with_source(html, action, path_shorthand)
+    |> no_form_trees!
   end
 
   

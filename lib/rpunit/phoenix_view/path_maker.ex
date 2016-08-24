@@ -5,21 +5,21 @@ defmodule RoundingPegs.ExUnit.PhoenixView.PathMaker do
   """
   alias RoundingPegs.ExUnit.PhoenixState
 
-  def cast_to_path(action, %{fn: fn_name} = descriptor) do
-    path_args = Map.get(descriptor, :args, [])
-    params = Map.get(descriptor, :params, [])
+  def cast_to_path(action, %{fn: fn_name} = shorthand) do
+    path_args = Map.get(shorthand, :args, [])
+    params = Map.get(shorthand, :params, [])
     fn_args = [PhoenixState.get(:endpoint), action] ++ path_args ++ [params]
     apply(PhoenixState.get(:path_module), fn_name, fn_args)
   end
 
-  def cast_to_path(action, %{model: model} = descriptor) do
+  def cast_to_path(action, %{model: model} = shorthand) do
     fn_name = PhoenixState.get(:path_fns) |> Map.get(model)
     unless fn_name, do: throw "#{model} is not in the PhoenixState :path_fns map."
-    cast_to_path(action, Map.put(descriptor, :fn, fn_name))
+    cast_to_path(action, Map.put(shorthand, :fn, fn_name))
   end
 
-  def cast_to_path(action, descriptor),
-    do: cast_to_path(action, canonicalize(descriptor))
+  def cast_to_path(action, shorthand),
+    do: cast_to_path(action, canonicalize(shorthand))
 
   
   def canonicalize(%{__struct__: model} = struct),
@@ -43,13 +43,15 @@ defmodule RoundingPegs.ExUnit.PhoenixView.PathMaker do
     end)
     %{base | args: args, params: params}
   end
+
+  # General utilities
   
-  # private
-  
-  defp module_name?(atom) do
-    atom
+  def module_name?(shorthand) when is_atom(shorthand) do
+    shorthand
     |> Atom.to_string
     |> String.starts_with?("Elixir.")
   end
+
+  def module_name?(_), do: false
 end
   

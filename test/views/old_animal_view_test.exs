@@ -10,7 +10,8 @@ defmodule Eecrit.OldAnimalViewTest do
       html = render_to_string(OldAnimalView, "index.html",
         conn: conn, animals: [], params: %{})
       assert html =~ "All animals currently in service"
-      allows_index!(html, {"Include animals out of service", OldAnimal}, [], include_out_of_service: true)
+      allows_index!(html, [OldAnimal, include_out_of_service: true],
+        text: "Include animals out of service")
       # Has appropriate text in removal-from-service column
       assert html =~ "Date animal will be removed from service"
     end
@@ -19,7 +20,8 @@ defmodule Eecrit.OldAnimalViewTest do
       html = render_to_string(OldAnimalView, "index.html",
         conn: conn, animals: [], params: %{"include_out_of_service" => "true"})
       assert html =~ "All animals, past and present"
-      allows_index!(html, {"Don't show animals that are out of service", OldAnimal})
+      allows_index!(html, OldAnimal,
+        text: "Don't show animals that are out of service")
       assert html =~ "Date animal was or will be removed from service"
     end
   end

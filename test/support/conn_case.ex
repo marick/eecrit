@@ -32,7 +32,7 @@ defmodule Eecrit.ConnCase do
       import Eecrit.Test.ViewHelpers
 
       import RoundingPegs.ExUnit.View
-      import RoundingPegs.ExUnit.ViewCheckers
+      import RoundingPegs.ExUnit.PhoenixView.Assert
 
       # The default endpoint for testing
       @endpoint Eecrit.Endpoint

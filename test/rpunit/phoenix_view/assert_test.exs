@@ -13,28 +13,28 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
     test "failure case: no anchor" do
       html = ""
-      assert_exception [ExUnit.AssertionError, "No <a> matching /animals"],
+      assert_exception [ExUnit.AssertionError, "Found no <a> matching /animals"],
         do: S.allows_anchor!(html, :index, @model)
     end
 
     test "failure case: anchor with bad string" do
       html = "<a class='irrelevant' href='/animals'>Animals</a>"
       assert_exception ["No :index <a> to /animals", ~r/Animals/],
-        do: S.allows_anchor!(html, :index, @model, "Manimals")
+        do: S.allows_anchor!(html, :index, @model, text: "Manimals")
     end
 
     test "success case for action, path, and string" do
       html = "<a class='irrelevant' href='/animals'>Animals</a>"
-      assert S.allows_anchor!(html, :index, @model, "Animals") =~ html
+      assert S.allows_anchor!(html, :index, @model, text: "Animals") =~ html
     end
 
     test "note that the match must be exact" do
       html = "<a class='irrelevant' href='/animals'>Animals</a>"
       assert_exception ["No :index <a> to /animals", "Animals"],
-        do: S.allows_anchor!(html, :index, @model, "Animal")
+        do: S.allows_anchor!(html, :index, @model, text: "Animal")
       html = "<a class='irrelevant' href='/animals'> Animals</a>"
       assert_exception ["No :index <a> to /animals", "Animals"],
-        do: S.allows_anchor!(html, :index, @model, "Animals")
+        do: S.allows_anchor!(html, :index, @model, text: "Animals")
     end
   end
 
@@ -50,12 +50,12 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
     end
 
     test "the failue case" do
-      assert_exception "Disallowed :new <a> to /animals/new" do 
+      assert_exception "Found disallowed :new <a> to /animals/new" do 
         html = "<a href='/animals/new'>Animals</a>"
         assert S.disallows_anchor!(html, :new, @model) =~ html
       end
 
-      assert_exception "Disallowed :edit <a> to /animals/1/edit" do 
+      assert_exception "Found disallowed :edit <a> to /animals/1/edit" do 
         html = "<a href='/animals/1/edit'>Animals</a>"
         assert S.disallows_anchor!(html, :edit, [@model, 1]) =~ html
       end
@@ -88,12 +88,12 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
       
       # No form
       html = ""
-      assert_exception "No :create <form> matching /animals",
+      assert_exception "Found no :create <form> matching /animals",
         do: S.allows_form!(html, :create, @model)
       
       # Wrong kind
       html = delete_form
-      assert_exception "No :create <form> matching /animals",
+      assert_exception "Found no :create <form> matching /animals",
         do: S.allows_form!(html, :create, @model)
     end
 
@@ -102,7 +102,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
       # Wrong kind
       html = create_form
-      assert_exception "No :update <form> matching /animals/1",
+      assert_exception "Found no :update <form> matching /animals/1",
         do: S.allows_form!(html, :update, [@model, 1])
     end
 
@@ -111,7 +111,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
       # Wrong kind
       html = update_form
-      assert_exception "No :delete <form> matching /animals/1",
+      assert_exception "Found no :delete <form> matching /animals/1",
         do: S.allows_form!(html, :delete, [@model, 1])
     end
   end
@@ -122,7 +122,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
       assert S.disallows_form!(html, :create, @model) == html
 
       html = delete_form <> create_form
-      assert_exception "Disallowed :create <form> for /animals",
+      assert_exception "Found disallowed :create <form> for /animals",
         do: S.disallows_form!(html, :create, @model)
     end
 
@@ -132,7 +132,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
       # Note different id
       assert S.disallows_form!(html, :update, [@model, "diff_id"]) == html
 
-      assert_exception "Disallowed :update <form> for /animals/id",
+      assert_exception "Found disallowed :update <form> for /animals/id",
         do: S.disallows_form!(html, :update, [@model, "id"])
     end
 
@@ -144,19 +144,86 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
       assert S.disallows_form!(html, :delete, [@model, "id"]) == html
 
       html = update_form <> delete_form
-      assert_exception "Disallowed :delete <form> for /animals/id",
+      assert_exception "Found disallowed :delete <form> for /animals/id",
         do: S.disallows_form!(html, :delete, [@model, "id"])
     end
   end
 
+  describe "disallows_any_form!" do
+    test "Only a model is allowed as the shorthand argument" do
+      assert_exception "no args allowed",
+        do: S.disallows_any_form!("", :delete, [@model, "id"])
+    end
+    
+    test "creation is no different than `disallows_form!`" do
+      html = delete_form <> update_form
+      assert S.disallows_any_form!(html, :create, @model) == html
+      
+      html = delete_form <> create_form
+      assert_exception "Found disallowed :create <form> for /animals",
+        do: S.disallows_any_form!(html, :create, @model)
+
+      html = delete_form <> create_form
+      assert_exception "Found disallowed :create <form> for /animals",
+        do: S.disallows_any_form!(html, :create, :old_animal_path)
+    end
+
+    test "update" do
+      # Catches any animal update, no matter the target
+      html = 
+         "<form action='/animals/id2' method='post'>
+            <input name='_method' type='hidden' value='put'>
+               stuff
+          </form>"
+
+      assert_exception "Found disallowed :update <form> for /animals...",
+        do: S.disallows_any_form!(html, :update, @model)
+
+      # Can also use the path function
+      assert_exception "Found disallowed :update <form> for /animals...",
+        do: S.disallows_any_form!(html, :update, :old_animal_path)
+
+      # Will not object to a delete function - just update
+      html = 
+         "<form action='/animals/id2' method='post'>
+            <input name='_method' type='hidden' value='delete'>
+               stuff
+          </form>"
+      S.disallows_any_form!(html, :update, :old_animal_path) =~ html
+    end
+    
+    test "deletion" do
+      # Catches any animal delete, no matter the target
+      html = 
+         "<form action='/animals/id2' method='post'>
+            <input name='_method' type='hidden' value='delete'>
+               stuff
+          </form>"
+
+      assert_exception "Found disallowed :delete <form> for /animals...",
+        do: S.disallows_any_form!(html, :delete, @model)
+
+      # Can also use the path function
+      assert_exception "Found disallowed :delete <form> for /animals...",
+        do: S.disallows_any_form!(html, :delete, :old_animal_path)
+
+      # Will not object to an update function - just delete
+      html = 
+         "<form action='/animals/id2' method='post'>
+            <input name='_method' type='hidden' value='put'>
+               stuff
+          </form>"
+      S.disallows_any_form!(html, :delete, :old_animal_path) =~ html
+    end
+  end
+    
   test "querying a form for the rest verb - allowing standard kludge" do
     assert S.has_true_rest_verb?(create_form, "post")
     assert S.has_true_rest_verb?(update_form, "put")
     assert S.has_true_rest_verb?(delete_form, "delete")
-
+    
     refute S.has_true_rest_verb?(create_form, "put")
     refute S.has_true_rest_verb?(update_form, "delete")
     refute S.has_true_rest_verb?(delete_form, "post")
   end
-
 end

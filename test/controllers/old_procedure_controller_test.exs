@@ -79,7 +79,8 @@ defmodule Eecrit.OldProcedureControllerTest do
     assert html =~ "Instructions"
 
     html
-    |> allows_new!({"Add a description", OldProcedureDescription}, [], procedure: procedure.id)
+    |> allows_new!([OldProcedureDescription, procedure: procedure.id],
+                       text: "Add a description")
     # TODO: Convert the rest of these.
     
     assert_outgoing_links(conn,

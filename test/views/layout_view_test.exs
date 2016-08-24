@@ -60,26 +60,26 @@ defmodule Eecrit.LayoutViewTest do
   ## File-specific assertions
   defchecker login_allowed!(html) do
     html
-    |> allows_new!({"Log in", Eecrit.Session})
-    |> disallows_any_delete!(Eecrit.Session)
+    |> allows_new!(:session_path, text: "Log in")
+    |> disallows_any_delete!(:session_path)
   end
 
   defchecker logout_allowed!(html, user) do
     html
-    |> disallows_new!(Eecrit.Session)
-    |> allows_delete!(Eecrit.Session, user)
+    |> disallows_new!(:session_path)
+    |> allows_delete!([:session_path, user])
   end
 
   defchecker no_admin_actions!(html) do
     html
     |> disallows_index!(Eecrit.OldAnimal)
-    |> disallows_index!(Eecrit.OldAnimal)
+    |> disallows_index!(Eecrit.OldProcedure)
   end
 
   defchecker can_go_to_admin_work!(html) do
     html
-    |> allows_index!({"Animals", Eecrit.OldAnimal})
-    |> allows_index!({"Procedures", Eecrit.OldProcedure})
+    |> allows_index!(Eecrit.OldAnimal, text: "Animals")
+    |> allows_index!(Eecrit.OldProcedure, text: "Procedures")
   end    
 
   defchecker no_user_information_shows!(html) do

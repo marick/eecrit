@@ -44,7 +44,6 @@ defmodule Eecrit.TagHelpers do
     Eecrit.User => :user_path,
     Eecrit.Organization => :organization_path,
     Eecrit.AbilityGroup => :ability_group_path,
-    Eecrit.Session => :session_path,
   }
   def resource_path_maker(model) do 
     Map.get(@resource_paths, model, "Eecrit.TagHelpers doesn't have a path registered for #{inspect model}")

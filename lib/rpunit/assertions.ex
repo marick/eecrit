@@ -1,6 +1,25 @@
 defmodule RoundingPegs.ExUnit.Assertions do
   import ExUnit.Assertions
+  # import RoundingPegs.ExUnit.CheckStyle
   
+  defmacro assert_exception(r, do: body) do
+    quote do
+      unquote(__MODULE__)._assert_exception(unquote(r), fn -> unquote(body) end)
+    end
+  end
+
+  defmacro matches!(actual, expected) do
+    quote do
+      # Seems like you can't bind_quote just `actual`
+      actual = unquote(actual)
+      ExUnit.Assertions.assert(actual =~ unquote(expected))
+      actual
+    end
+  end
+
+
+  # private
+
   def _assert_exception(requirements, f) when is_list(requirements) do
     try do
       f.()
@@ -31,10 +50,4 @@ defmodule RoundingPegs.ExUnit.Assertions do
     assert msg =~ requirement
   end
   
-  defmacro assert_exception(r, do: body) do
-    quote do
-      unquote(__MODULE__)._assert_exception(unquote(r), fn -> unquote(body) end)
-    end
-  end
-
 end

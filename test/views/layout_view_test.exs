@@ -88,7 +88,8 @@ defmodule Eecrit.LayoutViewTest do
   end
 
   defchecker user_information_shows!(html, user) do
-    assert html =~ user.display_name
-    assert html =~ User.org_short_name(user)
+    html
+    |> matches!(user.display_name)
+    |> matches!(User.org_short_name(user))
   end
 end

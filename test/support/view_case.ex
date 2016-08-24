@@ -21,6 +21,7 @@ defmodule Eecrit.ViewCase do
       # TODO: These are going away
       import RoundingPegs.ExUnit.View
 
+      import RoundingPegs.ExUnit.Assertions
       import RoundingPegs.ExUnit.PhoenixView.Arrange
       import RoundingPegs.ExUnit.PhoenixView.Act
       import RoundingPegs.ExUnit.PhoenixView.Assert

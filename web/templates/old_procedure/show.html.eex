@@ -22,9 +22,9 @@
     <tr>
       <td><%= raw(description.description) %></td>
       <td>
-          <%= link "Edit this description",
-              to: old_procedure_description_path(@conn, :edit, description, procedure: @old_procedure.id),
-              class: "btn btn-default" %>
+        <%= link "Edit this description",
+            to: old_procedure_description_path(@conn, :edit, description, procedure: @old_procedure.id),
+            class: "btn btn-default" %>
         <%= link "Delete", to: old_procedure_description_path(@conn, :delete, description), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
       </td>
     </tr>

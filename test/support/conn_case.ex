@@ -29,8 +29,8 @@ defmodule Eecrit.ConnCase do
       import Eecrit.Router.Helpers
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
-      import Eecrit.Test.ViewHelpers
 
+      import RoundingPegs.ExUnit.Assertions
       import RoundingPegs.ExUnit.View
       import RoundingPegs.ExUnit.PhoenixView.Assert
 

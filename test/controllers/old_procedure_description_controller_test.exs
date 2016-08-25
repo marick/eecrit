@@ -2,6 +2,7 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   use Eecrit.ConnCase
 
   alias Eecrit.OldProcedureDescription
+  alias Eecrit.OldProcedure
   @valid_attrs %{animal_kind: "bovine", description: "Some description", procedure_id: 43}
   @invalid_attrs %{animal_kind: "", procedure_id: 43}
   @bogus_attrs %{}
@@ -36,10 +37,10 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
     conn = get conn, old_procedure_description_path(conn, :new, procedure: procedure.id)
     assert conn.assigns.valid_animal_kinds == OldProcedureDescription.valid_animal_kinds
 
-    assert html_response(conn, 200) =~ "New description for exsanguination"
-    assert_outgoing_links(conn,
-      [{"Abandon new description and return to procedure", old_procedure_path(conn, :show, procedure.id)}])
-    
+    html = html_response(conn, 200)
+    html
+    |> matches!("New description for exsanguination")
+    |> allows_show!(procedure, text: "Abandon new description and return to procedure")
   end
 
   # CREATE
@@ -61,9 +62,11 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
 
   @tag accessed_by: "admin"
   test "a missing procedure id just provokes a 500", %{conn: conn} do
-    assert_raise(ArgumentError, fn ->
-      post conn, old_procedure_description_path(conn, :create), old_procedure_description: @bogus_attrs
-    end)
+    assert_exception ArgumentError do
+      post conn,
+        old_procedure_description_path(conn, :create),
+        old_procedure_description: @bogus_attrs
+    end
   end
 
   # SHOW
@@ -72,12 +75,14 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
   test "shows chosen resource", %{conn: conn} do
     old_procedure_description = insert_old_procedure_description()
     conn = get conn, old_procedure_description_path(conn, :show, old_procedure_description)
-    assert html_response(conn, 200) =~ "Description"
-    assert_outgoing_links(conn,
-      [old_procedure_path(conn, :show, old_procedure_description.procedure),
-       old_procedure_path(conn, :index),
-       old_procedure_description_path(conn, :index)
-      ])
+    html = html_response(conn, 200)
+    assert html =~ "Description"
+
+    # outgoing links
+    html
+    |> allows_show!(old_procedure_description.procedure, text: "View the procedure this belongs to")
+    |> allows_index!(OldProcedure, text: "View all procedures")
+    |> allows_index!(OldProcedureDescription, text: "View all descriptions")
   end
 
   @tag accessed_by: "admin"
@@ -95,11 +100,11 @@ defmodule Eecrit.OldProcedureDescriptionControllerTest do
     conn = get conn, old_procedure_description_path(conn, :edit, old_procedure_description, procedure: old_procedure_description.procedure.id)
 
     assert conn.assigns.valid_animal_kinds == OldProcedureDescription.valid_animal_kinds
-    response = html_response(conn, 200)
-    assert response =~ old_procedure_description.procedure.name
-    assert response =~ old_procedure_description.animal_kind
-    assert_outgoing_links(conn,
-      [{"Abandon change and return to procedure", old_procedure_path(conn, :show, old_procedure_description.procedure.id)}])
+    html = html_response(conn, 200)
+    html
+    |> matches!(old_procedure_description.procedure.name)
+    |> matches!(old_procedure_description.animal_kind)
+    |> allows_show!(old_procedure_description.procedure, text: "Abandon change and return to procedure")
   end
 
   # UPDATE

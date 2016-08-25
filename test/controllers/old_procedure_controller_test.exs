@@ -26,15 +26,17 @@ defmodule Eecrit.OldProcedureControllerTest do
   test "lists all entries on index", %{conn: conn} do
     old_procedure = insert_old_procedure(name: "Some procedure")
     conn = get conn, old_procedure_path(conn, :index)
-    assert html_response(conn, 200) =~ "Procedures"
-    assert_outgoing_links(conn,
-      [{"Add new procedure", old_procedure_path(conn, :new)},
 
-       # Table row
-       {"Show", old_procedure_path(conn, :show, old_procedure.id)},
-       {"Edit", old_procedure_path(conn, :edit, old_procedure.id)},
-       {"Delete", old_procedure_path(conn, :delete, old_procedure.id)},
-       ])
+    html = html_response(conn, 200)
+    html
+    |> matches!("Procedures")
+    |> allows_new!(OldProcedure, text: "Add new procedure")
+
+    # Table row
+    html
+    |> allows_show!(old_procedure, text: "Show")
+    |> allows_edit!(old_procedure, text: "Edit")
+    |> allows_delete!(old_procedure, text: "Delete")
   end
 
   # NEW
@@ -42,10 +44,11 @@ defmodule Eecrit.OldProcedureControllerTest do
   @tag accessed_by: "admin"
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, old_procedure_path(conn, :new)
-    assert html_response(conn, 200) =~ "New procedure"
 
-    assert_outgoing_links(conn,
-      [{"Back to procedure list", old_procedure_path(conn, :index)}])
+    html = html_response(conn, 200)
+    html
+    |> matches!("New procedure")
+    |> allows_index!(OldProcedure, text: "Back to procedure list")
   end
 
   # CREATE
@@ -62,38 +65,39 @@ defmodule Eecrit.OldProcedureControllerTest do
   @tag accessed_by: "admin"
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, old_procedure_path(conn, :create), old_procedure: @invalid_attrs
-    assert html_response(conn, 200) =~ "New procedure"
-    assert html_response(conn, 200) =~ "be blank"
+    html = html_response(conn, 200)
+    html
+    |> matches!("New procedure") # back to this page.
+    |> matches!("be blank")
   end
 
   # SHOW
 
   @tag accessed_by: "admin"
   test "shows chosen resource", %{conn: conn} do
-    procedure = insert_old_procedure(name: "Some procedure")
+    procedure = insert_old_procedure(name: "This is the chosen procedure name")
     description = insert_old_procedure_description(procedure: procedure,
-                                                   description: "Instructions")
+                                                   description: "This is the only procedure description")
     conn = get conn, old_procedure_path(conn, :show, procedure)
     html = html_response(conn, 200)
-    assert html =~ "Some procedure"
-    assert html =~ "Instructions"
 
+    # What we know/can do with the procedure as a whole
     html
-    |> allows_new!([OldProcedureDescription, procedure: procedure.id],
-                       text: "Add a description")
-    # TODO: Convert the rest of these.
-    
-    assert_outgoing_links(conn,
-      [      # General commands 
-        {"Change the name or delay", old_procedure_path(conn, :edit, procedure.id)},
-        {"Show all procedures", old_procedure_path(conn, :index)},
+    |> matches!("This is the chosen procedure name")
+    |> matches!("This is the only procedure description")
+    |> allows_edit!(procedure, text: "Change the name or delay")
 
-        # There is one description
-        {"Edit this description", old_procedure_description_path(conn, :edit, description.id, procedure: procedure.id)},
-      ])
+    # Working with the procedure's descriptions
+    html
+    |> allows_new!([OldProcedureDescription, procedure: procedure],
+                   text: "Add a description")
+    |> allows_edit!([description, procedure: procedure], # of our existing description
+                    text: "Edit this description")
+    |> allows_delete!(description, text: "Delete")
 
-    
-    assert_outgoing_link_texts(conn, ["Delete"]) # Sigh
+    # Available navigation away from this task
+    html
+    |> allows_index!(OldProcedure, text: "Show all procedures")
   end
 
   @tag accessed_by: "admin"
@@ -108,18 +112,20 @@ defmodule Eecrit.OldProcedureControllerTest do
   @tag accessed_by: "admin", skip: true
   test "renders form for editing chosen resource", %{conn: conn} do
     procedure = insert_old_procedure(name: "Caslick's procedure")
-    insert_old_procedure_description(procedure: procedure,
-                                     description: "Procedure Instructions")
+    description = insert_old_procedure_description(
+      procedure: procedure,
+      description: "Procedure Instructions")
     
     conn = get conn, old_procedure_path(conn, :edit, procedure)
     html = html_response(conn, 200)
-    assert html =~ "Edit Caslick&#39;s procedure"
-    # descriptions not edited here
-    refute html =~ "Procedure Instructions"
+    html
+    |> allows_edit!(procedure, text: "Edit Caslick&#39;s procedure")
+    |> disallows_edit!(description) # Descriptions not editable here
 
-    assert_outgoing_links(conn,
-      [{"Show Caslick&#39;s procedure", old_procedure_path(conn, :show, procedure.id)},
-       {"Show all procedures", old_procedure_path(conn, :index)}])
+    # Navigation away - pop back to this procedure or all procedures
+    html
+    |> allows_show!(procedure, "Show Caslick&#39;s procedure")
+    |> allows_index!(OldProcedure, "Show all procedures")
   end
 
   # UPDATE

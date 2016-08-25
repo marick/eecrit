@@ -15,7 +15,6 @@ defmodule Eecrit.ViewCase do
       import Eecrit.Router.Helpers
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
-      import Eecrit.Test.ViewHelpers
       import RoundingPegs.ExUnit.CheckStyle
 
       # TODO: These are going away

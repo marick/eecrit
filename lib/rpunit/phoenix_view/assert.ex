@@ -75,7 +75,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     arg
   end
 
-  defp can_extract_expected_text!({trees, path, action} = arg, extract_fn, expected) do
+  defp can_extract_expected_text!({trees, path, action}, extract_fn, expected) do
     possible_texts = Enum.map(trees, extract_fn)
     matches = Enum.filter(possible_texts, &(&1 == expected))
     if Enum.empty?(matches) do

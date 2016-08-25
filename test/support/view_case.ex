@@ -17,8 +17,6 @@ defmodule Eecrit.ViewCase do
       import Eecrit.Test.ConnHelpers
       import RoundingPegs.ExUnit.CheckStyle
 
-      # TODO: These are going away
-      import RoundingPegs.ExUnit.View
 
       import RoundingPegs.ExUnit.Assertions
       import RoundingPegs.ExUnit.PhoenixView.Arrange

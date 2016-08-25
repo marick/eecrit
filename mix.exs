@@ -40,6 +40,7 @@ defmodule Eecrit.Mixfile do
      {:shouldi, ">= 0.3.2"},
      {:floki, "~> 0.10.0", only: [:test, :dev]},
      {:canada, "~> 1.0.0"},
+     {:curtail, "~> 0.1"},
      
      {:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},

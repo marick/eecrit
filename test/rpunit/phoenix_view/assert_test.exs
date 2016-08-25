@@ -19,7 +19,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
     test "failure case: anchor with bad string" do
       html = "<a class='irrelevant' href='/animals'>Animals</a>"
-      assert_exception ["No :index <a> to /animals", ~r/Animals/],
+      assert_exception ["No :index for /animals", ~r/Animals/],
         do: S.allows_anchor!(html, :index, @model, text: "Manimals")
     end
 
@@ -30,10 +30,10 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
     test "note that the match must be exact" do
       html = "<a class='irrelevant' href='/animals'>Animals</a>"
-      assert_exception ["No :index <a> to /animals", "Animals"],
+      assert_exception ["No :index for /animals", "Animals"],
         do: S.allows_anchor!(html, :index, @model, text: "Animal")
       html = "<a class='irrelevant' href='/animals'> Animals</a>"
-      assert_exception ["No :index <a> to /animals", "Animals"],
+      assert_exception ["No :index for /animals", "Animals"],
         do: S.allows_anchor!(html, :index, @model, text: "Animals")
     end
   end

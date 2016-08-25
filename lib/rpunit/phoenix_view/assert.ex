@@ -30,6 +30,10 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert.Macros do
         allows_form!(html, unquote(action), path_shorthand)
       end
       
+      def unquote(allows_name)(html, path_shorthand, expecteds) do 
+        allows_form!(html, unquote(action), path_shorthand, expecteds)
+      end
+      
       def unquote(disallows_name)(html, path_shorthand) do 
         disallows_form!(html, unquote(action), path_shorthand)
       end
@@ -71,18 +75,18 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     arg
   end
 
-  defp exactly_matching_anchor_text!({trees, path, action} = arg, expected) do
-    matches = Enum.filter(trees, &(Floki.text(&1) == expected))
+  defp can_extract_expected_text!({trees, path, action} = arg, extract_fn, expected) do
+    possible_texts = Enum.map(trees, extract_fn)
+    matches = Enum.filter(possible_texts, &(&1 == expected))
     if Enum.empty?(matches) do
-      incorrects = Enum.map(trees, &Floki.text/1)
       msg =
-        "No #{pretty_action action} <a> to #{pretty_path path} has the correct text.\n" <>
+        "No #{pretty_action action} for #{pretty_path path} has the correct text.\n" <>
         "Here are the incorrect texts:\n  " <>
-        Enum.join(incorrects, "\n  ")
+        Enum.join(possible_texts, "\n  ")
       flunk(msg)
     end
-    arg
   end
+
 
   # TODO: why can't these both be defcheckers?
   def allows_anchor!(html, action, path_shorthand) do
@@ -95,9 +99,19 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
   def allows_anchor!(html, action, path_shorthand, text: text) do
     anchor_trees_with_source(html, action, path_shorthand)
     |> some_anchor_trees!
-    |> exactly_matching_anchor_text!(text)
+    |> can_extract_expected_text!(&Floki.text/1, text)
 
     html
+  end
+
+  def allows_anchor!(_html, _action, _path_shorthand, args) do
+    msg = if is_binary(args) do
+      shorter = Curtail.truncate(args, length: 15)
+      "The last argument should be a keyword list. Did you mean `text: #{inspect shorter}?`"
+    else
+      "Your final argument (#{inspect args}) is invalid."
+    end
+    raise msg
   end
 
   defchecker disallows_anchor!(html, action, path_shorthand) do
@@ -149,9 +163,21 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
     arg
   end
 
-  defchecker allows_form!(html, action, path_shorthand) do
+  def allows_form!(html, action, path_shorthand) do
     form_trees_with_source(html, action, path_shorthand)
     |> some_form_trees!
+
+    html
+  end
+
+  def allows_form!(html, action, path_shorthand, text: text) do
+    extracter = fn(trees) -> Floki.find(trees, "a") |> Floki.text end
+    
+    form_trees_with_source(html, action, path_shorthand)
+    |> some_form_trees!
+    |> can_extract_expected_text!(extracter, text)
+    
+    html
   end
 
   defchecker disallows_form!(html, action, path_shorthand) do

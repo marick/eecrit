@@ -4,3 +4,21 @@
                         action: <%= singular %>_path(@conn, :update, @<%= singular %>) <%= "%\>" %>
 
 <%= "<%=" %> link "Back", to: <%= singular %>_path(@conn, :index) <%= "%\>" %>
+
+Or abandon editing in one of these two ways:
+
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= "<%=" %>
+        link "Show ##### SOME IDENTIFIER HERE ####",
+        to: <%= singular %>_path(@conn, :show, @<%= singular %>),
+        class: "btn btn-default"
+    <%= "%\>"
+    <%= "<%=" %>
+        link "Show all <%= template_plural %>",
+        to: <%= singular %>_path(@conn, :index),
+        class: "btn btn-default"
+    <%= "%\>"
+  </span>
+</div>
+

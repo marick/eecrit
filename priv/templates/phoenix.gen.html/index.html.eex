@@ -1,5 +1,15 @@
 <h2>Listing <%= template_plural %></h2>
 
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= "<%=" %>
+       link "Add new <%= template_singular %>",
+       to: <%= singular %>_path(@conn, :new),
+       class: "btn btn-default"
+    <%= "%\>"
+  </span>
+</div>
+
 <table class="table">
   <thead>
     <tr>
@@ -23,4 +33,13 @@
   </tbody>
 </table>
 
-<%= "<%=" %> link "New <%= template_singular %>", to: <%= singular %>_path(@conn, :new) %>
+<div class="input-group">
+  <span class="input-group-btn">
+    <%= "<%=" %>
+       link "Add new <%= template_singular %>",
+       to: <%= singular %>_path(@conn, :new),
+       class: "btn btn-default"
+    <%= "%\>"
+  </span>
+</div>
+

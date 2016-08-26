@@ -1,6 +1,6 @@
 defmodule RoundingPegs.ExUnit.AssertionsTest do
-  use RoundingPegs.ExUnit.Case
-  import RoundingPegs.ExUnit.Assertions
+  use ExUnit.Case, async: true
+  use RoundingPegs.ExUnit
 
   describe "assert_exception" do
     test "can match on strings using =~ substring" do

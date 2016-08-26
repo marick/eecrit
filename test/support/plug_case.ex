@@ -13,8 +13,10 @@ defmodule Eecrit.PlugCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @opts Eecrit.Router.init([])
+
       # Import conveniences for testing with plugs
-      use ShouldI
       use Phoenix.ConnTest
 
       alias Eecrit.Repo
@@ -23,10 +25,8 @@ defmodule Eecrit.PlugCase do
       alias Eecrit.Test.PlugHelpers
       alias Plug.Conn
       alias Phoenix.ConnTest 
-      import RoundingPegs.ExUnit.CheckStyle
+      import RoundingPegs.ExUnit
 
-      # The default endpoint for testing
-      @opts Eecrit.Router.init([])
     end
   end
 

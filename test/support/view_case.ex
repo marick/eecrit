@@ -8,17 +8,14 @@ defmodule Eecrit.ViewCase do
       # The default endpoint for testing (for constructing paths)
       @endpoint Eecrit.Endpoint
 
-      use ShouldI
       use Phoenix.ConnTest
       import Phoenix.View
 
       import Eecrit.Router.Helpers
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
-      import RoundingPegs.ExUnit.CheckStyle
 
-
-      import RoundingPegs.ExUnit.Assertions
+      use RoundingPegs.ExUnit
       import RoundingPegs.ExUnit.PhoenixView.Arrange
       import RoundingPegs.ExUnit.PhoenixView.Act
       import RoundingPegs.ExUnit.PhoenixView.Assert

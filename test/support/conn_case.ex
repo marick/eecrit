@@ -17,9 +17,11 @@ defmodule Eecrit.ConnCase do
 
   using do
     quote do
-      use ShouldI
-      use Phoenix.ConnTest
+      # The default endpoint for testing
+      @endpoint Eecrit.Endpoint
 
+      use Phoenix.ConnTest
+      
       alias Eecrit.Repo
       alias Eecrit.OldRepo
       import Ecto
@@ -30,11 +32,9 @@ defmodule Eecrit.ConnCase do
       import Eecrit.Test.Makers
       import Eecrit.Test.ConnHelpers
 
-      import RoundingPegs.ExUnit.Assertions
+      use RoundingPegs.ExUnit
       import RoundingPegs.ExUnit.PhoenixView.Assert
 
-      # The default endpoint for testing
-      @endpoint Eecrit.Endpoint
     end
   end
 

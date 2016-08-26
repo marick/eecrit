@@ -17,7 +17,9 @@ defmodule Eecrit.ChannelCase do
 
   using do
     quote do
-      # Import conveniences for testing with channels
+      # The default endpoint for testing
+      @endpoint Eecrit.Endpoint
+
       use Phoenix.ChannelTest
 
       alias Eecrit.Repo
@@ -25,9 +27,7 @@ defmodule Eecrit.ChannelCase do
       import Ecto.Changeset
       import Ecto.Query
 
-
-      # The default endpoint for testing
-      @endpoint Eecrit.Endpoint
+      use RoundingPegs.ExUnit
     end
   end
 

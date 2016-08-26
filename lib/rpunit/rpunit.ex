@@ -1,8 +1,8 @@
-defmodule RoundingPegs.ExUnit.Case do
+defmodule RoundingPegs.ExUnit do
 
   defmacro __using__(_) do
     quote do
-      use ExUnit.Case
+      import RoundingPegs.ExUnit.CheckStyle
       import RoundingPegs.ExUnit.Assertions
       import ShouldI, only: [assign: 2]
     end

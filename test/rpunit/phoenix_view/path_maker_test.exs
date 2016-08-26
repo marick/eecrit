@@ -1,5 +1,6 @@
 defmodule RoundingPegs.ExUnit.PhoenixView.PathMakerTest do
-  use RoundingPegs.ExUnit.Case
+  use ExUnit.Case
+  use RoundingPegs.ExUnit
   alias RoundingPegs.ExUnit.PhoenixView.PathMaker, as: S
   require Eecrit.Router.Helpers
 

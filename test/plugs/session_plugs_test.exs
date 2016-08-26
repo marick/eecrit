@@ -6,7 +6,7 @@ defmodule Eecrit.SessionPlugsTest do
   alias Eecrit.Organization
   alias Eecrit.User
 
-  having "an `:add_current_user` function" do
+  describe "an `:add_current_user` function" do
     def subject(conn, user_id) do
       SessionPlugs.add_current_user(conn, :_args, user_id).assigns.current_user
     end

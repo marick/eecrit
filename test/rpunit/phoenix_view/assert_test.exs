@@ -1,5 +1,6 @@
 defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
-  use RoundingPegs.ExUnit.Case
+  use ExUnit.Case, async: true
+  use RoundingPegs.ExUnit
   alias RoundingPegs.ExUnit.PhoenixView.Assert, as: S
   require Eecrit.Router.Helpers
 

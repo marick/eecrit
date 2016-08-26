@@ -52,9 +52,6 @@ defmodule Eecrit.AbilityGroupController do
 
   def delete(conn, %{"id" => id}) do
     ability_group = Repo.get!(AbilityGroup, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(ability_group)
 
     conn

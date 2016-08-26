@@ -15,7 +15,7 @@ Or abandon editing in one of these two ways:
 <div class="input-group">
   <span class="input-group-btn">
     <%= link "Show #{@old_procedure.name}",
-        to: old_procedure_path(@conn, :show, @old_procedure.id),
+        to: old_procedure_path(@conn, :show, @old_procedure),
         class: "btn btn-default" %>
     <%= link "Show all procedures",
         to: old_procedure_path(@conn, :index),

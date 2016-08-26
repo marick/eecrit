@@ -34,7 +34,6 @@ defmodule Eecrit.ConnCase do
       use RoundingPegs.ExUnit
       import RoundingPegs.ExUnit.Conn.Assert
       import RoundingPegs.ExUnit.PhoenixView.Assert
-
     end
   end
 

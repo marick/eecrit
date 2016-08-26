@@ -81,7 +81,7 @@ defmodule Eecrit.OldAnimalControllerTest do
     assert redirected_to(conn) == old_animal_path(conn, :index)
     assert OldRepo.get_by(OldAnimal, @valid_attrs)
     assert html_response(conn, 302)
-    assert flash_matches(conn, "info", ~r{ANIMAL NAME was created})
+    flash_matches!(conn, "info", ~r{ANIMAL NAME was created})
   end
 
   @tag accessed_by: "admin"

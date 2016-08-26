@@ -30,9 +30,9 @@ defmodule Eecrit.ConnCase do
 
       import Eecrit.Router.Helpers
       import Eecrit.Test.Makers
-      import Eecrit.Test.ConnHelpers
 
       use RoundingPegs.ExUnit
+      import RoundingPegs.ExUnit.Conn.Assert
       import RoundingPegs.ExUnit.PhoenixView.Assert
 
     end

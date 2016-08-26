@@ -1,4 +1,4 @@
-defmodule RoundingPegs.ExUnit.Plug.Arrange do
+defmodule RoundingPegs.ExUnit.Conn.Arrange do
   # Copied from Phoenix source.
 
   @session Plug.Session.init(
@@ -14,5 +14,4 @@ defmodule RoundingPegs.ExUnit.Plug.Arrange do
     |> Plug.Session.call(@session)
     |> Plug.Conn.fetch_session()
   end
-
 end

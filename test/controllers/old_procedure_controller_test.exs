@@ -59,7 +59,7 @@ defmodule Eecrit.OldProcedureControllerTest do
     created = OldRepo.get_by(OldProcedure, @valid_attrs)
     assert created
     assert redirected_to(conn) == old_procedure_path(conn, :show, created.id)
-    assert flash_matches(conn, "info", ~r{PROCEDURE NAME was created})
+    flash_matches!(conn, "info", ~r{PROCEDURE NAME was created})
   end
 
   @tag accessed_by: "admin"

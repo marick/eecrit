@@ -1,6 +1,5 @@
 defmodule RoundingPegs.ExUnit.Assertions do
   import ExUnit.Assertions
-  # import RoundingPegs.ExUnit.CheckStyle
   
   defmacro assert_exception(r, do: body) do
     quote do

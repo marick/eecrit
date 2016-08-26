@@ -25,7 +25,7 @@ defmodule Eecrit.ModelCase do
       import Eecrit.ModelCase
       import Eecrit.Test.Makers
 
-      import RoundingPegs.ExUnit
+      use RoundingPegs.ExUnit
     end
   end
 

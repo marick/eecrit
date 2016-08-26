@@ -25,7 +25,8 @@ defmodule Eecrit.PlugCase do
       alias Eecrit.Test.PlugHelpers
       alias Plug.Conn
       alias Phoenix.ConnTest 
-      import RoundingPegs.ExUnit
+      use RoundingPegs.ExUnit
+      alias RoundingPegs.ExUnit.Plug.Arrange
 
     end
   end

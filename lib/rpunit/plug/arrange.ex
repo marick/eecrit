@@ -1,5 +1,4 @@
-defmodule Eecrit.Test.PlugHelpers do
-
+defmodule RoundingPegs.ExUnit.Plug.Arrange do
   # Copied from Phoenix source.
 
   @session Plug.Session.init(
@@ -9,7 +8,7 @@ defmodule Eecrit.Test.PlugHelpers do
     signing_salt: "yadayada"
   )
 
-  def with_session(conn) do
+  def add_plug_session(conn) do
     conn
     |> Map.put(:secret_key_base, String.duplicate("abcdefgh", 8))
     |> Plug.Session.call(@session)
@@ -17,4 +16,3 @@ defmodule Eecrit.Test.PlugHelpers do
   end
 
 end
-

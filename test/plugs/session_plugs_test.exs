@@ -65,7 +65,7 @@ defmodule Eecrit.SessionPlugsTest do
     run_plug = fn(user, plug) ->
       conn_with_user =
         conn
-        |> PlugHelpers.with_session()
+        |> Arrange.add_plug_session()
         |> ConnTest.fetch_flash()
         |> Conn.assign(:current_user, user)
       apply(SessionPlugs, plug, [conn_with_user, :_args])

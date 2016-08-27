@@ -4,6 +4,6 @@
                         action: <%= singular %>_path(@conn, :create) <%= "%\>" %>
 
 <%= "<%=" %> link "Back to <%= template_singular %> list",
-                  to: <%= singular %>_path(@conn, :index)
+                  to: <%= singular %>_path(@conn, :index),
                   class: "btn btn-default"
 <%= "%\>" %>

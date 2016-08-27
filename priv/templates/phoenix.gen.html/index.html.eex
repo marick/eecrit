@@ -6,7 +6,7 @@
        link "Add new <%= template_singular %>",
        to: <%= singular %>_path(@conn, :new),
        class: "btn btn-default"
-    <%= "%\>"
+    <%= "%\>" %>
   </span>
 </div>
 
@@ -39,7 +39,7 @@
        link "Add new <%= template_singular %>",
        to: <%= singular %>_path(@conn, :new),
        class: "btn btn-default"
-    <%= "%\>"
+    <%= "%\>" %>
   </span>
 </div>
 

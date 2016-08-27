@@ -12,13 +12,13 @@
 
 <div class="input-group">
   <span class="input-group-btn">
-    <%= "<%= %>
+    <%= "<%=" %>
       link "Edit this <%= template_singular %>",
            to: <%= singular %>_path(@conn, :edit, @<%= singular %>),
            class: "btn btn-default" %>
     <%= "%\>" %>
 
-    <%= "<%= %>
+    <%= "<%=" %>
       link "Back to <%= template_singular %> list",
       to: <%= singular %>_path(@conn, :index),
       class: "btn btn-default"

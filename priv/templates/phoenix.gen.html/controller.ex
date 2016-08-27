@@ -9,7 +9,6 @@ defmodule <%= module %>Controller do
   end
 
   def new(conn, _params) do
-    changeset = <%= alias %>.changeset(%<%= alias %>{})
     render(conn, "new.html", changeset: <%= alias %>.new_action_changeset)
   end
 

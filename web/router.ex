@@ -34,6 +34,7 @@ defmodule Eecrit.Router do
 
     get "/", PageController, :index
     get "/help", HelpController, :index
+    get "/elm", ElmController, :index
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 

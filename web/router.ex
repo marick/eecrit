@@ -33,6 +33,7 @@ defmodule Eecrit.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/help", HelpController, :index
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 

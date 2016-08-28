@@ -7758,6 +7758,46 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _user$project$Components_AnimalChoice$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$span,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('animal-choice')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					model.name,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' (',
+						A2(_elm_lang$core$Basics_ops['++'], model.kind, ')'))))
+			]));
+};
+var _user$project$Components_AnimalChoice$Model = F2(
+	function (a, b) {
+		return {name: a, kind: b};
+	});
+
+var _user$project$Components_AnimalChoiceList$renderAnimal = function (animal) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Components_AnimalChoice$view(animal)
+			]));
+};
+var _user$project$Components_AnimalChoiceList$animals = _elm_lang$core$Native_List.fromArray(
+	[
+		{name: 'Betsy', kind: 'cow'},
+		{name: 'Biff', kind: 'gelding'}
+	]);
+var _user$project$Components_AnimalChoiceList$renderAnimals = A2(_elm_lang$core$List$map, _user$project$Components_AnimalChoiceList$renderAnimal, _user$project$Components_AnimalChoiceList$animals);
 var _user$project$Components_AnimalChoiceList$view = A2(
 	_elm_lang$html$Html$div,
 	_elm_lang$core$Native_List.fromArray(
@@ -7778,33 +7818,7 @@ var _user$project$Components_AnimalChoiceList$view = A2(
 			_elm_lang$html$Html$ul,
 			_elm_lang$core$Native_List.fromArray(
 				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$li,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text('Animal 1')
-						])),
-					A2(
-					_elm_lang$html$Html$li,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text('Animal 2')
-						])),
-					A2(
-					_elm_lang$html$Html$li,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text('Animal 3')
-						]))
-				]))
+			_user$project$Components_AnimalChoiceList$renderAnimals)
 		]));
 
 var _user$project$Registration$main = {

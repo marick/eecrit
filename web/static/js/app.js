@@ -55,5 +55,8 @@ if(video) {
 
 // Elm setup
 
-const elmDiv = document.querySelector('#elm-container');
-const elmApp = Elm.App.embed(elmDiv);
+import Elm from './registration'
+const elmDiv = document.querySelector('#elm-target');
+if (elmDiv) {
+    Elm.Registration.embed(elmDiv);
+}

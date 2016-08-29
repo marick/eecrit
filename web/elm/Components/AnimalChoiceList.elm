@@ -4,13 +4,28 @@ import Html exposing (Html, text, ul, li, div, h2, button)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Components.AnimalChoice as AnimalChoice
+import Http
+import Task
+import Json.Decode as Json exposing ((:=))
+import Debug
+
+-- MODEL
 
 type alias Model =
     {animalChoices: List AnimalChoice.Model}
 
+initialModel : Model
+initialModel =
+    { animalChoices = [] }
+
+
+-- UPDATE
+
 type Msg
     = NoOp
     | Fetch
+    | FetchSucceed (List AnimalChoice.Model)
+    | FetchFail Http.Error
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -18,14 +33,18 @@ update msg model =
         NoOp ->
             (model, Cmd.none)
         Fetch ->
-            (animals, Cmd.none)
+            (model, fetchAnimalChoiceList)
+        FetchSucceed animalChoiceList ->
+            (Model animalChoiceList, Cmd.none)
+        FetchFail error ->
+            case error of
+                Http.UnexpectedPayload errorMessage ->
+                    Debug.log errorMessage
+                    (model, Cmd.none)
+                _ ->
+                    (model, Cmd.none)
 
-animals : Model
-animals =
-    { animalChoices = 
-          [  {name = "Betsy", kind = "cow"}
-          ,{name = "Biff", kind = "gelding"}
-          ]}
+-- VIEW
 
 renderAnimal : AnimalChoice.Model -> Html a
 renderAnimal animal =
@@ -35,14 +54,34 @@ renderAnimals : Model -> List (Html a)
 renderAnimals model =
     List.map renderAnimal model.animalChoices
 
-initialModel : Model
-initialModel =
-    { animalChoices = [] }
-                
-
 view : Model -> Html Msg
 view model =
   div [ class "animal-choice-list" ]
       [ h2 [] [ text "Animal Choice List" ]
       , button [onClick Fetch, class "btn btn-primary"] [text "Fetch"]
       , ul [] (renderAnimals model)]
+
+-- HTTP
+
+fetchAnimalChoiceList : Cmd Msg
+fetchAnimalChoiceList =
+    let
+        url = "/api/registration"
+    in
+        Task.perform FetchFail FetchSucceed (Http.get decodeAnimalChoiceFetch url)
+
+
+decodeAnimalChoiceFetch : Json.Decoder (List AnimalChoice.Model)
+decodeAnimalChoiceFetch =
+    Json.at ["data"] decodeAnimalChoiceList
+
+decodeAnimalChoiceList: Json.Decoder (List AnimalChoice.Model)
+decodeAnimalChoiceList =
+    Json.list decodeAnimalChoiceData
+
+decodeAnimalChoiceData : Json.Decoder AnimalChoice.Model
+decodeAnimalChoiceData =
+    Json.object2 AnimalChoice.Model
+        ("name" := Json.string)
+        ("kind" := Json.string)
+

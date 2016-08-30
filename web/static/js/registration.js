@@ -8752,6 +8752,30 @@ var _user$project$Components_AnimalChoiceList$renderAnimal = function (animal) {
 var _user$project$Components_AnimalChoiceList$renderAnimals = function (model) {
 	return A2(_elm_lang$core$List$map, _user$project$Components_AnimalChoiceList$renderAnimal, model.animalChoices);
 };
+var _user$project$Components_AnimalChoiceList$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('animal-choice-list')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Animal Choice List')
+					])),
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_user$project$Components_AnimalChoiceList$renderAnimals(model))
+			]));
+};
 var _user$project$Components_AnimalChoiceList$initialModel = {
 	animalChoices: _elm_lang$core$Native_List.fromArray(
 		[])
@@ -8800,41 +8824,6 @@ var _user$project$Components_AnimalChoiceList$update = F2(
 		}
 	});
 var _user$project$Components_AnimalChoiceList$Fetch = {ctor: 'Fetch'};
-var _user$project$Components_AnimalChoiceList$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('animal-choice-list')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Animal Choice List')
-					])),
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Events$onClick(_user$project$Components_AnimalChoiceList$Fetch),
-						_elm_lang$html$Html_Attributes$class('btn btn-primary')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Fetch')
-					])),
-				A2(
-				_elm_lang$html$Html$ul,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_user$project$Components_AnimalChoiceList$renderAnimals(model))
-			]));
-};
 var _user$project$Components_AnimalChoiceList$NoOp = {ctor: 'NoOp'};
 
 var _user$project$Registration$welcomeView = A2(
@@ -8873,13 +8862,25 @@ var _user$project$Registration$update = F2(
 				_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, cmd)
 			};
 		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{currentView: _p0._0}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
+			var _p3 = _p0._0;
+			var _p2 = _p3;
+			if (_p2.ctor === 'AnimalChoiceListView') {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentView: _p3}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, _user$project$Components_AnimalChoiceList$fetchAnimalChoiceList)
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{currentView: _p3}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			}
 		}
 	});
 var _user$project$Registration$animalChoiceListView = function (model) {
@@ -8889,8 +8890,8 @@ var _user$project$Registration$animalChoiceListView = function (model) {
 		_user$project$Components_AnimalChoiceList$view(model.animalChoiceListModel));
 };
 var _user$project$Registration$pageView = function (model) {
-	var _p2 = model.currentView;
-	if (_p2.ctor === 'RootView') {
+	var _p4 = model.currentView;
+	if (_p4.ctor === 'RootView') {
 		return _user$project$Registration$welcomeView;
 	} else {
 		return _user$project$Registration$animalChoiceListView(model);
@@ -8955,7 +8956,7 @@ var _user$project$Registration$header = A2(
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html$text('Articles')
+									_elm_lang$html$Html$text('Animals')
 								]))
 						]))
 				]))

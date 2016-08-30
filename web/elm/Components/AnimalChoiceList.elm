@@ -58,7 +58,6 @@ view : Model -> Html Msg
 view model =
   div [ class "animal-choice-list" ]
       [ h2 [] [ text "Animal Choice List" ]
-      , button [onClick Fetch, class "btn btn-primary"] [text "Fetch"]
       , ul [] (renderAnimals model)]
 
 -- HTTP

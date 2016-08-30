@@ -37,7 +37,11 @@ update msg model =
             let (updatedModel, cmd) = AnimalChoiceList.update animalChoiceMsg model.animalChoiceListModel
             in ( { model | animalChoiceListModel = updatedModel }, Cmd.map AnimalChoiceListMsg cmd )
         UpdateView page ->
-            ( { model | currentView = page }, Cmd.none)
+            case page of
+                AnimalChoiceListView ->
+                    ( {model | currentView = page}, Cmd.map AnimalChoiceListMsg AnimalChoiceList.fetchAnimalChoiceList)
+                _ ->
+                    ( { model | currentView = page }, Cmd.none)
       
 
 subscriptions : Model -> Sub Msg
@@ -54,7 +58,7 @@ header =
             [ li [] [a [href "#", onClick (UpdateView RootView)]
                        [text "Home"]]
             , li [] [a [href "#animals", onClick (UpdateView AnimalChoiceListView) ]
-                       [text "Articles"]]
+                       [text "Animals"]]
             ]
         ]
 

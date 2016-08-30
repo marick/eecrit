@@ -8804,7 +8804,7 @@ var _user$project$Components_AnimalChoiceList$animalLink = function (animal) {
 				_elm_lang$html$Html_Attributes$href(
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					'animal/',
+					'#animal/',
 					A2(_elm_lang$core$Basics_ops['++'], animal.name, '/show'))),
 				_elm_lang$html$Html_Events$onClick(
 				_user$project$Components_AnimalChoiceList$RouteToNewPage(
@@ -8862,6 +8862,27 @@ var _user$project$Components_AnimalChoiceList$view = function (model) {
 };
 var _user$project$Components_AnimalChoiceList$ListView = {ctor: 'ListView'};
 
+var _user$project$Components_AnimalChoiceShow$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h3,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(model.name)
+					])),
+				_elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], '... is of kind ', model.kind))
+			]));
+};
+var _user$project$Components_AnimalChoiceShow$NoOp = {ctor: 'NoOp'};
+
 var _user$project$Registration$welcomeView = A2(
 	_elm_lang$html$Html$h2,
 	_elm_lang$core$Native_List.fromArray(
@@ -8877,48 +8898,21 @@ var _user$project$Registration$Model = F2(
 	function (a, b) {
 		return {animalChoiceListModel: a, currentView: b};
 	});
+var _user$project$Registration$AnimalChoiceShowMsg = function (a) {
+	return {ctor: 'AnimalChoiceShowMsg', _0: a};
+};
+var _user$project$Registration$animalChoiceShowView = function (article) {
+	return A2(
+		_elm_lang$html$Html_App$map,
+		_user$project$Registration$AnimalChoiceShowMsg,
+		_user$project$Components_AnimalChoiceShow$view(article));
+};
 var _user$project$Registration$UpdateView = function (a) {
 	return {ctor: 'UpdateView', _0: a};
 };
 var _user$project$Registration$AnimalChoiceListMsg = function (a) {
 	return {ctor: 'AnimalChoiceListMsg', _0: a};
 };
-var _user$project$Registration$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'AnimalChoiceListMsg') {
-			var _p1 = A2(_user$project$Components_AnimalChoiceList$update, _p0._0, model.animalChoiceListModel);
-			var updatedModel = _p1._0;
-			var cmd = _p1._1;
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{animalChoiceListModel: updatedModel}),
-				_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, cmd)
-			};
-		} else {
-			var _p3 = _p0._0;
-			var _p2 = _p3;
-			if (_p2.ctor === 'AnimalChoiceListView') {
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{currentView: _p3}),
-					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, _user$project$Components_AnimalChoiceList$fetchAnimalChoiceList)
-				};
-			} else {
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{currentView: _p3}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			}
-		}
-	});
 var _user$project$Registration$animalChoiceListView = function (model) {
 	return A2(
 		_elm_lang$html$Html_App$map,
@@ -8926,13 +8920,77 @@ var _user$project$Registration$animalChoiceListView = function (model) {
 		_user$project$Components_AnimalChoiceList$view(model.animalChoiceListModel));
 };
 var _user$project$Registration$pageView = function (model) {
-	var _p4 = model.currentView;
-	if (_p4.ctor === 'RootView') {
-		return _user$project$Registration$welcomeView;
-	} else {
-		return _user$project$Registration$animalChoiceListView(model);
+	var _p0 = model.currentView;
+	switch (_p0.ctor) {
+		case 'RootView':
+			return _user$project$Registration$welcomeView;
+		case 'AnimalChoiceListView':
+			return _user$project$Registration$animalChoiceListView(model);
+		default:
+			return _user$project$Registration$animalChoiceShowView(_p0._0);
 	}
 };
+var _user$project$Registration$AnimalChoiceShowView = function (a) {
+	return {ctor: 'AnimalChoiceShowView', _0: a};
+};
+var _user$project$Registration$update = F2(
+	function (msg, model) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'AnimalChoiceListMsg':
+				var _p5 = _p1._0;
+				var _p2 = _p5;
+				if (_p2.ctor === 'RouteToNewPage') {
+					var _p3 = _p2._0;
+					if (_p3.ctor === 'ShowView') {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									currentView: _user$project$Registration$AnimalChoiceShowView(_p3._0)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					}
+				} else {
+					var _p4 = A2(_user$project$Components_AnimalChoiceList$update, _p5, model.animalChoiceListModel);
+					var updatedModel = _p4._0;
+					var cmd = _p4._1;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{animalChoiceListModel: updatedModel}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, cmd)
+					};
+				}
+			case 'UpdateView':
+				var _p7 = _p1._0;
+				var _p6 = _p7;
+				if (_p6.ctor === 'AnimalChoiceListView') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{currentView: _p7}),
+						_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$Registration$AnimalChoiceListMsg, _user$project$Components_AnimalChoiceList$fetchAnimalChoiceList)
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{currentView: _p7}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
 var _user$project$Registration$AnimalChoiceListView = {ctor: 'AnimalChoiceListView'};
 var _user$project$Registration$RootView = {ctor: 'RootView'};
 var _user$project$Registration$initialModel = {animalChoiceListModel: _user$project$Components_AnimalChoiceList$initialModel, currentView: _user$project$Registration$RootView};

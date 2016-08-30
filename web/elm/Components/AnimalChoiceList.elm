@@ -55,7 +55,7 @@ type SubPage
 
 animalLink : AnimalChoice.Model -> Html Msg
 animalLink animal =
-    a [ href ("animal/" ++ animal.name ++ "/show")
+    a [ href ("#animal/" ++ animal.name ++ "/show")
       , onClick (RouteToNewPage (ShowView animal))
       ]
       [ text " (Show)" ]

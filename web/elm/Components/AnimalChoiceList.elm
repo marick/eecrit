@@ -66,7 +66,7 @@ view model =
 fetchAnimalChoiceList : Cmd Msg
 fetchAnimalChoiceList =
     let
-        url = "/api/registration"
+        url = "/api/animals"
     in
         Task.perform FetchFail FetchSucceed (Http.get decodeAnimalChoiceFetch url)
 

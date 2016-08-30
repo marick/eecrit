@@ -61,8 +61,9 @@ defmodule Eecrit.Router do
     resources "/organizations", OrganizationController
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Eecrit do
-  #   pipe_through :api
-  # end
+  scope "/api", Eecrit do
+    pipe_through :api
+    
+    resources "/animals", OldAnimalApiController, except: [:new, :edit]
+  end
 end

@@ -8739,49 +8739,15 @@ var _user$project$Components_AnimalChoiceList$decodeAnimalChoiceFetch = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['data']),
 	_user$project$Components_AnimalChoiceList$decodeAnimalChoiceList);
-var _user$project$Components_AnimalChoiceList$renderAnimal = function (animal) {
-	return A2(
-		_elm_lang$html$Html$li,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$Components_AnimalChoice$view(animal)
-			]));
-};
-var _user$project$Components_AnimalChoiceList$renderAnimals = function (model) {
-	return A2(_elm_lang$core$List$map, _user$project$Components_AnimalChoiceList$renderAnimal, model.animalChoices);
-};
-var _user$project$Components_AnimalChoiceList$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('animal-choice-list')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Animal Choice List')
-					])),
-				A2(
-				_elm_lang$html$Html$ul,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_user$project$Components_AnimalChoiceList$renderAnimals(model))
-			]));
-};
 var _user$project$Components_AnimalChoiceList$initialModel = {
 	animalChoices: _elm_lang$core$Native_List.fromArray(
 		[])
 };
 var _user$project$Components_AnimalChoiceList$Model = function (a) {
 	return {animalChoices: a};
+};
+var _user$project$Components_AnimalChoiceList$RouteToNewPage = function (a) {
+	return {ctor: 'RouteToNewPage', _0: a};
 };
 var _user$project$Components_AnimalChoiceList$FetchFail = function (a) {
 	return {ctor: 'FetchFail', _0: a};
@@ -8811,7 +8777,7 @@ var _user$project$Components_AnimalChoiceList$update = F2(
 					_0: _user$project$Components_AnimalChoiceList$Model(_p0._0),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'FetchFail':
 				var _p1 = _p0._0;
 				if (_p1.ctor === 'UnexpectedPayload') {
 					return A2(
@@ -8821,10 +8787,80 @@ var _user$project$Components_AnimalChoiceList$update = F2(
 				} else {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Components_AnimalChoiceList$Fetch = {ctor: 'Fetch'};
 var _user$project$Components_AnimalChoiceList$NoOp = {ctor: 'NoOp'};
+var _user$project$Components_AnimalChoiceList$ShowView = function (a) {
+	return {ctor: 'ShowView', _0: a};
+};
+var _user$project$Components_AnimalChoiceList$animalLink = function (animal) {
+	return A2(
+		_elm_lang$html$Html$a,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$href(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'animal/',
+					A2(_elm_lang$core$Basics_ops['++'], animal.name, '/show'))),
+				_elm_lang$html$Html_Events$onClick(
+				_user$project$Components_AnimalChoiceList$RouteToNewPage(
+					_user$project$Components_AnimalChoiceList$ShowView(animal)))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(' (Show)')
+			]));
+};
+var _user$project$Components_AnimalChoiceList$renderAnimal = function (animal) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Components_AnimalChoice$view(animal),
+						_user$project$Components_AnimalChoiceList$animalLink(animal)
+					]))
+			]));
+};
+var _user$project$Components_AnimalChoiceList$renderAnimals = function (model) {
+	return A2(_elm_lang$core$List$map, _user$project$Components_AnimalChoiceList$renderAnimal, model.animalChoices);
+};
+var _user$project$Components_AnimalChoiceList$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('animal-choice-list')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Animal Choice List')
+					])),
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_user$project$Components_AnimalChoiceList$renderAnimals(model))
+			]));
+};
+var _user$project$Components_AnimalChoiceList$ListView = {ctor: 'ListView'};
 
 var _user$project$Registration$welcomeView = A2(
 	_elm_lang$html$Html$h2,

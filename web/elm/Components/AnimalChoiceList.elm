@@ -1,7 +1,7 @@
 module Components.AnimalChoiceList exposing (..)
 
-import Html exposing (Html, text, ul, li, div, h2, button)
-import Html.Attributes exposing (class)
+import Html exposing (..)
+import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 import Components.AnimalChoice as AnimalChoice
 import Http
@@ -26,6 +26,7 @@ type Msg
     | Fetch
     | FetchSucceed (List AnimalChoice.Model)
     | FetchFail Http.Error
+    | RouteToNewPage SubPage
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -43,14 +44,29 @@ update msg model =
                     (model, Cmd.none)
                 _ ->
                     (model, Cmd.none)
+        _ ->
+            (model, Cmd.none)
 
 -- VIEW
 
-renderAnimal : AnimalChoice.Model -> Html a
-renderAnimal animal =
-    li [] [AnimalChoice.view animal]
+type SubPage
+    = ListView
+    | ShowView AnimalChoice.Model
 
-renderAnimals : Model -> List (Html a)
+animalLink : AnimalChoice.Model -> Html Msg
+animalLink animal =
+    a [ href ("animal/" ++ animal.name ++ "/show")
+      , onClick (RouteToNewPage (ShowView animal))
+      ]
+      [ text " (Show)" ]
+              
+renderAnimal : AnimalChoice.Model -> Html Msg
+renderAnimal animal =
+    li [] [
+         div [] [AnimalChoice.view animal, animalLink animal]
+        ]
+
+renderAnimals : Model -> List (Html Msg)
 renderAnimals model =
     List.map renderAnimal model.animalChoices
 

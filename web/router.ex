@@ -64,6 +64,6 @@ defmodule Eecrit.Router do
   scope "/api", Eecrit do
     pipe_through :api
     
-    resources "/animals", OldAnimalApiController, except: [:new, :edit]
+    resources "/animals", OldAnimalApiController, only: [:index]
   end
 end

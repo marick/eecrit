@@ -8896,6 +8896,70 @@ var _user$project$Registration$pageView = function (model) {
 		return _user$project$Registration$animalChoiceListView(model);
 	}
 };
+var _user$project$Registration$AnimalChoiceListView = {ctor: 'AnimalChoiceListView'};
+var _user$project$Registration$RootView = {ctor: 'RootView'};
+var _user$project$Registration$initialModel = {animalChoiceListModel: _user$project$Components_AnimalChoiceList$initialModel, currentView: _user$project$Registration$RootView};
+var _user$project$Registration$init = {ctor: '_Tuple2', _0: _user$project$Registration$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Registration$header = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$h1,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Navigation')
+				])),
+			A2(
+			_elm_lang$html$Html$ul,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$li,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$a,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$href('#'),
+									_elm_lang$html$Html_Events$onClick(
+									_user$project$Registration$UpdateView(_user$project$Registration$RootView))
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text('Home')
+								]))
+						])),
+					A2(
+					_elm_lang$html$Html$li,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$a,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$href('#animals'),
+									_elm_lang$html$Html_Events$onClick(
+									_user$project$Registration$UpdateView(_user$project$Registration$AnimalChoiceListView))
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text('Articles')
+								]))
+						]))
+				]))
+		]));
 var _user$project$Registration$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8905,13 +8969,10 @@ var _user$project$Registration$view = function (model) {
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				_user$project$Registration$header,
 				_user$project$Registration$pageView(model)
 			]));
 };
-var _user$project$Registration$AnimalChoiceListView = {ctor: 'AnimalChoiceListView'};
-var _user$project$Registration$RootView = {ctor: 'RootView'};
-var _user$project$Registration$initialModel = {animalChoiceListModel: _user$project$Components_AnimalChoiceList$initialModel, currentView: _user$project$Registration$RootView};
-var _user$project$Registration$init = {ctor: '_Tuple2', _0: _user$project$Registration$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Registration$main = {
 	main: _elm_lang$html$Html_App$program(
 		{init: _user$project$Registration$init, view: _user$project$Registration$view, update: _user$project$Registration$update, subscriptions: _user$project$Registration$subscriptions})

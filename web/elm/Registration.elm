@@ -2,7 +2,8 @@ module Registration exposing (..)
 
 import Html exposing (..)
 import Html.App
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
+import Html.Events exposing (onClick)
 import Components.AnimalChoiceList as AnimalChoiceList
 
 -- MODEL 
@@ -45,6 +46,18 @@ subscriptions model =
 
 -- VIEW
 
+header : Html Msg
+header =
+    div []
+        [ h1 [] [text "Navigation"]
+        , ul []
+            [ li [] [a [href "#", onClick (UpdateView RootView)]
+                       [text "Home"]]
+            , li [] [a [href "#animals", onClick (UpdateView AnimalChoiceListView) ]
+                       [text "Articles"]]
+            ]
+        ]
+
 type Page
     = RootView
     | AnimalChoiceListView
@@ -64,7 +77,7 @@ welcomeView =
 view : Model -> Html Msg
 view model =
     div [ class "elm-app" ]
-        [ pageView model]
+        [ header, pageView model]
 
 animalChoiceListView : Model -> Html Msg
 animalChoiceListView model =

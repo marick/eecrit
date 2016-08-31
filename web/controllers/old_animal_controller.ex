@@ -2,16 +2,13 @@ defmodule Eecrit.OldAnimalController do
   use Eecrit.Web, :controller
 
   import Ecto.Query
+  alias Eecrit.OldAnimalQuery
   alias Eecrit.OldAnimal
 
   def index(conn, params) do
-    base_query = from a in OldAnimal, order_by: fragment("lower(?)", a.name)
-    query = if params["include_out_of_service"] do
-      base_query
-    else
-      base_query |> where([a], is_nil(a.date_removed_from_service) or a.date_removed_from_service > fragment("CURRENT_DATE"))
-    end
-    animals = OldRepo.all(query)
+    include_out_of_service? = Map.has_key?(params, "include_out_of_service")
+    animals =
+      OldAnimalQuery.all_ordered(include_out_of_service: include_out_of_service?)
     render(conn, "index.html", animals: animals, params: params)
   end
 

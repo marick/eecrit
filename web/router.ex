@@ -50,6 +50,10 @@ defmodule Eecrit.Router do
     resources "/animals", OldAnimalController
     resources "/procedures", OldProcedureController
     resources "/procedure_descriptions", OldProcedureDescriptionController
+
+    scope "/reports" do
+      get "/animal-use", ReportController, :animal_use
+    end
   end
 
   # Controllers that require superuser permissions.

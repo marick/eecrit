@@ -1,0 +1,13 @@
+<h2>Animal Use Report</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Animal</th>
+      <th>Uses</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+

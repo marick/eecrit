@@ -1,4 +1,4 @@
-defmodule Eecrit.OldAnimalRepoTest do
+defmodule Eecrit.Db.OldAnimalRepoTest do
   use Eecrit.ModelCase
   alias Eecrit.OldAnimal
 

@@ -9,6 +9,8 @@ defmodule Eecrit.ReportController do
   JOIN groups ON groups.id = uses.group_id
   JOIN reservations ON reservations.id = groups.reservation_id
   """
+
+  
   
   def animal_use(conn, _params) do
     res = Ecto.Adapters.SQL.query!(Eecrit.OldRepo, @animal_use_query, [])

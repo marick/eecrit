@@ -1,4 +1,4 @@
-defmodule Eecrit.Db.UserRepoTest do
+defmodule Eecrit.UserSinkTest do
   use Eecrit.ModelCase
   alias Eecrit.User
 

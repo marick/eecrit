@@ -1,7 +1,6 @@
 defmodule Eecrit.OldAnimalController do
   use Eecrit.Web, :controller
 
-  import Ecto.Query
   alias Eecrit.OldAnimalSource
   alias Eecrit.OldAnimal
 

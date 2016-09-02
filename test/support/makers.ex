@@ -87,15 +87,18 @@ defmodule Eecrit.Test.Makers do
 
   
   ## Old Reservations: This is just the fields at the top level, not
-  ## the uses below it.
-  def make_old_reservation_fields(overrides \\ %{}) do
-    defaults = %{id: next_id,
+  ## nested data
+  def make_old_reservation_fields(overrides \\ []) do
+    overrides = 
+      overrides
+      |> Keyword.update(:first_date, Ecto.Date.cast!("2001-02-02"), &Ecto.Date.cast!/1)
+      |> Keyword.update(:last_date, Ecto.Date.cast!("2021-12-12"), &Ecto.Date.cast!/1)
+    
+    other_defaults = %{id: next_id,
                  course: "VCM333",
-                 first_date: Ecto.Date.cast!("2001-02-02"),
-                 last_date: Ecto.Date.cast!("2021-12-12"),
                  time_bits: "011"}
     
-    struct(OldReservation, Dict.merge(defaults, overrides))
+    struct(OldReservation, Dict.merge(other_defaults, overrides))
   end
 
   ## Organizations

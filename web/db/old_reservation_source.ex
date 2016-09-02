@@ -3,33 +3,33 @@ defmodule Eecrit.OldReservationSource do
 
   @repo Eecrit.OldRepo
 
+  # Note: joins are a bad idea here because there are duplicate animal
+  # and procedure names. Preload, though it takes more queries, doesn't
+  # have this issue.
   def base_query do 
     from reservation in Eecrit.OldReservation,
-      where: reservation.id in [10, 13, 17, 18, 20],
-      join: animal in assoc(reservation, :animals),
-      join: procedure in assoc(reservation, :procedures)
+      preload: [:animals, :procedures]
   end
 
-  def restrict_to_date_range(query, start_date_inclusive, end_date_inclusive) do
+  def restrict_to_date_range(query, first_date_inclusive, last_date_inclusive) do
+    first = Ecto.Date.cast!(first_date_inclusive)
+    last = Ecto.Date.cast!(last_date_inclusive)
     from [reservation] in query,
       where: fragment("(?, ? + interval '1 day') OVERLAPS (?, ? + interval '1 day')",
         reservation.first_date, reservation.last_date,
-        type(^start_date_inclusive, :date),
-        type(^end_date_inclusive, :date))
+        type(^first, :date), type(^last, :date))
   end
 
-  def select_animal_procedure_period(query) do
-    from [reservation, animal, procedure] in query,
-      select: {animal.name, procedure.name, reservation.first_date, reservation.last_date}
-  end
-    
+  def animal_uses_in_date_range(start_date_inclusive, end_date_inclusive) do
+    raw =
+      base_query
+      |> restrict_to_date_range(start_date_inclusive, end_date_inclusive)
+      |> @repo.all
 
-  def procedures_per_animal(start_date_inclusive, end_date_inclusive) do
-    base_query
-    |> restrict_to_date_range(start_date_inclusive, end_date_inclusive)
-    |> select_animal_procedure_period
-    |> @repo.all
-#    |> Enum.map(&(trim_dates(&1, {start_date_include
-#    |> Enum.map(add_day_count)
+    Enum.map raw, fn reservation ->
+      %{animals: reservation.animals,
+        procedures: reservation.procedures,
+        date_range: {reservation.first_date, reservation.last_date}}
+    end
   end
 end

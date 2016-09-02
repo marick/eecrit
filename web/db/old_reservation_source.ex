@@ -1,5 +1,6 @@
 defmodule Eecrit.OldReservationSource do
   import Ecto.Query
+
   @repo Eecrit.OldRepo
 
   def base_query do 
@@ -27,7 +28,7 @@ defmodule Eecrit.OldReservationSource do
     base_query
     |> restrict_to_date_range(start_date_inclusive, end_date_inclusive)
     |> select_animal_procedure_period
-    |> Eecrit.OldRepo.all
+    |> @repo.all
 #    |> Enum.map(&(trim_dates(&1, {start_date_include
 #    |> Enum.map(add_day_count)
   end

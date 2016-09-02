@@ -5,6 +5,7 @@ defmodule Eecrit.OldReservationTest do
   @valid_attrs %{course: "vcm334",
                  first_date: Ecto.Date.cast!("2001-01-01"),
                  last_date: Ecto.Date.cast!("2012-12-12"),
+                 time_bits: "001"
                 }
   @empty_attrs %{}
   

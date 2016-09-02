@@ -2,13 +2,13 @@ defmodule Eecrit.OldAnimalController do
   use Eecrit.Web, :controller
 
   import Ecto.Query
-  alias Eecrit.OldAnimalQuery
+  alias Eecrit.OldAnimalSource
   alias Eecrit.OldAnimal
 
   def index(conn, params) do
     include_out_of_service? = Map.has_key?(params, "include_out_of_service")
     animals =
-      OldAnimalQuery.all_ordered(include_out_of_service: include_out_of_service?)
+      OldAnimalSource.all_ordered(include_out_of_service: include_out_of_service?)
     render(conn, "index.html", animals: animals, params: params)
   end
 

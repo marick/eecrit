@@ -1,10 +1,10 @@
-defmodule Eecrit.OldAnimalQuery do
+defmodule Eecrit.OldAnimalSource do
   import Ecto.Query
   alias Eecrit.OldAnimal
 
   @repo Eecrit.OldRepo
 
-  def all_ordered(options) do
+  def all_ordered(options \\ []) do
     base = from a in OldAnimal, order_by: fragment("lower(?)", a.name)
     tailored = add_tailoring(base, options)
     @repo.all(tailored)

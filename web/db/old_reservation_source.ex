@@ -1,4 +1,4 @@
-defmodule Eecrit.OldReservationQuery do
+defmodule Eecrit.OldReservationSource do
   import Ecto.Query
   @repo Eecrit.OldRepo
 

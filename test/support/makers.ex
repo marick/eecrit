@@ -3,6 +3,7 @@ defmodule Eecrit.Test.Makers do
   alias Eecrit.OldRepo
   alias Eecrit.User
   alias Eecrit.Organization
+  alias Eecrit.OldReservation
   alias Eecrit.OldAnimal
   alias Eecrit.OldProcedure
   alias Eecrit.OldProcedureDescription
@@ -84,6 +85,18 @@ defmodule Eecrit.Test.Makers do
     |> OldRepo.insert!()
   end
 
+  
+  ## Old Reservations: This is just the fields at the top level, not
+  ## the uses below it.
+  def make_old_reservation_fields(overrides \\ %{}) do
+    defaults = %{id: next_id,
+                 course: "VCM333",
+                 first_date: Ecto.Date.cast!("2001-02-02"),
+                 last_date: Ecto.Date.cast!("2021-12-12"),
+                 time_bits: "011"}
+    
+    struct(OldReservation, Dict.merge(defaults, overrides))
+  end
 
   ## Organizations
   def make_organization(overrides \\ %{}) do

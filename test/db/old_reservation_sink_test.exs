@@ -4,6 +4,8 @@ defmodule Eecrit.OldReservationSinkTest do
   alias Eecrit.OldReservation
   alias Eecrit.OldGroup
   alias Eecrit.OldUse
+  alias Eecrit.OldAnimal
+  alias Eecrit.OldProcedure
 
   test "complete_reservation" do
     animal = insert_old_animal()
@@ -14,7 +16,7 @@ defmodule Eecrit.OldReservationSinkTest do
                                          time_bits: "001"}
 
 
-    OldReservationSink.insert_new!(reservation_fields, [animal], [procedure])
+    OldReservationSink.make_full!(reservation_fields, [animal], [procedure])
 
     use = OldRepo.one(OldUse)
     group = OldRepo.one(OldGroup)
@@ -34,4 +36,19 @@ defmodule Eecrit.OldReservationSinkTest do
     assert reservation.animals == [animal]
     assert reservation.procedures == [procedure]
   end
+
+
+  test "uses are NxM" do
+    animals = [insert_old_animal(name: "a1"), insert_old_animal(name: "a2")]
+    procedures = [insert_old_procedure(name: "p1"), insert_old_procedure(name: "p2")]
+    OldReservationSink.make_full!(make_old_reservation_fields, animals, procedures)
+
+    reservation =
+      OldRepo.one(OldReservation)
+      |> OldRepo.preload([:animals, :procedures])
+
+    assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
+    assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
+  end
+
 end

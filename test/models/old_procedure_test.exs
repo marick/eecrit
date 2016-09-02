@@ -22,4 +22,16 @@ defmodule Eecrit.OldProcedureTest do
     changeset = OldProcedure.create_action_changeset(@invalid_attrs)
     refute changeset.valid?
   end
+
+  ### Utilities
+
+  test "sorting a list of procedures in a pleasing way" do
+    procedures = [make_old_procedure(name: "AM"),
+                  make_old_procedure(name: "aa"),
+                  make_old_procedure(name: "K"),
+                  make_old_procedure(name: "m"),
+                  make_old_procedure(name: "1")]
+    assert OldProcedure.alphabetical_names(procedures) == ["1", "aa", "AM", "K", "m"]
+  end
+  
 end

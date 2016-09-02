@@ -4,6 +4,7 @@ defmodule Eecrit.OldAnimal do
   resource_requires_ability :is_admin
 
   use Timex
+  alias Eecrit.Pile
   alias Eecrit.TimeUtil
   alias Eecrit.User
 
@@ -31,5 +32,11 @@ defmodule Eecrit.OldAnimal do
   def already_out_of_service?(old_animal, today \\ Timex.today) do
     db_date = TimeUtil.ecto_date_to_date(old_animal.date_removed_from_service)
     not Timex.after?(db_date, today)
+  end
+
+  def alphabetical_names(animal_list) do
+    animal_list
+    |> Pile.sort_human_alphabetically(:name)
+    |> Pile.fields(:name)
   end
 end

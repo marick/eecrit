@@ -4,6 +4,7 @@ defmodule Eecrit.OldProcedure do
   resource_requires_ability :is_admin
 
   alias Eecrit.User
+  alias Eecrit.Pile
 
   schema "procedures" do
     field :name, :string
@@ -20,4 +21,14 @@ defmodule Eecrit.OldProcedure do
     |> cast(params, @visible_fields)
     |> validate_required(@fields_always_required)
   end
+
+
+  ## Utility
+
+  def alphabetical_names(procedure_list) do
+    procedure_list
+    |> Pile.sort_human_alphabetically(:name)
+    |> Pile.fields(:name)
+  end
+
 end

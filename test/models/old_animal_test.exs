@@ -71,4 +71,13 @@ defmodule Eecrit.OldAnimalTest do
     animal = make_old_animal(date_removed_from_service: Ecto.Date.cast!("2000-01-01"))
     assert OldAnimal.already_out_of_service?(animal)
   end
+
+  test "sorting a list of animals in a pleasing way" do
+    animals = [make_old_animal(name: "AM"),
+               make_old_animal(name: "aa"),
+               make_old_animal(name: "K"),
+               make_old_animal(name: "m"),
+               make_old_animal(name: "1")]
+    assert OldAnimal.alphabetical_names(animals) == ["1", "aa", "AM", "K", "m"]
+  end
 end

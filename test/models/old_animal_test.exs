@@ -78,6 +78,61 @@ defmodule Eecrit.OldAnimalTest do
                make_old_animal(name: "K"),
                make_old_animal(name: "m"),
                make_old_animal(name: "1")]
-    assert OldAnimal.alphabetical_names(animals) == ["1", "aa", "AM", "K", "m"]
+    assert S.alphabetical_names(animals) == ["1", "aa", "AM", "K", "m"]
+  end
+
+  describe "calculating use-days" do 
+    @a1 %{id: "a1"}
+    @a2 %{id: "a2"}
+    @a3 %{id: "a3"}
+    @p1 %{id: "p1"}
+    @p2 %{id: "p2"}
+    @p3 %{id: "p3"}
+
+    @single_day {Ecto.Date.cast!("2012-12-12"), Ecto.Date.cast!("2012-12-12")}
+    @another_single_day {Ecto.Date.cast!("2012-12-13"), Ecto.Date.cast!("2012-12-13")}
+    @ten_days {Ecto.Date.cast!("2012-11-01"), Ecto.Date.cast!("2012-11-10")}
+
+    test "flattening these composite results" do
+      one = %{animals: [@a1, @a2], procedures: [@p1, @p2], date_range: @ten_days}
+      assert S.flatten_condensed_reservations([one]) ==
+        [{@a1, @p1, 10},
+         {@a1, @p2, 10},
+         {@a2, @p1, 10},
+         {@a2, @p2, 10}]
+    end
+
+    test "how the reduce step is started" do
+      assert S.reduce_step({@a1, @p1, 3}, %{}) == %{@a1 => %{@p1 => 3}}
+    end
+
+    test "adding a new animal" do
+      already = %{@a1 => %{@p1 => 3}}
+      assert S.reduce_step({@a2, @p1, 5}, already) ==
+       Map.merge(already, %{@a2 => %{@p1 => 5}})
+    end
+
+    test "adding a new procedure to an existing animal" do
+      already = %{@a1 => %{@p1 => 3}}
+      assert S.reduce_step({@a1, @p2, 5}, already) ==
+       %{@a1 => %{@p1 => 3, @p2 => 5}}
+    end      
+
+    test "updating the count of an existing animal/procedure pair" do
+      already = %{@a1 => %{@p1 => 3}}
+      assert S.reduce_step({@a1, @p1, 5}, already) == %{@a1 => %{@p1 => 8}}
+    end      
+
+    test "final calculation" do
+      raw = [%{animals: [@a1, @a2], procedures: [@p1, @p2], date_range: @single_day},
+             %{animals: [@a2, @a3], procedures: [@p2, @p3], date_range: @another_single_day},
+             %{animals: [@a2], procedures: [@p1], date_range: @ten_days}
+            ]
+
+      expected = %{@a1 => %{@p1 => 1,  @p2 => 1,        },
+                   @a2 => %{@p1 => 11, @p2 => 2, @p3 => 1},
+                   @a3 => %{           @p2 => 1, @p3 => 1}}
+      assert S.use_days(raw) == expected
+    end
   end
 end

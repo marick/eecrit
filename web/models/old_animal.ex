@@ -30,7 +30,7 @@ defmodule Eecrit.OldAnimal do
   end
 
   def already_out_of_service?(old_animal, today \\ Timex.today) do
-    db_date = TimeUtil.ecto_date_to_date(old_animal.date_removed_from_service)
+    db_date = TimeUtil.cast_to_date!(old_animal.date_removed_from_service)
     not Timex.after?(db_date, today)
   end
 
@@ -39,4 +39,26 @@ defmodule Eecrit.OldAnimal do
     |> Pile.sort_human_alphabetically(:name)
     |> Pile.fields(:name)
   end
+
+  def flatten_condensed_reservations(reservations) do 
+    for r <- reservations, a <- r.animals, p <- r.procedures, 
+      do: {a, p, TimeUtil.days_covered(r.date_range)}
+  end
+
+  # I think I could do this better if I understood Access better
+  def reduce_step({animal, procedure, use_count}, so_far) do
+    cond do
+      so_far[animal] == nil ->
+        so_far |> Map.put(animal, %{}) |> put_in([animal, procedure], use_count)
+      so_far[animal][procedure] == nil ->
+        update_in(so_far, [animal], &(Map.put(&1, procedure, use_count)))
+      :else ->
+        update_in(so_far, [animal, procedure], &(&1 + use_count))
+    end
+  end
+
+  def use_days(condensed_reservations) do
+    flats = flatten_condensed_reservations(condensed_reservations)
+    Enum.reduce(flats, %{}, &reduce_step/2)
+  end      
 end

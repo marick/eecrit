@@ -35,7 +35,7 @@ defmodule Eecrit.OldReservationSourceTest do
                                   last_date: @reservation_last_date)
       |> OldReservationSink.make_full!([], [])
 
-      @repo.one(S.base_query |> S.restrict_to_date_range(query_first, query_last))
+      @repo.one(S.base_query |> S.restrict_to_date_range({query_first, query_last}))
     end
 
     def assert_found(actual) do
@@ -61,7 +61,7 @@ defmodule Eecrit.OldReservationSourceTest do
     end
   end
 
-  describe "how the key information is presented" do
+  describe "animal_use_days" do
     setup do
       animals = [insert_old_animal(name: "a1"), insert_old_animal(name: "a2")]
       procedures = [insert_old_procedure(name: "p1"), insert_old_procedure(name: "p2")]
@@ -71,12 +71,20 @@ defmodule Eecrit.OldReservationSourceTest do
       :ok
     end
 
-    test "the selection of key information" do
-      [reservation] = S.animal_uses_in_date_range(@day_before, @day_after)
+    test "reservation fits nicely within date boundaries" do
+      [reservation] = S.animal_use_days({@day_before, @day_after})
       assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
       assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
       assert reservation.date_range ==
         {Ecto.Date.cast!(@reservation_first_date), Ecto.Date.cast!(@reservation_last_date)}
+    end
+
+    test "date ranges can be truncated" do
+      [reservation] = S.animal_use_days({@first_within, @last_within})
+      assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
+      assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
+      assert reservation.date_range ==
+        {Ecto.Date.cast!(@first_within), Ecto.Date.cast!(@last_within)}
     end
   end
 end

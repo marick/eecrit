@@ -1,5 +1,5 @@
 defmodule RoundingPegs.ExUnit.Conn.Assert do
-  import RoundingPegs.ExUnit.CheckStyle
+  import RoundingPegs.ExUnit.Macros
   import ExUnit.Assertions
   
   # This may only be used in controller tests, that do not use `bypass_through`.

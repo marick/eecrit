@@ -46,7 +46,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert.Macros do
 end
 
 defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
-  import RoundingPegs.ExUnit.CheckStyle
+  import RoundingPegs.ExUnit.Macros
   import ExUnit.Assertions
   alias RoundingPegs.ExUnit.PhoenixView.PathMaker
   import RoundingPegs.ExUnit.PhoenixView.Assert.Macros

@@ -8,18 +8,6 @@ defmodule Eecrit.OldReservationSourceTest do
 
   @repo Eecrit.OldRepo
 
-  test "base query" do
-    animals = [insert_old_animal(name: "a1"), insert_old_animal(name: "a2")]
-    procedures = [insert_old_procedure(name: "p1"), insert_old_procedure(name: "p2")]
-
-    make_old_reservation_fields
-    |> OldReservationSink.make_full!(animals, procedures)
-
-    reservation = @repo.one(S.base_query)
-    assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
-    assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
-  end
-  
   def d,
     do: %{
           way_before: "2000-01-09",
@@ -37,8 +25,6 @@ defmodule Eecrit.OldReservationSourceTest do
       last_date: d.reservation_last_date)
     OldReservationSink.make_full!(r, animals, procedures)
   end
-  
-  
   
   describe "handling of date ranges" do
     setup do
@@ -72,36 +58,6 @@ defmodule Eecrit.OldReservationSourceTest do
 
     test "the end is inclusive" do
       assert_found reservations_within({d.day_before, d.reservation_first_date})
-    end
-  end
-
-  describe "animal_use_days" do
-    setup do
-      animals = [insert_old_animal(name: "a1"), insert_old_animal(name: "a2")]
-      procedures = [insert_old_procedure(name: "p1"), insert_old_procedure(name: "p2")]
-
-      insert_ranged_reservation!(animals, procedures)
-      :ok
-    end
-
-    test "reservation outside of boundary" do
-      [] = S.animal_use_days({d.way_before, d.day_before})
-    end
-
-    test "reservation fits nicely within date boundaries" do
-      [reservation] = S.animal_use_days({d.day_before, d.day_after})
-      assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
-      assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
-      assert reservation.date_range ==
-        {Ecto.Date.cast!(d.reservation_first_date), Ecto.Date.cast!(d.reservation_last_date)}
-    end
-
-    test "date ranges can be truncated" do
-      [reservation] = S.animal_use_days({d.first_within, d.last_within})
-      assert OldAnimal.alphabetical_names(reservation.animals) == ["a1", "a2"]
-      assert OldProcedure.alphabetical_names(reservation.procedures) == ["p1", "p2"]
-      assert reservation.date_range ==
-        {Ecto.Date.cast!(d.first_within), Ecto.Date.cast!(d.last_within)}
     end
   end
 end

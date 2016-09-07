@@ -28,7 +28,7 @@ defmodule Eecrit.OldProcedure do
   def alphabetical_names(procedure_list) do
     procedure_list
     |> Pile.sort_human_alphabetically(:name)
-    |> Pile.fields(:name)
+    |> Pile.extract_values(:name)
   end
 
 end

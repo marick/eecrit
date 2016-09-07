@@ -37,7 +37,7 @@ defmodule Eecrit.OldAnimal do
   def alphabetical_names(animal_list) do
     animal_list
     |> Pile.sort_human_alphabetically(:name)
-    |> Pile.fields(:name)
+    |> Pile.extract_values(:name)
   end
 
   def flatten_condensed_reservations(reservations) do 

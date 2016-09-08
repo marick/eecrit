@@ -3,8 +3,6 @@ defmodule Eecrit.OldReservationSourceTest do
   alias Eecrit.OldReservationSource, as: S
   alias Eecrit.OldReservation
   alias Eecrit.OldReservationSink
-  alias Eecrit.OldAnimal
-  alias Eecrit.OldProcedure
 
   @repo Eecrit.OldRepo
 

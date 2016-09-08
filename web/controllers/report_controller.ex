@@ -3,6 +3,9 @@ defmodule Eecrit.ReportController do
   alias Eecrit.OldProcedure
   alias Eecrit.OldAnimal
   alias Eecrit.Pile
+  alias Eecrit.OldAnimalSource
+  alias Eecrit.OldUseSource
+  alias Eecrit.OldProcedureSource
 
   def view_model(animals, procedures, uses) do
     all_empty = Map.new(animals, & {&1.id, []})
@@ -34,26 +37,34 @@ defmodule Eecrit.ReportController do
     Pile.sort_human_alphabetically(unsorted_animals, &(hd(&1)).name)
   end
 
-  
-  def animal_use(conn, _params) do
-    animals = [%OldAnimal{id: 11, name: "a1"},
-               %OldAnimal{id: 33, name: "a3"},
-               %OldAnimal{id: 22, name: "a2"},
-              ]
+  def aggregate_use_counts(uses) do
+    grouped_counts = Enum.group_by(
+      uses,
+      fn {animal_id, procedure_id, _} -> {animal_id, procedure_id} end,
+      fn {_, _, use_count} -> use_count end)
 
-    procedures = [%OldProcedure{id: 111, name: "p1"},
-                  %OldProcedure{id: 333, name: "p3"},
-                  %OldProcedure{id: 222, name: "p2"},
-                 ]
+    for { {animal_id, procedure_id}, counts} <- grouped_counts do
+      {animal_id, procedure_id, Enum.sum(counts)}
+    end
+  end
 
-    uses = [{11, 111, 1},
-            {11, 222, 2},
-            {22, 111, 3},
-            {22, 333, 4},
-           ]
+  def end_to_end(date_range) do
+    animals = OldAnimalSource.all_ordered(date_range: date_range)
+    uses = OldUseSource.use_counts(date_range) |> aggregate_use_counts
+    used_procedure_ids = for {_, p_id, _} <- uses, do: p_id
+    procedures = OldProcedureSource.all_ordered(with_ids: used_procedure_ids)
 
-    
-    data = view_model(animals, procedures, uses)
-    render(conn, "animal_use.html", data: data)
-   end
+    view_model(animals, procedures, uses)
+  end
+
+  # localhost:4000/reports/animal-use?first_date=2015-01-01&last_date=2015-06-01
+  def animal_use(conn, %{"first_date" => first_date, "last_date" => last_date}) do
+    render(conn, "animal_use.html", data: end_to_end({first_date, last_date}))
+  end
+
+  def animal_use(conn, params) do
+    render(conn, "animal_use.html")
+  end
+
+
 end

@@ -1,7 +1,6 @@
 defmodule Eecrit.OldUseSourceTest do
   use Eecrit.ModelCase
   alias Eecrit.OldUseSource, as: S
-  alias Eecrit.OldReservation
   alias Eecrit.OldReservationSink
 
   @repo Eecrit.OldRepo
@@ -17,13 +16,6 @@ defmodule Eecrit.OldUseSourceTest do
           day_after: "2012-01-21"
     }
 
-  def insert_ranged_reservation!(animals \\ [], procedures \\ []) do 
-    r = make_old_reservation_fields(
-      first_date: d.reservation_first_date,
-      last_date: d.reservation_last_date)
-    OldReservationSink.make_full!(r, animals, procedures)
-  end
-
   describe "use_counts" do
     setup do
       a1 = insert_old_animal(name: "a1")
@@ -31,7 +23,11 @@ defmodule Eecrit.OldUseSourceTest do
       p1 = insert_old_procedure(name: "p1")
       p2 = insert_old_procedure(name: "p2")
 
-      insert_ranged_reservation!([a1, a2], [p1, p2])
+      make_old_reservation_fields(
+        first_date: d.reservation_first_date,
+        last_date: d.reservation_last_date)
+      |> OldReservationSink.make_full!([a1, a2], [p1, p2])
+
       provides([a1, a2, p1, p2])
     end
 
@@ -59,6 +55,21 @@ defmodule Eecrit.OldUseSourceTest do
     test "reservation overlaps the bounds", c do
       result = S.use_counts({d.first_within, d.last_within})
       assert_four_animals(result, c, 9)
+    end
+
+    test "note that duplicates are NOT coalesced", c do
+      # insert_ranged_reservation([c.a1], [c.p2])
+      # result = S.use_counts({d.first_within, d.last_within})
+      # IO.inspect result
+      make_old_reservation_fields(
+        first_date: d.first_within, last_date: d.first_within)
+      |> OldReservationSink.make_full!([c.a1], [c.p1])
+
+      result = S.use_counts({d.first_within, d.last_within})
+      assert length(result) == 5
+
+      assert {c.a1.id, c.p1.id, 9} in result
+      assert {c.a1.id, c.p1.id, 1} in result
     end
   end
 end

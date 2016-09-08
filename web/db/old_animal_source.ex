@@ -11,6 +11,7 @@ defmodule Eecrit.OldAnimalSource do
       end)
     end
     
+    def tailor(query, {:include_out_of_service, true}), do: query
     def tailor(query, {:include_out_of_service, false}) do
       query
       |> where([a],
@@ -24,8 +25,6 @@ defmodule Eecrit.OldAnimalSource do
          is_nil(a.date_removed_from_service) or
          a.date_removed_from_service >= ^Ecto.Date.cast!(first_date))
     end
-    
-    def tailor(query, _), do: query
   end
 
   ## PUBLIC

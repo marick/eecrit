@@ -3,7 +3,6 @@ defmodule Eecrit.ReportController do
   alias Eecrit.AnimalUseReportTxs
 
   def animal_use(conn, %{"report" => params}) do
-    IO.inspect params
      %{"first_date" => first_date, "last_date" => last_date} = params
      view_model = AnimalUseReportTxs.run({first_date, last_date})
      render(conn, "animal_use.html", view_model: view_model)

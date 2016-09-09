@@ -7,7 +7,7 @@
       <th>Uses</th>
     </tr>
   </thead>
-  <%= for [animal | procedures] <- @data do %>
+  <%= for [animal | procedures] <- @view_model do %>
     <tr>
       <td><%= animal.name %></td>
       <td>

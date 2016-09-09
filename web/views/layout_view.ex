@@ -33,4 +33,10 @@ defmodule Eecrit.LayoutView do
     current_user = conn.assigns.current_user
     build_if current_user, do: current_user.current_organization.short_name
   end
+
+  def report_links(conn) do
+    [
+      link("Animal use", to: report_path(conn, :animal_use)),
+    ]
+  end
 end

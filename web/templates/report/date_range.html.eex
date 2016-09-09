@@ -1,0 +1,16 @@
+<%= form_for @conn, @action, [as: "report"], fn f -> %>
+  <div class="form-group">
+    <%= label f, "Report dates (inclusive)", class: "control-label" %>
+    <%= error_tag f, :date_removed_from_service %>
+
+    <div class="input-group input-daterange" data-provide="datepicker">
+      <%= text_input f, :first_date, class: "form-control" %>
+      <span class="input-group-addon">to</span>
+      <%= text_input f, :last_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

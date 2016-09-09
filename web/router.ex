@@ -53,6 +53,7 @@ defmodule Eecrit.Router do
 
     scope "/reports" do
       get "/animal-use", ReportController, :animal_use
+      post "/animal-use", ReportController, :animal_use
     end
   end
 

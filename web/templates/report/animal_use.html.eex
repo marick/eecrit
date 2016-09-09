@@ -1,5 +1,7 @@
 <h2>Animal Use Report</h2>
 
+<%= render "date_range.html", conn: @conn, action: report_path(@conn, :animal_use) %>
+
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -7,6 +9,7 @@
       <th>Uses</th>
     </tr>
   </thead>
+  <tbody>
   <%= for [animal | procedures] <- @view_model do %>
     <tr>
       <td><%= animal.name %></td>
@@ -19,8 +22,6 @@
       </td>
     </tr>
   <% end %>
-  <tbody>
-    
   </tbody>
 </table>
 

@@ -28,17 +28,11 @@ global.bootstrap = require("bootstrap")
 // import socket from "./socket"
 
 $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-$.fn.datepicker.defaults.startDate = "today";
 $.fn.datepicker.defaults.autoclose = true;
 $.fn.datepicker.defaults.clearBtn = true;
 
 $(document).ready(() => {
-    $('.datepicker').datepicker({
-        startDate: 'today',
-        autoclose: true,
-        clearBtn: true,
-        format: "yyyy-mm-dd",
-    });
+    $('.datepicker').datepicker();
 })
 
 

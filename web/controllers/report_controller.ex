@@ -2,13 +2,14 @@ defmodule Eecrit.ReportController do
   use Eecrit.Web, :controller
   alias Eecrit.AnimalUseReportTxs
 
-  # localhost:4000/reports/animal-use?first_date=2015-01-01&last_date=2015-06-01
-  def animal_use(conn, %{"first_date" => first_date, "last_date" => last_date}) do
-    view_model = AnimalUseReportTxs.run({first_date, last_date})
-    render(conn, "animal_use.html", view_model: view_model)
+  def animal_use(conn, %{"report" => params}) do
+    IO.inspect params
+     %{"first_date" => first_date, "last_date" => last_date} = params
+     view_model = AnimalUseReportTxs.run({first_date, last_date})
+     render(conn, "animal_use.html", view_model: view_model)
   end
 
-  def animal_use(conn, params) do
-    render(conn, "animal_use.html")
+  def animal_use(conn, _params) do
+    render(conn, "animal_use_new.html")
   end
 end

@@ -3,53 +3,120 @@ defmodule Eecrit.AnimalUseReportTxsTest do
   alias Eecrit.AnimalUseReportTxs.P, as: P
   alias Eecrit.AnimalUseReportTxs, as: S
   
-  alias Eecrit.OldAnimal
-  alias Eecrit.OldProcedure
   alias Eecrit.OldReservationSink
 
   ### Privates
 
-  test "convert to final view model" do
-    animals = [%OldAnimal{id: 11, name: "a1"},
-               %OldAnimal{id: 33, name: "a3"},
-               %OldAnimal{id: 22, name: "a2"},
-              ]
-
-    procedures = [%OldProcedure{id: 111, name: "p1"},
-                  %OldProcedure{id: 333, name: "p3"},
-                  %OldProcedure{id: 222, name: "p2"},
-                 ]
-
-    uses = [{11, 111, 1},
-            {11, 222, 2},
-            {22, 111, 3},
-            {22, 333, 4},
-           ]
-
-    expected = 
-      [ [%{id: 11, name: "a1"}, %{id: 111, name: "p1", use_count: 1},
-                               %{id: 222, name: "p2", use_count: 2}],
-        [%{id: 22, name: "a2"}, %{id: 111, name: "p1", use_count: 3},
-                                %{id: 333, name: "p3", use_count: 4}],
-        [%{id: 33, name: "a3"}],
-      ]
-    assert P.view_model(uses, animals, procedures) == expected
+  setup do
+    a1 = make_old_animal(id: 11, name: "a1")
+    a2 = make_old_animal(id: 22, name: "a2")
+    a3 = make_old_animal(id: 33, name: "a3")
+    animals = [a1, a2, a3]
+    
+    p1 = make_old_animal(id: 111, name: "p1")
+    p2 = make_old_animal(id: 222, name: "p2")
+    p3 = make_old_animal(id: 333, name: "p3")
+    procedures = [p1, p2, p3]
+    provides([a1, a2, a3, animals, p1, p2, p3, procedures])
   end
 
   test "aggregate_use_counts" do
     uses = [{11, 111, 1},
             {11, 222, 2},
-            {11, 111, 3},   # note animal/procedure key
+            {11, 111, 3},   # note animal/procedure key is same as above
             {22, 333, 4},
            ]
     expected = [{11, 111, 4},
                 {11, 222, 2},
                 {22, 333, 4},
                ]
-    actual = P.aggregate_use_counts(uses)
-
-    assert MapSet.new(actual) == MapSet.new(expected)
+    actual = P.sum_counts_of_duplicate_animal_procedure_pairs(uses)
+    assert_same_elements(actual, expected)
   end
+
+  test "grouping procedure ids under the animals they belong to" do
+    input = [{11, 111, 11},
+             {11, 222, 12},
+             {22, 222, 22}]
+    animal_ids = [11, 22, 33]  # Note that 33 has no uses in above
+
+    expected = [[11, {222, 12}, {111, 11}],
+                [22, {222, 22}],
+                [33]]
+    
+    actual = P.create_list_of_lists(input, animal_ids)
+    assert_same_elements(actual, expected)
+  end
+
+  test "convert ids to models", c do
+    list_of_lists = [ [c.a1.id, {c.p1.id, 1}, {c.p2.id, 2}],
+                      [c.a2.id, {c.p1.id, 3}, {c.p3.id, 4}],
+                      [c.a3.id]]
+
+    expected = [ [c.a1, {c.p1, 1}, {c.p2, 2}],
+                 [c.a2, {c.p1, 3}, {c.p3, 4}],
+                 [c.a3] ]
+
+    actual = P.convert_ids_to_models(list_of_lists, c.animals, c.procedures)
+    assert actual == expected
+  end
+
+  test "convert models to model views", c do
+    list_of_lists = [ [c.a1, {c.p1, 1}, {c.p2, 2}],
+                      [c.a2, {c.p1, 3}, {c.p3, 4}],
+                      [c.a3] ]
+    # Note that models has all sorts of extra fields to strip off.
+    assert Map.has_key?(c.a1, :nickname)
+    assert Map.has_key?(c.p1, :date_removed_from_service)
+
+    expected = [ [ %{id: c.a1.id, name: c.a1.name},
+                     %{id: c.p1.id, name: c.p1.name, use_count: 1},
+                     %{id: c.p2.id, name: c.p2.name, use_count: 2}],
+                 [ %{id: c.a2.id, name: c.a2.name},
+                     %{id: c.p1.id, name: c.p1.name, use_count: 3},
+                     %{id: c.p3.id, name: c.p3.name, use_count: 4}],
+                 [ %{id: c.a3.id, name: c.a3.name}]
+               ]
+
+    actual = P.convert_models_to_model_views(list_of_lists)
+    assert actual == expected
+  end
+        
+  test "sort everything by name" do
+    list_of_lists = [ [ %{name: "an-Z"}, %{name: "pr-F"}, %{name: "pr-a"}],
+                      [ %{name: "an-M2"}, %{name: "pr-b"}, %{name: "pr-A"}],
+                      [ %{name: "an-m1"} ]]
+                      
+    expected = [[ %{name: "an-m1"} ],
+                [ %{name: "an-M2"}, %{name: "pr-A"}, %{name: "pr-b"}],
+                [ %{name: "an-Z"}, %{name: "pr-a"}, %{name: "pr-F"}]]
+
+    actual = P.two_level_sort(list_of_lists)
+    assert actual == expected
+  end
+    
+
+  test "complete flow from in-memory models to view model", c do
+    uses = [{c.a1.id, c.p1.id, 1},
+            {c.a2.id, c.p1.id, 1},
+            {c.a1.id, c.p2.id, 2},
+            {c.a2.id, c.p3.id, 4},
+            {c.a2.id, c.p1.id, 2},  # duplicate animal-procedure pair.
+           ]
+    
+    expected = 
+      [ [%{id: c.a1.id, name: c.a1.name},
+           %{id: c.p1.id, name: c.p1.name, use_count: 1},
+           %{id: c.p2.id, name: c.p2.name, use_count: 2}],
+        [%{id: c.a2.id, name: c.a2.name},
+           %{id: c.p1.id, name: c.p1.name, use_count: 3},
+           %{id: c.p3.id, name: c.p3.name, use_count: 4}],
+        [%{id: c.a3.id, name: c.a3.name}],
+      ]
+    actual = P.view_model(uses, c.animals, c.procedures)
+    assert actual == expected
+  end
+
 
   ### Publics
 
@@ -58,7 +125,7 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     |> OldReservationSink.make_full!(animals, procedures)
   end
 
-  test "end-to-end" do
+  test "including database lookup" do
     one_month = {"2016-06-01", "2016-06-30"}
     
     a1 = insert_old_animal(name: "a1")

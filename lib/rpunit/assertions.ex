@@ -7,6 +7,10 @@ defmodule RoundingPegs.ExUnit.Assertions do
     end
   end
 
+  def assert_same_elements(left, right) do
+    assert MapSet.new(left) == MapSet.new(right)
+  end
+
   defmacro matches!(actual, expected) do
     quote do
       # Seems like you can't bind_quote just `actual`

@@ -95,29 +95,22 @@ defmodule Eecrit.AnimalUseReportTxs do
       |> two_level_sort
     end
 
-
-    def gratuitous_parallelism(date_range, uses) do
-      animal_task = Task.async(fn ->
-        OldAnimalSource.all_ordered(date_range: date_range)
-      end)
-
-      procedure_task = Task.async(fn -> 
-        used_procedure_ids = (for {_, p_id, _} <- uses, do: p_id) |> Enum.uniq
-        OldProcedureSource.all_ordered(with_ids: used_procedure_ids)
-      end)
-
-      {animal_task, procedure_task}
+    def procedures_from_use_tuples(uses) do
+      ids = (for {_, p_id, _} <- uses, do: p_id) |> Enum.uniq
+      OldProcedureSource.all(with_ids: ids)
     end
-      
-    def relevant_animals({animal_task, _}), do: Task.await(animal_task)
-    def relevant_procedures({_, procedure_task}), do: Task.await(procedure_task)
+
+    def gratuitous_parallelism(date_range),
+      do: Task.async(fn -> OldAnimalSource.all(date_range: date_range) end)
   end
 
   ### PUBLIC
   
   def run(date_range) do
+    animals_task = P.gratuitous_parallelism(date_range)
     uses = OldUseSource.use_counts(date_range)
-    token = P.gratuitous_parallelism(date_range, uses)
-    P.view_model(uses, P.relevant_animals(token), P.relevant_procedures(token))
+    procedures = P.procedures_from_use_tuples(uses)
+
+    uses |> P.view_model(Task.await(animals_task), procedures)
   end
 end

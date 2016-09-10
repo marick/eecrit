@@ -11,16 +11,22 @@ defmodule Eecrit.OldProcedureSource do
       end)
     end
     
+    def tailor(query, {:order_by_name, true}),
+      do: from a in query, order_by: fragment("lower(?)", a.name)
+
     def tailor(query, {:with_ids, list}), do: query |> where([p], p.id in ^list)
   end
 
   ## PUBLIC
 
-  def all_ordered(options \\ []) do
-    query = from p in OldProcedure, order_by: fragment("lower(?)", p.name)
-
-    query
+  def all(options \\ []) do
+    OldProcedure
+    |> P.tailor(order_by_name: true)
     |> P.tailor(options)
     |> @repo.all
+  end
+
+  def all_ordered(options \\ []) do 
+    all [{:order_by_name, true} | options]
   end
 end

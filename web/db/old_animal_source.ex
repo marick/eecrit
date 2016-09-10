@@ -19,6 +19,9 @@ defmodule Eecrit.OldAnimalSource do
          a.date_removed_from_service > fragment("CURRENT_DATE"))
     end
 
+    def tailor(query, {:order_by_name, true}),
+      do: from a in query, order_by: fragment("lower(?)", a.name)
+
     def tailor(query, {:date_range, {first_date, _}}) do
       query
       |> where([a],
@@ -28,12 +31,17 @@ defmodule Eecrit.OldAnimalSource do
   end
 
   ## PUBLIC
+  
+  # TODO: Have a "use NamedSource "superclass", together with procedures?
 
-  def all_ordered(options \\ []) do
-    query = from a in OldAnimal, order_by: fragment("lower(?)", a.name)
-
-    query
+  def all(options \\ []) do
+    OldAnimal
+    |> P.tailor(order_by_name: true)
     |> P.tailor(options)
     |> @repo.all
+  end
+
+  def all_ordered(options \\ []) do 
+    all [{:order_by_name, true} | options]
   end
 end

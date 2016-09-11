@@ -89,6 +89,12 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
 
 
   # TODO: why can't these both be defcheckers?
+  #
+  # TODO: `allows_anchor` is awkward when used directly, rather than
+  # via `allows_index!` and the other RESTian functions. That is, consider:
+  #        |> allows_anchor!(:animal_use, :report_path, text: "Animal use")
+  #
+  
   def allows_anchor!(html, action, path_shorthand) do
     anchor_trees_with_source(html, action, path_shorthand)
     |> some_anchor_trees!

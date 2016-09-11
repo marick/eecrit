@@ -100,6 +100,9 @@ defmodule Eecrit.TagHelpers do
   tag_wrapper(:ul)
   tag_wrapper(:span)
 
+
+  def symbol_span(class), do: tag(:span, class: class)
+
   def resource_index_path(conn, path_builder) do
     apply(Eecrit.Router.Helpers, path_builder, [conn, :index])
   end

@@ -2,6 +2,7 @@ defmodule Eecrit.LayoutView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
   use Eecrit.TagHelpers
+  alias Eecrit.TagHelpers, as: T   # TODO: this is a kludge to avoid conflicts
 
   def navigation(conn) do
     iolists = [
@@ -41,24 +42,23 @@ defmodule Eecrit.LayoutView do
     ]
   end
 
+  def dropdown_button(title, button_size \\ "btn_xs") do
+    button_attrs = [type: "button",
+                    class: "btn btn-default #{button_size} dropdown-toggle",
+                    data_toggle: "dropdown",
+                    aria_haspopup: "true",
+                    aria_expanded: "false"]
+
+    [title, " ", symbol_span("caret")]
+    |> T.button(button_attrs)
+  end
+
   def dropdown_launcher(conn, title, links, button_size \\ "btn-xs") do
+    # For whatever reason, a dropdown button list requires a menu and a button.
     build_if can?(conn.assigns.current_user, :work_with, :reports) do 
-      menu_part =
-        links
-        |> Enum.map(&li/1)
-        |> ul(class: "dropdown-menu")
-      
-      button_attrs = [type: "button",
-                      class: "btn btn-default #{button_size} dropdown-toggle",
-                      data_toggle: "dropdown",
-                      aria_haspopup: "true",
-                      aria_expanded: "false"]
-      
-      button_part = 
-        [title, " ", tag(:span, class: "caret")]
-        |> Eecrit.TagHelpers.button(button_attrs)
-      
-      content_tag(:div, [button_part, menu_part], class: "btn-group")
+      button_part = dropdown_button(title, button_size)
+      menu_part = links |> Enum.map(&li/1) |> T.ul(class: "dropdown-menu")
+      T.div([button_part, menu_part], class: "btn-group")
     end
   end
 end

@@ -15,7 +15,7 @@ defmodule Eecrit.PageView do
       ],
 
       # Daily admin work
-      [AggregateViewWidgets.reports_launcher(conn),
+      [AggregateViewWidgets.reports_launcher(conn, button_size: "btn-lg", button_status: "btn-primary"),
        m_resource_button(conn, "Work With Animals", OldAnimal),
        m_resource_button(conn, "Work With Procedures", OldProcedure),
       ],

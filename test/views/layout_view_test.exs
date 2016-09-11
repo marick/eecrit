@@ -86,7 +86,7 @@ defmodule Eecrit.LayoutViewTest do
 
   defchecker no_user_information_shows!(html) do
     # Pretty indirect way to test this.
-    assert length(Floki.find(html, "li")) == 1
+    assert length(Floki.find(html, "li")) == 2 # Home and logout
   end
 
   defchecker user_information_shows!(html, user) do

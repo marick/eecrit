@@ -12,11 +12,14 @@
   <tbody>
   <%= for [animal | procedures] <- @view_model do %>
     <tr>
-      <td><%= animal.name %></td>
+      <td><%= link animal.name, to: old_animal_path(@conn, :show, animal.id) %></td>
       <td>
         <ul>
           <%= for procedure <- procedures do %>
-              <li> <%= procedure.name %> (<%= procedure.use_count %>) </li>
+              <li>
+                <%= link procedure.name, to: old_procedure_path(@conn, :show, procedure.id) %>
+                (<%= procedure.use_count %>)
+              </li>
           <% end %>
         </ul>
       </td>

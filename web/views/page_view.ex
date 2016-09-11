@@ -6,6 +6,7 @@ defmodule Eecrit.PageView do
   alias Eecrit.Organization
   alias Eecrit.AbilityGroup
   use Eecrit.TagHelpers
+  alias Eecrit.AggregateViewWidgets
 
   def commands(conn) do
     button_groups = [
@@ -14,7 +15,8 @@ defmodule Eecrit.PageView do
       ],
 
       # Daily admin work
-      [m_resource_button(conn, "Work With Animals", OldAnimal),
+      [AggregateViewWidgets.reports_launcher(conn),
+       m_resource_button(conn, "Work With Animals", OldAnimal),
        m_resource_button(conn, "Work With Procedures", OldProcedure),
       ],
 

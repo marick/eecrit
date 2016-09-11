@@ -5,6 +5,7 @@ defmodule Eecrit.LayoutView do
 
   def navigation(conn) do
     iolists = [
+      dropdown_launcher(conn, "Reports", report_links(conn)),
       m_resource_link(conn, "Animals", Eecrit.OldAnimal),
       m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
       salutation(conn),
@@ -38,5 +39,26 @@ defmodule Eecrit.LayoutView do
     [
       link("Animal use", to: report_path(conn, :animal_use)),
     ]
+  end
+
+  def dropdown_launcher(conn, title, links, button_size \\ "btn-xs") do
+    build_if can?(conn.assigns.current_user, :work_with, :reports) do 
+      menu_part =
+        links
+        |> Enum.map(&li/1)
+        |> ul(class: "dropdown-menu")
+      
+      button_attrs = [type: "button",
+                      class: "btn btn-default #{button_size} dropdown-toggle",
+                      data_toggle: "dropdown",
+                      aria_haspopup: "true",
+                      aria_expanded: "false"]
+      
+      button_part = 
+        [title, " ", tag(:span, class: "caret")]
+        |> Eecrit.TagHelpers.button(button_attrs)
+      
+      content_tag(:div, [button_part, menu_part], class: "btn-group")
+    end
   end
 end

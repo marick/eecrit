@@ -92,8 +92,13 @@ defmodule Eecrit.TagHelpers do
     build_unless empty_content?(iolists), do: Enum.intersperse(iolists, " ")
   end
 
-  tag_wrapper(:p)
+  # TODO: should really build this from a list.
+  tag_wrapper(:button)
+  tag_wrapper(:div)
   tag_wrapper(:li)
+  tag_wrapper(:p)
+  tag_wrapper(:ul)
+  tag_wrapper(:span)
 
   def resource_index_path(conn, path_builder) do
     apply(Eecrit.Router.Helpers, path_builder, [conn, :index])

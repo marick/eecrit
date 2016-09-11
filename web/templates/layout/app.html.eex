@@ -16,13 +16,6 @@
       <header class="header">
         <nav role="navigation">
           <ol class="breadcrumb text-right">
-            <li>
-              <%= render("dropdown_launcher.html",
-                  conn: @conn,
-                  title: "Reports",
-                  links: report_links(@conn))
-               %>
-            </li>
             <%= navigation(@conn) %> 
           </ol>
         </nav>

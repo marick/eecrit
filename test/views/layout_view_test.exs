@@ -74,12 +74,14 @@ defmodule Eecrit.LayoutViewTest do
     html
     |> disallows_index!(Eecrit.OldAnimal)
     |> disallows_index!(Eecrit.OldProcedure)
+    |> disallows_anchor!(:animal_use, :report_path)
   end
 
   defchecker can_go_to_admin_work!(html) do
     html
     |> allows_index!(Eecrit.OldAnimal, text: "Animals")
     |> allows_index!(Eecrit.OldProcedure, text: "Procedures")
+    |> allows_anchor!(:animal_use, :report_path, text: "Animal use")
   end    
 
   defchecker no_user_information_shows!(html) do

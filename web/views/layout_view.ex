@@ -7,6 +7,7 @@ defmodule Eecrit.LayoutView do
 
   def navigation(conn) do
     iolists = [
+      link("Home", to: page_path(conn, :index)),
       AggregateViewWidgets.reports_launcher(conn),
       m_resource_link(conn, "Animals", Eecrit.OldAnimal),
       m_resource_link(conn, "Procedures", Eecrit.OldProcedure),

@@ -29,7 +29,7 @@ defmodule Eecrit.OldUseSource do
     base_query = from reservation in Eecrit.OldReservation, preload: [:uses]
 
     base_query
-    |> OldReservationSource.restrict_to_date_range(bounds)
+    |> OldReservationSource.tailor(date_range: bounds)
     |> @repo.all
     |> Enum.map(trim_range)
     |> Enum.flat_map(condense_result)

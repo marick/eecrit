@@ -38,7 +38,7 @@ defmodule Eecrit.OldReservationSourceTest do
 
     def reservations_within({query_first, query_last}) do
       (from r in OldReservation)
-      |> S.restrict_to_date_range({query_first, query_last})
+      |> S.tailor(date_range: {query_first, query_last})
       |> @repo.one
     end
     

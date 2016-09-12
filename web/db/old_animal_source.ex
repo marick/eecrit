@@ -1,7 +1,9 @@
 defmodule Eecrit.OldAnimalSource do
   import Ecto.Query
   alias Eecrit.OldAnimal
-
+  alias Eecrit.OldReservationSource
+  alias Eecrit.OldReservation
+  
   @repo Eecrit.OldRepo
 
   defmodule P do 
@@ -11,6 +13,9 @@ defmodule Eecrit.OldAnimalSource do
       end)
     end
     
+    def tailor(query, {:order_by_name, true}),
+      do: from a in query, order_by: fragment("lower(?)", a.name)
+
     def tailor(query, {:include_out_of_service, true}), do: query
     def tailor(query, {:include_out_of_service, false}) do
       query
@@ -19,10 +24,7 @@ defmodule Eecrit.OldAnimalSource do
          a.date_removed_from_service > fragment("CURRENT_DATE"))
     end
 
-    def tailor(query, {:order_by_name, true}),
-      do: from a in query, order_by: fragment("lower(?)", a.name)
-
-    def tailor(query, {:date_range, {first_date, _}}) do
+    def tailor(query, {:ever_in_service_during, {first_date, _}}) do
       query
       |> where([a],
          is_nil(a.date_removed_from_service) or

@@ -101,7 +101,7 @@ defmodule Eecrit.AnimalUseReportTxs do
     end
 
     def gratuitous_parallelism(date_range),
-      do: Task.async(fn -> OldAnimalSource.all(date_range: date_range) end)
+      do: Task.async(fn -> OldAnimalSource.all(ever_in_service_during: date_range) end)
   end
 
   ### PUBLIC

@@ -1,27 +1,21 @@
 defmodule Eecrit.OldAnimalSourceTest do
   use Eecrit.ModelCase
-  alias Eecrit.OldAnimalSource
+  alias Eecrit.OldAnimalSource, as: S
 
-  def run(options),
-    do: OldAnimalSource.all_ordered(options) |> Enum.map(&Map.get(&1, :name))
-  
-  def everything_now, do: run(include_out_of_service: true)
-  def in_service_now, do: run(include_out_of_service: false)
 
-  test "returns human-style alphabetical ordering" do
+  def names(animals), do: Enum.map(animals, &Map.get(&1, :name))
+
+  test "all_ordered uses human alphabeticization" do
     insert_old_animal(name: "ab")
     insert_old_animal(name: "AA")
     insert_old_animal(name: "Z")
     insert_old_animal(name: "m")
     insert_old_animal(name: "12")
     
-    assert everything_now == ["12", "AA", "ab", "m", "Z"]
-    
-    # With this data, no difference between two ways of calling
-    assert in_service_now == ["12", "AA", "ab", "m", "Z"]
+    assert names(S.all_ordered) == ["12", "AA", "ab", "m", "Z"]
   end
   
-  describe "time_based return values" do
+  describe "all_ordered and time values" do
     setup do 
       yesterday = Timex.shift(Timex.today, days: -1) |> Ecto.Date.cast!
       today = Timex.today |> Ecto.Date.cast!
@@ -34,21 +28,28 @@ defmodule Eecrit.OldAnimalSourceTest do
       provides([yesterday, today, tomorrow])
     end
 
-    test "does not return items that are out of service at the current moment" do
-      # Note that animals are removed from service at the start of the day
-      assert in_service_now == ["never", "tomorrow"]
+    test "what about out-of-service animals?" do
+      # By default, they are returned
+      actual = names(S.all_ordered)
+      assert actual == ["never", "today", "tomorrow", "yesterday"]
 
-      # But everything_now can be returned
-      assert everything_now == ["never", "today", "tomorrow", "yesterday"]
+      # ... which can also be asked for explicitly
+      actual = names(S.all_ordered(include_out_of_service: true))
+      assert actual == ["never", "today", "tomorrow", "yesterday"]
+
+      # This can be overridden.
+      # Note that animals are removed from service at the start of the day
+      actual = names(S.all_ordered(include_out_of_service: false))
+      assert actual  == ["never", "tomorrow"]
     end
 
-    test "service overlap", c do
-      assert run(date_range: {c.yesterday, c.tomorrow}) ==
+    test "only including animals in service any time during a range", c do
+      assert names(S.all_ordered(ever_in_service_during: {c.yesterday, c.tomorrow})) ==
         ["never", "today", "tomorrow", "yesterday"]
       # Anything available for part of the range is returned.
-      assert run(date_range: {c.today, c.tomorrow}) ==
+      assert names(S.all_ordered(ever_in_service_during: {c.today, c.tomorrow})) ==
         ["never", "today", "tomorrow"]
-      assert run(date_range: {c.yesterday, c.today}) ==
+      assert names(S.all_ordered(ever_in_service_during: {c.yesterday, c.today})) ==
         ["never", "today", "tomorrow", "yesterday"]
     end
   end

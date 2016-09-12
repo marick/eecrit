@@ -38,7 +38,6 @@ defmodule Eecrit.OldAnimalSource do
 
   def all(options \\ []) do
     OldAnimal
-    |> P.tailor(order_by_name: true)
     |> P.tailor(options)
     |> @repo.all
   end

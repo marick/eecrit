@@ -21,7 +21,6 @@ defmodule Eecrit.OldProcedureSource do
 
   def all(options \\ []) do
     OldProcedure
-    |> P.tailor(order_by_name: true)
     |> P.tailor(options)
     |> @repo.all
   end

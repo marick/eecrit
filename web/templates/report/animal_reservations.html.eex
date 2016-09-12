@@ -1,0 +1,27 @@
+<h3>
+  Reservations for <%= ModelDisplays.animal(@conn, @view_model.animal) %>
+  <%= ModelDisplays.date_range(@view_model.date_range) %>
+</h3>
+
+(Note: reservations may overlap the beginning or end of the date range. For example, a three day reservation that starts the day before
+<%= ModelDisplays.date(@view_model.date_range.first_date) %> will be shown.)
+
+<table class="table table-striped table-condensed">
+  <tbody>
+  <%= for reservation <- @view_model.reservations do %>
+    <tr>
+      <td><%= reservation.summary %></td>
+      <td>
+        <ul>
+          <%= for procedure <- reservation.procedures do %>
+              <li>
+                <%= ModelDisplays.procedure(@conn, procedure) %>
+              </li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+

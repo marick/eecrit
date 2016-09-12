@@ -1,8 +1,6 @@
 defmodule Eecrit.OldAnimalSource do
   import Ecto.Query
   alias Eecrit.OldAnimal
-  alias Eecrit.OldReservationSource
-  alias Eecrit.OldReservation
   
   @repo Eecrit.OldRepo
 
@@ -45,4 +43,5 @@ defmodule Eecrit.OldAnimalSource do
   def all_ordered(options \\ []) do 
     all [{:order_by_name, true} | options]
   end
+
 end

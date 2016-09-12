@@ -2,7 +2,6 @@ defmodule Eecrit.LayoutView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
   use Eecrit.TagHelpers
-  alias Eecrit.TagHelpers, as: T   # TODO: this is a kludge to avoid conflicts
   alias Eecrit.AggregateViewWidgets
 
   def navigation(conn) do

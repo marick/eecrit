@@ -2,7 +2,6 @@ defmodule Eecrit.OldAnimalView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
   alias Eecrit.OldAnimal
-  alias Eecrit.TimeUtil
 
   @out_of_service_marker %{"include_out_of_service" => "true"}
 

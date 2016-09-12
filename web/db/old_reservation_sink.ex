@@ -1,5 +1,4 @@
 defmodule Eecrit.OldReservationSink do
-  alias Eecrit.OldReservation
   alias Eecrit.OldGroup
   alias Eecrit.OldUse
 
@@ -16,6 +15,7 @@ defmodule Eecrit.OldReservationSink do
     # Note that this call will turn into multiple inserts. Probably harmless
     # if a reservation is read while partially inserted, but still:
     # wrap in transaction.
-    @repo.transaction(fn -> @repo.insert!(reservation) end)
+    {:ok, reservation} = @repo.transaction(fn -> @repo.insert!(reservation) end)
+    reservation
   end
 end

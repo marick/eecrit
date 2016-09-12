@@ -24,7 +24,7 @@ defmodule Eecrit.OldReservationSourceTest do
     OldReservationSink.make_full!(r, animals, procedures)
   end
   
-  describe "handling of date ranges" do
+  describe "tailoring of date ranges for query" do
     setup do
       insert_ranged_reservation!
       :ok
@@ -56,6 +56,50 @@ defmodule Eecrit.OldReservationSourceTest do
 
     test "the end is inclusive" do
       assert_found reservations_within({d.day_before, d.reservation_first_date})
+    end
+  end
+
+
+  describe "fetching reservations that belong to an animal" do
+    setup do
+      reserved_animal = insert_old_animal(name: "reserved animal")
+      other_animal = insert_old_animal(name: "some other animal")
+      reserved_procedure = insert_old_procedure(name: "reserved procedure")
+      insert_old_procedure(name: "some other procedure")
+      reservation = insert_ranged_reservation!([reserved_animal], [reserved_procedure])
+      provides([reserved_animal, other_animal, reserved_procedure, reservation])
+    end
+    
+    def assert_same_identity(actual, expected),
+      do: assert Enum.map(actual, & &1.id) == Enum.map(expected, & &1.id)
+    
+    test "returns reservations belonging to the animal", c do
+      [actual] = S.reservations_for_animal(c.reserved_animal.id)
+      assert_same_identity([actual], [c.reservation])
+
+      [] = S.reservations_for_animal(c.other_animal.id)
+    end
+
+    test "it's typical to preload procedures", c do 
+      [actual] = S.reservations_for_animal(c.reserved_animal.id, preload: :procedures)
+      assert_same_identity(actual.procedures, [c.reserved_procedure])
+    end
+
+    test "you can also give a date range", c do
+      [actual] = S.reservations_for_animal(c.reserved_animal.id,
+        date_range: {d.day_before, d.day_after},
+        preload: :procedures)
+      assert_same_identity(actual.procedures, [c.reserved_procedure])
+
+      [] = S.reservations_for_animal(c.reserved_animal.id,
+        date_range: {d.way_before, d.day_before},
+        preload: :procedures)
+
+      # Note that, as usual, any overlap in dates suffices to include.
+      [actual] = S.reservations_for_animal(c.reserved_animal.id,
+        date_range: {d.way_before, d.first_within},
+        preload: :procedures)
+      assert_same_identity(actual.procedures, [c.reserved_procedure])
     end
   end
 end

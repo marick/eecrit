@@ -15,7 +15,10 @@ defmodule Eecrit.ReportController do
   def animal_reservations(conn, _params) do
     animal = %{id: 11, name: "a1"}
     date_range = %{first_date: "2015-12-11", last_date: "2016-12-01"}
-    reservation = %{summary: "Reservation summary",
+    reservation = %{date_range: {"2016-03-11", "2016-03-11"},
+                    times_of_day: "011",
+                    course: "vcm333",
+                    instructor: "Dr. Foozle",
                     procedures: [%{id: 111, name: "p1"}, %{id: 222, name: "p2"}]}
     view_model = %{animal: animal,
                    date_range: date_range,

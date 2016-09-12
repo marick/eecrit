@@ -10,7 +10,13 @@
   <tbody>
   <%= for reservation <- @view_model.reservations do %>
     <tr>
-      <td><%= reservation.summary %></td>
+      <td>
+        <%= ModelDisplays.date_range_without_prefix(reservation.date_range) %>:
+        <%= ModelDisplays.times(reservation.times_of_day)%>
+      </td>
+
+      <td>
+        <%= reservation.instructor %> for <%= reservation.course %>
       <td>
         <ul>
           <%= for procedure <- reservation.procedures do %>

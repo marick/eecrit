@@ -39,7 +39,7 @@ defmodule Eecrit.OldAnimalView do
       "#{animal.name} will be removed from service on"
     end
     strong_msg = content_tag(:strong, msg)
-    formatted = Eecrit.TimeUtil.friendly_format(date)
+    formatted = Eecrit.ModelDisplays.date(date)
     Phoenix.HTML.raw "#{safe_to_string strong_msg}: #{formatted}"
   end
 end

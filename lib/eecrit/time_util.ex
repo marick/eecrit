@@ -11,10 +11,6 @@ defmodule Eecrit.TimeUtil do
 
   def cast_to_erl!(d), do: d |> cast_to_date! |> Date.to_erl
 
-  def friendly_format(nil), do: ""
-  def friendly_format(date),
-    do: date |> cast_to_date! |> Timex.format!("%B %-d, %Y", :strftime)
-
   def adjust_range({first, last}, within: {earliest_first, latest_last}) do
     use_first =
       if cast_to_erl!(first) < cast_to_erl!(earliest_first),

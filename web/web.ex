@@ -65,6 +65,7 @@ defmodule Eecrit.Web do
       import Eecrit.ErrorHelpers
       import Eecrit.Gettext
       import Canada.Can, only: [can?: 3]
+      alias Eecrit.ModelDisplays
     end
   end
 

@@ -19,15 +19,6 @@ defmodule Eecrit.TimeUtilTest do
     assert S.cast_to_erl!("2012-01-23") == expected
   end
 
-  test "friendly-format" do
-    assert S.friendly_format(nil) == ""
-
-    expected = "January 23, 2012"
-    assert S.friendly_format(~D[2012-01-23]) == expected
-    assert S.friendly_format({2012, 1, 23}) == expected
-    assert S.friendly_format(Ecto.Date.cast!("2012-01-23")) == expected
-  end
-
   test "adjust_range" do
     nine = ~D[2012-01-09]
     ten = ~D[2012-01-10]

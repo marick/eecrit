@@ -53,4 +53,72 @@ defmodule Eecrit.OldAnimalSourceTest do
         ["never", "today", "tomorrow", "yesterday"]
     end
   end
+
+  def d,
+    do: %{
+          way_before: "2000-01-09",
+          day_before: "2012-01-09",
+          reservation_first_date: "2012-01-10",
+          first_within: "2012-01-11",
+          last_within: "2012-01-19",
+          reservation_last_date: "2012-01-20",
+          day_after: "2012-01-21"
+    }
+
+
+  describe "fetching reservations that belong to an animal" do
+    setup do
+      reserved_animal = insert_old_animal(name: "reserved animal")
+      other_animal = insert_old_animal(name: "some other animal")
+      reserved_procedure = insert_old_procedure(name: "reserved procedure")
+      insert_old_procedure(name: "some other procedure")
+      reservation_bounds = {d.reservation_first_date, d.reservation_last_date}
+      reservation = insert_ranged_reservation!(
+        reservation_bounds,
+        [reserved_animal], [reserved_procedure])
+      provides([reserved_animal, other_animal, reserved_procedure, reservation,
+               reservation_bounds])
+    end
+    
+    def assert_same_identities(actual, expected) when is_list(actual),
+      do: assert Enum.map(actual, & &1.id) == Enum.map(expected, & &1.id)
+    
+    def assert_same_identity(actual, expected),
+      do: assert actual.id == expected.id
+    
+    test "returns reservations belonging to the animal", c do
+      actual = S.animal_with_reservations(c.reserved_animal.id)
+      assert_same_identity(actual, c.reserved_animal)
+      [reservation] = actual.reservations  # There should be only one
+      assert_same_identity(reservation, c.reservation)
+
+      actual = S.animal_with_reservations(c.other_animal.id)
+      assert_same_identity(actual, c.other_animal)
+      assert actual.reservations == []
+    end
+
+    test "a date range that contains the reservation", c do
+      actual = S.animal_with_reservations(c.reserved_animal.id, date_range: c.reservation_bounds)
+      assert_same_identity(actual, c.reserved_animal)
+      [reservation] = actual.reservations  # There should be only one
+      assert_same_identity(reservation, c.reservation)
+
+      actual = S.animal_with_reservations(c.other_animal.id, date_range: c.reservation_bounds)
+      assert_same_identity(actual, c.other_animal)
+      assert actual.reservations == []
+    end
+
+    test "... and one that does not", c do
+      no_overlap = {d.way_before, d.day_before}
+      actual = S.animal_with_reservations(c.reserved_animal.id, date_range: no_overlap)
+      assert_same_identity(actual, c.reserved_animal)
+      assert actual.reservations == []
+    end
+    test "it's typical to look at procedures, so they are preloaded", c do 
+      %{reservations: [%{procedures: procs}]} =
+        S.animal_with_reservations(c.reserved_animal.id)
+      assert_same_identities(procs, [c.reserved_procedure])
+    end
+  end
+
 end

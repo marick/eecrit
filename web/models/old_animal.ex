@@ -17,6 +17,9 @@ defmodule Eecrit.OldAnimal do
     field :kind, :string
     field :procedure_description_kind, :string
     field :date_removed_from_service, Ecto.Date
+
+    has_many :uses, Eecrit.OldUse, foreign_key: :animal_id
+    has_many :reservations, through: [:uses, :group, :reservation]
   end
 
   @visible_fields [:name, :nickname, :kind, :procedure_description_kind, :date_removed_from_service]

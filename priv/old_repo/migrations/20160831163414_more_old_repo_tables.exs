@@ -4,7 +4,7 @@ defmodule Eecrit.OldRepo.Migrations.MoreOldRepoTables do
   def change do
     create table(:reservations) do
       add :course, :string
-      add :time, :string
+      add :instructor, :string
       add :first_date, :date
       add :last_date, :date
       add :time_bits, :string

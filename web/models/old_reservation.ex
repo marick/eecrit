@@ -8,9 +8,11 @@ defmodule Eecrit.OldReservation do
   # TODO: Not all fields are included yet
   schema "reservations" do
     field :course, :string
+    field :instructor, :string
     field :first_date, Ecto.Date
     field :last_date, Ecto.Date
     field :time_bits, :string
+    field :note, :string
     has_many :groups, OldGroup, foreign_key: :reservation_id
     has_many :uses, through: [:groups, :uses]
     has_many :animals, through: [:groups, :uses, :animal]

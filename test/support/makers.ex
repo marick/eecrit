@@ -8,6 +8,7 @@ defmodule Eecrit.Test.Makers do
   alias Eecrit.OldProcedure
   alias Eecrit.OldProcedureDescription
   alias Eecrit.AbilityGroup
+  alias Eecrit.OldReservationSink
 
   # TODO: simplify this with macros or higher-level functions
 
@@ -95,10 +96,16 @@ defmodule Eecrit.Test.Makers do
       |> Keyword.update(:last_date, Ecto.Date.cast!("2021-12-12"), &Ecto.Date.cast!/1)
     
     other_defaults = %{id: next_id,
-                 course: "VCM333",
-                 time_bits: "011"}
+                       course: "VCM333",
+                       instructor: "Dr. Dawn",
+                       time_bits: "011"}
     
     struct(OldReservation, Dict.merge(other_defaults, overrides))
+  end
+
+  def insert_ranged_reservation!({first_date, last_date}, animals \\ [], procedures \\ []) do 
+    make_old_reservation_fields(first_date: first_date, last_date: last_date)
+    |> OldReservationSink.make_full!(animals, procedures)
   end
 
   ## Organizations

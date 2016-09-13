@@ -3,8 +3,6 @@ defmodule Eecrit.AnimalUseReportTxsTest do
   alias Eecrit.AnimalUseReportTxs.P, as: P
   alias Eecrit.AnimalUseReportTxs, as: S
   
-  alias Eecrit.OldReservationSink
-
   ### Privates
 
   setup do
@@ -119,11 +117,6 @@ defmodule Eecrit.AnimalUseReportTxsTest do
 
 
   ### Publics
-
-  def insert_ranged_reservation!({first_date, last_date}, animals, procedures) do 
-    make_old_reservation_fields(first_date: first_date, last_date: last_date)
-    |> OldReservationSink.make_full!(animals, procedures)
-  end
 
   test "including database lookup" do
     one_month = {"2016-06-01", "2016-06-30"}

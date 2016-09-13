@@ -15,6 +15,7 @@ defmodule Eecrit.AnimalUseReportTxs do
   alias Eecrit.OldAnimalSource
   alias Eecrit.OldUseSource
   alias Eecrit.OldProcedureSource
+  alias Eecrit.ViewModel
 
   defmodule P do
     defp two_level_transform(list_of_lists, hd_transform, tail_transform) do
@@ -60,12 +61,11 @@ defmodule Eecrit.AnimalUseReportTxs do
     def convert_models_to_model_views(list_of_lists) do
       procedure_view = fn {procedure, count} ->
         procedure
-        |> Map.take([:name, :id])
+        |> ViewModel.procedure
         |> Map.put(:use_count, count)
       end
       
-      animal_view = fn animal -> Map.take(animal, [:name, :id]) end
-      two_level_transform(list_of_lists, animal_view, procedure_view)
+      two_level_transform(list_of_lists, &ViewModel.animal/1, procedure_view)
     end
 
     def two_level_sort(list_of_lists) do

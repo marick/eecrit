@@ -11,9 +11,9 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     a3 = make_old_animal(id: 33, name: "a3")
     animals = [a1, a2, a3]
     
-    p1 = make_old_animal(id: 111, name: "p1")
-    p2 = make_old_animal(id: 222, name: "p2")
-    p3 = make_old_animal(id: 333, name: "p3")
+    p1 = make_old_procedure(id: 111, name: "p1")
+    p2 = make_old_procedure(id: 222, name: "p2")
+    p3 = make_old_procedure(id: 333, name: "p3")
     procedures = [p1, p2, p3]
     provides([a1, a2, a3, animals, p1, p2, p3, procedures])
   end
@@ -63,9 +63,9 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     list_of_lists = [ [c.a1, {c.p1, 1}, {c.p2, 2}],
                       [c.a2, {c.p1, 3}, {c.p3, 4}],
                       [c.a3] ]
-    # Note that models has all sorts of extra fields to strip off.
+    # Note that models have had other keys stripped off.
     assert Map.has_key?(c.a1, :nickname)
-    assert Map.has_key?(c.p1, :date_removed_from_service)
+    assert Map.has_key?(c.a1, :date_removed_from_service)
 
     expected = [ [ %{id: c.a1.id, name: c.a1.name},
                      %{id: c.p1.id, name: c.p1.name, use_count: 1},

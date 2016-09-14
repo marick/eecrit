@@ -105,9 +105,8 @@ defmodule Eecrit.OldAnimalSource do
   # tailoring.
 
   def animal_with_reservations(id, options \\ []) do
-    result =
-      AnimalWithReservations.base(id)
-      |> AnimalWithReservations.tailor([:include_procedures | options])
-      |> AnimalWithReservations.run_query(@repo, id)
+    AnimalWithReservations.base(id)
+    |> AnimalWithReservations.tailor([:include_procedures | options])
+    |> AnimalWithReservations.run_query(@repo, id)
   end    
 end

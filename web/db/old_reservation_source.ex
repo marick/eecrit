@@ -1,7 +1,5 @@
 defmodule Eecrit.OldReservationSource do
   import Ecto.Query
-  alias Eecrit.OldReservation
-
   @repo Eecrit.OldRepo
 
   defmodule P do 

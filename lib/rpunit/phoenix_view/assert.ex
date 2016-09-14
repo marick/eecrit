@@ -93,7 +93,10 @@ defmodule RoundingPegs.ExUnit.PhoenixView.Assert do
   # TODO: `allows_anchor` is awkward when used directly, rather than
   # via `allows_index!` and the other RESTian functions. That is, consider:
   #        |> allows_anchor!(:animal_use, :report_path, text: "Animal use")
-  #
+  # or, worse:
+  # |> allows_anchor!(:animal_reservations,
+  #      [:report_path, animal: c.a1.id, first_date: "first", last_date: "last"],
+  #      text: "See reservations")
   
   def allows_anchor!(html, action, path_shorthand) do
     anchor_trees_with_source(html, action, path_shorthand)

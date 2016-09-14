@@ -12,7 +12,7 @@
     <tr>
       <td>
         <%= ModelDisplays.date_range_without_prefix(reservation.date_range) %>:
-        <%= ModelDisplays.times(reservation.times_of_day)%>
+        <%= ModelDisplays.times(reservation.time_bits)%>
       </td>
 
       <td>

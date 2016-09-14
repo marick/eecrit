@@ -17,19 +17,19 @@ defmodule Eecrit.AnimalReservationReportTxsTest do
 
     actual = S.run(a1.id, date_range: query_period)
     assert (actual.animal) == ViewModel.animal(a1)
-    assert actual.date_range == query_period
+    assert actual.date_range == ViewModel.date_range(query_period)
     assert actual.reservations == []
 
     reservation = insert_ranged_reservation!(reservation_month, [a1, a2], [p1, p2])
 
     actual = S.run(a1.id, date_range: query_period)
     assert (actual.animal) == ViewModel.animal(a1)
-    assert actual.date_range == query_period
+    assert actual.date_range == ViewModel.date_range(query_period)
     [actual_reservation] = actual.reservations
     assert actual_reservation.course == reservation.course
     assert actual_reservation.instructor == reservation.instructor
     assert actual_reservation.time_bits == reservation.time_bits
-    assert actual_reservation.date_range == reservation_month
+    assert actual_reservation.date_range == ViewModel.date_range(reservation_month)
 
     assert_same_elements(
       actual_reservation.procedures,
@@ -50,9 +50,9 @@ defmodule Eecrit.AnimalReservationReportTxsTest do
     assert actual.date_range == :infinity
     [past, current, future] = actual.reservations
     # Note ordering is by first reservation date
-    assert past.date_range == distant_past
-    assert current.date_range == reservation_month
-    assert future.date_range == far_future
+    assert past.date_range == ViewModel.date_range(distant_past)
+    assert current.date_range == ViewModel.date_range(reservation_month)
+    assert future.date_range == ViewModel.date_range(far_future)
   end
 
 end

@@ -17,6 +17,7 @@
 
       <td>
         <%= reservation.instructor %> for <%= reservation.course %>
+      </td>
       <td>
         <ul>
           <%= for procedure <- reservation.procedures do %>

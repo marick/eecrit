@@ -10,7 +10,8 @@ defmodule Eecrit.AnimalUseViewTest do
     view_model = [[a1, p1]]
     
     html = render_to_string(ReportView, "animal_use.html",
-      conn: c.conn, view_model: view_model)
+      conn: c.conn, view_model: view_model,
+      input_data: %{first_date: "first", last_date: "last"})
 
     provides([a1, p1, html])
   end
@@ -26,5 +27,9 @@ defmodule Eecrit.AnimalUseViewTest do
     c.html
     |> allows_show!([OldAnimal, c.a1.id], text: c.a1.name)
     |> allows_show!([OldProcedure, c.p1.id], text: c.p1.name)
+
+    # TODO: Fix allows anchor
+    |> matches!("/reports/animal-reservations?animal=#{c.a1.id}&amp;first_date=first&amp;last_date=last")
+    #allows_anchor!([:animal_reservations, animal: c.a1.id, first_date: "first", last_date: "last"], :report_path, text: c.p1.name)
   end    
 end

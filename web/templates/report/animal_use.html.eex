@@ -23,6 +23,10 @@
           <% end %>
         </ul>
       </td>
+      <td>
+        <%= ModelDisplays.animal_resources(@conn, animal.id, 
+            @input_data.first_date, @input_data.last_date) %>
+      </td>
     </tr>
   <% end %>
   </tbody>

@@ -1,7 +1,6 @@
 defmodule Eecrit.SessionController do
   use Eecrit.Web, :controller
   alias Eecrit.Repo
-  alias Eecrit.SessionPlugs
   alias Eecrit.User
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Phoenix.Controller

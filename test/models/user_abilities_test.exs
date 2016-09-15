@@ -1,5 +1,4 @@
 defmodule Eecrit.UserAbilitiesTest do
-  alias Eecrit.UserAbilities
   use Eecrit.ModelCase
   alias Eecrit.OldProcedure
   alias Eecrit.OldProcedureDescription

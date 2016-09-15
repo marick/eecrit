@@ -6,7 +6,6 @@ defmodule Eecrit.OldAnimal do
   use Timex
   alias Eecrit.Pile
   alias Eecrit.TimeUtil
-  alias Eecrit.User
 
   @valid_species ~w{bovine caprine equine}
   def valid_species, do: @valid_species

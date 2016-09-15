@@ -58,9 +58,6 @@ defmodule Eecrit.OldUseSourceTest do
     end
 
     test "note that duplicates are NOT coalesced", c do
-      # insert_ranged_reservation([c.a1], [c.p2])
-      # result = S.use_counts({d.first_within, d.last_within})
-      # IO.inspect result
       make_old_reservation_fields(
         first_date: d.first_within, last_date: d.first_within)
       |> OldReservationSink.make_full!([c.a1], [c.p1])

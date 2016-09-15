@@ -32,7 +32,6 @@ end
 
 defmodule Eecrit.TagHelpers do
   use Phoenix.HTML
-  import Eecrit.Router.Helpers
   import Eecrit.TagHelpers.Macros
   import Canada.Can, only: [can?: 3]
 

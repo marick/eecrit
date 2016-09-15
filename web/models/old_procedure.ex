@@ -3,7 +3,6 @@ defmodule Eecrit.OldProcedure do
   use Eecrit.ModelDefaults, model: __MODULE__
   resource_requires_ability :is_admin
 
-  alias Eecrit.User
   alias Eecrit.Pile
 
   schema "procedures" do

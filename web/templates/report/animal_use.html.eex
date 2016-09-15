@@ -12,12 +12,12 @@
   <tbody>
   <%= for [animal | procedures] <- @view_model do %>
     <tr>
-      <td><%= ModelDisplays.animal(@conn, animal) %></td>
+      <td><%= VMP.link_to_more_detail(animal, @conn) %></td>
       <td>
         <ul>
           <%= for procedure <- procedures do %>
               <li>
-                <%= ModelDisplays.procedure(@conn, procedure) %>
+                <%= VMP.link_to_more_detail(procedure, @conn) %>
                 (<%= procedure.use_count %>)
               </li>
           <% end %>

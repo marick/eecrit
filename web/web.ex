@@ -66,6 +66,7 @@ defmodule Eecrit.Web do
       import Eecrit.Gettext
       import Canada.Can, only: [can?: 3]
       alias Eecrit.ModelDisplays
+      alias Eecrit.ViewModel.Protocol, as: VMP
     end
   end
 

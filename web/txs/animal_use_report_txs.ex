@@ -59,10 +59,8 @@ defmodule Eecrit.AnimalUseReportTxs do
     [... [animal-view, procedure-view, procedure-view...] ...]       
     """
     def convert_models_to_model_views(list_of_lists) do
-      procedure_view = fn {procedure, count} ->
-        procedure
-        |> ViewModel.procedure
-        |> Map.put(:use_count, count)
+      procedure_view = fn {procedure, count} -> 
+        ViewModel.procedure(procedure, use_count: count)
       end
       
       two_level_transform(list_of_lists, &ViewModel.animal/1, procedure_view)

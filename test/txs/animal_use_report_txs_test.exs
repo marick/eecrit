@@ -2,6 +2,7 @@ defmodule Eecrit.AnimalUseReportTxsTest do
   use Eecrit.ConnCase
   alias Eecrit.AnimalUseReportTxs.P, as: P
   alias Eecrit.AnimalUseReportTxs, as: S
+  alias Eecrit.ViewModel, as: VM
   
   ### Privates
 
@@ -67,13 +68,13 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     assert Map.has_key?(c.a1, :nickname)
     assert Map.has_key?(c.a1, :date_removed_from_service)
 
-    expected = [ [ %{id: c.a1.id, name: c.a1.name},
-                     %{id: c.p1.id, name: c.p1.name, use_count: 1},
-                     %{id: c.p2.id, name: c.p2.name, use_count: 2}],
-                 [ %{id: c.a2.id, name: c.a2.name},
-                     %{id: c.p1.id, name: c.p1.name, use_count: 3},
-                     %{id: c.p3.id, name: c.p3.name, use_count: 4}],
-                 [ %{id: c.a3.id, name: c.a3.name}]
+    expected = [ [ VM.animal(c.a1),
+                     VM.procedure(c.p1, use_count: 1),
+                     VM.procedure(c.p2, use_count: 2)],
+                 [ VM.animal(c.a2),
+                     VM.procedure(c.p1, use_count: 3),
+                     VM.procedure(c.p3, use_count: 4)],
+                 [ VM.animal(c.a3) ],
                ]
 
     actual = P.convert_models_to_model_views(list_of_lists)
@@ -103,13 +104,13 @@ defmodule Eecrit.AnimalUseReportTxsTest do
            ]
     
     expected = 
-      [ [%{id: c.a1.id, name: c.a1.name},
-           %{id: c.p1.id, name: c.p1.name, use_count: 1},
-           %{id: c.p2.id, name: c.p2.name, use_count: 2}],
-        [%{id: c.a2.id, name: c.a2.name},
-           %{id: c.p1.id, name: c.p1.name, use_count: 3},
-           %{id: c.p3.id, name: c.p3.name, use_count: 4}],
-        [%{id: c.a3.id, name: c.a3.name}],
+      [ [VM.animal(c.a1),
+           VM.procedure(c.p1, use_count: 1),
+           VM.procedure(c.p2, use_count: 2)],
+        [VM.animal(c.a2),
+           VM.procedure(c.p1, use_count: 3),
+           VM.procedure(c.p3, use_count: 4)],
+        [VM.animal(c.a3)],
       ]
     actual = P.view_model(uses, c.animals, c.procedures)
     assert actual == expected
@@ -129,56 +130,53 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     p2 = insert_old_procedure(name: "p2")
     p3 = insert_old_procedure(name: "p3")
 
-    a = fn a -> %{id: a.id, name: a.name} end
-    p = fn p, count -> %{id: p.id, name: p.name, use_count: count} end
-
     insert_ranged_reservation!({"2016-06-01", "2016-06-01"}, [a1], [p1])
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 1)],
-      [a.(a2)],
-      [a.(a3)],
+      [VM.animal(a1), VM.procedure(p1, use_count: 1)],
+      [VM.animal(a2)],
+      [VM.animal(a3)],
     ]
 
     insert_ranged_reservation!({"2016-06-03", "2016-06-04"}, [a1, a2], [p1, p3])
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 1+2), p.(p3, 0+2)],
-      [a.(a2), p.(p1, 0+2), p.(p3, 0+2)],
-      [a.(a3)],
+      [VM.animal(a1), VM.procedure(p1, use_count: 1+2), VM.procedure(p3, use_count: 0+2)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 0+2), VM.procedure(p3, use_count: 0+2)],
+      [VM.animal(a3)],
     ]
 
     # Adding a reservation partially past the end date only counts the relevant
     # days (one in this case)
     insert_ranged_reservation!({"2016-06-30", "2016-07-01"}, [a3], [p1, p2, p3])
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 3), p.(p3, 2)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 0+1), p.(p2, 0+1), p.(p3, 0+1)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 3), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 0+1), VM.procedure(p2, use_count: 0+1), VM.procedure(p3, use_count: 0+1)]
     ]
     
     # The same is true of a reservation that overlaps the beginning.
     insert_ranged_reservation!({"2016-05-28", "2016-06-02"}, [a1], [p1, p2, p3])
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 3+2), p.(p2, 0+2), p.(p3, 2+2)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 1), p.(p2, 1), p.(p3, 1)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 3+2), VM.procedure(p2, use_count: 0+2), VM.procedure(p3, use_count: 2+2)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 1), VM.procedure(p2, use_count: 1), VM.procedure(p3, use_count: 1)]
     ]
 
     # Unsurprisingly, something not at all overlapping adds nothing.
     insert_ranged_reservation!({"2000-05-28", "2000-06-02"}, [a1], [p1, p2, p3])
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 5), p.(p2, 2), p.(p3, 4)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 1), p.(p2, 1), p.(p3, 1)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 5), VM.procedure(p2, use_count: 2), VM.procedure(p3, use_count: 4)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 1), VM.procedure(p2, use_count: 1), VM.procedure(p3, use_count: 1)]
     ]
 
     # Adding an animal midway through the period does make it show up
     # (There is no notion of an animal's "start date".)
     a4 = insert_old_animal(name: "a4")
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 5), p.(p2, 2), p.(p3, 4)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 1), p.(p2, 1), p.(p3, 1)],
-      [a.(a4)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 5), VM.procedure(p2, use_count: 2), VM.procedure(p3, use_count: 4)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 1), VM.procedure(p2, use_count: 1), VM.procedure(p3, use_count: 1)],
+      [VM.animal(a4)]
     ]
 
     # TODO: Today, it's not clear whether animals are removed from
@@ -189,10 +187,10 @@ defmodule Eecrit.AnimalUseReportTxsTest do
     insert_old_animal(name: "a5",
       date_removed_from_service: Ecto.Date.cast!("2000-05-31"))
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 5), p.(p2, 2), p.(p3, 4)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 1), p.(p2, 1), p.(p3, 1)],
-      [a.(a4)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 5), VM.procedure(p2, use_count: 2), VM.procedure(p3, use_count: 4)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 1), VM.procedure(p2, use_count: 1), VM.procedure(p3, use_count: 1)],
+      [VM.animal(a4)]
     ]
 
     # An animal out of service partway through the period does appear.
@@ -200,11 +198,11 @@ defmodule Eecrit.AnimalUseReportTxsTest do
       date_removed_from_service: Ecto.Date.cast!("2016-06-15"))
 
     assert S.run(one_month) == [
-      [a.(a1), p.(p1, 5), p.(p2, 2), p.(p3, 4)],
-      [a.(a2), p.(p1, 2), p.(p3, 2)],
-      [a.(a3), p.(p1, 1), p.(p2, 1), p.(p3, 1)],
-      [a.(a4)],
-      [a.(a6)]
+      [VM.animal(a1), VM.procedure(p1, use_count: 5), VM.procedure(p2, use_count: 2), VM.procedure(p3, use_count: 4)],
+      [VM.animal(a2), VM.procedure(p1, use_count: 2), VM.procedure(p3, use_count: 2)],
+      [VM.animal(a3), VM.procedure(p1, use_count: 1), VM.procedure(p2, use_count: 1), VM.procedure(p3, use_count: 1)],
+      [VM.animal(a4)],
+      [VM.animal(a6)]
     ]
   end
 end

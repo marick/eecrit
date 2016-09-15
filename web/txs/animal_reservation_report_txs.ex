@@ -8,7 +8,7 @@ defmodule Eecrit.AnimalReservationReportTxs do
   
   def run(id, options \\ []) do
     animal = OldAnimalSource.animal_with_reservations(id, options)
-    reservations = animal.reservations |> ViewModel.reservation |> sort_by_first_date
+    reservations = animal.reservations |> ViewModel.reservations |> sort_by_first_date
 
     %{animal: ViewModel.animal(animal),
       date_range: ViewModel.date_range(options[:date_range]),

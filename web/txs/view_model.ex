@@ -6,7 +6,6 @@ defmodule Eecrit.ViewModel.Macros do
         Module.put_attribute unquote(name), :required_keys, unquote(keys)
         Module.put_attribute unquote(name), :enforce_keys, unquote(keys)
         defstruct unquote(defstruct_body)
-        def cast_list!(models), do: Enum.map(models, &cast!/1)
         def cast!(model, extras \\ []) do
           struct!(unquote(name), Map.take(model, unquote(keys)))
           |> Map.merge(Enum.into(extras, %{}))
@@ -15,9 +14,27 @@ defmodule Eecrit.ViewModel.Macros do
       end
     end
   end
+
+  # The rigamarole with `singular` and `plural` is so the call
+  # needn't prefix the function name with `:`. Is that a good idea?
+  defmacro default_constructors(module, {singular, _, _}, {plural, _, _}) do
+    quote do
+      def unquote(singular)(x, extras \\ []) do
+        unquote(module).cast!(x, extras)
+      end
+
+      def unquote(plural)(%Ecto.Association.NotLoaded{}), do: []
+
+      def unquote(plural)(xs) do
+        Enum.map(xs, fn x -> unquote(singular)(x) end)
+      end
+
+      defoverridable [
+        {unquote(singular), 2}, {unquote(singular), 1}, {unquote(plural), 1}
+      ]
+    end
+  end
 end
-
-
 
 defmodule Eecrit.ViewModel do
   import Eecrit.Router.Helpers
@@ -50,22 +67,24 @@ defmodule Eecrit.ViewModel do
     end
   end
 
-  def animal(x, extras \\ []), do: Animal.cast!(x, extras)
-  def animals(xs), do: Animal.cast_list!(xs)
+  def_view_model Reservation,
+    [:course, :instructor, :time_bits, :date_range, :procedures] do
+  end
 
-  def procedure(x, extras \\ []), do: Procedure.cast!(x, extras)
-  def procedures(%Ecto.Association.NotLoaded{}), do: []
-  def procedures(xs), do: Procedure.cast_list!(xs)
+  default_constructors(Animal, animal, animals)
+  default_constructors(Procedure, procedure, procedures)
 
-  def reservation(list) when is_list(list), do: Enum.map(list, &reservation/1)
-  def reservation(%Eecrit.OldReservation{} = model) do
+  default_constructors(Reservation, reservation, reservations)
+  def reservation(model, extras \\ []) do
     model 
-    |> Map.take([:course, :instructor, :time_bits])
     |> Map.put(:date_range, date_range({Ecto.Date.to_iso8601(model.first_date),
                                        Ecto.Date.to_iso8601(model.last_date)}))
     |> Map.put(:procedures, procedures(model.procedures))
+    |> super(extras)
   end
 
+  # TODO: Settle on either one date-range format, or on one going down to
+  # the database or one coming back up.
   def date_range(%{first_date: _first, last_date: _last} = range), do: range
   def date_range({first, last}), do: %{first_date: first, last_date: last}
   def date_range(:infinity), do: :infinity

@@ -1,5 +1,5 @@
 <h3>
-  Reservations for <%= ModelDisplays.animal(@conn, @view_model.animal) %>
+  Reservations for <%= VMP.link_to_more_detail(@view_model.animal, @conn) %>
   <%= ModelDisplays.date_range(@view_model.date_range) %>
 </h3>
 
@@ -22,7 +22,7 @@
         <ul>
           <%= for procedure <- reservation.procedures do %>
               <li>
-                <%= ModelDisplays.procedure(@conn, procedure) %>
+                <%= VMP.link_to_more_detail(procedure, @conn) %>
               </li>
           <% end %>
         </ul>

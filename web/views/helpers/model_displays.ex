@@ -4,11 +4,8 @@ defmodule Eecrit.ModelDisplays do
   alias Eecrit.TimeUtil
   require Timex
 
-  def animal(conn, view_model) do 
-    link view_model.name,
-      to: old_animal_path(conn, :show, view_model.id),
-      title: "Show details for this animal"
-  end
+
+  ### TODO: Move all of this into view model functions.
 
   def animal_resources(conn, id, first_date, last_date) do 
     link "See reservations",
@@ -16,12 +13,6 @@ defmodule Eecrit.ModelDisplays do
         animal: id, first_date: first_date, last_date: last_date),
       title: "Show this animal's reservations for the given time period",
       class: "btn btn-default btn-xs"
-  end
-
-  def procedure(conn, view_model) do 
-    link view_model.name,
-      to: old_procedure_path(conn, :show, view_model.id),
-      title: "Show details for this procedure"
   end
 
   def date(nil), do: ""

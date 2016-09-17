@@ -38,7 +38,7 @@ defmodule Eecrit.Mixfile do
      # TODO: This should be only: :test, but I can't figure out where
      # to put the test support code.
      {:shouldi, ">= 0.3.2"},
-     {:floki, "~> 0.10.0", only: [:test, :dev]},
+     {:floki, "~> 0.10.0"},
      {:canada, "~> 1.0.0"},
      {:curtail, "~> 0.1"},
      

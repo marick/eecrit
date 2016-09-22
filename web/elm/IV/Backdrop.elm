@@ -1,4 +1,4 @@
-module IV.StaticImage exposing (provideBackdropFor)
+module IV.Backdrop exposing (provideBackdropFor)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

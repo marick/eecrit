@@ -23,7 +23,7 @@ subscriptions model =
 main =
     Html.App.program
         { init = init
-        , view = IV.View.view
+        , view = view
         , update = update
         , subscriptions = subscriptions
         }

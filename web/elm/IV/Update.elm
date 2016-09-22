@@ -1,0 +1,53 @@
+module IV.Update exposing (update)
+
+import IV.Msg exposing (Msg(..))
+import IV.Model exposing (Model)
+import String
+import IV.Droplet as Droplet
+import Animation
+
+
+floatSpeed model =
+  if String.isEmpty model.desiredNextSpeed then
+    model
+  else
+    case String.toInt model.desiredNextSpeed of
+        Ok n ->
+          {model | currentSpeed = toFloat n}
+        Err _ ->
+          model
+  
+updateNextSpeed model nextString =
+  if String.isEmpty nextString then
+    {model | desiredNextSpeed = nextString}
+  else
+    case String.toInt nextString of
+        Ok _ ->
+          {model | desiredNextSpeed = nextString}
+        Err _ ->
+          model
+
+startAnimation model = 
+  { model | droplet = Droplet.animate model.droplet model.currentSpeed }
+
+    
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+  case msg of
+    Go -> 
+      ( model |> floatSpeed |> startAnimation
+      , Cmd.none
+      )
+      
+    UpdateSpeed nextString ->
+      ( updateNextSpeed model nextString, Cmd.none)
+        
+    Animate time ->
+      ( { model
+          | droplet = (Animation.update time) model.droplet
+        }
+      , Cmd.none
+      )
+

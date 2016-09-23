@@ -3,7 +3,7 @@ module IV.Update exposing (update)
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import String
-import IV.Droplet as Droplet
+import IV.Droplet.Update as Droplet
 import IV.Droplet.Msg as DropletMsg
 
 floatSpeed model =

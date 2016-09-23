@@ -1,7 +1,7 @@
 module IV.Main exposing (..)
 import Html.App
 import Animation
-import IV.Droplet as Droplet
+import IV.Droplet.Model as Droplet
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import IV.Update exposing (update)

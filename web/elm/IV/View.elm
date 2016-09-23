@@ -5,7 +5,7 @@ import IV.Model exposing (Model)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Backdrop exposing (provideBackdropFor)
-import IV.Droplet as Droplet
+import IV.Droplet.View as Droplet
 import Html.Events as Events
 
 view : Model -> Html Msg

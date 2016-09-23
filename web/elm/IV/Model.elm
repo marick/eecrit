@@ -7,5 +7,3 @@ type alias Model =
     { droplet : Droplet.Model
     , speedControl : SpeedControl.Model
     }
-
-

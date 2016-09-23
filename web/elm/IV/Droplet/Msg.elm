@@ -5,8 +5,5 @@ import IV.Droplet.Model exposing (Model)
 
 type Msg
   = ChangeDripRate Float
-  | Animate Animation.Msg
+  | AnimationClockTick Animation.Msg
 
-subscriptions model = 
-  Animation.subscription Animate [model.style]
-    

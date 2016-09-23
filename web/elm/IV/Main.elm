@@ -12,16 +12,15 @@ init : ( Model, Cmd Msg )
 init =
     ( { droplet = Droplet.startingState
       , speedControl = SpeedControl.startingState
-      , currentSpeed = 800.0
       }
     , Cmd.none
     )
 
 subscriptions model =
---   Droplet.subscriptions model.droplet
---   Droplet.subscription Animate model.droplet
-  Animation.subscription Animate
-    [model.droplet.style]
+  Animation.subscription
+    AnimationClockTick
+    [ Droplet.animation model.droplet
+    ]
 
 main =
     Html.App.program
@@ -30,4 +29,3 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
-

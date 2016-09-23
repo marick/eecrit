@@ -28,9 +28,9 @@ update msg model =
         }
       , Cmd.none)
 
-    Animate time ->
+    AnimationClockTick tick ->
       ( { model
-          | droplet = Droplet.update (DropletMsg.Animate time) model.droplet 
+          | droplet = Droplet.update (DropletMsg.AnimationClockTick tick) model.droplet 
         }
       , Cmd.none
       )

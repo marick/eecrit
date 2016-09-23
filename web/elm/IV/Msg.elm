@@ -5,5 +5,5 @@ import Animation
 type Msg
     = ChangeDripRate
     | ChangedTextField String
-    | Animate Animation.Msg
+    | AnimationClockTick Animation.Msg
 

@@ -2,7 +2,7 @@ module IV.Droplet.Update exposing (..)
 
 import Animation
 import IV.Droplet.Msg exposing (Msg(..))
-import IV.Droplet.Model exposing (Model)
+import IV.Droplet.Model as Model exposing (Model)
 import IV.Droplet.View as View
 import Time exposing (second)
 
@@ -25,7 +25,7 @@ update msg model =
            ]
         ]
       in
-        { model | style = Animation.interrupt newCommands model.style}
+        { model | style = Animation.interrupt newCommands (Model.animation model)}
 
-    Animate tick ->
-      { model | style = (Animation.update tick) model.style }
+    AnimationClockTick tick ->
+      { model | style = (Animation.update tick) (Model.animation model) }

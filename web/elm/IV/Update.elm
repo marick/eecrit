@@ -5,7 +5,7 @@ import IV.Model exposing (Model)
 import String
 import IV.Droplet as Droplet
 import Animation
-
+import IV.Droplet.Msg as DropletMsg
 
 floatSpeed model =
   if String.isEmpty model.desiredNextSpeed then
@@ -28,9 +28,7 @@ updateNextSpeed model nextString =
           model
 
 startAnimation model = 
-  { model | droplet = Droplet.animate model.droplet model.currentSpeed }
-
-    
+  { model | droplet = Droplet.update (DropletMsg.ChangeDripRate model.currentSpeed) model.droplet }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

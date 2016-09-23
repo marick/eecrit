@@ -5,6 +5,7 @@ import IV.Palette as Palette
 import Animation exposing (px)
 import Svg
 import Time exposing (second)
+import IV.Droplet.Msg exposing (Msg(..))
 
 -- Model
 
@@ -41,23 +42,25 @@ stopping = [ Animation.points
 
 -- Update
 
-animate : Model -> Float -> Model
-animate droplet v =
-  let
-    -- Will use new mechanism for this shortly
-    tempSpeed = Animation.speed {perSecond = v}
-    newCommands = [
-     Animation.loop
-       [
-        Animation.wait (0.05 * second)
-       , Animation.toWith tempSpeed growing
-       , Animation.wait (0.1 * second)
-       , Animation.toWith tempSpeed stopping
-       , Animation.set starting
-       ]
-    ]
-  in
-    Animation.interrupt newCommands droplet
+update : Msg -> Model -> Model
+update msg model =
+  case msg of
+    ChangeDripRate v -> 
+      let
+        -- Will use new mechanism for this shortly
+        tempSpeed = Animation.speed {perSecond = v}
+        newCommands = [
+         Animation.loop
+           [
+            Animation.wait (0.05 * second)
+           , Animation.toWith tempSpeed growing
+           , Animation.wait (0.1 * second)
+           , Animation.toWith tempSpeed stopping
+           , Animation.set starting
+           ]
+        ]
+      in
+        Animation.interrupt newCommands model
 
 -- View  
 

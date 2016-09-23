@@ -1,14 +1,20 @@
 module IV.View exposing (view)
 
-import IV.Msg exposing(Msg(..))
+import IV.Msg as TopMsg
 import IV.Model exposing (Model)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Backdrop exposing (provideBackdropFor)
 import IV.Droplet.View as Droplet
 import Html.Events as Events
+import IV.SpeedControl.Msg exposing (Msg(ChangedTextField))
 
-view : Model -> Html Msg
+changeHandler : String -> TopMsg.Msg
+changeHandler string =
+  TopMsg.ToSpeedControl (ChangedTextField string)
+                
+
+view : Model -> Html TopMsg.Msg
 view model =
     div
       [
@@ -16,7 +22,6 @@ view model =
       ]
       [
         provideBackdropFor [(Droplet.render model.droplet)]
-      , input [ Attr.value model.speedControl.string, Events.onInput ChangedTextField] []
-      , button [Events.onClick ChangeDripRate ] [ text "Go" ]
-      , text (model.droplet.currentSpeed |> toString)
+      , input [ Attr.value model.speedControl.string, Events.onInput changeHandler] []
+      , button [Events.onClick TopMsg.ChangeDripRate ] [ text "Go" ]
       ]

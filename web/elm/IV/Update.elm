@@ -16,22 +16,24 @@ startAnimation model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    ToSpeedControl msg' ->
+      ( { model | speedControl = SpeedControl.update msg' model.speedControl }
+      , Cmd.none
+      )
+
     ChangeDripRate ->
       ( { model
           | droplet = Droplet.update (DropletMsg.ChangeDripRate model.speedControl.float) model.droplet }
       , Cmd.none
         )
 
-    ChangedTextField nextString ->
-      ( { model
-          | speedControl = SpeedControl.update (SpeedMsg.ChangedTextField nextString) model.speedControl
-        }
-      , Cmd.none)
-
     AnimationClockTick tick ->
-      ( { model
-          | droplet = Droplet.update (DropletMsg.AnimationClockTick tick) model.droplet 
-        }
-      , Cmd.none
-      )
+      let
+        updater = (DropletMsg.AnimationClockTick tick)
+      in
+        ( { model
+            | droplet = Droplet.update updater model.droplet 
+          }
+        , Cmd.none
+        )
 

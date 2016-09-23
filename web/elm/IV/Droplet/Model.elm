@@ -11,7 +11,7 @@ type alias Model =
 
 startingState : DropsPerSecond -> Model 
 startingState (DropsPerSecond float) =
-  Model (Animation.style View.starting) 800.0
+  Model (Animation.style View.starting) float
 
 animation : Model -> Animation.State
 animation model =

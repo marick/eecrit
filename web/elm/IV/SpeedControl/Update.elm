@@ -3,14 +3,18 @@ module IV.SpeedControl.Update exposing (..)
 import String
 import IV.SpeedControl.Msg exposing (..)
 import IV.SpeedControl.Model exposing (Model)
+import IV.Types exposing (..)
 
 updateNextSpeed model nextString =
   if String.isEmpty nextString then
-    {model | string = nextString, float = 0.0}
+    {model | string = nextString, perSecond = DropsPerSecond 0.1} -- bags leak
   else
-    case String.toInt nextString of
-        Ok int ->
-          {model | string = nextString, float = toFloat int}
+    case String.toFloat nextString of
+        Ok float ->
+          {model
+            | string = nextString
+            , perSecond = (DropsPerSecond float)
+          }
         Err _ ->
           model
 

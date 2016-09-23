@@ -8,10 +8,6 @@ import IV.SpeedControl.Update as SpeedControl
 import IV.Droplet.Msg as DropletMsg
 import IV.SpeedControl.Msg as SpeedMsg
 
-startAnimation model = 
-  { model | droplet = Droplet.update (DropletMsg.ChangeDripRate model.currentSpeed) model.droplet }
-
-    
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -23,7 +19,7 @@ update msg model =
 
     ChangeDripRate ->
       ( { model
-          | droplet = Droplet.update (DropletMsg.ChangeDripRate model.speedControl.float) model.droplet }
+          | droplet = Droplet.update (DropletMsg.ChangeDripRate model.speedControl.perSecond) model.droplet }
       , Cmd.none
         )
 

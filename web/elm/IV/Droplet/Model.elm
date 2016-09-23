@@ -2,15 +2,16 @@ module IV.Droplet.Model exposing (Model, startingState, animation)
 
 import Animation
 import IV.Droplet.View as View
+import IV.Types exposing (..)
 
 type alias Model =
   { style : Animation.State
   , currentSpeed : Float
   }
 
-startingState : Float -> Model 
-startingState float =
-  Model (Animation.style View.starting) float
+startingState : DropsPerSecond -> Model 
+startingState (DropsPerSecond float) =
+  Model (Animation.style View.starting) 800.0
 
 animation : Model -> Animation.State
 animation model =

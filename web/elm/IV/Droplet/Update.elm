@@ -5,22 +5,23 @@ import IV.Droplet.Msg exposing (Msg(..))
 import IV.Droplet.Model as Model exposing (Model)
 import IV.Droplet.View as View
 import Time exposing (second)
-
+import IV.Types exposing (..)
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    ChangeDripRate v -> 
+    ChangeDripRate perSecond -> 
       let
-        -- Will use new mechanism for this shortly
-        tempSpeed = Animation.speed {perSecond = v}
+        half_x =
+          Animation.easing
+            {
+              ease = identity,
+                duration = asDuration(perSecond) / 2.0
+            }
         newCommands = [
          Animation.loop
-           [
-            Animation.wait (0.05 * second)
-           , Animation.toWith tempSpeed View.growing
-           , Animation.wait (0.1 * second)
-           , Animation.toWith tempSpeed View.stopping
+           [ Animation.toWith half_x View.growing
+           , Animation.toWith half_x View.stopping
            , Animation.set View.starting
            ]
         ]

@@ -7,11 +7,15 @@ import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import IV.Update exposing (update)
 import IV.View exposing (view)
+import IV.Types exposing (..)
 
 init : ( Model, Cmd Msg )
 init =
-    ( { droplet = Droplet.startingState 800.0 
-      , speedControl = SpeedControl.startingState "800" 800.0
+  let
+    default = (DropsPerSecond 2.0)
+  in
+    ( { droplet = Droplet.startingState default
+      , speedControl = SpeedControl.startingState default
       }
     , Cmd.none
     )

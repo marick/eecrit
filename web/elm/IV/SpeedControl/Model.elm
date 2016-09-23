@@ -1,10 +1,12 @@
 module IV.SpeedControl.Model exposing (..)
 
+import IV.Types exposing (..)
+
 type alias Model =
   { string : String
-  , float : Float
+  , perSecond : DropsPerSecond
   }
 
-startingState : String -> Float -> Model
-startingState string float
-  = Model string float
+startingState : DropsPerSecond -> Model
+startingState (DropsPerSecond float)
+  = Model (toString float) (DropsPerSecond float)

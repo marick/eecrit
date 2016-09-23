@@ -8,8 +8,9 @@ type alias Model =
   , currentSpeed : Float
   }
 
-startingState : Model
-startingState = Model (Animation.style View.starting) 800.0
+startingState : Float -> Model 
+startingState float =
+  Model (Animation.style View.starting) float
 
 animation : Model -> Animation.State
 animation model =

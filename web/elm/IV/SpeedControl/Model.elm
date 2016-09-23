@@ -5,5 +5,6 @@ type alias Model =
   , float : Float
   }
 
-startingState : Model
-startingState = Model "800" 800.0
+startingState : String -> Float -> Model
+startingState string float
+  = Model string float

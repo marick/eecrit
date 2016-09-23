@@ -10,8 +10,8 @@ import IV.View exposing (view)
 
 init : ( Model, Cmd Msg )
 init =
-    ( { droplet = Droplet.startingState
-      , speedControl = SpeedControl.startingState
+    ( { droplet = Droplet.startingState 800.0 
+      , speedControl = SpeedControl.startingState "800" 800.0
       }
     , Cmd.none
     )

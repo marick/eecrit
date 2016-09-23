@@ -6,32 +6,12 @@ import Animation exposing (px)
 import Svg
 import Time exposing (second)
 
-type alias Droplet = Animation.State
+-- Model
 
-
-render droplet =
-  Svg.polygon (Animation.render droplet) []
+type alias Model = Animation.State
 
 startingState : Animation.State    
 startingState = Animation.style starting
-
-animate : Droplet -> Float -> Droplet
-animate droplet v =
-  let
-    -- Will use new mechanism for this shortly
-    tempSpeed = Animation.speed {perSecond = v}
-    newCommands = [
-     Animation.loop
-       [
-        Animation.wait (0.05 * second)
-       , Animation.toWith tempSpeed growing
-       , Animation.wait (0.1 * second)
-       , Animation.toWith tempSpeed stopping
-       , Animation.set starting
-       ]
-    ]
-  in
-    Animation.interrupt newCommands droplet
 
 starting = [ Animation.points
                        [ ( 55, 200 )
@@ -58,3 +38,29 @@ stopping = [ Animation.points
                        , ( 55, 300 )
                        ]
            ]
+
+-- Update
+
+animate : Model -> Float -> Model
+animate droplet v =
+  let
+    -- Will use new mechanism for this shortly
+    tempSpeed = Animation.speed {perSecond = v}
+    newCommands = [
+     Animation.loop
+       [
+        Animation.wait (0.05 * second)
+       , Animation.toWith tempSpeed growing
+       , Animation.wait (0.1 * second)
+       , Animation.toWith tempSpeed stopping
+       , Animation.set starting
+       ]
+    ]
+  in
+    Animation.interrupt newCommands droplet
+
+-- View  
+
+render droplet =
+  Svg.polygon (Animation.render droplet) []
+

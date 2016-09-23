@@ -1,9 +1,9 @@
 module IV.Model exposing (..)
 
-import IV.Droplet exposing (Droplet)
+import IV.Droplet as Droplet
 
 type alias Model =
-    { droplet : Droplet
+    { droplet : Droplet.Model
     , currentSpeed : Float
     , desiredNextSpeed : String
     }

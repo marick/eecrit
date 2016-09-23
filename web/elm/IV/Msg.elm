@@ -3,7 +3,7 @@ module IV.Msg exposing (..)
 import Animation
 
 type Msg
-    = PressedGoButton
+    = ChangeDripRate
     | ChangedTextField String
     | Animate Animation.Msg
 

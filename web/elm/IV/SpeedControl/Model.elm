@@ -1,7 +1,9 @@
 module IV.SpeedControl.Model exposing (..)
 
 type alias Model =
-  { desiredNextSpeed : String }
+  { string : String
+  , float : Float
+  }
 
 startingState : Model
-startingState = Model "800"
+startingState = Model "800" 800.0

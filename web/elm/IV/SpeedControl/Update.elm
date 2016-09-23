@@ -6,14 +6,15 @@ import IV.SpeedControl.Model exposing (Model)
 
 updateNextSpeed model nextString =
   if String.isEmpty nextString then
-    {model | desiredNextSpeed = nextString}
+    {model | string = nextString, float = 0.0}
   else
     case String.toInt nextString of
-        Ok _ ->
-          {model | desiredNextSpeed = nextString}
+        Ok int ->
+          {model | string = nextString, float = toFloat int}
         Err _ ->
           model
 
+  
 update : Msg -> Model -> Model
 update msg model =
   case msg of

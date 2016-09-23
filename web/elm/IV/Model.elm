@@ -6,7 +6,6 @@ import IV.SpeedControl.Model as SpeedControl
 type alias Model =
     { droplet : Droplet.Model
     , speedControl : SpeedControl.Model
-    , currentSpeed : Float
     }
 
 

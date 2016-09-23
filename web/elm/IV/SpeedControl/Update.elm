@@ -17,5 +17,5 @@ updateNextSpeed model nextString =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    ChangedText string ->
+    ChangedTextField string ->
       updateNextSpeed model string

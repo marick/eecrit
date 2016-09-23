@@ -3,7 +3,7 @@ module IV.Msg exposing (..)
 import Animation
 
 type Msg
-    = Go
-    | UpdateSpeed String
+    = PressedGoButton
+    | ChangedTextField String
     | Animate Animation.Msg
 

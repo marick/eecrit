@@ -26,14 +26,14 @@ startAnimation model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    Go -> 
+    PressedGoButton -> 
       ( model |> floatSpeed |> startAnimation
       , Cmd.none
       )
 
-    UpdateSpeed nextString ->
+    ChangedTextField nextString ->
       ( { model
-          | speedControl = SpeedControl.update (SpeedMsg.ChangedText nextString) model.speedControl
+          | speedControl = SpeedControl.update (SpeedMsg.ChangedTextField nextString) model.speedControl
         }
       , Cmd.none)
         

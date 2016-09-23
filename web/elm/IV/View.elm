@@ -16,8 +16,8 @@ view model =
       ]
       [
         provideBackdropFor [(Droplet.render model.droplet)]
-      , input [ Attr.value model.speedControl.desiredNextSpeed, Events.onInput UpdateSpeed] []
-      , button [Events.onClick Go ] [ text "Go" ]
+      , input [ Attr.value model.speedControl.desiredNextSpeed, Events.onInput ChangedTextField] []
+      , button [Events.onClick PressedGoButton ] [ text "Go" ]
       , text (model.currentSpeed |> toString)
       ]
 

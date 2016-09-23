@@ -27,5 +27,5 @@ update msg model =
       in
         { model | style = Animation.interrupt newCommands model.style}
 
-    Animate time ->
-      { model | style = (Animation.update time) model.style }
+    Animate tick ->
+      { model | style = (Animation.update tick) model.style }

@@ -4,28 +4,20 @@ import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import String
 import IV.Droplet.Update as Droplet
+import IV.SpeedControl.Update as SpeedControl
 import IV.Droplet.Msg as DropletMsg
+import IV.SpeedControl.Msg as SpeedMsg
 
 floatSpeed model =
-  if String.isEmpty model.desiredNextSpeed then
+  if String.isEmpty model.speedControl.desiredNextSpeed then
     model
   else
-    case String.toInt model.desiredNextSpeed of
+    case String.toInt model.speedControl.desiredNextSpeed of
         Ok n ->
           {model | currentSpeed = toFloat n}
         Err _ ->
           model
   
-updateNextSpeed model nextString =
-  if String.isEmpty nextString then
-    {model | desiredNextSpeed = nextString}
-  else
-    case String.toInt nextString of
-        Ok _ ->
-          {model | desiredNextSpeed = nextString}
-        Err _ ->
-          model
-
 startAnimation model = 
   { model | droplet = Droplet.update (DropletMsg.ChangeDripRate model.currentSpeed) model.droplet }
 
@@ -38,9 +30,12 @@ update msg model =
       ( model |> floatSpeed |> startAnimation
       , Cmd.none
       )
-      
+
     UpdateSpeed nextString ->
-      ( updateNextSpeed model nextString, Cmd.none)
+      ( { model
+          | speedControl = SpeedControl.update (SpeedMsg.ChangedText nextString) model.speedControl
+        }
+      , Cmd.none)
         
     Animate time ->
       ( { model

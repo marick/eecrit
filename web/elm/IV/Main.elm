@@ -2,6 +2,7 @@ module IV.Main exposing (..)
 import Html.App
 import Animation
 import IV.Droplet.Model as Droplet
+import IV.SpeedControl.Model as SpeedControl
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import IV.Update exposing (update)
@@ -10,8 +11,8 @@ import IV.View exposing (view)
 init : ( Model, Cmd Msg )
 init =
     ( { droplet = Droplet.startingState
+      , speedControl = SpeedControl.startingState
       , currentSpeed = 800.0
-      , desiredNextSpeed = "800"
       }
     , Cmd.none
     )

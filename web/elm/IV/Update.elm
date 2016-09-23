@@ -4,7 +4,6 @@ import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import String
 import IV.Droplet as Droplet
-import Animation
 import IV.Droplet.Msg as DropletMsg
 
 floatSpeed model =
@@ -30,6 +29,7 @@ updateNextSpeed model nextString =
 startAnimation model = 
   { model | droplet = Droplet.update (DropletMsg.ChangeDripRate model.currentSpeed) model.droplet }
 
+    
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -44,7 +44,7 @@ update msg model =
         
     Animate time ->
       ( { model
-          | droplet = (Animation.update time) model.droplet
+          | droplet = Droplet.update (DropletMsg.Animate time) model.droplet 
         }
       , Cmd.none
       )

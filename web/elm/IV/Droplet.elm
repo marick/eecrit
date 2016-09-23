@@ -9,10 +9,11 @@ import IV.Droplet.Msg exposing (Msg(..))
 
 -- Model
 
-type alias Model = Animation.State
+type alias Model =
+  { style : Animation.State }
 
-startingState : Animation.State    
-startingState = Animation.style starting
+startingState : Model
+startingState = Model (Animation.style starting)
 
 starting = [ Animation.points
                        [ ( 55, 200 )
@@ -60,10 +61,19 @@ update msg model =
            ]
         ]
       in
-        Animation.interrupt newCommands model
+        { model | style = Animation.interrupt newCommands model.style}
+
+    Animate time ->
+      { model | style = (Animation.update time) model.style }
 
 -- View  
 
-render droplet =
-  Svg.polygon (Animation.render droplet) []
+render model =
+  Svg.polygon (Animation.render model.style) []
 
+
+-- Subscriptions
+
+
+subscriptions model = 
+  Animation.subscription Animate [model.style]

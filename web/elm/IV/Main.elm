@@ -17,8 +17,10 @@ init =
     )
 
 subscriptions model =
-    Animation.subscription Animate
-        [model.droplet]
+--   Droplet.subscriptions model.droplet
+--   Droplet.subscription Animate model.droplet
+  Animation.subscription Animate
+    [model.droplet.style]
 
 main =
     Html.App.program

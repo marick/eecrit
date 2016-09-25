@@ -2,6 +2,7 @@ module IV.Backdrop exposing (provideBackdropFor)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import IV.Clock.View as Clock
 
 provideBackdropFor animatedElements = 
   svg
@@ -10,7 +11,8 @@ provideBackdropFor animatedElements =
     , y "0"
     , viewBox "0 0 400 400"
     ]
-    <| [liquid, bottomLiquid, bag, nozzle, hose] ++ animatedElements
+    <| [liquid, bottomLiquid, bag, nozzle, hose, Clock.face] ++
+      [Clock.minuteHandAt 12, Clock.hourHandAt 2] ++ animatedElements
 
 bag = rect
       [ fill "none"

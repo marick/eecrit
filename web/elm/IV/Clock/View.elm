@@ -6,6 +6,7 @@ import Svg.Attributes exposing (..)
 import IV.Palette as Palette
 import Dict
 import Formatting exposing (..)
+import Html.Attributes
 
 import Color
 
@@ -144,19 +145,19 @@ hourHandBaseProperties hour =
   , x2' clockCenterX
   , y2' (clockCenterY - hourHandLength)
   , stroke "#000"
-  , strokeWidth "3"
+  , strokeWidth "5"
   , markerEnd "url(#arrow)"
+  , Html.Attributes.attribute "transform-origin" "260px 200px"
   ]
       
 startingHourHandProperties =
-  [Animation.stroke Color.green,
-   Animation.strokeWidth 3.0]
+  [
+    Animation.rotate (Animation.deg 60)
+  ]
 
 endingHourHandProperties =
   [
-    Animation.stroke Color.red
-  , Animation.strokeWidth 10.0
-  , Animation.exactly "transform" "rotate(80deg)"
+   Animation.rotate (Animation.deg 180)
   ]
   
 render model =

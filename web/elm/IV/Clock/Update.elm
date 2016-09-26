@@ -1,6 +1,6 @@
 module IV.Clock.Update exposing (..)
 
-import Animation
+import Animation exposing (px)
 import IV.Clock.Msg exposing (Msg(..))
 import IV.Clock.Model as Model exposing (Model)
 import IV.Clock.View as View
@@ -18,12 +18,15 @@ easing duration =
 advanceHours hours animation = 
   let
     change  =
-      [ Animation.toWith (easing (3.0 * second)) View.startingHourHandProperties
-      , Animation.toWith (easing (3.0 * second)) View.endingHourHandProperties
+      [ Animation.set View.startingHourHandProperties
+      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 90)]
+      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 120)]
+      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 150)]
+      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 180)]
       ]
-    loop = Animation.loop change
+    loop = Animation.repeat 4 change
   in
-    Animation.interrupt [loop] animation
+    Animation.interrupt change animation
 
 update : Msg -> Model -> Model
 update msg model =

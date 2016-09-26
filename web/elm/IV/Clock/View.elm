@@ -133,7 +133,7 @@ handProperties =
   -- y2 will depend on length of hand
   , stroke "black"
   , markerEnd "url(#arrow)"
-  , Html.Attributes.attribute "transform-origin" "260px 200px"
+  , Html.Attributes.attribute "transform-origin" "260px 200px" -- TODO: insert x&y values
   ]
 hourHandBaseProperties =
   [ y2' (clockCenterY - hourHandLength)

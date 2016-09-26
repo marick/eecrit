@@ -32,7 +32,7 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     AdvanceHours hours ->
-      { model | style = advanceHours 3.0 model.style }
+      { model | hourHand = advanceHours 3.0 model.hourHand }
 
     AnimationClockTick tick ->
-      { model | style = (Animation.update tick) model.style }
+      { model | hourHand = (Animation.update tick) model.hourHand }

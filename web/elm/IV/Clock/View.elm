@@ -161,4 +161,4 @@ endingHourHandProperties =
   ]
   
 render model =
-  line (Animation.render model.style ++ hourHandBaseProperties 2) []
+  line (Animation.render model.hourHand ++ hourHandBaseProperties 2) []

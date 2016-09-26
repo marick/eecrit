@@ -1,4 +1,4 @@
-module IV.Droplet.Model exposing (Model, startingState, animation)
+module IV.Droplet.Model exposing (Model, startingState, animations)
 
 import Animation
 import IV.Droplet.View as View
@@ -13,6 +13,6 @@ startingState : DropsPerSecond -> Model
 startingState (DropsPerSecond float) =
   Model (Animation.style View.missingDrop) float
 
-animation : Model -> Animation.State
-animation model =
-  model.style
+animations : Model -> List Animation.State
+animations model =
+  [model.style]

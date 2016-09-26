@@ -55,9 +55,9 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     ChangeDripRate perSecond ->
-      { model | style = changeDropRate perSecond (Model.animation model) }
+      { model | style = changeDropRate perSecond model.style }
 
     AnimationClockTick tick ->
-      { model | style = (Animation.update tick) (Model.animation model) }
+      { model | style = (Animation.update tick) model.style }
 
 

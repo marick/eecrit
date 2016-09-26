@@ -11,7 +11,7 @@ type alias Model =
 startingState =
   Model (Animation.style View.startingHourHandProperties)
 
-animation : Model -> Animation.State
-animation model =
-  model.style
+animations : Model -> List Animation.State
+animations model =
+  [model.style]
            

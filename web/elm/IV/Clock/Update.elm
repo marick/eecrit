@@ -18,8 +18,8 @@ easing duration =
 advanceHours hours animation = 
   let
     change  =
-      [ Animation.set View.startingHourHandProperties
-      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 90)]
+      [ -- Animation.set View.startingHourHandProperties
+       Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 90)]
       , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 120)]
       , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 150)]
       , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 180)]
@@ -32,7 +32,7 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     AdvanceHours hours ->
-      { model | style = advanceHours 3.0 (Model.animation model) }
+      { model | style = advanceHours 3.0 model.style }
 
     AnimationClockTick tick ->
-      { model | style = (Animation.update tick) (Model.animation model) }
+      { model | style = (Animation.update tick) model.style }

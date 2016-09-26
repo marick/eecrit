@@ -25,9 +25,7 @@ init =
 subscriptions model =
   Animation.subscription
     AnimationClockTick
-    [ Droplet.animation model.droplet
-    , Clock.animation model.clock
-    ]
+    (Droplet.animations model.droplet ++ Clock.animations model.clock)
 
 main =
     Html.App.program

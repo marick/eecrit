@@ -9,7 +9,7 @@ type alias Model =
   }
 
 startingState =
-  Model (Animation.style View.startingHourHandProperties)
+  Model (Animation.style (View.hourHandStartsAt 2))
 
 animations : Model -> List Animation.State
 animations model =

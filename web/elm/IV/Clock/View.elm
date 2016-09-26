@@ -66,19 +66,6 @@ rotate' degrees xCenter yCenter =
 transformForHour hour =
   transform <| rotate' (hour * 30) clockCenterX clockCenterY
 
-minuteHandAt hour =
-  line
-    [ x1' clockCenterX
-    , y1' clockCenterY
-    , x2' clockCenterX
-    , y2' (clockCenterY - minuteHandLength)
-    , stroke "#000"
-    , strokeWidth "3"
-    , markerEnd "url(#arrow)"
-    , transformForHour hour
-    ]
-    []
-
 clockNumeral value = 
   let    
     common =
@@ -137,28 +124,33 @@ trace hour =
     ]
     []
 
--- Animation Part      
+-- Animation Part
 
-hourHandBaseProperties hour =
+handProperties =
   [ x1' clockCenterX
   , y1' clockCenterY
   , x2' clockCenterX
-  , y2' (clockCenterY - hourHandLength)
-  , stroke "#000"
-  , strokeWidth "5"
+  -- y2 will depend on length of hand
+  , stroke "black"
   , markerEnd "url(#arrow)"
   , Html.Attributes.attribute "transform-origin" "260px 200px"
   ]
+hourHandBaseProperties =
+  [ y2' (clockCenterY - hourHandLength)
+  , strokeWidth "5"
+  ] ++ handProperties
       
-startingHourHandProperties =
+minuteHandAt hour =
+  line
+    ([ y2' (clockCenterY - minuteHandLength)
+     , strokeWidth "3"
+     ] ++ handProperties)
+    []
+
+hourHandStartsAt hour =
   [
-    Animation.rotate (Animation.deg 60)
+    Animation.rotate (Animation.deg (30 * hour))
   ]
 
-endingHourHandProperties =
-  [
-   Animation.rotate (Animation.deg 180)
-  ]
-  
 render model =
-  line (Animation.render model.hourHand ++ hourHandBaseProperties 2) []
+  line (Animation.render model.hourHand ++ hourHandBaseProperties) []

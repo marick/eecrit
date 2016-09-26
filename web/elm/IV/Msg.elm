@@ -5,6 +5,7 @@ import IV.SpeedControl.Msg as SpeedControl
 
 type Msg
     = ChangeDripRate
+    | AdvanceHours
     | ToSpeedControl SpeedControl.Msg
     | AnimationClockTick Animation.Msg
 

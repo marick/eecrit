@@ -26,6 +26,7 @@ subscriptions model =
   Animation.subscription
     AnimationClockTick
     [ Droplet.animation model.droplet
+    , Clock.animation model.clock
     ]
 
 main =

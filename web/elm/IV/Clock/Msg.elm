@@ -6,4 +6,4 @@ import IV.Types exposing (..)
 
 type Msg
   = AdvanceHours Int
-
+  | AnimationClockTick Animation.Msg

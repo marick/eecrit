@@ -7,7 +7,7 @@ import IV.Palette as Palette
 import Dict
 import Formatting exposing (..)
 
-ia = print int
+import Color
 
 useInt : (String -> a) -> (Int -> a)
 useInt stringFn i =
@@ -64,19 +64,6 @@ rotate' degrees xCenter yCenter =
       
 transformForHour hour =
   transform <| rotate' (hour * 30) clockCenterX clockCenterY
-
-hourHandAt hour =
-  line
-    [ x1' clockCenterX
-    , y1' clockCenterY
-    , x2' clockCenterX
-    , y2' (clockCenterY - hourHandLength)
-    , stroke "#000"
-    , strokeWidth "3"
-    , markerEnd "url(#arrow)"
-    , transformForHour hour
-    ]
-    []
 
 minuteHandAt hour =
   line
@@ -149,6 +136,26 @@ trace hour =
     ]
     []
 
+-- Animation Part      
 
--- render model
+hourHandBaseProperties hour =
+  [ x1' clockCenterX
+  , y1' clockCenterY
+  , x2' clockCenterX
+  , y2' (clockCenterY - hourHandLength)
+  , stroke "#000"
+  , strokeWidth "3"
+  , markerEnd "url(#arrow)"
+  , transformForHour hour
+  ]
+      
+startingHourHandProperties =
+  [Animation.stroke Color.blue,
+   Animation.strokeWidth 1.0]
+
+endingHourHandProperties =
+  [Animation.stroke Color.red,
+   Animation.strokeWidth 10.0]
   
+render model =
+  line (Animation.render model.style ++ hourHandBaseProperties 2) []

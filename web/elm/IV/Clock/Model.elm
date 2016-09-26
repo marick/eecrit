@@ -5,7 +5,13 @@ import IV.Clock.View as View
 import IV.Types exposing (..)
 
 type alias Model =
-  { hour : Int
+  { style : Animation.State
   }
 
-startingState = Model 3
+startingState =
+  Model (Animation.style View.startingHourHandProperties)
+
+animation : Model -> Animation.State
+animation model =
+  model.style
+           

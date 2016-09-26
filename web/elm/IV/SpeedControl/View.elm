@@ -17,6 +17,7 @@ view model =
     []
     [ input [ Attr.value model.string, Events.onInput changeHandler] []
     , button [Events.onClick TopMsg.ChangeDripRate ] [ text "Go" ]
+    , button [Events.onClick TopMsg.AdvanceHours ] [ text "Advance Hours"]
     ]
 
   

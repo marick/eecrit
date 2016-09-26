@@ -8,20 +8,20 @@ import Time exposing (second)
 import IV.Types exposing (..)
 
 
-easing duration =
+spinCount n =
   Animation.easing
     {
       ease = identity
-    , duration = duration
+    , duration = n * 1.5 * second
     }
 
 advanceHours hours animation = 
   let
     change  =
-      [ Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 90)]
-      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 120)]
-      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 150)]
-      , Animation.toWith (easing (3.0 * second)) [Animation.rotate (Animation.deg 180)]
+      [ Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 90)]
+      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 120)]
+      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 150)]
+      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 180)]
       ]
   in
     Animation.interrupt change animation
@@ -29,7 +29,7 @@ advanceHours hours animation =
 spinMinutes animation =
   let
     change =
-      [ Animation.toWith (easing (4 * 3.0 * second)) [Animation.rotate (Animation.turn 4.0)]
+      [ Animation.toWith (spinCount 4) [Animation.rotate (Animation.turn 4.0)]
       ]
   in
     Animation.interrupt change animation

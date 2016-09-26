@@ -146,16 +146,18 @@ hourHandBaseProperties hour =
   , stroke "#000"
   , strokeWidth "3"
   , markerEnd "url(#arrow)"
-  , transformForHour hour
   ]
       
 startingHourHandProperties =
-  [Animation.stroke Color.blue,
-   Animation.strokeWidth 1.0]
+  [Animation.stroke Color.green,
+   Animation.strokeWidth 3.0]
 
 endingHourHandProperties =
-  [Animation.stroke Color.red,
-   Animation.strokeWidth 10.0]
+  [
+    Animation.stroke Color.red
+  , Animation.strokeWidth 10.0
+  , Animation.exactly "transform" "rotate(80deg)"
+  ]
   
 render model =
   line (Animation.render model.style ++ hourHandBaseProperties 2) []

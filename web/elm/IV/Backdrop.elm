@@ -11,8 +11,7 @@ provideBackdropFor animatedElements =
     , y "0"
     , viewBox "0 0 400 400"
     ]
-    <| [liquid, bottomLiquid, bag, nozzle, hose, Clock.face] ++
-      [Clock.minuteHandAt 12] ++ animatedElements
+    <| [liquid, bottomLiquid, bag, nozzle, hose, Clock.face] ++ animatedElements
 
 bag = rect
       [ fill "none"

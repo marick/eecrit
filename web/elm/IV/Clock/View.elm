@@ -140,17 +140,23 @@ hourHandBaseProperties =
   , strokeWidth "5"
   ] ++ handProperties
       
-minuteHandAt hour =
-  line
-    ([ y2' (clockCenterY - minuteHandLength)
-     , strokeWidth "3"
-     ] ++ handProperties)
-    []
+minuteHandBaseProperties =
+  [ y2' (clockCenterY - minuteHandLength)
+  , strokeWidth "3"
+  ] ++ handProperties
 
 hourHandStartsAt hour =
   [
     Animation.rotate (Animation.deg (30 * hour))
   ]
 
+minuteHandStartsAt minute =
+  [
+    Animation.rotate (Animation.deg minute)
+  ]
+
 render model =
-  line (Animation.render model.hourHand ++ hourHandBaseProperties) []
+  Svg.g []
+    [ line (Animation.render model.hourHand ++ hourHandBaseProperties) []
+    , line (Animation.render model.minuteHand ++ minuteHandBaseProperties) []
+    ]

@@ -8,31 +8,32 @@ import Time exposing (second)
 import IV.Types exposing (..)
 
 
-spinCount n =
+easeForHours n =
   Animation.easing
     {
       ease = identity
     , duration = n * 1.5 * second
     }
 
-advanceHours hours animation = 
+advanceHourHand hours animation = 
   let
     change  =
-      [ Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 90)]
-      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 120)]
-      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 150)]
-      , Animation.toWith (spinCount 1) [Animation.rotate (Animation.deg 180)]
+      [ Animation.toWith (easeForHours 1) [Animation.rotate (Animation.deg 90)]
+      , Animation.toWith (easeForHours 1) [Animation.rotate (Animation.deg 120)]
+      , Animation.toWith (easeForHours 1) [Animation.rotate (Animation.deg 150)]
+      , Animation.toWith (easeForHours 1) [Animation.rotate (Animation.deg 180)]
       ]
   in
     Animation.interrupt change animation
 
-spinMinutes animation =
+-- Todo: No idea why this is float, given it's being handed a literal 4.
+spinMinuteHand : Float -> Animation.State -> Animation.State
+spinMinuteHand hours animation =
   let
-    change =
-      [ Animation.toWith (spinCount 4) [Animation.rotate (Animation.turn 4.0)]
-      ]
+    revolutions = Animation.deg <| hours * 360
+    change = Animation.toWith (easeForHours hours) [Animation.rotate revolutions]
   in
-    Animation.interrupt change animation
+    Animation.interrupt [change] animation
   
 
 update : Msg -> Model -> Model
@@ -40,8 +41,8 @@ update msg model =
   case msg of
     AdvanceHours hours ->
       { model
-        | hourHand = advanceHours 4 model.hourHand
-        , minuteHand = spinMinutes model.minuteHand
+        | hourHand = advanceHourHand 4 model.hourHand
+        , minuteHand = spinMinuteHand 4 model.minuteHand
       }
 
     AnimationClockTick tick ->

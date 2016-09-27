@@ -1,10 +1,11 @@
-module IV.Backdrop exposing (..)
+module IV.View.Apparatus exposing (drawing)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Clock.View as Clock
 
-entireDrip = [liquid, bottomLiquid, bag, nozzle, hose]
+drawing =
+  Svg.g [] [liquid, bottomLiquid, bag, nozzle, hose]
 
 bag = rect
       [ fill "none"

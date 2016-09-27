@@ -4,14 +4,19 @@ import Animation
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Formatting exposing (..)
-import Html.Attributes
+import Html exposing (button, text, div)
 import IV.Pile.SvgAttributes exposing (..)
+import IV.Msg as TopMsg
+import Html.Events as Events
 
 import Color
 
 -- HTML Part
 
-
+controls =
+  div []
+    [ button [Events.onClick TopMsg.AdvanceHours ] [ Html.text "Advance Hours"]
+    ]
 
 -- Plain Drawing Part
 
@@ -82,7 +87,7 @@ clockNumeral value =
           []
           
   in
-    text' (common ++ xy) [text <| toString value]
+    Svg.text' (common ++ xy) [Svg.text <| toString value]
       
 face =
   g []

@@ -4,42 +4,43 @@ import IV.Msg exposing (Msg)
 import IV.Model exposing (Model)
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Backdrop exposing (..)
 import IV.Droplet.View as Droplet
 import IV.SpeedControl.View as SpeedControl
 import IV.Clock.View as Clock
 import Svg
 import Svg.Attributes exposing (..)
+import IV.View.Apparatus as Apparatus
 
-width = "700px"
-height = "700px"
-svgArea = "0 0 400 400"
+everything = {width = "700px", height = "700px"}
+graphics = {width = "400px", height = "400px"}
 
 mainDiv : List (Html msg) -> Html msg
 mainDiv contents = 
   div
   [ Attr.style [ ( "margin", "0px auto" )
-               , ( "width", width )
-               , ( "height", height )
+               , ( "width", everything.width )
+               , ( "height", everything.height )
                , ( "cursor", "pointer" )
                ]
   ]
   contents
 
-mainSvg contents =
+mainSvg staticContents animatedContents  =
   Svg.svg
   [ version "1.1"
   , x "0"
   , y "0"
-  , viewBox svgArea
+  , Svg.Attributes.width graphics.width
+  , Svg.Attributes.height graphics.height
   ]
-  contents
+  (staticContents ++ animatedContents)
 
 view : Model -> Html Msg
 view model =
   mainDiv
-  [ mainSvg (entireDrip ++ [Clock.face] ++ [ (Droplet.render model.droplet)
-                           , (Clock.render model.clock)
-                           ])
+  [ mainSvg
+      [Apparatus.drawing, Clock.face]
+      [Droplet.render model.droplet, Clock.render model.clock]
   , SpeedControl.view model.speedControl
+  , Clock.controls
   ]

@@ -10,6 +10,7 @@ import IV.Clock.View as Clock
 import Svg
 import Svg.Attributes exposing (..)
 import IV.View.Apparatus as Apparatus
+import IV.View.ClockFace as ClockFace
 
 everything = {width = "700px", height = "700px"}
 graphics = {width = "400px", height = "400px"}
@@ -39,7 +40,7 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ mainSvg
-      [Apparatus.drawing, Clock.face]
+      [Apparatus.drawing, ClockFace.drawing]
       [Droplet.render model.droplet, Clock.render model.clock]
   , SpeedControl.view model.speedControl
   , Clock.controls

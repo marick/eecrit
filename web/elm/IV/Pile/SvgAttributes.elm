@@ -1,7 +1,9 @@
-module IV.Pile.IntAttributes exposing (..)
+module IV.Pile.SvgAttributes exposing (..)
 
 import Formatting exposing (..)
+import Svg
 import Svg.Attributes exposing (..)
+import VirtualDom
 
 useInt : (String -> a) -> (Int -> a)
 useInt stringFn i =
@@ -20,3 +22,9 @@ cx' = useInt cx
 cy' = useInt cy
 r' = useInt r
 
+transformOrigin' : Int -> Int -> Svg.Attribute msg
+transformOrigin' x y =
+  let 
+    argFormatter = print <| int <> s "px " <> int <> s "px"
+  in
+    VirtualDom.attribute "transform-origin" (argFormatter x y)

@@ -3,13 +3,17 @@ module IV.Clock.View exposing (..)
 import Animation
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import IV.Palette as Palette
-import Dict
 import Formatting exposing (..)
 import Html.Attributes
-import IV.Pile.IntAttributes exposing (..)
+import IV.Pile.SvgAttributes exposing (..)
 
 import Color
+
+-- HTML Part
+
+
+
+-- Plain Drawing Part
 
 clockCenterX = 260
 clockCenterY = 200
@@ -117,7 +121,7 @@ handProperties =
   -- y2 will depend on length of hand
   , stroke "black"
   , markerEnd "url(#arrow)"
-  , Html.Attributes.attribute "transform-origin" "260px 200px" -- TODO: insert x&y values
+  , transformOrigin' clockCenterX clockCenterY
   ]
 hourHandBaseProperties =
   [ y2' (clockCenterY - hourHandLength)

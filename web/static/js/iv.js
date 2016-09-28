@@ -15589,14 +15589,30 @@ var _user$project$IV_SpeedControl_View$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('form-group')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('control-label'),
+						A2(_elm_lang$html$Html_Attributes$attribute, 'for', 'change-drip-rate')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Change drip rate')
+					])),
 				A2(
 				_elm_lang$html$Html$input,
 				_elm_lang$core$Native_List.fromArray(
 					[
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$id('change-drip-rate'),
 						_elm_lang$html$Html_Attributes$value(model.string),
+						_elm_lang$html$Html_Attributes$size(4),
 						_elm_lang$html$Html_Events$onInput(_user$project$IV_SpeedControl_View$changeHandler)
 					]),
 				_elm_lang$core$Native_List.fromArray(
@@ -15605,7 +15621,8 @@ var _user$project$IV_SpeedControl_View$view = function (model) {
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$ChangeDripRate)
+						_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$ChangeDripRate),
+						_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[

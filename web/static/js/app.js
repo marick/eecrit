@@ -58,9 +58,7 @@ if(video) {
 
 import Elm from './iv'
 
-alert ("imported elm")
-const elmDiv = document.querySelector('#elm-target');
+const elmDiv = document.querySelector('#iv-target');
 if (elmDiv) {
-    alert ("running")
     Elm.IV.embed(elmDiv);
 }

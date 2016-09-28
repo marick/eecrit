@@ -14,9 +14,25 @@ changeHandler string =
 view : Model -> Html TopMsg.Msg
 view model =
   div
-    []
-    [ input [ Attr.value model.string, Events.onInput changeHandler] []
-    , button [Events.onClick TopMsg.ChangeDripRate ] [ text "Go" ]
+    [Attr.class "form-group"]
+    [ label
+        [ Attr.class "control-label"
+        , Attr.attribute "for" "change-drip-rate"]
+        [text "Change drip rate"]
+
+    , input
+        [ Attr.type' "text"
+        -- , Attr.class "form-control col-xs-2"
+        , Attr.id "change-drip-rate"
+        , Attr.value model.string
+        , Attr.size 4
+        , Events.onInput changeHandler]
+        []
+    , button
+        [ Events.onClick TopMsg.ChangeDripRate
+        , Attr.class "btn btn-default btn-xs"
+        ]
+        [ text "Go" ]
     ]
 
   

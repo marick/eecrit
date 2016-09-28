@@ -16,14 +16,12 @@ view model =
   div
     [Attr.class "form-group"]
     [ label
-        [ Attr.class "control-label"
-        , Attr.attribute "for" "change-drip-rate"]
-        [text "Change drip rate"]
+        [ Attr.class "control-label" ]
+        [text "Change drip rate  "]
 
     , input
         [ Attr.type' "text"
         -- , Attr.class "form-control col-xs-2"
-        , Attr.id "change-drip-rate"
         , Attr.value model.string
         , Attr.size 4
         , Events.onInput changeHandler]
@@ -34,5 +32,3 @@ view model =
         ]
         [ text "Go" ]
     ]
-
-  

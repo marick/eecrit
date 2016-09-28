@@ -3,7 +3,7 @@ module IV.Clock.View exposing (..)
 import Animation
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import Html exposing (button, text, div)
+import Html exposing (button, text, div, label)
 import IV.Pile.SvgAttributes exposing (..)
 import IV.Msg as TopMsg
 import Html.Events as Events
@@ -12,11 +12,14 @@ import Html.Events as Events
 -- HTML Part: Controlling the model
 
 controls =
-  div []
-    [ Html.label []
-        [ Html.text "Control the clock"
-        , button [Events.onClick TopMsg.AdvanceHours ] [ Html.text "Advance Hours"]
+  div
+    [ class "form-group" ]
+    [ label [ class "control-label"] [ Html.text "Control the clock" ]
+    , button
+        [ Events.onClick TopMsg.AdvanceHours
+        , class "btn btn-default btn-xs"
         ]
+        [ Html.text "Advance Hours"]
     ]
 
 -- Drawing Part: Displaying the model

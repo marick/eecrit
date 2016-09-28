@@ -1,4 +1,4 @@
-module IV.Main exposing (..)
+module IV exposing (..)
 import Html.App
 import Animation
 import IV.Droplet.Model as Droplet

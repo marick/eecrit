@@ -49,8 +49,18 @@ if(video) {
 
 // Elm setup
 
-import Elm from './registration'
+// import Elm from './registration'
+// const elmDiv = document.querySelector('#elm-target');
+// if (elmDiv) {
+//     Elm.Registration.embed(elmDiv);
+// }
+
+
+import Elm from './iv'
+
+alert ("imported elm")
 const elmDiv = document.querySelector('#elm-target');
 if (elmDiv) {
-    Elm.Registration.embed(elmDiv);
+    alert ("running")
+    Elm.IV.embed(elmDiv);
 }

@@ -15107,18 +15107,18 @@ var _user$project$IV_Types$DropsPerSecond = function (a) {
 	return {ctor: 'DropsPerSecond', _0: a};
 };
 
-var _user$project$IV_Droplet_Model$animations = function (model) {
+var _user$project$IV_Droplet_Main$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[model.style]);
 };
-var _user$project$IV_Droplet_Model$Model = F2(
+var _user$project$IV_Droplet_Main$Model = F2(
 	function (a, b) {
 		return {style: a, currentSpeed: b};
 	});
-var _user$project$IV_Droplet_Model$startingState = function (_p0) {
+var _user$project$IV_Droplet_Main$startingState = function (_p0) {
 	var _p1 = _p0;
 	return A2(
-		_user$project$IV_Droplet_Model$Model,
+		_user$project$IV_Droplet_Main$Model,
 		_mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Droplet_View$missingDrop),
 		_p1._0);
 };
@@ -15882,7 +15882,7 @@ var _user$project$IV$subscriptions = function (model) {
 		_user$project$IV_Msg$AnimationClockTick,
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$IV_Droplet_Model$animations(model.droplet),
+			_user$project$IV_Droplet_Main$animations(model.droplet),
 			_user$project$IV_Clock_Model$animations(model.clock)));
 };
 var _user$project$IV$init = function () {
@@ -15890,7 +15890,7 @@ var _user$project$IV$init = function () {
 	return {
 		ctor: '_Tuple2',
 		_0: {
-			droplet: _user$project$IV_Droplet_Model$startingState($default),
+			droplet: _user$project$IV_Droplet_Main$startingState($default),
 			speedControl: _user$project$IV_SpeedControl_Model$startingState($default),
 			clock: _user$project$IV_Clock_Model$startingState
 		},

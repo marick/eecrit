@@ -1,11 +1,28 @@
-module IV.Droplet.Update exposing (..)
+module IV.Droplet.Main exposing (Model, startingState, animations, update)
 
 import Animation
-import IV.Droplet.Msg exposing (Msg(..))
-import IV.Droplet.Model as Model exposing (Model)
 import IV.Droplet.View as View
-import Time exposing (second)
 import IV.Types exposing (..)
+import IV.Droplet.Msg exposing (Msg(..))
+import IV.Droplet.View as View
+
+
+
+type alias Model =
+  { style : Animation.State
+  , currentSpeed : Float
+  }
+
+startingState : DropsPerSecond -> Model 
+startingState (DropsPerSecond float) =
+  Model (Animation.style View.missingDrop) float
+
+animations : Model -> List Animation.State
+animations model =
+  [model.style]
+
+
+-- Update
 
 dropStreamCutoff = (DropsPerSecond 8.0)
 -- Following is slower than reality (in a vacuum), but looks better

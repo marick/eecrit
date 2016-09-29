@@ -1,7 +1,7 @@
 module IV exposing (..)
 import Html.App
 import Animation
-import IV.Droplet.Model as Droplet
+import IV.Droplet.Main as Droplet
 import IV.SpeedControl.Model as SpeedControl
 import IV.Clock.Model as Clock
 import IV.Msg exposing (Msg(..))

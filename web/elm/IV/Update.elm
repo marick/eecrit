@@ -1,13 +1,15 @@
 module IV.Update exposing (update)
 
 import IV.Msg exposing (Msg(..))
-import IV.Model exposing (Model)
+import IV.Model as Model exposing (Model)
 import String
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Update as Scenario
 import IV.Clock.Update as Clock
 import IV.Scenario.Msg as SpeedMsg
 import IV.Clock.Msg as ClockMsg
+import IV.Pile.ManagedStrings exposing (floatString)
+import IV.Types exposing (..)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -19,8 +21,11 @@ update msg model =
       )
 
     StartSimulation ->
+      let
+        dropletData = model.scenario.dripText |> floatString |> DropsPerSecond
+      in          
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation model.scenario.drip.perSecond) model.droplet
+          | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
           , clock = Clock.update ClockMsg.StartSimulation model.clock
         }
       , Cmd.none

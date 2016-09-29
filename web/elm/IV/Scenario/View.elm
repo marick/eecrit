@@ -9,7 +9,7 @@ import Html.Events as Events
 
 changeHandler : String -> TopMsg.Msg
 changeHandler string =
-  TopMsg.ToScenario (Msg.ChangedTextField string)
+  TopMsg.ToScenario (Msg.ChangedDripText string)
 
 description model =
   "You are presented with a " ++
@@ -26,12 +26,12 @@ view model =
        [text <| description model ]
     , p
        []
-       [ text "Using your calculations, change the drip rate "
+       [ text "Using your calculations, the drip rate "
        , input
            [ Attr.type' "text"
            -- , Attr.class "form-control col-xs-2"
-           , Attr.value model.drip.string
-           , Attr.size 4
+           , Attr.value model.dripText
+           , Attr.size 6
            , Events.onInput changeHandler]
            []
        , text " and the hours [TBD] and minutes [TBD] to check, then " 

@@ -1,12 +1,12 @@
-module IV.Droplet.Main exposing (Model, startingState, animations, update)
+module IV.Droplet.Main exposing (Model, startingState, animations,
+                                   update, Msg(..))
 
 import Animation
 import IV.Droplet.View as View
 import IV.Types exposing (..)
-import IV.Droplet.Msg exposing (Msg(..))
 import IV.Droplet.View as View
 
-
+--- Model
 
 type alias Model =
   { style : Animation.State
@@ -21,6 +21,11 @@ animations : Model -> List Animation.State
 animations model =
   [model.style]
 
+-- Msg
+
+type Msg
+  = ChangeDripRate DropsPerSecond
+  | AnimationClockTick Animation.Msg
 
 -- Update
 

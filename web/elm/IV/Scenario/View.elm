@@ -26,15 +26,30 @@ view model =
        [text <| description model ]
     , p
        []
-       [ text "Using your calculations, the drip rate "
+       [ text "Using your calculations, set the drip rate "
        , input
            [ Attr.type' "text"
            -- , Attr.class "form-control col-xs-2"
            , Attr.value model.dripText
            , Attr.size 6
-           , Events.onInput changeHandler]
+           , Events.onInput changeHandler
+           ]
            []
-       , text " and the hours [TBD] and minutes [TBD] to check, then " 
+       , text " and the hours "
+       , input
+           [ Attr.type' "text"
+           , Attr.value (toString model.simulationInHours)
+           , Attr.size 6
+           ]
+           []
+       , text " and minutes "
+       , input
+           [ Attr.type' "text"
+           , Attr.value "0"
+           , Attr.size 6
+           ]
+           []
+       , text "to check, then " 
        , button
            [ Events.onClick TopMsg.StartSimulation
            , Attr.class "btn btn-default btn-xs"

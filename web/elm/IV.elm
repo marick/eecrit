@@ -15,7 +15,7 @@ init =
   let
     default = (DropsPerSecond 2.0)
   in
-    ( { droplet = Droplet.startingState default
+    ( { droplet = Droplet.startingState
       , scenario = Scenario.startingState default
       , clock = Clock.startingState
       }

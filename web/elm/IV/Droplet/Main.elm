@@ -10,12 +10,11 @@ import IV.Droplet.View as View
 
 type alias Model =
   { style : Animation.State
-  , currentSpeed : Float
   }
 
-startingState : DropsPerSecond -> Model 
-startingState (DropsPerSecond float) =
-  Model (Animation.style View.missingDrop) float
+startingState : Model 
+startingState =
+  Model (Animation.style View.missingDrop)
 
 animations : Model -> List Animation.State
 animations model =

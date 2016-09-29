@@ -2,22 +2,19 @@ module IV.Scenario.Update exposing (..)
 
 import String
 import IV.Scenario.Msg exposing (..)
-import IV.Scenario.Model exposing (Model)
+import IV.Scenario.Model exposing (Model, DripDesire)
 import IV.Types exposing (..)
 
 updateNextSpeed model nextString =
   if String.isEmpty nextString then
-    {model | string = nextString, perSecond = DropsPerSecond 0.1} -- bags leak
+    {model | drip = DripDesire "" <| DropsPerSecond 0.0001 } -- bags leak
   else
     case String.toFloat nextString of
-        Ok float ->
-          {model
-            | string = nextString
-            , perSecond = (DropsPerSecond float)
-          }
-        Err _ ->
-          model
-
+      Ok float ->
+        {model | drip = DripDesire nextString <| DropsPerSecond float }
+      Err _ ->
+        model
+              
   
 update : Msg -> Model -> Model
 update msg model =

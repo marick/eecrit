@@ -20,7 +20,7 @@ update msg model =
 
     StartSimulation ->
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation model.scenario.perSecond) model.droplet
+          | droplet = Droplet.update (Droplet.StartSimulation model.scenario.drip.perSecond) model.droplet
           , clock = Clock.update ClockMsg.StartSimulation model.clock
         }
       , Cmd.none

@@ -22,7 +22,7 @@ view model =
     , input
         [ Attr.type' "text"
         -- , Attr.class "form-control col-xs-2"
-        , Attr.value model.string
+        , Attr.value model.drip.string
         , Attr.size 4
         , Events.onInput changeHandler]
         []

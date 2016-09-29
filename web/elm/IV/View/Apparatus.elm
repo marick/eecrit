@@ -3,19 +3,36 @@ module IV.View.Apparatus exposing (drawing)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Clock.View as Clock
+import IV.Pile.SvgAttributes exposing (..)
 
 drawing =
-  Svg.g [] [liquid, bottomLiquid, bag, nozzle, hose]
+  Svg.g
+    []
+    ([liquid, bottomLiquid, bag, nozzle, hose] ++
+       List.map marking [1 .. 9])
+      
 
 bag = rect
       [ fill "none"
       , x "0"
       , y "0"
       , width "120"
-      , height "199"
+      , height "200"
       , stroke "black"
       ]
       []
+
+marking n =
+  let
+    ypos = 20 * n
+  in
+    line
+      [ x1' 0
+      , x2' 30
+      , y1' ypos
+      , y2' ypos
+      , stroke "black" ]
+    []
 
 liquid = rect
       [ fill "#d3d7cf"

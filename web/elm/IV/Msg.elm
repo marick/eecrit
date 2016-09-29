@@ -4,8 +4,7 @@ import Animation
 import IV.Scenario.Msg as Scenario
 
 type Msg
-    = ChangeDripRate
-    | AdvanceHours
+    = StartSimulation
     | ToScenario Scenario.Msg
     | AnimationClockTick Animation.Msg
 

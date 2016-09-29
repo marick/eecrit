@@ -27,8 +27,8 @@ view model =
         , Events.onInput changeHandler]
         []
     , button
-        [ Events.onClick TopMsg.ChangeDripRate
+        [ Events.onClick TopMsg.StartSimulation
         , Attr.class "btn btn-default btn-xs"
         ]
-        [ text "Go" ]
+        [ text "Try it out!" ]
     ]

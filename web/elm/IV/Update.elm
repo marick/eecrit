@@ -14,19 +14,15 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     ToScenario msg' ->
-      ( { model | speedControl = Scenario.update msg' model.speedControl }
+      ( { model | scenario = Scenario.update msg' model.scenario }
       , Cmd.none
       )
 
-    AdvanceHours ->
+    StartSimulation ->
       ( { model
-          | clock = Clock.update (ClockMsg.AdvanceHours 3) model.clock }
-      , Cmd.none
-      )
-
-    ChangeDripRate ->
-      ( { model
-          | droplet = Droplet.update (Droplet.ChangeDripRate model.speedControl.perSecond) model.droplet }
+          | droplet = Droplet.update (Droplet.StartSimulation model.scenario.perSecond) model.droplet
+          , clock = Clock.update ClockMsg.StartSimulation model.clock
+        }
       , Cmd.none
       )
 

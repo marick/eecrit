@@ -24,7 +24,7 @@ animations model =
 -- Msg
 
 type Msg
-  = ChangeDripRate DropsPerSecond
+  = StartSimulation DropsPerSecond
   | AnimationClockTick Animation.Msg
 
 -- Update
@@ -76,7 +76,7 @@ changeDropRate dropsPerSecond animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    ChangeDripRate perSecond ->
+    StartSimulation perSecond ->
       { model | style = changeDropRate perSecond model.style }
 
     AnimationClockTick tick ->

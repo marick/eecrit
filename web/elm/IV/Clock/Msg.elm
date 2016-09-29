@@ -5,5 +5,5 @@ import IV.Clock.Model exposing (Model)
 import IV.Types exposing (..)
 
 type Msg
-  = AdvanceHours Int
+  = StartSimulation
   | AnimationClockTick Animation.Msg

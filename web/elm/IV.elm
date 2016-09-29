@@ -16,7 +16,7 @@ init =
     default = (DropsPerSecond 2.0)
   in
     ( { droplet = Droplet.startingState default
-      , speedControl = Scenario.startingState default
+      , scenario = Scenario.startingState default
       , clock = Clock.startingState
       }
     , Cmd.none

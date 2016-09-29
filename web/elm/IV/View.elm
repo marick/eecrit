@@ -42,6 +42,5 @@ view model =
   [ mainSvg
       [Apparatus.drawing, ClockFace.drawing]
       [Droplet.render model.droplet, Clock.render model.clock]
-  , Scenario.view model.speedControl
-  , Clock.controls
+  , Scenario.view model.scenario
   ]

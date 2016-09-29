@@ -9,21 +9,6 @@ import IV.Msg as TopMsg
 import Html.Events as Events
 
 
--- HTML Part: Controlling the model
-
-controls =
-  div
-    [ class "form-group" ]
-    [ label [ class "control-label"] [ Html.text "Control the clock" ]
-    , button
-        [ Events.onClick TopMsg.AdvanceHours
-        , class "btn btn-default btn-xs"
-        ]
-        [ Html.text "Advance Hours"]
-    ]
-
--- Drawing Part: Displaying the model
-
 clockCenterX = 260
 clockCenterY = 200
 clockRadius = 100

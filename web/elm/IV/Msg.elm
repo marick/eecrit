@@ -1,11 +1,11 @@
 module IV.Msg exposing (..)
 
 import Animation
-import IV.SpeedControl.Msg as SpeedControl
+import IV.Scenario.Msg as Scenario
 
 type Msg
     = ChangeDripRate
     | AdvanceHours
-    | ToSpeedControl SpeedControl.Msg
+    | ToScenario Scenario.Msg
     | AnimationClockTick Animation.Msg
 

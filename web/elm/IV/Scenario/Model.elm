@@ -1,4 +1,4 @@
-module IV.SpeedControl.Model exposing (..)
+module IV.Scenario.Model exposing (..)
 
 import IV.Types exposing (..)
 

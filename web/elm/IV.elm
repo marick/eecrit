@@ -2,7 +2,7 @@ module IV exposing (..)
 import Html.App
 import Animation
 import IV.Droplet.Main as Droplet
-import IV.SpeedControl.Model as SpeedControl
+import IV.Scenario.Model as Scenario
 import IV.Clock.Model as Clock
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
@@ -16,7 +16,7 @@ init =
     default = (DropsPerSecond 2.0)
   in
     ( { droplet = Droplet.startingState default
-      , speedControl = SpeedControl.startingState default
+      , speedControl = Scenario.startingState default
       , clock = Clock.startingState
       }
     , Cmd.none

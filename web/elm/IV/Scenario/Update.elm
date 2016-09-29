@@ -1,8 +1,8 @@
-module IV.SpeedControl.Update exposing (..)
+module IV.Scenario.Update exposing (..)
 
 import String
-import IV.SpeedControl.Msg exposing (..)
-import IV.SpeedControl.Model exposing (Model)
+import IV.Scenario.Msg exposing (..)
+import IV.Scenario.Model exposing (Model)
 import IV.Types exposing (..)
 
 updateNextSpeed model nextString =

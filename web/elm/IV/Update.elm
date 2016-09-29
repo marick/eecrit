@@ -4,17 +4,17 @@ import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import String
 import IV.Droplet.Main as Droplet
-import IV.SpeedControl.Update as SpeedControl
+import IV.Scenario.Update as Scenario
 import IV.Clock.Update as Clock
-import IV.SpeedControl.Msg as SpeedMsg
+import IV.Scenario.Msg as SpeedMsg
 import IV.Clock.Msg as ClockMsg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    ToSpeedControl msg' ->
-      ( { model | speedControl = SpeedControl.update msg' model.speedControl }
+    ToScenario msg' ->
+      ( { model | speedControl = Scenario.update msg' model.speedControl }
       , Cmd.none
       )
 

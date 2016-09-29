@@ -5,7 +5,7 @@ import IV.Model exposing (Model)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Droplet.View as Droplet
-import IV.SpeedControl.View as SpeedControl
+import IV.Scenario.View as Scenario
 import IV.Clock.View as Clock
 import Svg
 import Svg.Attributes exposing (..)
@@ -42,6 +42,6 @@ view model =
   [ mainSvg
       [Apparatus.drawing, ClockFace.drawing]
       [Droplet.render model.droplet, Clock.render model.clock]
-  , SpeedControl.view model.speedControl
+  , Scenario.view model.speedControl
   , Clock.controls
   ]

@@ -1,15 +1,15 @@
-module IV.SpeedControl.View exposing (view)
+module IV.Scenario.View exposing (view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.SpeedControl.Model exposing (Model)
+import IV.Scenario.Model exposing (Model)
 import IV.Msg as TopMsg
-import IV.SpeedControl.Msg as Msg
+import IV.Scenario.Msg as Msg
 import Html.Events as Events
 
 changeHandler : String -> TopMsg.Msg
 changeHandler string =
-  TopMsg.ToSpeedControl (Msg.ChangedTextField string)
+  TopMsg.ToScenario (Msg.ChangedTextField string)
 
 view : Model -> Html TopMsg.Msg
 view model =

@@ -39,7 +39,7 @@ liquid = rect
       , x "0"
       , y "20"
       , width "120"
-      , height "179"
+      , height "180"
       ]
       []
 

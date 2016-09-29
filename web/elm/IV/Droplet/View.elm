@@ -29,7 +29,7 @@ flowShape =
     ]
 
 chamberXOffset = 55
-chamberYOffset = 200
+chamberYOffset = 201
 fluidYOffset = 270
 
 dropAtTop = translateBy (chamberXOffset, chamberYOffset) dropShape

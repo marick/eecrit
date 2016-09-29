@@ -16,9 +16,15 @@ dripDesire ((DropsPerSecond float) as perSecond) =
 
 type alias Model =
   { drip : DripDesire
+  , animalDescription : String
+  , weightInPounds : Int
+  , simulationInHours : Int
   }
 
 startingState : DropsPerSecond -> Model
 startingState dropsPerSecond = 
   { drip = dripDesire dropsPerSecond
+  , animalDescription = "3d lactation purebred Holstein"
+  , weightInPounds = 1560
+  , simulationInHours = 1
   }

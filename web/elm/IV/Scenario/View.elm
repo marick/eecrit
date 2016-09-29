@@ -11,24 +11,35 @@ changeHandler : String -> TopMsg.Msg
 changeHandler string =
   TopMsg.ToScenario (Msg.ChangedTextField string)
 
+description model =
+  "You are presented with a " ++
+  toString model.weightInPounds ++
+  " lb " ++ model.animalDescription ++ "."
+      
+    
 view : Model -> Html TopMsg.Msg
 view model =
   div
-    [Attr.class "form-group"]
-    [ label
-        [ Attr.class "control-label" ]
-        [text "Change drip rate  "]
-
-    , input
-        [ Attr.type' "text"
-        -- , Attr.class "form-control col-xs-2"
-        , Attr.value model.drip.string
-        , Attr.size 4
-        , Events.onInput changeHandler]
-        []
-    , button
-        [ Events.onClick TopMsg.StartSimulation
-        , Attr.class "btn btn-default btn-xs"
-        ]
-        [ text "Try it out!" ]
+    []
+    [ p
+       []
+       [text <| description model ]
+    , p
+       []
+       [ text "Using your calculations, change the drip rate "
+       , input
+           [ Attr.type' "text"
+           -- , Attr.class "form-control col-xs-2"
+           , Attr.value model.drip.string
+           , Attr.size 4
+           , Events.onInput changeHandler]
+           []
+       , text " and the hours [TBD] and minutes [TBD] to check, then " 
+       , button
+           [ Events.onClick TopMsg.StartSimulation
+           , Attr.class "btn btn-default btn-xs"
+           ]
+           [ text "Try it out" ]
+       ]
     ]
+    

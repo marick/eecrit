@@ -1,6 +1,6 @@
 module IV.Clock.Update exposing (..)
 
-import Animation exposing (px)
+import Animation
 import IV.Clock.Msg exposing (Msg(..))
 import IV.Clock.Model as Model exposing (Model)
 import IV.Clock.View as View

@@ -4,6 +4,7 @@ import Animation
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Main as Scenario
 import IV.Clock.Model as Clock
+import IV.BagLevel.Main as BagLevel
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)
 import IV.Update exposing (update)
@@ -15,6 +16,7 @@ init =
   ( { droplet = Droplet.startingState
     , scenario = Scenario.startingState
     , clock = Clock.startingState
+    , bagLevel = BagLevel.startingState
     }
   , Cmd.none
   )

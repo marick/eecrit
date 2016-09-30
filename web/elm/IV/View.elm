@@ -27,7 +27,7 @@ mainDiv contents =
   ]
   contents
 
-mainSvg staticContents animatedContents  =
+mainSvg contents  =
   Svg.svg
   [ version "1.1"
   , x "0"
@@ -35,13 +35,14 @@ mainSvg staticContents animatedContents  =
   , Svg.Attributes.width graphics.width
   , Svg.Attributes.height graphics.height
   ]
-  (staticContents ++ animatedContents)
+  contents
 
 view : Model -> Html Msg
 view model =
   mainDiv
   [ mainSvg
-      [BagLevel.liquid, Apparatus.drawing, ClockFace.drawing]
-      [Droplet.render model.droplet, Clock.render model.clock]
+      [BagLevel.render model.bagLevel, Droplet.render model.droplet,
+         Apparatus.drawing, ClockFace.drawing,
+         Clock.render model.clock]
   , Scenario.view model.scenario
   ]

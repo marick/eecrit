@@ -5,6 +5,7 @@ import IV.Model as Model exposing (Model)
 import String
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Main as Scenario
+import IV.BagLevel.Main as BagLevel
 import IV.Clock.Update as Clock
 import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
@@ -26,6 +27,7 @@ update msg model =
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
           , clock = Clock.update ClockMsg.StartSimulation model.clock
+          , bagLevel = BagLevel.update BagLevel.StartSimulation model.bagLevel
         }
       , Cmd.none
       )
@@ -34,7 +36,7 @@ update msg model =
       ( { model
           | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet
           , clock = Clock.update (ClockMsg.AnimationClockTick tick) model.clock
+          , bagLevel = BagLevel.update (BagLevel.AnimationClockTick tick) model.bagLevel
         }
       , Cmd.none
       )
-

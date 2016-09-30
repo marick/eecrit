@@ -12,7 +12,7 @@ type alias Model =
 
 startingState : Model 
 startingState =
-  Model (Animation.style View.full)
+  Model (Animation.style View.levelAnimatedProperties)
 
 animations : Model -> List Animation.State
 animations model =
@@ -21,7 +21,7 @@ animations model =
 -- Msg
 
 type Msg
-  = StartSimulation DropsPerSecond
+  = StartSimulation
   | AnimationClockTick Animation.Msg
 
 -- Update
@@ -34,11 +34,19 @@ easing duration =
     }
 
 
+dropLevel animation =
+  let
+    change = [Animation.toWith (easing 2000.0) View.droppedProperties]
+  in
+    Animation.interrupt change animation
+
+    
+
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation perSecond ->
-      { model | style = changeDropRate perSecond model.style }
+    StartSimulation ->
+      { model | style = dropLevel model.style }
 
     AnimationClockTick tick ->
       { model | style = (Animation.update tick) model.style }

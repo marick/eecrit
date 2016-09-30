@@ -1,4 +1,4 @@
-module IV.Droplet.Main exposing (..)
+module IV.BagLevel.Main exposing (..)
 
 import Animation
 import IV.BagLevel.View as View

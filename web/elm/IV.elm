@@ -12,15 +12,12 @@ import IV.Types exposing (..)
 
 init : ( Model, Cmd Msg )
 init =
-  let
-    default = (DropsPerSecond 2.0)
-  in
-    ( { droplet = Droplet.startingState
-      , scenario = Scenario.startingState default
-      , clock = Clock.startingState
-      }
-    , Cmd.none
-    )
+  ( { droplet = Droplet.startingState
+    , scenario = Scenario.startingState
+    , clock = Clock.startingState
+    }
+  , Cmd.none
+  )
 
 subscriptions model =
   Animation.subscription

@@ -15,8 +15,8 @@ type alias Model =
   , bagType : String
   }
 
-startingState : DropsPerSecond -> Model
-startingState dropsPerSecond = 
+startingState : Model
+startingState = 
   { dripText = "0"
   , animalDescription = "3d lactation purebred Holstein"
   , weightInPounds = 1560

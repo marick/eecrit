@@ -7,6 +7,7 @@ import Html.Attributes as Attr
 import IV.Droplet.View as Droplet
 import IV.Scenario.View as Scenario
 import IV.Clock.View as Clock
+import IV.BagLevel.View as BagLevel
 import Svg
 import Svg.Attributes exposing (..)
 import IV.View.Apparatus as Apparatus
@@ -40,7 +41,7 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ mainSvg
-      [Apparatus.drawing, ClockFace.drawing]
+      [BagLevel.liquid, Apparatus.drawing, ClockFace.drawing]
       [Droplet.render model.droplet, Clock.render model.clock]
   , Scenario.view model.scenario
   ]

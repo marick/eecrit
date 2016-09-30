@@ -8,7 +8,7 @@ import IV.Pile.SvgAttributes exposing (..)
 drawing =
   Svg.g
     []
-    ([liquid, bottomLiquid, bag, nozzle, hose] ++
+    ([bottomLiquid, bag, nozzle, hose] ++
        List.map marking [1 .. 9])
       
 
@@ -33,15 +33,6 @@ marking n =
       , y2' ypos
       , stroke "black" ]
     []
-
-liquid = rect
-      [ fill "#d3d7cf"
-      , x "0"
-      , y "20"
-      , width "120"
-      , height "180"
-      ]
-      []
 
 nozzle = polyline
          [ fill "none", stroke "black", points "45,200 45,290 75,290 75,200"]

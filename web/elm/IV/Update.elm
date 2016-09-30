@@ -4,9 +4,8 @@ import IV.Msg exposing (Msg(..))
 import IV.Model as Model exposing (Model)
 import String
 import IV.Droplet.Main as Droplet
-import IV.Scenario.Update as Scenario
+import IV.Scenario.Main as Scenario
 import IV.Clock.Update as Clock
-import IV.Scenario.Msg as SpeedMsg
 import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
 import IV.Types exposing (..)

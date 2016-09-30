@@ -2,7 +2,7 @@ module IV exposing (..)
 import Html.App
 import Animation
 import IV.Droplet.Main as Droplet
-import IV.Scenario.Model as Scenario
+import IV.Scenario.Main as Scenario
 import IV.Clock.Model as Clock
 import IV.Msg exposing (Msg(..))
 import IV.Model exposing (Model)

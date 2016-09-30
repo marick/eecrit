@@ -1,7 +1,7 @@
 module IV.Msg exposing (..)
 
 import Animation
-import IV.Scenario.Msg as Scenario
+import IV.Scenario.Main as Scenario
 
 type Msg
     = StartSimulation

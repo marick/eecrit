@@ -2,19 +2,21 @@ module IV.Scenario.View exposing (view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Model exposing (Model)
+import IV.Scenario.Main exposing (Model, Msg(..))
 import IV.Msg as TopMsg
-import IV.Scenario.Msg as Msg
 import Html.Events as Events
 
 changeHandler : String -> TopMsg.Msg
 changeHandler string =
-  TopMsg.ToScenario (Msg.ChangedDripText string)
+  TopMsg.ToScenario (ChangedDripText string)
 
 description model =
   "You are presented with a " ++
   toString model.weightInPounds ++
-  " lb " ++ model.animalDescription ++ "."
+  " lb " ++ model.animalDescription ++ ". You have " ++
+  toString model.bagContentsInLiters ++
+  " liters of fluid in a " ++ 
+  model.bagType ++ "."
       
     
 view : Model -> Html TopMsg.Msg
@@ -49,7 +51,7 @@ view model =
            , Attr.size 6
            ]
            []
-       , text "to check, then " 
+       , text "before you next look at the fluid level, then " 
        , button
            [ Events.onClick TopMsg.StartSimulation
            , Attr.class "btn btn-default btn-xs"

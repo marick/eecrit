@@ -6,9 +6,9 @@ import IV.Scenario.Main exposing (Model, Msg(..))
 import IV.Msg as TopMsg
 import Html.Events as Events
 
-changeHandler : String -> TopMsg.Msg
-changeHandler string =
-  TopMsg.ToScenario (ChangedDripText string)
+changeHandler : (String -> Msg) -> String -> TopMsg.Msg
+changeHandler msg string =
+  TopMsg.ToScenario (msg string)
 
 description model =
   "You are presented with a " ++
@@ -34,21 +34,23 @@ view model =
            -- , Attr.class "form-control col-xs-2"
            , Attr.value model.dripText
            , Attr.size 6
-           , Events.onInput changeHandler
+           , Events.onInput (changeHandler ChangedDripText)
            ]
            []
        , text " and the hours "
        , input
            [ Attr.type' "text"
-           , Attr.value (toString model.simulationInHours)
+           , Attr.value model.simulationHoursText
            , Attr.size 6
+           , Events.onInput (changeHandler ChangedHoursText)
            ]
            []
        , text " and minutes "
        , input
            [ Attr.type' "text"
-           , Attr.value "0"
+           , Attr.value model.simulationMinutesText
            , Attr.size 6
+           , Events.onInput (changeHandler ChangedMinutesText)
            ]
            []
        , text "before you next look at the fluid level, then " 

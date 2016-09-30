@@ -11,10 +11,16 @@ levelBaseProperties =
   , width "120"
   ]
 
-levelAnimatedProperties =
-  [ Animation.y 20
-  , Animation.height (px 180)
-  ]
+
+  
+animatedLevelValues fractionBagFilled =
+  let
+    height = fractionBagFilled * 200
+    y = 200 - height
+  in
+    [ Animation.y y
+    , Animation.height (px height)
+    ]
 
 droppedProperties = [Animation.y 80, Animation.height (px 120)]
 

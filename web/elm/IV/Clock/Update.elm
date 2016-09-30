@@ -39,7 +39,7 @@ spinMinuteHand hours animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation ->
+    StartSimulation hours minutes ->
       { model
         | hourHand = advanceHourHand 4 model.hourHand
         , minuteHand = spinMinuteHand 4 model.minuteHand

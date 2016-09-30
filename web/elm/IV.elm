@@ -13,10 +13,14 @@ import IV.Types exposing (..)
 
 init : ( Model, Cmd Msg )
 init =
+  let
+    scenario = Scenario.startingState
+    fractionBagFilled = (scenario.bagContentsInLiters / scenario.bagCapacityInLiters)
+  in
   ( { droplet = Droplet.startingState
-    , scenario = Scenario.startingState
+    , scenario = scenario  
     , clock = Clock.startingState
-    , bagLevel = BagLevel.startingState
+    , bagLevel = BagLevel.startingState fractionBagFilled
     }
   , Cmd.none
   )

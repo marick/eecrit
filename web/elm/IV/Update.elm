@@ -8,7 +8,7 @@ import IV.Scenario.Main as Scenario
 import IV.BagLevel.Main as BagLevel
 import IV.Clock.Update as Clock
 import IV.Clock.Msg as ClockMsg
-import IV.Pile.ManagedStrings exposing (floatString)
+import IV.Pile.ManagedStrings exposing (floatString, intString)
 import IV.Types exposing (..)
 
 
@@ -23,10 +23,12 @@ update msg model =
     StartSimulation ->
       let
         dropletData = model.scenario.dripText |> floatString |> DropsPerSecond
+        hours = model.scenario.simulationHoursText |> intString
+        minutes = model.scenario.simulationMinutesText |> intString
       in          
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
-          , clock = Clock.update ClockMsg.StartSimulation model.clock
+          , clock = Clock.update (ClockMsg.StartSimulation hours minutes) model.clock
           , bagLevel = BagLevel.update BagLevel.StartSimulation model.bagLevel
         }
       , Cmd.none

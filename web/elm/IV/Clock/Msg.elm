@@ -5,5 +5,5 @@ import IV.Clock.Model exposing (Model)
 import IV.Types exposing (..)
 
 type Msg
-  = StartSimulation Float Float
+  = StartSimulation Float
   | AnimationClockTick Animation.Msg

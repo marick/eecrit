@@ -11,7 +11,6 @@ import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
 import IV.Types exposing (..)
 
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
@@ -25,10 +24,11 @@ update msg model =
         dropletData = model.scenario.dripText |> floatString |> DropsPerSecond
         hours = model.scenario.simulationHoursText |> floatString
         minutes = model.scenario.simulationMinutesText |> floatString
+        f = fractionalHours hours minutes
       in          
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
-          , clock = Clock.update (ClockMsg.StartSimulation hours minutes) model.clock
+          , clock = Clock.update (ClockMsg.StartSimulation f) model.clock
           , bagLevel = BagLevel.update BagLevel.StartSimulation model.bagLevel
         }
       , Cmd.none

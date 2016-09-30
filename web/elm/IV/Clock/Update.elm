@@ -20,9 +20,6 @@ startingHourDegrees = 60.0
 hoursInDegrees : Float -> Float
 hoursInDegrees hours = 30 * hours
 
-fractionalHours hours minutes =
-  hours + (minutes / 60.0)
-
 advanceHourHand : Float -> Animation.State -> Animation.State
 advanceHourHand fractionalHours animation = 
   let
@@ -48,13 +45,10 @@ spinMinuteHand fractionalHours animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation hours minutes ->
-      let
-        f = fractionalHours hours minutes
-      in
+    StartSimulation fractionalHours ->
       { model
-        | hourHand = advanceHourHand f model.hourHand
-        , minuteHand = spinMinuteHand f model.minuteHand
+        | hourHand = advanceHourHand fractionalHours model.hourHand
+        , minuteHand = spinMinuteHand fractionalHours model.minuteHand
       }
 
     AnimationClockTick tick ->

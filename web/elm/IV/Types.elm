@@ -14,3 +14,6 @@ asDuration (DropsPerSecond perSecond) =
   
 
 
+fractionalHours hours minutes =
+  hours + (minutes / 60.0)
+

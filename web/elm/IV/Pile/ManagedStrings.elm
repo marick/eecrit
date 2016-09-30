@@ -41,17 +41,3 @@ isValidIntString string =
         True
       Err _ ->
         False
-
-
-intString : String -> Int
-intString string = 
-  if String.isEmpty string then
-    0
-  else
-    case String.toInt string of
-      Ok int ->
-        int
-      Err _ ->
-        1000000000 -- Make it noticeable?
-
-          

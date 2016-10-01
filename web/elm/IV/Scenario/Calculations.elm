@@ -11,7 +11,7 @@ startingFractionBagFilled model =
   
 endingFractionBagFilled : Model -> Float
 endingFractionBagFilled model =
-  0.5
+  0.1
 
   
 dropsPerSecond : Model -> DropsPerSecond

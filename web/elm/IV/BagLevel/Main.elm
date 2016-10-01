@@ -25,7 +25,7 @@ animations model =
 -- Msg
 
 type Msg
-  = StartSimulation Float DropsPerSecond
+  = StartSimulation Float Float
   | AnimationClockTick Animation.Msg
 
 -- Update
@@ -37,10 +37,10 @@ easing duration =
     , duration = duration * 1.5 * second
     }
 
-dropLevel fractionalHours animation =
+dropLevel fractionalHours level animation =
   let
     ease = (easing fractionalHours)
-    change = [Animation.toWith ease (View.animatedLevelValues 0.5)]
+    change = [Animation.toWith ease (View.animatedLevelValues level)]
   in
     Animation.interrupt change animation
 
@@ -49,8 +49,8 @@ dropLevel fractionalHours animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation fractionalHours (DropsPerSecond dps) ->
-      { model | style = dropLevel fractionalHours model.style }
+    StartSimulation fractionalHours level ->
+      { model | style = dropLevel fractionalHours level model.style }
 
     AnimationClockTick tick ->
       { model | style = (Animation.update tick) model.style }

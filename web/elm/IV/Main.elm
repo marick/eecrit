@@ -59,11 +59,12 @@ update msg model =
       let
         dps = Calc.dropsPerSecond model.scenario
         f = Calc.fractionalHours model.scenario
+        level = Calc.endingFractionBagFilled model.scenario
       in          
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dps) model.droplet
           , clock = Clock.update (Clock.StartSimulation f) model.clock
-          , bagLevel = BagLevel.update (BagLevel.StartSimulation f dps) model.bagLevel
+          , bagLevel = BagLevel.update (BagLevel.StartSimulation f level) model.bagLevel
         }
       , Cmd.none
       )
@@ -76,4 +77,3 @@ update msg model =
         }
       , Cmd.none
       )
-      

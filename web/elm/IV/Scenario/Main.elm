@@ -14,6 +14,7 @@ type alias Model =
   , bagCapacityInLiters : Float
   , bagContentsInLiters : Float
   , bagType : String
+  , dropsPerMil : Float
   }
 
 startingState : Model
@@ -26,6 +27,7 @@ startingState =
   , bagCapacityInLiters = 20
   , bagContentsInLiters = 19
   , bagType = "5-gallon carboy"
+  , dropsPerMil = 15.0
   }
 
 -- Msg

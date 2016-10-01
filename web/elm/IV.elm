@@ -11,16 +11,18 @@ import IV.Update exposing (update)
 import IV.View exposing (view)
 import IV.Types exposing (..)
 
+fractionBagFilled scenario =
+  (scenario.bagContentsInLiters / scenario.bagCapacityInLiters)
+
 init : ( Model, Cmd Msg )
 init =
   let
     scenario = Scenario.startingState
-    fractionBagFilled = (scenario.bagContentsInLiters / scenario.bagCapacityInLiters)
   in
   ( { droplet = Droplet.startingState
     , scenario = scenario  
     , clock = Clock.startingState
-    , bagLevel = BagLevel.startingState fractionBagFilled
+    , bagLevel = BagLevel.startingState (fractionBagFilled scenario)
     }
   , Cmd.none
   )

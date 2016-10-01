@@ -7,7 +7,6 @@ import IV.Clock.Model as Clock
 import IV.Clock.Update as ClockUpdate
 import IV.BagLevel.Main as BagLevel
 
-import IV.Msg exposing (Msg(..))
 import IV.Types exposing (..)
 import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
@@ -39,6 +38,13 @@ subscriptions model =
     AnimationClockTick
     (Droplet.animations model.droplet ++ Clock.animations model.clock)
 
+
+-- Msg
+
+type Msg
+    = StartSimulation
+    | ToScenario Scenario.Msg
+    | AnimationClockTick Animation.Msg
 
 -- Update
   

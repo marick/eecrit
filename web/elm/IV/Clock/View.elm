@@ -5,7 +5,6 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Html exposing (button, text, div, label)
 import IV.Pile.SvgAttributes exposing (..)
-import IV.Msg as TopMsg
 import Html.Events as Events
 
 

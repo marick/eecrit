@@ -3,12 +3,12 @@ module IV.Scenario.View exposing (view)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Scenario.Main exposing (Model, Msg(..))
-import IV.Msg as TopMsg
+import IV.Main as Main
 import Html.Events as Events
 
-changeHandler : (String -> Msg) -> String -> TopMsg.Msg
+changeHandler : (String -> Msg) -> String -> Main.Msg
 changeHandler msg string =
-  TopMsg.ToScenario (msg string)
+  Main.ToScenario (msg string)
 
 description model =
   "You are presented with a " ++
@@ -19,7 +19,7 @@ description model =
   model.bagType ++ "."
       
     
-view : Model -> Html TopMsg.Msg
+view : Model -> Html Main.Msg
 view model =
   div
     []
@@ -55,7 +55,7 @@ view model =
            []
        , text "until you plan to next look at the fluid level, then " 
        , button
-           [ Events.onClick TopMsg.StartSimulation
+           [ Events.onClick Main.StartSimulation
            , Attr.class "btn btn-default btn-xs"
            ]
            [ text "See What To Expect" ]

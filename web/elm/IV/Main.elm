@@ -1,15 +1,49 @@
-module IV.Update exposing (update)
+module IV.Main exposing (..)
 
-import IV.Msg exposing (Msg(..))
-import IV.Model as Model exposing (Model)
-import String
+import Animation
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Main as Scenario
+import IV.Clock.Model as Clock
+import IV.Clock.Update as ClockUpdate
 import IV.BagLevel.Main as BagLevel
-import IV.Clock.Update as Clock
+
+import IV.Msg exposing (Msg(..))
+import IV.Types exposing (..)
 import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
-import IV.Types exposing (..)
+
+-- Model
+
+type alias Model =
+    { droplet : Droplet.Model
+    , scenario : Scenario.Model
+    , clock : Clock.Model
+    , bagLevel : BagLevel.Model
+    }
+
+init : ( Model, Cmd Msg )
+init =
+  let
+    scenario = Scenario.startingState
+  in
+  ( { droplet = Droplet.startingState
+    , scenario = scenario  
+    , clock = Clock.startingState
+    , bagLevel = BagLevel.startingState (fractionBagFilled scenario)
+    }
+  , Cmd.none
+  )
+
+subscriptions model =
+  Animation.subscription
+    AnimationClockTick
+    (Droplet.animations model.droplet ++ Clock.animations model.clock)
+
+
+-- Update
+  
+fractionBagFilled scenario =
+  (scenario.bagContentsInLiters / scenario.bagCapacityInLiters)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -28,7 +62,7 @@ update msg model =
       in          
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
-          , clock = Clock.update (ClockMsg.StartSimulation f) model.clock
+          , clock = ClockUpdate.update (ClockMsg.StartSimulation f) model.clock
           , bagLevel = BagLevel.update (BagLevel.StartSimulation f dropletData) model.bagLevel
         }
       , Cmd.none
@@ -37,8 +71,9 @@ update msg model =
     AnimationClockTick tick ->
       ( { model
           | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet
-          , clock = Clock.update (ClockMsg.AnimationClockTick tick) model.clock
+          , clock = ClockUpdate.update (ClockMsg.AnimationClockTick tick) model.clock
           , bagLevel = BagLevel.update (BagLevel.AnimationClockTick tick) model.bagLevel
         }
       , Cmd.none
       )
+      

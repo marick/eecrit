@@ -13,7 +13,7 @@ import Svg.Attributes exposing (..)
 import IV.View.Apparatus as Apparatus
 import IV.View.ClockFace as ClockFace
 
-everything = {width = "700px", height = "700px"}
+everything = {width = "400px", height = "700px"}
 graphics = {width = "400px", height = "400px"}
 
 mainDiv : List (Html msg) -> Html msg

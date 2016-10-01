@@ -29,7 +29,7 @@ update msg model =
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
           , clock = Clock.update (ClockMsg.StartSimulation f) model.clock
-          , bagLevel = BagLevel.update BagLevel.StartSimulation model.bagLevel
+          , bagLevel = BagLevel.update (BagLevel.StartSimulation f dropletData) model.bagLevel
         }
       , Cmd.none
       )

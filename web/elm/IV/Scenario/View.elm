@@ -53,12 +53,12 @@ view model =
            , Events.onInput (changeHandler ChangedMinutesText)
            ]
            []
-       , text "before you next look at the fluid level, then " 
+       , text "until you plan to next look at the fluid level, then " 
        , button
            [ Events.onClick TopMsg.StartSimulation
            , Attr.class "btn btn-default btn-xs"
            ]
-           [ text "Try it out" ]
+           [ text "See What To Expect" ]
        ]
     ]
     

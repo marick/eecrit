@@ -18,11 +18,11 @@ dropsPerSecond : Model -> DropsPerSecond
 dropsPerSecond model =
   model.dripText |> floatString |> DropsPerSecond
 
-
-fractionalHours model =
+hours : Model -> Hours
+hours model =
   let
-    hours = model.simulationHoursText |> floatString
-    minutes = model.simulationMinutesText |> floatString
+    h = model.simulationHoursText |> floatString
+    m = model.simulationMinutesText |> floatString
   in
-    hours + (minutes / 60.0)
+    Hours <| h + (m / 60.0)
 

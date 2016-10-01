@@ -18,7 +18,7 @@ animations model =
 -- Msg
 
 type Msg
-  = StartSimulation Float Level
+  = StartSimulation Hours Level
   | AnimationClockTick Animation.Msg
 
 -- Update
@@ -30,8 +30,8 @@ startingState level =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation fractionalHours level ->
-      { model | style = drainBag fractionalHours level model.style }
+    StartSimulation hours level ->
+      { model | style = drainBag hours level model.style }
 
     AnimationClockTick tick ->
       { model | style = (Animation.update tick) model.style }
@@ -45,10 +45,10 @@ easing duration =
     , duration = duration * 1.5 * second
     }
 
-drainBag : Float -> Level -> Animation.State -> Animation.State
-drainBag fractionalHours level animation =
+drainBag : Hours -> Level -> Animation.State -> Animation.State
+drainBag (Hours hours) level animation =
   let
-    ease = (easing fractionalHours)
+    ease = (easing hours)
     change = [Animation.toWith ease (View.animationProperties level)]
   in
     Animation.interrupt change animation

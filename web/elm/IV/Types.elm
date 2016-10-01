@@ -3,7 +3,9 @@ module IV.Types exposing (..)
 import Time exposing (second)
 
 type DropsPerSecond = DropsPerSecond Float
-
+type Level = Level Float
+type Hours = Hours Float
+  
 asDuration : DropsPerSecond -> Float
 asDuration (DropsPerSecond perSecond) = 
   if perSecond == 0.0 then
@@ -12,5 +14,3 @@ asDuration (DropsPerSecond perSecond) =
     (1 / perSecond) * second
 
 
-type Level = Level Float
-  

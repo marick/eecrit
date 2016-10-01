@@ -24,7 +24,7 @@ animations model =
 -- Msg
 
 type Msg
-  = StartSimulation Float
+  = StartSimulation Hours
   | AnimationClockTick Animation.Msg
 
 
@@ -42,23 +42,22 @@ startingHourDegrees = 60.0
 hoursInDegrees : Float -> Float
 hoursInDegrees hours = 30 * hours
 
-advanceHourHand : Float -> Animation.State -> Animation.State
-advanceHourHand fractionalHours animation = 
+advanceHourHand : Hours -> Animation.State -> Animation.State
+advanceHourHand (Hours hours) animation = 
   let
-    ease = (easeForHours fractionalHours)
-    endPosition = (Animation.deg (hoursInDegrees (2 + fractionalHours)))
+    ease = (easeForHours hours)
+    endPosition = (Animation.deg (hoursInDegrees (2 + hours)))
     change  =
       [ Animation.toWith ease [Animation.rotate endPosition]
       ]
   in
     Animation.interrupt change animation
 
--- Todo: No idea why this is float, given it's being handed a literal 4.
-spinMinuteHand : Float -> Animation.State -> Animation.State
-spinMinuteHand fractionalHours animation =
+spinMinuteHand : Hours -> Animation.State -> Animation.State
+spinMinuteHand (Hours hours) animation =
   let
-    revolutions = Animation.deg <| fractionalHours * 360
-    ease = (easeForHours fractionalHours)
+    revolutions = Animation.deg <| hours * 360
+    ease = (easeForHours hours)
     change = Animation.toWith ease [Animation.rotate revolutions]
   in
     Animation.interrupt [change] animation
@@ -67,10 +66,10 @@ spinMinuteHand fractionalHours animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation fractionalHours ->
+    StartSimulation hours ->
       { model
-        | hourHand = advanceHourHand fractionalHours model.hourHand
-        , minuteHand = spinMinuteHand fractionalHours model.minuteHand
+        | hourHand = advanceHourHand hours model.hourHand
+        , minuteHand = spinMinuteHand hours model.minuteHand
       }
 
     AnimationClockTick tick ->

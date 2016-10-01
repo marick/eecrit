@@ -4,14 +4,14 @@ import IV.Types exposing (..)
 import IV.Scenario.Main exposing (Model)
 import IV.Pile.ManagedStrings exposing (floatString)
 
-startingFractionBagFilled : Model -> Float
+startingFractionBagFilled : Model -> Level
 startingFractionBagFilled model =
-  (model.bagContentsInLiters / model.bagCapacityInLiters)
+  Level (model.bagContentsInLiters / model.bagCapacityInLiters)
 
   
-endingFractionBagFilled : Model -> Float
+endingFractionBagFilled : Model -> Level
 endingFractionBagFilled model =
-  0.1
+  Level 0.1
 
   
 dropsPerSecond : Model -> DropsPerSecond

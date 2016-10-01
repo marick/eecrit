@@ -2,8 +2,7 @@ module IV.Types exposing (..)
 
 import Time exposing (second)
 
-type DropsPerSecond
-  = DropsPerSecond Float
+type DropsPerSecond = DropsPerSecond Float
 
 asDuration : DropsPerSecond -> Float
 asDuration (DropsPerSecond perSecond) = 
@@ -11,3 +10,7 @@ asDuration (DropsPerSecond perSecond) =
     10000.0 * second   -- a really slow leak...
   else
     (1 / perSecond) * second
+
+
+type Level = Level Float
+  

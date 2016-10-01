@@ -4,6 +4,7 @@ import Animation exposing (px)
 import IV.Palette as Palette
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import IV.Types exposing (..)
 
 levelBaseProperties =
   [ fill "#d3d7cf"
@@ -12,8 +13,7 @@ levelBaseProperties =
   ]
 
 
-  
-animatedLevelValues fractionBagFilled =
+animationProperties (Level fractionBagFilled) =
   let
     height = fractionBagFilled * 200
     y = 200 - height

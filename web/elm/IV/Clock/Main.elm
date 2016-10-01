@@ -3,18 +3,15 @@ module IV.Clock.Main exposing (..)
 import Animation
 import IV.Clock.View as View
 import IV.Types exposing (..)
-import Time exposing (second)
+import IV.Pile.Animation as APile
 
 -- Model
+
+startingHour = Hours 2
 
 type alias Model =
   { hourHand : Animation.State
   , minuteHand : Animation.State
-  }
-
-startingState =
-  { hourHand = Animation.style (View.hourHandStartsAt 2)
-  , minuteHand = Animation.style (View.minuteHandStartsAt 0)
   }
 
 animations : Model -> List Animation.State
@@ -28,40 +25,12 @@ type Msg
   | AnimationClockTick Animation.Msg
 
 
--- Update  
+-- Update
 
-easeForHours n =
-  Animation.easing
-    {
-      ease = identity
-    , duration = n * 1.5 * second
-    }
-
-startingHourDegrees = 60.0
-
-hoursInDegrees : Float -> Float
-hoursInDegrees hours = 30 * hours
-
-advanceHourHand : Hours -> Animation.State -> Animation.State
-advanceHourHand (Hours hours) animation = 
-  let
-    ease = (easeForHours hours)
-    endPosition = (Animation.deg (hoursInDegrees (2 + hours)))
-    change  =
-      [ Animation.toWith ease [Animation.rotate endPosition]
-      ]
-  in
-    Animation.interrupt change animation
-
-spinMinuteHand : Hours -> Animation.State -> Animation.State
-spinMinuteHand (Hours hours) animation =
-  let
-    revolutions = Animation.deg <| hours * 360
-    ease = (easeForHours hours)
-    change = Animation.toWith ease [Animation.rotate revolutions]
-  in
-    Animation.interrupt [change] animation
-  
+startingState =
+  { hourHand = Animation.style (View.hourHandStartsAt 2)
+  , minuteHand = Animation.style (View.minuteHandStartsAt 0)
+  }
 
 update : Msg -> Model -> Model
 update msg model =
@@ -78,3 +47,35 @@ update msg model =
         , minuteHand = (Animation.update tick) model.minuteHand
       }
     
+
+
+
+hoursInDegrees : Hours -> Float
+hoursInDegrees (Hours hours) =
+  30 * hours
+
+    
+minuteHandRotations (Hours hours) =
+  Animation.deg <| hours * 360
+
+advanceHourHand : Hours -> Animation.State -> Animation.State
+advanceHourHand hours animation = 
+  let
+    ease = APile.easeForHours hours
+    rotation = Animation.deg <| (hoursInDegrees startingHour) + hoursInDegrees hours
+    change  =
+      [ Animation.toWith ease [Animation.rotate rotation]
+      ]
+  in
+    Animation.interrupt change animation
+
+spinMinuteHand : Hours -> Animation.State -> Animation.State
+spinMinuteHand hours animation =
+  let
+    revolutions = minuteHandRotations hours
+    ease = APile.easeForHours hours
+    change = Animation.toWith ease [Animation.rotate revolutions]
+  in
+    Animation.interrupt [change] animation
+  
+

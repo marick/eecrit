@@ -4,6 +4,7 @@ import Animation
 import IV.BagLevel.View as View
 import IV.Types exposing (..)
 import Time exposing (second)
+import IV.Pile.Animation as APile
 
 --- Model
 
@@ -38,17 +39,10 @@ update msg model =
 
 
 
-easing duration =
-  Animation.easing
-    {
-      ease = identity
-    , duration = duration * 1.5 * second
-    }
-
 drainBag : Hours -> Level -> Animation.State -> Animation.State
-drainBag (Hours hours) level animation =
+drainBag hours level animation =
   let
-    ease = (easing hours)
+    ease = APile.easeForHours hours
     change = [Animation.toWith ease (View.animationProperties level)]
   in
     Animation.interrupt change animation

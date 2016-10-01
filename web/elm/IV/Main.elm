@@ -8,6 +8,7 @@ import IV.BagLevel.Main as BagLevel
 
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (floatString)
+import IV.Scenario.Calculations as Calc
 
 -- Model
 
@@ -17,19 +18,6 @@ type alias Model =
     , clock : Clock.Model
     , bagLevel : BagLevel.Model
     }
-
-init : ( Model, Cmd Msg )
-init =
-  let
-    scenario = Scenario.startingState
-  in
-  ( { droplet = Droplet.startingState
-    , scenario = scenario  
-    , clock = Clock.startingState
-    , bagLevel = BagLevel.startingState (fractionBagFilled scenario)
-    }
-  , Cmd.none
-  )
 
 subscriptions model =
   Animation.subscription
@@ -46,8 +34,18 @@ type Msg
 
 -- Update
   
-fractionBagFilled scenario =
-  (scenario.bagContentsInLiters / scenario.bagCapacityInLiters)
+init : ( Model, Cmd Msg )
+init =
+  let
+    scenario = Scenario.startingState
+  in
+  ( { droplet = Droplet.startingState
+    , scenario = scenario  
+    , clock = Clock.startingState
+    , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
+    }
+  , Cmd.none
+  )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -59,15 +57,13 @@ update msg model =
 
     StartSimulation ->
       let
-        dropletData = model.scenario.dripText |> floatString |> DropsPerSecond
-        hours = model.scenario.simulationHoursText |> floatString
-        minutes = model.scenario.simulationMinutesText |> floatString
-        f = fractionalHours hours minutes
+        dps = Calc.dropsPerSecond model.scenario
+        f = Calc.fractionalHours model.scenario
       in          
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
+          | droplet = Droplet.update (Droplet.StartSimulation dps) model.droplet
           , clock = Clock.update (Clock.StartSimulation f) model.clock
-          , bagLevel = BagLevel.update (BagLevel.StartSimulation f dropletData) model.bagLevel
+          , bagLevel = BagLevel.update (BagLevel.StartSimulation f dps) model.bagLevel
         }
       , Cmd.none
       )

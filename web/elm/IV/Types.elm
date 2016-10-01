@@ -11,9 +11,3 @@ asDuration (DropsPerSecond perSecond) =
     10000.0 * second   -- a really slow leak...
   else
     (1 / perSecond) * second
-  
-
-
-fractionalHours hours minutes =
-  hours + (minutes / 60.0)
-

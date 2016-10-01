@@ -3,12 +3,10 @@ module IV.Main exposing (..)
 import Animation
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Main as Scenario
-import IV.Clock.Model as Clock
-import IV.Clock.Update as ClockUpdate
+import IV.Clock.Main as Clock
 import IV.BagLevel.Main as BagLevel
 
 import IV.Types exposing (..)
-import IV.Clock.Msg as ClockMsg
 import IV.Pile.ManagedStrings exposing (floatString)
 
 -- Model
@@ -68,7 +66,7 @@ update msg model =
       in          
       ( { model
           | droplet = Droplet.update (Droplet.StartSimulation dropletData) model.droplet
-          , clock = ClockUpdate.update (ClockMsg.StartSimulation f) model.clock
+          , clock = Clock.update (Clock.StartSimulation f) model.clock
           , bagLevel = BagLevel.update (BagLevel.StartSimulation f dropletData) model.bagLevel
         }
       , Cmd.none
@@ -77,7 +75,7 @@ update msg model =
     AnimationClockTick tick ->
       ( { model
           | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet
-          , clock = ClockUpdate.update (ClockMsg.AnimationClockTick tick) model.clock
+          , clock = Clock.update (Clock.AnimationClockTick tick) model.clock
           , bagLevel = BagLevel.update (BagLevel.AnimationClockTick tick) model.bagLevel
         }
       , Cmd.none

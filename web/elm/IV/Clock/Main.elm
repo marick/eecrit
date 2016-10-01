@@ -1,12 +1,34 @@
-module IV.Clock.Update exposing (..)
+module IV.Clock.Main exposing (..)
 
 import Animation
-import IV.Clock.Msg exposing (Msg(..))
-import IV.Clock.Model as Model exposing (Model)
 import IV.Clock.View as View
-import Time exposing (second)
 import IV.Types exposing (..)
+import Time exposing (second)
 
+-- Model
+
+type alias Model =
+  { hourHand : Animation.State
+  , minuteHand : Animation.State
+  }
+
+startingState =
+  { hourHand = Animation.style (View.hourHandStartsAt 2)
+  , minuteHand = Animation.style (View.minuteHandStartsAt 0)
+  }
+
+animations : Model -> List Animation.State
+animations model =
+  [model.hourHand, model.minuteHand]
+           
+-- Msg
+
+type Msg
+  = StartSimulation Float
+  | AnimationClockTick Animation.Msg
+
+
+-- Update  
 
 easeForHours n =
   Animation.easing
@@ -56,3 +78,4 @@ update msg model =
         | hourHand = (Animation.update tick) model.hourHand
         , minuteHand = (Animation.update tick) model.minuteHand
       }
+    

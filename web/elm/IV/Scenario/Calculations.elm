@@ -3,7 +3,6 @@ module IV.Scenario.Calculations exposing (..)
 import IV.Types exposing (..)
 import IV.Scenario.Main exposing (Model)
 import IV.Pile.ManagedStrings exposing (floatString)
-import Debug
 
 startingFractionBagFilled : Model -> Level
 startingFractionBagFilled model =
@@ -16,10 +15,10 @@ endingFractionBagFilled model =
     (DropsPerSecond dps) = dropsPerSecond model
     (Hours fractionalHours) = hours model
     (Level startingLevel) = startingFractionBagFilled model
-    milsPerSecond = Debug.log "mps" (dps / model.dropsPerMil)
+    milsPerSecond = dps / model.dropsPerMil
     milsPerHour = milsPerSecond * 60 * 60
-    litersPerHour = Debug.log "lph" (milsPerHour / 1000)
-    decrease = Debug.log "dcrse" (litersPerHour * fractionalHours / model.bagCapacityInLiters)
+    litersPerHour = milsPerHour / 1000
+    decrease = litersPerHour * fractionalHours / model.bagCapacityInLiters
   in
     Level <| startingLevel - decrease
 

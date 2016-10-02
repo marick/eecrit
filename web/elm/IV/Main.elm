@@ -31,27 +31,31 @@ type Msg
     = StartSimulation
     | ToScenario Scenario.Msg
     | AnimationClockTick Animation.Msg
+    | PickedScenario Scenario.Model
 
 -- Update
+
+initWithScenario : Scenario.Model -> Model
+initWithScenario scenario =
+  { droplet = Droplet.startingState
+  , scenario = scenario  
+  , clock = Clock.startingState
+  , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
+  }
   
 init : ( Model, Cmd Msg )
-init =
-  let
-    scenario = Scenario.cowScenario
-  in
-  ( { droplet = Droplet.startingState
-    , scenario = scenario  
-    , clock = Clock.startingState
-    , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
-    }
-  , Cmd.none
-  )
+init = (initWithScenario Scenario.cowScenario, Cmd.none)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     ToScenario msg' ->
       ( { model | scenario = Scenario.update msg' model.scenario }
+      , Cmd.none
+      )
+
+    PickedScenario scenario ->
+      ( initWithScenario scenario
       , Cmd.none
       )
 

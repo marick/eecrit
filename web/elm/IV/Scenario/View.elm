@@ -35,7 +35,7 @@ scenarioButton buttonScenario currentScenario additionalClassString =
     button 
       [ Attr.type' "button"
       , Attr.class class
-      , Events.onClick <| Main.ToScenario <| PickedScenario buttonScenario
+      , Events.onClick <| Main.PickedScenario buttonScenario
       ]
       [ text buttonScenario.tag]
 

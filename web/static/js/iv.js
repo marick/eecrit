@@ -15258,10 +15258,8 @@ var _user$project$IV_Scenario_Main$update = F2(
 				return A2(_user$project$IV_Scenario_Main$updateNextSpeed, model, _p0._0);
 			case 'ChangedHoursText':
 				return A2(_user$project$IV_Scenario_Main$updateHours, model, _p0._0);
-			case 'ChangedMinutesText':
-				return A2(_user$project$IV_Scenario_Main$updateMinutes, model, _p0._0);
 			default:
-				return _p0._0;
+				return A2(_user$project$IV_Scenario_Main$updateMinutes, model, _p0._0);
 		}
 	});
 var _user$project$IV_Scenario_Main$commonToAllScenarios = {dripText: '0', simulationHoursText: '0', simulationMinutesText: '0', dropsPerMil: 15.0};
@@ -15287,9 +15285,6 @@ var _user$project$IV_Scenario_Main$Model = function (a) {
 			};
 		};
 	};
-};
-var _user$project$IV_Scenario_Main$PickedScenario = function (a) {
-	return {ctor: 'PickedScenario', _0: a};
 };
 var _user$project$IV_Scenario_Main$ChangedMinutesText = function (a) {
 	return {ctor: 'ChangedMinutesText', _0: a};
@@ -15653,6 +15648,14 @@ var _user$project$IV_Main$update = F2(
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			case 'PickedScenario':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{scenario: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'StartSimulation':
 				var level = _user$project$IV_Scenario_Calculations$endingFractionBagFilled(model.scenario);
 				var hours = _user$project$IV_Scenario_Calculations$hours(model.scenario);
@@ -15719,6 +15722,9 @@ var _user$project$IV_Main$Model = F4(
 	function (a, b, c, d) {
 		return {droplet: a, scenario: b, clock: c, bagLevel: d};
 	});
+var _user$project$IV_Main$PickedScenario = function (a) {
+	return {ctor: 'PickedScenario', _0: a};
+};
 var _user$project$IV_Main$AnimationClockTick = function (a) {
 	return {ctor: 'AnimationClockTick', _0: a};
 };
@@ -15766,8 +15772,7 @@ var _user$project$IV_Scenario_View$scenarioButton = F3(
 					_elm_lang$html$Html_Attributes$type$('button'),
 					_elm_lang$html$Html_Attributes$class($class),
 					_elm_lang$html$Html_Events$onClick(
-					_user$project$IV_Main$ToScenario(
-						_user$project$IV_Scenario_Main$PickedScenario(buttonScenario)))
+					_user$project$IV_Main$PickedScenario(buttonScenario))
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[

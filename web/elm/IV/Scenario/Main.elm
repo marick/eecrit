@@ -65,7 +65,6 @@ type Msg
   = ChangedDripText String
   | ChangedHoursText String
   | ChangedMinutesText String
-  | PickedScenario Model
 
 -- Update
 
@@ -97,5 +96,3 @@ update msg model =
       updateHours model string
     ChangedMinutesText string ->
       updateMinutes model string
-    PickedScenario newModel ->
-      newModel  

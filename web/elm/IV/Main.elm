@@ -37,7 +37,7 @@ type Msg
 init : ( Model, Cmd Msg )
 init =
   let
-    scenario = Scenario.startingState
+    scenario = Scenario.cowScenario
   in
   ( { droplet = Droplet.startingState
     , scenario = scenario  

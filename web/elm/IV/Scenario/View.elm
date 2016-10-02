@@ -1,10 +1,11 @@
-module IV.Scenario.View exposing (view)
+module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Main exposing (Model, Msg(..))
+import IV.Scenario.Main exposing (Model, Msg(..), cowScenario, calfScenario)
 import IV.Main as Main
 import Html.Events as Events
+import IV.Pile.HtmlShorthand exposing (..)
 
 changeHandler : (String -> Msg) -> String -> Main.Msg
 changeHandler msg string =
@@ -17,15 +18,30 @@ description model =
   toString model.bagContentsInLiters ++
   " liters of fluid in a " ++ 
   model.bagType ++ "."
-      
-    
+
+
+choices model = 
+  row
+    [ button
+        [ Attr.type' "button"
+        , Attr.class "btn btn-primary col-sm-5"
+        , Events.onClick <| Main.ToScenario <| PickedScenario cowScenario
+        ]
+        [ text cowScenario.tag]
+    , button
+        [ Attr.type' "button"
+        , Attr.class "btn btn-default col-sm-5 col-md-offset-2"
+        , Events.onClick <| Main.ToScenario <| PickedScenario calfScenario
+        ]
+        [ text calfScenario.tag]
+    ]
+  
 view : Model -> Html Main.Msg
 view model =
   div
     []
-    [ p
-       []
-       [text <| description model ]
+    [ row
+      [ p [] [text <| description model ] ]
     , p
        []
        [ text "Using your calculations, set the drip rate "
@@ -61,4 +77,3 @@ view model =
            [ text "See What To Expect" ]
        ]
     ]
-    

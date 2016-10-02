@@ -39,7 +39,8 @@ mainSvg contents  =
 view : Model -> Html Msg
 view model =
   mainDiv
-  [ mainSvg
+  [ Scenario.choices model.scenario
+  , mainSvg
       [BagLevel.render model.bagLevel, Droplet.render model.droplet,
          Apparatus.drawing, ClockFace.drawing,
          Clock.render model.clock]

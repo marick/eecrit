@@ -11,6 +11,7 @@ import Svg
 import Svg.Attributes exposing (..)
 import IV.View.Apparatus as Apparatus
 import IV.View.ClockFace as ClockFace
+import IV.Pile.HtmlShorthand exposing (..)
 
 everything = {width = "400px", height = "700px"}
 graphics = {width = "400px", height = "400px"}
@@ -27,14 +28,17 @@ mainDiv contents =
   contents
 
 mainSvg contents  =
-  Svg.svg
-  [ version "1.1"
-  , x "0"
-  , y "0"
-  , Svg.Attributes.width graphics.width
-  , Svg.Attributes.height graphics.height
-  ]
-  contents
+  row 
+    [ hr [] []
+    , Svg.svg
+        [ version "1.1"
+        , x "0"
+        , y "0"
+        , Svg.Attributes.width graphics.width
+        , Svg.Attributes.height graphics.height
+        ]
+        contents
+    ]
 
 view : Model -> Html Msg
 view model =

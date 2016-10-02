@@ -77,7 +77,7 @@ view model =
             , Events.onInput (changeHandler ChangedMinutesText)
             ]
             []
-        , text "until you plan to next look at the fluid level, then " 
+        , text " until you plan to next look at the fluid level, then " 
         , button
             [ Events.onClick Main.StartSimulation
             , Attr.class "btn btn-default btn-xs"

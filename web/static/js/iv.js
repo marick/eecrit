@@ -15869,7 +15869,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
-						_elm_lang$html$Html$text('until you plan to next look at the fluid level, then '),
+						_elm_lang$html$Html$text(' until you plan to next look at the fluid level, then '),
 						A2(
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
@@ -16088,17 +16088,27 @@ var _user$project$IV_View_ClockFace$drawing = A2(
 
 var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
 var _user$project$IV_View$mainSvg = function (contents) {
-	return A2(
-		_elm_lang$svg$Svg$svg,
+	return _user$project$IV_Pile_HtmlShorthand$row(
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$svg$Svg_Attributes$version('1.1'),
-				_elm_lang$svg$Svg_Attributes$x('0'),
-				_elm_lang$svg$Svg_Attributes$y('0'),
-				_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View$graphics.width),
-				_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View$graphics.height)
-			]),
-		contents);
+				A2(
+				_elm_lang$html$Html$hr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$svg$Svg$svg,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$svg$Svg_Attributes$version('1.1'),
+						_elm_lang$svg$Svg_Attributes$x('0'),
+						_elm_lang$svg$Svg_Attributes$y('0'),
+						_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View$graphics.width),
+						_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View$graphics.height)
+					]),
+				contents)
+			]));
 };
 var _user$project$IV_View$everything = {width: '400px', height: '700px'};
 var _user$project$IV_View$mainDiv = function (contents) {

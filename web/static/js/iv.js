@@ -15258,15 +15258,39 @@ var _user$project$IV_Scenario_Main$update = F2(
 				return A2(_user$project$IV_Scenario_Main$updateNextSpeed, model, _p0._0);
 			case 'ChangedHoursText':
 				return A2(_user$project$IV_Scenario_Main$updateHours, model, _p0._0);
-			default:
+			case 'ChangedMinutesText':
 				return A2(_user$project$IV_Scenario_Main$updateMinutes, model, _p0._0);
+			default:
+				return _p0._0;
 		}
 	});
-var _user$project$IV_Scenario_Main$cowPreset = {dripText: '0', animalDescription: '3d lactation purebred Holstein', weightInPounds: 1560, simulationHoursText: '4', simulationMinutesText: '0', bagCapacityInLiters: 20, bagContentsInLiters: 19, bagType: '5-gallon carboy', dropsPerMil: 15.0};
-var _user$project$IV_Scenario_Main$Model = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {dripText: a, animalDescription: b, weightInPounds: c, simulationHoursText: d, simulationMinutesText: e, bagCapacityInLiters: f, bagContentsInLiters: g, bagType: h, dropsPerMil: i};
-	});
+var _user$project$IV_Scenario_Main$commonToAllScenarios = {dripText: '0', simulationHoursText: '0', simulationMinutesText: '0', dropsPerMil: 15.0};
+var _user$project$IV_Scenario_Main$cowScenario = {tag: '1560 lb. cow', animalDescription: '3d lactation purebred Holstein', weightInPounds: 1560, bagCapacityInLiters: 20, bagContentsInLiters: 19, bagType: '5-gallon carboy', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
+var _user$project$IV_Scenario_Main$calfScenario = {tag: '90 lb. heifer calf', animalDescription: '10-day-old Hereford heifer calf', weightInPounds: 90, bagCapacityInLiters: 2, bagContentsInLiters: 2, bagType: '2-liter bag', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
+var _user$project$IV_Scenario_Main$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {tag: a, dripText: b, animalDescription: c, weightInPounds: d, simulationHoursText: e, simulationMinutesText: f, bagCapacityInLiters: g, bagContentsInLiters: h, bagType: i, dropsPerMil: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$IV_Scenario_Main$PickedScenario = function (a) {
+	return {ctor: 'PickedScenario', _0: a};
+};
 var _user$project$IV_Scenario_Main$ChangedMinutesText = function (a) {
 	return {ctor: 'ChangedMinutesText', _0: a};
 };
@@ -15678,7 +15702,7 @@ var _user$project$IV_Main$update = F2(
 		}
 	});
 var _user$project$IV_Main$init = function () {
-	var scenario = _user$project$IV_Scenario_Main$cowPreset;
+	var scenario = _user$project$IV_Scenario_Main$cowScenario;
 	return {
 		ctor: '_Tuple2',
 		_0: {
@@ -15722,32 +15746,42 @@ var _user$project$IV_Pile_HtmlShorthand$row = function (elements) {
 		elements);
 };
 
-var _user$project$IV_Scenario_View$choices = _user$project$IV_Pile_HtmlShorthand$row(
-	_elm_lang$core$Native_List.fromArray(
-		[
+var _user$project$IV_Scenario_View$highlight = F2(
+	function (buttonScenario, currentScenario) {
+		return _elm_lang$core$Native_Utils.eq(buttonScenario, currentScenario) ? ' btn-primary ' : ' btn-default ';
+	});
+var _user$project$IV_Scenario_View$scenarioButton = F3(
+	function (buttonScenario, currentScenario, additionalClassString) {
+		var $class = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'btn col-sm-5 ',
 			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_user$project$IV_Scenario_View$highlight, buttonScenario, currentScenario),
+				additionalClassString));
+		return A2(
 			_elm_lang$html$Html$button,
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html_Attributes$type$('button'),
-					_elm_lang$html$Html_Attributes$class('btn btn-primary col-sm-5')
+					_elm_lang$html$Html_Attributes$class($class),
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$IV_Main$ToScenario(
+						_user$project$IV_Scenario_Main$PickedScenario(buttonScenario)))
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('1560 lb. cow')
-				])),
-			A2(
-			_elm_lang$html$Html$button,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$type$('button'),
-					_elm_lang$html$Html_Attributes$class('btn btn-default col-sm-5 col-md-offset-2')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text('90 lb. heifer calf')
-				]))
-		]));
+					_elm_lang$html$Html$text(buttonScenario.tag)
+				]));
+	});
+var _user$project$IV_Scenario_View$choices = function (model) {
+	return _user$project$IV_Pile_HtmlShorthand$row(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A3(_user$project$IV_Scenario_View$scenarioButton, _user$project$IV_Scenario_Main$cowScenario, model, ''),
+				A3(_user$project$IV_Scenario_View$scenarioButton, _user$project$IV_Scenario_Main$calfScenario, model, 'col-md-offset-2')
+			]));
+};
 var _user$project$IV_Scenario_View$description = function (model) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -15778,24 +15812,17 @@ var _user$project$IV_Scenario_View$changeHandler = F2(
 			msg(string));
 	});
 var _user$project$IV_Scenario_View$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
+	return _user$project$IV_Pile_HtmlShorthand$row(
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Pile_HtmlShorthand$row(
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						A2(
-						_elm_lang$html$Html$p,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(
-								_user$project$IV_Scenario_View$description(model))
-							]))
+						_elm_lang$html$Html$text(
+						_user$project$IV_Scenario_View$description(model))
 					])),
 				A2(
 				_elm_lang$html$Html$p,
@@ -16094,7 +16121,7 @@ var _user$project$IV_View$view = function (model) {
 	return _user$project$IV_View$mainDiv(
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Scenario_View$choices,
+				_user$project$IV_Scenario_View$choices(model.scenario),
 				_user$project$IV_View$mainSvg(
 				_elm_lang$core$Native_List.fromArray(
 					[

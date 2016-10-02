@@ -5,6 +5,13 @@ import IV.Pile.ManagedStrings exposing (..)
 import String
 
 
+commonToAllScenarios =
+  { dripText = "0"
+  , simulationHoursText = "0"
+  , simulationMinutesText = "0"
+  , dropsPerMil = 15.0
+  }
+
 type alias Model =
   { tag : String
   , dripText : String
@@ -19,33 +26,37 @@ type alias Model =
   }
 
 cowScenario : Model
-cowScenario = 
+cowScenario =
   { tag = "1560 lb. cow"
-
-  , dripText = "0"
+      
   , animalDescription = "3d lactation purebred Holstein"
   , weightInPounds = 1560
-  , simulationHoursText = "0"
-  , simulationMinutesText = "0"
   , bagCapacityInLiters = 20
   , bagContentsInLiters = 19
   , bagType = "5-gallon carboy"
-  , dropsPerMil = 15.0
+              
+  -- Must be a better way
+  , dripText = commonToAllScenarios.dripText
+  , simulationHoursText = commonToAllScenarios.simulationHoursText
+  , simulationMinutesText = commonToAllScenarios.simulationMinutesText
+  , dropsPerMil = commonToAllScenarios.dropsPerMil
   }
-
+  
 calfScenario : Model
 calfScenario = 
   { tag = "90 lb. heifer calf"
 
-  , dripText = "0"
-  , animalDescription = "90 lb 10-day-old Hereford heifer calf"
+  , animalDescription = "10-day-old Hereford heifer calf"
   , weightInPounds = 90
-  , simulationHoursText = "0"
-  , simulationMinutesText = "0"
   , bagCapacityInLiters = 2
   , bagContentsInLiters = 2
   , bagType = "2-liter bag"
-  , dropsPerMil = 15.0
+
+  -- Must be a better way
+  , dripText = commonToAllScenarios.dripText
+  , simulationHoursText = commonToAllScenarios.simulationHoursText
+  , simulationMinutesText = commonToAllScenarios.simulationMinutesText
+  , dropsPerMil = commonToAllScenarios.dropsPerMil
   }
 
 -- Msg

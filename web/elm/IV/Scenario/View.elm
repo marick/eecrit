@@ -19,61 +19,69 @@ description model =
   " liters of fluid in a " ++ 
   model.bagType ++ "."
 
+highlight buttonScenario currentScenario =
+  if buttonScenario == currentScenario then
+    " btn-primary "
+  else
+    " btn-default "
 
+scenarioButton : Model -> Model -> String -> Html Main.Msg
+scenarioButton buttonScenario currentScenario additionalClassString =
+  let 
+    class = "btn col-sm-5 " ++
+            highlight buttonScenario currentScenario ++
+            additionalClassString
+  in
+    button 
+      [ Attr.type' "button"
+      , Attr.class class
+      , Events.onClick <| Main.ToScenario <| PickedScenario buttonScenario
+      ]
+      [ text buttonScenario.tag]
+
+choices : Model -> Html Main.Msg    
 choices model = 
   row
-    [ button
-        [ Attr.type' "button"
-        , Attr.class "btn btn-primary col-sm-5"
-        , Events.onClick <| Main.ToScenario <| PickedScenario cowScenario
-        ]
-        [ text cowScenario.tag]
-    , button
-        [ Attr.type' "button"
-        , Attr.class "btn btn-default col-sm-5 col-md-offset-2"
-        , Events.onClick <| Main.ToScenario <| PickedScenario calfScenario
-        ]
-        [ text calfScenario.tag]
+    [ scenarioButton cowScenario model ""
+    , scenarioButton calfScenario model "col-md-offset-2"
     ]
   
 view : Model -> Html Main.Msg
 view model =
-  div
-    []
-    [ row
-      [ p [] [text <| description model ] ]
+  row
+    [ p [] [text <| description model ] 
     , p
-       []
-       [ text "Using your calculations, set the drip rate "
-       , input
-           [ Attr.type' "text"
-           -- , Attr.class "form-control col-xs-2"
-           , Attr.value model.dripText
-           , Attr.size 6
-           , Events.onInput (changeHandler ChangedDripText)
-           ]
-           []
-       , text " and the hours "
-       , input
-           [ Attr.type' "text"
-           , Attr.value model.simulationHoursText
-           , Attr.size 6
-           , Events.onInput (changeHandler ChangedHoursText)
-           ]
-           []
-       , text " and minutes "
-       , input
-           [ Attr.type' "text"
-           , Attr.value model.simulationMinutesText
-           , Attr.size 6
-           , Events.onInput (changeHandler ChangedMinutesText)
-           ]
-           []
-       , text "until you plan to next look at the fluid level, then " 
-       , button
-           [ Events.onClick Main.StartSimulation
-           , Attr.class "btn btn-default btn-xs"
-           ]
-           [ text "See What To Expect" ]
-       ]
+        []
+        [ text "Using your calculations, set the drip rate "
+        , input
+            [ Attr.type' "text"
+            -- , Attr.class "form-control col-xs-2"
+            , Attr.value model.dripText
+            , Attr.size 6
+            , Events.onInput (changeHandler ChangedDripText)
+            ]
+            []
+        , text " and the hours "
+        , input
+            [ Attr.type' "text"
+            , Attr.value model.simulationHoursText
+            , Attr.size 6
+            , Events.onInput (changeHandler ChangedHoursText)
+            ]
+            []
+        , text " and minutes "
+        , input
+            [ Attr.type' "text"
+            , Attr.value model.simulationMinutesText
+            , Attr.size 6
+            , Events.onInput (changeHandler ChangedMinutesText)
+            ]
+            []
+        , text "until you plan to next look at the fluid level, then " 
+        , button
+            [ Events.onClick Main.StartSimulation
+            , Attr.class "btn btn-default btn-xs"
+            ]
+            [ text "See What To Expect" ]
+        ]
     ]

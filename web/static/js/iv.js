@@ -15032,7 +15032,7 @@ var _user$project$IV_Droplet_View$render = function (model) {
 			[]));
 };
 var _user$project$IV_Droplet_View$fluidYOffset = 270;
-var _user$project$IV_Droplet_View$chamberYOffset = 200;
+var _user$project$IV_Droplet_View$chamberYOffset = 201;
 var _user$project$IV_Droplet_View$chamberXOffset = 55;
 var _user$project$IV_Droplet_View$flowHeight = 70;
 var _user$project$IV_Droplet_View$dropHeight = 10;
@@ -15101,39 +15101,180 @@ var _user$project$IV_Droplet_View$streamState2 = _elm_lang$core$Native_List.from
 
 var _user$project$IV_Types$asDuration = function (_p0) {
 	var _p1 = _p0;
-	return (1 / _p1._0) * _elm_lang$core$Time$second;
+	var _p2 = _p1._0;
+	return _elm_lang$core$Native_Utils.eq(_p2, 0.0) ? (10000.0 * _elm_lang$core$Time$second) : ((1 / _p2) * _elm_lang$core$Time$second);
 };
 var _user$project$IV_Types$DropsPerSecond = function (a) {
 	return {ctor: 'DropsPerSecond', _0: a};
 };
+var _user$project$IV_Types$Level = function (a) {
+	return {ctor: 'Level', _0: a};
+};
+var _user$project$IV_Types$Hours = function (a) {
+	return {ctor: 'Hours', _0: a};
+};
 
+var _user$project$IV_Droplet_Main$easing = function (duration) {
+	return _mdgriffith$elm_style_animation$Animation$easing(
+		{ease: _elm_lang$core$Basics$identity, duration: duration});
+};
+var _user$project$IV_Droplet_Main$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
+var _user$project$IV_Droplet_Main$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Droplet_Main$dropStreamCutoff);
+var _user$project$IV_Droplet_Main$fallingDrop = function (dropsPerSecond) {
+	var totalTime = _user$project$IV_Types$asDuration(dropsPerSecond);
+	var hangingTime = totalTime - _user$project$IV_Droplet_Main$fallingTime;
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Droplet_View$missingDrop),
+			A2(
+			_mdgriffith$elm_style_animation$Animation$toWith,
+			_user$project$IV_Droplet_Main$easing(hangingTime),
+			_user$project$IV_Droplet_View$hangingDrop),
+			A2(
+			_mdgriffith$elm_style_animation$Animation$toWith,
+			_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
+			_user$project$IV_Droplet_View$fallenDrop)
+		]);
+};
+var _user$project$IV_Droplet_Main$steadyStream = _elm_lang$core$Native_List.fromArray(
+	[
+		A2(
+		_mdgriffith$elm_style_animation$Animation$toWith,
+		_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
+		_user$project$IV_Droplet_View$streamState1),
+		A2(
+		_mdgriffith$elm_style_animation$Animation$toWith,
+		_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
+		_user$project$IV_Droplet_View$streamState2)
+	]);
+var _user$project$IV_Droplet_Main$animationSteps = function (dropsPerSecond) {
+	var _p0 = dropsPerSecond;
+	var raw = _p0._0;
+	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Droplet_Main$steadyStream : _user$project$IV_Droplet_Main$fallingDrop(dropsPerSecond);
+};
+var _user$project$IV_Droplet_Main$changeDropRate = F2(
+	function (dropsPerSecond, animation) {
+		var loop = _mdgriffith$elm_style_animation$Animation$loop(
+			_user$project$IV_Droplet_Main$animationSteps(dropsPerSecond));
+		return A2(
+			_mdgriffith$elm_style_animation$Animation$interrupt,
+			_elm_lang$core$Native_List.fromArray(
+				[loop]),
+			animation);
+	});
+var _user$project$IV_Droplet_Main$update = F2(
+	function (msg, model) {
+		var _p1 = msg;
+		if (_p1.ctor === 'StartSimulation') {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					style: A2(_user$project$IV_Droplet_Main$changeDropRate, _p1._0, model.style)
+				});
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					style: A2(_mdgriffith$elm_style_animation$Animation$update, _p1._0, model.style)
+				});
+		}
+	});
 var _user$project$IV_Droplet_Main$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[model.style]);
 };
-var _user$project$IV_Droplet_Main$Model = F2(
-	function (a, b) {
-		return {style: a, currentSpeed: b};
-	});
-var _user$project$IV_Droplet_Main$startingState = function (_p0) {
-	var _p1 = _p0;
-	return A2(
-		_user$project$IV_Droplet_Main$Model,
-		_mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Droplet_View$missingDrop),
-		_p1._0);
+var _user$project$IV_Droplet_Main$Model = function (a) {
+	return {style: a};
+};
+var _user$project$IV_Droplet_Main$startingState = _user$project$IV_Droplet_Main$Model(
+	_mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Droplet_View$missingDrop));
+var _user$project$IV_Droplet_Main$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
+};
+var _user$project$IV_Droplet_Main$StartSimulation = function (a) {
+	return {ctor: 'StartSimulation', _0: a};
 };
 
-var _user$project$IV_SpeedControl_Model$Model = F2(
-	function (a, b) {
-		return {string: a, perSecond: b};
+var _user$project$IV_Pile_ManagedStrings$isValidIntString = function (string) {
+	if (_elm_lang$core$String$isEmpty(string)) {
+		return true;
+	} else {
+		var _p0 = _elm_lang$core$String$toInt(string);
+		if (_p0.ctor === 'Ok') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+};
+var _user$project$IV_Pile_ManagedStrings$floatString = function (string) {
+	if (_elm_lang$core$String$isEmpty(string)) {
+		return 0.0;
+	} else {
+		var _p1 = _elm_lang$core$String$toFloat(string);
+		if (_p1.ctor === 'Ok') {
+			return _p1._0;
+		} else {
+			return 1.0e9;
+		}
+	}
+};
+var _user$project$IV_Pile_ManagedStrings$isValidFloatString = function (string) {
+	if (_elm_lang$core$String$isEmpty(string)) {
+		return true;
+	} else {
+		var _p2 = _elm_lang$core$String$toFloat(string);
+		if (_p2.ctor === 'Ok') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+};
+
+var _user$project$IV_Scenario_Main$updateMinutes = F2(
+	function (model, nextString) {
+		return _user$project$IV_Pile_ManagedStrings$isValidIntString(nextString) ? _elm_lang$core$Native_Utils.update(
+			model,
+			{simulationMinutesText: nextString}) : model;
 	});
-var _user$project$IV_SpeedControl_Model$startingState = function (_p0) {
-	var _p1 = _p0;
-	var _p2 = _p1._0;
-	return A2(
-		_user$project$IV_SpeedControl_Model$Model,
-		_elm_lang$core$Basics$toString(_p2),
-		_user$project$IV_Types$DropsPerSecond(_p2));
+var _user$project$IV_Scenario_Main$updateHours = F2(
+	function (model, nextString) {
+		return _user$project$IV_Pile_ManagedStrings$isValidIntString(nextString) ? _elm_lang$core$Native_Utils.update(
+			model,
+			{simulationHoursText: nextString}) : model;
+	});
+var _user$project$IV_Scenario_Main$updateNextSpeed = F2(
+	function (model, nextString) {
+		return _user$project$IV_Pile_ManagedStrings$isValidFloatString(nextString) ? _elm_lang$core$Native_Utils.update(
+			model,
+			{dripText: nextString}) : model;
+	});
+var _user$project$IV_Scenario_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'ChangedDripText':
+				return A2(_user$project$IV_Scenario_Main$updateNextSpeed, model, _p0._0);
+			case 'ChangedHoursText':
+				return A2(_user$project$IV_Scenario_Main$updateHours, model, _p0._0);
+			default:
+				return A2(_user$project$IV_Scenario_Main$updateMinutes, model, _p0._0);
+		}
+	});
+var _user$project$IV_Scenario_Main$startingState = {dripText: '0', animalDescription: '3d lactation purebred Holstein', weightInPounds: 1560, simulationHoursText: '4', simulationMinutesText: '0', bagCapacityInLiters: 20, bagContentsInLiters: 19, bagType: '5-gallon carboy', dropsPerMil: 15.0};
+var _user$project$IV_Scenario_Main$Model = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {dripText: a, animalDescription: b, weightInPounds: c, simulationHoursText: d, simulationMinutesText: e, bagCapacityInLiters: f, bagContentsInLiters: g, bagType: h, dropsPerMil: i};
+	});
+var _user$project$IV_Scenario_Main$ChangedMinutesText = function (a) {
+	return {ctor: 'ChangedMinutesText', _0: a};
+};
+var _user$project$IV_Scenario_Main$ChangedHoursText = function (a) {
+	return {ctor: 'ChangedHoursText', _0: a};
+};
+var _user$project$IV_Scenario_Main$ChangedDripText = function (a) {
+	return {ctor: 'ChangedDripText', _0: a};
 };
 
 var _user$project$IV_Pile_SvgAttributes$transformOrigin$ = F2(
@@ -15170,19 +15311,6 @@ var _user$project$IV_Pile_SvgAttributes$y2$ = _user$project$IV_Pile_SvgAttribute
 var _user$project$IV_Pile_SvgAttributes$cx$ = _user$project$IV_Pile_SvgAttributes$useInt(_elm_lang$svg$Svg_Attributes$cx);
 var _user$project$IV_Pile_SvgAttributes$cy$ = _user$project$IV_Pile_SvgAttributes$useInt(_elm_lang$svg$Svg_Attributes$cy);
 var _user$project$IV_Pile_SvgAttributes$r$ = _user$project$IV_Pile_SvgAttributes$useInt(_elm_lang$svg$Svg_Attributes$r);
-
-var _user$project$IV_SpeedControl_Msg$ChangedTextField = function (a) {
-	return {ctor: 'ChangedTextField', _0: a};
-};
-
-var _user$project$IV_Msg$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Msg$ToSpeedControl = function (a) {
-	return {ctor: 'ToSpeedControl', _0: a};
-};
-var _user$project$IV_Msg$AdvanceHours = {ctor: 'AdvanceHours'};
-var _user$project$IV_Msg$ChangeDripRate = {ctor: 'ChangeDripRate'};
 
 var _user$project$IV_Clock_View$minuteHandStartsAt = function (minute) {
 	return _elm_lang$core$Native_List.fromArray(
@@ -15285,215 +15413,24 @@ var _user$project$IV_Clock_View$render = function (model) {
 					[]))
 			]));
 };
-var _user$project$IV_Clock_View$controls = A2(
-	_elm_lang$html$Html$div,
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$svg$Svg_Attributes$class('form-group')
-		]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			A2(
-			_elm_lang$html$Html$label,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$svg$Svg_Attributes$class('control-label')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text('Control the clock')
-				])),
-			A2(
-			_elm_lang$html$Html$button,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$AdvanceHours),
-					_elm_lang$svg$Svg_Attributes$class('btn btn-default btn-xs')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text('Advance Hours')
-				]))
-		]));
 
-var _user$project$IV_Clock_Model$animations = function (model) {
-	return _elm_lang$core$Native_List.fromArray(
-		[model.hourHand, model.minuteHand]);
-};
-var _user$project$IV_Clock_Model$startingState = {
-	hourHand: _mdgriffith$elm_style_animation$Animation$style(
-		_user$project$IV_Clock_View$hourHandStartsAt(2)),
-	minuteHand: _mdgriffith$elm_style_animation$Animation$style(
-		_user$project$IV_Clock_View$minuteHandStartsAt(0))
-};
-var _user$project$IV_Clock_Model$Model = F2(
-	function (a, b) {
-		return {hourHand: a, minuteHand: b};
-	});
-
-var _user$project$IV_Model$Model = F3(
-	function (a, b, c) {
-		return {droplet: a, speedControl: b, clock: c};
-	});
-
-var _user$project$IV_Droplet_Msg$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Droplet_Msg$ChangeDripRate = function (a) {
-	return {ctor: 'ChangeDripRate', _0: a};
-};
-
-var _user$project$IV_Droplet_Update$easing = function (duration) {
+var _user$project$IV_Pile_Animation$easeForHours = function (_p0) {
+	var _p1 = _p0;
 	return _mdgriffith$elm_style_animation$Animation$easing(
-		{ease: _elm_lang$core$Basics$identity, duration: duration});
-};
-var _user$project$IV_Droplet_Update$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
-var _user$project$IV_Droplet_Update$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Droplet_Update$dropStreamCutoff);
-var _user$project$IV_Droplet_Update$fallingDrop = function (dropsPerSecond) {
-	var totalTime = _user$project$IV_Types$asDuration(dropsPerSecond);
-	var hangingTime = totalTime - _user$project$IV_Droplet_Update$fallingTime;
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Droplet_View$missingDrop),
-			A2(
-			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Droplet_Update$easing(hangingTime),
-			_user$project$IV_Droplet_View$hangingDrop),
-			A2(
-			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Droplet_Update$easing(_user$project$IV_Droplet_Update$fallingTime),
-			_user$project$IV_Droplet_View$fallenDrop)
-		]);
-};
-var _user$project$IV_Droplet_Update$steadyStream = _elm_lang$core$Native_List.fromArray(
-	[
-		A2(
-		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Droplet_Update$easing(_user$project$IV_Droplet_Update$fallingTime),
-		_user$project$IV_Droplet_View$streamState1),
-		A2(
-		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Droplet_Update$easing(_user$project$IV_Droplet_Update$fallingTime),
-		_user$project$IV_Droplet_View$streamState2)
-	]);
-var _user$project$IV_Droplet_Update$animationSteps = function (dropsPerSecond) {
-	var _p0 = dropsPerSecond;
-	var raw = _p0._0;
-	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Droplet_Update$steadyStream : _user$project$IV_Droplet_Update$fallingDrop(dropsPerSecond);
-};
-var _user$project$IV_Droplet_Update$changeDropRate = F2(
-	function (dropsPerSecond, animation) {
-		var loop = _mdgriffith$elm_style_animation$Animation$loop(
-			_user$project$IV_Droplet_Update$animationSteps(dropsPerSecond));
-		return A2(
-			_mdgriffith$elm_style_animation$Animation$interrupt,
-			_elm_lang$core$Native_List.fromArray(
-				[loop]),
-			animation);
-	});
-var _user$project$IV_Droplet_Update$update = F2(
-	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'ChangeDripRate') {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A2(_user$project$IV_Droplet_Update$changeDropRate, _p1._0, model.style)
-				});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A2(_mdgriffith$elm_style_animation$Animation$update, _p1._0, model.style)
-				});
-		}
-	});
-
-var _user$project$IV_SpeedControl_Update$updateNextSpeed = F2(
-	function (model, nextString) {
-		if (_elm_lang$core$String$isEmpty(nextString)) {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					string: nextString,
-					perSecond: _user$project$IV_Types$DropsPerSecond(0.1)
-				});
-		} else {
-			var _p0 = _elm_lang$core$String$toFloat(nextString);
-			if (_p0.ctor === 'Ok') {
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{
-						string: nextString,
-						perSecond: _user$project$IV_Types$DropsPerSecond(_p0._0)
-					});
-			} else {
-				return model;
-			}
-		}
-	});
-var _user$project$IV_SpeedControl_Update$update = F2(
-	function (msg, model) {
-		var _p1 = msg;
-		return A2(_user$project$IV_SpeedControl_Update$updateNextSpeed, model, _p1._0);
-	});
-
-var _user$project$IV_Clock_Msg$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Clock_Msg$AdvanceHours = function (a) {
-	return {ctor: 'AdvanceHours', _0: a};
+		{ease: _elm_lang$core$Basics$identity, duration: (_p1._0 * 1.5) * _elm_lang$core$Time$second});
 };
 
-var _user$project$IV_Clock_Update$easeForHours = function (n) {
-	return _mdgriffith$elm_style_animation$Animation$easing(
-		{ease: _elm_lang$core$Basics$identity, duration: (n * 1.5) * _elm_lang$core$Time$second});
+var _user$project$IV_Clock_Main$minuteHandRotations = function (_p0) {
+	var _p1 = _p0;
+	return _mdgriffith$elm_style_animation$Animation$deg(_p1._0 * 360);
 };
-var _user$project$IV_Clock_Update$advanceHourHand = F2(
+var _user$project$IV_Clock_Main$spinMinuteHand = F2(
 	function (hours, animation) {
-		var change = _elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_mdgriffith$elm_style_animation$Animation$toWith,
-				_user$project$IV_Clock_Update$easeForHours(1),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_mdgriffith$elm_style_animation$Animation$rotate(
-						_mdgriffith$elm_style_animation$Animation$deg(90))
-					])),
-				A2(
-				_mdgriffith$elm_style_animation$Animation$toWith,
-				_user$project$IV_Clock_Update$easeForHours(1),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_mdgriffith$elm_style_animation$Animation$rotate(
-						_mdgriffith$elm_style_animation$Animation$deg(120))
-					])),
-				A2(
-				_mdgriffith$elm_style_animation$Animation$toWith,
-				_user$project$IV_Clock_Update$easeForHours(1),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_mdgriffith$elm_style_animation$Animation$rotate(
-						_mdgriffith$elm_style_animation$Animation$deg(150))
-					])),
-				A2(
-				_mdgriffith$elm_style_animation$Animation$toWith,
-				_user$project$IV_Clock_Update$easeForHours(1),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_mdgriffith$elm_style_animation$Animation$rotate(
-						_mdgriffith$elm_style_animation$Animation$deg(180))
-					]))
-			]);
-		return A2(_mdgriffith$elm_style_animation$Animation$interrupt, change, animation);
-	});
-var _user$project$IV_Clock_Update$spinMinuteHand = F2(
-	function (hours, animation) {
-		var revolutions = _mdgriffith$elm_style_animation$Animation$deg(hours * 360);
+		var ease = _user$project$IV_Pile_Animation$easeForHours(hours);
+		var revolutions = _user$project$IV_Clock_Main$minuteHandRotations(hours);
 		var change = A2(
 			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Clock_Update$easeForHours(hours),
+			ease,
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_mdgriffith$elm_style_animation$Animation$rotate(revolutions)
@@ -15504,64 +15441,215 @@ var _user$project$IV_Clock_Update$spinMinuteHand = F2(
 				[change]),
 			animation);
 	});
-var _user$project$IV_Clock_Update$update = F2(
+var _user$project$IV_Clock_Main$hoursInDegrees = function (_p2) {
+	var _p3 = _p2;
+	return 30 * _p3._0;
+};
+var _user$project$IV_Clock_Main$startingState = {
+	hourHand: _mdgriffith$elm_style_animation$Animation$style(
+		_user$project$IV_Clock_View$hourHandStartsAt(2)),
+	minuteHand: _mdgriffith$elm_style_animation$Animation$style(
+		_user$project$IV_Clock_View$minuteHandStartsAt(0))
+};
+var _user$project$IV_Clock_Main$animations = function (model) {
+	return _elm_lang$core$Native_List.fromArray(
+		[model.hourHand, model.minuteHand]);
+};
+var _user$project$IV_Clock_Main$startingHour = _user$project$IV_Types$Hours(2);
+var _user$project$IV_Clock_Main$advanceHourHand = F2(
+	function (hours, animation) {
+		var rotation = _mdgriffith$elm_style_animation$Animation$deg(
+			_user$project$IV_Clock_Main$hoursInDegrees(_user$project$IV_Clock_Main$startingHour) + _user$project$IV_Clock_Main$hoursInDegrees(hours));
+		var ease = _user$project$IV_Pile_Animation$easeForHours(hours);
+		var change = _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_mdgriffith$elm_style_animation$Animation$toWith,
+				ease,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_mdgriffith$elm_style_animation$Animation$rotate(rotation)
+					]))
+			]);
+		return A2(_mdgriffith$elm_style_animation$Animation$interrupt, change, animation);
+	});
+var _user$project$IV_Clock_Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'AdvanceHours') {
+		var _p4 = msg;
+		if (_p4.ctor === 'StartSimulation') {
+			var _p5 = _p4._0;
 			return _elm_lang$core$Native_Utils.update(
 				model,
 				{
-					hourHand: A2(_user$project$IV_Clock_Update$advanceHourHand, 4, model.hourHand),
-					minuteHand: A2(_user$project$IV_Clock_Update$spinMinuteHand, 4, model.minuteHand)
+					hourHand: A2(_user$project$IV_Clock_Main$advanceHourHand, _p5, model.hourHand),
+					minuteHand: A2(_user$project$IV_Clock_Main$spinMinuteHand, _p5, model.minuteHand)
 				});
 		} else {
-			var _p1 = _p0._0;
+			var _p6 = _p4._0;
 			return _elm_lang$core$Native_Utils.update(
 				model,
 				{
-					hourHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p1, model.hourHand),
-					minuteHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p1, model.minuteHand)
+					hourHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p6, model.hourHand),
+					minuteHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p6, model.minuteHand)
 				});
 		}
 	});
+var _user$project$IV_Clock_Main$Model = F2(
+	function (a, b) {
+		return {hourHand: a, minuteHand: b};
+	});
+var _user$project$IV_Clock_Main$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
+};
+var _user$project$IV_Clock_Main$StartSimulation = function (a) {
+	return {ctor: 'StartSimulation', _0: a};
+};
 
-var _user$project$IV_Update$update = F2(
+var _user$project$IV_BagLevel_View$droppedProperties = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$y(80),
+		_mdgriffith$elm_style_animation$Animation$height(
+		_mdgriffith$elm_style_animation$Animation$px(120))
+	]);
+var _user$project$IV_BagLevel_View$animationProperties = function (_p0) {
+	var _p1 = _p0;
+	var height = _p1._0 * 200;
+	var y = 200 - height;
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_mdgriffith$elm_style_animation$Animation$y(y),
+			_mdgriffith$elm_style_animation$Animation$height(
+			_mdgriffith$elm_style_animation$Animation$px(height))
+		]);
+};
+var _user$project$IV_BagLevel_View$levelBaseProperties = _elm_lang$core$Native_List.fromArray(
+	[
+		_elm_lang$svg$Svg_Attributes$fill('#d3d7cf'),
+		_elm_lang$svg$Svg_Attributes$x('0'),
+		_elm_lang$svg$Svg_Attributes$width('120')
+	]);
+var _user$project$IV_BagLevel_View$render = function (model) {
+	return A2(
+		_elm_lang$svg$Svg$rect,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_mdgriffith$elm_style_animation$Animation$render(model.style),
+			_user$project$IV_BagLevel_View$levelBaseProperties),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+
+var _user$project$IV_BagLevel_Main$drainBag = F3(
+	function (hours, level, animation) {
+		var ease = _user$project$IV_Pile_Animation$easeForHours(hours);
+		var change = _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_mdgriffith$elm_style_animation$Animation$toWith,
+				ease,
+				_user$project$IV_BagLevel_View$animationProperties(level))
+			]);
+		return A2(_mdgriffith$elm_style_animation$Animation$interrupt, change, animation);
+	});
+var _user$project$IV_BagLevel_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'StartSimulation') {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					style: A3(_user$project$IV_BagLevel_Main$drainBag, _p0._0, _p0._1, model.style)
+				});
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					style: A2(_mdgriffith$elm_style_animation$Animation$update, _p0._0, model.style)
+				});
+		}
+	});
+var _user$project$IV_BagLevel_Main$startingState = function (level) {
+	return {
+		style: _mdgriffith$elm_style_animation$Animation$style(
+			_user$project$IV_BagLevel_View$animationProperties(level))
+	};
+};
+var _user$project$IV_BagLevel_Main$animations = function (model) {
+	return _elm_lang$core$Native_List.fromArray(
+		[model.style]);
+};
+var _user$project$IV_BagLevel_Main$Model = function (a) {
+	return {style: a};
+};
+var _user$project$IV_BagLevel_Main$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
+};
+var _user$project$IV_BagLevel_Main$StartSimulation = F2(
+	function (a, b) {
+		return {ctor: 'StartSimulation', _0: a, _1: b};
+	});
+
+var _user$project$IV_Scenario_Calculations$hours = function (model) {
+	var m = _user$project$IV_Pile_ManagedStrings$floatString(model.simulationMinutesText);
+	var h = _user$project$IV_Pile_ManagedStrings$floatString(model.simulationHoursText);
+	return _user$project$IV_Types$Hours(h + (m / 60.0));
+};
+var _user$project$IV_Scenario_Calculations$dropsPerSecond = function (model) {
+	return _user$project$IV_Types$DropsPerSecond(
+		_user$project$IV_Pile_ManagedStrings$floatString(model.dripText));
+};
+var _user$project$IV_Scenario_Calculations$startingFractionBagFilled = function (model) {
+	return _user$project$IV_Types$Level(model.bagContentsInLiters / model.bagCapacityInLiters);
+};
+var _user$project$IV_Scenario_Calculations$endingFractionBagFilled = function (model) {
+	var _p0 = _user$project$IV_Scenario_Calculations$startingFractionBagFilled(model);
+	var startingLevel = _p0._0;
+	var _p1 = _user$project$IV_Scenario_Calculations$hours(model);
+	var fractionalHours = _p1._0;
+	var _p2 = _user$project$IV_Scenario_Calculations$dropsPerSecond(model);
+	var dps = _p2._0;
+	var milsPerSecond = A2(_elm_lang$core$Debug$log, 'mps', dps / model.dropsPerMil);
+	var milsPerHour = (milsPerSecond * 60) * 60;
+	var litersPerHour = A2(_elm_lang$core$Debug$log, 'lph', milsPerHour / 1000);
+	var decrease = A2(_elm_lang$core$Debug$log, 'dcrse', (litersPerHour * fractionalHours) / model.bagCapacityInLiters);
+	return _user$project$IV_Types$Level(startingLevel - decrease);
+};
+
+var _user$project$IV_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'ToSpeedControl':
+			case 'ToScenario':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							speedControl: A2(_user$project$IV_SpeedControl_Update$update, _p0._0, model.speedControl)
+							scenario: A2(_user$project$IV_Scenario_Main$update, _p0._0, model.scenario)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'AdvanceHours':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							clock: A2(
-								_user$project$IV_Clock_Update$update,
-								_user$project$IV_Clock_Msg$AdvanceHours(3),
-								model.clock)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ChangeDripRate':
+			case 'StartSimulation':
+				var level = _user$project$IV_Scenario_Calculations$endingFractionBagFilled(model.scenario);
+				var hours = _user$project$IV_Scenario_Calculations$hours(model.scenario);
+				var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
 							droplet: A2(
-								_user$project$IV_Droplet_Update$update,
-								_user$project$IV_Droplet_Msg$ChangeDripRate(model.speedControl.perSecond),
-								model.droplet)
+								_user$project$IV_Droplet_Main$update,
+								_user$project$IV_Droplet_Main$StartSimulation(dps),
+								model.droplet),
+							clock: A2(
+								_user$project$IV_Clock_Main$update,
+								_user$project$IV_Clock_Main$StartSimulation(hours),
+								model.clock),
+							bagLevel: A2(
+								_user$project$IV_BagLevel_Main$update,
+								A2(_user$project$IV_BagLevel_Main$StartSimulation, hours, level),
+								model.bagLevel)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -15573,63 +15661,159 @@ var _user$project$IV_Update$update = F2(
 						model,
 						{
 							droplet: A2(
-								_user$project$IV_Droplet_Update$update,
-								_user$project$IV_Droplet_Msg$AnimationClockTick(_p1),
+								_user$project$IV_Droplet_Main$update,
+								_user$project$IV_Droplet_Main$AnimationClockTick(_p1),
 								model.droplet),
 							clock: A2(
-								_user$project$IV_Clock_Update$update,
-								_user$project$IV_Clock_Msg$AnimationClockTick(_p1),
-								model.clock)
+								_user$project$IV_Clock_Main$update,
+								_user$project$IV_Clock_Main$AnimationClockTick(_p1),
+								model.clock),
+							bagLevel: A2(
+								_user$project$IV_BagLevel_Main$update,
+								_user$project$IV_BagLevel_Main$AnimationClockTick(_p1),
+								model.bagLevel)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
 	});
-
-var _user$project$IV_SpeedControl_View$changeHandler = function (string) {
-	return _user$project$IV_Msg$ToSpeedControl(
-		_user$project$IV_SpeedControl_Msg$ChangedTextField(string));
+var _user$project$IV_Main$init = function () {
+	var scenario = _user$project$IV_Scenario_Main$startingState;
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			droplet: _user$project$IV_Droplet_Main$startingState,
+			scenario: scenario,
+			clock: _user$project$IV_Clock_Main$startingState,
+			bagLevel: _user$project$IV_BagLevel_Main$startingState(
+				_user$project$IV_Scenario_Calculations$startingFractionBagFilled(scenario))
+		},
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+}();
+var _user$project$IV_Main$Model = F4(
+	function (a, b, c, d) {
+		return {droplet: a, scenario: b, clock: c, bagLevel: d};
+	});
+var _user$project$IV_Main$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
 };
-var _user$project$IV_SpeedControl_View$view = function (model) {
+var _user$project$IV_Main$subscriptions = function (model) {
+	return A2(
+		_mdgriffith$elm_style_animation$Animation$subscription,
+		_user$project$IV_Main$AnimationClockTick,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_user$project$IV_Droplet_Main$animations(model.droplet),
+			_user$project$IV_Clock_Main$animations(model.clock)));
+};
+var _user$project$IV_Main$ToScenario = function (a) {
+	return {ctor: 'ToScenario', _0: a};
+};
+var _user$project$IV_Main$StartSimulation = {ctor: 'StartSimulation'};
+
+var _user$project$IV_Scenario_View$description = function (model) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'You are presented with a ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(model.weightInPounds),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' lb ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					model.animalDescription,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'. You have ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(model.bagContentsInLiters),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' liters of fluid in a ',
+								A2(_elm_lang$core$Basics_ops['++'], model.bagType, '.'))))))));
+};
+var _user$project$IV_Scenario_View$changeHandler = F2(
+	function (msg, string) {
+		return _user$project$IV_Main$ToScenario(
+			msg(string));
+	});
+var _user$project$IV_Scenario_View$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('form-group')
-			]),
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$label,
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('control-label')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Change drip rate  ')
+						_elm_lang$html$Html$text(
+						_user$project$IV_Scenario_View$description(model))
 					])),
 				A2(
-				_elm_lang$html$Html$input,
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$type$('text'),
-						_elm_lang$html$Html_Attributes$value(model.string),
-						_elm_lang$html$Html_Attributes$size(4),
-						_elm_lang$html$Html_Events$onInput(_user$project$IV_SpeedControl_View$changeHandler)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[])),
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$ChangeDripRate),
-						_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Go')
+						_elm_lang$html$Html$text('Using your calculations, set the drip rate '),
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('text'),
+								_elm_lang$html$Html_Attributes$value(model.dripText),
+								_elm_lang$html$Html_Attributes$size(6),
+								_elm_lang$html$Html_Events$onInput(
+								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedDripText))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text(' and the hours '),
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('text'),
+								_elm_lang$html$Html_Attributes$value(model.simulationHoursText),
+								_elm_lang$html$Html_Attributes$size(6),
+								_elm_lang$html$Html_Events$onInput(
+								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedHoursText))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text(' and minutes '),
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('text'),
+								_elm_lang$html$Html_Attributes$value(model.simulationMinutesText),
+								_elm_lang$html$Html_Attributes$size(6),
+								_elm_lang$html$Html_Events$onInput(
+								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedMinutesText))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text('until you plan to next look at the fluid level, then '),
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$IV_Main$StartSimulation),
+								_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('See What To Expect')
+							]))
 					]))
 			]));
 };
@@ -15666,18 +15850,21 @@ var _user$project$IV_View_Apparatus$nozzle = A2(
 		]),
 	_elm_lang$core$Native_List.fromArray(
 		[]));
-var _user$project$IV_View_Apparatus$liquid = A2(
-	_elm_lang$svg$Svg$rect,
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$svg$Svg_Attributes$fill('#d3d7cf'),
-			_elm_lang$svg$Svg_Attributes$x('0'),
-			_elm_lang$svg$Svg_Attributes$y('20'),
-			_elm_lang$svg$Svg_Attributes$width('120'),
-			_elm_lang$svg$Svg_Attributes$height('179')
-		]),
-	_elm_lang$core$Native_List.fromArray(
-		[]));
+var _user$project$IV_View_Apparatus$marking = function (n) {
+	var ypos = 20 * n;
+	return A2(
+		_elm_lang$svg$Svg$line,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$IV_Pile_SvgAttributes$x1$(0),
+				_user$project$IV_Pile_SvgAttributes$x2$(30),
+				_user$project$IV_Pile_SvgAttributes$y1$(ypos),
+				_user$project$IV_Pile_SvgAttributes$y2$(ypos),
+				_elm_lang$svg$Svg_Attributes$stroke('black')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
 var _user$project$IV_View_Apparatus$bag = A2(
 	_elm_lang$svg$Svg$rect,
 	_elm_lang$core$Native_List.fromArray(
@@ -15686,7 +15873,7 @@ var _user$project$IV_View_Apparatus$bag = A2(
 			_elm_lang$svg$Svg_Attributes$x('0'),
 			_elm_lang$svg$Svg_Attributes$y('0'),
 			_elm_lang$svg$Svg_Attributes$width('120'),
-			_elm_lang$svg$Svg_Attributes$height('199'),
+			_elm_lang$svg$Svg_Attributes$height('200'),
 			_elm_lang$svg$Svg_Attributes$stroke('black')
 		]),
 	_elm_lang$core$Native_List.fromArray(
@@ -15695,8 +15882,14 @@ var _user$project$IV_View_Apparatus$drawing = A2(
 	_elm_lang$svg$Svg$g,
 	_elm_lang$core$Native_List.fromArray(
 		[]),
-	_elm_lang$core$Native_List.fromArray(
-		[_user$project$IV_View_Apparatus$liquid, _user$project$IV_View_Apparatus$bottomLiquid, _user$project$IV_View_Apparatus$bag, _user$project$IV_View_Apparatus$nozzle, _user$project$IV_View_Apparatus$hose]));
+	A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$IV_View_Apparatus$bottomLiquid, _user$project$IV_View_Apparatus$bag, _user$project$IV_View_Apparatus$nozzle, _user$project$IV_View_Apparatus$hose]),
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$IV_View_Apparatus$marking,
+			_elm_lang$core$Native_List.range(1, 9))));
 
 var _user$project$IV_View_ClockFace$spacedInt = A2(
 	_krisajenkins$formatting$Formatting_ops['<>'],
@@ -15827,21 +16020,20 @@ var _user$project$IV_View_ClockFace$drawing = A2(
 				[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]))));
 
 var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
-var _user$project$IV_View$mainSvg = F2(
-	function (staticContents, animatedContents) {
-		return A2(
-			_elm_lang$svg$Svg$svg,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$svg$Svg_Attributes$version('1.1'),
-					_elm_lang$svg$Svg_Attributes$x('0'),
-					_elm_lang$svg$Svg_Attributes$y('0'),
-					_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View$graphics.width),
-					_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View$graphics.height)
-				]),
-			A2(_elm_lang$core$Basics_ops['++'], staticContents, animatedContents));
-	});
-var _user$project$IV_View$everything = {width: '700px', height: '700px'};
+var _user$project$IV_View$mainSvg = function (contents) {
+	return A2(
+		_elm_lang$svg$Svg$svg,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$version('1.1'),
+				_elm_lang$svg$Svg_Attributes$x('0'),
+				_elm_lang$svg$Svg_Attributes$y('0'),
+				_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View$graphics.width),
+				_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View$graphics.height)
+			]),
+		contents);
+};
+var _user$project$IV_View$everything = {width: '400px', height: '700px'};
 var _user$project$IV_View$mainDiv = function (contents) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -15862,44 +16054,22 @@ var _user$project$IV_View$view = function (model) {
 	return _user$project$IV_View$mainDiv(
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_user$project$IV_View$mainSvg,
-				_elm_lang$core$Native_List.fromArray(
-					[_user$project$IV_View_Apparatus$drawing, _user$project$IV_View_ClockFace$drawing]),
+				_user$project$IV_View$mainSvg(
 				_elm_lang$core$Native_List.fromArray(
 					[
+						_user$project$IV_BagLevel_View$render(model.bagLevel),
 						_user$project$IV_Droplet_View$render(model.droplet),
+						_user$project$IV_View_Apparatus$drawing,
+						_user$project$IV_View_ClockFace$drawing,
 						_user$project$IV_Clock_View$render(model.clock)
 					])),
-				_user$project$IV_SpeedControl_View$view(model.speedControl),
-				_user$project$IV_Clock_View$controls
+				_user$project$IV_Scenario_View$view(model.scenario)
 			]));
 };
 
-var _user$project$IV$subscriptions = function (model) {
-	return A2(
-		_mdgriffith$elm_style_animation$Animation$subscription,
-		_user$project$IV_Msg$AnimationClockTick,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_user$project$IV_Droplet_Main$animations(model.droplet),
-			_user$project$IV_Clock_Model$animations(model.clock)));
-};
-var _user$project$IV$init = function () {
-	var $default = _user$project$IV_Types$DropsPerSecond(2.0);
-	return {
-		ctor: '_Tuple2',
-		_0: {
-			droplet: _user$project$IV_Droplet_Main$startingState($default),
-			speedControl: _user$project$IV_SpeedControl_Model$startingState($default),
-			clock: _user$project$IV_Clock_Model$startingState
-		},
-		_1: _elm_lang$core$Platform_Cmd$none
-	};
-}();
 var _user$project$IV$main = {
 	main: _elm_lang$html$Html_App$program(
-		{init: _user$project$IV$init, view: _user$project$IV_View$view, update: _user$project$IV_Update$update, subscriptions: _user$project$IV$subscriptions})
+		{init: _user$project$IV_Main$init, view: _user$project$IV_View$view, update: _user$project$IV_Main$update, subscriptions: _user$project$IV_Main$subscriptions})
 };
 
 var Elm = {};

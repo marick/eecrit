@@ -59,6 +59,7 @@ view model =
             , Attr.value model.dripText
             , Attr.size 6
             , Events.onInput (changedText ChangedDripText)
+            , Events.onBlur <| Main.ChoseDripSpeed 
             ]
             []
         , text "drops/sec, set the hours "

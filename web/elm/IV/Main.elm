@@ -29,9 +29,11 @@ subscriptions model =
 
 type Msg
     = StartSimulation
-    | ToScenario Scenario.Msg
+    | ChoseDripSpeed
     | AnimationClockTick Animation.Msg
     | PickedScenario Scenario.Model
+
+    | ToScenario Scenario.Msg
 
 -- Update
 
@@ -66,9 +68,18 @@ update msg model =
         level = Calc.endingFractionBagFilled model.scenario
       in          
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation dps) model.droplet
-          , clock = Clock.update (Clock.StartSimulation hours) model.clock
+          | clock = Clock.update (Clock.StartSimulation hours) model.clock
           , bagLevel = BagLevel.update (BagLevel.StartSimulation hours level) model.bagLevel
+        }
+      , Cmd.none
+      )
+
+    ChoseDripSpeed ->
+      let
+        dps = Calc.dropsPerSecond model.scenario
+      in          
+      ( { model
+          | droplet = Droplet.update (Droplet.StartSimulation dps) model.droplet
         }
       , Cmd.none
       )

@@ -7,8 +7,8 @@ import IV.Main as Main
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
 
-changeHandler : (String -> Msg) -> String -> Main.Msg
-changeHandler msg string =
+changedText : (String -> Msg) -> String -> Main.Msg
+changedText msg string =
   Main.ToScenario (msg string)
 
 description model =
@@ -58,7 +58,7 @@ view model =
             -- , Attr.class "form-control col-xs-2"
             , Attr.value model.dripText
             , Attr.size 6
-            , Events.onInput (changeHandler ChangedDripText)
+            , Events.onInput (changedText ChangedDripText)
             ]
             []
         , text "drops/sec, set the hours "
@@ -66,7 +66,7 @@ view model =
             [ Attr.type' "text"
             , Attr.value model.simulationHoursText
             , Attr.size 6
-            , Events.onInput (changeHandler ChangedHoursText)
+            , Events.onInput (changedText ChangedHoursText)
             ]
             []
         , text " and minutes "
@@ -74,7 +74,7 @@ view model =
             [ Attr.type' "text"
             , Attr.value model.simulationMinutesText
             , Attr.size 6
-            , Events.onInput (changeHandler ChangedMinutesText)
+            , Events.onInput (changedText ChangedMinutesText)
             ]
             []
         , text " until you plan to next look at the fluid level, then " 

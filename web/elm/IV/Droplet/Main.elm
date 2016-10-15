@@ -1,4 +1,5 @@
 module IV.Droplet.Main exposing (Model, startingState, animations,
+                                   guaranteedFlow,
                                    update, Msg(..))
 
 import Animation
@@ -16,6 +17,8 @@ startingState : Model
 startingState =
   Model (Animation.style View.missingDrop)
 
+
+
 animations : Model -> List Animation.State
 animations model =
   [model.style]
@@ -28,7 +31,8 @@ type Msg
 
 -- Update
 
-dropStreamCutoff = (DropsPerSecond 8.0)
+dropStreamCutoff = DropsPerSecond 8.0
+guaranteedFlow = DropsPerSecond 10.0
 -- Following is slower than reality (in a vacuum), but looks better
 fallingTime = asDuration dropStreamCutoff
 

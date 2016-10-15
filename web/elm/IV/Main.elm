@@ -68,7 +68,8 @@ update msg model =
         level = Calc.endingFractionBagFilled model.scenario
       in          
       ( { model
-          | clock = Clock.update (Clock.StartSimulation hours) model.clock
+          | droplet = Droplet.update (Droplet.StartSimulation Droplet.guaranteedFlow) model.droplet
+          , clock = Clock.update (Clock.StartSimulation hours) model.clock
           , bagLevel = BagLevel.update (BagLevel.StartSimulation hours level) model.bagLevel
         }
       , Cmd.none

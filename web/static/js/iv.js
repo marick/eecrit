@@ -15258,6 +15258,7 @@ var _user$project$IV_Droplet_Main$easing = function (duration) {
 	return _mdgriffith$elm_style_animation$Animation$easing(
 		{ease: _elm_lang$core$Basics$identity, duration: duration});
 };
+var _user$project$IV_Droplet_Main$guaranteedFlow = _user$project$IV_Types$DropsPerSecond(10.0);
 var _user$project$IV_Droplet_Main$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
 var _user$project$IV_Droplet_Main$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Droplet_Main$dropStreamCutoff);
 var _user$project$IV_Droplet_Main$fallingDrop = function (dropsPerSecond) {
@@ -15819,7 +15820,7 @@ var _user$project$IV_Main$update = F2(
 						{
 							droplet: A2(
 								_user$project$IV_Droplet_Main$update,
-								_user$project$IV_Droplet_Main$StartSimulation(dps),
+								_user$project$IV_Droplet_Main$StartSimulation(_user$project$IV_Droplet_Main$guaranteedFlow),
 								model.droplet),
 							clock: A2(
 								_user$project$IV_Clock_Main$update,
@@ -15829,6 +15830,20 @@ var _user$project$IV_Main$update = F2(
 								_user$project$IV_BagLevel_Main$update,
 								A2(_user$project$IV_BagLevel_Main$StartSimulation, hours, level),
 								model.bagLevel)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ChoseDripSpeed':
+				var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							droplet: A2(
+								_user$project$IV_Droplet_Main$update,
+								_user$project$IV_Droplet_Main$StartSimulation(dps),
+								model.droplet)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -15860,6 +15875,9 @@ var _user$project$IV_Main$Model = F4(
 	function (a, b, c, d) {
 		return {droplet: a, scenario: b, clock: c, bagLevel: d};
 	});
+var _user$project$IV_Main$ToScenario = function (a) {
+	return {ctor: 'ToScenario', _0: a};
+};
 var _user$project$IV_Main$PickedScenario = function (a) {
 	return {ctor: 'PickedScenario', _0: a};
 };
@@ -15875,9 +15893,7 @@ var _user$project$IV_Main$subscriptions = function (model) {
 			_user$project$IV_Droplet_Main$animations(model.droplet),
 			_user$project$IV_Clock_Main$animations(model.clock)));
 };
-var _user$project$IV_Main$ToScenario = function (a) {
-	return {ctor: 'ToScenario', _0: a};
-};
+var _user$project$IV_Main$ChoseDripSpeed = {ctor: 'ChoseDripSpeed'};
 var _user$project$IV_Main$StartSimulation = {ctor: 'StartSimulation'};
 
 var _user$project$IV_Pile_HtmlShorthand$row = function (elements) {
@@ -15949,7 +15965,7 @@ var _user$project$IV_Scenario_View$description = function (model) {
 								' liters of fluid in a ',
 								A2(_elm_lang$core$Basics_ops['++'], model.bagType, '.'))))))));
 };
-var _user$project$IV_Scenario_View$changeHandler = F2(
+var _user$project$IV_Scenario_View$changedText = F2(
 	function (msg, string) {
 		return _user$project$IV_Main$ToScenario(
 			msg(string));
@@ -15973,7 +15989,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Using your calculations, set the drip rate '),
+						_elm_lang$html$Html$text('Using your calculations, set the drip rate to '),
 						A2(
 						_elm_lang$html$Html$input,
 						_elm_lang$core$Native_List.fromArray(
@@ -15982,11 +15998,12 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.dripText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedDripText))
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedDripText)),
+								_elm_lang$html$Html_Events$onBlur(_user$project$IV_Main$ChoseDripSpeed)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
-						_elm_lang$html$Html$text(' and the hours '),
+						_elm_lang$html$Html$text('drops/sec, set the hours '),
 						A2(
 						_elm_lang$html$Html$input,
 						_elm_lang$core$Native_List.fromArray(
@@ -15995,7 +16012,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.simulationHoursText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedHoursText))
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedHoursText))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
@@ -16008,7 +16025,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.simulationMinutesText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changeHandler(_user$project$IV_Scenario_Main$ChangedMinutesText))
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedMinutesText))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),

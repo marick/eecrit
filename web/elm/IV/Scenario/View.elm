@@ -52,7 +52,7 @@ view model =
     [ p [] [text <| description model ] 
     , p
         []
-        [ text "Using your calculations, set the drip rate "
+        [ text "Using your calculations, set the drip rate to "
         , input
             [ Attr.type' "text"
             -- , Attr.class "form-control col-xs-2"
@@ -61,7 +61,7 @@ view model =
             , Events.onInput (changeHandler ChangedDripText)
             ]
             []
-        , text " and the hours "
+        , text "drops/sec, set the hours "
         , input
             [ Attr.type' "text"
             , Attr.value model.simulationHoursText

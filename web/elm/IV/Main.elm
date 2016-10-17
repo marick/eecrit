@@ -55,6 +55,14 @@ initWithScenario scenario =
 init : ( Model, Cmd Msg )
 init = (initWithScenario Scenario.cowScenario, Cmd.none)
 
+allAnimationUpdate : Model -> (Droplet.Msg, Clock.Msg, BagLevel.Msg) -> Model
+allAnimationUpdate model (dropletMsg, clockMsg, bagLevelMsg) = 
+  { model
+    | droplet = Droplet.update dropletMsg model.droplet
+    , clock = Clock.update clockMsg model.clock
+    , bagLevel = BagLevel.update bagLevelMsg model.bagLevel
+  }
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
@@ -68,20 +76,6 @@ update msg model =
       , Cmd.none
       )
 
-    StartSimulation ->
-      let
-        dps = Calc.dropsPerSecond model.scenario
-        hours = Calc.hours model.scenario
-        level = Calc.endingFractionBagFilled model.scenario
-      in          
-      ( { model
-          | droplet = Droplet.update Droplet.ShowTimeLapseFlow model.droplet
-          , clock = Clock.update (Clock.StartSimulation hours) model.clock
-          , bagLevel = BagLevel.update (BagLevel.StartSimulation hours level) model.bagLevel
-        }
-      , Cmd.none
-      )
-
     ChoseDripSpeed ->
       let
         dps = Calc.dropsPerSecond model.scenario
@@ -92,11 +86,25 @@ update msg model =
       , Cmd.none
       )
 
+    StartSimulation ->
+      let
+        dps = Calc.dropsPerSecond model.scenario
+        hours = Calc.hours model.scenario
+        level = Calc.endingFractionBagFilled model.scenario
+      in          
+      ( allAnimationUpdate model
+          ( Droplet.ShowTimeLapseFlow
+          , Clock.StartSimulation hours
+          , BagLevel.StartSimulation hours level
+          )
+      , Cmd.none
+      )
+
     AnimationClockTick tick ->
-      ( { model
-          | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet
-          , clock = Clock.update (Clock.AnimationClockTick tick) model.clock
-          , bagLevel = BagLevel.update (BagLevel.AnimationClockTick tick) model.bagLevel
-        }
+      ( allAnimationUpdate model
+          ( Droplet.AnimationClockTick tick
+          , Clock.AnimationClockTick tick
+          , BagLevel.AnimationClockTick tick
+          )
       , Cmd.none
       )

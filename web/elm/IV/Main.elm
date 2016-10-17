@@ -23,10 +23,13 @@ type alias Model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
+  -- Note: This provides a subscription to the animation frame iff
+  -- any of the listed animations is running.
   Animation.subscription
     AnimationClockTick
-    -- TODO: Come to grips with fact that not all the animations are required here.
-    (Droplet.animations model.droplet ++ Clock.animations model.clock)
+    (Droplet.animations model.droplet ++
+       Clock.animations model.clock  ++
+       BagLevel.animations model.bagLevel)
 
 
 -- Msg
@@ -89,9 +92,6 @@ update msg model =
       , Cmd.none
       )
 
-    -- TODO: would it be better to have the messages automatically distributed
-    -- to each animation (by having Droplet.AnimationClockTick,
-    -- BagLevel.AnimationClockTick, etc.?
     AnimationClockTick tick ->
       ( { model
           | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet

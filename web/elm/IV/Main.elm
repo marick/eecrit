@@ -42,7 +42,7 @@ type Msg
 
 initWithScenario : Scenario.Model -> Model
 initWithScenario scenario =
-  { droplet = Droplet.startingState
+  { droplet = Droplet.noDrips
   , scenario = scenario  
   , clock = Clock.startingState
   , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
@@ -71,7 +71,7 @@ update msg model =
         level = Calc.endingFractionBagFilled model.scenario
       in          
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation Droplet.guaranteedFlow) model.droplet
+          | droplet = Droplet.update Droplet.ShowTimeLapseFlow model.droplet
           , clock = Clock.update (Clock.StartSimulation hours) model.clock
           , bagLevel = BagLevel.update (BagLevel.StartSimulation hours level) model.bagLevel
         }
@@ -83,7 +83,7 @@ update msg model =
         dps = Calc.dropsPerSecond model.scenario
       in          
       ( { model
-          | droplet = Droplet.update (Droplet.StartSimulation dps) model.droplet
+          | droplet = Droplet.update (Droplet.ShowTrueFlow dps) model.droplet
         }
       , Cmd.none
       )

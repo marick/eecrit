@@ -1,5 +1,4 @@
-module IV.Droplet.Main exposing (Model, startingState, animations,
-                                   guaranteedFlow,
+module IV.Droplet.Main exposing (Model, noDrips, animations,
                                    update, Msg(..))
 
 import Animation
@@ -13,8 +12,8 @@ type alias Model =
   { style : Animation.State
   }
 
-startingState : Model 
-startingState =
+noDrips : Model 
+noDrips =
   Model (Animation.style View.missingDrop)
 
 
@@ -26,7 +25,8 @@ animations model =
 -- Msg
 
 type Msg
-  = StartSimulation DropsPerSecond
+  = ShowTrueFlow DropsPerSecond
+  | ShowTimeLapseFlow  -- Fast flow, as in time-lapse photography
   | AnimationClockTick Animation.Msg
 
 -- Update
@@ -79,8 +79,11 @@ changeDropRate dropsPerSecond animation =
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    StartSimulation perSecond ->
+    ShowTrueFlow perSecond ->
       { model | style = changeDropRate perSecond model.style }
+
+    ShowTimeLapseFlow ->
+      { model | style = changeDropRate guaranteedFlow model.style }
 
     AnimationClockTick tick ->
       { model | style = (Animation.update tick) model.style }

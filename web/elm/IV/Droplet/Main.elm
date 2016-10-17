@@ -54,8 +54,7 @@ fallingDrop dropsPerSecond =
     ]
 
 steadyStream = 
-  [ -- Animation.set View.missingDrop
-    Animation.toWith (easing fallingTime) View.streamState1
+  [ Animation.toWith (easing fallingTime) View.streamState1
   , Animation.toWith (easing fallingTime) View.streamState2
   ]
     

@@ -13,8 +13,10 @@ import IV.Scenario.Calculations as Calc
 -- Model
 
 type alias Model =
-    { droplet : Droplet.Model
-    , scenario : Scenario.Model
+    { scenario : Scenario.Model -- this holds all the user-chosen data
+
+    -- The following hold the animation states of component pieces
+    , droplet : Droplet.Model
     , clock : Clock.Model
     , bagLevel : BagLevel.Model
     }

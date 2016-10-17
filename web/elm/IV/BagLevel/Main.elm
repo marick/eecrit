@@ -18,25 +18,17 @@ animations model =
 
 -- Msg
 
-type Msg
-  = StartSimulation Hours Level
-  | AnimationClockTick Animation.Msg
-
--- Update
-
 startingState : Level -> Model 
 startingState level =
   { style = Animation.style <| View.animationProperties level }
 
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    StartSimulation hours level ->
-      { model | style = drainBag hours level model.style }
 
-    AnimationClockTick tick ->
-      { model | style = (Animation.update tick) model.style }
+startSimulation : Model -> Hours -> Level -> Model
+startSimulation model hours level =
+  { model | style = drainBag hours level model.style }
 
+animationClockTick model tick =
+  { model | style = (Animation.update tick) model.style }
 
 
 drainBag : Hours -> Level -> Animation.State -> Animation.State

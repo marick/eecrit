@@ -18,35 +18,24 @@ animations : Model -> List Animation.State
 animations model =
   [model.hourHand, model.minuteHand]
            
--- Msg
-
-type Msg
-  = StartSimulation Hours
-  | AnimationClockTick Animation.Msg
-
-
--- Update
 
 startingState =
   { hourHand = Animation.style (View.hourHandStartsAt 2)
   , minuteHand = Animation.style (View.minuteHandStartsAt 0)
   }
 
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    StartSimulation hours ->
-      { model
-        | hourHand = advanceHourHand hours model.hourHand
-        , minuteHand = spinMinuteHand hours model.minuteHand
-      }
+startSimulation model hours = 
+  { model
+    | hourHand = advanceHourHand hours model.hourHand
+    , minuteHand = spinMinuteHand hours model.minuteHand
+  }
 
-    AnimationClockTick tick ->
-      { model
-        | hourHand = (Animation.update tick) model.hourHand
-        , minuteHand = (Animation.update tick) model.minuteHand
-      }
-    
+animationClockTick model tick = 
+  { model
+    | hourHand = (Animation.update tick) model.hourHand
+    , minuteHand = (Animation.update tick) model.minuteHand
+  }
+  
 
 
 

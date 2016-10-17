@@ -1,5 +1,4 @@
-module IV.Droplet.Main exposing (Model, noDrips, animations,
-                                   update, Msg(..))
+module IV.Droplet.Main exposing (..)
 
 import Animation
 import IV.Droplet.View as View
@@ -21,13 +20,6 @@ noDrips =
 animations : Model -> List Animation.State
 animations model =
   [model.style]
-
--- Msg
-
-type Msg
-  = ShowTrueFlow DropsPerSecond
-  | ShowTimeLapseFlow  -- Fast flow, as in time-lapse photography
-  | AnimationClockTick Animation.Msg
 
 -- Update
 
@@ -73,18 +65,13 @@ changeDropRate dropsPerSecond animation =
   in
     Animation.interrupt [loop] animation
   
-  
 
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    ShowTrueFlow perSecond ->
-      { model | style = changeDropRate perSecond model.style }
+showTrueFlow model perSecond = 
+  { model | style = changeDropRate perSecond model.style }
 
-    ShowTimeLapseFlow ->
-      { model | style = changeDropRate guaranteedFlow model.style }
+showTimeLapseFlow model = 
+  { model | style = changeDropRate guaranteedFlow model.style }
 
-    AnimationClockTick tick ->
-      { model | style = (Animation.update tick) model.style }
-
+animationClockTick model tick =     
+  { model | style = (Animation.update tick) model.style }
 

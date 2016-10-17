@@ -1,5 +1,6 @@
 module IV.Main exposing (..)
 
+import IV.Msg exposing (..)
 import Animation
 import IV.Droplet.Main as Droplet
 import IV.Scenario.Main as Scenario
@@ -30,17 +31,6 @@ subscriptions model =
        Clock.animations model.clock  ++
        BagLevel.animations model.bagLevel)
 
-
--- Msg
-
-type Msg
-    = StartSimulation
-    | ChoseDripSpeed
-    | PickedScenario Scenario.Model
-
-    | AnimationClockTick Animation.Msg
-
-    | ToScenario Scenario.Msg
 
 -- Update
 
@@ -94,11 +84,15 @@ update msg model =
       )
 
     AnimationClockTick tick ->
-      ( 
-       { model
-         | droplet = Droplet.animationClockTick model.droplet tick
-         , clock = Clock.animationClockTick model.clock tick
-         , bagLevel = BagLevel.animationClockTick model.bagLevel tick
-       }
-      , Cmd.none
-      )
+      let
+        (newLevel, cmd) = BagLevel.animationClockTick model.bagLevel tick
+      in 
+        ( 
+         { model
+           | droplet = Droplet.animationClockTick model.droplet tick
+           , clock = Clock.animationClockTick model.clock tick
+           , bagLevel = newLevel
+         }
+        , cmd
+        )
+        

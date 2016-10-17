@@ -1,6 +1,7 @@
 module IV.View exposing (view)
 
-import IV.Main exposing (Model, Msg)
+import IV.Main exposing (Model)
+import IV.Msg exposing (Msg)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Droplet.View as Droplet

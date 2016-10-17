@@ -3,13 +3,13 @@ module IV.Scenario.View exposing (choices, view)
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Scenario.Main exposing (Model, Msg(..), cowScenario, calfScenario)
-import IV.Main as Main
+import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
 
-changedText : (String -> Msg) -> String -> Main.Msg
+changedText : (String -> Msg) -> String -> MainMsg.Msg
 changedText msg string =
-  Main.ToScenario (msg string)
+  MainMsg.ToScenario (msg string)
 
 description model =
   "You are presented with a " ++
@@ -25,7 +25,7 @@ highlight buttonScenario currentScenario =
   else
     " btn-default "
 
-scenarioButton : Model -> Model -> String -> Html Main.Msg
+scenarioButton : Model -> Model -> String -> Html MainMsg.Msg
 scenarioButton buttonScenario currentScenario additionalClassString =
   let 
     class = "btn col-sm-5 " ++
@@ -35,18 +35,18 @@ scenarioButton buttonScenario currentScenario additionalClassString =
     button 
       [ Attr.type' "button"
       , Attr.class class
-      , Events.onClick <| Main.PickedScenario buttonScenario
+      , Events.onClick <| MainMsg.PickedScenario buttonScenario
       ]
       [ text buttonScenario.tag]
 
-choices : Model -> Html Main.Msg    
+choices : Model -> Html MainMsg.Msg    
 choices model = 
   row
     [ scenarioButton cowScenario model ""
     , scenarioButton calfScenario model "col-md-offset-2"
     ]
   
-view : Model -> Html Main.Msg
+view : Model -> Html MainMsg.Msg
 view model =
   row
     [ p [] [text <| description model ] 
@@ -59,7 +59,7 @@ view model =
             , Attr.value model.dripText
             , Attr.size 6
             , Events.onInput (changedText ChangedDripText)
-            , Events.onBlur <| Main.ChoseDripSpeed 
+            , Events.onBlur <| MainMsg.ChoseDripSpeed 
             ]
             []
         , text "drops/sec, set the hours "
@@ -80,7 +80,7 @@ view model =
             []
         , text " until you plan to next look at the fluid level, then " 
         , button
-            [ Events.onClick Main.StartSimulation
+            [ Events.onClick MainMsg.StartSimulation
             , Attr.class "btn btn-default btn-xs"
             ]
             [ text "See What To Expect" ]

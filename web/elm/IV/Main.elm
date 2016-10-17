@@ -21,6 +21,7 @@ type alias Model =
     , bagLevel : BagLevel.Model
     }
 
+subscriptions : Model -> Sub Msg
 subscriptions model =
   Animation.subscription
     AnimationClockTick

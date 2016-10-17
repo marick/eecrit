@@ -4,9 +4,15 @@ import Animation
 import IV.Types exposing (..)
 import Time exposing (second)
 
-easeForHours (Hours hours) =
+
+simulationDuration : Hours -> Float
+simulationDuration (Hours hours) =
+  hours * 1.5 * second
+
+easeForHours : Hours -> Animation.Interpolation
+easeForHours hours =
   Animation.easing
     {
       ease = identity
-    , duration = hours * 1.5 * second
+    , duration = simulationDuration hours
     }

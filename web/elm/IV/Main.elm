@@ -25,6 +25,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
   Animation.subscription
     AnimationClockTick
+    -- TODO: Come to grips with fact that not all the animations are required here.
     (Droplet.animations model.droplet ++ Clock.animations model.clock)
 
 
@@ -88,6 +89,9 @@ update msg model =
       , Cmd.none
       )
 
+    -- TODO: would it be better to have the messages automatically distributed
+    -- to each animation (by having Droplet.AnimationClockTick,
+    -- BagLevel.AnimationClockTick, etc.?
     AnimationClockTick tick ->
       ( { model
           | droplet = Droplet.update (Droplet.AnimationClockTick tick) model.droplet

@@ -1,4 +1,4 @@
-module IV.BagLevel.View exposing (..)
+module IV.Simulation.BagLevelView exposing (..)
 
 import Animation exposing (px)
 import IV.Palette as Palette

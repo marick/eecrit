@@ -1,9 +1,8 @@
 module IV.Droplet.Main exposing (..)
 
 import Animation
-import IV.Droplet.View as View
+import IV.Simulation.DropletView as View
 import IV.Types exposing (..)
-import IV.Droplet.View as View
 
 --- Model
 

@@ -1,4 +1,4 @@
-module IV.Clock.View exposing (..)
+module IV.Simulation.ClockView exposing (..)
 
 import Animation
 import Svg exposing (..)

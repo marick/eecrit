@@ -2,7 +2,8 @@ module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Main exposing (Model, Msg(..), cowScenario, calfScenario)
+import IV.Scenario.Main exposing (Model, cowScenario, calfScenario)
+import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)

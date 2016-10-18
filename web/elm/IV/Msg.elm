@@ -1,6 +1,7 @@
 module IV.Msg exposing (..)
 
 import Animation
+import IV.Scenario.Msg as ScenarioMsg
 import IV.Scenario.Main as Scenario
 
 type Msg
@@ -10,5 +11,5 @@ type Msg
 
     | AnimationClockTick Animation.Msg
 
-    | ToScenario Scenario.Msg
+    | ToScenario ScenarioMsg.Msg
 

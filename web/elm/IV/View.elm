@@ -4,10 +4,10 @@ import IV.Main exposing (Model)
 import IV.Msg exposing (Msg)
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Droplet.View as Droplet
+import IV.Simulation.DropletView as Droplet
 import IV.Scenario.View as Scenario
-import IV.Clock.View as Clock
-import IV.BagLevel.View as BagLevel
+import IV.Simulation.ClockView as Clock
+import IV.Simulation.BagLevelView as BagLevel
 import Svg
 import Svg.Attributes exposing (..)
 import IV.View.Apparatus as Apparatus

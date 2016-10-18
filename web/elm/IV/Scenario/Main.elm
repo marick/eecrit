@@ -1,5 +1,6 @@
 module IV.Scenario.Main exposing (..)
 
+import IV.Scenario.Msg exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
 import String
@@ -58,13 +59,6 @@ calfScenario =
   , simulationMinutesText = commonToAllScenarios.simulationMinutesText
   , dropsPerMil = commonToAllScenarios.dropsPerMil
   }
-
--- Msg
-
-type Msg
-  = ChangedDripText String
-  | ChangedHoursText String
-  | ChangedMinutesText String
 
 -- Update
 

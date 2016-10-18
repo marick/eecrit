@@ -1,7 +1,7 @@
 module IV.BagLevel.Main exposing (..)
 
 import Animation
-import IV.BagLevel.View as View
+import IV.Simulation.BagLevelView as View
 import IV.Types exposing (..)
 import Time exposing (second)
 import IV.Pile.Animation as APile

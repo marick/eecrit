@@ -84,15 +84,12 @@ update msg model =
       )
 
     AnimationClockTick tick ->
-      let
-        (newLevel, cmd) = BagLevel.animationClockTick model.bagLevel tick
-      in 
-        ( 
-         { model
-           | droplet = Droplet.animationClockTick model.droplet tick
-           , clock = Clock.animationClockTick model.clock tick
-           , bagLevel = newLevel
-         }
-        , cmd
-        )
+      ( 
+       { model
+         | droplet = Droplet.animationClockTick model.droplet tick
+         , clock = Clock.animationClockTick model.clock tick
+         , bagLevel = BagLevel.animationClockTick model.bagLevel tick
+       }
+      , Cmd.none
+      )
         

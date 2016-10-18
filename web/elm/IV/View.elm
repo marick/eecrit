@@ -4,14 +4,14 @@ import IV.Main exposing (Model)
 import IV.Msg exposing (Msg)
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Simulation.DropletView as Droplet
+import IV.Apparatus.DropletView as Droplet
 import IV.Scenario.View as Scenario
-import IV.Simulation.ClockView as Clock
-import IV.Simulation.BagLevelView as BagLevel
+import IV.Clock.View as Clock
+import IV.Apparatus.BagLevelView as BagLevel
 import Svg
 import Svg.Attributes exposing (..)
-import IV.View.Apparatus as Apparatus
-import IV.View.ClockFace as ClockFace
+import IV.Apparatus.View as Apparatus
+import IV.Clock.ClockFace as ClockFace
 import IV.Pile.HtmlShorthand exposing (..)
 
 everything = {width = "400px", height = "700px"}

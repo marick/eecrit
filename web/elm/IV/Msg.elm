@@ -2,7 +2,7 @@ module IV.Msg exposing (..)
 
 import Animation
 import IV.Scenario.Msg as ScenarioMsg
-import IV.Simulation.Msg as SimulationMsg
+import IV.Apparatus.Msg as ApparatusMsg
 import IV.Scenario.Main as Scenario
 
 type Msg
@@ -13,5 +13,5 @@ type Msg
     | AnimationClockTick Animation.Msg
 
     | ToScenario ScenarioMsg.Msg
-    | ToSimulation SimulationMsg.Msg
+    | ToApparatus ApparatusMsg.Msg
 

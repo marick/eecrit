@@ -1,8 +1,7 @@
-module IV.View.Apparatus exposing (drawing)
+module IV.Apparatus.View exposing (drawing)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import IV.Simulation.ClockView as Clock
 import IV.Pile.SvgAttributes exposing (..)
 
 drawing =

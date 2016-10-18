@@ -1,7 +1,7 @@
 module IV.Clock.Main exposing (..)
 
 import Animation
-import IV.Simulation.ClockView as View
+import IV.Clock.View as View
 import IV.Types exposing (..)
 import IV.Pile.Animation as APile
 

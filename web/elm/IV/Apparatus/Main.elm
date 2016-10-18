@@ -1,6 +1,6 @@
-module IV.Simulation.Main exposing (..)
+module IV.Apparatus.Main exposing (..)
 
-import IV.Simulation.Msg exposing (..)
+import IV.Apparatus.Msg exposing (..)
 import IV.Types exposing (..)
 
 type alias Model =

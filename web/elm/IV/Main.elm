@@ -2,11 +2,11 @@ module IV.Main exposing (..)
 
 import IV.Msg exposing (..)
 import Animation
-import IV.Droplet.Main as Droplet
+import IV.Apparatus.Droplet as Droplet
 import IV.Scenario.Main as Scenario
-import IV.Simulation.Main as Simulation
+import IV.Apparatus.Main as Apparatus
 import IV.Clock.Main as Clock
-import IV.BagLevel.Main as BagLevel
+import IV.Apparatus.BagLevel as BagLevel
 
 import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
@@ -15,7 +15,7 @@ import IV.Scenario.Calculations as Calc
 
 type alias Model =
     { scenario : Scenario.Model -- this holds all the user-chosen data
-    , simulation : Simulation.Model
+    , simulation : Apparatus.Model
 
     -- The following hold the animation states of component pieces
     , droplet : Droplet.Model
@@ -40,7 +40,7 @@ initWithScenario : Scenario.Model -> Model
 initWithScenario scenario =
   { droplet = Droplet.noDrips
   , scenario = scenario
-  , simulation = Simulation.unstarted
+  , simulation = Apparatus.unstarted
   , clock = Clock.startingState
   , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
   }
@@ -56,7 +56,7 @@ update msg model =
       , Cmd.none
       )
 
-    ToSimulation msg' ->
+    ToApparatus msg' ->
       ( model
       , Cmd.none
       )

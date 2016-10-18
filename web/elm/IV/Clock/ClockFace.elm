@@ -1,4 +1,4 @@
-module IV.View.ClockFace exposing (drawing)
+module IV.Clock.ClockFace exposing (drawing)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

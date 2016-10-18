@@ -1,4 +1,4 @@
-module IV.Simulation.DropletView exposing (..)
+module IV.Apparatus.DropletView exposing (..)
 
 import Animation
 import IV.Palette as Palette

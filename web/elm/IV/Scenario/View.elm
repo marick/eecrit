@@ -85,6 +85,8 @@ view model =
             [ Events.onClick MainMsg.StartSimulation
             , Attr.class "btn btn-default btn-xs"
             ]
-            [ text "See What To Expect" ]
+            [ text "Start the Clock" ]
         ]
+    , p []
+      [ text "To start over, click one of the buttons at the top." ]
     ]

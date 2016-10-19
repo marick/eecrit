@@ -69,13 +69,16 @@ updateDroplet model updater =
 
 updateAllAnimations model (dropletUpdater, clockUpdater, bagLevelUpdater) =
   let
-    temp = { model
-             | clock = clockUpdater model.clock
-             , bagLevel = bagLevelUpdater model.bagLevel
-           }
+    (newDroplet, dropletCmd) = dropletUpdater model.droplet
+    newClock = clockUpdater model.clock
+    (newBagLevel, bagLevelCmd) = bagLevelUpdater model.bagLevel
+    newModel = { model
+                 | droplet = newDroplet
+                 , clock = newClock
+                 , bagLevel = newBagLevel }
+    cmd = Cmd.batch [dropletCmd, bagLevelCmd]
   in
-    updateDroplet temp dropletUpdater
-
+    (newModel, cmd)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =

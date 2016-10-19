@@ -11,24 +11,27 @@ import IV.Pile.Animation as APile
 type alias Model =
   { style : Animation.State
   }
-
+style' model val = { model | style = val }
+                   
 animations : Model -> List Animation.State
 animations model =
   [model.style]
-
--- Msg
 
 startingState : Level -> Model 
 startingState level =
   { style = Animation.style <| View.animationProperties level }
 
 
-startSimulation : Hours -> Level -> Model -> Model
+startSimulation : Hours -> Level -> Model -> (Model, Cmd msg)
 startSimulation hours level model =
-  { model | style = drainBag hours level model.style }
+  ( drainBag hours level model.style |> style' model
+  , Cmd.none
+  )
 
 animationClockTick tick model =
-  { model | style = (Animation.update tick) model.style }
+  ( Animation.update tick model.style |> style' model
+  , Cmd.none
+  )
 
 
 drainBag : Hours -> Level -> Animation.State -> Animation.State

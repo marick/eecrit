@@ -4,6 +4,7 @@ import IV.Msg exposing (..)
 import Animation
 import IV.Apparatus.Droplet as Droplet
 import IV.Scenario.Main as Scenario
+import IV.Scenario.Model as ScenarioModel
 import IV.Apparatus.Main as Apparatus
 import IV.Clock.Main as Clock
 import IV.Apparatus.BagLevel as BagLevel
@@ -14,7 +15,7 @@ import IV.Scenario.Calculations as Calc
 -- Model
 
 type alias Model =
-    { scenario : Scenario.Model -- this holds all the user-chosen data
+    { scenario : ScenarioModel.Model -- this holds all the user-chosen data
     , simulation : Apparatus.Model
 
     -- The following hold the animation states of component pieces
@@ -22,6 +23,9 @@ type alias Model =
     , clock : Clock.Model
     , bagLevel : BagLevel.Model
     }
+
+scenario model val =
+  { model | scenario = val }
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -36,7 +40,7 @@ subscriptions model =
 
 -- Update
 
-initWithScenario : Scenario.Model -> Model
+initWithScenario : ScenarioModel.Model -> Model
 initWithScenario scenario =
   { droplet = Droplet.noDrips
   , scenario = scenario
@@ -50,9 +54,10 @@ init = (initWithScenario Scenario.cowScenario, Cmd.none)
 
 
 updateScenario model updater =
-  ( { model | scenario = updater model.scenario }
-  , Cmd.none
-  )
+  let
+    ( newScenario, cmd ) = updater model.scenario
+  in
+    ( scenario model newScenario, cmd)
   
 updateDroplet model updater =
   ( { model | droplet = updater model.droplet }

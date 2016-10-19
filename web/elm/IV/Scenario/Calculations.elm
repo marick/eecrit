@@ -1,7 +1,7 @@
 module IV.Scenario.Calculations exposing (..)
 
 import IV.Types exposing (..)
-import IV.Scenario.Main exposing (Model)
+import IV.Scenario.Model exposing (Model)
 import IV.Pile.ManagedStrings exposing (floatString)
 
 startingFractionBagFilled : Model -> Level

@@ -1,29 +1,19 @@
 module IV.Scenario.Main exposing (..)
 
 import IV.Scenario.Msg exposing (..)
+import IV.Scenario.Model exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
 import String
+import IV.Msg as Out
 
+-- Model
 
 commonToAllScenarios =
   { dripText = "0"
   , simulationHoursText = "0"
   , simulationMinutesText = "0"
   , dropsPerMil = 15.0
-  }
-
-type alias Model =
-  { tag : String
-  , dripText : String
-  , animalDescription : String
-  , weightInPounds : Int
-  , simulationHoursText : String
-  , simulationMinutesText : String
-  , bagCapacityInLiters : Float
-  , bagContentsInLiters : Float
-  , bagType : String
-  , dropsPerMil : Float
   }
 
 cowScenario : Model
@@ -62,7 +52,7 @@ calfScenario =
 
 -- Update
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd Out.Msg )
 update msg model =
   case msg of
     ChangedDripText string ->
@@ -79,9 +69,11 @@ simulationHoursText model val =
 simulationMinutesText model val =
   { model | simulationMinutesText = val }
     
-updateWhen : String -> (String -> Bool) -> Model -> (Model -> String -> Model) -> Model
+updateWhen : String -> (String -> Bool) -> Model -> (Model -> String -> Model) -> (Model, Cmd Out.Msg)
 updateWhen candidate pred model updater =
-  if pred candidate then
-    updater model candidate
-  else
-    model
+  ( if pred candidate then
+      updater model candidate
+    else
+      model
+  , Cmd.none
+  )

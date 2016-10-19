@@ -3,12 +3,12 @@ module IV.Msg exposing (..)
 import Animation
 import IV.Scenario.Msg as ScenarioMsg
 import IV.Apparatus.Msg as ApparatusMsg
-import IV.Scenario.Main as Scenario
+import IV.Scenario.Model as ScenarioModel
 
 type Msg
     = StartSimulation
     | ChoseDripSpeed
-    | PickedScenario Scenario.Model
+    | PickedScenario ScenarioModel.Model
 
     | AnimationClockTick Animation.Msg
 

@@ -10662,6 +10662,14 @@ var _krisajenkins$formatting$Formatting$premap = F2(
 				};
 			});
 	});
+var _krisajenkins$formatting$Formatting$apply = F2(
+	function (_p14, v) {
+		var _p15 = _p14;
+		return _krisajenkins$formatting$Formatting$Format(
+			function (c) {
+				return A2(_p15._0, c, v);
+			});
+	});
 var _krisajenkins$formatting$Formatting$s = function (str) {
 	return _krisajenkins$formatting$Formatting$Format(
 		function (c) {
@@ -10683,12 +10691,13 @@ var _krisajenkins$formatting$Formatting$wrap = function (wrapping) {
 var _krisajenkins$formatting$Formatting$uriFragment = A2(_krisajenkins$formatting$Formatting$premap, _evancz$elm_http$Http$uriEncode, _krisajenkins$formatting$Formatting$string);
 var _krisajenkins$formatting$Formatting$any = _krisajenkins$formatting$Formatting$Format(
 	function (c) {
-		return function (_p14) {
+		return function (_p16) {
 			return c(
-				_elm_lang$core$Basics$toString(_p14));
+				_elm_lang$core$Basics$toString(_p16));
 		};
 	});
 var _krisajenkins$formatting$Formatting$int = _krisajenkins$formatting$Formatting$any;
+var _krisajenkins$formatting$Formatting$bool = _krisajenkins$formatting$Formatting$any;
 var _krisajenkins$formatting$Formatting$float = _krisajenkins$formatting$Formatting$any;
 var _krisajenkins$formatting$Formatting$roundTo = function (n) {
 	return _krisajenkins$formatting$Formatting$Format(
@@ -13175,13 +13184,14 @@ var _mdgriffith$elm_style_animation$Animation$propertyValue = F2(
 												_elm_lang$core$Basics$toString(_p15._4.position),
 												')'))))))));
 			case 'ShadowProperty':
-				var _p16 = _p15._2;
+				var _p17 = _p15._2;
+				var _p16 = _p15._0;
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
 					_p15._1 ? 'inset ' : '',
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p16.offsetX.position),
+						_elm_lang$core$Basics$toString(_p17.offsetX.position),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							'px',
@@ -13190,7 +13200,7 @@ var _mdgriffith$elm_style_animation$Animation$propertyValue = F2(
 								' ',
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(_p16.offsetY.position),
+									_elm_lang$core$Basics$toString(_p17.offsetY.position),
 									A2(
 										_elm_lang$core$Basics_ops['++'],
 										'px',
@@ -13199,7 +13209,7 @@ var _mdgriffith$elm_style_animation$Animation$propertyValue = F2(
 											' ',
 											A2(
 												_elm_lang$core$Basics_ops['++'],
-												_elm_lang$core$Basics$toString(_p16.blur.position),
+												_elm_lang$core$Basics$toString(_p17.blur.position),
 												A2(
 													_elm_lang$core$Basics_ops['++'],
 													'px',
@@ -13208,146 +13218,143 @@ var _mdgriffith$elm_style_animation$Animation$propertyValue = F2(
 														' ',
 														A2(
 															_elm_lang$core$Basics_ops['++'],
-															_elm_lang$core$Basics$toString(_p16.size.position),
+															(_elm_lang$core$Native_Utils.eq(_p16, 'text-shadow') || _elm_lang$core$Native_Utils.eq(_p16, 'drop-shadow')) ? '' : A2(
+																_elm_lang$core$Basics_ops['++'],
+																_elm_lang$core$Basics$toString(_p17.size.position),
+																A2(_elm_lang$core$Basics_ops['++'], 'px', ' ')),
 															A2(
 																_elm_lang$core$Basics_ops['++'],
-																'px',
+																'rgba(',
 																A2(
 																	_elm_lang$core$Basics_ops['++'],
-																	' ',
+																	_elm_lang$core$Basics$toString(
+																		_elm_lang$core$Basics$round(_p17.red.position)),
 																	A2(
 																		_elm_lang$core$Basics_ops['++'],
-																		'rgba(',
+																		', ',
 																		A2(
 																			_elm_lang$core$Basics_ops['++'],
 																			_elm_lang$core$Basics$toString(
-																				_elm_lang$core$Basics$round(_p16.red.position)),
+																				_elm_lang$core$Basics$round(_p17.green.position)),
 																			A2(
 																				_elm_lang$core$Basics_ops['++'],
 																				', ',
 																				A2(
 																					_elm_lang$core$Basics_ops['++'],
 																					_elm_lang$core$Basics$toString(
-																						_elm_lang$core$Basics$round(_p16.green.position)),
+																						_elm_lang$core$Basics$round(_p17.blue.position)),
 																					A2(
 																						_elm_lang$core$Basics_ops['++'],
 																						', ',
 																						A2(
 																							_elm_lang$core$Basics_ops['++'],
-																							_elm_lang$core$Basics$toString(
-																								_elm_lang$core$Basics$round(_p16.blue.position)),
-																							A2(
-																								_elm_lang$core$Basics_ops['++'],
-																								', ',
-																								A2(
-																									_elm_lang$core$Basics_ops['++'],
-																									_elm_lang$core$Basics$toString(_p16.alpha.position),
-																									')')))))))))))))))))))));
+																							_elm_lang$core$Basics$toString(_p17.alpha.position),
+																							')')))))))))))))))))));
 			case 'Property':
-				var _p17 = _p15._1;
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(_p17.position),
-					_p17.unit);
-			case 'Property2':
-				var _p19 = _p15._2;
 				var _p18 = _p15._1;
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
 					_elm_lang$core$Basics$toString(_p18.position),
+					_p18.unit);
+			case 'Property2':
+				var _p20 = _p15._2;
+				var _p19 = _p15._1;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p19.position),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p18.unit,
+						_p19.unit,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							delim,
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p19.position),
-								_p19.unit))));
+								_elm_lang$core$Basics$toString(_p20.position),
+								_p20.unit))));
 			case 'Property3':
-				var _p22 = _p15._3;
-				var _p21 = _p15._2;
-				var _p20 = _p15._1;
+				var _p23 = _p15._3;
+				var _p22 = _p15._2;
+				var _p21 = _p15._1;
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(_p20.position),
+					_elm_lang$core$Basics$toString(_p21.position),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p20.unit,
+						_p21.unit,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							delim,
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p21.position),
+								_elm_lang$core$Basics$toString(_p22.position),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_p21.unit,
+									_p22.unit,
 									A2(
 										_elm_lang$core$Basics_ops['++'],
 										delim,
 										A2(
 											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(_p22.position),
-											_p22.unit)))))));
+											_elm_lang$core$Basics$toString(_p23.position),
+											_p23.unit)))))));
 			case 'Property4':
-				var _p26 = _p15._4;
-				var _p25 = _p15._3;
-				var _p24 = _p15._2;
-				var _p23 = _p15._1;
+				var _p27 = _p15._4;
+				var _p26 = _p15._3;
+				var _p25 = _p15._2;
+				var _p24 = _p15._1;
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(_p23.position),
+					_elm_lang$core$Basics$toString(_p24.position),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p23.unit,
+						_p24.unit,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							delim,
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p24.position),
+								_elm_lang$core$Basics$toString(_p25.position),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_p24.unit,
+									_p25.unit,
 									A2(
 										_elm_lang$core$Basics_ops['++'],
 										delim,
 										A2(
 											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(_p25.position),
+											_elm_lang$core$Basics$toString(_p26.position),
 											A2(
 												_elm_lang$core$Basics_ops['++'],
-												_p25.unit,
+												_p26.unit,
 												A2(
 													_elm_lang$core$Basics_ops['++'],
 													delim,
 													A2(
 														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(_p26.position),
-														_p26.unit))))))))));
+														_elm_lang$core$Basics$toString(_p27.position),
+														_p27.unit))))))))));
 			case 'AngleProperty':
-				var _p27 = _p15._1;
+				var _p28 = _p15._1;
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(_p27.position),
-					_p27.unit);
+					_elm_lang$core$Basics$toString(_p28.position),
+					_p28.unit);
 			case 'Points':
 				return A2(
 					_elm_lang$core$String$join,
 					' ',
 					A2(
 						_elm_lang$core$List$map,
-						function (_p28) {
-							var _p29 = _p28;
+						function (_p29) {
+							var _p30 = _p29;
 							return A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p29._0.position),
+								_elm_lang$core$Basics$toString(_p30._0.position),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									',',
-									_elm_lang$core$Basics$toString(_p29._1.position)));
+									_elm_lang$core$Basics$toString(_p30._1.position)));
 						},
 						_p15._0));
 			default:
@@ -13358,8 +13365,8 @@ var _mdgriffith$elm_style_animation$Animation$propertyValue = F2(
 		}
 	});
 var _mdgriffith$elm_style_animation$Animation$displayModeName = function (mode) {
-	var _p30 = mode;
-	switch (_p30.ctor) {
+	var _p31 = mode;
+	switch (_p31.ctor) {
 		case 'None':
 			return 'none';
 		case 'Inline':
@@ -13377,25 +13384,33 @@ var _mdgriffith$elm_style_animation$Animation$displayModeName = function (mode) 
 	}
 };
 var _mdgriffith$elm_style_animation$Animation$isAttr = function (prop) {
-	var _p31 = prop;
-	switch (_p31.ctor) {
-		case 'Points':
-			return true;
-		case 'Path':
-			return true;
-		case 'Property4':
-			return _elm_lang$core$Native_Utils.eq(_p31._0, 'viewBox');
-		default:
-			return false;
-	}
+	return A2(
+		_elm_lang$core$String$startsWith,
+		'attr:',
+		_mdgriffith$elm_style_animation$Animation_Model$propertyName(prop)) || function () {
+		var _p32 = prop;
+		switch (_p32.ctor) {
+			case 'Points':
+				return true;
+			case 'Path':
+				return true;
+			case 'Property':
+				var _p33 = _p32._0;
+				return _elm_lang$core$Native_Utils.eq(_p33, 'cx') || (_elm_lang$core$Native_Utils.eq(_p33, 'cy') || (_elm_lang$core$Native_Utils.eq(_p33, 'x') || (_elm_lang$core$Native_Utils.eq(_p33, 'y') || (_elm_lang$core$Native_Utils.eq(_p33, 'rx') || (_elm_lang$core$Native_Utils.eq(_p33, 'ry') || (_elm_lang$core$Native_Utils.eq(_p33, 'r') || _elm_lang$core$Native_Utils.eq(_p33, 'offset')))))));
+			case 'Property4':
+				return _elm_lang$core$Native_Utils.eq(_p32._0, 'viewBox');
+			default:
+				return false;
+		}
+	}();
 };
 var _mdgriffith$elm_style_animation$Animation$webkitPrefix = '-webkit-';
 var _mdgriffith$elm_style_animation$Animation$iePrefix = '-ms-';
 var _mdgriffith$elm_style_animation$Animation$prefix = function (stylePair) {
 	var propValue = _elm_lang$core$Basics$snd(stylePair);
 	var propName = _elm_lang$core$Basics$fst(stylePair);
-	var _p32 = propName;
-	switch (_p32) {
+	var _p34 = propName;
+	switch (_p34) {
 		case 'transform':
 			return _elm_lang$core$Native_List.fromArray(
 				[
@@ -13451,39 +13466,39 @@ var _mdgriffith$elm_style_animation$Animation$isFilter = function (prop) {
 		_elm_lang$core$List$member,
 		_mdgriffith$elm_style_animation$Animation_Model$propertyName(prop),
 		_elm_lang$core$Native_List.fromArray(
-			['filter-url', 'blur', 'brightness', 'contrast', 'grayscale', 'hue-rotate', 'invert', 'saturate', 'sepia']));
+			['filter-url', 'blur', 'brightness', 'contrast', 'grayscale', 'hue-rotate', 'invert', 'saturate', 'sepia', 'drop-shadow']));
 };
 var _mdgriffith$elm_style_animation$Animation$render3dRotation = function (prop) {
-	var _p33 = prop;
-	if (_p33.ctor === 'Property3') {
-		var _p36 = _p33._3;
-		var _p35 = _p33._2;
-		var _p34 = _p33._1;
+	var _p35 = prop;
+	if (_p35.ctor === 'Property3') {
+		var _p38 = _p35._3;
+		var _p37 = _p35._2;
+		var _p36 = _p35._1;
 		return A2(
 			_elm_lang$core$Basics_ops['++'],
 			'rotateX(',
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(_p34.position),
+				_elm_lang$core$Basics$toString(_p36.position),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_p34.unit,
+					_p36.unit,
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						') rotateY(',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(_p35.position),
+							_elm_lang$core$Basics$toString(_p37.position),
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_p35.unit,
+								_p37.unit,
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									') rotateZ(',
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										_elm_lang$core$Basics$toString(_p36.position),
-										A2(_elm_lang$core$Basics_ops['++'], _p36.unit, ')')))))))));
+										_elm_lang$core$Basics$toString(_p38.position),
+										A2(_elm_lang$core$Basics_ops['++'], _p38.unit, ')')))))))));
 	} else {
 		return '';
 	}
@@ -13496,64 +13511,116 @@ var _mdgriffith$elm_style_animation$Animation$isTransformation = function (prop)
 			['rotate', 'rotateX', 'rotateY', 'rotateZ', 'rotate3d', 'translate', 'translate3d', 'scale', 'scale3d']));
 };
 var _mdgriffith$elm_style_animation$Animation$renderAttrs = function (prop) {
-	var _p37 = prop;
-	switch (_p37.ctor) {
-		case 'Points':
-			return _elm_lang$core$Maybe$Just(
-				_elm_lang$svg$Svg_Attributes$points(
-					A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
-		case 'Path':
-			return _elm_lang$core$Maybe$Just(
-				_elm_lang$svg$Svg_Attributes$d(
-					A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
-		case 'Property4':
-			return _elm_lang$core$Native_Utils.eq(_p37._0, 'viewBox') ? _elm_lang$core$Maybe$Just(
-				_elm_lang$svg$Svg_Attributes$viewBox(
-					A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' '))) : _elm_lang$core$Maybe$Nothing;
-		default:
-			return _elm_lang$core$Maybe$Nothing;
+	if (A2(
+		_elm_lang$core$String$startsWith,
+		'attr:',
+		_mdgriffith$elm_style_animation$Animation_Model$propertyName(prop))) {
+		return _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$html$Html_Attributes$attribute,
+				A2(
+					_elm_lang$core$String$dropLeft,
+					5,
+					_mdgriffith$elm_style_animation$Animation_Model$propertyName(prop)),
+				A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+	} else {
+		var _p39 = prop;
+		switch (_p39.ctor) {
+			case 'Points':
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$svg$Svg_Attributes$points(
+						A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+			case 'Path':
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$svg$Svg_Attributes$d(
+						A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+			case 'Property':
+				var _p40 = _p39._0;
+				switch (_p40) {
+					case 'x':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$x(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'y':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$y(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'cx':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$cx(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'cy':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$cy(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'rx':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$rx(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'ry':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$ry(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'r':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$r(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					case 'offset':
+						return _elm_lang$core$Maybe$Just(
+							_elm_lang$svg$Svg_Attributes$offset(
+								A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' ')));
+					default:
+						return _elm_lang$core$Maybe$Nothing;
+				}
+			case 'Property4':
+				return _elm_lang$core$Native_Utils.eq(_p39._0, 'viewBox') ? _elm_lang$core$Maybe$Just(
+					_elm_lang$svg$Svg_Attributes$viewBox(
+						A2(_mdgriffith$elm_style_animation$Animation$propertyValue, prop, ' '))) : _elm_lang$core$Maybe$Nothing;
+			default:
+				return _elm_lang$core$Maybe$Nothing;
+		}
 	}
 };
-var _mdgriffith$elm_style_animation$Animation$render = function (_p38) {
-	var _p39 = _p38;
-	var _p40 = A2(_elm_lang$core$List$partition, _mdgriffith$elm_style_animation$Animation$isAttr, _p39._0.style);
-	var attrProps = _p40._0;
-	var styleProps = _p40._1;
-	var _p41 = A3(
+var _mdgriffith$elm_style_animation$Animation$render = function (_p41) {
+	var _p42 = _p41;
+	var _p43 = A2(_elm_lang$core$List$partition, _mdgriffith$elm_style_animation$Animation$isAttr, _p42._0.style);
+	var attrProps = _p43._0;
+	var styleProps = _p43._1;
+	var _p44 = A3(
 		_elm_lang$core$List$foldl,
 		F2(
-			function (prop, _p42) {
-				var _p43 = _p42;
-				var _p46 = _p43._1;
-				var _p45 = _p43._0;
-				var _p44 = _p43._2;
+			function (prop, _p45) {
+				var _p46 = _p45;
+				var _p49 = _p46._1;
+				var _p48 = _p46._0;
+				var _p47 = _p46._2;
 				return _mdgriffith$elm_style_animation$Animation$isTransformation(prop) ? {
 					ctor: '_Tuple3',
-					_0: _p45,
+					_0: _p48,
 					_1: A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p46,
+						_p49,
 						_elm_lang$core$Native_List.fromArray(
 							[prop])),
-					_2: _p44
+					_2: _p47
 				} : (_mdgriffith$elm_style_animation$Animation$isFilter(prop) ? {
 					ctor: '_Tuple3',
-					_0: _p45,
-					_1: _p46,
+					_0: _p48,
+					_1: _p49,
 					_2: A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p44,
+						_p47,
 						_elm_lang$core$Native_List.fromArray(
 							[prop]))
 				} : {
 					ctor: '_Tuple3',
 					_0: A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p45,
+						_p48,
 						_elm_lang$core$Native_List.fromArray(
 							[prop])),
-					_1: _p46,
-					_2: _p44
+					_1: _p49,
+					_2: _p47
 				});
 			}),
 		{
@@ -13566,9 +13633,9 @@ var _mdgriffith$elm_style_animation$Animation$render = function (_p38) {
 				[])
 		},
 		styleProps);
-	var style = _p41._0;
-	var transforms = _p41._1;
-	var filters = _p41._2;
+	var style = _p44._0;
+	var transforms = _p44._1;
+	var filters = _p44._2;
 	var renderedStyle = A2(
 		_elm_lang$core$List$map,
 		function (prop) {
@@ -13654,15 +13721,15 @@ var _mdgriffith$elm_style_animation$Animation$render = function (_p38) {
 var _mdgriffith$elm_style_animation$Animation$alignStartingPoint = function (points) {
 	var sums = A2(
 		_elm_lang$core$List$map,
-		function (_p47) {
-			var _p48 = _p47;
-			return _p48._0 + _p48._1;
+		function (_p50) {
+			var _p51 = _p50;
+			return _p51._0 + _p51._1;
 		},
 		points);
 	var maybeMin = _elm_lang$core$List$minimum(sums);
 	var indexOfLowestPoint = function () {
-		var _p49 = maybeMin;
-		if (_p49.ctor === 'Nothing') {
+		var _p52 = maybeMin;
+		if (_p52.ctor === 'Nothing') {
 			return _elm_lang$core$Maybe$Nothing;
 		} else {
 			return _elm_lang$core$List$head(
@@ -13673,20 +13740,20 @@ var _mdgriffith$elm_style_animation$Animation$alignStartingPoint = function (poi
 						_elm_lang$core$List$indexedMap,
 						F2(
 							function (i, val) {
-								return _elm_lang$core$Native_Utils.eq(val, _p49._0) ? _elm_lang$core$Maybe$Just(i) : _elm_lang$core$Maybe$Nothing;
+								return _elm_lang$core$Native_Utils.eq(val, _p52._0) ? _elm_lang$core$Maybe$Just(i) : _elm_lang$core$Maybe$Nothing;
 							}),
 						sums)));
 		}
 	}();
-	var _p50 = indexOfLowestPoint;
-	if (_p50.ctor === 'Nothing') {
+	var _p53 = indexOfLowestPoint;
+	if (_p53.ctor === 'Nothing') {
 		return points;
 	} else {
-		var _p51 = _p50._0;
+		var _p54 = _p53._0;
 		return A2(
 			_elm_lang$core$Basics_ops['++'],
-			A2(_elm_lang$core$List$drop, _p51, points),
-			A2(_elm_lang$core$List$take, _p51, points));
+			A2(_elm_lang$core$List$drop, _p54, points),
+			A2(_elm_lang$core$List$take, _p54, points));
 	}
 };
 var _mdgriffith$elm_style_animation$Animation$close = _mdgriffith$elm_style_animation$Animation_Model$Close;
@@ -13729,56 +13796,83 @@ var _mdgriffith$elm_style_animation$Animation$strokeWidth = function (x) {
 	return A3(_mdgriffith$elm_style_animation$Animation$length, 'stroke-width', x, '');
 };
 var _mdgriffith$elm_style_animation$Animation$length2 = F3(
-	function (name, _p53, _p52) {
-		var _p54 = _p53;
-		var _p55 = _p52;
+	function (name, _p56, _p55) {
+		var _p57 = _p56;
+		var _p58 = _p55;
 		return A3(
 			_mdgriffith$elm_style_animation$Animation_Model$Property2,
 			name,
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p54._0, _p54._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p55._0, _p55._1));
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p57._0, _p57._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p58._0, _p58._1));
+	});
+var _mdgriffith$elm_style_animation$Animation$attr2 = F3(
+	function (name, value1, value2) {
+		return A3(
+			_mdgriffith$elm_style_animation$Animation$length2,
+			A2(_elm_lang$core$Basics_ops['++'], 'attr:', name),
+			value1,
+			value2);
 	});
 var _mdgriffith$elm_style_animation$Animation$custom2 = F3(
 	function (name, value, unit) {
 		return A3(_mdgriffith$elm_style_animation$Animation$length2, name, value, unit);
 	});
 var _mdgriffith$elm_style_animation$Animation$length3 = F4(
-	function (name, _p58, _p57, _p56) {
-		var _p59 = _p58;
-		var _p60 = _p57;
-		var _p61 = _p56;
+	function (name, _p61, _p60, _p59) {
+		var _p62 = _p61;
+		var _p63 = _p60;
+		var _p64 = _p59;
 		return A4(
 			_mdgriffith$elm_style_animation$Animation_Model$Property3,
 			name,
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p59._0, _p59._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p60._0, _p60._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p61._0, _p61._1));
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p62._0, _p62._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p63._0, _p63._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p64._0, _p64._1));
+	});
+var _mdgriffith$elm_style_animation$Animation$attr3 = F4(
+	function (name, value1, value2, value3) {
+		return A4(
+			_mdgriffith$elm_style_animation$Animation$length3,
+			A2(_elm_lang$core$Basics_ops['++'], 'attr:', name),
+			value1,
+			value2,
+			value3);
 	});
 var _mdgriffith$elm_style_animation$Animation$rotate3d = F3(
-	function (_p64, _p63, _p62) {
-		var _p65 = _p64;
-		var _p66 = _p63;
-		var _p67 = _p62;
+	function (_p67, _p66, _p65) {
+		var _p68 = _p67;
+		var _p69 = _p66;
+		var _p70 = _p65;
 		return A4(
 			_mdgriffith$elm_style_animation$Animation$length3,
 			'rotate3d',
-			{ctor: '_Tuple2', _0: _p65._0, _1: 'rad'},
-			{ctor: '_Tuple2', _0: _p66._0, _1: 'rad'},
-			{ctor: '_Tuple2', _0: _p67._0, _1: 'rad'});
+			{ctor: '_Tuple2', _0: _p68._0, _1: 'rad'},
+			{ctor: '_Tuple2', _0: _p69._0, _1: 'rad'},
+			{ctor: '_Tuple2', _0: _p70._0, _1: 'rad'});
 	});
 var _mdgriffith$elm_style_animation$Animation$length4 = F5(
-	function (name, _p71, _p70, _p69, _p68) {
-		var _p72 = _p71;
-		var _p73 = _p70;
-		var _p74 = _p69;
-		var _p75 = _p68;
+	function (name, _p74, _p73, _p72, _p71) {
+		var _p75 = _p74;
+		var _p76 = _p73;
+		var _p77 = _p72;
+		var _p78 = _p71;
 		return A5(
 			_mdgriffith$elm_style_animation$Animation_Model$Property4,
 			name,
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p72._0, _p72._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p73._0, _p73._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p74._0, _p74._1),
-			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p75._0, _p75._1));
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p75._0, _p75._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p76._0, _p76._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p77._0, _p77._1),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p78._0, _p78._1));
+	});
+var _mdgriffith$elm_style_animation$Animation$attr4 = F5(
+	function (name, value1, value2, value3, value4) {
+		return A5(
+			_mdgriffith$elm_style_animation$Animation$length4,
+			A2(_elm_lang$core$Basics_ops['++'], 'attr:', name),
+			value1,
+			value2,
+			value3,
+			value4);
 	});
 var _mdgriffith$elm_style_animation$Animation$viewBox = F4(
 	function (w, x, y, z) {
@@ -13790,16 +13884,23 @@ var _mdgriffith$elm_style_animation$Animation$viewBox = F4(
 			{ctor: '_Tuple2', _0: y, _1: ''},
 			{ctor: '_Tuple2', _0: z, _1: ''});
 	});
-var _mdgriffith$elm_style_animation$Animation$customColor = F2(
+var _mdgriffith$elm_style_animation$Animation$attr = F3(
+	function (name, value, unit) {
+		return A2(
+			_mdgriffith$elm_style_animation$Animation_Model$Property,
+			A2(_elm_lang$core$Basics_ops['++'], 'attr:', name),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, value, unit));
+	});
+var _mdgriffith$elm_style_animation$Animation$attrColor = F2(
 	function (name, color) {
-		var _p76 = _elm_lang$core$Color$toRgb(color);
-		var red = _p76.red;
-		var green = _p76.green;
-		var blue = _p76.blue;
-		var alpha = _p76.alpha;
+		var _p79 = _elm_lang$core$Color$toRgb(color);
+		var red = _p79.red;
+		var green = _p79.green;
+		var blue = _p79.blue;
+		var alpha = _p79.alpha;
 		return A5(
 			_mdgriffith$elm_style_animation$Animation_Model$ColorProperty,
-			name,
+			A2(_elm_lang$core$Basics_ops['++'], 'attr:', name),
 			A2(
 				_mdgriffith$elm_style_animation$Animation$initMotion,
 				_elm_lang$core$Basics$toFloat(red),
@@ -13814,24 +13915,6 @@ var _mdgriffith$elm_style_animation$Animation$customColor = F2(
 				''),
 			A2(_mdgriffith$elm_style_animation$Animation$initMotion, alpha, ''));
 	});
-var _mdgriffith$elm_style_animation$Animation$color = function (c) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'color', c);
-};
-var _mdgriffith$elm_style_animation$Animation$backgroundColor = function (c) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'background-color', c);
-};
-var _mdgriffith$elm_style_animation$Animation$borderColor = function (c) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'border-color', c);
-};
-var _mdgriffith$elm_style_animation$Animation$fill = function (color) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'fill', color);
-};
-var _mdgriffith$elm_style_animation$Animation$stroke = function (color) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'stroke', color);
-};
-var _mdgriffith$elm_style_animation$Animation$stopColor = function (color) {
-	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'stop-color', color);
-};
 var _mdgriffith$elm_style_animation$Animation$custom = F3(
 	function (name, value, unit) {
 		return A2(
@@ -13890,6 +13973,48 @@ var _mdgriffith$elm_style_animation$Animation$sepia = function (x) {
 var _mdgriffith$elm_style_animation$Animation$offset = function (value) {
 	return A3(_mdgriffith$elm_style_animation$Animation$custom, 'offset', value, '');
 };
+var _mdgriffith$elm_style_animation$Animation$customColor = F2(
+	function (name, color) {
+		var _p80 = _elm_lang$core$Color$toRgb(color);
+		var red = _p80.red;
+		var green = _p80.green;
+		var blue = _p80.blue;
+		var alpha = _p80.alpha;
+		return A5(
+			_mdgriffith$elm_style_animation$Animation_Model$ColorProperty,
+			name,
+			A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(red),
+				''),
+			A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(green),
+				''),
+			A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(blue),
+				''),
+			A2(_mdgriffith$elm_style_animation$Animation$initMotion, alpha, ''));
+	});
+var _mdgriffith$elm_style_animation$Animation$color = function (c) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'color', c);
+};
+var _mdgriffith$elm_style_animation$Animation$backgroundColor = function (c) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'background-color', c);
+};
+var _mdgriffith$elm_style_animation$Animation$borderColor = function (c) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'border-color', c);
+};
+var _mdgriffith$elm_style_animation$Animation$fill = function (color) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'fill', color);
+};
+var _mdgriffith$elm_style_animation$Animation$stroke = function (color) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'stroke', color);
+};
+var _mdgriffith$elm_style_animation$Animation$stopColor = function (color) {
+	return A2(_mdgriffith$elm_style_animation$Animation$customColor, 'stop-color', color);
+};
 var _mdgriffith$elm_style_animation$Animation$scale3d = F3(
 	function (x, y, z) {
 		return A4(
@@ -13899,19 +14024,19 @@ var _mdgriffith$elm_style_animation$Animation$scale3d = F3(
 			A2(_mdgriffith$elm_style_animation$Animation$initMotion, y, ''),
 			A2(_mdgriffith$elm_style_animation$Animation$initMotion, z, ''));
 	});
-var _mdgriffith$elm_style_animation$Animation$rotate = function (_p77) {
-	var _p78 = _p77;
+var _mdgriffith$elm_style_animation$Animation$rotate = function (_p81) {
+	var _p82 = _p81;
 	return A2(
 		_mdgriffith$elm_style_animation$Animation_Model$AngleProperty,
 		'rotate',
-		A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p78._0, 'rad'));
+		A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p82._0, 'rad'));
 };
 var _mdgriffith$elm_style_animation$Animation$textShadow = function (shade) {
-	var _p79 = _elm_lang$core$Color$toRgb(shade.color);
-	var red = _p79.red;
-	var green = _p79.green;
-	var blue = _p79.blue;
-	var alpha = _p79.alpha;
+	var _p83 = _elm_lang$core$Color$toRgb(shade.color);
+	var red = _p83.red;
+	var green = _p83.green;
+	var blue = _p83.blue;
+	var alpha = _p83.alpha;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation_Model$ShadowProperty,
 		'text-shadow',
@@ -13937,11 +14062,11 @@ var _mdgriffith$elm_style_animation$Animation$textShadow = function (shade) {
 		});
 };
 var _mdgriffith$elm_style_animation$Animation$shadow = function (shade) {
-	var _p80 = _elm_lang$core$Color$toRgb(shade.color);
-	var red = _p80.red;
-	var green = _p80.green;
-	var blue = _p80.blue;
-	var alpha = _p80.alpha;
+	var _p84 = _elm_lang$core$Color$toRgb(shade.color);
+	var red = _p84.red;
+	var green = _p84.green;
+	var blue = _p84.blue;
+	var alpha = _p84.alpha;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation_Model$ShadowProperty,
 		'box-shadow',
@@ -13967,11 +14092,11 @@ var _mdgriffith$elm_style_animation$Animation$shadow = function (shade) {
 		});
 };
 var _mdgriffith$elm_style_animation$Animation$insetShadow = function (shade) {
-	var _p81 = _elm_lang$core$Color$toRgb(shade.color);
-	var red = _p81.red;
-	var green = _p81.green;
-	var blue = _p81.blue;
-	var alpha = _p81.alpha;
+	var _p85 = _elm_lang$core$Color$toRgb(shade.color);
+	var red = _p85.red;
+	var green = _p85.green;
+	var blue = _p85.blue;
+	var alpha = _p85.alpha;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation_Model$ShadowProperty,
 		'box-shadow',
@@ -14040,56 +14165,25 @@ var _mdgriffith$elm_style_animation$Animation$verticalTo = function (x) {
 	return _mdgriffith$elm_style_animation$Animation_Model$VerticalTo(
 		A2(_mdgriffith$elm_style_animation$Animation$initMotion, x, ''));
 };
-var _mdgriffith$elm_style_animation$Animation$curve2 = function (_p82) {
-	var _p83 = _p82;
-	var _p86 = _p83.point;
-	var _p85 = _p83.control2;
-	var _p84 = _p83.control1;
+var _mdgriffith$elm_style_animation$Animation$curve2 = function (_p86) {
+	var _p87 = _p86;
+	var _p90 = _p87.point;
+	var _p89 = _p87.control2;
+	var _p88 = _p87.control1;
 	return _mdgriffith$elm_style_animation$Animation_Model$Curve(
 		{
 			control1: {
 				ctor: '_Tuple2',
 				_0: A2(
 					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$fst(_p84),
+					_elm_lang$core$Basics$fst(_p88),
 					''),
 				_1: A2(
 					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$snd(_p84),
+					_elm_lang$core$Basics$snd(_p88),
 					'')
 			},
 			control2: {
-				ctor: '_Tuple2',
-				_0: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$fst(_p85),
-					''),
-				_1: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$snd(_p85),
-					'')
-			},
-			point: {
-				ctor: '_Tuple2',
-				_0: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$fst(_p86),
-					''),
-				_1: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$snd(_p86),
-					'')
-			}
-		});
-};
-var _mdgriffith$elm_style_animation$Animation$curve2To = function (_p87) {
-	var _p88 = _p87;
-	var _p91 = _p88.point;
-	var _p90 = _p88.control2;
-	var _p89 = _p88.control1;
-	return _mdgriffith$elm_style_animation$Animation_Model$CurveTo(
-		{
-			control1: {
 				ctor: '_Tuple2',
 				_0: A2(
 					_mdgriffith$elm_style_animation$Animation$initMotion,
@@ -14100,7 +14194,7 @@ var _mdgriffith$elm_style_animation$Animation$curve2To = function (_p87) {
 					_elm_lang$core$Basics$snd(_p89),
 					'')
 			},
-			control2: {
+			point: {
 				ctor: '_Tuple2',
 				_0: A2(
 					_mdgriffith$elm_style_animation$Animation$initMotion,
@@ -14110,27 +14204,28 @@ var _mdgriffith$elm_style_animation$Animation$curve2To = function (_p87) {
 					_mdgriffith$elm_style_animation$Animation$initMotion,
 					_elm_lang$core$Basics$snd(_p90),
 					'')
-			},
-			point: {
-				ctor: '_Tuple2',
-				_0: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$fst(_p91),
-					''),
-				_1: A2(
-					_mdgriffith$elm_style_animation$Animation$initMotion,
-					_elm_lang$core$Basics$snd(_p91),
-					'')
 			}
 		});
 };
-var _mdgriffith$elm_style_animation$Animation$curve = function (_p92) {
-	var _p93 = _p92;
-	var _p95 = _p93.point;
-	var _p94 = _p93.control;
-	return _mdgriffith$elm_style_animation$Animation_Model$Quadratic(
+var _mdgriffith$elm_style_animation$Animation$curve2To = function (_p91) {
+	var _p92 = _p91;
+	var _p95 = _p92.point;
+	var _p94 = _p92.control2;
+	var _p93 = _p92.control1;
+	return _mdgriffith$elm_style_animation$Animation_Model$CurveTo(
 		{
-			control: {
+			control1: {
+				ctor: '_Tuple2',
+				_0: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$fst(_p93),
+					''),
+				_1: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$snd(_p93),
+					'')
+			},
+			control2: {
 				ctor: '_Tuple2',
 				_0: A2(
 					_mdgriffith$elm_style_animation$Animation$initMotion,
@@ -14154,11 +14249,11 @@ var _mdgriffith$elm_style_animation$Animation$curve = function (_p92) {
 			}
 		});
 };
-var _mdgriffith$elm_style_animation$Animation$curveTo = function (_p96) {
+var _mdgriffith$elm_style_animation$Animation$curve = function (_p96) {
 	var _p97 = _p96;
 	var _p99 = _p97.point;
 	var _p98 = _p97.control;
-	return _mdgriffith$elm_style_animation$Animation_Model$QuadraticTo(
+	return _mdgriffith$elm_style_animation$Animation_Model$Quadratic(
 		{
 			control: {
 				ctor: '_Tuple2',
@@ -14184,6 +14279,36 @@ var _mdgriffith$elm_style_animation$Animation$curveTo = function (_p96) {
 			}
 		});
 };
+var _mdgriffith$elm_style_animation$Animation$curveTo = function (_p100) {
+	var _p101 = _p100;
+	var _p103 = _p101.point;
+	var _p102 = _p101.control;
+	return _mdgriffith$elm_style_animation$Animation_Model$QuadraticTo(
+		{
+			control: {
+				ctor: '_Tuple2',
+				_0: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$fst(_p102),
+					''),
+				_1: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$snd(_p102),
+					'')
+			},
+			point: {
+				ctor: '_Tuple2',
+				_0: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$fst(_p103),
+					''),
+				_1: A2(
+					_mdgriffith$elm_style_animation$Animation$initMotion,
+					_elm_lang$core$Basics$snd(_p103),
+					'')
+			}
+		});
+};
 var _mdgriffith$elm_style_animation$Animation$arc = function (arc) {
 	return arc.clockwise ? _mdgriffith$elm_style_animation$Animation_Model$ClockwiseArc(
 		{
@@ -14201,30 +14326,60 @@ var _mdgriffith$elm_style_animation$Animation$arc = function (arc) {
 			endAngle: A2(_mdgriffith$elm_style_animation$Animation$initMotion, arc.endAngle, '')
 		});
 };
-var _mdgriffith$elm_style_animation$Animation$hueRotate = function (_p100) {
-	var _p101 = _p100;
+var _mdgriffith$elm_style_animation$Animation$hueRotate = function (_p104) {
+	var _p105 = _p104;
 	return A2(
 		_mdgriffith$elm_style_animation$Animation_Model$AngleProperty,
 		'hue-rotate',
-		A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p101._0, 'rad'));
+		A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p105._0, 'rad'));
+};
+var _mdgriffith$elm_style_animation$Animation$dropShadow = function (shade) {
+	var _p106 = _elm_lang$core$Color$toRgb(shade.color);
+	var red = _p106.red;
+	var green = _p106.green;
+	var blue = _p106.blue;
+	var alpha = _p106.alpha;
+	return A3(
+		_mdgriffith$elm_style_animation$Animation_Model$ShadowProperty,
+		'drop-shadow',
+		false,
+		{
+			offsetX: A2(_mdgriffith$elm_style_animation$Animation$initMotion, shade.offsetX, 'px'),
+			offsetY: A2(_mdgriffith$elm_style_animation$Animation$initMotion, shade.offsetY, 'px'),
+			size: A2(_mdgriffith$elm_style_animation$Animation$initMotion, shade.size, 'px'),
+			blur: A2(_mdgriffith$elm_style_animation$Animation$initMotion, shade.blur, 'px'),
+			red: A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(red),
+				'px'),
+			green: A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(green),
+				'px'),
+			blue: A2(
+				_mdgriffith$elm_style_animation$Animation$initMotion,
+				_elm_lang$core$Basics$toFloat(blue),
+				'px'),
+			alpha: A2(_mdgriffith$elm_style_animation$Animation$initMotion, alpha, 'px')
+		});
 };
 var _mdgriffith$elm_style_animation$Animation$points = function (pnts) {
 	return _mdgriffith$elm_style_animation$Animation_Model$Points(
 		A2(
 			_elm_lang$core$List$map,
-			function (_p102) {
-				var _p103 = _p102;
+			function (_p107) {
+				var _p108 = _p107;
 				return {
 					ctor: '_Tuple2',
-					_0: A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p103._0, ''),
-					_1: A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p103._1, '')
+					_0: A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p108._0, ''),
+					_1: A2(_mdgriffith$elm_style_animation$Animation$initMotion, _p108._1, '')
 				};
 			},
 			_mdgriffith$elm_style_animation$Animation$alignStartingPoint(pnts)));
 };
 var _mdgriffith$elm_style_animation$Animation$lengthUnitName = function (unit) {
-	var _p104 = unit;
-	switch (_p104.ctor) {
+	var _p109 = unit;
+	switch (_p109.ctor) {
 		case 'NoUnit':
 			return '';
 		case 'Px':
@@ -14259,306 +14414,287 @@ var _mdgriffith$elm_style_animation$Animation$lengthUnitName = function (unit) {
 			return 'pc';
 	}
 };
-var _mdgriffith$elm_style_animation$Animation$height = function (_p105) {
-	var _p106 = _p105;
+var _mdgriffith$elm_style_animation$Animation$height = function (_p110) {
+	var _p111 = _p110;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'height',
-		_p106._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p106._1));
+		_p111._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p111._1));
 };
-var _mdgriffith$elm_style_animation$Animation$width = function (_p107) {
-	var _p108 = _p107;
+var _mdgriffith$elm_style_animation$Animation$width = function (_p112) {
+	var _p113 = _p112;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'width',
-		_p108._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p108._1));
+		_p113._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p113._1));
 };
-var _mdgriffith$elm_style_animation$Animation$left = function (_p109) {
-	var _p110 = _p109;
+var _mdgriffith$elm_style_animation$Animation$left = function (_p114) {
+	var _p115 = _p114;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'left',
-		_p110._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p110._1));
+		_p115._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p115._1));
 };
-var _mdgriffith$elm_style_animation$Animation$top = function (_p111) {
-	var _p112 = _p111;
+var _mdgriffith$elm_style_animation$Animation$top = function (_p116) {
+	var _p117 = _p116;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'top',
-		_p112._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p112._1));
+		_p117._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p117._1));
 };
-var _mdgriffith$elm_style_animation$Animation$right = function (_p113) {
-	var _p114 = _p113;
+var _mdgriffith$elm_style_animation$Animation$right = function (_p118) {
+	var _p119 = _p118;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'right',
-		_p114._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p114._1));
+		_p119._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p119._1));
 };
-var _mdgriffith$elm_style_animation$Animation$bottom = function (_p115) {
-	var _p116 = _p115;
+var _mdgriffith$elm_style_animation$Animation$bottom = function (_p120) {
+	var _p121 = _p120;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'bottom',
-		_p116._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p116._1));
+		_p121._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p121._1));
 };
-var _mdgriffith$elm_style_animation$Animation$maxHeight = function (_p117) {
-	var _p118 = _p117;
+var _mdgriffith$elm_style_animation$Animation$maxHeight = function (_p122) {
+	var _p123 = _p122;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'max-height',
-		_p118._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p118._1));
+		_p123._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p123._1));
 };
-var _mdgriffith$elm_style_animation$Animation$maxWidth = function (_p119) {
-	var _p120 = _p119;
+var _mdgriffith$elm_style_animation$Animation$maxWidth = function (_p124) {
+	var _p125 = _p124;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'max-width',
-		_p120._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p120._1));
+		_p125._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p125._1));
 };
-var _mdgriffith$elm_style_animation$Animation$minHeight = function (_p121) {
-	var _p122 = _p121;
+var _mdgriffith$elm_style_animation$Animation$minHeight = function (_p126) {
+	var _p127 = _p126;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'min-height',
-		_p122._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p122._1));
+		_p127._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p127._1));
 };
-var _mdgriffith$elm_style_animation$Animation$minWidth = function (_p123) {
-	var _p124 = _p123;
+var _mdgriffith$elm_style_animation$Animation$minWidth = function (_p128) {
+	var _p129 = _p128;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'min-width',
-		_p124._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p124._1));
+		_p129._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p129._1));
 };
-var _mdgriffith$elm_style_animation$Animation$padding = function (_p125) {
-	var _p126 = _p125;
+var _mdgriffith$elm_style_animation$Animation$padding = function (_p130) {
+	var _p131 = _p130;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'padding',
-		_p126._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p126._1));
+		_p131._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p131._1));
 };
-var _mdgriffith$elm_style_animation$Animation$paddingLeft = function (_p127) {
-	var _p128 = _p127;
+var _mdgriffith$elm_style_animation$Animation$paddingLeft = function (_p132) {
+	var _p133 = _p132;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'padding-left',
-		_p128._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p128._1));
+		_p133._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p133._1));
 };
-var _mdgriffith$elm_style_animation$Animation$paddingRight = function (_p129) {
-	var _p130 = _p129;
+var _mdgriffith$elm_style_animation$Animation$paddingRight = function (_p134) {
+	var _p135 = _p134;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'padding-right',
-		_p130._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p130._1));
+		_p135._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p135._1));
 };
-var _mdgriffith$elm_style_animation$Animation$paddingTop = function (_p131) {
-	var _p132 = _p131;
+var _mdgriffith$elm_style_animation$Animation$paddingTop = function (_p136) {
+	var _p137 = _p136;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'padding-top',
-		_p132._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p132._1));
+		_p137._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p137._1));
 };
-var _mdgriffith$elm_style_animation$Animation$paddingBottom = function (_p133) {
-	var _p134 = _p133;
+var _mdgriffith$elm_style_animation$Animation$paddingBottom = function (_p138) {
+	var _p139 = _p138;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'padding-bottom',
-		_p134._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p134._1));
+		_p139._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p139._1));
 };
-var _mdgriffith$elm_style_animation$Animation$margin = function (_p135) {
-	var _p136 = _p135;
+var _mdgriffith$elm_style_animation$Animation$margin = function (_p140) {
+	var _p141 = _p140;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'margin',
-		_p136._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p136._1));
+		_p141._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p141._1));
 };
-var _mdgriffith$elm_style_animation$Animation$marginLeft = function (_p137) {
-	var _p138 = _p137;
+var _mdgriffith$elm_style_animation$Animation$marginLeft = function (_p142) {
+	var _p143 = _p142;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'margin-left',
-		_p138._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p138._1));
+		_p143._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p143._1));
 };
-var _mdgriffith$elm_style_animation$Animation$marginRight = function (_p139) {
-	var _p140 = _p139;
+var _mdgriffith$elm_style_animation$Animation$marginRight = function (_p144) {
+	var _p145 = _p144;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'margin-right',
-		_p140._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p140._1));
+		_p145._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p145._1));
 };
-var _mdgriffith$elm_style_animation$Animation$marginTop = function (_p141) {
-	var _p142 = _p141;
+var _mdgriffith$elm_style_animation$Animation$marginTop = function (_p146) {
+	var _p147 = _p146;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'margin-top',
-		_p142._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p142._1));
+		_p147._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p147._1));
 };
-var _mdgriffith$elm_style_animation$Animation$marginBottom = function (_p143) {
-	var _p144 = _p143;
+var _mdgriffith$elm_style_animation$Animation$marginBottom = function (_p148) {
+	var _p149 = _p148;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'margin-bottom',
-		_p144._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p144._1));
+		_p149._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p149._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderWidth = function (_p145) {
-	var _p146 = _p145;
+var _mdgriffith$elm_style_animation$Animation$borderWidth = function (_p150) {
+	var _p151 = _p150;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-width',
-		_p146._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p146._1));
+		_p151._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p151._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderLeftWidth = function (_p147) {
-	var _p148 = _p147;
+var _mdgriffith$elm_style_animation$Animation$borderLeftWidth = function (_p152) {
+	var _p153 = _p152;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-left-width',
-		_p148._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p148._1));
+		_p153._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p153._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderRightWidth = function (_p149) {
-	var _p150 = _p149;
+var _mdgriffith$elm_style_animation$Animation$borderRightWidth = function (_p154) {
+	var _p155 = _p154;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-right-width',
-		_p150._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p150._1));
+		_p155._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p155._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderTopWidth = function (_p151) {
-	var _p152 = _p151;
+var _mdgriffith$elm_style_animation$Animation$borderTopWidth = function (_p156) {
+	var _p157 = _p156;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-top-width',
-		_p152._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p152._1));
+		_p157._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p157._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderBottomWidth = function (_p153) {
-	var _p154 = _p153;
+var _mdgriffith$elm_style_animation$Animation$borderBottomWidth = function (_p158) {
+	var _p159 = _p158;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-bottom-width',
-		_p154._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p154._1));
+		_p159._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p159._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderRadius = function (_p155) {
-	var _p156 = _p155;
+var _mdgriffith$elm_style_animation$Animation$borderRadius = function (_p160) {
+	var _p161 = _p160;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-radius',
-		_p156._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p156._1));
+		_p161._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p161._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderTopLeftRadius = function (_p157) {
-	var _p158 = _p157;
+var _mdgriffith$elm_style_animation$Animation$borderTopLeftRadius = function (_p162) {
+	var _p163 = _p162;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-top-left-radius',
-		_p158._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p158._1));
+		_p163._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p163._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderTopRightRadius = function (_p159) {
-	var _p160 = _p159;
+var _mdgriffith$elm_style_animation$Animation$borderTopRightRadius = function (_p164) {
+	var _p165 = _p164;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-top-right-radius',
-		_p160._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p160._1));
+		_p165._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p165._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderBottomLeftRadius = function (_p161) {
-	var _p162 = _p161;
+var _mdgriffith$elm_style_animation$Animation$borderBottomLeftRadius = function (_p166) {
+	var _p167 = _p166;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-bottom-left-radius',
-		_p162._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p162._1));
+		_p167._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p167._1));
 };
-var _mdgriffith$elm_style_animation$Animation$borderBottomRightRadius = function (_p163) {
-	var _p164 = _p163;
+var _mdgriffith$elm_style_animation$Animation$borderBottomRightRadius = function (_p168) {
+	var _p169 = _p168;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'border-bottom-right-radius',
-		_p164._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p164._1));
+		_p169._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p169._1));
 };
-var _mdgriffith$elm_style_animation$Animation$letterSpacing = function (_p165) {
-	var _p166 = _p165;
+var _mdgriffith$elm_style_animation$Animation$letterSpacing = function (_p170) {
+	var _p171 = _p170;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'letter-spacing',
-		_p166._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p166._1));
+		_p171._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p171._1));
 };
-var _mdgriffith$elm_style_animation$Animation$lineHeight = function (_p167) {
-	var _p168 = _p167;
+var _mdgriffith$elm_style_animation$Animation$lineHeight = function (_p172) {
+	var _p173 = _p172;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'line-height',
-		_p168._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p168._1));
+		_p173._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p173._1));
 };
 var _mdgriffith$elm_style_animation$Animation$backgroundPosition = F2(
-	function (_p170, _p169) {
-		var _p171 = _p170;
-		var _p172 = _p169;
+	function (_p175, _p174) {
+		var _p176 = _p175;
+		var _p177 = _p174;
 		return A3(
 			_mdgriffith$elm_style_animation$Animation$length2,
 			'background-position',
 			{
 				ctor: '_Tuple2',
-				_0: _p171._0,
-				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p171._1)
+				_0: _p176._0,
+				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p176._1)
 			},
 			{
 				ctor: '_Tuple2',
-				_0: _p172._0,
-				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p172._1)
+				_0: _p177._0,
+				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p177._1)
 			});
 	});
 var _mdgriffith$elm_style_animation$Animation$translate = F2(
-	function (_p174, _p173) {
-		var _p175 = _p174;
-		var _p176 = _p173;
+	function (_p179, _p178) {
+		var _p180 = _p179;
+		var _p181 = _p178;
 		return A3(
 			_mdgriffith$elm_style_animation$Animation$length2,
 			'translate',
-			{
-				ctor: '_Tuple2',
-				_0: _p175._0,
-				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p175._1)
-			},
-			{
-				ctor: '_Tuple2',
-				_0: _p176._0,
-				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p176._1)
-			});
-	});
-var _mdgriffith$elm_style_animation$Animation$translate3d = F3(
-	function (_p179, _p178, _p177) {
-		var _p180 = _p179;
-		var _p181 = _p178;
-		var _p182 = _p177;
-		return A4(
-			_mdgriffith$elm_style_animation$Animation$length3,
-			'translate3d',
 			{
 				ctor: '_Tuple2',
 				_0: _p180._0,
@@ -14568,198 +14704,217 @@ var _mdgriffith$elm_style_animation$Animation$translate3d = F3(
 				ctor: '_Tuple2',
 				_0: _p181._0,
 				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p181._1)
+			});
+	});
+var _mdgriffith$elm_style_animation$Animation$translate3d = F3(
+	function (_p184, _p183, _p182) {
+		var _p185 = _p184;
+		var _p186 = _p183;
+		var _p187 = _p182;
+		return A4(
+			_mdgriffith$elm_style_animation$Animation$length3,
+			'translate3d',
+			{
+				ctor: '_Tuple2',
+				_0: _p185._0,
+				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p185._1)
 			},
 			{
 				ctor: '_Tuple2',
-				_0: _p182._0,
-				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p182._1)
+				_0: _p186._0,
+				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p186._1)
+			},
+			{
+				ctor: '_Tuple2',
+				_0: _p187._0,
+				_1: _mdgriffith$elm_style_animation$Animation$lengthUnitName(_p187._1)
 			});
 	});
-var _mdgriffith$elm_style_animation$Animation$blur = function (_p183) {
-	var _p184 = _p183;
+var _mdgriffith$elm_style_animation$Animation$blur = function (_p188) {
+	var _p189 = _p188;
 	return A3(
 		_mdgriffith$elm_style_animation$Animation$length,
 		'blur',
-		_p184._0,
-		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p184._1));
+		_p189._0,
+		_mdgriffith$elm_style_animation$Animation$lengthUnitName(_p189._1));
 };
 var _mdgriffith$elm_style_animation$Animation$update = F2(
 	function (tick, animation) {
 		return _elm_lang$core$Basics$fst(
 			A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation));
 	});
-var _mdgriffith$elm_style_animation$Animation$debug = function (_p185) {
-	var _p186 = _p185;
-	var _p196 = _p186._0;
-	var time = _p196.timing.current;
+var _mdgriffith$elm_style_animation$Animation$debug = function (_p190) {
+	var _p191 = _p190;
+	var _p201 = _p191._0;
+	var time = _p201.timing.current;
 	var getValueTuple = function (prop) {
-		var _p187 = prop;
-		switch (_p187.ctor) {
+		var _p192 = prop;
+		switch (_p192.ctor) {
 			case 'ExactProperty':
 				return _elm_lang$core$Native_List.fromArray(
 					[]);
 			case 'ColorProperty':
-				var _p188 = _p187._0;
+				var _p193 = _p192._0;
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p188, '-red'),
-						_1: _p187._1,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-red'),
+						_1: _p192._1,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p188, '-green'),
-						_1: _p187._2,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-green'),
+						_1: _p192._2,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p188, '-blue'),
-						_1: _p187._3,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-blue'),
+						_1: _p192._3,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p188, '-alpha'),
-						_1: _p187._4,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-alpha'),
+						_1: _p192._4,
 						_2: time
 					}
 					]);
 			case 'ShadowProperty':
-				var _p190 = _p187._2;
-				var _p189 = _p187._0;
-				var name = _p187._1 ? A2(_elm_lang$core$Basics_ops['++'], _p189, '-inset') : _p189;
+				var _p195 = _p192._2;
+				var _p194 = _p192._0;
+				var name = _p192._1 ? A2(_elm_lang$core$Basics_ops['++'], _p194, '-inset') : _p194;
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-offsetX'),
-						_1: _p190.offsetX,
+						_1: _p195.offsetX,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-offsetY'),
-						_1: _p190.offsetY,
+						_1: _p195.offsetY,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-size'),
-						_1: _p190.size,
+						_1: _p195.size,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-blur'),
-						_1: _p190.blur,
+						_1: _p195.blur,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-red'),
-						_1: _p190.red,
+						_1: _p195.red,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-green'),
-						_1: _p190.green,
+						_1: _p195.green,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-blue'),
-						_1: _p190.blue,
+						_1: _p195.blue,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
 						_0: A2(_elm_lang$core$Basics_ops['++'], name, '-alpha'),
-						_1: _p190.alpha,
+						_1: _p195.alpha,
 						_2: time
 					}
 					]);
 			case 'Property':
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple3', _0: _p187._0, _1: _p187._1, _2: time}
+						{ctor: '_Tuple3', _0: _p192._0, _1: _p192._1, _2: time}
 					]);
 			case 'Property2':
-				var _p191 = _p187._0;
+				var _p196 = _p192._0;
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p191, '-x'),
-						_1: _p187._1,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p196, '-x'),
+						_1: _p192._1,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p191, '-y'),
-						_1: _p187._2,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p196, '-y'),
+						_1: _p192._2,
 						_2: time
 					}
 					]);
 			case 'Property3':
-				var _p192 = _p187._0;
+				var _p197 = _p192._0;
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p192, '-x'),
-						_1: _p187._1,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p197, '-x'),
+						_1: _p192._1,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p192, '-y'),
-						_1: _p187._2,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p197, '-y'),
+						_1: _p192._2,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p192, '-z'),
-						_1: _p187._3,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p197, '-z'),
+						_1: _p192._3,
 						_2: time
 					}
 					]);
 			case 'Property4':
-				var _p193 = _p187._0;
+				var _p198 = _p192._0;
 				return _elm_lang$core$Native_List.fromArray(
 					[
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-w'),
-						_1: _p187._1,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p198, '-w'),
+						_1: _p192._1,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-x'),
-						_1: _p187._2,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p198, '-x'),
+						_1: _p192._2,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-y'),
-						_1: _p187._3,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p198, '-y'),
+						_1: _p192._3,
 						_2: time
 					},
 						{
 						ctor: '_Tuple3',
-						_0: A2(_elm_lang$core$Basics_ops['++'], _p193, '-z'),
-						_1: _p187._4,
+						_0: A2(_elm_lang$core$Basics_ops['++'], _p198, '-z'),
+						_1: _p192._4,
 						_2: time
 					}
 					]);
 			case 'AngleProperty':
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple3', _0: _p187._0, _1: _p187._1, _2: time}
+						{ctor: '_Tuple3', _0: _p192._0, _1: _p192._1, _2: time}
 					]);
 			case 'Points':
 				var name = 'points';
@@ -14767,8 +14922,8 @@ var _mdgriffith$elm_style_animation$Animation$debug = function (_p185) {
 					A2(
 						_elm_lang$core$List$indexedMap,
 						F2(
-							function (i, _p194) {
-								var _p195 = _p194;
+							function (i, _p199) {
+								var _p200 = _p199;
 								return _elm_lang$core$Native_List.fromArray(
 									[
 										{
@@ -14777,7 +14932,7 @@ var _mdgriffith$elm_style_animation$Animation$debug = function (_p185) {
 											_elm_lang$core$Basics_ops['++'],
 											_elm_lang$core$Basics$toString(i),
 											A2(_elm_lang$core$Basics_ops['++'], name, '-x')),
-										_1: _p195._0,
+										_1: _p200._0,
 										_2: time
 									},
 										{
@@ -14786,22 +14941,22 @@ var _mdgriffith$elm_style_animation$Animation$debug = function (_p185) {
 											_elm_lang$core$Basics_ops['++'],
 											_elm_lang$core$Basics$toString(i),
 											A2(_elm_lang$core$Basics_ops['++'], name, '-y')),
-										_1: _p195._1,
+										_1: _p200._1,
 										_2: time
 									}
 									]);
 							}),
-						_p187._0));
+						_p192._0));
 			default:
 				return _elm_lang$core$Native_List.fromArray(
 					[]);
 		}
 	};
-	return A2(_elm_lang$core$List$concatMap, getValueTuple, _p196.style);
+	return A2(_elm_lang$core$List$concatMap, getValueTuple, _p201.style);
 };
-var _mdgriffith$elm_style_animation$Animation$isRunning = function (_p197) {
-	var _p198 = _p197;
-	return _p198._0.running;
+var _mdgriffith$elm_style_animation$Animation$isRunning = function (_p202) {
+	var _p203 = _p202;
+	return _p203._0.running;
 };
 var _mdgriffith$elm_style_animation$Animation$subscription = F2(
 	function (msg, states) {
@@ -14811,8 +14966,8 @@ var _mdgriffith$elm_style_animation$Animation$subscription = F2(
 			_elm_lang$animation_frame$AnimationFrame$times(_mdgriffith$elm_style_animation$Animation_Model$Tick)) : _elm_lang$core$Platform_Sub$none;
 	});
 var _mdgriffith$elm_style_animation$Animation$extractInitialWait = function (steps) {
-	var _p199 = _elm_lang$core$List$head(steps);
-	if (_p199.ctor === 'Nothing') {
+	var _p204 = _elm_lang$core$List$head(steps);
+	if (_p204.ctor === 'Nothing') {
 		return {
 			ctor: '_Tuple2',
 			_0: 0,
@@ -14820,51 +14975,51 @@ var _mdgriffith$elm_style_animation$Animation$extractInitialWait = function (ste
 				[])
 		};
 	} else {
-		var _p200 = _p199._0;
-		if (_p200.ctor === 'Wait') {
-			var _p201 = _mdgriffith$elm_style_animation$Animation$extractInitialWait(
+		var _p205 = _p204._0;
+		if (_p205.ctor === 'Wait') {
+			var _p206 = _mdgriffith$elm_style_animation$Animation$extractInitialWait(
 				A2(_elm_lang$core$List$drop, 1, steps));
-			var additionalTime = _p201._0;
-			var remainingSteps = _p201._1;
-			return {ctor: '_Tuple2', _0: _p200._0 + additionalTime, _1: remainingSteps};
+			var additionalTime = _p206._0;
+			var remainingSteps = _p206._1;
+			return {ctor: '_Tuple2', _0: _p205._0 + additionalTime, _1: remainingSteps};
 		} else {
 			return {ctor: '_Tuple2', _0: 0, _1: steps};
 		}
 	}
 };
 var _mdgriffith$elm_style_animation$Animation$interrupt = F2(
-	function (steps, _p202) {
-		var _p203 = _p202;
-		var _p204 = _p203._0;
+	function (steps, _p207) {
+		var _p208 = _p207;
+		var _p209 = _p208._0;
 		return _mdgriffith$elm_style_animation$Animation_Model$Animation(
 			_elm_lang$core$Native_Utils.update(
-				_p204,
+				_p209,
 				{
 					interruption: A2(
 						_elm_lang$core$List_ops['::'],
 						_mdgriffith$elm_style_animation$Animation$extractInitialWait(steps),
-						_p204.interruption),
+						_p209.interruption),
 					running: true
 				}));
 	});
 var _mdgriffith$elm_style_animation$Animation$queue = F2(
-	function (steps, _p205) {
-		var _p206 = _p205;
-		var _p207 = _p206._0;
+	function (steps, _p210) {
+		var _p211 = _p210;
+		var _p212 = _p211._0;
 		return _mdgriffith$elm_style_animation$Animation_Model$Animation(
 			_elm_lang$core$Native_Utils.update(
-				_p207,
+				_p212,
 				{
-					steps: A2(_elm_lang$core$Basics_ops['++'], _p207.steps, steps),
+					steps: A2(_elm_lang$core$Basics_ops['++'], _p212.steps, steps),
 					running: true
 				}));
 	});
 var _mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties = function (props) {
-	var _p208 = A2(
+	var _p213 = A2(
 		_elm_lang$core$List$map,
 		function (propGroup) {
-			var _p209 = _elm_lang$core$List$head(propGroup);
-			if (_p209.ctor === 'Nothing') {
+			var _p214 = _elm_lang$core$List$head(propGroup);
+			if (_p214.ctor === 'Nothing') {
 				return '';
 			} else {
 				return (_elm_lang$core$Native_Utils.cmp(
@@ -14875,7 +15030,7 @@ var _mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties = fu
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						'The \"',
-						A2(_elm_lang$core$Basics_ops['++'], _p209._0, '\" css property is listed more than once.  Only the last instance will be used.'))) : '';
+						A2(_elm_lang$core$Basics_ops['++'], _p214._0, '\" css property is listed more than once.  Only the last instance will be used.'))) : '';
 			}
 		},
 		A2(
@@ -14923,21 +15078,21 @@ var _mdgriffith$elm_style_animation$Animation$styleWith = F2(
 				_mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties(props)));
 	});
 var _mdgriffith$elm_style_animation$Animation$styleWithEach = function (props) {
-	var _p210 = _mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties(
+	var _p215 = _mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties(
 		A2(_elm_lang$core$List$map, _elm_lang$core$Basics$snd, props));
 	return _mdgriffith$elm_style_animation$Animation$initialState(
 		A2(
 			_elm_lang$core$List$map,
-			function (_p211) {
-				var _p212 = _p211;
+			function (_p216) {
+				var _p217 = _p216;
 				return A2(
 					_mdgriffith$elm_style_animation$Animation_Model$mapToMotion,
 					function (m) {
 						return _elm_lang$core$Native_Utils.update(
 							m,
-							{interpolation: _p212._0});
+							{interpolation: _p217._0});
 					},
-					_p212._1);
+					_p217._1);
 			},
 			props));
 };
@@ -14955,16 +15110,16 @@ var _mdgriffith$elm_style_animation$Animation$toWithEach = function (interpProps
 	return _mdgriffith$elm_style_animation$Animation_Model$ToWith(
 		A2(
 			_elm_lang$core$List$map,
-			function (_p213) {
-				var _p214 = _p213;
+			function (_p218) {
+				var _p219 = _p218;
 				return A2(
 					_mdgriffith$elm_style_animation$Animation_Model$mapToMotion,
 					function (m) {
 						return _elm_lang$core$Native_Utils.update(
 							m,
-							{interpolation: _p214._0});
+							{interpolation: _p219._0});
 					},
-					_p214._1);
+					_p219._1);
 			},
 			interpProps));
 };
@@ -14997,8 +15152,8 @@ var _mdgriffith$elm_style_animation$Animation$defaultInterpolationByProperty = f
 	};
 	var spring = _mdgriffith$elm_style_animation$Animation_Model$Spring(
 		{stiffness: 170, damping: 26});
-	var _p215 = prop;
-	switch (_p215.ctor) {
+	var _p220 = prop;
+	switch (_p220.ctor) {
 		case 'ExactProperty':
 			return spring;
 		case 'ColorProperty':
@@ -15010,7 +15165,7 @@ var _mdgriffith$elm_style_animation$Animation$defaultInterpolationByProperty = f
 		case 'Property2':
 			return spring;
 		case 'Property3':
-			return _elm_lang$core$Native_Utils.eq(_p215._0, 'rotate3d') ? _mdgriffith$elm_style_animation$Animation$speed(
+			return _elm_lang$core$Native_Utils.eq(_p220._0, 'rotate3d') ? _mdgriffith$elm_style_animation$Animation$speed(
 				{perSecond: _elm_lang$core$Basics$pi}) : spring;
 		case 'Property4':
 			return spring;
@@ -15041,10 +15196,10 @@ var _mdgriffith$elm_style_animation$Animation$style = function (props) {
 			_mdgriffith$elm_style_animation$Animation$setDefaultInterpolation,
 			_mdgriffith$elm_style_animation$Animation$warnForDoubleListedProperties(props)));
 };
-var _mdgriffith$elm_style_animation$Animation$easing = function (_p216) {
-	var _p217 = _p216;
+var _mdgriffith$elm_style_animation$Animation$easing = function (_p221) {
+	var _p222 = _p221;
 	return _mdgriffith$elm_style_animation$Animation_Model$Easing(
-		{progress: 1, duration: _p217.duration, start: 0, ease: _p217.ease});
+		{progress: 1, duration: _p222.duration, start: 0, ease: _p222.ease});
 };
 var _mdgriffith$elm_style_animation$Animation$spring = function (settings) {
 	return _mdgriffith$elm_style_animation$Animation_Model$Spring(settings);
@@ -15160,38 +15315,96 @@ var _mdgriffith$elm_style_animation$Animation$inline = _mdgriffith$elm_style_ani
 var _mdgriffith$elm_style_animation$Animation$None = {ctor: 'None'};
 var _mdgriffith$elm_style_animation$Animation$none = _mdgriffith$elm_style_animation$Animation$None;
 
+var _mdgriffith$elm_style_animation$Animation_Messenger$send = function (msg) {
+	return _mdgriffith$elm_style_animation$Animation_Model$Send(msg);
+};
+var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
+	function (tick, animation) {
+		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
+	});
+
+var _user$project$IV_Scenario_Msg$ChangedMinutesText = function (a) {
+	return {ctor: 'ChangedMinutesText', _0: a};
+};
+var _user$project$IV_Scenario_Msg$ChangedHoursText = function (a) {
+	return {ctor: 'ChangedHoursText', _0: a};
+};
+var _user$project$IV_Scenario_Msg$ChangedDripText = function (a) {
+	return {ctor: 'ChangedDripText', _0: a};
+};
+
+var _user$project$IV_Apparatus_Msg$Foo = {ctor: 'Foo'};
+
+var _user$project$IV_Scenario_Model$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {tag: a, dripText: b, animalDescription: c, weightInPounds: d, simulationHoursText: e, simulationMinutesText: f, bagCapacityInLiters: g, bagContentsInLiters: h, bagType: i, dropsPerMil: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+var _user$project$IV_Msg$ToApparatus = function (a) {
+	return {ctor: 'ToApparatus', _0: a};
+};
+var _user$project$IV_Msg$ToScenario = function (a) {
+	return {ctor: 'ToScenario', _0: a};
+};
+var _user$project$IV_Msg$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
+};
+var _user$project$IV_Msg$PickedScenario = function (a) {
+	return {ctor: 'PickedScenario', _0: a};
+};
+var _user$project$IV_Msg$ChoseDripSpeed = {ctor: 'ChoseDripSpeed'};
+var _user$project$IV_Msg$StopSimulation = {ctor: 'StopSimulation'};
+var _user$project$IV_Msg$StartSimulation = {ctor: 'StartSimulation'};
+
 var _user$project$IV_Palette$white = A3(_elm_lang$core$Color$rgb, 255, 255, 255);
 var _user$project$IV_Palette$shiftedAluminum = A3(_elm_lang$core$Color$rgb, 193, 193, 193);
 var _user$project$IV_Palette$aluminum = A3(_elm_lang$core$Color$rgb, 211, 215, 207);
 
-var _user$project$IV_Droplet_View$render = function (model) {
+var _user$project$IV_Apparatus_DropletView$render = function (model) {
 	return A2(
 		_elm_lang$svg$Svg$polygon,
 		_mdgriffith$elm_style_animation$Animation$render(model.style),
 		_elm_lang$core$Native_List.fromArray(
 			[]));
 };
-var _user$project$IV_Droplet_View$fluidYOffset = 270;
-var _user$project$IV_Droplet_View$chamberYOffset = 201;
-var _user$project$IV_Droplet_View$chamberXOffset = 55;
-var _user$project$IV_Droplet_View$flowHeight = 70;
-var _user$project$IV_Droplet_View$dropHeight = 10;
-var _user$project$IV_Droplet_View$dropWidth = 10;
-var _user$project$IV_Droplet_View$dropShape = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$fluidYOffset = 270;
+var _user$project$IV_Apparatus_DropletView$chamberYOffset = 201;
+var _user$project$IV_Apparatus_DropletView$chamberXOffset = 55;
+var _user$project$IV_Apparatus_DropletView$flowHeight = 70;
+var _user$project$IV_Apparatus_DropletView$dropHeight = 10;
+var _user$project$IV_Apparatus_DropletView$dropWidth = 10;
+var _user$project$IV_Apparatus_DropletView$dropShape = _elm_lang$core$Native_List.fromArray(
 	[
 		{ctor: '_Tuple2', _0: 0, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$dropWidth, _1: _user$project$IV_Droplet_View$dropHeight},
-		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Droplet_View$dropHeight}
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$dropWidth, _1: _user$project$IV_Apparatus_DropletView$dropHeight},
+		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_DropletView$dropHeight}
 	]);
-var _user$project$IV_Droplet_View$flowShape = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$flowShape = _elm_lang$core$Native_List.fromArray(
 	[
 		{ctor: '_Tuple2', _0: 0, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$dropWidth, _1: _user$project$IV_Droplet_View$flowHeight},
-		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Droplet_View$flowHeight}
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$dropWidth, _1: _user$project$IV_Apparatus_DropletView$flowHeight},
+		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_DropletView$flowHeight}
 	]);
-var _user$project$IV_Droplet_View$translateBy = F2(
+var _user$project$IV_Apparatus_DropletView$translateBy = F2(
 	function (_p0, points) {
 		var _p1 = _p0;
 		return A2(
@@ -15202,40 +15415,40 @@ var _user$project$IV_Droplet_View$translateBy = F2(
 			},
 			points);
 	});
-var _user$project$IV_Droplet_View$dropAtTop = A2(
-	_user$project$IV_Droplet_View$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$chamberXOffset, _1: _user$project$IV_Droplet_View$chamberYOffset},
-	_user$project$IV_Droplet_View$dropShape);
-var _user$project$IV_Droplet_View$missingDrop = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$dropAtTop = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$chamberXOffset, _1: _user$project$IV_Apparatus_DropletView$chamberYOffset},
+	_user$project$IV_Apparatus_DropletView$dropShape);
+var _user$project$IV_Apparatus_DropletView$missingDrop = _elm_lang$core$Native_List.fromArray(
 	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Droplet_View$dropAtTop),
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
 		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Palette$white)
 	]);
-var _user$project$IV_Droplet_View$hangingDrop = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$hangingDrop = _elm_lang$core$Native_List.fromArray(
 	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Droplet_View$dropAtTop),
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
 		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Palette$aluminum)
 	]);
-var _user$project$IV_Droplet_View$dropInFluidAtBottom = A2(
-	_user$project$IV_Droplet_View$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$chamberXOffset, _1: _user$project$IV_Droplet_View$fluidYOffset},
-	_user$project$IV_Droplet_View$dropShape);
-var _user$project$IV_Droplet_View$fallenDrop = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$dropInFluidAtBottom = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$chamberXOffset, _1: _user$project$IV_Apparatus_DropletView$fluidYOffset},
+	_user$project$IV_Apparatus_DropletView$dropShape);
+var _user$project$IV_Apparatus_DropletView$fallenDrop = _elm_lang$core$Native_List.fromArray(
 	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Droplet_View$dropInFluidAtBottom)
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropInFluidAtBottom)
 	]);
-var _user$project$IV_Droplet_View$flowInChamber = A2(
-	_user$project$IV_Droplet_View$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Droplet_View$chamberXOffset, _1: _user$project$IV_Droplet_View$chamberYOffset},
-	_user$project$IV_Droplet_View$flowShape);
-var _user$project$IV_Droplet_View$streamState1 = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$flowInChamber = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_DropletView$chamberXOffset, _1: _user$project$IV_Apparatus_DropletView$chamberYOffset},
+	_user$project$IV_Apparatus_DropletView$flowShape);
+var _user$project$IV_Apparatus_DropletView$streamState1 = _elm_lang$core$Native_List.fromArray(
 	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Droplet_View$flowInChamber),
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
 		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Palette$aluminum)
 	]);
-var _user$project$IV_Droplet_View$streamState2 = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_DropletView$streamState2 = _elm_lang$core$Native_List.fromArray(
 	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Droplet_View$flowInChamber),
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
 		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Palette$shiftedAluminum)
 	]);
 
@@ -15254,87 +15467,102 @@ var _user$project$IV_Types$Hours = function (a) {
 	return {ctor: 'Hours', _0: a};
 };
 
-var _user$project$IV_Droplet_Main$easing = function (duration) {
+var _user$project$IV_Apparatus_Droplet$easing = function (duration) {
 	return _mdgriffith$elm_style_animation$Animation$easing(
 		{ease: _elm_lang$core$Basics$identity, duration: duration});
 };
-var _user$project$IV_Droplet_Main$guaranteedFlow = _user$project$IV_Types$DropsPerSecond(10.0);
-var _user$project$IV_Droplet_Main$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
-var _user$project$IV_Droplet_Main$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Droplet_Main$dropStreamCutoff);
-var _user$project$IV_Droplet_Main$fallingDrop = function (dropsPerSecond) {
+var _user$project$IV_Apparatus_Droplet$guaranteedFlow = _user$project$IV_Types$DropsPerSecond(10.0);
+var _user$project$IV_Apparatus_Droplet$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
+var _user$project$IV_Apparatus_Droplet$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Apparatus_Droplet$dropStreamCutoff);
+var _user$project$IV_Apparatus_Droplet$fallingDrop = function (dropsPerSecond) {
 	var totalTime = _user$project$IV_Types$asDuration(dropsPerSecond);
-	var hangingTime = totalTime - _user$project$IV_Droplet_Main$fallingTime;
+	var hangingTime = totalTime - _user$project$IV_Apparatus_Droplet$fallingTime;
 	return _elm_lang$core$Native_List.fromArray(
 		[
-			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Droplet_View$missingDrop),
+			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Apparatus_DropletView$missingDrop),
 			A2(
 			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Droplet_Main$easing(hangingTime),
-			_user$project$IV_Droplet_View$hangingDrop),
+			_user$project$IV_Apparatus_Droplet$easing(hangingTime),
+			_user$project$IV_Apparatus_DropletView$hangingDrop),
 			A2(
 			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
-			_user$project$IV_Droplet_View$fallenDrop)
+			_user$project$IV_Apparatus_Droplet$easing(_user$project$IV_Apparatus_Droplet$fallingTime),
+			_user$project$IV_Apparatus_DropletView$fallenDrop)
 		]);
 };
-var _user$project$IV_Droplet_Main$steadyStream = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_Droplet$steadyStream = _elm_lang$core$Native_List.fromArray(
 	[
 		A2(
 		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
-		_user$project$IV_Droplet_View$streamState1),
+		_user$project$IV_Apparatus_Droplet$easing(_user$project$IV_Apparatus_Droplet$fallingTime),
+		_user$project$IV_Apparatus_DropletView$streamState1),
 		A2(
 		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Droplet_Main$easing(_user$project$IV_Droplet_Main$fallingTime),
-		_user$project$IV_Droplet_View$streamState2)
+		_user$project$IV_Apparatus_Droplet$easing(_user$project$IV_Apparatus_Droplet$fallingTime),
+		_user$project$IV_Apparatus_DropletView$streamState2)
 	]);
-var _user$project$IV_Droplet_Main$animationSteps = function (dropsPerSecond) {
+var _user$project$IV_Apparatus_Droplet$animationSteps = function (dropsPerSecond) {
 	var _p0 = dropsPerSecond;
 	var raw = _p0._0;
-	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Droplet_Main$steadyStream : _user$project$IV_Droplet_Main$fallingDrop(dropsPerSecond);
+	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Apparatus_Droplet$steadyStream : _user$project$IV_Apparatus_Droplet$fallingDrop(dropsPerSecond);
 };
-var _user$project$IV_Droplet_Main$changeDropRate = F2(
+var _user$project$IV_Apparatus_Droplet$changeDropRate = F2(
 	function (dropsPerSecond, animation) {
 		var loop = _mdgriffith$elm_style_animation$Animation$loop(
-			_user$project$IV_Droplet_Main$animationSteps(dropsPerSecond));
+			_user$project$IV_Apparatus_Droplet$animationSteps(dropsPerSecond));
 		return A2(
 			_mdgriffith$elm_style_animation$Animation$interrupt,
 			_elm_lang$core$Native_List.fromArray(
 				[loop]),
 			animation);
 	});
-var _user$project$IV_Droplet_Main$update = F2(
-	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'StartSimulation') {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A2(_user$project$IV_Droplet_Main$changeDropRate, _p1._0, model.style)
-				});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A2(_mdgriffith$elm_style_animation$Animation$update, _p1._0, model.style)
-				});
-		}
-	});
-var _user$project$IV_Droplet_Main$animations = function (model) {
+var _user$project$IV_Apparatus_Droplet$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[model.style]);
 };
-var _user$project$IV_Droplet_Main$Model = function (a) {
+var _user$project$IV_Apparatus_Droplet$style$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{style: val});
+	});
+var _user$project$IV_Apparatus_Droplet$showTrueFlow = F2(
+	function (perSecond, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(
+				_user$project$IV_Apparatus_Droplet$style$,
+				model,
+				A2(_user$project$IV_Apparatus_Droplet$changeDropRate, perSecond, model.style)),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$IV_Apparatus_Droplet$showTimeLapseFlow = function (model) {
+	return {
+		ctor: '_Tuple2',
+		_0: A2(
+			_user$project$IV_Apparatus_Droplet$style$,
+			model,
+			A2(_user$project$IV_Apparatus_Droplet$changeDropRate, _user$project$IV_Apparatus_Droplet$guaranteedFlow, model.style)),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _user$project$IV_Apparatus_Droplet$animationClockTick = F2(
+	function (tick, model) {
+		var _p1 = A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model.style);
+		var newStyle = _p1._0;
+		var cmd = _p1._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$IV_Apparatus_Droplet$style$, model, newStyle),
+			_1: cmd
+		};
+	});
+var _user$project$IV_Apparatus_Droplet$Model = function (a) {
 	return {style: a};
 };
-var _user$project$IV_Droplet_Main$startingState = _user$project$IV_Droplet_Main$Model(
-	_mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Droplet_View$missingDrop));
-var _user$project$IV_Droplet_Main$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Droplet_Main$StartSimulation = function (a) {
-	return {ctor: 'StartSimulation', _0: a};
-};
+var _user$project$IV_Apparatus_Droplet$noDrips = _user$project$IV_Apparatus_Droplet$Model(
+	_mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Apparatus_DropletView$missingDrop));
 
 var _user$project$IV_Pile_ManagedStrings$isValidIntString = function (string) {
 	if (_elm_lang$core$String$isEmpty(string)) {
@@ -15373,68 +15601,56 @@ var _user$project$IV_Pile_ManagedStrings$isValidFloatString = function (string) 
 	}
 };
 
-var _user$project$IV_Scenario_Main$updateMinutes = F2(
-	function (model, nextString) {
-		return _user$project$IV_Pile_ManagedStrings$isValidIntString(nextString) ? _elm_lang$core$Native_Utils.update(
-			model,
-			{simulationMinutesText: nextString}) : model;
+var _user$project$IV_Scenario_Main$updateWhen = F4(
+	function (candidate, pred, model, updater) {
+		return {
+			ctor: '_Tuple2',
+			_0: pred(candidate) ? A2(updater, model, candidate) : model,
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
-var _user$project$IV_Scenario_Main$updateHours = F2(
-	function (model, nextString) {
-		return _user$project$IV_Pile_ManagedStrings$isValidIntString(nextString) ? _elm_lang$core$Native_Utils.update(
+var _user$project$IV_Scenario_Main$simulationMinutesText$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
 			model,
-			{simulationHoursText: nextString}) : model;
+			{simulationMinutesText: val});
 	});
-var _user$project$IV_Scenario_Main$updateNextSpeed = F2(
-	function (model, nextString) {
-		return _user$project$IV_Pile_ManagedStrings$isValidFloatString(nextString) ? _elm_lang$core$Native_Utils.update(
+var _user$project$IV_Scenario_Main$simulationHoursText$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
 			model,
-			{dripText: nextString}) : model;
+			{simulationHoursText: val});
+	});
+var _user$project$IV_Scenario_Main$dripText$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{dripText: val});
 	});
 var _user$project$IV_Scenario_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'ChangedDripText':
-				return A2(_user$project$IV_Scenario_Main$updateNextSpeed, model, _p0._0);
+				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Main$dripText$);
 			case 'ChangedHoursText':
-				return A2(_user$project$IV_Scenario_Main$updateHours, model, _p0._0);
+				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Main$simulationHoursText$);
 			default:
-				return A2(_user$project$IV_Scenario_Main$updateMinutes, model, _p0._0);
+				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Main$simulationMinutesText$);
 		}
 	});
 var _user$project$IV_Scenario_Main$commonToAllScenarios = {dripText: '0', simulationHoursText: '0', simulationMinutesText: '0', dropsPerMil: 15.0};
 var _user$project$IV_Scenario_Main$cowScenario = {tag: '1560 lb. cow', animalDescription: '3d lactation purebred Holstein', weightInPounds: 1560, bagCapacityInLiters: 20, bagContentsInLiters: 19, bagType: '5-gallon carboy', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
 var _user$project$IV_Scenario_Main$calfScenario = {tag: '90 lb. heifer calf', animalDescription: '10-day-old Hereford heifer calf', weightInPounds: 90, bagCapacityInLiters: 2, bagContentsInLiters: 2, bagType: '2-liter bag', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
-var _user$project$IV_Scenario_Main$Model = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return {tag: a, dripText: b, animalDescription: c, weightInPounds: d, simulationHoursText: e, simulationMinutesText: f, bagCapacityInLiters: g, bagContentsInLiters: h, bagType: i, dropsPerMil: j};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _user$project$IV_Scenario_Main$ChangedMinutesText = function (a) {
-	return {ctor: 'ChangedMinutesText', _0: a};
-};
-var _user$project$IV_Scenario_Main$ChangedHoursText = function (a) {
-	return {ctor: 'ChangedHoursText', _0: a};
-};
-var _user$project$IV_Scenario_Main$ChangedDripText = function (a) {
-	return {ctor: 'ChangedDripText', _0: a};
+
+var _user$project$IV_Apparatus_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return model;
+	});
+var _user$project$IV_Apparatus_Main$unstarted = {foo: 'bar'};
+var _user$project$IV_Apparatus_Main$Model = function (a) {
+	return {foo: a};
 };
 
 var _user$project$IV_Pile_SvgAttributes$transformOrigin$ = F2(
@@ -15574,10 +15790,16 @@ var _user$project$IV_Clock_View$render = function (model) {
 			]));
 };
 
-var _user$project$IV_Pile_Animation$easeForHours = function (_p0) {
+var _user$project$IV_Pile_Animation$simulationDuration = function (_p0) {
 	var _p1 = _p0;
+	return (_p1._0 * 1.5) * _elm_lang$core$Time$second;
+};
+var _user$project$IV_Pile_Animation$easeForHours = function (hours) {
 	return _mdgriffith$elm_style_animation$Animation$easing(
-		{ease: _elm_lang$core$Basics$identity, duration: (_p1._0 * 1.5) * _elm_lang$core$Time$second});
+		{
+			ease: _elm_lang$core$Basics$identity,
+			duration: _user$project$IV_Pile_Animation$simulationDuration(hours)
+		});
 };
 
 var _user$project$IV_Clock_Main$minuteHandRotations = function (_p0) {
@@ -15605,6 +15827,24 @@ var _user$project$IV_Clock_Main$hoursInDegrees = function (_p2) {
 	var _p3 = _p2;
 	return 30 * _p3._0;
 };
+var _user$project$IV_Clock_Main$animationClockTick = F2(
+	function (tick, model) {
+		var _p4 = A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model.minuteHand);
+		var newMinuteHand = _p4._0;
+		var minuteHandCommand = _p4._1;
+		var _p5 = A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model.hourHand);
+		var newHourHand = _p5._0;
+		var hourHandCommand = _p5._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{hourHand: newHourHand, minuteHand: newMinuteHand}),
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				_elm_lang$core$Native_List.fromArray(
+					[hourHandCommand, minuteHandCommand]))
+		};
+	});
 var _user$project$IV_Clock_Main$startingState = {
 	hourHand: _mdgriffith$elm_style_animation$Animation$style(
 		_user$project$IV_Clock_View$hourHandStartsAt(2)),
@@ -15629,49 +15869,36 @@ var _user$project$IV_Clock_Main$advanceHourHand = F2(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_mdgriffith$elm_style_animation$Animation$rotate(rotation)
-					]))
+					])),
+				_mdgriffith$elm_style_animation$Animation_Messenger$send(_user$project$IV_Msg$StopSimulation)
 			]);
 		return A2(_mdgriffith$elm_style_animation$Animation$interrupt, change, animation);
 	});
-var _user$project$IV_Clock_Main$update = F2(
-	function (msg, model) {
-		var _p4 = msg;
-		if (_p4.ctor === 'StartSimulation') {
-			var _p5 = _p4._0;
-			return _elm_lang$core$Native_Utils.update(
+var _user$project$IV_Clock_Main$startSimulation = F2(
+	function (hours, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
 				model,
 				{
-					hourHand: A2(_user$project$IV_Clock_Main$advanceHourHand, _p5, model.hourHand),
-					minuteHand: A2(_user$project$IV_Clock_Main$spinMinuteHand, _p5, model.minuteHand)
-				});
-		} else {
-			var _p6 = _p4._0;
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					hourHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p6, model.hourHand),
-					minuteHand: A2(_mdgriffith$elm_style_animation$Animation$update, _p6, model.minuteHand)
-				});
-		}
+					hourHand: A2(_user$project$IV_Clock_Main$advanceHourHand, hours, model.hourHand),
+					minuteHand: A2(_user$project$IV_Clock_Main$spinMinuteHand, hours, model.minuteHand)
+				}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
 var _user$project$IV_Clock_Main$Model = F2(
 	function (a, b) {
 		return {hourHand: a, minuteHand: b};
 	});
-var _user$project$IV_Clock_Main$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Clock_Main$StartSimulation = function (a) {
-	return {ctor: 'StartSimulation', _0: a};
-};
 
-var _user$project$IV_BagLevel_View$droppedProperties = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_BagLevelView$droppedProperties = _elm_lang$core$Native_List.fromArray(
 	[
 		_mdgriffith$elm_style_animation$Animation$y(80),
 		_mdgriffith$elm_style_animation$Animation$height(
 		_mdgriffith$elm_style_animation$Animation$px(120))
 	]);
-var _user$project$IV_BagLevel_View$animationProperties = function (_p0) {
+var _user$project$IV_Apparatus_BagLevelView$animationProperties = function (_p0) {
 	var _p1 = _p0;
 	var height = _p1._0 * 200;
 	var y = 200 - height;
@@ -15682,24 +15909,24 @@ var _user$project$IV_BagLevel_View$animationProperties = function (_p0) {
 			_mdgriffith$elm_style_animation$Animation$px(height))
 		]);
 };
-var _user$project$IV_BagLevel_View$levelBaseProperties = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Apparatus_BagLevelView$levelBaseProperties = _elm_lang$core$Native_List.fromArray(
 	[
 		_elm_lang$svg$Svg_Attributes$fill('#d3d7cf'),
 		_elm_lang$svg$Svg_Attributes$x('0'),
 		_elm_lang$svg$Svg_Attributes$width('120')
 	]);
-var _user$project$IV_BagLevel_View$render = function (model) {
+var _user$project$IV_Apparatus_BagLevelView$render = function (model) {
 	return A2(
 		_elm_lang$svg$Svg$rect,
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_mdgriffith$elm_style_animation$Animation$render(model.style),
-			_user$project$IV_BagLevel_View$levelBaseProperties),
+			_user$project$IV_Apparatus_BagLevelView$levelBaseProperties),
 		_elm_lang$core$Native_List.fromArray(
 			[]));
 };
 
-var _user$project$IV_BagLevel_Main$drainBag = F3(
+var _user$project$IV_Apparatus_BagLevel$drainBag = F3(
 	function (hours, level, animation) {
 		var ease = _user$project$IV_Pile_Animation$easeForHours(hours);
 		var change = _elm_lang$core$Native_List.fromArray(
@@ -15707,47 +15934,51 @@ var _user$project$IV_BagLevel_Main$drainBag = F3(
 				A2(
 				_mdgriffith$elm_style_animation$Animation$toWith,
 				ease,
-				_user$project$IV_BagLevel_View$animationProperties(level))
+				_user$project$IV_Apparatus_BagLevelView$animationProperties(level))
 			]);
 		return A2(_mdgriffith$elm_style_animation$Animation$interrupt, change, animation);
 	});
-var _user$project$IV_BagLevel_Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'StartSimulation') {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A3(_user$project$IV_BagLevel_Main$drainBag, _p0._0, _p0._1, model.style)
-				});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					style: A2(_mdgriffith$elm_style_animation$Animation$update, _p0._0, model.style)
-				});
-		}
-	});
-var _user$project$IV_BagLevel_Main$startingState = function (level) {
+var _user$project$IV_Apparatus_BagLevel$startingState = function (level) {
 	return {
 		style: _mdgriffith$elm_style_animation$Animation$style(
-			_user$project$IV_BagLevel_View$animationProperties(level))
+			_user$project$IV_Apparatus_BagLevelView$animationProperties(level))
 	};
 };
-var _user$project$IV_BagLevel_Main$animations = function (model) {
+var _user$project$IV_Apparatus_BagLevel$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[model.style]);
 };
-var _user$project$IV_BagLevel_Main$Model = function (a) {
+var _user$project$IV_Apparatus_BagLevel$style$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{style: val});
+	});
+var _user$project$IV_Apparatus_BagLevel$startSimulation = F3(
+	function (hours, level, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(
+				_user$project$IV_Apparatus_BagLevel$style$,
+				model,
+				A3(_user$project$IV_Apparatus_BagLevel$drainBag, hours, level, model.style)),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$IV_Apparatus_BagLevel$animationClockTick = F2(
+	function (tick, model) {
+		var _p0 = A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model.style);
+		var newStyle = _p0._0;
+		var cmd = _p0._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$IV_Apparatus_BagLevel$style$, model, newStyle),
+			_1: cmd
+		};
+	});
+var _user$project$IV_Apparatus_BagLevel$Model = function (a) {
 	return {style: a};
 };
-var _user$project$IV_BagLevel_Main$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_BagLevel_Main$StartSimulation = F2(
-	function (a, b) {
-		return {ctor: 'StartSimulation', _0: a, _1: b};
-	});
 
 var _user$project$IV_Scenario_Calculations$hours = function (model) {
 	var m = _user$project$IV_Pile_ManagedStrings$floatString(model.simulationMinutesText);
@@ -15775,12 +16006,33 @@ var _user$project$IV_Scenario_Calculations$endingFractionBagFilled = function (m
 	return _user$project$IV_Types$Level(startingLevel - decrease);
 };
 
+var _user$project$IV_Main$updateAllAnimations = F2(
+	function (model, _p0) {
+		var _p1 = _p0;
+		var _p2 = _p1._2(model.bagLevel);
+		var newBagLevel = _p2._0;
+		var bagLevelCmd = _p2._1;
+		var _p3 = _p1._1(model.clock);
+		var newClock = _p3._0;
+		var clockCmd = _p3._1;
+		var _p4 = _p1._0(model.droplet);
+		var newDroplet = _p4._0;
+		var dropletCmd = _p4._1;
+		var newModel = _elm_lang$core$Native_Utils.update(
+			model,
+			{droplet: newDroplet, clock: newClock, bagLevel: newBagLevel});
+		var cmd = _elm_lang$core$Platform_Cmd$batch(
+			_elm_lang$core$Native_List.fromArray(
+				[dropletCmd, clockCmd, bagLevelCmd]));
+		return {ctor: '_Tuple2', _0: newModel, _1: cmd};
+	});
 var _user$project$IV_Main$initWithScenario = function (scenario) {
 	return {
-		droplet: _user$project$IV_Droplet_Main$startingState,
+		droplet: _user$project$IV_Apparatus_Droplet$noDrips,
 		scenario: scenario,
+		simulation: _user$project$IV_Apparatus_Main$unstarted,
 		clock: _user$project$IV_Clock_Main$startingState,
-		bagLevel: _user$project$IV_BagLevel_Main$startingState(
+		bagLevel: _user$project$IV_Apparatus_BagLevel$startingState(
 			_user$project$IV_Scenario_Calculations$startingFractionBagFilled(scenario))
 	};
 };
@@ -15789,112 +16041,109 @@ var _user$project$IV_Main$init = {
 	_0: _user$project$IV_Main$initWithScenario(_user$project$IV_Scenario_Main$cowScenario),
 	_1: _elm_lang$core$Platform_Cmd$none
 };
-var _user$project$IV_Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'ToScenario':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							scenario: A2(_user$project$IV_Scenario_Main$update, _p0._0, model.scenario)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'PickedScenario':
-				return {
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Main$initWithScenario(_p0._0),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'StartSimulation':
-				var level = _user$project$IV_Scenario_Calculations$endingFractionBagFilled(model.scenario);
-				var hours = _user$project$IV_Scenario_Calculations$hours(model.scenario);
-				var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							droplet: A2(
-								_user$project$IV_Droplet_Main$update,
-								_user$project$IV_Droplet_Main$StartSimulation(_user$project$IV_Droplet_Main$guaranteedFlow),
-								model.droplet),
-							clock: A2(
-								_user$project$IV_Clock_Main$update,
-								_user$project$IV_Clock_Main$StartSimulation(hours),
-								model.clock),
-							bagLevel: A2(
-								_user$project$IV_BagLevel_Main$update,
-								A2(_user$project$IV_BagLevel_Main$StartSimulation, hours, level),
-								model.bagLevel)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ChoseDripSpeed':
-				var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							droplet: A2(
-								_user$project$IV_Droplet_Main$update,
-								_user$project$IV_Droplet_Main$StartSimulation(dps),
-								model.droplet)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				var _p1 = _p0._0;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							droplet: A2(
-								_user$project$IV_Droplet_Main$update,
-								_user$project$IV_Droplet_Main$AnimationClockTick(_p1),
-								model.droplet),
-							clock: A2(
-								_user$project$IV_Clock_Main$update,
-								_user$project$IV_Clock_Main$AnimationClockTick(_p1),
-								model.clock),
-							bagLevel: A2(
-								_user$project$IV_BagLevel_Main$update,
-								_user$project$IV_BagLevel_Main$AnimationClockTick(_p1),
-								model.bagLevel)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-		}
-	});
-var _user$project$IV_Main$Model = F4(
-	function (a, b, c, d) {
-		return {droplet: a, scenario: b, clock: c, bagLevel: d};
-	});
-var _user$project$IV_Main$ToScenario = function (a) {
-	return {ctor: 'ToScenario', _0: a};
-};
-var _user$project$IV_Main$PickedScenario = function (a) {
-	return {ctor: 'PickedScenario', _0: a};
-};
-var _user$project$IV_Main$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
 var _user$project$IV_Main$subscriptions = function (model) {
 	return A2(
 		_mdgriffith$elm_style_animation$Animation$subscription,
-		_user$project$IV_Main$AnimationClockTick,
+		_user$project$IV_Msg$AnimationClockTick,
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_user$project$IV_Droplet_Main$animations(model.droplet),
-			_user$project$IV_Clock_Main$animations(model.clock)));
+			_user$project$IV_Apparatus_Droplet$animations(model.droplet),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$IV_Clock_Main$animations(model.clock),
+				_user$project$IV_Apparatus_BagLevel$animations(model.bagLevel))));
 };
-var _user$project$IV_Main$ChoseDripSpeed = {ctor: 'ChoseDripSpeed'};
-var _user$project$IV_Main$StartSimulation = {ctor: 'StartSimulation'};
+var _user$project$IV_Main$droplet$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{droplet: val});
+	});
+var _user$project$IV_Main$updateDroplet = F2(
+	function (model, updater) {
+		var _p5 = updater(model.droplet);
+		var newDroplet = _p5._0;
+		var cmd = _p5._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$IV_Main$droplet$, model, newDroplet),
+			_1: cmd
+		};
+	});
+var _user$project$IV_Main$showTrueFlow = function (model) {
+	var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario);
+	return A2(
+		_user$project$IV_Main$updateDroplet,
+		model,
+		_user$project$IV_Apparatus_Droplet$showTrueFlow(dps));
+};
+var _user$project$IV_Main$scenario$ = F2(
+	function (model, val) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{scenario: val});
+	});
+var _user$project$IV_Main$updateScenario = F2(
+	function (model, updater) {
+		var _p6 = updater(model.scenario);
+		var newScenario = _p6._0;
+		var cmd = _p6._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_user$project$IV_Main$scenario$, model, newScenario),
+			_1: cmd
+		};
+	});
+var _user$project$IV_Main$update = F2(
+	function (msg, model) {
+		var _p7 = msg;
+		switch (_p7.ctor) {
+			case 'ToScenario':
+				return A2(
+					_user$project$IV_Main$updateScenario,
+					model,
+					_user$project$IV_Scenario_Main$update(_p7._0));
+			case 'ToApparatus':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'PickedScenario':
+				return {
+					ctor: '_Tuple2',
+					_0: _user$project$IV_Main$initWithScenario(_p7._0),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ChoseDripSpeed':
+				return _user$project$IV_Main$showTrueFlow(model);
+			case 'StartSimulation':
+				var level = _user$project$IV_Scenario_Calculations$endingFractionBagFilled(model.scenario);
+				var hours = _user$project$IV_Scenario_Calculations$hours(model.scenario);
+				return A2(
+					_user$project$IV_Main$updateAllAnimations,
+					model,
+					{
+						ctor: '_Tuple3',
+						_0: _user$project$IV_Apparatus_Droplet$showTimeLapseFlow,
+						_1: _user$project$IV_Clock_Main$startSimulation(hours),
+						_2: A2(_user$project$IV_Apparatus_BagLevel$startSimulation, hours, level)
+					});
+			case 'StopSimulation':
+				return _user$project$IV_Main$showTrueFlow(model);
+			default:
+				var _p8 = _p7._0;
+				return A2(
+					_user$project$IV_Main$updateAllAnimations,
+					model,
+					{
+						ctor: '_Tuple3',
+						_0: _user$project$IV_Apparatus_Droplet$animationClockTick(_p8),
+						_1: _user$project$IV_Clock_Main$animationClockTick(_p8),
+						_2: _user$project$IV_Apparatus_BagLevel$animationClockTick(_p8)
+					});
+		}
+	});
+var _user$project$IV_Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {scenario: a, simulation: b, droplet: c, clock: d, bagLevel: e};
+	});
 
 var _user$project$IV_Pile_HtmlShorthand$row = function (elements) {
 	return A2(
@@ -15926,7 +16175,7 @@ var _user$project$IV_Scenario_View$scenarioButton = F3(
 					_elm_lang$html$Html_Attributes$type$('button'),
 					_elm_lang$html$Html_Attributes$class($class),
 					_elm_lang$html$Html_Events$onClick(
-					_user$project$IV_Main$PickedScenario(buttonScenario))
+					_user$project$IV_Msg$PickedScenario(buttonScenario))
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
@@ -15967,7 +16216,7 @@ var _user$project$IV_Scenario_View$description = function (model) {
 };
 var _user$project$IV_Scenario_View$changedText = F2(
 	function (msg, string) {
-		return _user$project$IV_Main$ToScenario(
+		return _user$project$IV_Msg$ToScenario(
 			msg(string));
 	});
 var _user$project$IV_Scenario_View$view = function (model) {
@@ -15998,8 +16247,8 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.dripText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedDripText)),
-								_elm_lang$html$Html_Events$onBlur(_user$project$IV_Main$ChoseDripSpeed)
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDripText)),
+								_elm_lang$html$Html_Events$onBlur(_user$project$IV_Msg$ChoseDripSpeed)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
@@ -16012,7 +16261,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.simulationHoursText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedHoursText))
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedHoursText))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
@@ -16025,7 +16274,7 @@ var _user$project$IV_Scenario_View$view = function (model) {
 								_elm_lang$html$Html_Attributes$value(model.simulationMinutesText),
 								_elm_lang$html$Html_Attributes$size(6),
 								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Main$ChangedMinutesText))
+								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedMinutesText))
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
@@ -16034,18 +16283,26 @@ var _user$project$IV_Scenario_View$view = function (model) {
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Events$onClick(_user$project$IV_Main$StartSimulation),
+								_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$StartSimulation),
 								_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('See What To Expect')
+								_elm_lang$html$Html$text('Start the Clock')
 							]))
+					])),
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('To start over, click one of the buttons at the top.')
 					]))
 			]));
 };
 
-var _user$project$IV_View_Apparatus$hose = A2(
+var _user$project$IV_Apparatus_View$hose = A2(
 	_elm_lang$svg$Svg$rect,
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -16058,7 +16315,7 @@ var _user$project$IV_View_Apparatus$hose = A2(
 		]),
 	_elm_lang$core$Native_List.fromArray(
 		[]));
-var _user$project$IV_View_Apparatus$bottomLiquid = A2(
+var _user$project$IV_Apparatus_View$bottomLiquid = A2(
 	_elm_lang$svg$Svg$polygon,
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -16067,7 +16324,7 @@ var _user$project$IV_View_Apparatus$bottomLiquid = A2(
 		]),
 	_elm_lang$core$Native_List.fromArray(
 		[]));
-var _user$project$IV_View_Apparatus$nozzle = A2(
+var _user$project$IV_Apparatus_View$nozzle = A2(
 	_elm_lang$svg$Svg$polyline,
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -16077,7 +16334,7 @@ var _user$project$IV_View_Apparatus$nozzle = A2(
 		]),
 	_elm_lang$core$Native_List.fromArray(
 		[]));
-var _user$project$IV_View_Apparatus$marking = function (n) {
+var _user$project$IV_Apparatus_View$marking = function (n) {
 	var ypos = 20 * n;
 	return A2(
 		_elm_lang$svg$Svg$line,
@@ -16092,7 +16349,7 @@ var _user$project$IV_View_Apparatus$marking = function (n) {
 		_elm_lang$core$Native_List.fromArray(
 			[]));
 };
-var _user$project$IV_View_Apparatus$bag = A2(
+var _user$project$IV_Apparatus_View$bag = A2(
 	_elm_lang$svg$Svg$rect,
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -16105,96 +16362,96 @@ var _user$project$IV_View_Apparatus$bag = A2(
 		]),
 	_elm_lang$core$Native_List.fromArray(
 		[]));
-var _user$project$IV_View_Apparatus$drawing = A2(
+var _user$project$IV_Apparatus_View$drawing = A2(
 	_elm_lang$svg$Svg$g,
 	_elm_lang$core$Native_List.fromArray(
 		[]),
 	A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$IV_View_Apparatus$bottomLiquid, _user$project$IV_View_Apparatus$bag, _user$project$IV_View_Apparatus$nozzle, _user$project$IV_View_Apparatus$hose]),
+			[_user$project$IV_Apparatus_View$bottomLiquid, _user$project$IV_Apparatus_View$bag, _user$project$IV_Apparatus_View$nozzle, _user$project$IV_Apparatus_View$hose]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$IV_View_Apparatus$marking,
+			_user$project$IV_Apparatus_View$marking,
 			_elm_lang$core$Native_List.range(1, 9))));
 
-var _user$project$IV_View_ClockFace$spacedInt = A2(
+var _user$project$IV_Clock_ClockFace$spacedInt = A2(
 	_krisajenkins$formatting$Formatting_ops['<>'],
 	_krisajenkins$formatting$Formatting$s(' '),
 	A2(
 		_krisajenkins$formatting$Formatting_ops['<>'],
 		_krisajenkins$formatting$Formatting$int,
 		_krisajenkins$formatting$Formatting$s(' ')));
-var _user$project$IV_View_ClockFace$rotate$ = F3(
+var _user$project$IV_Clock_ClockFace$rotate$ = F3(
 	function (degrees, xCenter, yCenter) {
 		var fmt = A2(
 			_krisajenkins$formatting$Formatting_ops['<>'],
 			_krisajenkins$formatting$Formatting$s('rotate('),
 			A2(
 				_krisajenkins$formatting$Formatting_ops['<>'],
-				_user$project$IV_View_ClockFace$spacedInt,
+				_user$project$IV_Clock_ClockFace$spacedInt,
 				A2(
 					_krisajenkins$formatting$Formatting_ops['<>'],
-					_user$project$IV_View_ClockFace$spacedInt,
+					_user$project$IV_Clock_ClockFace$spacedInt,
 					A2(
 						_krisajenkins$formatting$Formatting_ops['<>'],
-						_user$project$IV_View_ClockFace$spacedInt,
+						_user$project$IV_Clock_ClockFace$spacedInt,
 						_krisajenkins$formatting$Formatting$s(')')))));
 		return A4(_krisajenkins$formatting$Formatting$print, fmt, degrees, xCenter, yCenter);
 	});
-var _user$project$IV_View_ClockFace$hourMarkersLineLength = 80;
-var _user$project$IV_View_ClockFace$clockNumeralSize = '20px';
-var _user$project$IV_View_ClockFace$clockNumeralOffset = 10;
-var _user$project$IV_View_ClockFace$clockRadius = 100;
-var _user$project$IV_View_ClockFace$clockCenterY = 200;
-var _user$project$IV_View_ClockFace$clockCenterX = 260;
-var _user$project$IV_View_ClockFace$transformForHour = function (hour) {
+var _user$project$IV_Clock_ClockFace$hourMarkersLineLength = 80;
+var _user$project$IV_Clock_ClockFace$clockNumeralSize = '20px';
+var _user$project$IV_Clock_ClockFace$clockNumeralOffset = 10;
+var _user$project$IV_Clock_ClockFace$clockRadius = 100;
+var _user$project$IV_Clock_ClockFace$clockCenterY = 200;
+var _user$project$IV_Clock_ClockFace$clockCenterX = 260;
+var _user$project$IV_Clock_ClockFace$transformForHour = function (hour) {
 	return _elm_lang$svg$Svg_Attributes$transform(
-		A3(_user$project$IV_View_ClockFace$rotate$, hour * 30, _user$project$IV_View_ClockFace$clockCenterX, _user$project$IV_View_ClockFace$clockCenterY));
+		A3(_user$project$IV_Clock_ClockFace$rotate$, hour * 30, _user$project$IV_Clock_ClockFace$clockCenterX, _user$project$IV_Clock_ClockFace$clockCenterY));
 };
-var _user$project$IV_View_ClockFace$hourMarkers = function (hour) {
+var _user$project$IV_Clock_ClockFace$hourMarkers = function (hour) {
 	return A2(
 		_elm_lang$svg$Svg$line,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Pile_SvgAttributes$x1$(_user$project$IV_View_ClockFace$clockCenterX),
-				_user$project$IV_Pile_SvgAttributes$y1$(_user$project$IV_View_ClockFace$clockCenterY),
-				_user$project$IV_Pile_SvgAttributes$x2$(_user$project$IV_View_ClockFace$clockCenterX),
-				_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_View_ClockFace$clockCenterY - _user$project$IV_View_ClockFace$hourMarkersLineLength),
+				_user$project$IV_Pile_SvgAttributes$x1$(_user$project$IV_Clock_ClockFace$clockCenterX),
+				_user$project$IV_Pile_SvgAttributes$y1$(_user$project$IV_Clock_ClockFace$clockCenterY),
+				_user$project$IV_Pile_SvgAttributes$x2$(_user$project$IV_Clock_ClockFace$clockCenterX),
+				_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_Clock_ClockFace$clockCenterY - _user$project$IV_Clock_ClockFace$hourMarkersLineLength),
 				_elm_lang$svg$Svg_Attributes$stroke('#000'),
 				_elm_lang$svg$Svg_Attributes$strokeWidth('1'),
-				_user$project$IV_View_ClockFace$transformForHour(hour)
+				_user$project$IV_Clock_ClockFace$transformForHour(hour)
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[]));
 };
-var _user$project$IV_View_ClockFace$clockNumeral = function (value) {
+var _user$project$IV_Clock_ClockFace$clockNumeral = function (value) {
 	var xy = function () {
 		var _p0 = value;
 		switch (_p0) {
 			case 12:
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_View_ClockFace$clockCenterX),
-						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_View_ClockFace$clockCenterY - _user$project$IV_View_ClockFace$clockRadius) + _user$project$IV_View_ClockFace$clockNumeralOffset)
+						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ClockFace$clockCenterX),
+						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ClockFace$clockCenterY - _user$project$IV_Clock_ClockFace$clockRadius) + _user$project$IV_Clock_ClockFace$clockNumeralOffset)
 					]);
 			case 3:
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_View_ClockFace$clockCenterX + _user$project$IV_View_ClockFace$clockRadius) - _user$project$IV_View_ClockFace$clockNumeralOffset),
-						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_View_ClockFace$clockCenterY)
+						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ClockFace$clockCenterX + _user$project$IV_Clock_ClockFace$clockRadius) - _user$project$IV_Clock_ClockFace$clockNumeralOffset),
+						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ClockFace$clockCenterY)
 					]);
 			case 6:
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_View_ClockFace$clockCenterX),
-						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_View_ClockFace$clockCenterY + _user$project$IV_View_ClockFace$clockRadius) - _user$project$IV_View_ClockFace$clockNumeralOffset)
+						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ClockFace$clockCenterX),
+						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ClockFace$clockCenterY + _user$project$IV_Clock_ClockFace$clockRadius) - _user$project$IV_Clock_ClockFace$clockNumeralOffset)
 					]);
 			case 9:
 				return _elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_View_ClockFace$clockCenterX - _user$project$IV_View_ClockFace$clockRadius) + _user$project$IV_View_ClockFace$clockNumeralOffset),
-						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_View_ClockFace$clockCenterY)
+						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ClockFace$clockCenterX - _user$project$IV_Clock_ClockFace$clockRadius) + _user$project$IV_Clock_ClockFace$clockNumeralOffset),
+						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ClockFace$clockCenterY)
 					]);
 			default:
 				return _elm_lang$core$Native_List.fromArray(
@@ -16203,7 +16460,7 @@ var _user$project$IV_View_ClockFace$clockNumeral = function (value) {
 	}();
 	var common = _elm_lang$core$Native_List.fromArray(
 		[
-			_elm_lang$svg$Svg_Attributes$fontSize(_user$project$IV_View_ClockFace$clockNumeralSize),
+			_elm_lang$svg$Svg_Attributes$fontSize(_user$project$IV_Clock_ClockFace$clockNumeralSize),
 			_elm_lang$svg$Svg_Attributes$dy('.3em'),
 			_elm_lang$svg$Svg_Attributes$textAnchor('middle')
 		]);
@@ -16216,7 +16473,7 @@ var _user$project$IV_View_ClockFace$clockNumeral = function (value) {
 				_elm_lang$core$Basics$toString(value))
 			]));
 };
-var _user$project$IV_View_ClockFace$drawing = A2(
+var _user$project$IV_Clock_ClockFace$drawing = A2(
 	_elm_lang$svg$Svg$g,
 	_elm_lang$core$Native_List.fromArray(
 		[]),
@@ -16228,21 +16485,21 @@ var _user$project$IV_View_ClockFace$drawing = A2(
 				_elm_lang$svg$Svg$circle,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_Pile_SvgAttributes$cx$(_user$project$IV_View_ClockFace$clockCenterX),
-						_user$project$IV_Pile_SvgAttributes$cy$(_user$project$IV_View_ClockFace$clockCenterY),
-						_user$project$IV_Pile_SvgAttributes$r$(_user$project$IV_View_ClockFace$clockRadius),
+						_user$project$IV_Pile_SvgAttributes$cx$(_user$project$IV_Clock_ClockFace$clockCenterX),
+						_user$project$IV_Pile_SvgAttributes$cy$(_user$project$IV_Clock_ClockFace$clockCenterY),
+						_user$project$IV_Pile_SvgAttributes$r$(_user$project$IV_Clock_ClockFace$clockRadius),
 						_elm_lang$svg$Svg_Attributes$fill('#0B79CE')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
-				_user$project$IV_View_ClockFace$clockNumeral(12),
-				_user$project$IV_View_ClockFace$clockNumeral(3),
-				_user$project$IV_View_ClockFace$clockNumeral(6),
-				_user$project$IV_View_ClockFace$clockNumeral(9)
+				_user$project$IV_Clock_ClockFace$clockNumeral(12),
+				_user$project$IV_Clock_ClockFace$clockNumeral(3),
+				_user$project$IV_Clock_ClockFace$clockNumeral(6),
+				_user$project$IV_Clock_ClockFace$clockNumeral(9)
 			]),
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$IV_View_ClockFace$hourMarkers,
+			_user$project$IV_Clock_ClockFace$hourMarkers,
 			_elm_lang$core$Native_List.fromArray(
 				[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]))));
 
@@ -16295,10 +16552,10 @@ var _user$project$IV_View$view = function (model) {
 				_user$project$IV_View$mainSvg(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$IV_BagLevel_View$render(model.bagLevel),
-						_user$project$IV_Droplet_View$render(model.droplet),
-						_user$project$IV_View_Apparatus$drawing,
-						_user$project$IV_View_ClockFace$drawing,
+						_user$project$IV_Apparatus_BagLevelView$render(model.bagLevel),
+						_user$project$IV_Apparatus_DropletView$render(model.droplet),
+						_user$project$IV_Apparatus_View$drawing,
+						_user$project$IV_Clock_ClockFace$drawing,
 						_user$project$IV_Clock_View$render(model.clock)
 					])),
 				_user$project$IV_Scenario_View$view(model.scenario)

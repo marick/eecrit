@@ -56,17 +56,17 @@ update : Msg -> Model -> (Model, Cmd Out.Msg )
 update msg model =
   case msg of
     ChangedDripText string ->
-      updateWhen string isValidFloatString model dripText 
+      updateWhen string isValidFloatString model dripText' 
     ChangedHoursText string ->
-      updateWhen string isValidIntString model simulationHoursText
+      updateWhen string isValidIntString model simulationHoursText'
     ChangedMinutesText string ->
-      updateWhen string isValidIntString model simulationMinutesText 
+      updateWhen string isValidIntString model simulationMinutesText'
                 
-dripText model val =
+dripText' model val =
   { model | dripText = val }
-simulationHoursText model val =
+simulationHoursText' model val =
   { model | simulationHoursText = val }
-simulationMinutesText model val =
+simulationMinutesText' model val =
   { model | simulationMinutesText = val }
     
 updateWhen : String -> (String -> Bool) -> Model -> (Model -> String -> Model) -> (Model, Cmd Out.Msg)

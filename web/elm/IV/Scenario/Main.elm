@@ -62,31 +62,26 @@ calfScenario =
 
 -- Update
 
-
-updateNextSpeed model nextString =
-  if isValidFloatString nextString then
-    {model | dripText = nextString }
-  else
-    model
-  
-updateHours model nextString =
-  if isValidIntString nextString then
-    {model | simulationHoursText = nextString }
-  else
-    model
-
-updateMinutes model nextString = 
-  if isValidIntString nextString then
-    {model | simulationMinutesText = nextString }
-  else
-    model
-  
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     ChangedDripText string ->
-      updateNextSpeed model string
+      updateWhen string isValidFloatString model dripText 
     ChangedHoursText string ->
-      updateHours model string
+      updateWhen string isValidIntString model simulationHoursText
     ChangedMinutesText string ->
-      updateMinutes model string
+      updateWhen string isValidIntString model simulationMinutesText 
+                
+dripText model val =
+  { model | dripText = val }
+simulationHoursText model val =
+  { model | simulationHoursText = val }
+simulationMinutesText model val =
+  { model | simulationMinutesText = val }
+    
+updateWhen : String -> (String -> Bool) -> Model -> (Model -> String -> Model) -> Model
+updateWhen candidate pred model updater =
+  if pred candidate then
+    updater model candidate
+  else
+    model

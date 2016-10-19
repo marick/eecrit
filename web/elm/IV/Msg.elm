@@ -7,6 +7,7 @@ import IV.Scenario.Model as ScenarioModel
 
 type Msg
     = StartSimulation
+    | StopSimulation
     | ChoseDripSpeed
     | PickedScenario ScenarioModel.Model
 

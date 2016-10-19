@@ -81,6 +81,14 @@ updateAllAnimations model (dropletUpdater, clockUpdater, bagLevelUpdater) =
   in
     (newModel, cmd)
 
+
+showTrueFlow model =
+  let
+    dps = Calc.dropsPerSecond model.scenario
+  in
+    Droplet.showTrueFlow dps |> updateDroplet model
+  
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
@@ -98,10 +106,7 @@ update msg model =
       )
 
     ChoseDripSpeed ->
-      let
-        dps = Calc.dropsPerSecond model.scenario
-      in
-        Droplet.showTrueFlow dps |> updateDroplet model
+      showTrueFlow model
 
     StartSimulation ->
       let
@@ -114,6 +119,9 @@ update msg model =
           , BagLevel.startSimulation hours level
           )
 
+    StopSimulation ->
+      showTrueFlow model
+        
     AnimationClockTick tick ->
       updateAllAnimations model
         ( Droplet.animationClockTick tick

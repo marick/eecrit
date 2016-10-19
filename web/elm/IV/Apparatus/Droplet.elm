@@ -1,13 +1,18 @@
 module IV.Apparatus.Droplet exposing (..)
 
 import Animation
+import Animation.Messenger
 import IV.Apparatus.DropletView as View
 import IV.Types exposing (..)
+import IV.Msg exposing (Msg)
 
 --- Model
 
+type alias AnimationState =
+  Animation.Messenger.State Msg
+
 type alias Model =
-  { style : Animation.State
+  { style : AnimationState
   }
 style' model val = { model | style = val }
 
@@ -17,7 +22,7 @@ noDrips =
 
 
 
-animations : Model -> List Animation.State
+animations : Model -> List AnimationState
 animations model =
   [model.style]
 
@@ -76,7 +81,9 @@ showTimeLapseFlow model =
   )
 
 animationClockTick tick model =
-  ( Animation.update tick model.style |> style' model
-  , Cmd.none
-  )
-
+  let
+    (newStyle, cmd) = Animation.Messenger.update tick model.style
+  in
+    ( style' model newStyle
+    , cmd
+    )

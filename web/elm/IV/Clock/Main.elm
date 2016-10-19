@@ -1,20 +1,25 @@
 module IV.Clock.Main exposing (..)
 
 import Animation
+import Animation.Messenger
 import IV.Clock.View as View
 import IV.Types exposing (..)
 import IV.Pile.Animation as APile
+import IV.Msg exposing (..)
 
 -- Model
 
 startingHour = Hours 2
 
+type alias AnimationState =
+  Animation.Messenger.State Msg
+
 type alias Model =
-  { hourHand : Animation.State
-  , minuteHand : Animation.State
+  { hourHand : AnimationState
+  , minuteHand : AnimationState
   }
 
-animations : Model -> List Animation.State
+animations : Model -> List AnimationState
 animations model =
   [model.hourHand, model.minuteHand]
            
@@ -34,12 +39,16 @@ startSimulation hours model =
   , Cmd.none
   )
 
-animationClockTick tick model = 
+animationClockTick tick model =
+  let
+    (newHourHand, hourHandCommand) = Animation.Messenger.update tick model.hourHand
+    (newMinuteHand, minuteHandCommand) = Animation.Messenger.update tick model.minuteHand
+  in
   ( { model
-      | hourHand = (Animation.update tick) model.hourHand
-      , minuteHand = (Animation.update tick) model.minuteHand
+      | hourHand = newHourHand
+      , minuteHand = newMinuteHand
     }
-  , Cmd.none
+  , Cmd.batch [hourHandCommand, minuteHandCommand]
   )
   
 
@@ -53,18 +62,19 @@ hoursInDegrees (Hours hours) =
 minuteHandRotations (Hours hours) =
   Animation.deg <| hours * 360
 
-advanceHourHand : Hours -> Animation.State -> Animation.State
+advanceHourHand : Hours -> AnimationState -> AnimationState
 advanceHourHand hours animation = 
   let
     ease = APile.easeForHours hours
     rotation = Animation.deg <| (hoursInDegrees startingHour) + hoursInDegrees hours
     change  =
       [ Animation.toWith ease [Animation.rotate rotation]
+      , Animation.Messenger.send StopSimulation
       ]
   in
     Animation.interrupt change animation
 
-spinMinuteHand : Hours -> Animation.State -> Animation.State
+spinMinuteHand : Hours -> AnimationState -> AnimationState
 spinMinuteHand hours animation =
   let
     revolutions = minuteHandRotations hours

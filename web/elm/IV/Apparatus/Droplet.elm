@@ -9,6 +9,7 @@ import IV.Types exposing (..)
 type alias Model =
   { style : Animation.State
   }
+style' model val = { model | style = val }
 
 noDrips : Model 
 noDrips =
@@ -63,14 +64,19 @@ changeDropRate dropsPerSecond animation =
     loop = Animation.loop (animationSteps dropsPerSecond)
   in
     Animation.interrupt [loop] animation
-  
 
-showTrueFlow perSecond model = 
-  { model | style = changeDropRate perSecond model.style }
+showTrueFlow perSecond model =
+  ( changeDropRate perSecond model.style |> style' model
+  , Cmd.none
+  )
 
 showTimeLapseFlow model = 
-  { model | style = changeDropRate guaranteedFlow model.style }
+  ( changeDropRate guaranteedFlow model.style |> style' model
+  , Cmd.none
+  )
 
 animationClockTick tick model =
-  { model | style = (Animation.update tick) model.style }
+  ( Animation.update tick model.style |> style' model
+  , Cmd.none
+  )
 

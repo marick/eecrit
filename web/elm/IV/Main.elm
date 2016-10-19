@@ -24,8 +24,10 @@ type alias Model =
     , bagLevel : BagLevel.Model
     }
 
-scenario model val =
+scenario' model val =
   { model | scenario = val }
+droplet' model val =
+  { model | droplet = val }
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -57,21 +59,22 @@ updateScenario model updater =
   let
     ( newScenario, cmd ) = updater model.scenario
   in
-    ( scenario model newScenario, cmd)
+    ( scenario' model newScenario, cmd)
   
 updateDroplet model updater =
-  ( { model | droplet = updater model.droplet }
-  , Cmd.none
-  )
+  let
+    (newDroplet, cmd ) = updater model.droplet
+  in
+    ( droplet' model newDroplet, cmd)
 
 updateAllAnimations model (dropletUpdater, clockUpdater, bagLevelUpdater) =
-  ( { model
-      | droplet = dropletUpdater model.droplet
-      , clock = clockUpdater model.clock
-      , bagLevel = bagLevelUpdater model.bagLevel
-    }
-  , Cmd.none
-  )
+  let
+    temp = { model
+             | clock = clockUpdater model.clock
+             , bagLevel = bagLevelUpdater model.bagLevel
+           }
+  in
+    updateDroplet temp dropletUpdater
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

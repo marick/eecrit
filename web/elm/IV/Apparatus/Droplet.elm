@@ -65,12 +65,12 @@ changeDropRate dropsPerSecond animation =
     Animation.interrupt [loop] animation
   
 
-showTrueFlow model perSecond = 
+showTrueFlow perSecond model = 
   { model | style = changeDropRate perSecond model.style }
 
 showTimeLapseFlow model = 
   { model | style = changeDropRate guaranteedFlow model.style }
 
-animationClockTick model tick =     
+animationClockTick tick model =
   { model | style = (Animation.update tick) model.style }
 

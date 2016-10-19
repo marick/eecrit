@@ -24,13 +24,13 @@ startingState =
   , minuteHand = Animation.style (View.minuteHandStartsAt 0)
   }
 
-startSimulation model hours = 
+startSimulation hours model = 
   { model
     | hourHand = advanceHourHand hours model.hourHand
     , minuteHand = spinMinuteHand hours model.minuteHand
   }
 
-animationClockTick model tick = 
+animationClockTick tick model = 
   { model
     | hourHand = (Animation.update tick) model.hourHand
     , minuteHand = (Animation.update tick) model.minuteHand

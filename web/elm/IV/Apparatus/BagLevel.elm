@@ -23,11 +23,11 @@ startingState level =
   { style = Animation.style <| View.animationProperties level }
 
 
-startSimulation : Model -> Hours -> Level -> Model
-startSimulation model hours level =
+startSimulation : Hours -> Level -> Model -> Model
+startSimulation hours level model =
   { model | style = drainBag hours level model.style }
 
-animationClockTick model tick =
+animationClockTick tick model =
   { model | style = (Animation.update tick) model.style }
 
 

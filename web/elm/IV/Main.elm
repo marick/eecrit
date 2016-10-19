@@ -48,15 +48,34 @@ initWithScenario scenario =
 init : ( Model, Cmd Msg )
 init = (initWithScenario Scenario.cowScenario, Cmd.none)
 
+
+updateScenario model updater =
+  ( { model | scenario = updater model.scenario }
+  , Cmd.none
+  )
+  
+updateDroplet model updater =
+  ( { model | droplet = updater model.droplet }
+  , Cmd.none
+  )
+
+updateAllAnimations model (dropletUpdater, clockUpdater, bagLevelUpdater) =
+  ( { model
+      | droplet = dropletUpdater model.droplet
+      , clock = clockUpdater model.clock
+      , bagLevel = bagLevelUpdater model.bagLevel
+    }
+  , Cmd.none
+  )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     ToScenario msg' ->
-      ( { model | scenario = Scenario.update msg' model.scenario }
-      , Cmd.none
-      )
+      Scenario.update msg' |> updateScenario model
 
-    ToApparatus msg' ->
+    ToApparatus msg' -> 
       ( model
       , Cmd.none
       )
@@ -69,35 +88,24 @@ update msg model =
     ChoseDripSpeed ->
       let
         dps = Calc.dropsPerSecond model.scenario
-      in          
-      ( { model
-          | droplet = Droplet.showTrueFlow model.droplet dps
-        }
-      , Cmd.none
-      )
+      in
+        Droplet.showTrueFlow dps |> updateDroplet model
 
     StartSimulation ->
       let
-        dps = Calc.dropsPerSecond model.scenario
         hours = Calc.hours model.scenario
         level = Calc.endingFractionBagFilled model.scenario
-      in          
-      (
-       { model
-         | droplet = Droplet.showTimeLapseFlow model.droplet
-         , clock = Clock.startSimulation model.clock hours
-         , bagLevel = BagLevel.startSimulation model.bagLevel hours level
-       }
-      , Cmd.none
-      )
+      in
+        updateAllAnimations model 
+          ( Droplet.showTimeLapseFlow
+          , Clock.startSimulation hours
+          , BagLevel.startSimulation hours level
+          )
 
     AnimationClockTick tick ->
-      ( 
-       { model
-         | droplet = Droplet.animationClockTick model.droplet tick
-         , clock = Clock.animationClockTick model.clock tick
-         , bagLevel = BagLevel.animationClockTick model.bagLevel tick
-       }
-      , Cmd.none
-      )
+      updateAllAnimations model
+        ( Droplet.animationClockTick tick
+        , Clock.animationClockTick tick
+        , BagLevel.animationClockTick tick
+        )
         

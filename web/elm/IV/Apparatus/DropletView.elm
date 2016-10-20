@@ -1,51 +1,27 @@
-module IV.Apparatus.DropletView exposing (..)
+module IV.Apparatus.DropletView exposing ( render
+                                         , missingDrop
+                                         , hangingDrop
+                                         , fallenDrop
+                                         , streamState1
+                                         , streamState2
+                                         )
 
 import Animation
-import IV.Pile.Palette as Palette
 import Svg
+import IV.Types exposing (..)
+import IV.Apparatus.ViewConstants as Apparatus
 
-type alias Point = (Float, Float)
+render model =
+  Svg.polygon (Animation.render model.style) []
 
-translateBy : Point -> List Point -> List Point
-translateBy (deltaX, deltaY) points =
-  List.map (\(x, y) -> (x + deltaX, y + deltaY)) points
-  
-dropWidth = 10
-dropHeight = 10
-flowHeight = 70
-
-dropShape = 
-  [ ( 0,         0 )
-  , ( dropWidth, 0)
-  , ( dropWidth, dropHeight )
-  , ( 0,         dropHeight )
-  ]
-
-flowShape = 
-    [ ( 0,         0)
-    , ( dropWidth, 0)
-    , ( dropWidth, flowHeight)
-    , ( 0,         flowHeight)
-    ]
-
-chamberXOffset = 55
-chamberYOffset = 201
-fluidYOffset = 270
-
-dropAtTop = translateBy (chamberXOffset, chamberYOffset) dropShape
-dropInFluidAtBottom = translateBy (chamberXOffset, fluidYOffset) dropShape
-
-flowInChamber = translateBy (chamberXOffset, chamberYOffset) flowShape
-
-                      
 missingDrop =
   [ Animation.points dropAtTop
-  , Animation.fill Palette.white
+  , Animation.fill Apparatus.whiteColor
   ]
 
 hangingDrop =
   [ Animation.points dropAtTop
-  , Animation.fill Palette.aluminum
+  , Animation.fill Apparatus.liquidColor
   ]
 
 fallenDrop =
@@ -53,13 +29,50 @@ fallenDrop =
 
 streamState1 =
   [ Animation.points flowInChamber
-  , Animation.fill Palette.aluminum
+  , Animation.fill Apparatus.liquidColor
   ]    
       
 streamState2 =
   [ Animation.points flowInChamber
-  , Animation.fill Palette.shiftedAluminum
+  , Animation.fill Apparatus.variantLiquidColor
   ]    
       
-render model =
-  Svg.polygon (Animation.render model.style) []
+
+-- Private
+
+translateBy : Point -> List Point -> List Point
+translateBy (deltaX, deltaY) points =
+  List.map (\(x, y) -> (x + deltaX, y + deltaY)) points
+  
+
+dropShape = 
+  [ ( 0,                   0 )
+  , ( Apparatus.dropWidth, 0)
+  , ( Apparatus.dropWidth, Apparatus.dropHeight )
+  , ( 0,                   Apparatus.dropHeight )
+  ]
+
+flowShape = 
+    [ ( 0,                   0)
+    , ( Apparatus.dropWidth, 0)
+    , ( Apparatus.dropWidth, Apparatus.streamHeight)
+    , ( 0,                   Apparatus.streamHeight)
+    ]
+
+
+dropAtTop =
+  translateBy
+    (Apparatus.dropXOffset, Apparatus.chamberYOffset)
+    dropShape
+
+dropInFluidAtBottom =
+  translateBy
+    (Apparatus.dropXOffset, Apparatus.puddleYOffset)
+    dropShape
+
+flowInChamber =
+  translateBy
+    (Apparatus.dropXOffset, Apparatus.chamberYOffset)
+    flowShape
+
+                      

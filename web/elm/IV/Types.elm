@@ -2,6 +2,7 @@ module IV.Types exposing (..)
 
 import Time exposing (second)
 
+type alias Point = (Float, Float)
 type DropsPerSecond = DropsPerSecond Float
 type Level = Level Float
 type Hours = Hours Float

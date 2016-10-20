@@ -1,55 +1,11 @@
-module IV.Apparatus.View exposing (drawing)
+module IV.Apparatus.View exposing (render)
 
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-import IV.Pile.SvgAttributes exposing (..)
+import IV.Apparatus.StaticView as StaticView
+import IV.Apparatus.BagLevelView as BagLevelView
+import IV.Apparatus.DropletView as DropletView
 
-drawing =
-  Svg.g
-    []
-    ([bottomLiquid, bag, nozzle, hose] ++
-       List.map marking [1 .. 9])
-      
-
-bag = rect
-      [ fill "none"
-      , x "0"
-      , y "0"
-      , width "120"
-      , height "200"
-      , stroke "black"
-      ]
-      []
-
-marking n =
-  let
-    ypos = 20 * n
-  in
-    line
-      [ x1' 0
-      , x2' 30
-      , y1' ypos
-      , y2' ypos
-      , stroke "black" ]
-    []
-
-nozzle = polyline
-         [ fill "none", stroke "black", points "45,200 45,290 75,290 75,200"]
-         []
-
-bottomLiquid = polygon
-               [ fill "#d3d7cf"
-               , points "45,270 45,290 75,290 75,270"
-               ]
-               []
-           
-hose =
-  Svg.rect
-    [ stroke "black"
-    , fill "#d3d7cf"
-    , x "55"
-    , y "290"
-    , width "10"
-    , height "90"
-    ]
-    []
+render bmodel dmodel =
+  [ BagLevelView.render bmodel
+  , DropletView.render dmodel
+  , StaticView.render -- Note: static view must go last to be on top.
+  ]

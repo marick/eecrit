@@ -1,26 +1,17 @@
-module IV.Clock.ClockFace exposing (drawing)
+module IV.Clock.StaticView exposing (render)
 
+import IV.Clock.ViewConstants as Clock
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Formatting exposing (..)
 import IV.Pile.SvgAttributes exposing (..)
 
-
--- Todo: remove this duplication
-clockCenterX = 260
-clockCenterY = 200
-clockRadius = 100
-
-clockNumeralOffset = 10
-clockNumeralSize = "20px"
-hourMarkersLineLength = 80
-
-drawing =
+render =
   g []
     ([ circle
-       [ cx' clockCenterX
-       , cy' clockCenterY
-       , r' clockRadius
+       [ cx' Clock.centerX
+       , cy' Clock.centerY
+       , r' Clock.radius
        , fill "#0B79CE" 
        ]
        []
@@ -29,6 +20,9 @@ drawing =
      , clockNumeral 6
      , clockNumeral 9
      ] ++ (List.map hourMarkers [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]))
+
+-- Private
+
 
 spacedInt = s " " <> int <> s " "
 
@@ -39,14 +33,14 @@ rotate' degrees xCenter yCenter =
     print fmt degrees xCenter yCenter
       
 transformForHour hour =
-  transform <| rotate' (hour * 30) clockCenterX clockCenterY
+  transform <| rotate' (hour * 30) Clock.centerX Clock.centerY
       
 hourMarkers hour = 
   line
-    [ x1' clockCenterX
-    , y1' clockCenterY
-    , x2' clockCenterX
-    , y2' (clockCenterY - hourMarkersLineLength)
+    [ x1' Clock.centerX
+    , y1' Clock.centerY
+    , x2' Clock.centerX
+    , y2' (Clock.centerY - Clock.hourMarkersLineLength)
     , stroke "#000"
     , strokeWidth "1"
     , transformForHour hour
@@ -56,26 +50,26 @@ hourMarkers hour =
 clockNumeral value = 
   let    
     common =
-      [ fontSize clockNumeralSize
+      [ fontSize Clock.numeralFontSize
       , dy ".3em"  -- apparently better methods don't work on IE
       , textAnchor "middle"]
     xy =
       case value of
         12 ->
-          [ x' clockCenterX
-          , y' (clockCenterY - clockRadius + clockNumeralOffset)
+          [ x' Clock.centerX
+          , y' (Clock.centerY - Clock.radius + Clock.numeralOffset)
           ]
         3 ->
-          [ x' (clockCenterX + clockRadius - clockNumeralOffset )
-          , y' clockCenterY
+          [ x' (Clock.centerX + Clock.radius - Clock.numeralOffset )
+          , y' Clock.centerY
           ]
         6 ->
-          [ x' clockCenterX
-          , y' (clockCenterY + clockRadius - clockNumeralOffset)
+          [ x' Clock.centerX
+          , y' (Clock.centerY + Clock.radius - Clock.numeralOffset)
           ]
         9 -> 
-          [ x' (clockCenterX - clockRadius + clockNumeralOffset )
-          , y' clockCenterY
+          [ x' (Clock.centerX - Clock.radius + Clock.numeralOffset )
+          , y' Clock.centerY
           ]
         _ ->
           []

@@ -2,7 +2,7 @@ module IV.Clock.Main exposing (..)
 
 import Animation
 import Animation.Messenger
-import IV.Clock.View as View
+import IV.Clock.AnimatedView as View
 import IV.Types exposing (..)
 import IV.Pile.Animation as APile
 import IV.Msg exposing (..)

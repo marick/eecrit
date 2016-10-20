@@ -21,10 +21,14 @@ y2' = useInt y2
 cx' = useInt cx
 cy' = useInt cy
 r' = useInt r
-
+height' = useInt height
+width' = useInt width
+     
 transformOrigin' : Int -> Int -> Svg.Attribute msg
 transformOrigin' x y =
   let 
     argFormatter = print <| int <> s "px " <> int <> s "px"
   in
     VirtualDom.attribute "transform-origin" (argFormatter x y)
+
+

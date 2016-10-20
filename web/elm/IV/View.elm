@@ -1,18 +1,16 @@
 module IV.View exposing (view)
 
-import IV.Main exposing (Model)
-import IV.Msg exposing (Msg)
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Apparatus.DropletView as Droplet
-import IV.Scenario.View as Scenario
-import IV.Clock.View as Clock
-import IV.Apparatus.BagLevelView as BagLevel
 import Svg
 import Svg.Attributes exposing (..)
-import IV.Apparatus.View as Apparatus
-import IV.Clock.ClockFace as ClockFace
 import IV.Pile.HtmlShorthand exposing (..)
+
+import IV.Main exposing (Model)
+import IV.Msg exposing (Msg)
+import IV.Scenario.View as Scenario
+import IV.Apparatus.View as Apparatus
+import IV.Clock.View as Clock
 
 everything = {width = "400px", height = "700px"}
 graphics = {width = "400px", height = "400px"}
@@ -46,8 +44,6 @@ view model =
   mainDiv
   [ Scenario.choices model.scenario
   , mainSvg
-      [BagLevel.render model.bagLevel, Droplet.render model.droplet,
-         Apparatus.drawing, ClockFace.drawing,
-         Clock.render model.clock]
+      <| Apparatus.render model.bagLevel model.droplet ++ Clock.render model.clock
   , Scenario.view model.scenario
   ]

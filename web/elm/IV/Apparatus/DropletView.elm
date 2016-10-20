@@ -1,7 +1,7 @@
 module IV.Apparatus.DropletView exposing (..)
 
 import Animation
-import IV.Palette as Palette
+import IV.Pile.Palette as Palette
 import Svg
 
 type alias Point = (Float, Float)

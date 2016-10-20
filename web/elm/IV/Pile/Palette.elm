@@ -1,4 +1,4 @@
-module IV.Palette exposing (..)
+module IV.Pile.Palette exposing (..)
 
 import Color exposing (Color, rgb)
 

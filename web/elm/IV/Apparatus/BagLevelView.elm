@@ -1,7 +1,6 @@
 module IV.Apparatus.BagLevelView exposing (..)
 
 import Animation exposing (px)
-import IV.Palette as Palette
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Types exposing (..)

@@ -6,7 +6,7 @@ import IV.Apparatus.BagLevelView as View
 import IV.Types exposing (..)
 import Time exposing (second)
 import IV.Pile.Animation as APile
-import IV.Msg exposing (Msg)
+import IV.Msg exposing (Msg(..))
 
 --- Model
 
@@ -46,6 +46,7 @@ interpretDrainage drainage =
       [ Animation.toWith
           (APile.easeForHours hours)
           (View.animationProperties (Level 0))
+      , Animation.Messenger.send FluidRanOut
       ]
           
     PartlyEmptied hours level ->

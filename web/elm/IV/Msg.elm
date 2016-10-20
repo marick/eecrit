@@ -9,6 +9,7 @@ type Msg
     = StartSimulation
     | StopSimulation
     | ChoseDripSpeed
+    | FluidRanOut
     | PickedScenario ScenarioModel.Model
 
     | AnimationClockTick Animation.Msg

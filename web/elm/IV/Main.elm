@@ -108,6 +108,15 @@ update msg model =
     ChoseDripSpeed ->
       showTrueFlow model
 
+    FluidRanOut ->
+      let 
+        -- TODO: encapsulate
+        scenario = model.scenario
+        newScenario = { scenario | dripText = "0" }
+        drainedModel = { model | scenario = newScenario }
+      in
+        update ChoseDripSpeed drainedModel
+
     StartSimulation ->
       updateAllAnimations model 
         ( Droplet.showTimeLapseFlow

@@ -1,37 +1,70 @@
-module IV.Scenario.Calculations exposing (..)
+module IV.Scenario.Calculations exposing ( startingLevel
+                                         , drainage
+                                         , dropsPerSecond
+                                         , hours
+                                         )
 
 import IV.Types exposing (..)
 import IV.Scenario.Model exposing (Model)
 import IV.Pile.ManagedStrings exposing (floatString)
 
-startingFractionBagFilled : Model -> Level
-startingFractionBagFilled model =
-  Level (model.bagContentsInLiters / model.bagCapacityInLiters)
-
-  
-endingFractionBagFilled : Model -> Level
-endingFractionBagFilled model =
-  let
-    (DropsPerSecond dps) = dropsPerSecond model
-    (Hours fractionalHours) = hours model
-    (Level startingLevel) = startingFractionBagFilled model
-    milsPerSecond = dps / model.dropsPerMil
-    milsPerHour = milsPerSecond * 60 * 60
-    litersPerHour = milsPerHour / 1000
-    decrease = litersPerHour * fractionalHours / model.bagCapacityInLiters
-  in
-    Level <| startingLevel - decrease
-
+startingLevel : Model -> Level
+startingLevel model =
+  Level <| model.bagContentsInLiters / model.bagCapacityInLiters
   
 dropsPerSecond : Model -> DropsPerSecond
 dropsPerSecond model =
-  model.dripText |> floatString |> DropsPerSecond
+  DropsPerSecond <| dropsPerSecond' model
 
 hours : Model -> Hours
 hours model =
+  Hours <| hours' model
+
+drainage : Model -> Drainage
+drainage model =
+  let 
+    toEmpty = hoursToEmptyBag' model
+    planned = hours' model
+  in
+    if planned < toEmpty then
+      PartlyEmptied (Hours planned) (Level (endingFractionBagFilled' model))
+    else
+      FullyEmptied (Hours toEmpty)
+
+-- Private
+
+dropsPerSecond' : Model -> Float
+dropsPerSecond' model =
+  floatString model.dripText
+
+startingFractionBagFilled : Model -> Float
+startingFractionBagFilled model =
+  model.bagContentsInLiters / model.bagCapacityInLiters
+  
+hours' : Model -> Float
+hours' model =
   let
     h = model.simulationHoursText |> floatString
     m = model.simulationMinutesText |> floatString
   in
-    Hours <| h + (m / 60.0)
+    h + (m / 60.0)
 
+hoursToEmptyBag' : Model -> Float
+hoursToEmptyBag' model =
+  model.bagContentsInLiters / (litersPerHour' model)
+
+litersPerHour' : Model -> Float
+litersPerHour' model =
+  let 
+    dps = dropsPerSecond' model
+    milsPerSecond = dps / model.dropsPerMil
+    milsPerHour = milsPerSecond * 60 * 60
+  in
+    milsPerHour / 1000
+
+endingFractionBagFilled' : Model -> Float
+endingFractionBagFilled' model =
+  let
+    litersGone = (litersPerHour' model) * (hours' model)
+  in
+    (model.bagContentsInLiters - litersGone) / model.bagCapacityInLiters

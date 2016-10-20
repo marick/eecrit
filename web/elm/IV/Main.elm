@@ -48,7 +48,7 @@ initWithScenario scenario =
   , scenario = scenario
   , simulation = Apparatus.unstarted
   , clock = Clock.startingState
-  , bagLevel = BagLevel.startingState (Calc.startingFractionBagFilled scenario)
+  , bagLevel = BagLevel.startingState (Calc.startingLevel scenario)
   }
   
 init : ( Model, Cmd Msg )
@@ -109,16 +109,12 @@ update msg model =
       showTrueFlow model
 
     StartSimulation ->
-      let
-        hours = Calc.hours model.scenario
-        level = Calc.endingFractionBagFilled model.scenario
-      in
-        updateAllAnimations model 
-          ( Droplet.showTimeLapseFlow
-          , Clock.startSimulation hours
-          , BagLevel.startSimulation hours level
-          )
-
+      updateAllAnimations model 
+        ( Droplet.showTimeLapseFlow
+        , Clock.startSimulation <| Calc.hours model.scenario
+        , BagLevel.startSimulation <| Calc.drainage model.scenario
+        )
+        
     StopSimulation ->
       showTrueFlow model
         

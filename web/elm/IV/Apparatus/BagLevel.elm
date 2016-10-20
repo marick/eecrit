@@ -26,13 +26,6 @@ startingState : Level -> Model
 startingState level =
   { style = Animation.style <| View.animationProperties level }
 
-
--- startSimulation : Hours -> Level -> Model -> (Model, Cmd Msg)
-startSimulation hours level model =
-  ( drainBag hours level model.style |> style' model
-  , Cmd.none
-  )
-
 animationClockTick tick model =
   let
     (newStyle, cmd) = Animation.Messenger.update tick model.style
@@ -41,10 +34,23 @@ animationClockTick tick model =
     , cmd
     )
 
-drainBag : Hours -> Level -> AnimationState -> AnimationState
-drainBag hours level animation =
-  let
-    ease = APile.easeForHours hours
-    change = [Animation.toWith ease (View.animationProperties level)]
-  in
-    Animation.interrupt change animation
+startSimulation : Drainage -> Model -> (Model, Cmd Msg)
+startSimulation drainage model =
+  ( Animation.interrupt (interpretDrainage drainage) model.style |> style' model
+  , Cmd.none
+  )
+
+interpretDrainage drainage =
+  case drainage of
+    FullyEmptied hours -> 
+      [ Animation.toWith
+          (APile.easeForHours hours)
+          (View.animationProperties (Level 0))
+      ]
+          
+    PartlyEmptied hours level ->
+      [ Animation.toWith
+          (APile.easeForHours hours)
+          (View.animationProperties level)
+      ]
+      

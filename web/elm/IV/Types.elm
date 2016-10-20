@@ -5,6 +5,10 @@ import Time exposing (second)
 type DropsPerSecond = DropsPerSecond Float
 type Level = Level Float
 type Hours = Hours Float
+
+type Drainage
+  = FullyEmptied Hours
+  | PartlyEmptied Hours Level
   
 asDuration : DropsPerSecond -> Float
 asDuration (DropsPerSecond perSecond) = 

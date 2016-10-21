@@ -1,6 +1,7 @@
 module IV.Apparatus.Main exposing (..)
 
-import IV.Apparatus.Msg exposing (..)
+import IV.Apparatus.Droplet as Droplet
+import IV.Apparatus.BagLevel as BagLevel
 import IV.Types exposing (..)
 
 type alias Model =
@@ -8,8 +9,5 @@ type alias Model =
 
 unstarted = { foo = "bar" }
 
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    _ ->
-      model
+animations model = 
+  [model.droplet, model.bagLevel]

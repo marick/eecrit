@@ -10,10 +10,6 @@ import IV.Msg exposing (Msg(..))
 
 type alias Model = AnimationState
                    
-animations : Model -> List AnimationState
-animations model =
-  [model]
-
 startingState : Level -> Model 
 startingState level =
   Animation.style <| View.animationProperties level

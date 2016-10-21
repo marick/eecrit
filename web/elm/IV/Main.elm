@@ -16,7 +16,7 @@ import IV.Scenario.Calculations as Calc
 
 type alias Model =
     { scenario : ScenarioModel.Model -- this holds all the user-chosen data
-    , simulation : Apparatus.Model
+    , apparatus : Apparatus.Model
 
     -- The following hold the animation states of component pieces
     , droplet : Droplet.Model
@@ -35,9 +35,7 @@ subscriptions model =
   -- any of the listed animations is running.
   Animation.subscription
     AnimationClockTick
-    (Droplet.animations model.droplet ++
-       Clock.animations model.clock  ++
-       BagLevel.animations model.bagLevel)
+    (Apparatus.animations model ++ Clock.animations model.clock)
 
 
 -- Update
@@ -46,7 +44,7 @@ initWithScenario : ScenarioModel.Model -> Model
 initWithScenario scenario =
   { droplet = Droplet.noDrips
   , scenario = scenario
-  , simulation = Apparatus.unstarted
+  , apparatus = Apparatus.unstarted
   , clock = Clock.startingState
   , bagLevel = BagLevel.startingState (Calc.startingLevel scenario)
   }
@@ -94,11 +92,6 @@ update msg model =
   case msg of
     ToScenario msg' ->
       Scenario.update msg' |> updateScenario model
-
-    ToApparatus msg' -> 
-      ( model
-      , Cmd.none
-      )
 
     PickedScenario scenario ->
       ( initWithScenario scenario

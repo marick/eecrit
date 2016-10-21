@@ -14,10 +14,6 @@ noDrips : Model
 noDrips =
   Animation.style View.missingDrop
 
-animations : Model -> List AnimationState
-animations model =
-  [model]
-
 -- Update
 
 dropStreamCutoff = DropsPerSecond 8.0

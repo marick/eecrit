@@ -8,9 +8,6 @@ import IV.Msg exposing (Msg)
 
 --- Model
 
-type alias AnimationState =
-  Animation.Messenger.State Msg
-
 type alias Model =
   { style : AnimationState
   }

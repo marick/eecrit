@@ -11,9 +11,6 @@ import IV.Msg exposing (..)
 
 startingHour = Hours 2
 
-type alias AnimationState =
-  Animation.Messenger.State Msg
-
 type alias Model =
   { hourHand : AnimationState
   , minuteHand : AnimationState

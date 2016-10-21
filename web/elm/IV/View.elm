@@ -43,7 +43,6 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ Scenario.choices model.scenario
-  , mainSvg
-      <| Apparatus.render model.bagLevel model.droplet ++ Clock.render model.clock
+  , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
   , Scenario.view model.scenario
   ]

@@ -1,5 +1,6 @@
 module IV.Apparatus.BagView exposing
-  ( ..
+  ( render
+  , animatableFluidAttributes
   )
 
 import IV.Apparatus.ViewConstants as Apparatus
@@ -13,12 +14,12 @@ import Svg.Attributes exposing (..)
 
 
 render model =
-  [ rect (Animation.render model.bagLevel ++ invariantProperties) []
-  , Svg.g
-      []
-      ([ bag ] ++ List.map marking [1 .. 9])
-  ]
-
+  Svg.g []
+    [ fluid model
+    , bag
+    , markings
+    ]
+    
 -- The static part      
 
 bag = rect
@@ -43,12 +44,11 @@ marking n =
       , stroke "black" ]
     []
 
+markings = Svg.g [] <| List.map marking [1 .. 9]
+
 -- Animated Part
 
-
-
-
-animationProperties (Level fractionBagFilled) =
+animatableFluidAttributes (Level fractionBagFilled) =
   let
     height = fractionBagFilled * Apparatus.bagHeight
     y = Apparatus.bagHeight - height
@@ -57,8 +57,8 @@ animationProperties (Level fractionBagFilled) =
     , Animation.height (px height)
     ]
 
-
--- Private    
+fluid model =
+  rect (Animation.render model.bagLevel ++ invariantProperties) []
 
 invariantProperties =
   [ fill Apparatus.liquidColorString

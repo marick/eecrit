@@ -1,15 +1,14 @@
-module IV.Apparatus.StaticView exposing (render)
+module IV.Apparatus.ChamberView exposing (render)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Pile.SvgAttributes exposing (..)
 import IV.Apparatus.ViewConstants as Apparatus
-import IV.Apparatus.BagView
 
 render =
   Svg.g
     []
-    [bottomLiquid, chamber, hose]
+    [bottomLiquid, chamber]
       
 
 -- Private
@@ -27,13 +26,3 @@ bottomLiquid = polygon
                ]
                []
            
-hose =
-  Svg.rect
-    [ stroke "black"
-    , fill Apparatus.liquidColorString
-    , x' Apparatus.hoseXOffset
-    , y' Apparatus.hoseYOffset
-    , width' Apparatus.hoseWidth
-    , height' Apparatus.hoseHeight
-    ]
-    []

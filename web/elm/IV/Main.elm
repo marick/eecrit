@@ -77,7 +77,9 @@ update msg model =
 
     FluidRanOut ->
       let 
-        -- TODO: encapsulate
+        -- TODO: Changing the value in the scenario is needed so that
+        -- the drip doesn't start up again (from an empty bag) when
+        -- the simulation finishes (the clock runs out).
         scenario = model.scenario
         newScenario = { scenario | dripText = "0" }
         drainedModel = { model | scenario = newScenario }

@@ -4,38 +4,16 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Pile.SvgAttributes exposing (..)
 import IV.Apparatus.ViewConstants as Apparatus
+import IV.Apparatus.BagView
 
 render =
   Svg.g
     []
-    ([bottomLiquid, bag, chamber, hose] ++
-       List.map marking [1 .. 9])
+    [bottomLiquid, chamber, hose]
       
 
 -- Private
       
-bag = rect
-      [ fill "none"
-      , x' 0
-      , y' 0
-      , width' Apparatus.bagWidth
-      , height' Apparatus.bagHeight
-      , stroke "black"
-      ]
-      []
-
-marking n =
-  let
-    ypos = 20 * n
-  in
-    line
-      [ x1' 0
-      , x2' 30
-      , y1' ypos
-      , y2' ypos
-      , stroke "black" ]
-    []
-
 chamber = polyline
           [ fill "none"
           , stroke "black"

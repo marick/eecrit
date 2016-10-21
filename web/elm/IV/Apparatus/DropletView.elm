@@ -12,7 +12,7 @@ import IV.Types exposing (..)
 import IV.Apparatus.ViewConstants as Apparatus
 
 render model =
-  Svg.polygon (Animation.render model.style) []
+  Svg.polygon (Animation.render model) []
 
 missingDrop =
   [ Animation.points dropAtTop

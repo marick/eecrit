@@ -8,20 +8,15 @@ import IV.Msg exposing (Msg)
 
 --- Model
 
-type alias Model =
-  { style : AnimationState
-  }
-style' model val = { model | style = val }
+type alias Model = AnimationState
 
 noDrips : Model 
 noDrips =
-  Model (Animation.style View.missingDrop)
-
-
+  Animation.style View.missingDrop
 
 animations : Model -> List AnimationState
 animations model =
-  [model.style]
+  [model]
 
 -- Update
 
@@ -68,19 +63,14 @@ changeDropRate dropsPerSecond animation =
     Animation.interrupt [loop] animation
 
 showTrueFlow perSecond model =
-  ( changeDropRate perSecond model.style |> style' model
+  ( changeDropRate perSecond model
   , Cmd.none
   )
 
 showTimeLapseFlow model = 
-  ( changeDropRate guaranteedFlow model.style |> style' model
+  ( changeDropRate guaranteedFlow model
   , Cmd.none
   )
 
 animationClockTick tick model =
-  let
-    (newStyle, cmd) = Animation.Messenger.update tick model.style
-  in
-    ( style' model newStyle
-    , cmd
-    )
+  Animation.Messenger.update tick model

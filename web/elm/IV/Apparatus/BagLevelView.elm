@@ -12,7 +12,7 @@ import IV.Apparatus.ViewConstants as Apparatus
 
 
 render model =
-  rect (Animation.render model.style ++ invariantProperties) []
+  rect (Animation.render model ++ invariantProperties) []
 
 animationProperties (Level fractionBagFilled) =
   let

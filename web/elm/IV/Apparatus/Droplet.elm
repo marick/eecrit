@@ -8,9 +8,7 @@ import IV.Msg exposing (Msg)
 
 --- Model
 
-type alias Model = AnimationState
-
-noDrips : Model 
+noDrips : AnimationState 
 noDrips =
   Animation.style View.missingDrop
 

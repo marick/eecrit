@@ -7,8 +7,8 @@ import IV.Scenario.Calculations as Calc
 import IV.Scenario.Model as Scenario
 
 type alias Model =
-  { droplet : Droplet.Model
-  , bagLevel : BagLevel.Model
+  { droplet : AnimationState
+  , bagLevel : AnimationState
   }
 
 unstarted scenario =

@@ -8,16 +8,14 @@ import Time exposing (second)
 import IV.Pile.Animation as APile
 import IV.Msg exposing (Msg(..))
 
-type alias Model = AnimationState
-                   
-startingState : Level -> Model 
+startingState : Level -> AnimationState 
 startingState level =
   Animation.style <| View.animatableFluidAttributes level
 
 animationClockTick tick model =
   Animation.Messenger.update tick model
 
-startSimulation : Drainage -> Model -> (Model, Cmd Msg)
+startSimulation : Drainage -> AnimationState -> (AnimationState, Cmd Msg)
 startSimulation drainage model =
   ( Animation.interrupt (interpretDrainage drainage) model
   , Cmd.none

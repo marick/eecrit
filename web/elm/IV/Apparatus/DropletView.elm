@@ -37,6 +37,11 @@ streamState2 =
   , Animation.fill Apparatus.variantLiquidColor
   ]    
       
+streamRunsOut =
+  [ Animation.points finalSliverInChamber
+  , Animation.fill Apparatus.liquidColor
+  ]    
+      
 
 -- Private
 
@@ -59,6 +64,12 @@ flowShape =
     , ( 0,                   Apparatus.streamHeight)
     ]
 
+finalSliverOfFlowShape = 
+    [ ( 0,                   0)
+    , ( Apparatus.dropWidth, 0)
+    , ( Apparatus.dropWidth, 0)
+    , ( 0,                   0)
+    ]
 
 dropAtTop =
   translateBy
@@ -75,4 +86,7 @@ flowInChamber =
     (Apparatus.dropXOffset, Apparatus.chamberYOffset)
     flowShape
 
-                      
+finalSliverInChamber =
+  translateBy
+    (Apparatus.dropXOffset, Apparatus.chamberYOffset)
+    finalSliverOfFlowShape

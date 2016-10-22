@@ -22,6 +22,8 @@ type alias Model =
 
 scenario' model val =
   { model | scenario = val }
+apparatus' model val =
+  { model | apparatus = val }
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -53,8 +55,7 @@ updateScenario model updater =
   
 showTrueFlow model =
   let
-    dps = Calc.dropsPerSecond model.scenario
-    (newApparatus, cmd) = Apparatus.showTrueFlow dps model.apparatus
+    (newApparatus, cmd) = Apparatus.showTrueFlow model.apparatus
   in
     ( { model | apparatus = newApparatus }
     , cmd
@@ -73,18 +74,18 @@ update msg model =
       )
 
     ChoseDripSpeed ->
-      showTrueFlow model
+      let
+        tweakedApparatus = Apparatus.rate' model.apparatus (Calc.dropsPerSecond model.scenario)
+        newModel = apparatus' model tweakedApparatus
+      in
+        showTrueFlow newModel
 
     FluidRanOut ->
-      let 
-        -- TODO: Changing the value in the scenario is needed so that
-        -- the drip doesn't start up again (from an empty bag) when
-        -- the simulation finishes (the clock runs out).
-        scenario = model.scenario
-        newScenario = { scenario | dripText = "0" }
-        drainedModel = { model | scenario = newScenario }
+      let
+        tweakedApparatus = Apparatus.rate' model.apparatus (DropsPerSecond 0)
+        drainedModel = apparatus' model tweakedApparatus
       in
-        update ChoseDripSpeed drainedModel
+        showTrueFlow drainedModel
 
     StartSimulation ->
       let

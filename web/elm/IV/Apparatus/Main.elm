@@ -9,26 +9,29 @@ import IV.Scenario.Model as Scenario
 type alias Model =
   { droplet : AnimationState
   , bagLevel : AnimationState
+  , rate : DropsPerSecond
   }
 
 unstarted scenario =
   { droplet = Droplet.noDrips
   , bagLevel = BagLevel.startingState (Calc.startingLevel scenario)
+  , rate = DropsPerSecond 0
   }
 
 droplet' model val =
   { model | droplet = val }
 bagLevel' model val =
   { model | bagLevel = val }
-
-  
+rate' model val =
+  { model | rate = val }
 
 animations model = 
   [model.droplet, model.bagLevel]
 
-showTrueFlow dps model = 
+    
+showTrueFlow model = 
   let
-    (newDroplet, cmd) = Droplet.showTrueFlow dps model.droplet
+    (newDroplet, cmd) = Droplet.showTrueFlow model.rate model.droplet
   in
     ( { model | droplet = newDroplet }
     , cmd

@@ -4,7 +4,7 @@ import Animation
 import Animation.Messenger
 import IV.Clock.AnimatedView as View
 import IV.Types exposing (..)
-import IV.Pile.Animation as APile
+import IV.Pile.Animation exposing (easeForHours)
 import IV.Msg exposing (..)
 
 -- Model
@@ -62,10 +62,9 @@ minuteHandRotations (Hours hours) =
 advanceHourHand : Hours -> AnimationState -> AnimationState
 advanceHourHand hours animation = 
   let
-    ease = APile.easeForHours hours
     rotation = Animation.deg <| (hoursInDegrees startingHour) + hoursInDegrees hours
     change  =
-      [ Animation.toWith ease [Animation.rotate rotation]
+      [ Animation.toWith (easeForHours hours) [Animation.rotate rotation]
       , Animation.Messenger.send StopSimulation
       ]
   in
@@ -75,8 +74,7 @@ spinMinuteHand : Hours -> AnimationState -> AnimationState
 spinMinuteHand hours animation =
   let
     revolutions = minuteHandRotations hours
-    ease = APile.easeForHours hours
-    change = Animation.toWith ease [Animation.rotate revolutions]
+    change = Animation.toWith (easeForHours hours) [Animation.rotate revolutions]
   in
     Animation.interrupt [change] animation
   

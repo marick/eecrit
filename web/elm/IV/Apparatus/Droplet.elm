@@ -5,6 +5,7 @@ import Animation.Messenger
 import IV.Apparatus.DropletView as View
 import IV.Types exposing (..)
 import IV.Msg exposing (Msg)
+import IV.Pile.Animation exposing (linearEasing)
 
 --- Model
 
@@ -19,26 +20,19 @@ guaranteedFlow = DropsPerSecond 10.0
 -- Following is slower than reality (in a vacuum), but looks better
 fallingTime = asDuration dropStreamCutoff
 
-easing duration =
-  Animation.easing
-    {
-      ease = identity
-    , duration = duration
-    }
-
 fallingDrop dropsPerSecond =
   let
     totalTime = asDuration dropsPerSecond
     hangingTime = totalTime - fallingTime
   in
     [ Animation.set View.missingDrop
-    , Animation.toWith (easing hangingTime) View.hangingDrop
-    , Animation.toWith (easing fallingTime) View.fallenDrop
+    , Animation.toWith (linearEasing hangingTime) View.hangingDrop
+    , Animation.toWith (linearEasing fallingTime) View.fallenDrop
     ]
 
 steadyStream = 
-  [ Animation.toWith (easing fallingTime) View.streamState1
-  , Animation.toWith (easing fallingTime) View.streamState2
+  [ Animation.toWith (linearEasing fallingTime) View.streamState1
+  , Animation.toWith (linearEasing fallingTime) View.streamState2
   ]
     
 animationSteps dropsPerSecond =

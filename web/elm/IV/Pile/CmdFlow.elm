@@ -1,6 +1,7 @@
-module IV.Pile.Effects exposing
+module IV.Pile.CmdFlow exposing
   ( change
-  , chain
+  , augment
+  , chainLike
   )
 
 type alias GetterSetter whole part =
@@ -10,20 +11,19 @@ type alias GetterSetter whole part =
 
 type alias PartTransform part msg =
   part -> (part, Cmd msg)
-  
+
+
 change : (GetterSetter whole part) ->
            (whole -> (PartTransform part msg) -> (whole, Cmd msg))
-change {getter, setter} =
-  \ whole f -> 
-    let
-      (newPart, cmd) = f (getter whole)
-    in
-      (setter whole newPart, cmd)
-
+change {getter, setter} whole f =
+  let
+    (newPart, cmd) = f (getter whole)
+  in
+    (setter whole newPart, cmd)
+      
 augment : (GetterSetter whole part) ->
-           ( (whole, Cmd msg) -> (PartTransform part msg) -> (whole, Cmd msg))
-augment {getter, setter} =
-  \ (whole, cmd) f -> 
+           ( (PartTransform part msg) -> (whole, Cmd msg) -> (whole, Cmd msg))
+augment {getter, setter} f (whole, cmd) =
     let
       (newPart, newCmd) = f (getter whole)
     in
@@ -31,12 +31,10 @@ augment {getter, setter} =
       , Cmd.batch [cmd, newCmd]
       )
                 
-chain : whole -> List ( GetterSetter whole part, PartTransform part msg) ->
+chainLike : whole -> List ( GetterSetter whole part, PartTransform part msg) ->
              (whole, Cmd msg)
-chain whole list =
+chainLike whole list =
   let
-    updater = \ (inWhat, f) soFar -> augment inWhat soFar f
+    updater = \ (inWhat, f) soFar -> augment inWhat f soFar 
   in
     List.foldl updater (whole, Cmd.none) list
-  
-

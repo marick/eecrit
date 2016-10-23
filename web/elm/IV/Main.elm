@@ -9,6 +9,7 @@ import IV.Clock.Main as Clock
 
 import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
+import IV.Pile.CmdFlow as CmdFlow
 
 -- Model
 
@@ -20,18 +21,13 @@ type alias Model =
     , apparatus : Apparatus.Model
     }
 
-scenario' model val =
-  { model | scenario = val }
-apparatus' model val =
-  { model | apparatus = val }
+scenario' model val = { model | scenario = val }
+clock' model val = { model | clock = val }
+apparatus' model val = { model | apparatus = val }
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  -- Note: This provides a subscription to the animation frame iff
-  -- any of the listed animations is running.
-  Animation.subscription
-    AnimationClockTick
-    (Apparatus.animations model.apparatus ++ Clock.animations model.clock)
+scenarioPart = { getter = .scenario, setter = scenario' }
+clockPart = { getter = .clock, setter = clock' }
+apparatusPart = { getter = .apparatus, setter = apparatus' }
 
 
 -- Update
@@ -66,53 +62,47 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     ToScenario msg' ->
-      Scenario.update msg' |> updateScenario model
+      Scenario.update msg' |> CmdFlow.change scenarioPart model
 
     PickedScenario scenario ->
-      ( initWithScenario scenario
-      , Cmd.none
-      )
+      initWithScenario scenario ! []
 
     ChoseDripSpeed ->
-      let
-        tweakedApparatus = Apparatus.rate' model.apparatus (Calc.dropsPerSecond model.scenario)
-        newModel = apparatus' model tweakedApparatus
-      in
-        showTrueFlow newModel
+      CmdFlow.chainLike model
+        [ (apparatusPart, Apparatus.changeDripRate (Calc.dropsPerSecond model.scenario))
+        , (apparatusPart, Apparatus.showTrueFlow)
+        ]
 
     FluidRanOut ->
-      let
-        tweakedApparatus = Apparatus.rate' model.apparatus (DropsPerSecond 0)
-        drainedModel = apparatus' model tweakedApparatus
-      in
-        showTrueFlow drainedModel
+      CmdFlow.chainLike model
+        [ (apparatusPart, Apparatus.changeDripRate (DropsPerSecond 0))
+        , (apparatusPart, Apparatus.showTrueFlow)
+        ] 
 
     StartSimulation ->
       let
-        (newApparatus, apparatusCmd) = Apparatus.startSimulation model.scenario model.apparatus
-        (newClock, clockCmd) = Clock.startSimulation (Calc.hours model.scenario) model.clock
-
-        newModel = { model
-                     | apparatus = newApparatus
-                     , clock = newClock
-                   }
-        cmd = Cmd.batch [apparatusCmd, clockCmd]
+        apparatusF = Apparatus.startSimulation model.scenario
+        clockF = Clock.startSimulation <| Calc.hours model.scenario
       in
-        (newModel, cmd)
+        model ! []
+          |> CmdFlow.augment apparatusPart apparatusF
+          |> CmdFlow.augment clockPart clockF
         
     StopSimulation ->
-      showTrueFlow model
+      Apparatus.showTrueFlow |> CmdFlow.change apparatusPart model
         
     AnimationClockTick tick ->
-      let
-        (newApparatus, apparatusCmd) = Apparatus.animationClockTick tick model.apparatus
-        (newClock, clockCmd) = Clock.animationClockTick tick model.clock
-
-        newModel = { model
-                     | apparatus = newApparatus
-                     , clock = newClock
-                   }
-        cmd = Cmd.batch [apparatusCmd, clockCmd]
-      in
-        (newModel, cmd)
+      model ! []
+        |> (CmdFlow.augment apparatusPart <| Apparatus.animationClockTick tick)
+        |> (CmdFlow.augment clockPart <| Clock.animationClockTick tick)
         
+-- Subscriptions
+    
+subscriptions : Model -> Sub Msg
+subscriptions model =
+  -- Note: This provides a subscription to the animation frame iff
+  -- any of the listed animations is running.
+  Animation.subscription
+    AnimationClockTick
+    (Apparatus.animations model.apparatus ++ Clock.animations model.clock)
+

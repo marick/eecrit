@@ -17,9 +17,7 @@ animationClockTick tick model =
 
 startSimulation : Drainage -> AnimationState -> (AnimationState, Cmd Msg)
 startSimulation drainage model =
-  ( Animation.interrupt (interpretDrainage drainage) model
-  , Cmd.none
-  )
+  Animation.interrupt (interpretDrainage drainage) model ! []
 
 interpretDrainage drainage =
   case drainage of

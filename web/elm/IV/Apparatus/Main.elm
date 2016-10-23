@@ -1,4 +1,12 @@
-module IV.Apparatus.Main exposing (..)
+module IV.Apparatus.Main exposing
+  ( Model
+  , animations
+  , unstarted
+  , showTrueFlow
+  , startSimulation
+  , animationClockTick
+  , changeDripRate
+  )
 
 import IV.Apparatus.Droplet as Droplet
 import IV.Apparatus.BagLevel as BagLevel
@@ -6,24 +14,27 @@ import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
 import IV.Scenario.Model as Scenario
 import IV.Msg exposing (Msg)
-import IV.Pile.Effects as Effects
+import IV.Pile.CmdFlow as CmdFlow
 import List
 
+animations model = 
+  [model.droplet, model.bagLevel]
+
+-- Model
+    
 type alias Model =
   { droplet : AnimationState
   , bagLevel : AnimationState
   , rate : DropsPerSecond
   }
 
-droplet' model val =
-  { model | droplet = val }
-bagLevel' model val =
-  { model | bagLevel = val }
-rate' model val =
-  { model | rate = val }
+droplet' model val = { model | droplet = val }
+bagLevel' model val = { model | bagLevel = val }
+rate' model val = { model | rate = val }
 
-dropletIn = { getter = .droplet, setter = droplet' }
-bagLevelIn = { getter = .bagLevel, setter = bagLevel' }
+dropletPart = { getter = .droplet, setter = droplet' }
+bagLevelPart = { getter = .bagLevel, setter = bagLevel' }
+ratePart = { getter = .rate, setter = rate' }
 
 unstarted scenario =
   { droplet = Droplet.noDrips
@@ -31,25 +42,25 @@ unstarted scenario =
   , rate = DropsPerSecond 0
   }
 
-
-animations model = 
-  [model.droplet, model.bagLevel]
-
+-- Updates
 
 showTrueFlow : Model -> ( Model, Cmd Msg)
 showTrueFlow model =
-  Droplet.showTrueFlow model.rate |> Effects.change dropletIn model
+  Droplet.showTrueFlow model.rate |> CmdFlow.change dropletPart model
 
+changeDripRate : DropsPerSecond -> Model -> ( Model, Cmd Msg )
+changeDripRate dropsPerSecond model =
+  rate' model dropsPerSecond ! []
 
 startSimulation : Scenario.Model -> Model -> ( Model, Cmd Msg)
 startSimulation scenario model =
-  Effects.chain model
-    [ (dropletIn, Droplet.showTimeLapseFlow)
-    , (bagLevelIn, BagLevel.startSimulation <| Calc.drainage scenario)
+  CmdFlow.chainLike model
+    [ (dropletPart, Droplet.showTimeLapseFlow)
+    , (bagLevelPart, BagLevel.startSimulation <| Calc.drainage scenario)
     ]
     
 animationClockTick tick model =
-  Effects.chain model
-    [ (dropletIn, Droplet.animationClockTick tick)
-    , (bagLevelIn, BagLevel.animationClockTick tick)
+  CmdFlow.chainLike model
+    [ (dropletPart, Droplet.animationClockTick tick)
+    , (bagLevelPart, BagLevel.animationClockTick tick)
     ]

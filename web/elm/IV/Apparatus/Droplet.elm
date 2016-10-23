@@ -51,14 +51,10 @@ changeDropRate dropsPerSecond animation =
     Animation.interrupt [loop] animation
 
 showTrueFlow perSecond model =
-  ( changeDropRate perSecond model
-  , Cmd.none
-  )
+  changeDropRate perSecond model ! []
 
 showTimeLapseFlow model = 
-  ( changeDropRate guaranteedFlow model
-  , Cmd.none
-  )
+  changeDropRate guaranteedFlow model ! []
 
 animationClockTick tick model =
   Animation.Messenger.update tick model

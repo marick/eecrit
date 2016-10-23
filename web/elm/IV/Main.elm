@@ -42,22 +42,6 @@ initWithScenario scenario =
 init : ( Model, Cmd Msg )
 init = (initWithScenario Scenario.cowScenario, Cmd.none)
 
-
-updateScenario model updater =
-  let
-    ( newScenario, cmd ) = updater model.scenario
-  in
-    ( scenario' model newScenario, cmd)
-  
-showTrueFlow model =
-  let
-    (newApparatus, cmd) = Apparatus.showTrueFlow model.apparatus
-  in
-    ( { model | apparatus = newApparatus }
-    , cmd
-    )
-  
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
@@ -93,8 +77,8 @@ update msg model =
         
     AnimationClockTick tick ->
       model ! []
-        |> (CmdFlow.augment apparatusPart <| Apparatus.animationClockTick tick)
-        |> (CmdFlow.augment clockPart <| Clock.animationClockTick tick)
+        |> CmdFlow.augment apparatusPart (Apparatus.animationClockTick tick)
+        |> CmdFlow.augment clockPart (Clock.animationClockTick tick)
         
 -- Subscriptions
     

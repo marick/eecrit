@@ -30,7 +30,16 @@ augment {getter, setter} f (whole, cmd) =
       ( setter whole newPart
       , Cmd.batch [cmd, newCmd]
       )
-                
+
+
+{-| A possibly more readable form when a sequence of augmentations
+all have the same type.
+
+
+TODO: This is probably a bad idea.
+
+-}
+      
 chainLike : whole -> List ( GetterSetter whole part, PartTransform part msg) ->
              (whole, Cmd msg)
 chainLike whole list =

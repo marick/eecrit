@@ -4,6 +4,7 @@ import Animation
 import IV.Scenario.Msg as ScenarioMsg
 import IV.Scenario.Model as ScenarioModel
 
+
 type Msg
     = StartSimulation
     | StopSimulation
@@ -14,4 +15,3 @@ type Msg
     | AnimationClockTick Animation.Msg
 
     | ToScenario ScenarioMsg.Msg
-

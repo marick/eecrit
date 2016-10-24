@@ -15,22 +15,9 @@ chamberYOffset = bagHeight
 chamberWidth = 30
 chamberHeight = 90
 
-chamberPoints =
-  nPoints [ (chamberXOffset,                bagHeight                )
-          , (chamberXOffset,                bagHeight + chamberHeight)
-          , (chamberXOffset + chamberWidth, bagHeight + chamberHeight)
-          , (chamberXOffset + chamberWidth, bagHeight                )
-          ]
-               
 puddleHeight = 20
 puddleYOffset = chamberYOffset + chamberHeight - puddleHeight
-chamberPuddlePoints =
-  nPoints [ (chamberXOffset,                puddleYOffset               )
-          , (chamberXOffset,                puddleYOffset + puddleHeight)
-          , (chamberXOffset + chamberWidth, puddleYOffset + puddleHeight)
-          , (chamberXOffset + chamberWidth, puddleYOffset               )
-          ]
-
+                
 dropXOffset = 55
 dropWidth = 10
 dropHeight = 10
@@ -42,10 +29,10 @@ hoseYOffset = chamberYOffset + chamberHeight
 hoseWidth = dropWidth
 hoseHeight = 90
                 
-liquidColor : Color
-liquidColor = rgb 211 215 207
-liquidColorString = "#d3d7cf"     -- Sigh
-variantLiquidColor = rgb 193 193 193
+fluidColor : Color
+fluidColor = rgb 211 215 207
+fluidColorString = "#d3d7cf"     -- Sigh
+variantFluidColor = rgb 193 193 193
 whiteColor = rgb 255 255 255           
 
 

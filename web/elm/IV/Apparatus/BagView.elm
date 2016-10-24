@@ -61,7 +61,7 @@ fluid model =
   rect (Animation.render model.bagLevel ++ invariantProperties) []
 
 invariantProperties =
-  [ fill Apparatus.liquidColorString
+  [ fill Apparatus.fluidColorString
   , x' 0
   , width' Apparatus.bagWidth
   ]

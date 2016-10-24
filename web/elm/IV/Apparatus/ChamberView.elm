@@ -2,27 +2,36 @@ module IV.Apparatus.ChamberView exposing (render)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Animation exposing (px)
 import IV.Pile.SvgAttributes exposing (..)
-import IV.Apparatus.ViewConstants as Apparatus
+import IV.Apparatus.ViewConstants as C
 
 render =
   Svg.g
     []
-    [bottomLiquid, chamber]
+    [bottomFluid, chamber]
       
 
 -- Private
       
-chamber = polyline
+chamber = rect
           [ fill "none"
           , stroke "black"
-          , points Apparatus.chamberPoints
+          , x' C.chamberXOffset
+          , y' C.bagHeight
+          , width' C.chamberWidth
+          , height' C.chamberHeight
           ]
           []
 
-bottomLiquid = polygon
-               [ fill Apparatus.liquidColorString
-               , points Apparatus.chamberPuddlePoints
+-- animatableFluidAttributes =
+--   [Animation.y 
+            
+bottomFluid = rect
+               [ fill C.fluidColorString
+               , x' C.chamberXOffset
+               , y' (C.puddleYOffset + C.puddleHeight)
+               , width' C.chamberWidth
+               , height' C.puddleHeight
                ]
                []
-           

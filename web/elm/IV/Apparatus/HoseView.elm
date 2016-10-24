@@ -13,7 +13,7 @@ render model =
 hose =
   Svg.rect
     [ stroke "black"
-    , fill Apparatus.liquidColorString
+    , fill Apparatus.fluidColorString
     , x' Apparatus.hoseXOffset
     , y' Apparatus.hoseYOffset
     , width' Apparatus.hoseWidth

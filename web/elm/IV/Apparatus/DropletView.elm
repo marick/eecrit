@@ -21,7 +21,7 @@ missingDrop =
 
 hangingDrop =
   [ Animation.points dropAtTop
-  , Animation.fill Apparatus.liquidColor
+  , Animation.fill Apparatus.fluidColor
   ]
 
 fallenDrop =
@@ -29,17 +29,17 @@ fallenDrop =
 
 streamState1 =
   [ Animation.points flowInChamber
-  , Animation.fill Apparatus.liquidColor
+  , Animation.fill Apparatus.fluidColor
   ]    
       
 streamState2 =
   [ Animation.points flowInChamber
-  , Animation.fill Apparatus.variantLiquidColor
+  , Animation.fill Apparatus.variantFluidColor
   ]    
       
 streamRunsOut =
   [ Animation.points finalSliverInChamber
-  , Animation.fill Apparatus.liquidColor
+  , Animation.fill Apparatus.fluidColor
   ]    
       
 

@@ -30,7 +30,7 @@ chamber = rect
 bottomFluid = rect
                [ fill C.fluidColorString
                , x' C.chamberXOffset
-               , y' (C.puddleYOffset + C.puddleHeight)
+               , y' C.puddleYOffset
                , width' C.chamberWidth
                , height' C.puddleHeight
                ]

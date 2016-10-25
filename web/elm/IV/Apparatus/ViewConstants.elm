@@ -10,6 +10,7 @@ bagHeight = 200
 
 -- The chamber is above the hose. Droplets fall into it.
 -- It has a puddle in the bottom.
+chamberOrigin = (chamberXOffset, bagHeight)
 chamberXOffset = 45
 chamberYOffset = bagHeight
 chamberWidth = 30
@@ -36,12 +37,3 @@ variantFluidColor = rgb 193 193 193
 whiteColor = rgb 255 255 255           
 
 
--- Private
-
-onePoint : Point -> String 
-onePoint (x, y) =
-  print (float <> s "," <> float) x y
-               
-nPoints : List Point -> String
-nPoints points =
-  String.join " " <| List.map onePoint points

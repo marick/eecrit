@@ -4,6 +4,8 @@ import Formatting exposing (..)
 import Svg
 import Svg.Attributes exposing (..)
 import VirtualDom
+import IV.Types exposing (..)
+import String
 
 useInt : (String -> a) -> (Int -> a)
 useInt stringFn i =
@@ -23,7 +25,10 @@ cy' = useInt cy
 r' = useInt r
 height' = useInt height
 width' = useInt width
-     
+
+
+-- Support for Transforms and the like
+         
 transformOrigin' : Int -> Int -> Svg.Attribute msg
 transformOrigin' x y =
   let 
@@ -31,4 +36,19 @@ transformOrigin' x y =
   in
     VirtualDom.attribute "transform-origin" (argFormatter x y)
 
+-- Transform arguments
+pointFmt = (float <> s "," <> float)
+translateFmt = (s "translate(" <> pointFmt <> s ")") 
 
+translate (x, y) =
+  print translateFmt x y
+
+-- Private
+
+toSvgPoint : Point -> String 
+toSvgPoint (x, y) =
+  print pointFmt x y
+               
+toSvgPoints : List Point -> String
+toSvgPoints points =
+  String.join " " <| List.map toSvgPoint points

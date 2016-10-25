@@ -61,6 +61,7 @@ update msg model =
       CmdFlow.chainLike model
         [ (apparatusPart, Apparatus.changeDripRate (DropsPerSecond 0))
         , (apparatusPart, Apparatus.showTrueFlow)
+        , (apparatusPart, Apparatus.drainChamber)
         ] 
 
     StartSimulation ->

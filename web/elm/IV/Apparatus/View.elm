@@ -7,7 +7,7 @@ import IV.Apparatus.DropletView as DropletView
 
 render model =
   [ DropletView.render model.droplet
-  , ChamberView.render
+  , ChamberView.render model.chamberFluid
   , BagView.render model
   , HoseView.render model
   ] 

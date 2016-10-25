@@ -64,6 +64,9 @@ update msg model =
         , (apparatusPart, Apparatus.drainChamber)
         ] 
 
+    ChamberEmptied ->
+      Apparatus.drainHose |> CmdFlow.change apparatusPart model
+
     StartSimulation ->
       let
         apparatusF = Apparatus.startSimulation model.scenario

@@ -7,6 +7,7 @@ module IV.Apparatus.ChamberView exposing
 import IV.Apparatus.DrainingRectangle as Rect
 import IV.Apparatus.ViewConstants as C
 import IV.Types exposing (..)
+import IV.Msg exposing (Msg(..))
 
 startingLevel = Level <| (toFloat C.puddleHeight) / (toFloat C.chamberHeight)
       
@@ -21,5 +22,8 @@ render animationState =
   Rect.render configuration C.chamberOrigin animationState
 
 startingState = Rect.startingState configuration startingLevel
-startDraining animationState = Rect.drain configuration (Hours 0.2) animationState
+
+startDraining animationState =
+  Rect.drainThenSend configuration (Hours 0.2) animationState ChamberEmptied
+
 animationClockTick tick animationState = Rect.continueDraining tick animationState

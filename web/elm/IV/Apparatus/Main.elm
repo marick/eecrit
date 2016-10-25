@@ -7,6 +7,7 @@ module IV.Apparatus.Main exposing
   , animationClockTick
   , changeDripRate
   , drainChamber
+  , drainHose
   )
 
 import IV.Apparatus.Droplet as Droplet
@@ -65,12 +66,12 @@ changeDripRate dropsPerSecond model =
 
 drainChamber : Model -> ( Model, Cmd Msg )
 drainChamber model =
---  ChamberView.startDraining |> CmdFlow.change chamberFluidPart model
-  CmdFlow.chainLike model
-    [ (chamberFluidPart, ChamberView.startDraining)
-    , (hoseFluidPart, HoseView.startDraining)
-    ]
-    
+  ChamberView.startDraining |> CmdFlow.change chamberFluidPart model
+
+drainHose : Model -> (Model, Cmd Msg)
+drainHose model = 
+  HoseView.startDraining |> CmdFlow.change hoseFluidPart model
+
 startSimulation : Scenario.Model -> Model -> ( Model, Cmd Msg)
 startSimulation scenario model =
   CmdFlow.chainLike model

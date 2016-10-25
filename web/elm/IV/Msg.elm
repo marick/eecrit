@@ -10,6 +10,7 @@ type Msg
     | StopSimulation
     | ChoseDripSpeed
     | FluidRanOut
+    | ChamberEmptied
     | PickedScenario ScenarioModel.Model
 
     | AnimationClockTick Animation.Msg

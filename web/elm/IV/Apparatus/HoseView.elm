@@ -1,22 +1,25 @@
-module IV.Apparatus.HoseView exposing (render)
+module IV.Apparatus.HoseView exposing
+  ( render
+  , startingState
+  , startDraining
+  , animationClockTick
+  )
 
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-import IV.Pile.SvgAttributes exposing (..)
-import IV.Apparatus.ViewConstants as Apparatus
-  
-render model =
-  Svg.g
-    []
-    [hose]
-      
-hose =
-  Svg.rect
-    [ stroke "black"
-    , fill Apparatus.fluidColorString
-    , x' Apparatus.hoseXOffset
-    , y' Apparatus.hoseYOffset
-    , width' Apparatus.hoseWidth
-    , height' Apparatus.hoseHeight
-    ]
-    []
+import IV.Apparatus.DrainingRectangle as Rect
+import IV.Apparatus.ViewConstants as C
+import IV.Types exposing (..)
+
+configuration =
+  { containerWidth = C.hoseWidth
+  , containerHeight = C.hoseHeight
+  , fillColor = C.fluidColorString
+  , extraFigures = []
+  }
+
+render animationState =
+  Rect.render configuration C.hoseOrigin animationState
+
+startingState = Rect.startingState configuration (Level 1.0)
+startDraining animationState = Rect.drain configuration (Hours 0.2) animationState
+animationClockTick tick animationState = Rect.continueDraining tick animationState
+

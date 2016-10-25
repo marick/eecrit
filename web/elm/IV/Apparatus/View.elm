@@ -9,5 +9,5 @@ render model =
   [ DropletView.render model.droplet
   , ChamberView.render model.chamberFluid
   , BagView.render model.bagLevel
-  , HoseView.render model
+  , HoseView.render model.hoseFluid
   ] 

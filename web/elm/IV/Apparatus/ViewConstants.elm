@@ -11,7 +11,7 @@ bagHeight = 200
 
 -- The chamber is above the hose. Droplets fall into it.
 -- It has a puddle in the bottom.
-chamberOrigin = (chamberXOffset, bagHeight)
+chamberOrigin = (chamberXOffset, chamberYOffset)
 chamberXOffset = 45
 chamberYOffset = bagHeight
 chamberWidth = 30
@@ -26,7 +26,7 @@ dropHeight = 10
 streamHeight = puddleYOffset - chamberYOffset
 
 -- Droplets fit exactly into the host
-hoseOrigin = (hoseXOffset, hoseHeight)
+hoseOrigin = (hoseXOffset, hoseYOffset)
 hoseXOffset = dropXOffset
 hoseYOffset = chamberYOffset + chamberHeight
 hoseWidth = dropWidth

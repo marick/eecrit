@@ -24,6 +24,6 @@ render animationState =
 startingState = Rect.startingState configuration startingLevel
 
 startDraining animationState =
-  Rect.drainThenSend configuration (Hours 0.2) animationState ChamberEmptied
+  Rect.drainThenSend configuration (Hours 0.4) animationState ChamberEmptied
 
 animationClockTick tick animationState = Rect.continueDraining tick animationState

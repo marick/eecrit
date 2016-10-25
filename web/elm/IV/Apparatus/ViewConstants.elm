@@ -5,6 +5,7 @@ import Formatting exposing (..)
 import IV.Types exposing (Point)
 import String
 
+bagOrigin = (0, 0)
 bagWidth = 120
 bagHeight = 200
 

@@ -14,6 +14,7 @@ configuration =
   { containerWidth = C.chamberWidth
   , containerHeight = C.chamberHeight
   , fillColor = C.fluidColorString
+  , extraFigures = []
   }
 
 render animationState =
@@ -23,5 +24,5 @@ startingState = Rect.startingState configuration startingLevel
 
 -- Private
                 
-startDraining model = Rect.startDraining configuration model
-animationClockTick tick model = Rect.continueDraining tick model
+startDraining animationState = Rect.drain configuration (Hours 0.1) animationState
+animationClockTick tick animationState = Rect.continueDraining tick animationState

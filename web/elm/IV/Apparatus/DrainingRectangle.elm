@@ -1,8 +1,10 @@
 module IV.Apparatus.DrainingRectangle exposing
-  ( render
-  , startingState
-  , startDraining
-  , continueDraining)
+ (..)
+  -- ( render
+  -- , startingState
+  -- , drain
+  -- , drainThenSend
+  -- , continueDraining)
 
 import Animation exposing (px)
 import Animation.Messenger
@@ -13,35 +15,55 @@ import IV.Pile.Animation exposing (easeForHours)
 import IV.Pile.SvgAttributes exposing (..)
 import IV.Types exposing (..)
 
+-- TODO: I hate hate hate how this state has to appear everywhere
+import IV.Msg exposing (Msg)
+
 type alias Configuration =
   { containerWidth : Int
   , containerHeight : Int
   , fillColor : String
+  , extraFigures : List (Svg Msg)
   }
 
 startingState : Configuration -> Level -> AnimationState
 startingState configuration startingLevel =
   Animation.style <| animatableAttributes configuration startingLevel
 
-render : Configuration -> Point -> AnimationState -> Svg msg
+render : Configuration -> Point -> AnimationState -> Svg Msg
 render configuration origin animationState =
   Svg.g
     [ transform (translate origin) ]
-    [fluid animationState configuration, container configuration]
+    ([fluid animationState configuration, container configuration] ++ configuration.extraFigures)
 
-startDraining : Configuration -> AnimationState -> (AnimationState, Cmd msg)
-startDraining configuration model = 
-    Animation.interrupt
-    [ Animation.toWith
-        (easeForHours (Hours 0.1))
-        (animatableAttributes configuration (Level 0))
-    ]
-    model ! []
+drain : Configuration -> Hours -> AnimationState -> (AnimationState, Cmd Msg)
+drain configuration hours animationState = 
+  doDrain configuration hours (Level 0) animationState []
 
-continueDraining tick model = 
-  Animation.Messenger.update tick model
+drainPartially : Configuration -> Hours -> Level -> AnimationState -> (AnimationState, Cmd Msg)
+drainPartially configuration hours level animationState =
+  doDrain configuration hours level animationState []
+
+-- TODO: How to make this type annotation work without introducing a
+-- dependency on IV.Msg?
+-- drainThenSend : Configuration -> Hours -> AnimationState -> msg -> (AnimationState, Cmd msg)
+drainThenSend configuration hours animationState msg =
+  doDrain configuration hours (Level 0) animationState [ Animation.Messenger.send msg]
+
+continueDraining tick animationState = 
+  Animation.Messenger.update tick animationState
 
 -- Private
+
+doDrain configuration hours level animationState moreSteps =
+  let
+    drainStep = Animation.toWith
+                  (easeForHours hours)
+                  (animatableAttributes configuration level)
+  in
+  ( Animation.interrupt (drainStep :: moreSteps) animationState
+  , Cmd.none
+  )
+
 
 container configuration = 
   rect

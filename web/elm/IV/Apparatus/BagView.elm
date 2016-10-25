@@ -1,36 +1,47 @@
 module IV.Apparatus.BagView exposing
   ( render
-  , animatableFluidAttributes
+  , startingState
+  , startDraining
+  , animationClockTick
   )
 
-import IV.Apparatus.ViewConstants as Apparatus
-
-import IV.Pile.SvgAttributes exposing (..)
-import IV.Types exposing (..)
-
-import Animation exposing (px)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import IV.Pile.SvgAttributes exposing (..)
 
+import IV.Apparatus.DrainingRectangle as Rect
+import IV.Apparatus.ViewConstants as C
+import IV.Msg exposing (Msg(..))
+import IV.Types exposing (..)
 
-render model =
-  Svg.g []
-    [ fluid model
-    , bag
-    , markings
-    ]
+configuration =
+  { containerWidth = C.bagWidth
+  , containerHeight = C.bagHeight
+  , fillColor = C.fluidColorString
+  , extraFigures = [markings]
+  }
+
+render animationState =
+  Rect.render configuration C.bagOrigin animationState
     
--- The static part      
+startingState : Level -> AnimationState 
+startingState level =
+  Rect.startingState configuration level
 
-bag = rect
-      [ fill "none"
-      , x' 0
-      , y' 0
-      , width' Apparatus.bagWidth
-      , height' Apparatus.bagHeight
-      , stroke "black"
-      ]
-      []
+-- Private
+    
+animationClockTick tick animationState = Rect.continueDraining tick animationState
+
+startDraining : Drainage -> AnimationState -> (AnimationState, Cmd Msg)
+startDraining drainage animationState =
+  case drainage of
+    FullyEmptied hours ->
+      Rect.drainThenSend configuration hours animationState FluidRanOut
+
+    PartlyEmptied hours level ->
+      Rect.drainPartially configuration hours level animationState 
+
+-- The static part      
 
 marking n =
   let
@@ -45,23 +56,3 @@ marking n =
     []
 
 markings = Svg.g [] <| List.map marking [1 .. 9]
-
--- Animated Part
-
-animatableFluidAttributes (Level fractionBagFilled) =
-  let
-    height = fractionBagFilled * Apparatus.bagHeight
-    y = Apparatus.bagHeight - height
-  in
-    [ Animation.y y
-    , Animation.height (px height)
-    ]
-
-fluid model =
-  rect (Animation.render model.bagLevel ++ invariantProperties) []
-
-invariantProperties =
-  [ fill Apparatus.fluidColorString
-  , x' 0
-  , width' Apparatus.bagWidth
-  ]

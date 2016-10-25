@@ -10,7 +10,7 @@ module IV.Apparatus.Main exposing
   )
 
 import IV.Apparatus.Droplet as Droplet
-import IV.Apparatus.BagLevel as BagLevel
+import IV.Apparatus.BagView as BagView
 import IV.Apparatus.ChamberView as ChamberView
 import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
@@ -43,7 +43,7 @@ ratePart = { getter = .rate, setter = rate' }
 
 unstarted scenario =
   { droplet = Droplet.noDrips
-  , bagLevel = (Debug.log "baglevelstart" (BagLevel.startingState (Calc.startingLevel scenario)))
+  , bagLevel = (Debug.log "baglevelstart" (BagView.startingState (Calc.startingLevel scenario)))
   , chamberFluid = (Debug.log "chamberfluid start" ChamberView.startingState)
   , rate = DropsPerSecond 0
   }
@@ -66,12 +66,12 @@ startSimulation : Scenario.Model -> Model -> ( Model, Cmd Msg)
 startSimulation scenario model =
   CmdFlow.chainLike model
     [ (dropletPart, Droplet.showTimeLapseFlow)
-    , (bagLevelPart, BagLevel.startSimulation <| Calc.drainage scenario)
+    , (bagLevelPart, BagView.startDraining <| Calc.drainage scenario)
     ]
     
 animationClockTick tick model =
   CmdFlow.chainLike model
     [ (dropletPart, Droplet.animationClockTick tick)
-    , (bagLevelPart, BagLevel.animationClockTick tick)
+    , (bagLevelPart, BagView.animationClockTick tick)
     , (chamberFluidPart, ChamberView.animationClockTick tick)
     ]

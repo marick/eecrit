@@ -27,11 +27,7 @@ render animationState =
 startingState : Level -> AnimationState 
 startingState level =
   Rect.startingState configuration level
-
--- Private
     
-animationClockTick tick animationState = Rect.continueDraining tick animationState
-
 startDraining : Drainage -> AnimationState -> (AnimationState, Cmd Msg)
 startDraining drainage animationState =
   case drainage of
@@ -40,6 +36,8 @@ startDraining drainage animationState =
 
     PartlyEmptied hours level ->
       Rect.drainPartially configuration hours level animationState 
+
+animationClockTick tick animationState = Rect.continueDraining tick animationState
 
 -- The static part      
 

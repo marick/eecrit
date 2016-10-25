@@ -25,7 +25,8 @@ dropWidth = 10
 dropHeight = 10
 streamHeight = puddleYOffset - chamberYOffset
 
--- Droplets fit exactly into the host               
+-- Droplets fit exactly into the host
+hoseOrigin = (hoseXOffset, hoseHeight)
 hoseXOffset = dropXOffset
 hoseYOffset = chamberYOffset + chamberHeight
 hoseWidth = dropWidth

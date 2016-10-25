@@ -21,8 +21,5 @@ render animationState =
   Rect.render configuration C.chamberOrigin animationState
 
 startingState = Rect.startingState configuration startingLevel
-
--- Private
-                
-startDraining animationState = Rect.drain configuration (Hours 0.1) animationState
+startDraining animationState = Rect.drain configuration (Hours 0.2) animationState
 animationClockTick tick animationState = Rect.continueDraining tick animationState

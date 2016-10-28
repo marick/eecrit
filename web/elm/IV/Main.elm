@@ -8,7 +8,6 @@ import IV.Apparatus.Main as Apparatus
 import IV.Clock.Main as Clock
 
 import IV.Types exposing (..)
-import IV.Scenario.Calculations as Calc
 import IV.Pile.CmdFlow as CmdFlow
 
 -- Model
@@ -35,7 +34,7 @@ apparatusPart = { getter = .apparatus, setter = apparatus' }
 initWithScenario : ScenarioModel.EditableModel -> Model
 initWithScenario scenario =
   { scenario = scenario
-  , apparatus = Apparatus.unstarted scenario
+  , apparatus = Apparatus.unstarted <| ScenarioModel.startingLevel scenario
   , clock = Clock.startingState
   }
   
@@ -69,10 +68,10 @@ update msg model =
     ChamberEmptied ->
       Apparatus.drainHose |> CmdFlow.change apparatusPart model
 
-    StartSimulation ->
+    StartSimulation runnableModel ->
       let
-        apparatusF = Apparatus.startSimulation model.scenario
-        clockF = Clock.startSimulation <| Calc.hours model.scenario
+        apparatusF = Apparatus.startSimulation runnableModel.drainage
+        clockF = Clock.startSimulation runnableModel.totalHours
       in
         model ! []
           |> CmdFlow.augment apparatusPart apparatusF

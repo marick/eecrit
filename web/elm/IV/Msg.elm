@@ -7,7 +7,7 @@ import IV.Types exposing (..)
 
 
 type Msg
-    = StartSimulation
+    = StartSimulation ScenarioModel.RunnableModel
     | StopSimulation
     | ChoseDripRate DropsPerSecond
     | FluidRanOut

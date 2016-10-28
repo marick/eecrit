@@ -2,7 +2,7 @@ module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground, dripRate)
+import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground, dripRate, runnableModel)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
@@ -88,7 +88,7 @@ view model =
             []
         , text " until you plan to next look at the fluid level, then " 
         , button
-            [ Events.onClick MainMsg.StartSimulation
+            [ Events.onClick <| MainMsg.StartSimulation (runnableModel model)
             , Attr.class "btn btn-default btn-xs"
             ]
             [ text "Start the Clock" ]

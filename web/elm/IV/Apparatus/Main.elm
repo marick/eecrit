@@ -15,7 +15,6 @@ import IV.Apparatus.BagView as BagView
 import IV.Apparatus.ChamberView as ChamberView
 import IV.Apparatus.HoseView as HoseView
 import IV.Types exposing (..)
-import IV.Scenario.Calculations as Calc
 import IV.Scenario.Models as Scenario
 import IV.Msg exposing (Msg)
 import IV.Pile.Animation exposing (AnimationState)
@@ -47,9 +46,9 @@ chamberFluidPart = { getter = .chamberFluid, setter = chamberFluid' }
 hoseFluidPart = { getter = .hoseFluid, setter = hoseFluid' }
 ratePart = { getter = .rate, setter = rate' }
 
-unstarted scenario =
+unstarted startingLevel =
   { droplet = Droplet.noDrips
-  , bagLevel = BagView.startingState (Calc.startingLevel scenario)
+  , bagLevel = BagView.startingState startingLevel
   , chamberFluid = ChamberView.startingState
   , hoseFluid = HoseView.startingState
   , rate = DropsPerSecond 0
@@ -73,11 +72,11 @@ drainHose : Model -> (Model, Cmd Msg)
 drainHose model = 
   HoseView.startDraining |> CmdFlow.change hoseFluidPart model
 
-startSimulation : Scenario.EditableModel -> Model -> ( Model, Cmd Msg)
-startSimulation scenario model =
+startSimulation : Drainage -> Model -> ( Model, Cmd Msg)
+startSimulation drainage model =
   CmdFlow.chainLike model
-    [ (dropletPart, Droplet.showTimeLapseFlow)
-    , (bagLevelPart, BagView.startDraining <| Calc.drainage scenario)
+    [ ( dropletPart, Droplet.showTimeLapseFlow )
+    , ( bagLevelPart, BagView.startDraining drainage )
     ]
     
 animationClockTick tick model =

@@ -10,7 +10,7 @@ import Animation
 import Animation.Messenger
 import IV.Clock.AnimatedView as View
 import IV.Types exposing (..)
-import IV.Pile.Animation exposing (easeForHours)
+import IV.Pile.Animation exposing (easeForHours, AnimationState)
 import IV.Msg exposing (..)
 import IV.Pile.CmdFlow as CmdFlow
 

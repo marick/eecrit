@@ -1,9 +1,14 @@
 module IV.Pile.Animation exposing (..)
 
 import Animation
+import Animation.Messenger
 import IV.Types exposing (..)
 import Time exposing (second)
+import IV.Msg exposing (Msg)
 
+
+type alias AnimationState =
+  Animation.Messenger.State Msg
 
 simulationDuration : Hours -> Float
 simulationDuration (Hours hours) =

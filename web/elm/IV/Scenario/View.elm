@@ -2,7 +2,7 @@ module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground)
+import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground, dripRate)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
@@ -67,7 +67,7 @@ view model =
             , Attr.value model.decisions.dripText
             , Attr.size 6
             , Events.onInput (changedText ChangedDripText)
-            , Events.onBlur <| MainMsg.ChoseDripSpeed 
+            , Events.onBlur <| (MainMsg.ChoseDripRate (dripRate model))
             ]
             []
         , text "drops/sec, set the hours "

@@ -18,6 +18,7 @@ import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
 import IV.Scenario.Models as Scenario
 import IV.Msg exposing (Msg)
+import IV.Pile.Animation exposing (AnimationState)
 import IV.Pile.CmdFlow as CmdFlow
 import List
 

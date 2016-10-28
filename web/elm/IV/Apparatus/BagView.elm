@@ -7,6 +7,7 @@ module IV.Apparatus.BagView exposing
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import IV.Pile.Animation exposing (AnimationState)
 import IV.Pile.SvgAttributes exposing (..)
 
 import IV.Apparatus.DrainingRectangle as Rect

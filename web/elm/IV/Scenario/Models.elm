@@ -1,5 +1,7 @@
 module IV.Scenario.Models exposing (..)
 
+import IV.Types exposing (..)
+import IV.Pile.ManagedStrings exposing (floatString)
 
 type alias CaseBackground =
   { tag : String
@@ -75,4 +77,6 @@ type alias RunnableModel =
   {
   }
 
-  
+dripRate : EditableModel -> DropsPerSecond  
+dripRate editableModel =
+  DropsPerSecond <| floatString editableModel.decisions.dripText

@@ -53,9 +53,9 @@ update msg model =
     PickedScenario scenario ->
       initWithScenario scenario ! []
 
-    ChoseDripSpeed ->
+    ChoseDripRate dripRate ->
       CmdFlow.chainLike model
-        [ (apparatusPart, Apparatus.changeDripRate (Calc.dropsPerSecond model.scenario))
+        [ (apparatusPart, Apparatus.changeDripRate dripRate)
         , (apparatusPart, Apparatus.showTrueFlow)
         ]
 

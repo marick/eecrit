@@ -1,12 +1,6 @@
 module IV.Types exposing (..)
 
-import Animation
-import Animation.Messenger
 import Time exposing (second)
-import IV.Msg exposing (Msg)
-
-type alias AnimationState =
-  Animation.Messenger.State Msg
 
 type alias Point = (Float, Float)
 type DropsPerSecond = DropsPerSecond Float

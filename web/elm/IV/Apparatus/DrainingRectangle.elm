@@ -10,7 +10,7 @@ import Animation exposing (px)
 import Animation.Messenger
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import IV.Pile.Animation exposing (easeForHours)
+import IV.Pile.Animation exposing (easeForHours, AnimationState)
 
 import IV.Pile.SvgAttributes exposing (..)
 import IV.Types exposing (..)

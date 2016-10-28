@@ -5,7 +5,7 @@ import Animation.Messenger
 import IV.Apparatus.DropletView as View
 import IV.Types exposing (..)
 import IV.Msg exposing (Msg)
-import IV.Pile.Animation exposing (linearEasing)
+import IV.Pile.Animation exposing (linearEasing, AnimationState)
 
 --- Model
 

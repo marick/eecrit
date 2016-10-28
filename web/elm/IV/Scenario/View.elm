@@ -2,8 +2,7 @@ module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Models exposing (EditableModel)
-import IV.Scenario.Main exposing (cowScenario, calfScenario)
+import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
@@ -16,11 +15,11 @@ changedText msg string =
 
 description model =
   "You are presented with a " ++
-  toString model.weightInPounds ++
-  " lb " ++ model.animalDescription ++ ". You have " ++
-  toString model.bagContentsInLiters ++
+  toString model.background.weightInPounds ++
+  " lb " ++ model.background.animalDescription ++ ". You have " ++
+  toString model.background.bagContentsInLiters ++
   " liters of fluid in a " ++ 
-  model.bagType ++ "."
+  model.background.bagType ++ "."
 
 highlight buttonScenario currentScenario =
   if buttonScenario == currentScenario then
@@ -40,7 +39,7 @@ scenarioButton buttonScenario currentScenario additionalClassString =
       , Attr.class class
       , Events.onClick <| MainMsg.PickedScenario buttonScenario
       ]
-      [ text buttonScenario.tag]
+      [ text buttonScenario.background.tag]
 
 choices : EditableModel -> Html MainMsg.Msg    
 choices model =
@@ -51,8 +50,8 @@ choices model =
 
 buttons model = 
   row []
-  [ scenarioButton cowScenario model ""
-  , scenarioButton calfScenario model "col-md-offset-2"
+  [ scenarioButton (scenario cowBackground) model ""
+  , scenarioButton (scenario calfBackground) model "col-md-offset-2"
   ]  
 
 view : EditableModel -> Html MainMsg.Msg
@@ -65,7 +64,7 @@ view model =
         , input
             [ Attr.type' "text"
             -- , Attr.class "form-control col-xs-2"
-            , Attr.value model.dripText
+            , Attr.value model.decisions.dripText
             , Attr.size 6
             , Events.onInput (changedText ChangedDripText)
             , Events.onBlur <| MainMsg.ChoseDripSpeed 
@@ -74,7 +73,7 @@ view model =
         , text "drops/sec, set the hours "
         , input
             [ Attr.type' "text"
-            , Attr.value model.simulationHoursText
+            , Attr.value model.decisions.simulationHoursText
             , Attr.size 6
             , Events.onInput (changedText ChangedHoursText)
             ]
@@ -82,7 +81,7 @@ view model =
         , text " and minutes "
         , input
             [ Attr.type' "text"
-            , Attr.value model.simulationMinutesText
+            , Attr.value model.decisions.simulationMinutesText
             , Attr.size 6
             , Events.onInput (changedText ChangedMinutesText)
             ]

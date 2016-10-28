@@ -7,48 +7,7 @@ import IV.Pile.ManagedStrings exposing (..)
 import String
 import IV.Msg as Out
 
--- Model
 
-commonToAllScenarios =
-  { dripText = "0"
-  , simulationHoursText = "0"
-  , simulationMinutesText = "0"
-  , dropsPerMil = 15.0
-  }
-
-cowScenario : EditableModel
-cowScenario =
-  { tag = "1560 lb. cow"
-      
-  , animalDescription = "3d lactation purebred Holstein"
-  , weightInPounds = 1560
-  , bagCapacityInLiters = 20
-  , bagContentsInLiters = 19
-  , bagType = "5-gallon carboy"
-              
-  -- Must be a better way
-  , dripText = commonToAllScenarios.dripText
-  , simulationHoursText = commonToAllScenarios.simulationHoursText
-  , simulationMinutesText = commonToAllScenarios.simulationMinutesText
-  , dropsPerMil = commonToAllScenarios.dropsPerMil
-  }
-  
-calfScenario : EditableModel
-calfScenario = 
-  { tag = "90 lb. heifer calf"
-
-  , animalDescription = "10-day-old Hereford heifer calf"
-  , weightInPounds = 90
-  , bagCapacityInLiters = 2
-  , bagContentsInLiters = 2
-  , bagType = "2-liter bag"
-
-  -- Must be a better way
-  , dripText = commonToAllScenarios.dripText
-  , simulationHoursText = commonToAllScenarios.simulationHoursText
-  , simulationMinutesText = commonToAllScenarios.simulationMinutesText
-  , dropsPerMil = commonToAllScenarios.dropsPerMil
-  }
 
 -- Update
 
@@ -62,12 +21,26 @@ update msg model =
     ChangedMinutesText string ->
       updateWhen string isValidIntString model simulationMinutesText'
                 
-dripText' model val =
-  { model | dripText = val }
-simulationHoursText' model val =
-  { model | simulationHoursText = val }
-simulationMinutesText' model val =
-  { model | simulationMinutesText = val }
+dripText' editableModel val =
+  let
+    decisions = editableModel.decisions
+    newDecisions = { decisions | dripText = val }
+  in
+    { editableModel | decisions = newDecisions }
+    
+simulationHoursText' editableModel val =
+  let
+    decisions = editableModel.decisions
+    newDecisions = { decisions | simulationHoursText = val }
+  in
+    { editableModel | decisions = newDecisions }
+
+simulationMinutesText' editableModel val =
+  let
+    decisions = editableModel.decisions
+    newDecisions = { decisions | simulationMinutesText = val }
+  in
+    { editableModel | decisions = newDecisions }
     
 updateWhen : String -> (String -> Bool) -> EditableModel -> (EditableModel -> String -> EditableModel) -> (EditableModel, Cmd Out.Msg)
 updateWhen candidate pred model updater =

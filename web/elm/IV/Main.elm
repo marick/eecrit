@@ -40,7 +40,9 @@ initWithScenario scenario =
   }
   
 init : ( Model, Cmd Msg )
-init = (initWithScenario Scenario.cowScenario, Cmd.none)
+init = ( initWithScenario (ScenarioModel.scenario ScenarioModel.cowBackground)
+       , Cmd.none
+       )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =

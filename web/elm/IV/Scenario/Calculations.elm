@@ -10,7 +10,7 @@ import IV.Pile.ManagedStrings exposing (floatString)
 
 startingLevel : EditableModel -> Level
 startingLevel model =
-  Level <| model.bagContentsInLiters / model.bagCapacityInLiters
+  Level <| model.background.bagContentsInLiters / model.background.bagCapacityInLiters
   
 dropsPerSecond : EditableModel -> DropsPerSecond
 dropsPerSecond model =
@@ -35,29 +35,29 @@ drainage model =
 
 dropsPerSecond' : EditableModel -> Float
 dropsPerSecond' model =
-  floatString model.dripText
+  floatString model.decisions.dripText
 
 startingFractionBagFilled : EditableModel -> Float
 startingFractionBagFilled model =
-  model.bagContentsInLiters / model.bagCapacityInLiters
+  model.background.bagContentsInLiters / model.background.bagCapacityInLiters
   
 hours' : EditableModel -> Float
 hours' model =
   let
-    h = model.simulationHoursText |> floatString
-    m = model.simulationMinutesText |> floatString
+    h = model.decisions.simulationHoursText |> floatString
+    m = model.decisions.simulationMinutesText |> floatString
   in
     h + (m / 60.0)
 
 hoursToEmptyBag' : EditableModel -> Float
 hoursToEmptyBag' model =
-  model.bagContentsInLiters / (litersPerHour' model)
+  model.background.bagContentsInLiters / (litersPerHour' model)
 
 litersPerHour' : EditableModel -> Float
 litersPerHour' model =
   let 
     dps = dropsPerSecond' model
-    milsPerSecond = dps / model.dropsPerMil
+    milsPerSecond = dps / model.background.dropsPerMil
     milsPerHour = milsPerSecond * 60 * 60
   in
     milsPerHour / 1000
@@ -67,4 +67,4 @@ endingFractionBagFilled' model =
   let
     litersGone = (litersPerHour' model) * (hours' model)
   in
-    (model.bagContentsInLiters - litersGone) / model.bagCapacityInLiters
+    (model.background.bagContentsInLiters - litersGone) / model.background.bagCapacityInLiters

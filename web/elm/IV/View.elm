@@ -27,7 +27,7 @@ mainDiv contents =
   contents
 
 mainSvg contents  =
-  row 
+  row [ ]
     [ hr [] []
     , Svg.svg
         [ version "1.1"

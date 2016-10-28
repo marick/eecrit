@@ -8,6 +8,7 @@ import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
+import IV.Scenario.Editor as Editor
 
 changedText : (String -> Msg) -> String -> MainMsg.Msg
 changedText msg string =
@@ -42,15 +43,21 @@ scenarioButton buttonScenario currentScenario additionalClassString =
       [ text buttonScenario.tag]
 
 choices : Model -> Html MainMsg.Msg    
-choices model = 
-  row
-    [ scenarioButton cowScenario model ""
-    , scenarioButton calfScenario model "col-md-offset-2"
+choices model =
+  div []
+    [ buttons model
+    , Editor.edit model
     ]
-  
+
+buttons model = 
+  row []
+  [ scenarioButton cowScenario model ""
+  , scenarioButton calfScenario model "col-md-offset-2"
+  ]  
+
 view : Model -> Html MainMsg.Msg
 view model =
-  row
+  row []
     [ p [] [text <| description model ] 
     , p
         []

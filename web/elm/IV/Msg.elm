@@ -2,7 +2,7 @@ module IV.Msg exposing (..)
 
 import Animation
 import IV.Scenario.Msg as ScenarioMsg
-import IV.Scenario.Model as ScenarioModel
+import IV.Scenario.Models as ScenarioModel
 
 
 type Msg
@@ -11,7 +11,7 @@ type Msg
     | ChoseDripSpeed
     | FluidRanOut
     | ChamberEmptied
-    | PickedScenario ScenarioModel.Model
+    | PickedScenario ScenarioModel.EditableModel
 
     | AnimationClockTick Animation.Msg
 

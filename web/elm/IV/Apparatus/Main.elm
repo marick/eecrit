@@ -16,7 +16,7 @@ import IV.Apparatus.ChamberView as ChamberView
 import IV.Apparatus.HoseView as HoseView
 import IV.Types exposing (..)
 import IV.Scenario.Calculations as Calc
-import IV.Scenario.Model as Scenario
+import IV.Scenario.Models as Scenario
 import IV.Msg exposing (Msg)
 import IV.Pile.CmdFlow as CmdFlow
 import List
@@ -72,7 +72,7 @@ drainHose : Model -> (Model, Cmd Msg)
 drainHose model = 
   HoseView.startDraining |> CmdFlow.change hoseFluidPart model
 
-startSimulation : Scenario.Model -> Model -> ( Model, Cmd Msg)
+startSimulation : Scenario.EditableModel -> Model -> ( Model, Cmd Msg)
 startSimulation scenario model =
   CmdFlow.chainLike model
     [ (dropletPart, Droplet.showTimeLapseFlow)

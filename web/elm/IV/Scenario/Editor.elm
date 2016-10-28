@@ -6,10 +6,10 @@ import Html.Attributes as Attr
 import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
-import IV.Scenario.Model exposing (Model)
+import IV.Scenario.Models exposing (EditableModel)
 
 
-edit : Model -> Html MainMsg.Msg
+edit : EditableModel -> Html MainMsg.Msg
 edit model = 
   row
     [ Attr.style

@@ -1,7 +1,7 @@
 module IV.Scenario.Main exposing (..)
 
 import IV.Scenario.Msg exposing (..)
-import IV.Scenario.Model exposing (..)
+import IV.Scenario.Models exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
 import String
@@ -16,7 +16,7 @@ commonToAllScenarios =
   , dropsPerMil = 15.0
   }
 
-cowScenario : Model
+cowScenario : EditableModel
 cowScenario =
   { tag = "1560 lb. cow"
       
@@ -33,7 +33,7 @@ cowScenario =
   , dropsPerMil = commonToAllScenarios.dropsPerMil
   }
   
-calfScenario : Model
+calfScenario : EditableModel
 calfScenario = 
   { tag = "90 lb. heifer calf"
 
@@ -52,7 +52,7 @@ calfScenario =
 
 -- Update
 
-update : Msg -> Model -> (Model, Cmd Out.Msg )
+update : Msg -> EditableModel -> (EditableModel, Cmd Out.Msg )
 update msg model =
   case msg of
     ChangedDripText string ->
@@ -69,7 +69,7 @@ simulationHoursText' model val =
 simulationMinutesText' model val =
   { model | simulationMinutesText = val }
     
-updateWhen : String -> (String -> Bool) -> Model -> (Model -> String -> Model) -> (Model, Cmd Out.Msg)
+updateWhen : String -> (String -> Bool) -> EditableModel -> (EditableModel -> String -> EditableModel) -> (EditableModel, Cmd Out.Msg)
 updateWhen candidate pred model updater =
   ( if pred candidate then
       updater model candidate

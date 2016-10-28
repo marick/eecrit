@@ -3,7 +3,7 @@ module IV.Main exposing (..)
 import IV.Msg exposing (..)
 import Animation
 import IV.Scenario.Main as Scenario
-import IV.Scenario.Model as ScenarioModel
+import IV.Scenario.Models as ScenarioModel
 import IV.Apparatus.Main as Apparatus
 import IV.Clock.Main as Clock
 
@@ -14,7 +14,7 @@ import IV.Pile.CmdFlow as CmdFlow
 -- Model
 
 type alias Model =
-    { scenario : ScenarioModel.Model -- this holds all the user-chosen data
+    { scenario : ScenarioModel.EditableModel -- this holds all the user-chosen data
 
     -- The following hold the animation states of component pieces
     , clock : Clock.Model
@@ -32,7 +32,7 @@ apparatusPart = { getter = .apparatus, setter = apparatus' }
 
 -- Update
 
-initWithScenario : ScenarioModel.Model -> Model
+initWithScenario : ScenarioModel.EditableModel -> Model
 initWithScenario scenario =
   { scenario = scenario
   , apparatus = Apparatus.unstarted scenario

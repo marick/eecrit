@@ -1,6 +1,6 @@
-module IV.Scenario.Model exposing (..)
+module IV.Scenario.Models exposing (..)
 
-type alias Model =
+type alias EditableModel =
   { tag : String
   , dripText : String
   , animalDescription : String

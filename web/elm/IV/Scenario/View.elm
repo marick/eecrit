@@ -2,7 +2,7 @@ module IV.Scenario.View exposing (choices, view)
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Model exposing (Model)
+import IV.Scenario.Models exposing (EditableModel)
 import IV.Scenario.Main exposing (cowScenario, calfScenario)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
@@ -28,7 +28,7 @@ highlight buttonScenario currentScenario =
   else
     " btn-default "
 
-scenarioButton : Model -> Model -> String -> Html MainMsg.Msg
+scenarioButton : EditableModel -> EditableModel -> String -> Html MainMsg.Msg
 scenarioButton buttonScenario currentScenario additionalClassString =
   let 
     class = "btn col-sm-5 " ++
@@ -42,7 +42,7 @@ scenarioButton buttonScenario currentScenario additionalClassString =
       ]
       [ text buttonScenario.tag]
 
-choices : Model -> Html MainMsg.Msg    
+choices : EditableModel -> Html MainMsg.Msg    
 choices model =
   div []
     [ buttons model
@@ -55,7 +55,7 @@ buttons model =
   , scenarioButton calfScenario model "col-md-offset-2"
   ]  
 
-view : Model -> Html MainMsg.Msg
+view : EditableModel -> Html MainMsg.Msg
 view model =
   row []
     [ p [] [text <| description model ] 

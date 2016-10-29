@@ -1,5 +1,6 @@
 module IV.View exposing (view)
 
+import Animation
 import Html exposing (..)
 import Html.Attributes as Attr
 import Svg
@@ -43,6 +44,22 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ Scenario.choices model.scenario
+  , viewEditor model.scenarioEditorState
   , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
   , Scenario.view model.scenario
   ]
+
+
+viewEditor animationState = 
+  row
+    (Animation.render animationState
+       ++ [Attr.style
+             [ ("border", "2px solid #AAA")
+             , ("opacity", "1.0")
+             ]
+          ])
+    [ p [] [text "here is some text"]
+    , p [] [text "here is some text"]
+    , p [] [text "here is some text"]
+    ]
+  

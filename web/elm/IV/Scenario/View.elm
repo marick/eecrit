@@ -44,14 +44,18 @@ scenarioButton buttonScenario currentScenario additionalClassString =
 choices : EditableModel -> Html MainMsg.Msg    
 choices model =
   div []
-    [ buttons model
-    , Editor.edit model
-    ]
+    [ buttons model]
 
 buttons model = 
   row []
   [ scenarioButton (scenario cowBackground) model ""
   , scenarioButton (scenario calfBackground) model "col-md-offset-2"
+  , button
+      [ Attr.class "btn col-sm-5"
+      , Attr.type' "button"
+      , Events.onClick MainMsg.OpenScenarioEditor
+      ]
+      [ text "Write your own" ]
   ]  
 
 view : EditableModel -> Html MainMsg.Msg

@@ -18,7 +18,6 @@ import Animation.Messenger
 
 type alias Model =
     { scenario : ScenarioModel.EditableModel -- this holds all the user-chosen data
-    , editorOpen : Bool
 
     -- The following hold the animation states of component pieces
     , clock : Clock.Model
@@ -39,7 +38,6 @@ apparatusPart = { getter = .apparatus, setter = apparatus' }
 initWithScenario : ScenarioModel.EditableModel -> Model
 initWithScenario scenario =
   { scenario = scenario
-  , editorOpen = False
   , apparatus = Apparatus.unstarted <| ScenarioModel.startingLevel scenario
   , clock = Clock.startingState
   }
@@ -55,11 +53,6 @@ update msg model =
     ToScenario msg' ->
       Scenario.update msg' |> CmdFlow.change scenarioPart model
 
-    OpenScenarioEditor ->
-      ( { model | editorOpen = True }
-      , Cmd.none
-      )
-        
     PickedScenario scenario ->
       initWithScenario scenario ! []
 

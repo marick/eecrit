@@ -11,16 +11,45 @@ import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
-import IV.Scenario.Editor as Editor
 
-changedText : (String -> Msg) -> String -> MainMsg.Msg
-changedText msg string =
-  MainMsg.ToScenario (msg string)
 
+-- Top row of buttons
+
+viewScenarioChoices : EditableModel -> Html MainMsg.Msg    
+viewScenarioChoices model =
+  div []
+    [ buttons model]
+
+buttons model = 
+  row []
+  [ scenarioButton (scenario cowBackground) model ""
+  , scenarioButton (scenario calfBackground) model "col-md-offset-2"
+  , textButton [ Events.onClick (local OpenCaseBackgroundEditor) ] "Write your own"
+  ]
+  
+highlight buttonScenario currentScenario =
+  if buttonScenario == currentScenario then
+    " btn-primary "
+  else
+    " btn-default "
+
+scenarioButton : EditableModel -> EditableModel -> String -> Html MainMsg.Msg
+scenarioButton buttonScenario currentScenario additionalClassString =
+  let 
+    class = "btn col-sm-5 " ++
+            highlight buttonScenario currentScenario ++
+            additionalClassString
+  in
+    textButton
+      [Events.onClick <| MainMsg.PickedScenario buttonScenario] 
+      buttonScenario.background.tag
+
+-- Case background editor
+  
 viewCaseBackgroundEditor model =
   let
     display =
-      case model.editorOpen of 
+      case model.caseBackgroundEditorOpen of 
         True -> "block"
         False -> "none"
   in 
@@ -35,6 +64,8 @@ viewCaseBackgroundEditor model =
     , p [] [text "here is some text"]
     ]
 
+-- Treatment editor
+    
 description model =
   "You are presented with a " ++
   toString model.background.weightInPounds ++
@@ -42,43 +73,6 @@ description model =
   toString model.background.bagContentsInLiters ++
   " liters of fluid in a " ++ 
   model.background.bagType ++ "."
-
-highlight buttonScenario currentScenario =
-  if buttonScenario == currentScenario then
-    " btn-primary "
-  else
-    " btn-default "
-
-scenarioButton : EditableModel -> EditableModel -> String -> Html MainMsg.Msg
-scenarioButton buttonScenario currentScenario additionalClassString =
-  let 
-    class = "btn col-sm-5 " ++
-            highlight buttonScenario currentScenario ++
-            additionalClassString
-  in
-    button 
-      [ Attr.type' "button"
-      , Attr.class class
-      , Events.onClick <| MainMsg.PickedScenario buttonScenario
-      ]
-      [ text buttonScenario.background.tag]
-
-viewScenarioChoices : EditableModel -> Html MainMsg.Msg    
-viewScenarioChoices model =
-  div []
-    [ buttons model]
-
-buttons model = 
-  row []
-  [ scenarioButton (scenario cowBackground) model ""
-  , scenarioButton (scenario calfBackground) model "col-md-offset-2"
-  , button
-      [ Attr.class "btn col-sm-5"
-      , Attr.type' "button"
-      , Events.onClick MainMsg.OpenScenarioEditor
-      ]
-      [ text "Write your own" ]
-  ]  
 
 viewTreatmentEditor : EditableModel -> Html MainMsg.Msg
 viewTreatmentEditor model =
@@ -122,3 +116,25 @@ viewTreatmentEditor model =
     , p []
       [ text "To start over, click one of the buttons at the top." ]
     ]
+
+
+
+-- Private
+
+changedText : (String -> Msg) -> String -> MainMsg.Msg
+changedText msg string =
+  local (msg string)
+
+local : Msg -> MainMsg.Msg
+local msg =
+  MainMsg.ToScenario msg
+
+
+textButton extraAttributes string =
+  button
+  ( [ Attr.class "btn col-sm-5"
+    , Attr.type' "button"
+    ] ++ extraAttributes
+  )
+  [ text string ]
+  

@@ -44,7 +44,7 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ Scenario.viewScenarioChoices model.scenario
-  , Scenario.viewCaseBackgroundEditor model
+  , Scenario.viewCaseBackgroundEditor model.scenario
   , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
   , Scenario.viewTreatmentEditor model.scenario
   ]

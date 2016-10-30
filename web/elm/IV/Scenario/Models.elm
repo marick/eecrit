@@ -23,7 +23,7 @@ defaultBackground =
   , weightInPounds = 0
   }
 
-type alias DoctorDecisions =
+type alias TreatmentDecisions =
   {
     dripText : String
   , simulationHoursText : String
@@ -38,13 +38,15 @@ defaultDecisions =
 
 type alias EditableModel =
   { background : CaseBackground
-  , decisions : DoctorDecisions
+  , decisions : TreatmentDecisions
+  , caseBackgroundEditorOpen : Bool
   }
 
 scenario : CaseBackground -> EditableModel
 scenario background =
   { background = background
   , decisions = defaultDecisions
+  , caseBackgroundEditorOpen = False
   }
 
 -- Specific starting Scenarios

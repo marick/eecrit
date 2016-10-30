@@ -14,8 +14,6 @@ type Msg
     | ChamberEmptied
     | PickedScenario ScenarioModel.EditableModel
 
-    | OpenScenarioEditor
-
     | AnimationClockTick Animation.Msg
 
     | ToScenario ScenarioMsg.Msg

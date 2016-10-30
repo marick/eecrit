@@ -28,7 +28,7 @@ mainDiv contents =
   contents
 
 mainSvg contents  =
-  row [ ]
+  row [] 
     [ hr [] []
     , Svg.svg
         [ version "1.1"
@@ -44,22 +44,26 @@ view : Model -> Html Msg
 view model =
   mainDiv
   [ Scenario.choices model.scenario
-  , viewEditor model.scenarioEditorState
+  , viewEditor model
   , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
   , Scenario.view model.scenario
   ]
 
 
-viewEditor animationState = 
-  row
-    (Animation.render animationState
-       ++ [Attr.style
-             [ ("border", "2px solid #AAA")
-             , ("opacity", "1.0")
-             ]
-          ])
+viewEditor model =
+  let
+    display =
+      case model.editorOpen of 
+        True -> "block"
+        False -> "none"
+  in 
+    div
+    [Attr.style
+       [ ("border", "2px solid #AAA")
+       , ("display", display)
+       ]
+    ]
     [ p [] [text "here is some text"]
     , p [] [text "here is some text"]
     , p [] [text "here is some text"]
     ]
-  

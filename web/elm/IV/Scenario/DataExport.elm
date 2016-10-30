@@ -1,12 +1,17 @@
-module IV.Scenario.DataExport exposing (..)
+module IV.Scenario.DataExport exposing
+  ( SimulationData
+  , runnableModel
+  , dripRate
+  , startingLevel
+  )
 
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (floatString)
 import IV.Scenario.Model exposing (..)
 
--- Runnable models
+-- Here is what the rest of the world cares about
 
-type alias RunnableModel =
+type alias SimulationData =
   { totalHours : Hours
   , drainage : Drainage
   }
@@ -20,6 +25,19 @@ dripRate : EditableModel -> DropsPerSecond
 dripRate editableModel =
   DropsPerSecond <| floatString editableModel.decisions.dripText
 
+startingLevel : EditableModel -> Level
+startingLevel model =
+  Level <| model.background.bagContentsInLiters / model.background.bagCapacityInLiters
+        
+
+
+-- Private
+
+
+
+
+
+    
 hours : EditableModel -> Float
 hours model =
   let
@@ -40,10 +58,6 @@ drainage model =
     else
       FullyEmptied (Hours toEmpty)
 
-startingLevel : EditableModel -> Level
-startingLevel model =
-  Level <| model.background.bagContentsInLiters / model.background.bagCapacityInLiters
-        
 hoursToEmptyBag : EditableModel -> Float
 hoursToEmptyBag model =
   model.background.bagContentsInLiters / (litersPerHour model)

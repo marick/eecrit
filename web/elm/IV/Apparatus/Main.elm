@@ -15,7 +15,7 @@ import IV.Apparatus.BagView as BagView
 import IV.Apparatus.ChamberView as ChamberView
 import IV.Apparatus.HoseView as HoseView
 import IV.Types exposing (..)
-import IV.Scenario.Models as Scenario
+import IV.Scenario.Model as Scenario
 import IV.Msg exposing (Msg)
 import IV.Pile.Animation exposing (AnimationState)
 import IV.Pile.CmdFlow as CmdFlow

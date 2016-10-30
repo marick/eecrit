@@ -6,7 +6,8 @@ module IV.Scenario.View exposing
 
 import Html exposing (..)
 import Html.Attributes as Attr
-import IV.Scenario.Models exposing (EditableModel, scenario, cowBackground, calfBackground, dripRate, runnableModel)
+import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground)
+import IV.Scenario.DataExport exposing (dripRate, runnableModel)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events

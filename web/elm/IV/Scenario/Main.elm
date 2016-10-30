@@ -1,7 +1,7 @@
 module IV.Scenario.Main exposing (..)
 
 import IV.Scenario.Msg exposing (..)
-import IV.Scenario.Models exposing (EditableModel)
+import IV.Scenario.Model exposing (EditableModel)
 import IV.Scenario.Lenses exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
 import IV.Msg as Out

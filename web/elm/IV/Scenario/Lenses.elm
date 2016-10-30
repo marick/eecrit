@@ -1,7 +1,7 @@
 module IV.Scenario.Lenses exposing (..)
 
 import Monocle.Lens exposing (..)
-import IV.Scenario.Models exposing (..)
+import IV.Scenario.Model exposing (..)
 
 -- Model fields
 

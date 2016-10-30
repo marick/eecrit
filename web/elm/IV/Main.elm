@@ -1,18 +1,20 @@
 module IV.Main exposing (..)
 
-import IV.Msg exposing (..)
 import Animation
-import IV.Scenario.Main as Scenario
-import IV.Scenario.Models as ScenarioModel
-import IV.Apparatus.Main as Apparatus
-import IV.Clock.Main as Clock
+import Animation.Messenger
 import Html.Attributes as Attr
 
+import IV.Msg exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.CmdFlow as CmdFlow
 import IV.Pile.Animation exposing (AnimationState)
-import Animation
-import Animation.Messenger
+
+import IV.Apparatus.Main as Apparatus
+import IV.Clock.Main as Clock
+import IV.Scenario.Main as Scenario
+import IV.Scenario.Model as ScenarioModel
+import IV.Scenario.DataExport as DataExport
+
 
 -- Model
 
@@ -38,7 +40,7 @@ apparatusPart = { getter = .apparatus, setter = apparatus' }
 initWithScenario : ScenarioModel.EditableModel -> Model
 initWithScenario scenario =
   { scenario = scenario
-  , apparatus = Apparatus.unstarted <| ScenarioModel.startingLevel scenario
+  , apparatus = Apparatus.unstarted <| DataExport.startingLevel scenario
   , clock = Clock.startingState
   }
   

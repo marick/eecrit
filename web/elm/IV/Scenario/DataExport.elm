@@ -17,7 +17,7 @@ type alias SimulationData =
   }
 
 runnableModel editableModel =
-  { totalHours = Hours <| hours editableModel
+  { totalHours = Hours (hours editableModel)
   , drainage = drainage editableModel
   }
 
@@ -27,25 +27,13 @@ dripRate editableModel =
 
 startingLevel : EditableModel -> Level
 startingLevel model =
-  Level <| model.background.bagContentsInLiters / model.background.bagCapacityInLiters
-        
+  let
+    floats = toFloats model
+  in
+    Level (floats.bagContentsInLiters / floats.bagCapacityInLiters)
 
 
 -- Private
-
-
-
-
-
-    
-hours : EditableModel -> Float
-hours model =
-  let
-    h = model.decisions.simulationHoursText |> floatString
-    m = model.decisions.simulationMinutesText |> floatString
-  in
-    h + (m / 60.0)
-
 
 drainage : EditableModel -> Drainage
 drainage model =
@@ -57,6 +45,39 @@ drainage model =
       PartlyEmptied (Hours planned) (Level (endingFractionBagFilled model))
     else
       FullyEmptied (Hours toEmpty)
+
+
+
+
+-- A transformation to be used by other code
+
+type alias DataAsFloats =
+  { bagCapacityInLiters : Float
+  , bagContentsInLiters : Float
+  , dropsPerMil : Float
+  , dps : Float
+  , totalHours : Float
+  }
+
+toFloats : EditableModel -> DataAsFloats
+toFloats stringContainer = 
+  { bagCapacityInLiters = stringContainer.background.bagCapacityInLiters
+  , bagContentsInLiters = stringContainer.background.bagContentsInLiters
+  , dropsPerMil = stringContainer.background.dropsPerMil
+  , dps = floatString stringContainer.decisions.dripText
+  , totalHours = hours stringContainer
+  }
+
+
+hours : EditableModel -> Float
+hours model =
+  let
+    h = model.decisions.simulationHoursText |> floatString
+    m = model.decisions.simulationMinutesText |> floatString
+  in
+    h + (m / 60.0)
+
+
 
 hoursToEmptyBag : EditableModel -> Float
 hoursToEmptyBag model =

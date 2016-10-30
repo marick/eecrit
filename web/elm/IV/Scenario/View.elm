@@ -1,4 +1,8 @@
-module IV.Scenario.View exposing (choices, view)
+module IV.Scenario.View exposing
+  ( viewScenarioChoices
+  , viewCaseBackgroundEditor
+  , viewTreatmentEditor
+  )
 
 import Html exposing (..)
 import Html.Attributes as Attr
@@ -12,6 +16,24 @@ import IV.Scenario.Editor as Editor
 changedText : (String -> Msg) -> String -> MainMsg.Msg
 changedText msg string =
   MainMsg.ToScenario (msg string)
+
+viewCaseBackgroundEditor model =
+  let
+    display =
+      case model.editorOpen of 
+        True -> "block"
+        False -> "none"
+  in 
+    div
+    [Attr.style
+       [ ("border", "2px solid #AAA")
+       , ("display", display)
+       ]
+    ]
+    [ p [] [text "here is some text"]
+    , p [] [text "here is some text"]
+    , p [] [text "here is some text"]
+    ]
 
 description model =
   "You are presented with a " ++
@@ -41,8 +63,8 @@ scenarioButton buttonScenario currentScenario additionalClassString =
       ]
       [ text buttonScenario.background.tag]
 
-choices : EditableModel -> Html MainMsg.Msg    
-choices model =
+viewScenarioChoices : EditableModel -> Html MainMsg.Msg    
+viewScenarioChoices model =
   div []
     [ buttons model]
 
@@ -58,8 +80,8 @@ buttons model =
       [ text "Write your own" ]
   ]  
 
-view : EditableModel -> Html MainMsg.Msg
-view model =
+viewTreatmentEditor : EditableModel -> Html MainMsg.Msg
+viewTreatmentEditor model =
   row []
     [ p [] [text <| description model ] 
     , p

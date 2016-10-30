@@ -43,27 +43,8 @@ mainSvg contents  =
 view : Model -> Html Msg
 view model =
   mainDiv
-  [ Scenario.choices model.scenario
-  , viewEditor model
+  [ Scenario.viewScenarioChoices model.scenario
+  , Scenario.viewCaseBackgroundEditor model
   , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
-  , Scenario.view model.scenario
+  , Scenario.viewTreatmentEditor model.scenario
   ]
-
-
-viewEditor model =
-  let
-    display =
-      case model.editorOpen of 
-        True -> "block"
-        False -> "none"
-  in 
-    div
-    [Attr.style
-       [ ("border", "2px solid #AAA")
-       , ("display", display)
-       ]
-    ]
-    [ p [] [text "here is some text"]
-    , p [] [text "here is some text"]
-    , p [] [text "here is some text"]
-    ]

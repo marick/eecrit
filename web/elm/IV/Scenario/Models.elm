@@ -3,6 +3,23 @@ module IV.Scenario.Models exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.ManagedStrings exposing (floatString)
 
+type alias EditableModel =
+  { background : CaseBackground
+  , caseBackgroundEditorOpen : Bool
+  , decisions : TreatmentDecisions
+  }
+
+  
+scenario : CaseBackground -> EditableModel
+scenario background =
+  { background = background
+  , caseBackgroundEditorOpen = False
+  , decisions = defaultDecisions
+  }
+
+  
+
+  
 type alias CaseBackground =
   { tag : String
   , bagCapacityInLiters : Float
@@ -23,6 +40,9 @@ defaultBackground =
   , weightInPounds = 0
   }
 
+
+-- Treatment Decisions   
+
 type alias TreatmentDecisions =
   {
     dripText : String
@@ -34,19 +54,6 @@ defaultDecisions =
   { dripText = "0"
   , simulationHoursText = "0"
   , simulationMinutesText = "0"
-  }
-
-type alias EditableModel =
-  { background : CaseBackground
-  , decisions : TreatmentDecisions
-  , caseBackgroundEditorOpen : Bool
-  }
-
-scenario : CaseBackground -> EditableModel
-scenario background =
-  { background = background
-  , decisions = defaultDecisions
-  , caseBackgroundEditorOpen = False
   }
 
 -- Specific starting Scenarios
@@ -73,7 +80,7 @@ calfBackground =
     , bagType = "2-liter bag"
   }
 
-
+-- Runnable models
 
 type alias RunnableModel =
   { totalHours : Hours

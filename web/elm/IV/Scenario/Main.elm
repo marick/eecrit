@@ -2,55 +2,32 @@ module IV.Scenario.Main exposing (..)
 
 import IV.Scenario.Msg exposing (..)
 import IV.Scenario.Models exposing (..)
+import IV.Scenario.Lenses exposing (..)
 import IV.Types exposing (..)
+import IV.Pile.CmdFlow as CmdFlow
 import IV.Pile.ManagedStrings exposing (..)
 import String
 import IV.Msg as Out
 
 
-
--- Update
-
 update : Msg -> EditableModel -> (EditableModel, Cmd Out.Msg )
 update msg model =
   case msg of
     ChangedDripText string ->
-      updateWhen string isValidFloatString model dripText' 
+      updateWhen string isValidFloatString model model_dripText ! []
     ChangedHoursText string ->
-      updateWhen string isValidIntString model simulationHoursText'
+      updateWhen string isValidIntString model model_simulationHoursText ! []
     ChangedMinutesText string ->
-      updateWhen string isValidIntString model simulationMinutesText'
+      updateWhen string isValidIntString model model_simulationMinutesText ! []
     OpenCaseBackgroundEditor ->
       { model | caseBackgroundEditorOpen = True } ! []
     CloseCaseBackgroundEditor ->
       { model | caseBackgroundEditorOpen = False } ! []
                 
-dripText' editableModel val =
-  let
-    decisions = editableModel.decisions
-    newDecisions = { decisions | dripText = val }
-  in
-    { editableModel | decisions = newDecisions }
     
-simulationHoursText' editableModel val =
-  let
-    decisions = editableModel.decisions
-    newDecisions = { decisions | simulationHoursText = val }
-  in
-    { editableModel | decisions = newDecisions }
-
-simulationMinutesText' editableModel val =
-  let
-    decisions = editableModel.decisions
-    newDecisions = { decisions | simulationMinutesText = val }
-  in
-    { editableModel | decisions = newDecisions }
-    
-updateWhen : String -> (String -> Bool) -> EditableModel -> (EditableModel -> String -> EditableModel) -> (EditableModel, Cmd Out.Msg)
-updateWhen candidate pred model updater =
-  ( if pred candidate then
-      updater model candidate
-    else
-      model
-  , Cmd.none
-  )
+updateWhen candidate pred model lens = 
+  if pred candidate then
+    lens.set candidate model
+  else
+    model
+  

@@ -62,6 +62,11 @@ viewCaseBackgroundEditor model =
     [ p [] [text "here is some text"]
     , p [] [text "here is some text"]
     , p [] [text "here is some text"]
+    , row []
+        [ textButton
+            [ Events.onClick (local CloseCaseBackgroundEditor) ]
+            "Close"
+        ]
     ]
 
 -- Treatment editor

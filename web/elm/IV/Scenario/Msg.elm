@@ -7,4 +7,5 @@ type Msg
   | ChangedMinutesText String
 
   | OpenCaseBackgroundEditor
+  | CloseCaseBackgroundEditor
 

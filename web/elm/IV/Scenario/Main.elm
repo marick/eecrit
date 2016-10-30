@@ -22,6 +22,8 @@ update msg model =
       updateWhen string isValidIntString model simulationMinutesText'
     OpenCaseBackgroundEditor ->
       { model | caseBackgroundEditorOpen = True } ! []
+    CloseCaseBackgroundEditor ->
+      { model | caseBackgroundEditorOpen = False } ! []
                 
 dripText' editableModel val =
   let

@@ -4,6 +4,7 @@ import Animation
 import Animation.Messenger
 import Html.Attributes as Attr
 
+import IV.Lenses exposing (..)
 import IV.Msg exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.CmdFlow as CmdFlow
@@ -26,15 +27,6 @@ type alias Model =
     , apparatus : Apparatus.Model
     }
 
-scenario' model val = { model | scenario = val }
-clock' model val = { model | clock = val }
-apparatus' model val = { model | apparatus = val }
-
-scenarioPart = { getter = .scenario, setter = scenario' }
-clockPart = { getter = .clock, setter = clock' }
-apparatusPart = { getter = .apparatus, setter = apparatus' }
-
-
 -- Update
 
 initWithScenario : ScenarioModel.EditableModel -> (Model, Cmd Msg)
@@ -49,56 +41,68 @@ initWithScenario scenario =
 init : ( Model, Cmd Msg )
 init = initWithScenario (ScenarioModel.scenario ScenarioModel.cowBackground)
 
+
+changeDripRate dripRate = updateApparatus (Apparatus.changeDripRate dripRate)
+showTrueFlow = updateApparatus Apparatus.showTrueFlow
+drainChamber = updateApparatus Apparatus.drainChamber
+drainHose = updateApparatus Apparatus.drainHose
+
+startApparatusSimulation drainage = updateApparatus (Apparatus.startSimulation drainage)
+startClock hours = updateClock (Clock.startSimulation hours)
+
+openCaseBackgroundEditor = updateScenario Scenario.openCaseBackgroundEditor
+closeCaseBackgroundEditor = updateScenario Scenario.closeCaseBackgroundEditor
+
+animateClock tick = updateClock (Clock.animationClockTick tick)
+animateApparatus tick = updateApparatus (Apparatus.animationClockTick tick)
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     ToScenario msg' ->
-      Scenario.update msg' |> CmdFlow.change scenarioPart model
+      flow model
+        |> updateScenario (Scenario.update msg')
 
     PickedScenario scenario ->
       initWithScenario scenario
 
     ChoseDripRate dripRate ->
-      CmdFlow.chainLike model
-        [ (apparatusPart, Apparatus.changeDripRate dripRate)
-        , (apparatusPart, Apparatus.showTrueFlow)
-        ]
+      flow model
+        |> changeDripRate dripRate
+        |> showTrueFlow
 
     FluidRanOut ->
-      CmdFlow.chainLike model
-        [ (apparatusPart, Apparatus.changeDripRate (DropsPerSecond 0))
-        , (apparatusPart, Apparatus.showTrueFlow)
-        , (apparatusPart, Apparatus.drainChamber)
-        ] 
+      flow model
+        |> changeDripRate (DropsPerSecond 0)
+        |> showTrueFlow
+        |> drainChamber
 
-    ChamberEmptied ->
-      Apparatus.drainHose |> CmdFlow.change apparatusPart model
+    ChamberEmptied ->   -- TODO: This should just be part of Apparatus.drainChamber
+      flow model
+        |> drainHose
 
     StartSimulation runnableModel ->
-      let
-        apparatusF = Apparatus.startSimulation runnableModel.drainage
-        clockF = Clock.startSimulation runnableModel.totalHours
-      in
-        model ! []
-          |> CmdFlow.augment apparatusPart apparatusF
-          |> CmdFlow.augment clockPart clockF
+      flow model
+        |> startApparatusSimulation runnableModel.drainage
+        |> startClock runnableModel.totalHours
         
     StopSimulation ->
-      Apparatus.showTrueFlow |> CmdFlow.change apparatusPart model
+      flow model
+        |> showTrueFlow
 
     OpenCaseBackgroundEditor ->
-      model ! []
-        |> CmdFlow.augment scenarioPart Scenario.openCaseBackgroundEditor
-        |> CmdFlow.augment apparatusPart Apparatus.showTrueFlow
+      flow model
+        |> openCaseBackgroundEditor
+        |> showTrueFlow
         
     CloseCaseBackgroundEditor ->
       initWithScenario model.scenario
-        |> CmdFlow.augment scenarioPart Scenario.closeCaseBackgroundEditor
+        |> closeCaseBackgroundEditor
         
     AnimationClockTick tick ->
-      model ! []
-        |> CmdFlow.augment apparatusPart (Apparatus.animationClockTick tick)
-        |> CmdFlow.augment clockPart (Clock.animationClockTick tick)
+      flow model
+        |> animateClock tick
+        |> animateApparatus tick
         
 -- Subscriptions
     

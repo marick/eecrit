@@ -148,7 +148,7 @@ local msg =
 
 textButton extraAttributes string =
   button
-  ( [ Attr.class "btn col-sm-5"
+  ( [ Attr.class "btn btn-xs"
     , Attr.type' "button"
     ] ++ extraAttributes
   )

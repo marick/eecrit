@@ -21,22 +21,20 @@ scenario background =
   
 type alias CaseBackground =
   { tag : String
-  , bagCapacityInLiters : Float
-  , bagContentsInLiters : Float
+  , bagCapacityInLiters : String
+  , bagContentsInLiters : String
   , bagType : String
-  , dropsPerMil : Float
+  , dropsPerMil : String
   , animalDescription : String
-  , weightInPounds : Int
   }
 
 defaultBackground =
   { tag = "Case shorthand (optional)"
-  , bagCapacityInLiters = 0
-  , bagContentsInLiters = 0
+  , bagCapacityInLiters = "0"
+  , bagContentsInLiters = "0"
   , bagType = "kind of bag (optional)"
-  , dropsPerMil = 15.0
+  , dropsPerMil = "15.0"
   , animalDescription = "Animal weight in pounds (optional)"
-  , weightInPounds = 0
   }
 
 
@@ -61,10 +59,9 @@ cowBackground : CaseBackground
 cowBackground = 
   { defaultBackground
     | tag = "1560 lb. cow"
-    , animalDescription = "3d lactation purebred Holstein"
-    , weightInPounds = 1560
-    , bagCapacityInLiters = 20
-    , bagContentsInLiters = 19
+    , animalDescription = "a 1560 lb 3d lactation purebred Holstein"
+    , bagCapacityInLiters = "20"
+    , bagContentsInLiters = "19"
     , bagType = "5-gallon carboy"
   }
 
@@ -72,10 +69,9 @@ calfBackground : CaseBackground
 calfBackground = 
   { defaultBackground
     | tag = "90 lb. heifer calf"
-    , animalDescription = "10-day-old Hereford heifer calf"
-    , weightInPounds = 90
-    , bagCapacityInLiters = 2
-    , bagContentsInLiters = 2
+    , animalDescription = "a 90 lb. 10-day-old Hereford heifer calf"
+    , bagCapacityInLiters = "2"
+    , bagContentsInLiters = "2"
     , bagType = "2-liter bag"
   }
 

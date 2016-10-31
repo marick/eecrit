@@ -73,10 +73,9 @@ viewCaseBackgroundEditor model =
 -- Treatment editor
     
 description model =
-  "You are presented with a " ++
-  toString model.background.weightInPounds ++
-  " lb " ++ model.background.animalDescription ++ ". You have " ++
-  toString model.background.bagContentsInLiters ++
+  "You are presented with " ++
+  model.background.animalDescription ++ ". You have " ++
+  model.background.bagContentsInLiters ++
   " liters of fluid in a " ++ 
   model.background.bagType ++ "."
 

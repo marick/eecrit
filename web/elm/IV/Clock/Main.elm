@@ -9,10 +9,10 @@ module IV.Clock.Main exposing
 import Animation
 import Animation.Messenger
 import IV.Clock.AnimatedView as View
+import IV.Clock.Lenses exposing (..)
 import IV.Types exposing (..)
 import IV.Pile.Animation exposing (easeForHours, AnimationState)
 import IV.Msg exposing (..)
-import IV.Pile.CmdFlow as CmdFlow
 
 animations : Model -> List AnimationState
 animations model =
@@ -27,12 +27,6 @@ type alias Model =
   { hourHand : AnimationState
   , minuteHand : AnimationState
   }
-hourHand' model val = { model | hourHand = val }
-minuteHand' model val = { model | minuteHand = val }
-
-hourHandPart = { getter = .hourHand, setter = hourHand' }
-minuteHandPart = { getter = .minuteHand, setter = minuteHand' }
-
 
 startingState =
   { hourHand = Animation.style (View.hourHandStartsAt startingHourRaw)
@@ -41,18 +35,15 @@ startingState =
 
 -- Update
 
-startSimulation hours model = 
-  CmdFlow.chainLike model
-    [ ( hourHandPart, advanceHourHand hours)
-    , ( minuteHandPart, spinMinuteHand hours)
-    ]
+startSimulation hours model =
+  flow model
+    |> updateHourHand (advanceHourHand hours)
+    |> updateMinuteHand (spinMinuteHand hours)
 
 animationClockTick tick model =
-  CmdFlow.chainLike model
-    [ ( hourHandPart, Animation.Messenger.update tick )
-    , ( minuteHandPart, Animation.Messenger.update tick )
-    ]
-  
+  flow model
+    |> updateHourHand (Animation.Messenger.update tick)
+    |> updateMinuteHand (Animation.Messenger.update tick)
 
 -- Private
 

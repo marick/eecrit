@@ -1,49 +1,21 @@
 module IV.Pile.CmdFlow exposing
-  ( change
-  , augment
-  , chainLike
+  ( flow
+  , update
   )
 
-type alias GetterSetter whole part =
-  { getter : whole -> part
-  , setter : whole -> part -> whole
-  }
-
-type alias PartTransform part msg =
-  part -> (part, Cmd msg)
+import Monocle.Lens exposing (..)
 
 
-change : (GetterSetter whole part) ->
-           (whole -> (PartTransform part msg) -> (whole, Cmd msg))
-change {getter, setter} whole f =
+flow : model -> (model, Cmd msg)
+flow model =
+  (model, Cmd.none)
+
+update : (Lens whole part) -> (part -> (part, Cmd msg)) -> (whole, Cmd msg) -> (whole, Cmd msg)
+update lens f (whole, cmd) =
   let
-    (newPart, cmd) = f (getter whole)
+    (newPart, newCmd) = f (lens.get whole)
   in
-    (setter whole newPart, cmd)
-      
-augment : (GetterSetter whole part) ->
-           ( (PartTransform part msg) -> (whole, Cmd msg) -> (whole, Cmd msg))
-augment {getter, setter} f (whole, cmd) =
-    let
-      (newPart, newCmd) = f (getter whole)
-    in
-      ( setter whole newPart
-      , Cmd.batch [cmd, newCmd]
-      )
-
-
-{-| A possibly more readable form when a sequence of augmentations
-all have the same type.
-
-
-TODO: This is probably a bad idea.
-
--}
-      
-chainLike : whole -> List ( GetterSetter whole part, PartTransform part msg) ->
-             (whole, Cmd msg)
-chainLike whole list =
-  let
-    updater = \ (inWhat, f) soFar -> augment inWhat f soFar 
-  in
-    List.foldl updater (whole, Cmd.none) list
+    ( lens.set newPart whole
+    , Cmd.batch [cmd, newCmd]
+    )
+  

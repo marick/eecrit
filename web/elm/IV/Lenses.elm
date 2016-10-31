@@ -1,7 +1,7 @@
 module IV.Lenses exposing (..)
 
 import Monocle.Lens exposing (..)
-import IV.Pile.CmdFlow2 as CmdFlow
+import IV.Pile.CmdFlow as CmdFlow
 
 
 flow = CmdFlow.flow

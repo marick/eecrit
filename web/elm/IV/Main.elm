@@ -7,7 +7,6 @@ import Html.Attributes as Attr
 import IV.Lenses exposing (..)
 import IV.Msg exposing (..)
 import IV.Types exposing (..)
-import IV.Pile.CmdFlow as CmdFlow
 import IV.Pile.Animation exposing (AnimationState)
 
 import IV.Apparatus.Main as Apparatus

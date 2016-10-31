@@ -10,16 +10,14 @@ module IV.Apparatus.Main exposing
   , drainHose
   )
 
-import IV.Apparatus.Droplet as Droplet
 import IV.Apparatus.BagView as BagView
 import IV.Apparatus.ChamberView as ChamberView
+import IV.Apparatus.Droplet as Droplet
 import IV.Apparatus.HoseView as HoseView
+import IV.Apparatus.Lenses exposing (..)
 import IV.Types exposing (..)
-import IV.Scenario.Model as Scenario
 import IV.Msg exposing (Msg)
 import IV.Pile.Animation exposing (AnimationState)
-import IV.Pile.CmdFlow as CmdFlow
-import List
 
 animations model = 
   [model.droplet, model.bagLevel, model.chamberFluid, model.hoseFluid]
@@ -34,18 +32,6 @@ type alias Model =
   , rate : DropsPerSecond
   }
 
-droplet' model val = { model | droplet = val }
-bagLevel' model val = { model | bagLevel = (Debug.log "set bag level" val) }
-chamberFluid' model val = { model | chamberFluid = (Debug.log "set chamber fluid" val) }
-hoseFluid' model val = { model | hoseFluid = (Debug.log "set chamber fluid" val) }
-rate' model val = { model | rate = val }
-
-dropletPart = { getter = .droplet, setter = droplet' }
-bagLevelPart = { getter = .bagLevel, setter = bagLevel' }
-chamberFluidPart = { getter = .chamberFluid, setter = chamberFluid' }
-hoseFluidPart = { getter = .hoseFluid, setter = hoseFluid' }
-ratePart = { getter = .rate, setter = rate' }
-
 unstarted startingLevel =
   { droplet = Droplet.noDrips
   , bagLevel = BagView.startingState startingLevel
@@ -58,31 +44,34 @@ unstarted startingLevel =
 
 showTrueFlow : Model -> ( Model, Cmd Msg)
 showTrueFlow model =
-  Droplet.showTrueFlow model.rate |> CmdFlow.change dropletPart model
+  flow model
+    |> updateDroplet (Droplet.showTrueFlow model.rate)
 
 changeDripRate : DropsPerSecond -> Model -> ( Model, Cmd Msg )
 changeDripRate dropsPerSecond model =
-  rate' model dropsPerSecond ! []
+  ( apparatus_rate.set dropsPerSecond model
+  , Cmd.none
+  )
 
 drainChamber : Model -> ( Model, Cmd Msg )
 drainChamber model =
-  ChamberView.startDraining |> CmdFlow.change chamberFluidPart model
+  flow model
+    |> updateChamberFluid ChamberView.startDraining
 
 drainHose : Model -> (Model, Cmd Msg)
-drainHose model = 
-  HoseView.startDraining |> CmdFlow.change hoseFluidPart model
+drainHose model =
+  flow model
+    |> updateHoseFluid HoseView.startDraining
 
 startSimulation : Drainage -> Model -> ( Model, Cmd Msg)
 startSimulation drainage model =
-  CmdFlow.chainLike model
-    [ ( dropletPart, Droplet.showTimeLapseFlow )
-    , ( bagLevelPart, BagView.startDraining drainage )
-    ]
+  flow model
+    |> updateDroplet Droplet.showTimeLapseFlow
+    |> updateBagLevel (BagView.startDraining drainage)
     
 animationClockTick tick model =
-  CmdFlow.chainLike model
-    [ (dropletPart, Droplet.animationClockTick tick)
-    , (bagLevelPart, BagView.animationClockTick tick)
-    , (chamberFluidPart, ChamberView.animationClockTick tick)
-    , (hoseFluidPart, HoseView.animationClockTick tick)
-    ]
+  flow model
+    |> updateDroplet (Droplet.animationClockTick tick)
+    |> updateBagLevel (BagView.animationClockTick tick)
+    |> updateChamberFluid (ChamberView.animationClockTick tick)
+    |> updateHoseFluid (HoseView.animationClockTick tick)

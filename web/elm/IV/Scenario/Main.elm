@@ -11,11 +11,11 @@ update : Msg -> EditableModel -> (EditableModel, Cmd Out.Msg )
 update msg model =
   case msg of
     ChangedDripText string ->
-      updateWhen string isValidFloatString model model_dripText ! []
+      updateWhen string isValidFloatString model model_dripRate ! []
     ChangedHoursText string ->
-      updateWhen string isValidIntString model model_simulationHoursText ! []
+      updateWhen string isValidIntString model model_simulationHours ! []
     ChangedMinutesText string ->
-      updateWhen string isValidIntString model model_simulationMinutesText ! []
+      updateWhen string isValidIntString model model_simulationMinutes ! []
     OpenCaseBackgroundEditor ->
       { model | caseBackgroundEditorOpen = True } ! []
     CloseCaseBackgroundEditor ->

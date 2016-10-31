@@ -44,15 +44,15 @@ defaultBackground =
 
 type alias TreatmentDecisions =
   {
-    dripText : String
-  , simulationHoursText : String
-  , simulationMinutesText : String
+    dripRate : String
+  , simulationHours : String
+  , simulationMinutes : String
   }
 
 defaultDecisions =
-  { dripText = "0"
-  , simulationHoursText = "0"
-  , simulationMinutesText = "0"
+  { dripRate = "0"
+  , simulationHours = "0"
+  , simulationMinutes = "0"
   }
 
 -- Specific starting Scenarios

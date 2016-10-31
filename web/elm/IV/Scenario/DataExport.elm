@@ -23,7 +23,7 @@ runnableModel editableModel =
 
 dripRate : EditableModel -> DropsPerSecond  
 dripRate editableModel =
-  DropsPerSecond <| floatString editableModel.decisions.dripText
+  DropsPerSecond <| floatString editableModel.decisions.dripRate
 
 startingLevel : EditableModel -> Level
 startingLevel model =
@@ -64,7 +64,7 @@ toFloats stringContainer =
   { bagCapacityInLiters = stringContainer.background.bagCapacityInLiters
   , bagContentsInLiters = stringContainer.background.bagContentsInLiters
   , dropsPerMil = stringContainer.background.dropsPerMil
-  , dps = floatString stringContainer.decisions.dripText
+  , dps = floatString stringContainer.decisions.dripRate
   , totalHours = hours stringContainer
   }
 
@@ -72,8 +72,8 @@ toFloats stringContainer =
 hours : EditableModel -> Float
 hours model =
   let
-    h = model.decisions.simulationHoursText |> floatString
-    m = model.decisions.simulationMinutesText |> floatString
+    h = model.decisions.simulationHours |> floatString
+    m = model.decisions.simulationMinutes |> floatString
   in
     h + (m / 60.0)
 
@@ -102,5 +102,5 @@ litersPerHour model =
       
 dropsPerSecond : EditableModel -> Float
 dropsPerSecond model =
-  floatString model.decisions.dripText
+  floatString model.decisions.dripRate
 

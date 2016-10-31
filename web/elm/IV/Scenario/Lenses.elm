@@ -33,33 +33,33 @@ model_caseBackgroundEditorOpen =
 
 -- Decisions 
 
-decisions_dripText : Lens TreatmentDecisions String
-decisions_dripText =
+decisions_dripRate : Lens TreatmentDecisions String
+decisions_dripRate =
   let
-    get arg1 = arg1.dripText
-    set new2 arg1 = { arg1 | dripText = new2 }
+    get arg1 = arg1.dripRate
+    set new2 arg1 = { arg1 | dripRate = new2 }
   in
     Lens get set
 
-decisions_simulationHoursText : Lens TreatmentDecisions String
-decisions_simulationHoursText =
+decisions_simulationHours : Lens TreatmentDecisions String
+decisions_simulationHours =
   let
-    get arg1 = arg1.simulationHoursText
-    set new2 arg1 = { arg1 | simulationHoursText = new2 }
+    get arg1 = arg1.simulationHours
+    set new2 arg1 = { arg1 | simulationHours = new2 }
   in
     Lens get set
 
-decisions_simulationMinutesText : Lens TreatmentDecisions String
-decisions_simulationMinutesText =
+decisions_simulationMinutes : Lens TreatmentDecisions String
+decisions_simulationMinutes =
   let
-    get arg1 = arg1.simulationMinutesText
-    set new2 arg1 = { arg1 | simulationMinutesText = new2 }
+    get arg1 = arg1.simulationMinutes
+    set new2 arg1 = { arg1 | simulationMinutes = new2 }
   in
     Lens get set
 
 
 -- Model down to Decisions
 
-model_dripText = Monocle.Lens.compose model_decisions decisions_dripText
-model_simulationHoursText = Monocle.Lens.compose model_decisions decisions_simulationHoursText
-model_simulationMinutesText = Monocle.Lens.compose model_decisions decisions_simulationMinutesText
+model_dripRate = Monocle.Lens.compose model_decisions decisions_dripRate
+model_simulationHours = Monocle.Lens.compose model_decisions decisions_simulationHours
+model_simulationMinutes = Monocle.Lens.compose model_decisions decisions_simulationMinutes

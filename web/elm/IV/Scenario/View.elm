@@ -7,7 +7,7 @@ module IV.Scenario.View exposing
 import Html exposing (..)
 import Html.Attributes as Attr
 import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground)
-import IV.Scenario.DataExport exposing (dripRate, runnableModel)
+import IV.Scenario.DataExport as DataExport
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
@@ -90,16 +90,16 @@ viewTreatmentEditor model =
         , input
             [ Attr.type' "text"
             -- , Attr.class "form-control col-xs-2"
-            , Attr.value model.decisions.dripText
+            , Attr.value model.decisions.dripRate
             , Attr.size 6
             , Events.onInput (changedText ChangedDripText)
-            , Events.onBlur <| (MainMsg.ChoseDripRate (dripRate model))
+            , Events.onBlur <| (MainMsg.ChoseDripRate (DataExport.dripRate model))
             ]
             []
         , text "drops/sec, set the hours "
         , input
             [ Attr.type' "text"
-            , Attr.value model.decisions.simulationHoursText
+            , Attr.value model.decisions.simulationHours
             , Attr.size 6
             , Events.onInput (changedText ChangedHoursText)
             ]
@@ -107,14 +107,14 @@ viewTreatmentEditor model =
         , text " and minutes "
         , input
             [ Attr.type' "text"
-            , Attr.value model.decisions.simulationMinutesText
+            , Attr.value model.decisions.simulationMinutes
             , Attr.size 6
             , Events.onInput (changedText ChangedMinutesText)
             ]
             []
         , text " until you plan to next look at the fluid level, then " 
         , button
-            [ Events.onClick <| MainMsg.StartSimulation (runnableModel model)
+            [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)
             , Attr.class "btn btn-default btn-xs"
             ]
             [ text "Start the Clock" ]

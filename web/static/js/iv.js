@@ -7444,6 +7444,118 @@ var _elm_lang$html$Html_App$beginnerProgram = function (_p1) {
 };
 var _elm_lang$html$Html_App$map = _elm_lang$virtual_dom$VirtualDom$map;
 
+var _arturopala$elm_monocle$Monocle_Iso$modify = F2(
+	function (iso, f) {
+		return function (_p0) {
+			return iso.reverseGet(
+				f(
+					iso.get(_p0)));
+		};
+	});
+var _arturopala$elm_monocle$Monocle_Iso$Iso = F2(
+	function (a, b) {
+		return {get: a, reverseGet: b};
+	});
+var _arturopala$elm_monocle$Monocle_Iso$reverse = function (iso) {
+	return A2(_arturopala$elm_monocle$Monocle_Iso$Iso, iso.reverseGet, iso.get);
+};
+var _arturopala$elm_monocle$Monocle_Iso$compose = F2(
+	function (outer, inner) {
+		return A2(
+			_arturopala$elm_monocle$Monocle_Iso$Iso,
+			function (_p1) {
+				return inner.get(
+					outer.get(_p1));
+			},
+			function (_p2) {
+				return outer.reverseGet(
+					inner.reverseGet(_p2));
+			});
+	});
+
+var _arturopala$elm_monocle$Monocle_Lens$modifyAndMerge = F3(
+	function (lens, fx, merge) {
+		var mf = function (_p0) {
+			var _p1 = _p0;
+			var _p4 = _p1._0;
+			return function (_p2) {
+				var _p3 = _p2;
+				return {
+					ctor: '_Tuple2',
+					_0: A2(lens.set, _p3._0, _p4),
+					_1: A2(merge, _p1._1, _p3._1)
+				};
+			}(
+				fx(
+					lens.get(_p4)));
+		};
+		return mf;
+	});
+var _arturopala$elm_monocle$Monocle_Lens$modify = F2(
+	function (lens, f) {
+		var mf = function (a) {
+			return function (b) {
+				return A2(lens.set, b, a);
+			}(
+				f(
+					lens.get(a)));
+		};
+		return mf;
+	});
+var _arturopala$elm_monocle$Monocle_Lens$Lens = F2(
+	function (a, b) {
+		return {get: a, set: b};
+	});
+var _arturopala$elm_monocle$Monocle_Lens$compose = F2(
+	function (outer, inner) {
+		var set = F2(
+			function (c, a) {
+				return function (b) {
+					return A2(outer.set, b, a);
+				}(
+					A2(
+						inner.set,
+						c,
+						outer.get(a)));
+			});
+		return A2(
+			_arturopala$elm_monocle$Monocle_Lens$Lens,
+			function (_p5) {
+				return inner.get(
+					outer.get(_p5));
+			},
+			set);
+	});
+var _arturopala$elm_monocle$Monocle_Lens$fromIso = function (iso) {
+	var set = F2(
+		function (b, _p6) {
+			return iso.reverseGet(b);
+		});
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, iso.get, set);
+};
+var _arturopala$elm_monocle$Monocle_Lens$zip = F2(
+	function (left, right) {
+		var set = F2(
+			function (_p8, _p7) {
+				var _p9 = _p8;
+				var _p10 = _p7;
+				return {
+					ctor: '_Tuple2',
+					_0: A2(left.set, _p9._0, _p10._0),
+					_1: A2(right.set, _p9._1, _p10._1)
+				};
+			});
+		var get = function (_p11) {
+			var _p12 = _p11;
+			return {
+				ctor: '_Tuple2',
+				_0: left.get(_p12._0),
+				_1: right.get(_p12._1)
+			};
+		};
+		return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+	});
+
 var _elm_lang$core$Set$foldr = F3(
 	function (f, b, _p0) {
 		var _p1 = _p0;
@@ -15323,6 +15435,82 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
+var _user$project$IV_Pile_CmdFlow$update = F3(
+	function (lens, f, _p0) {
+		var _p1 = _p0;
+		var _p3 = _p1._0;
+		var _p2 = f(
+			lens.get(_p3));
+		var newPart = _p2._0;
+		var newCmd = _p2._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(lens.set, newPart, _p3),
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				_elm_lang$core$Native_List.fromArray(
+					[_p1._1, newCmd]))
+		};
+	});
+var _user$project$IV_Pile_CmdFlow$flow = function (model) {
+	return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+};
+
+var _user$project$IV_Lenses$model_apparatus = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{apparatus: new2});
+		});
+	var get = function (arg1) {
+		return arg1.apparatus;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Lenses$model_clock = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{clock: new2});
+		});
+	var get = function (arg1) {
+		return arg1.clock;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Lenses$model_scenario = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{scenario: new2});
+		});
+	var get = function (arg1) {
+		return arg1.scenario;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Lenses$updateClock = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_clock, f);
+};
+var _user$project$IV_Lenses$updateApparatus = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_apparatus, f);
+};
+var _user$project$IV_Lenses$updateScenario = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_scenario, f);
+};
+var _user$project$IV_Lenses$flow = _user$project$IV_Pile_CmdFlow$flow;
+
+var _user$project$IV_Scenario_Msg$ChangedDropsPerMil = function (a) {
+	return {ctor: 'ChangedDropsPerMil', _0: a};
+};
+var _user$project$IV_Scenario_Msg$ChangedBagContents = function (a) {
+	return {ctor: 'ChangedBagContents', _0: a};
+};
+var _user$project$IV_Scenario_Msg$ChangedBagCapacity = function (a) {
+	return {ctor: 'ChangedBagCapacity', _0: a};
+};
 var _user$project$IV_Scenario_Msg$ChangedMinutesText = function (a) {
 	return {ctor: 'ChangedMinutesText', _0: a};
 };
@@ -15332,43 +15520,6 @@ var _user$project$IV_Scenario_Msg$ChangedHoursText = function (a) {
 var _user$project$IV_Scenario_Msg$ChangedDripText = function (a) {
 	return {ctor: 'ChangedDripText', _0: a};
 };
-
-var _user$project$IV_Scenario_Model$Model = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return {tag: a, dripText: b, animalDescription: c, weightInPounds: d, simulationHoursText: e, simulationMinutesText: f, bagCapacityInLiters: g, bagContentsInLiters: h, bagType: i, dropsPerMil: j};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-
-var _user$project$IV_Msg$ToScenario = function (a) {
-	return {ctor: 'ToScenario', _0: a};
-};
-var _user$project$IV_Msg$AnimationClockTick = function (a) {
-	return {ctor: 'AnimationClockTick', _0: a};
-};
-var _user$project$IV_Msg$PickedScenario = function (a) {
-	return {ctor: 'PickedScenario', _0: a};
-};
-var _user$project$IV_Msg$ChamberEmptied = {ctor: 'ChamberEmptied'};
-var _user$project$IV_Msg$FluidRanOut = {ctor: 'FluidRanOut'};
-var _user$project$IV_Msg$ChoseDripSpeed = {ctor: 'ChoseDripSpeed'};
-var _user$project$IV_Msg$StopSimulation = {ctor: 'StopSimulation'};
-var _user$project$IV_Msg$StartSimulation = {ctor: 'StartSimulation'};
 
 var _user$project$IV_Types$asDuration = function (_p0) {
 	var _p1 = _p0;
@@ -15391,6 +15542,30 @@ var _user$project$IV_Types$PartlyEmptied = F2(
 var _user$project$IV_Types$FullyEmptied = function (a) {
 	return {ctor: 'FullyEmptied', _0: a};
 };
+
+var _user$project$IV_Scenario_Model$editableBackground = {tag: '', bagCapacityInLiters: '0', bagContentsInLiters: '0', bagType: 'container', dropsPerMil: '15.0', animalDescription: 'case'};
+var _user$project$IV_Scenario_Model$cowBackground = _elm_lang$core$Native_Utils.update(
+	_user$project$IV_Scenario_Model$editableBackground,
+	{tag: '1560 lb. cow', animalDescription: 'a 1560 lb 3d lactation purebred Holstein', bagCapacityInLiters: '20', bagContentsInLiters: '19', bagType: '5-gallon carboy'});
+var _user$project$IV_Scenario_Model$calfBackground = _elm_lang$core$Native_Utils.update(
+	_user$project$IV_Scenario_Model$editableBackground,
+	{tag: '90 lb. heifer calf', animalDescription: 'a 90 lb. 10-day-old Hereford heifer calf', bagCapacityInLiters: '2', bagContentsInLiters: '2', bagType: 'bag'});
+var _user$project$IV_Scenario_Model$defaultDecisions = {dripRate: '0', simulationHours: '0', simulationMinutes: '0'};
+var _user$project$IV_Scenario_Model$scenario = function (background) {
+	return {background: background, caseBackgroundEditorOpen: false, decisions: _user$project$IV_Scenario_Model$defaultDecisions};
+};
+var _user$project$IV_Scenario_Model$EditableModel = F3(
+	function (a, b, c) {
+		return {background: a, caseBackgroundEditorOpen: b, decisions: c};
+	});
+var _user$project$IV_Scenario_Model$CaseBackground = F6(
+	function (a, b, c, d, e, f) {
+		return {tag: a, bagCapacityInLiters: b, bagContentsInLiters: c, bagType: d, dropsPerMil: e, animalDescription: f};
+	});
+var _user$project$IV_Scenario_Model$TreatmentDecisions = F3(
+	function (a, b, c) {
+		return {dripRate: a, simulationHours: b, simulationMinutes: c};
+	});
 
 var _user$project$IV_Pile_ManagedStrings$isValidIntString = function (string) {
 	if (_elm_lang$core$String$isEmpty(string)) {
@@ -15429,155 +15604,87 @@ var _user$project$IV_Pile_ManagedStrings$isValidFloatString = function (string) 
 	}
 };
 
-var _user$project$IV_Scenario_Main$updateWhen = F4(
-	function (candidate, pred, model, updater) {
-		return {
-			ctor: '_Tuple2',
-			_0: pred(candidate) ? A2(updater, model, candidate) : model,
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+var _user$project$IV_Scenario_DataExport$litersPerHour = function (floats) {
+	var milsPerSecond = floats.dripRate / floats.dropsPerMil;
+	var milsPerHour = (milsPerSecond * 60) * 60;
+	return milsPerHour / 1000;
+};
+var _user$project$IV_Scenario_DataExport$hoursToEmptyBag = function (floats) {
+	return floats.bagContentsInLiters / _user$project$IV_Scenario_DataExport$litersPerHour(floats);
+};
+var _user$project$IV_Scenario_DataExport$hours = function (floats) {
+	var m = floats.simulationMinutes;
+	var h = floats.simulationHours;
+	return h + (m / 60.0);
+};
+var _user$project$IV_Scenario_DataExport$endingFractionBagFilled = function (floats) {
+	var litersGone = _user$project$IV_Scenario_DataExport$litersPerHour(floats) * _user$project$IV_Scenario_DataExport$hours(floats);
+	return (floats.bagContentsInLiters - litersGone) / floats.bagCapacityInLiters;
+};
+var _user$project$IV_Scenario_DataExport$drainage = function (floats) {
+	var planned = _user$project$IV_Scenario_DataExport$hours(floats);
+	var toEmpty = _user$project$IV_Scenario_DataExport$hoursToEmptyBag(floats);
+	return (_elm_lang$core$Native_Utils.cmp(planned, toEmpty) < 0) ? A2(
+		_user$project$IV_Types$PartlyEmptied,
+		_user$project$IV_Types$Hours(planned),
+		_user$project$IV_Types$Level(
+			_user$project$IV_Scenario_DataExport$endingFractionBagFilled(floats))) : _user$project$IV_Types$FullyEmptied(
+		_user$project$IV_Types$Hours(toEmpty));
+};
+var _user$project$IV_Scenario_DataExport$toFloats = function (stringContainer) {
+	return {
+		bagCapacityInLiters: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.background.bagCapacityInLiters),
+		bagContentsInLiters: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.background.bagContentsInLiters),
+		dropsPerMil: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.background.dropsPerMil),
+		dripRate: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.decisions.dripRate),
+		simulationHours: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.decisions.simulationHours),
+		simulationMinutes: _user$project$IV_Pile_ManagedStrings$floatString(stringContainer.decisions.simulationMinutes)
+	};
+};
+var _user$project$IV_Scenario_DataExport$startingLevel = function (editableModel) {
+	var floats = _user$project$IV_Scenario_DataExport$toFloats(editableModel);
+	return _user$project$IV_Types$Level(floats.bagContentsInLiters / floats.bagCapacityInLiters);
+};
+var _user$project$IV_Scenario_DataExport$dripRate = function (editableModel) {
+	return _user$project$IV_Types$DropsPerSecond(
+		_user$project$IV_Pile_ManagedStrings$floatString(editableModel.decisions.dripRate));
+};
+var _user$project$IV_Scenario_DataExport$runnableModel = function (editableModel) {
+	var floats = _user$project$IV_Scenario_DataExport$toFloats(editableModel);
+	return {
+		totalHours: _user$project$IV_Types$Hours(
+			_user$project$IV_Scenario_DataExport$hours(floats)),
+		drainage: _user$project$IV_Scenario_DataExport$drainage(floats)
+	};
+};
+var _user$project$IV_Scenario_DataExport$SimulationData = F2(
+	function (a, b) {
+		return {totalHours: a, drainage: b};
 	});
-var _user$project$IV_Scenario_Main$simulationMinutesText$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{simulationMinutesText: val});
+var _user$project$IV_Scenario_DataExport$DataAsFloats = F6(
+	function (a, b, c, d, e, f) {
+		return {bagCapacityInLiters: a, bagContentsInLiters: b, dropsPerMil: c, dripRate: d, simulationHours: e, simulationMinutes: f};
 	});
-var _user$project$IV_Scenario_Main$simulationHoursText$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{simulationHoursText: val});
-	});
-var _user$project$IV_Scenario_Main$dripText$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{dripText: val});
-	});
-var _user$project$IV_Scenario_Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'ChangedDripText':
-				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Main$dripText$);
-			case 'ChangedHoursText':
-				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Main$simulationHoursText$);
-			default:
-				return A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Main$simulationMinutesText$);
-		}
-	});
-var _user$project$IV_Scenario_Main$commonToAllScenarios = {dripText: '0', simulationHoursText: '0', simulationMinutesText: '0', dropsPerMil: 15.0};
-var _user$project$IV_Scenario_Main$cowScenario = {tag: '1560 lb. cow', animalDescription: '3d lactation purebred Holstein', weightInPounds: 1560, bagCapacityInLiters: 20, bagContentsInLiters: 19, bagType: '5-gallon carboy', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
-var _user$project$IV_Scenario_Main$calfScenario = {tag: '90 lb. heifer calf', animalDescription: '10-day-old Hereford heifer calf', weightInPounds: 90, bagCapacityInLiters: 2, bagContentsInLiters: 2, bagType: '2-liter bag', dripText: _user$project$IV_Scenario_Main$commonToAllScenarios.dripText, simulationHoursText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationHoursText, simulationMinutesText: _user$project$IV_Scenario_Main$commonToAllScenarios.simulationMinutesText, dropsPerMil: _user$project$IV_Scenario_Main$commonToAllScenarios.dropsPerMil};
 
-var _user$project$IV_Apparatus_ViewConstants$whiteColor = A3(_elm_lang$core$Color$rgb, 255, 255, 255);
-var _user$project$IV_Apparatus_ViewConstants$variantFluidColor = A3(_elm_lang$core$Color$rgb, 193, 193, 193);
-var _user$project$IV_Apparatus_ViewConstants$fluidColorString = '#d3d7cf';
-var _user$project$IV_Apparatus_ViewConstants$fluidColor = A3(_elm_lang$core$Color$rgb, 211, 215, 207);
-var _user$project$IV_Apparatus_ViewConstants$hoseHeight = 90;
-var _user$project$IV_Apparatus_ViewConstants$dropHeight = 10;
-var _user$project$IV_Apparatus_ViewConstants$dropWidth = 10;
-var _user$project$IV_Apparatus_ViewConstants$hoseWidth = _user$project$IV_Apparatus_ViewConstants$dropWidth;
-var _user$project$IV_Apparatus_ViewConstants$dropXOffset = 55;
-var _user$project$IV_Apparatus_ViewConstants$hoseXOffset = _user$project$IV_Apparatus_ViewConstants$dropXOffset;
-var _user$project$IV_Apparatus_ViewConstants$puddleHeight = 20;
-var _user$project$IV_Apparatus_ViewConstants$chamberHeight = 90;
-var _user$project$IV_Apparatus_ViewConstants$chamberWidth = 30;
-var _user$project$IV_Apparatus_ViewConstants$chamberXOffset = 45;
-var _user$project$IV_Apparatus_ViewConstants$bagHeight = 200;
-var _user$project$IV_Apparatus_ViewConstants$chamberYOffset = _user$project$IV_Apparatus_ViewConstants$bagHeight;
-var _user$project$IV_Apparatus_ViewConstants$chamberOrigin = {ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$chamberXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset};
-var _user$project$IV_Apparatus_ViewConstants$puddleYOffset = (_user$project$IV_Apparatus_ViewConstants$chamberYOffset + _user$project$IV_Apparatus_ViewConstants$chamberHeight) - _user$project$IV_Apparatus_ViewConstants$puddleHeight;
-var _user$project$IV_Apparatus_ViewConstants$streamHeight = _user$project$IV_Apparatus_ViewConstants$puddleYOffset - _user$project$IV_Apparatus_ViewConstants$chamberYOffset;
-var _user$project$IV_Apparatus_ViewConstants$hoseYOffset = _user$project$IV_Apparatus_ViewConstants$chamberYOffset + _user$project$IV_Apparatus_ViewConstants$chamberHeight;
-var _user$project$IV_Apparatus_ViewConstants$hoseOrigin = {ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$hoseXOffset, _1: _user$project$IV_Apparatus_ViewConstants$hoseYOffset};
-var _user$project$IV_Apparatus_ViewConstants$bagWidth = 120;
-var _user$project$IV_Apparatus_ViewConstants$bagOrigin = {ctor: '_Tuple2', _0: 0, _1: 0};
-
-var _user$project$IV_Apparatus_DropletView$finalSliverOfFlowShape = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 0, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: 0, _1: 0}
-	]);
-var _user$project$IV_Apparatus_DropletView$flowShape = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 0, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: _user$project$IV_Apparatus_ViewConstants$streamHeight},
-		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_ViewConstants$streamHeight}
-	]);
-var _user$project$IV_Apparatus_DropletView$dropShape = _elm_lang$core$Native_List.fromArray(
-	[
-		{ctor: '_Tuple2', _0: 0, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
-		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: _user$project$IV_Apparatus_ViewConstants$dropHeight},
-		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_ViewConstants$dropHeight}
-	]);
-var _user$project$IV_Apparatus_DropletView$translateBy = F2(
-	function (_p0, points) {
-		var _p1 = _p0;
-		return A2(
-			_elm_lang$core$List$map,
-			function (_p2) {
-				var _p3 = _p2;
-				return {ctor: '_Tuple2', _0: _p3._0 + _p1._0, _1: _p3._1 + _p1._1};
-			},
-			points);
-	});
-var _user$project$IV_Apparatus_DropletView$dropAtTop = A2(
-	_user$project$IV_Apparatus_DropletView$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
-	_user$project$IV_Apparatus_DropletView$dropShape);
-var _user$project$IV_Apparatus_DropletView$dropInFluidAtBottom = A2(
-	_user$project$IV_Apparatus_DropletView$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$puddleYOffset},
-	_user$project$IV_Apparatus_DropletView$dropShape);
-var _user$project$IV_Apparatus_DropletView$flowInChamber = A2(
-	_user$project$IV_Apparatus_DropletView$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
-	_user$project$IV_Apparatus_DropletView$flowShape);
-var _user$project$IV_Apparatus_DropletView$finalSliverInChamber = A2(
-	_user$project$IV_Apparatus_DropletView$translateBy,
-	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
-	_user$project$IV_Apparatus_DropletView$finalSliverOfFlowShape);
-var _user$project$IV_Apparatus_DropletView$streamRunsOut = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$finalSliverInChamber),
-		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
-	]);
-var _user$project$IV_Apparatus_DropletView$streamState2 = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
-		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$variantFluidColor)
-	]);
-var _user$project$IV_Apparatus_DropletView$streamState1 = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
-		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
-	]);
-var _user$project$IV_Apparatus_DropletView$fallenDrop = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropInFluidAtBottom)
-	]);
-var _user$project$IV_Apparatus_DropletView$hangingDrop = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
-		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
-	]);
-var _user$project$IV_Apparatus_DropletView$missingDrop = _elm_lang$core$Native_List.fromArray(
-	[
-		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
-		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$whiteColor)
-	]);
-var _user$project$IV_Apparatus_DropletView$render = function (model) {
-	return A2(
-		_elm_lang$svg$Svg$polygon,
-		_mdgriffith$elm_style_animation$Animation$render(model),
-		_elm_lang$core$Native_List.fromArray(
-			[]));
+var _user$project$IV_Msg$CloseCaseBackgroundEditor = {ctor: 'CloseCaseBackgroundEditor'};
+var _user$project$IV_Msg$OpenCaseBackgroundEditor = {ctor: 'OpenCaseBackgroundEditor'};
+var _user$project$IV_Msg$ToScenario = function (a) {
+	return {ctor: 'ToScenario', _0: a};
+};
+var _user$project$IV_Msg$AnimationClockTick = function (a) {
+	return {ctor: 'AnimationClockTick', _0: a};
+};
+var _user$project$IV_Msg$PickedScenario = function (a) {
+	return {ctor: 'PickedScenario', _0: a};
+};
+var _user$project$IV_Msg$ChamberEmptied = {ctor: 'ChamberEmptied'};
+var _user$project$IV_Msg$FluidRanOut = {ctor: 'FluidRanOut'};
+var _user$project$IV_Msg$ChoseDripRate = function (a) {
+	return {ctor: 'ChoseDripRate', _0: a};
+};
+var _user$project$IV_Msg$StopSimulation = {ctor: 'StopSimulation'};
+var _user$project$IV_Msg$StartSimulation = function (a) {
+	return {ctor: 'StartSimulation', _0: a};
 };
 
 var _user$project$IV_Pile_Animation$linearEasing = function (duration) {
@@ -15592,72 +15699,6 @@ var _user$project$IV_Pile_Animation$easeForHours = function (hours) {
 	return _user$project$IV_Pile_Animation$linearEasing(
 		_user$project$IV_Pile_Animation$simulationDuration(hours));
 };
-
-var _user$project$IV_Apparatus_Droplet$animationClockTick = F2(
-	function (tick, model) {
-		return A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model);
-	});
-var _user$project$IV_Apparatus_Droplet$guaranteedFlow = _user$project$IV_Types$DropsPerSecond(10.0);
-var _user$project$IV_Apparatus_Droplet$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
-var _user$project$IV_Apparatus_Droplet$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Apparatus_Droplet$dropStreamCutoff);
-var _user$project$IV_Apparatus_Droplet$fallingDrop = function (dropsPerSecond) {
-	var totalTime = _user$project$IV_Types$asDuration(dropsPerSecond);
-	var hangingTime = totalTime - _user$project$IV_Apparatus_Droplet$fallingTime;
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Apparatus_DropletView$missingDrop),
-			A2(
-			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Pile_Animation$linearEasing(hangingTime),
-			_user$project$IV_Apparatus_DropletView$hangingDrop),
-			A2(
-			_mdgriffith$elm_style_animation$Animation$toWith,
-			_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
-			_user$project$IV_Apparatus_DropletView$fallenDrop)
-		]);
-};
-var _user$project$IV_Apparatus_Droplet$steadyStream = _elm_lang$core$Native_List.fromArray(
-	[
-		A2(
-		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
-		_user$project$IV_Apparatus_DropletView$streamState1),
-		A2(
-		_mdgriffith$elm_style_animation$Animation$toWith,
-		_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
-		_user$project$IV_Apparatus_DropletView$streamState2)
-	]);
-var _user$project$IV_Apparatus_Droplet$animationSteps = function (dropsPerSecond) {
-	var _p0 = dropsPerSecond;
-	var raw = _p0._0;
-	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Apparatus_Droplet$steadyStream : _user$project$IV_Apparatus_Droplet$fallingDrop(dropsPerSecond);
-};
-var _user$project$IV_Apparatus_Droplet$changeDropRate = F2(
-	function (dropsPerSecond, animation) {
-		var loop = _mdgriffith$elm_style_animation$Animation$loop(
-			_user$project$IV_Apparatus_Droplet$animationSteps(dropsPerSecond));
-		return A2(
-			_mdgriffith$elm_style_animation$Animation$interrupt,
-			_elm_lang$core$Native_List.fromArray(
-				[loop]),
-			animation);
-	});
-var _user$project$IV_Apparatus_Droplet$showTrueFlow = F2(
-	function (perSecond, model) {
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			A2(_user$project$IV_Apparatus_Droplet$changeDropRate, perSecond, model),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
-	});
-var _user$project$IV_Apparatus_Droplet$showTimeLapseFlow = function (model) {
-	return A2(
-		_elm_lang$core$Platform_Cmd_ops['!'],
-		A2(_user$project$IV_Apparatus_Droplet$changeDropRate, _user$project$IV_Apparatus_Droplet$guaranteedFlow, model),
-		_elm_lang$core$Native_List.fromArray(
-			[]));
-};
-var _user$project$IV_Apparatus_Droplet$noDrips = _mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Apparatus_DropletView$missingDrop);
 
 var _user$project$IV_Pile_SvgAttributes$pointFmt = A2(
 	_krisajenkins$formatting$Formatting_ops['<>'],
@@ -15852,6 +15893,30 @@ var _user$project$IV_Apparatus_DrainingRectangle$Configuration = F4(
 		return {containerWidth: a, containerHeight: b, fillColor: c, extraFigures: d};
 	});
 
+var _user$project$IV_Apparatus_ViewConstants$whiteColor = A3(_elm_lang$core$Color$rgb, 255, 255, 255);
+var _user$project$IV_Apparatus_ViewConstants$variantFluidColor = A3(_elm_lang$core$Color$rgb, 193, 193, 193);
+var _user$project$IV_Apparatus_ViewConstants$fluidColorString = '#d3d7cf';
+var _user$project$IV_Apparatus_ViewConstants$fluidColor = A3(_elm_lang$core$Color$rgb, 211, 215, 207);
+var _user$project$IV_Apparatus_ViewConstants$hoseHeight = 90;
+var _user$project$IV_Apparatus_ViewConstants$dropHeight = 10;
+var _user$project$IV_Apparatus_ViewConstants$dropWidth = 10;
+var _user$project$IV_Apparatus_ViewConstants$hoseWidth = _user$project$IV_Apparatus_ViewConstants$dropWidth;
+var _user$project$IV_Apparatus_ViewConstants$dropXOffset = 55;
+var _user$project$IV_Apparatus_ViewConstants$hoseXOffset = _user$project$IV_Apparatus_ViewConstants$dropXOffset;
+var _user$project$IV_Apparatus_ViewConstants$puddleHeight = 20;
+var _user$project$IV_Apparatus_ViewConstants$chamberHeight = 90;
+var _user$project$IV_Apparatus_ViewConstants$chamberWidth = 30;
+var _user$project$IV_Apparatus_ViewConstants$chamberXOffset = 45;
+var _user$project$IV_Apparatus_ViewConstants$bagHeight = 200;
+var _user$project$IV_Apparatus_ViewConstants$chamberYOffset = _user$project$IV_Apparatus_ViewConstants$bagHeight;
+var _user$project$IV_Apparatus_ViewConstants$chamberOrigin = {ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$chamberXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset};
+var _user$project$IV_Apparatus_ViewConstants$puddleYOffset = (_user$project$IV_Apparatus_ViewConstants$chamberYOffset + _user$project$IV_Apparatus_ViewConstants$chamberHeight) - _user$project$IV_Apparatus_ViewConstants$puddleHeight;
+var _user$project$IV_Apparatus_ViewConstants$streamHeight = _user$project$IV_Apparatus_ViewConstants$puddleYOffset - _user$project$IV_Apparatus_ViewConstants$chamberYOffset;
+var _user$project$IV_Apparatus_ViewConstants$hoseYOffset = _user$project$IV_Apparatus_ViewConstants$chamberYOffset + _user$project$IV_Apparatus_ViewConstants$chamberHeight;
+var _user$project$IV_Apparatus_ViewConstants$hoseOrigin = {ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$hoseXOffset, _1: _user$project$IV_Apparatus_ViewConstants$hoseYOffset};
+var _user$project$IV_Apparatus_ViewConstants$bagWidth = 120;
+var _user$project$IV_Apparatus_ViewConstants$bagOrigin = {ctor: '_Tuple2', _0: 0, _1: 0};
+
 var _user$project$IV_Apparatus_BagView$marking = function (n) {
 	var ypos = 20 * n;
 	return A2(
@@ -15928,6 +15993,157 @@ var _user$project$IV_Apparatus_ChamberView$startingLevel = _user$project$IV_Type
 	_elm_lang$core$Basics$toFloat(_user$project$IV_Apparatus_ViewConstants$puddleHeight) / _elm_lang$core$Basics$toFloat(_user$project$IV_Apparatus_ViewConstants$chamberHeight));
 var _user$project$IV_Apparatus_ChamberView$startingState = A2(_user$project$IV_Apparatus_DrainingRectangle$startingState, _user$project$IV_Apparatus_ChamberView$configuration, _user$project$IV_Apparatus_ChamberView$startingLevel);
 
+var _user$project$IV_Apparatus_DropletView$finalSliverOfFlowShape = _elm_lang$core$Native_List.fromArray(
+	[
+		{ctor: '_Tuple2', _0: 0, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: 0, _1: 0}
+	]);
+var _user$project$IV_Apparatus_DropletView$flowShape = _elm_lang$core$Native_List.fromArray(
+	[
+		{ctor: '_Tuple2', _0: 0, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: _user$project$IV_Apparatus_ViewConstants$streamHeight},
+		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_ViewConstants$streamHeight}
+	]);
+var _user$project$IV_Apparatus_DropletView$dropShape = _elm_lang$core$Native_List.fromArray(
+	[
+		{ctor: '_Tuple2', _0: 0, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: 0},
+		{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropWidth, _1: _user$project$IV_Apparatus_ViewConstants$dropHeight},
+		{ctor: '_Tuple2', _0: 0, _1: _user$project$IV_Apparatus_ViewConstants$dropHeight}
+	]);
+var _user$project$IV_Apparatus_DropletView$translateBy = F2(
+	function (_p0, points) {
+		var _p1 = _p0;
+		return A2(
+			_elm_lang$core$List$map,
+			function (_p2) {
+				var _p3 = _p2;
+				return {ctor: '_Tuple2', _0: _p3._0 + _p1._0, _1: _p3._1 + _p1._1};
+			},
+			points);
+	});
+var _user$project$IV_Apparatus_DropletView$dropAtTop = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
+	_user$project$IV_Apparatus_DropletView$dropShape);
+var _user$project$IV_Apparatus_DropletView$dropInFluidAtBottom = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$puddleYOffset},
+	_user$project$IV_Apparatus_DropletView$dropShape);
+var _user$project$IV_Apparatus_DropletView$flowInChamber = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
+	_user$project$IV_Apparatus_DropletView$flowShape);
+var _user$project$IV_Apparatus_DropletView$finalSliverInChamber = A2(
+	_user$project$IV_Apparatus_DropletView$translateBy,
+	{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_ViewConstants$dropXOffset, _1: _user$project$IV_Apparatus_ViewConstants$chamberYOffset},
+	_user$project$IV_Apparatus_DropletView$finalSliverOfFlowShape);
+var _user$project$IV_Apparatus_DropletView$streamRunsOut = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$finalSliverInChamber),
+		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
+	]);
+var _user$project$IV_Apparatus_DropletView$streamState2 = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
+		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$variantFluidColor)
+	]);
+var _user$project$IV_Apparatus_DropletView$streamState1 = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$flowInChamber),
+		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
+	]);
+var _user$project$IV_Apparatus_DropletView$fallenDrop = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropInFluidAtBottom)
+	]);
+var _user$project$IV_Apparatus_DropletView$hangingDrop = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
+		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$fluidColor)
+	]);
+var _user$project$IV_Apparatus_DropletView$missingDrop = _elm_lang$core$Native_List.fromArray(
+	[
+		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
+		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$whiteColor)
+	]);
+var _user$project$IV_Apparatus_DropletView$render = function (model) {
+	return A2(
+		_elm_lang$svg$Svg$polygon,
+		_mdgriffith$elm_style_animation$Animation$render(model),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+
+var _user$project$IV_Apparatus_Droplet$animationClockTick = F2(
+	function (tick, model) {
+		return A2(_mdgriffith$elm_style_animation$Animation_Messenger$update, tick, model);
+	});
+var _user$project$IV_Apparatus_Droplet$guaranteedFlow = _user$project$IV_Types$DropsPerSecond(10.0);
+var _user$project$IV_Apparatus_Droplet$dropStreamCutoff = _user$project$IV_Types$DropsPerSecond(8.0);
+var _user$project$IV_Apparatus_Droplet$fallingTime = _user$project$IV_Types$asDuration(_user$project$IV_Apparatus_Droplet$dropStreamCutoff);
+var _user$project$IV_Apparatus_Droplet$fallingDrop = function (dropsPerSecond) {
+	var totalTime = _user$project$IV_Types$asDuration(dropsPerSecond);
+	var hangingTime = totalTime - _user$project$IV_Apparatus_Droplet$fallingTime;
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_mdgriffith$elm_style_animation$Animation$set(_user$project$IV_Apparatus_DropletView$missingDrop),
+			A2(
+			_mdgriffith$elm_style_animation$Animation$toWith,
+			_user$project$IV_Pile_Animation$linearEasing(hangingTime),
+			_user$project$IV_Apparatus_DropletView$hangingDrop),
+			A2(
+			_mdgriffith$elm_style_animation$Animation$toWith,
+			_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
+			_user$project$IV_Apparatus_DropletView$fallenDrop)
+		]);
+};
+var _user$project$IV_Apparatus_Droplet$steadyStream = _elm_lang$core$Native_List.fromArray(
+	[
+		A2(
+		_mdgriffith$elm_style_animation$Animation$toWith,
+		_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
+		_user$project$IV_Apparatus_DropletView$streamState1),
+		A2(
+		_mdgriffith$elm_style_animation$Animation$toWith,
+		_user$project$IV_Pile_Animation$linearEasing(_user$project$IV_Apparatus_Droplet$fallingTime),
+		_user$project$IV_Apparatus_DropletView$streamState2)
+	]);
+var _user$project$IV_Apparatus_Droplet$animationSteps = function (dropsPerSecond) {
+	var _p0 = dropsPerSecond;
+	var raw = _p0._0;
+	return (_elm_lang$core$Native_Utils.cmp(raw, 8.0) > 0) ? _user$project$IV_Apparatus_Droplet$steadyStream : _user$project$IV_Apparatus_Droplet$fallingDrop(dropsPerSecond);
+};
+var _user$project$IV_Apparatus_Droplet$changeDropRate = F2(
+	function (dropsPerSecond, animation) {
+		var loop = _mdgriffith$elm_style_animation$Animation$loop(
+			_user$project$IV_Apparatus_Droplet$animationSteps(dropsPerSecond));
+		return A2(
+			_mdgriffith$elm_style_animation$Animation$interrupt,
+			_elm_lang$core$Native_List.fromArray(
+				[loop]),
+			animation);
+	});
+var _user$project$IV_Apparatus_Droplet$showTrueFlow = F2(
+	function (perSecond, model) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A2(_user$project$IV_Apparatus_Droplet$changeDropRate, perSecond, model),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _user$project$IV_Apparatus_Droplet$showTimeLapseFlow = function (model) {
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		A2(_user$project$IV_Apparatus_Droplet$changeDropRate, _user$project$IV_Apparatus_Droplet$guaranteedFlow, model),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+var _user$project$IV_Apparatus_Droplet$noDrips = _mdgriffith$elm_style_animation$Animation$style(_user$project$IV_Apparatus_DropletView$missingDrop);
+
 var _user$project$IV_Apparatus_HoseView$animationClockTick = F2(
 	function (tick, animationState) {
 		return A2(_user$project$IV_Apparatus_DrainingRectangle$continueDraining, tick, animationState);
@@ -15954,242 +16170,144 @@ var _user$project$IV_Apparatus_HoseView$startDraining = function (animationState
 		animationState);
 };
 
-var _user$project$IV_Scenario_Calculations$hours$ = function (model) {
-	var m = _user$project$IV_Pile_ManagedStrings$floatString(model.simulationMinutesText);
-	var h = _user$project$IV_Pile_ManagedStrings$floatString(model.simulationHoursText);
-	return h + (m / 60.0);
+var _user$project$IV_Apparatus_Lenses$apparatus_rate = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{rate: new2});
+		});
+	var get = function (arg1) {
+		return arg1.rate;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Apparatus_Lenses$apparatus_hoseFluid = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{hoseFluid: new2});
+		});
+	var get = function (arg1) {
+		return arg1.hoseFluid;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Apparatus_Lenses$apparatus_chamberFluid = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{chamberFluid: new2});
+		});
+	var get = function (arg1) {
+		return arg1.chamberFluid;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Apparatus_Lenses$apparatus_bagLevel = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{bagLevel: new2});
+		});
+	var get = function (arg1) {
+		return arg1.bagLevel;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Apparatus_Lenses$apparatus_droplet = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{droplet: new2});
+		});
+	var get = function (arg1) {
+		return arg1.droplet;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Apparatus_Lenses$updateRate = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Apparatus_Lenses$apparatus_rate, f);
 };
-var _user$project$IV_Scenario_Calculations$startingFractionBagFilled = function (model) {
-	return model.bagContentsInLiters / model.bagCapacityInLiters;
+var _user$project$IV_Apparatus_Lenses$updateHoseFluid = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Apparatus_Lenses$apparatus_hoseFluid, f);
 };
-var _user$project$IV_Scenario_Calculations$dropsPerSecond$ = function (model) {
-	return _user$project$IV_Pile_ManagedStrings$floatString(model.dripText);
+var _user$project$IV_Apparatus_Lenses$updateChamberFluid = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Apparatus_Lenses$apparatus_chamberFluid, f);
 };
-var _user$project$IV_Scenario_Calculations$litersPerHour$ = function (model) {
-	var dps = _user$project$IV_Scenario_Calculations$dropsPerSecond$(model);
-	var milsPerSecond = dps / model.dropsPerMil;
-	var milsPerHour = (milsPerSecond * 60) * 60;
-	return milsPerHour / 1000;
+var _user$project$IV_Apparatus_Lenses$updateBagLevel = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Apparatus_Lenses$apparatus_bagLevel, f);
 };
-var _user$project$IV_Scenario_Calculations$hoursToEmptyBag$ = function (model) {
-	return model.bagContentsInLiters / _user$project$IV_Scenario_Calculations$litersPerHour$(model);
+var _user$project$IV_Apparatus_Lenses$updateDroplet = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Apparatus_Lenses$apparatus_droplet, f);
 };
-var _user$project$IV_Scenario_Calculations$endingFractionBagFilled$ = function (model) {
-	var litersGone = _user$project$IV_Scenario_Calculations$litersPerHour$(model) * _user$project$IV_Scenario_Calculations$hours$(model);
-	return (model.bagContentsInLiters - litersGone) / model.bagCapacityInLiters;
-};
-var _user$project$IV_Scenario_Calculations$drainage = function (model) {
-	var planned = _user$project$IV_Scenario_Calculations$hours$(model);
-	var toEmpty = _user$project$IV_Scenario_Calculations$hoursToEmptyBag$(model);
-	return (_elm_lang$core$Native_Utils.cmp(planned, toEmpty) < 0) ? A2(
-		_user$project$IV_Types$PartlyEmptied,
-		_user$project$IV_Types$Hours(planned),
-		_user$project$IV_Types$Level(
-			_user$project$IV_Scenario_Calculations$endingFractionBagFilled$(model))) : _user$project$IV_Types$FullyEmptied(
-		_user$project$IV_Types$Hours(toEmpty));
-};
-var _user$project$IV_Scenario_Calculations$hours = function (model) {
-	return _user$project$IV_Types$Hours(
-		_user$project$IV_Scenario_Calculations$hours$(model));
-};
-var _user$project$IV_Scenario_Calculations$dropsPerSecond = function (model) {
-	return _user$project$IV_Types$DropsPerSecond(
-		_user$project$IV_Scenario_Calculations$dropsPerSecond$(model));
-};
-var _user$project$IV_Scenario_Calculations$startingLevel = function (model) {
-	return _user$project$IV_Types$Level(model.bagContentsInLiters / model.bagCapacityInLiters);
-};
+var _user$project$IV_Apparatus_Lenses$flow = _user$project$IV_Pile_CmdFlow$flow;
 
-var _user$project$IV_Pile_CmdFlow$augment = F3(
-	function (_p1, f, _p0) {
-		var _p2 = _p1;
-		var _p3 = _p0;
-		var _p5 = _p3._0;
-		var _p4 = f(
-			_p2.getter(_p5));
-		var newPart = _p4._0;
-		var newCmd = _p4._1;
+var _user$project$IV_Apparatus_Main$animationClockTick = F2(
+	function (tick, model) {
+		return A2(
+			_user$project$IV_Apparatus_Lenses$updateHoseFluid,
+			_user$project$IV_Apparatus_HoseView$animationClockTick(tick),
+			A2(
+				_user$project$IV_Apparatus_Lenses$updateChamberFluid,
+				_user$project$IV_Apparatus_ChamberView$animationClockTick(tick),
+				A2(
+					_user$project$IV_Apparatus_Lenses$updateBagLevel,
+					_user$project$IV_Apparatus_BagView$animationClockTick(tick),
+					A2(
+						_user$project$IV_Apparatus_Lenses$updateDroplet,
+						_user$project$IV_Apparatus_Droplet$animationClockTick(tick),
+						_user$project$IV_Apparatus_Lenses$flow(model)))));
+	});
+var _user$project$IV_Apparatus_Main$startSimulation = F2(
+	function (drainage, model) {
+		return A2(
+			_user$project$IV_Apparatus_Lenses$updateBagLevel,
+			_user$project$IV_Apparatus_BagView$startDraining(drainage),
+			A2(
+				_user$project$IV_Apparatus_Lenses$updateDroplet,
+				_user$project$IV_Apparatus_Droplet$showTimeLapseFlow,
+				_user$project$IV_Apparatus_Lenses$flow(model)));
+	});
+var _user$project$IV_Apparatus_Main$drainHose = function (model) {
+	return A2(
+		_user$project$IV_Apparatus_Lenses$updateHoseFluid,
+		_user$project$IV_Apparatus_HoseView$startDraining,
+		_user$project$IV_Apparatus_Lenses$flow(model));
+};
+var _user$project$IV_Apparatus_Main$drainChamber = function (model) {
+	return A2(
+		_user$project$IV_Apparatus_Lenses$updateChamberFluid,
+		_user$project$IV_Apparatus_ChamberView$startDraining,
+		_user$project$IV_Apparatus_Lenses$flow(model));
+};
+var _user$project$IV_Apparatus_Main$changeDripRate = F2(
+	function (dropsPerSecond, model) {
 		return {
 			ctor: '_Tuple2',
-			_0: A2(_p2.setter, _p5, newPart),
-			_1: _elm_lang$core$Platform_Cmd$batch(
-				_elm_lang$core$Native_List.fromArray(
-					[_p3._1, newCmd]))
+			_0: A2(_user$project$IV_Apparatus_Lenses$apparatus_rate.set, dropsPerSecond, model),
+			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$IV_Pile_CmdFlow$chainLike = F2(
-	function (whole, list) {
-		var updater = F2(
-			function (_p6, soFar) {
-				var _p7 = _p6;
-				return A3(_user$project$IV_Pile_CmdFlow$augment, _p7._0, _p7._1, soFar);
-			});
-		return A3(
-			_elm_lang$core$List$foldl,
-			updater,
-			{ctor: '_Tuple2', _0: whole, _1: _elm_lang$core$Platform_Cmd$none},
-			list);
-	});
-var _user$project$IV_Pile_CmdFlow$change = F3(
-	function (_p8, whole, f) {
-		var _p9 = _p8;
-		var _p10 = f(
-			_p9.getter(whole));
-		var newPart = _p10._0;
-		var cmd = _p10._1;
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_p9.setter, whole, newPart),
-			_1: cmd
-		};
-	});
-var _user$project$IV_Pile_CmdFlow$GetterSetter = F2(
-	function (a, b) {
-		return {getter: a, setter: b};
-	});
-
-var _user$project$IV_Apparatus_Main$unstarted = function (scenario) {
+var _user$project$IV_Apparatus_Main$showTrueFlow = function (model) {
+	return A2(
+		_user$project$IV_Apparatus_Lenses$updateDroplet,
+		_user$project$IV_Apparatus_Droplet$showTrueFlow(model.rate),
+		_user$project$IV_Apparatus_Lenses$flow(model));
+};
+var _user$project$IV_Apparatus_Main$unstarted = function (startingLevel) {
 	return {
 		droplet: _user$project$IV_Apparatus_Droplet$noDrips,
-		bagLevel: _user$project$IV_Apparatus_BagView$startingState(
-			_user$project$IV_Scenario_Calculations$startingLevel(scenario)),
+		bagLevel: _user$project$IV_Apparatus_BagView$startingState(startingLevel),
 		chamberFluid: _user$project$IV_Apparatus_ChamberView$startingState,
 		hoseFluid: _user$project$IV_Apparatus_HoseView$startingState,
 		rate: _user$project$IV_Types$DropsPerSecond(0)
 	};
 };
-var _user$project$IV_Apparatus_Main$rate$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{rate: val});
-	});
-var _user$project$IV_Apparatus_Main$ratePart = {
-	getter: function (_) {
-		return _.rate;
-	},
-	setter: _user$project$IV_Apparatus_Main$rate$
-};
-var _user$project$IV_Apparatus_Main$changeDripRate = F2(
-	function (dropsPerSecond, model) {
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			A2(_user$project$IV_Apparatus_Main$rate$, model, dropsPerSecond),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
-	});
-var _user$project$IV_Apparatus_Main$hoseFluid$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				hoseFluid: A2(_elm_lang$core$Debug$log, 'set chamber fluid', val)
-			});
-	});
-var _user$project$IV_Apparatus_Main$hoseFluidPart = {
-	getter: function (_) {
-		return _.hoseFluid;
-	},
-	setter: _user$project$IV_Apparatus_Main$hoseFluid$
-};
-var _user$project$IV_Apparatus_Main$drainHose = function (model) {
-	return A3(_user$project$IV_Pile_CmdFlow$change, _user$project$IV_Apparatus_Main$hoseFluidPart, model, _user$project$IV_Apparatus_HoseView$startDraining);
-};
-var _user$project$IV_Apparatus_Main$chamberFluid$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				chamberFluid: A2(_elm_lang$core$Debug$log, 'set chamber fluid', val)
-			});
-	});
-var _user$project$IV_Apparatus_Main$chamberFluidPart = {
-	getter: function (_) {
-		return _.chamberFluid;
-	},
-	setter: _user$project$IV_Apparatus_Main$chamberFluid$
-};
-var _user$project$IV_Apparatus_Main$drainChamber = function (model) {
-	return A3(_user$project$IV_Pile_CmdFlow$change, _user$project$IV_Apparatus_Main$chamberFluidPart, model, _user$project$IV_Apparatus_ChamberView$startDraining);
-};
-var _user$project$IV_Apparatus_Main$bagLevel$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				bagLevel: A2(_elm_lang$core$Debug$log, 'set bag level', val)
-			});
-	});
-var _user$project$IV_Apparatus_Main$bagLevelPart = {
-	getter: function (_) {
-		return _.bagLevel;
-	},
-	setter: _user$project$IV_Apparatus_Main$bagLevel$
-};
-var _user$project$IV_Apparatus_Main$droplet$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{droplet: val});
-	});
-var _user$project$IV_Apparatus_Main$dropletPart = {
-	getter: function (_) {
-		return _.droplet;
-	},
-	setter: _user$project$IV_Apparatus_Main$droplet$
-};
-var _user$project$IV_Apparatus_Main$showTrueFlow = function (model) {
-	return A3(
-		_user$project$IV_Pile_CmdFlow$change,
-		_user$project$IV_Apparatus_Main$dropletPart,
-		model,
-		_user$project$IV_Apparatus_Droplet$showTrueFlow(model.rate));
-};
-var _user$project$IV_Apparatus_Main$startSimulation = F2(
-	function (scenario, model) {
-		return A2(
-			_user$project$IV_Pile_CmdFlow$chainLike,
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{ctor: '_Tuple2', _0: _user$project$IV_Apparatus_Main$dropletPart, _1: _user$project$IV_Apparatus_Droplet$showTimeLapseFlow},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Apparatus_Main$bagLevelPart,
-					_1: _user$project$IV_Apparatus_BagView$startDraining(
-						_user$project$IV_Scenario_Calculations$drainage(scenario))
-				}
-				]));
-	});
-var _user$project$IV_Apparatus_Main$animationClockTick = F2(
-	function (tick, model) {
-		return A2(
-			_user$project$IV_Pile_CmdFlow$chainLike,
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Apparatus_Main$dropletPart,
-					_1: _user$project$IV_Apparatus_Droplet$animationClockTick(tick)
-				},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Apparatus_Main$bagLevelPart,
-					_1: _user$project$IV_Apparatus_BagView$animationClockTick(tick)
-				},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Apparatus_Main$chamberFluidPart,
-					_1: _user$project$IV_Apparatus_ChamberView$animationClockTick(tick)
-				},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Apparatus_Main$hoseFluidPart,
-					_1: _user$project$IV_Apparatus_HoseView$animationClockTick(tick)
-				}
-				]));
-	});
 var _user$project$IV_Apparatus_Main$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[model.droplet, model.bagLevel, model.chamberFluid, model.hoseFluid]);
@@ -16305,6 +16423,38 @@ var _user$project$IV_Clock_AnimatedView$render = function (model) {
 			]));
 };
 
+var _user$project$IV_Clock_Lenses$clock_minuteHand = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{minuteHand: new2});
+		});
+	var get = function (arg1) {
+		return arg1.minuteHand;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Clock_Lenses$clock_hourHand = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{hourHand: new2});
+		});
+	var get = function (arg1) {
+		return arg1.hourHand;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Clock_Lenses$updateMinuteHand = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Clock_Lenses$clock_minuteHand, f);
+};
+var _user$project$IV_Clock_Lenses$updateHourHand = function (f) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Clock_Lenses$clock_hourHand, f);
+};
+var _user$project$IV_Clock_Lenses$flow = _user$project$IV_Pile_CmdFlow$flow;
+
 var _user$project$IV_Clock_Main$advance = F4(
 	function (animation, hours, rotationF, endMsg) {
 		var after = function () {
@@ -16343,48 +16493,15 @@ var _user$project$IV_Clock_Main$spinMinuteHand = F2(
 	function (hours, animation) {
 		return A4(_user$project$IV_Clock_Main$advance, animation, hours, _user$project$IV_Clock_Main$minuteHandRotations, _elm_lang$core$Maybe$Nothing);
 	});
-var _user$project$IV_Clock_Main$minuteHand$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{minuteHand: val});
-	});
-var _user$project$IV_Clock_Main$minuteHandPart = {
-	getter: function (_) {
-		return _.minuteHand;
-	},
-	setter: _user$project$IV_Clock_Main$minuteHand$
-};
-var _user$project$IV_Clock_Main$hourHand$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{hourHand: val});
-	});
-var _user$project$IV_Clock_Main$hourHandPart = {
-	getter: function (_) {
-		return _.hourHand;
-	},
-	setter: _user$project$IV_Clock_Main$hourHand$
-};
 var _user$project$IV_Clock_Main$animationClockTick = F2(
 	function (tick, model) {
 		return A2(
-			_user$project$IV_Pile_CmdFlow$chainLike,
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Clock_Main$hourHandPart,
-					_1: _mdgriffith$elm_style_animation$Animation_Messenger$update(tick)
-				},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Clock_Main$minuteHandPart,
-					_1: _mdgriffith$elm_style_animation$Animation_Messenger$update(tick)
-				}
-				]));
+			_user$project$IV_Clock_Lenses$updateMinuteHand,
+			_mdgriffith$elm_style_animation$Animation_Messenger$update(tick),
+			A2(
+				_user$project$IV_Clock_Lenses$updateHourHand,
+				_mdgriffith$elm_style_animation$Animation_Messenger$update(tick),
+				_user$project$IV_Clock_Lenses$flow(model)));
 	});
 var _user$project$IV_Clock_Main$startingHourRaw = 2;
 var _user$project$IV_Clock_Main$startingHour = _user$project$IV_Types$Hours(_user$project$IV_Clock_Main$startingHourRaw);
@@ -16410,21 +16527,12 @@ var _user$project$IV_Clock_Main$advanceHourHand = F2(
 var _user$project$IV_Clock_Main$startSimulation = F2(
 	function (hours, model) {
 		return A2(
-			_user$project$IV_Pile_CmdFlow$chainLike,
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Clock_Main$hourHandPart,
-					_1: _user$project$IV_Clock_Main$advanceHourHand(hours)
-				},
-					{
-					ctor: '_Tuple2',
-					_0: _user$project$IV_Clock_Main$minuteHandPart,
-					_1: _user$project$IV_Clock_Main$spinMinuteHand(hours)
-				}
-				]));
+			_user$project$IV_Clock_Lenses$updateMinuteHand,
+			_user$project$IV_Clock_Main$spinMinuteHand(hours),
+			A2(
+				_user$project$IV_Clock_Lenses$updateHourHand,
+				_user$project$IV_Clock_Main$advanceHourHand(hours),
+				_user$project$IV_Clock_Lenses$flow(model)));
 	});
 var _user$project$IV_Clock_Main$animations = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
@@ -16435,6 +16543,188 @@ var _user$project$IV_Clock_Main$Model = F2(
 		return {hourHand: a, minuteHand: b};
 	});
 
+var _user$project$IV_Scenario_Lenses$decisions_simulationMinutes = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{simulationMinutes: new2});
+		});
+	var get = function (arg1) {
+		return arg1.simulationMinutes;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$decisions_simulationHours = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{simulationHours: new2});
+		});
+	var get = function (arg1) {
+		return arg1.simulationHours;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$decisions_dripRate = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{dripRate: new2});
+		});
+	var get = function (arg1) {
+		return arg1.dripRate;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$background_dropsPerMil = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{dropsPerMil: new2});
+		});
+	var get = function (arg1) {
+		return arg1.dropsPerMil;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$background_bagContents = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{bagContentsInLiters: new2});
+		});
+	var get = function (arg1) {
+		return arg1.bagContentsInLiters;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$background_bagCapacity = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{bagCapacityInLiters: new2});
+		});
+	var get = function (arg1) {
+		return arg1.bagCapacityInLiters;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$model_caseBackgroundEditorOpen = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{caseBackgroundEditorOpen: new2});
+		});
+	var get = function (arg1) {
+		return arg1.caseBackgroundEditorOpen;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$model_background = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{background: new2});
+		});
+	var get = function (arg1) {
+		return arg1.background;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$model_bagCapacity = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_bagCapacity);
+var _user$project$IV_Scenario_Lenses$model_bagContents = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_bagContents);
+var _user$project$IV_Scenario_Lenses$model_dropsPerMil = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_dropsPerMil);
+var _user$project$IV_Scenario_Lenses$model_decisions = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{decisions: new2});
+		});
+	var get = function (arg1) {
+		return arg1.decisions;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Scenario_Lenses$model_dripRate = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_decisions, _user$project$IV_Scenario_Lenses$decisions_dripRate);
+var _user$project$IV_Scenario_Lenses$model_simulationHours = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_decisions, _user$project$IV_Scenario_Lenses$decisions_simulationHours);
+var _user$project$IV_Scenario_Lenses$model_simulationMinutes = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_decisions, _user$project$IV_Scenario_Lenses$decisions_simulationMinutes);
+
+var _user$project$IV_Scenario_Main$updateWhen = F4(
+	function (candidate, pred, model, lens) {
+		return pred(candidate) ? A2(lens.set, candidate, model) : model;
+	});
+var _user$project$IV_Scenario_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'ChangedDripText':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Lenses$model_dripRate),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ChangedHoursText':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Lenses$model_simulationHours),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ChangedMinutesText':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidIntString, model, _user$project$IV_Scenario_Lenses$model_simulationMinutes),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ChangedBagCapacity':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Lenses$model_bagCapacity),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ChangedBagContents':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Lenses$model_bagContents),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A4(_user$project$IV_Scenario_Main$updateWhen, _p0._0, _user$project$IV_Pile_ManagedStrings$isValidFloatString, model, _user$project$IV_Scenario_Lenses$model_dropsPerMil),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+		}
+	});
+var _user$project$IV_Scenario_Main$closeCaseBackgroundEditor = function (model) {
+	return {
+		ctor: '_Tuple2',
+		_0: A2(_user$project$IV_Scenario_Lenses$model_caseBackgroundEditorOpen.set, false, model),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _user$project$IV_Scenario_Main$openCaseBackgroundEditor = function (model) {
+	return {
+		ctor: '_Tuple2',
+		_0: A2(
+			_user$project$IV_Scenario_Lenses$model_decisions.set,
+			_user$project$IV_Scenario_Model$defaultDecisions,
+			A2(
+				_user$project$IV_Scenario_Lenses$model_background.set,
+				_user$project$IV_Scenario_Model$editableBackground,
+				A2(_user$project$IV_Scenario_Lenses$model_caseBackgroundEditorOpen.set, true, model))),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+
 var _user$project$IV_Main$subscriptions = function (model) {
 	return A2(
 		_mdgriffith$elm_style_animation$Animation$subscription,
@@ -16444,135 +16734,100 @@ var _user$project$IV_Main$subscriptions = function (model) {
 			_user$project$IV_Apparatus_Main$animations(model.apparatus),
 			_user$project$IV_Clock_Main$animations(model.clock)));
 };
+var _user$project$IV_Main$animateApparatus = function (tick) {
+	return _user$project$IV_Lenses$updateApparatus(
+		_user$project$IV_Apparatus_Main$animationClockTick(tick));
+};
+var _user$project$IV_Main$animateClock = function (tick) {
+	return _user$project$IV_Lenses$updateClock(
+		_user$project$IV_Clock_Main$animationClockTick(tick));
+};
+var _user$project$IV_Main$closeCaseBackgroundEditor = _user$project$IV_Lenses$updateScenario(_user$project$IV_Scenario_Main$closeCaseBackgroundEditor);
+var _user$project$IV_Main$openCaseBackgroundEditor = _user$project$IV_Lenses$updateScenario(_user$project$IV_Scenario_Main$openCaseBackgroundEditor);
+var _user$project$IV_Main$startClock = function (hours) {
+	return _user$project$IV_Lenses$updateClock(
+		_user$project$IV_Clock_Main$startSimulation(hours));
+};
+var _user$project$IV_Main$startApparatusSimulation = function (drainage) {
+	return _user$project$IV_Lenses$updateApparatus(
+		_user$project$IV_Apparatus_Main$startSimulation(drainage));
+};
+var _user$project$IV_Main$drainHose = _user$project$IV_Lenses$updateApparatus(_user$project$IV_Apparatus_Main$drainHose);
+var _user$project$IV_Main$drainChamber = _user$project$IV_Lenses$updateApparatus(_user$project$IV_Apparatus_Main$drainChamber);
+var _user$project$IV_Main$showTrueFlow = _user$project$IV_Lenses$updateApparatus(_user$project$IV_Apparatus_Main$showTrueFlow);
+var _user$project$IV_Main$changeDripRate = function (dripRate) {
+	return _user$project$IV_Lenses$updateApparatus(
+		_user$project$IV_Apparatus_Main$changeDripRate(dripRate));
+};
 var _user$project$IV_Main$initWithScenario = function (scenario) {
 	return {
-		scenario: scenario,
-		apparatus: _user$project$IV_Apparatus_Main$unstarted(scenario),
-		clock: _user$project$IV_Clock_Main$startingState
+		ctor: '_Tuple2',
+		_0: {
+			scenario: scenario,
+			apparatus: _user$project$IV_Apparatus_Main$unstarted(
+				_user$project$IV_Scenario_DataExport$startingLevel(scenario)),
+			clock: _user$project$IV_Clock_Main$startingState
+		},
+		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
-var _user$project$IV_Main$init = {
-	ctor: '_Tuple2',
-	_0: _user$project$IV_Main$initWithScenario(_user$project$IV_Scenario_Main$cowScenario),
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _user$project$IV_Main$apparatus$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{apparatus: val});
-	});
-var _user$project$IV_Main$apparatusPart = {
-	getter: function (_) {
-		return _.apparatus;
-	},
-	setter: _user$project$IV_Main$apparatus$
-};
-var _user$project$IV_Main$clock$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{clock: val});
-	});
-var _user$project$IV_Main$clockPart = {
-	getter: function (_) {
-		return _.clock;
-	},
-	setter: _user$project$IV_Main$clock$
-};
-var _user$project$IV_Main$scenario$ = F2(
-	function (model, val) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{scenario: val});
-	});
-var _user$project$IV_Main$scenarioPart = {
-	getter: function (_) {
-		return _.scenario;
-	},
-	setter: _user$project$IV_Main$scenario$
-};
+var _user$project$IV_Main$init = _user$project$IV_Main$initWithScenario(
+	_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$cowBackground));
 var _user$project$IV_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'ToScenario':
-				return A3(
-					_user$project$IV_Pile_CmdFlow$change,
-					_user$project$IV_Main$scenarioPart,
-					model,
-					_user$project$IV_Scenario_Main$update(_p0._0));
+				return A2(
+					_user$project$IV_Lenses$updateScenario,
+					_user$project$IV_Scenario_Main$update(_p0._0),
+					_user$project$IV_Lenses$flow(model));
 			case 'PickedScenario':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_user$project$IV_Main$initWithScenario(_p0._0),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'ChoseDripSpeed':
-				return A2(
-					_user$project$IV_Pile_CmdFlow$chainLike,
-					model,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							{
-							ctor: '_Tuple2',
-							_0: _user$project$IV_Main$apparatusPart,
-							_1: _user$project$IV_Apparatus_Main$changeDripRate(
-								_user$project$IV_Scenario_Calculations$dropsPerSecond(model.scenario))
-						},
-							{ctor: '_Tuple2', _0: _user$project$IV_Main$apparatusPart, _1: _user$project$IV_Apparatus_Main$showTrueFlow}
-						]));
+				return _user$project$IV_Main$initWithScenario(_p0._0);
+			case 'ChoseDripRate':
+				return _user$project$IV_Main$showTrueFlow(
+					A2(
+						_user$project$IV_Main$changeDripRate,
+						_p0._0,
+						_user$project$IV_Lenses$flow(model)));
 			case 'FluidRanOut':
-				return A2(
-					_user$project$IV_Pile_CmdFlow$chainLike,
-					model,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							{
-							ctor: '_Tuple2',
-							_0: _user$project$IV_Main$apparatusPart,
-							_1: _user$project$IV_Apparatus_Main$changeDripRate(
-								_user$project$IV_Types$DropsPerSecond(0))
-						},
-							{ctor: '_Tuple2', _0: _user$project$IV_Main$apparatusPart, _1: _user$project$IV_Apparatus_Main$showTrueFlow},
-							{ctor: '_Tuple2', _0: _user$project$IV_Main$apparatusPart, _1: _user$project$IV_Apparatus_Main$drainChamber}
-						]));
+				return _user$project$IV_Main$drainChamber(
+					_user$project$IV_Main$showTrueFlow(
+						A2(
+							_user$project$IV_Main$changeDripRate,
+							_user$project$IV_Types$DropsPerSecond(0),
+							_user$project$IV_Lenses$flow(model))));
 			case 'ChamberEmptied':
-				return A3(_user$project$IV_Pile_CmdFlow$change, _user$project$IV_Main$apparatusPart, model, _user$project$IV_Apparatus_Main$drainHose);
+				return _user$project$IV_Main$drainHose(
+					_user$project$IV_Lenses$flow(model));
 			case 'StartSimulation':
-				var clockF = _user$project$IV_Clock_Main$startSimulation(
-					_user$project$IV_Scenario_Calculations$hours(model.scenario));
-				var apparatusF = _user$project$IV_Apparatus_Main$startSimulation(model.scenario);
-				return A3(
-					_user$project$IV_Pile_CmdFlow$augment,
-					_user$project$IV_Main$clockPart,
-					clockF,
-					A3(
-						_user$project$IV_Pile_CmdFlow$augment,
-						_user$project$IV_Main$apparatusPart,
-						apparatusF,
-						A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							model,
-							_elm_lang$core$Native_List.fromArray(
-								[]))));
-			case 'StopSimulation':
-				return A3(_user$project$IV_Pile_CmdFlow$change, _user$project$IV_Main$apparatusPart, model, _user$project$IV_Apparatus_Main$showTrueFlow);
-			default:
 				var _p1 = _p0._0;
-				return A3(
-					_user$project$IV_Pile_CmdFlow$augment,
-					_user$project$IV_Main$clockPart,
-					_user$project$IV_Clock_Main$animationClockTick(_p1),
-					A3(
-						_user$project$IV_Pile_CmdFlow$augment,
-						_user$project$IV_Main$apparatusPart,
-						_user$project$IV_Apparatus_Main$animationClockTick(_p1),
-						A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							model,
-							_elm_lang$core$Native_List.fromArray(
-								[]))));
+				return A2(
+					_user$project$IV_Main$startClock,
+					_p1.totalHours,
+					A2(
+						_user$project$IV_Main$startApparatusSimulation,
+						_p1.drainage,
+						_user$project$IV_Lenses$flow(model)));
+			case 'StopSimulation':
+				return _user$project$IV_Main$showTrueFlow(
+					_user$project$IV_Lenses$flow(model));
+			case 'OpenCaseBackgroundEditor':
+				return _user$project$IV_Main$showTrueFlow(
+					_user$project$IV_Main$openCaseBackgroundEditor(
+						_user$project$IV_Lenses$flow(model)));
+			case 'CloseCaseBackgroundEditor':
+				return _user$project$IV_Main$closeCaseBackgroundEditor(
+					_user$project$IV_Main$initWithScenario(model.scenario));
+			default:
+				var _p2 = _p0._0;
+				return A2(
+					_user$project$IV_Main$animateApparatus,
+					_p2,
+					A2(
+						_user$project$IV_Main$animateClock,
+						_p2,
+						_user$project$IV_Lenses$flow(model)));
 		}
 	});
 var _user$project$IV_Main$Model = F3(
@@ -16580,82 +16835,91 @@ var _user$project$IV_Main$Model = F3(
 		return {scenario: a, clock: b, apparatus: c};
 	});
 
-var _user$project$IV_Pile_HtmlShorthand$row = function (elements) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('row')
-			]),
-		elements);
-};
-
-var _user$project$IV_Scenario_View$highlight = F2(
-	function (buttonScenario, currentScenario) {
-		return _elm_lang$core$Native_Utils.eq(buttonScenario, currentScenario) ? ' btn-primary ' : ' btn-default ';
-	});
-var _user$project$IV_Scenario_View$scenarioButton = F3(
-	function (buttonScenario, currentScenario, additionalClassString) {
-		var $class = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'btn col-sm-5 ',
+var _user$project$IV_Pile_HtmlShorthand$row = F2(
+	function (attrs, elements) {
+		return A2(
+			_elm_lang$html$Html$div,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A2(_user$project$IV_Scenario_View$highlight, buttonScenario, currentScenario),
-				additionalClassString));
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('row')
+					]),
+				attrs),
+			elements);
+	});
+
+var _user$project$IV_Scenario_View$textButton = F2(
+	function (extraAttributes, string) {
 		return A2(
 			_elm_lang$html$Html$button,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$type$('button'),
-					_elm_lang$html$Html_Attributes$class($class),
-					_elm_lang$html$Html_Events$onClick(
-					_user$project$IV_Msg$PickedScenario(buttonScenario))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text(buttonScenario.tag)
-				]));
-	});
-var _user$project$IV_Scenario_View$choices = function (model) {
-	return _user$project$IV_Pile_HtmlShorthand$row(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A3(_user$project$IV_Scenario_View$scenarioButton, _user$project$IV_Scenario_Main$cowScenario, model, ''),
-				A3(_user$project$IV_Scenario_View$scenarioButton, _user$project$IV_Scenario_Main$calfScenario, model, 'col-md-offset-2')
-			]));
-};
-var _user$project$IV_Scenario_View$description = function (model) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		'You are presented with a ',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(model.weightInPounds),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				' lb ',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					model.animalDescription,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'. You have ',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(model.bagContentsInLiters),
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								' liters of fluid in a ',
-								A2(_elm_lang$core$Basics_ops['++'], model.bagType, '.'))))))));
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('btn btn-xs'),
+						_elm_lang$html$Html_Attributes$type$('button')
+					]),
+				extraAttributes),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(string)
+				]));
+	});
+var _user$project$IV_Scenario_View$local = function (msg) {
+	return _user$project$IV_Msg$ToScenario(msg);
 };
 var _user$project$IV_Scenario_View$changedText = F2(
 	function (msg, string) {
-		return _user$project$IV_Msg$ToScenario(
+		return _user$project$IV_Scenario_View$local(
 			msg(string));
 	});
-var _user$project$IV_Scenario_View$view = function (model) {
-	return _user$project$IV_Pile_HtmlShorthand$row(
+var _user$project$IV_Scenario_View$textInput = F3(
+	function (extraAttributes, value, onInput) {
+		return A2(
+			_elm_lang$html$Html$input,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$value(value),
+						_elm_lang$html$Html_Attributes$size(6),
+						_elm_lang$html$Html_Events$onInput(onInput)
+					]),
+				extraAttributes),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _user$project$IV_Scenario_View$description = function (model) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'You are presented with ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			model.background.animalDescription,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'. You have ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					model.background.bagContentsInLiters,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' liters of fluid in a ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							model.background.bagType,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' that holds ',
+								A2(_elm_lang$core$Basics_ops['++'], model.background.bagCapacityInLiters, ' liters.'))))))));
+};
+var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
+	return A2(
+		_user$project$IV_Pile_HtmlShorthand$row,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -16674,51 +16938,38 @@ var _user$project$IV_Scenario_View$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text('Using your calculations, set the drip rate to '),
-						A2(
-						_elm_lang$html$Html$input,
+						A3(
+						_user$project$IV_Scenario_View$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$type$('text'),
-								_elm_lang$html$Html_Attributes$value(model.dripText),
-								_elm_lang$html$Html_Attributes$size(6),
-								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDripText)),
-								_elm_lang$html$Html_Events$onBlur(_user$project$IV_Msg$ChoseDripSpeed)
+								_elm_lang$html$Html_Events$onBlur(
+								_user$project$IV_Msg$ChoseDripRate(
+									_user$project$IV_Scenario_DataExport$dripRate(model)))
 							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
+						model.decisions.dripRate,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDripText)),
 						_elm_lang$html$Html$text('drops/sec, set the hours '),
-						A2(
-						_elm_lang$html$Html$input,
+						A3(
+						_user$project$IV_Scenario_View$textInput,
 						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$type$('text'),
-								_elm_lang$html$Html_Attributes$value(model.simulationHoursText),
-								_elm_lang$html$Html_Attributes$size(6),
-								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedHoursText))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
+							[]),
+						model.decisions.simulationHours,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedHoursText)),
 						_elm_lang$html$Html$text(' and minutes '),
-						A2(
-						_elm_lang$html$Html$input,
+						A3(
+						_user$project$IV_Scenario_View$textInput,
 						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$type$('text'),
-								_elm_lang$html$Html_Attributes$value(model.simulationMinutesText),
-								_elm_lang$html$Html_Attributes$size(6),
-								_elm_lang$html$Html_Events$onInput(
-								_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedMinutesText))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
+							[]),
+						model.decisions.simulationMinutes,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedMinutesText)),
 						_elm_lang$html$Html$text(' until you plan to next look at the fluid level, then '),
 						A2(
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$StartSimulation),
+								_elm_lang$html$Html_Events$onClick(
+								_user$project$IV_Msg$StartSimulation(
+									_user$project$IV_Scenario_DataExport$runnableModel(model))),
 								_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs')
 							]),
 						_elm_lang$core$Native_List.fromArray(
@@ -16734,6 +16985,179 @@ var _user$project$IV_Scenario_View$view = function (model) {
 					[
 						_elm_lang$html$Html$text('To start over, click one of the buttons at the top.')
 					]))
+			]));
+};
+var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
+	var display = function () {
+		var _p0 = model.caseBackgroundEditorOpen;
+		if (_p0 === true) {
+			return 'block';
+		} else {
+			return 'none';
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'border', _1: '2px solid #AAA'},
+						{ctor: '_Tuple2', _0: 'padding', _1: '1em'},
+						{ctor: '_Tuple2', _0: 'display', _1: display}
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_user$project$IV_Pile_HtmlShorthand$row,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Set: ')
+					])),
+				A2(
+				_user$project$IV_Pile_HtmlShorthand$row,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('... the container\'s '),
+						A2(
+						_elm_lang$html$Html$b,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('capacity')
+							])),
+						_elm_lang$html$Html$text(' in liters'),
+						A3(
+						_user$project$IV_Scenario_View$textInput,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						model.background.bagCapacityInLiters,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedBagCapacity))
+					])),
+				A2(
+				_user$project$IV_Pile_HtmlShorthand$row,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('... the container\'s '),
+						A2(
+						_elm_lang$html$Html$b,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('starting contents')
+							])),
+						_elm_lang$html$Html$text(' in liters'),
+						A3(
+						_user$project$IV_Scenario_View$textInput,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						model.background.bagContentsInLiters,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedBagContents))
+					])),
+				A2(
+				_user$project$IV_Pile_HtmlShorthand$row,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('... the number of drops per ml '),
+						A3(
+						_user$project$IV_Scenario_View$textInput,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						model.background.dropsPerMil,
+						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDropsPerMil))
+					])),
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(' ')
+					])),
+				A2(
+				_user$project$IV_Pile_HtmlShorthand$row,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_user$project$IV_Scenario_View$textButton,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$CloseCaseBackgroundEditor)
+							]),
+						'Close')
+					]))
+			]));
+};
+var _user$project$IV_Scenario_View$highlight = F2(
+	function (buttonScenario, currentScenario) {
+		return _elm_lang$core$Native_Utils.eq(buttonScenario, currentScenario) ? ' btn-primary ' : ' btn-default ';
+	});
+var _user$project$IV_Scenario_View$scenarioButton = F3(
+	function (buttonScenario, currentScenario, additionalClassString) {
+		var $class = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'btn col-sm-5 ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_user$project$IV_Scenario_View$highlight, buttonScenario, currentScenario),
+				additionalClassString));
+		return A2(
+			_user$project$IV_Scenario_View$textButton,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$IV_Msg$PickedScenario(buttonScenario))
+				]),
+			buttonScenario.background.tag);
+	});
+var _user$project$IV_Scenario_View$buttons = function (model) {
+	return A2(
+		_user$project$IV_Pile_HtmlShorthand$row,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A3(
+				_user$project$IV_Scenario_View$scenarioButton,
+				_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$cowBackground),
+				model,
+				''),
+				A3(
+				_user$project$IV_Scenario_View$scenarioButton,
+				_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$calfBackground),
+				model,
+				'col-md-offset-2'),
+				A2(
+				_user$project$IV_Scenario_View$textButton,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$IV_Msg$OpenCaseBackgroundEditor)
+					]),
+				'Write your own')
+			]));
+};
+var _user$project$IV_Scenario_View$viewScenarioChoices = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$IV_Scenario_View$buttons(model)
 			]));
 };
 
@@ -16879,7 +17303,10 @@ var _user$project$IV_Clock_View$render = function (model) {
 
 var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
 var _user$project$IV_View$mainSvg = function (contents) {
-	return _user$project$IV_Pile_HtmlShorthand$row(
+	return A2(
+		_user$project$IV_Pile_HtmlShorthand$row,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -16922,13 +17349,14 @@ var _user$project$IV_View$view = function (model) {
 	return _user$project$IV_View$mainDiv(
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Scenario_View$choices(model.scenario),
+				_user$project$IV_Scenario_View$viewScenarioChoices(model.scenario),
+				_user$project$IV_Scenario_View$viewCaseBackgroundEditor(model.scenario),
 				_user$project$IV_View$mainSvg(
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					_user$project$IV_Apparatus_View$render(model.apparatus),
 					_user$project$IV_Clock_View$render(model.clock))),
-				_user$project$IV_Scenario_View$view(model.scenario)
+				_user$project$IV_Scenario_View$viewTreatmentEditor(model.scenario)
 			]));
 };
 

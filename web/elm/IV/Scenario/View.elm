@@ -57,12 +57,28 @@ viewCaseBackgroundEditor model =
     div
     [Attr.style
        [ ("border", "2px solid #AAA")
+       , ("padding", "1em")
        , ("display", display)
        ]
     ]
-    [ p [] [text "here is some text"]
-    , p [] [text "here is some text"]
-    , p [] [text "here is some text"]
+    [ row [] [text "Set: "]
+    , row []
+        [ text "... the container's "
+        , b [] [text "capacity"]
+        , text " in liters"
+        , textInput [] model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
+        ]
+    , row []
+        [ text "... the container's "
+        , b [] [text "starting contents"]
+        , text " in liters"
+        , textInput [] model.background.bagContentsInLiters (changedText ChangedBagContents)
+        ]
+    , row []
+        [ text "... the number of drops per ml "
+        , textInput [] model.background.dropsPerMil (changedText ChangedDropsPerMil)
+        ]
+    , p [] [text " "]
     , row []
         [ textButton
             [ Events.onClick (local CloseCaseBackgroundEditor) ]
@@ -77,7 +93,19 @@ description model =
   model.background.animalDescription ++ ". You have " ++
   model.background.bagContentsInLiters ++
   " liters of fluid in a " ++ 
-  model.background.bagType ++ "."
+  model.background.bagType ++ " that holds " ++
+  model.background.bagCapacityInLiters ++ " liters."
+
+
+textInput extraAttributes value onInput =
+  input
+  ([ Attr.type' "text"
+   , Attr.value value
+   , Attr.size 6
+   , Events.onInput onInput
+   ] ++ extraAttributes)
+  []
+  
 
 viewTreatmentEditor : EditableModel -> Html MainMsg.Msg
 viewTreatmentEditor model =
@@ -86,31 +114,14 @@ viewTreatmentEditor model =
     , p
         []
         [ text "Using your calculations, set the drip rate to "
-        , input
-            [ Attr.type' "text"
-            -- , Attr.class "form-control col-xs-2"
-            , Attr.value model.decisions.dripRate
-            , Attr.size 6
-            , Events.onInput (changedText ChangedDripText)
-            , Events.onBlur <| (MainMsg.ChoseDripRate (DataExport.dripRate model))
-            ]
-            []
+        , textInput
+            [Events.onBlur <| (MainMsg.ChoseDripRate (DataExport.dripRate model))]
+            model.decisions.dripRate
+            (changedText ChangedDripText)
         , text "drops/sec, set the hours "
-        , input
-            [ Attr.type' "text"
-            , Attr.value model.decisions.simulationHours
-            , Attr.size 6
-            , Events.onInput (changedText ChangedHoursText)
-            ]
-            []
+        , textInput [] model.decisions.simulationHours (changedText ChangedHoursText)
         , text " and minutes "
-        , input
-            [ Attr.type' "text"
-            , Attr.value model.decisions.simulationMinutes
-            , Attr.size 6
-            , Events.onInput (changedText ChangedMinutesText)
-            ]
-            []
+        , textInput [] model.decisions.simulationMinutes (changedText ChangedMinutesText)
         , text " until you plan to next look at the fluid level, then " 
         , button
             [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)

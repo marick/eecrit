@@ -6,6 +6,10 @@ type Msg
   | ChangedHoursText String
   | ChangedMinutesText String
 
+  | ChangedBagCapacity String
+  | ChangedBagContents String
+  | ChangedDropsPerMil String
+
   | OpenCaseBackgroundEditor
   | CloseCaseBackgroundEditor
 

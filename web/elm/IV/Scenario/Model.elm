@@ -28,16 +28,6 @@ type alias CaseBackground =
   , animalDescription : String
   }
 
-defaultBackground =
-  { tag = "Case shorthand (optional)"
-  , bagCapacityInLiters = "0"
-  , bagContentsInLiters = "0"
-  , bagType = "kind of bag (optional)"
-  , dropsPerMil = "15.0"
-  , animalDescription = "Animal weight in pounds (optional)"
-  }
-
-
 -- Treatment Decisions   
 
 type alias TreatmentDecisions =
@@ -55,9 +45,18 @@ defaultDecisions =
 
 -- Specific starting Scenarios
 
+editableBackground =
+  { tag = ""
+  , bagCapacityInLiters = "0"
+  , bagContentsInLiters = "0"
+  , bagType = "container"
+  , dropsPerMil = "15.0"
+  , animalDescription = "case"
+  }
+
 cowBackground : CaseBackground
 cowBackground = 
-  { defaultBackground
+  { editableBackground
     | tag = "1560 lb. cow"
     , animalDescription = "a 1560 lb 3d lactation purebred Holstein"
     , bagCapacityInLiters = "20"
@@ -67,11 +66,11 @@ cowBackground =
 
 calfBackground : CaseBackground
 calfBackground = 
-  { defaultBackground
+  { editableBackground
     | tag = "90 lb. heifer calf"
     , animalDescription = "a 90 lb. 10-day-old Hereford heifer calf"
     , bagCapacityInLiters = "2"
     , bagContentsInLiters = "2"
-    , bagType = "2-liter bag"
+    , bagType = "bag"
   }
 

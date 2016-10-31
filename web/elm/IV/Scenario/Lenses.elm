@@ -29,7 +29,35 @@ model_caseBackgroundEditorOpen =
   in
     Lens get set
 
---
+-- Background
+
+background_bagCapacity : Lens CaseBackground String
+background_bagCapacity =
+  let
+    get arg1 = arg1.bagCapacityInLiters
+    set new2 arg1 = { arg1 | bagCapacityInLiters = new2 }
+  in
+    Lens get set
+
+
+background_bagContents : Lens CaseBackground String
+background_bagContents =
+  let
+    get arg1 = arg1.bagContentsInLiters
+    set new2 arg1 = { arg1 | bagContentsInLiters = new2 }
+  in
+    Lens get set
+
+
+background_dropsPerMil : Lens CaseBackground String
+background_dropsPerMil =
+  let
+    get arg1 = arg1.dropsPerMil
+    set new2 arg1 = { arg1 | dropsPerMil = new2 }
+  in
+    Lens get set
+
+
 
 -- Decisions 
 
@@ -63,3 +91,9 @@ decisions_simulationMinutes =
 model_dripRate = Monocle.Lens.compose model_decisions decisions_dripRate
 model_simulationHours = Monocle.Lens.compose model_decisions decisions_simulationHours
 model_simulationMinutes = Monocle.Lens.compose model_decisions decisions_simulationMinutes
+
+
+model_bagCapacity = Monocle.Lens.compose model_background background_bagCapacity
+model_bagContents = Monocle.Lens.compose model_background background_bagContents
+model_dropsPerMil = Monocle.Lens.compose model_background background_dropsPerMil
+                          

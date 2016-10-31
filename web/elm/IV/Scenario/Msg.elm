@@ -10,6 +10,3 @@ type Msg
   | ChangedBagContents String
   | ChangedDropsPerMil String
 
-  | OpenCaseBackgroundEditor
-  | CloseCaseBackgroundEditor
-

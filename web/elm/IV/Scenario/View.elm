@@ -25,7 +25,7 @@ buttons model =
   row []
   [ scenarioButton (scenario cowBackground) model ""
   , scenarioButton (scenario calfBackground) model "col-md-offset-2"
-  , textButton [ Events.onClick (local OpenCaseBackgroundEditor) ] "Write your own"
+  , textButton [ Events.onClick MainMsg.OpenCaseBackgroundEditor ] "Write your own"
   ]
   
 highlight buttonScenario currentScenario =
@@ -81,7 +81,7 @@ viewCaseBackgroundEditor model =
     , p [] [text " "]
     , row []
         [ textButton
-            [ Events.onClick (local CloseCaseBackgroundEditor) ]
+            [ Events.onClick MainMsg.CloseCaseBackgroundEditor ]
             "Close"
         ]
     ]

@@ -7,6 +7,22 @@ import IV.Pile.ManagedStrings exposing (..)
 import IV.Msg as Out
 
 
+openCaseBackgroundEditor model = 
+  ( model
+    |> model_caseBackgroundEditorOpen.set True
+    |> model_background.set editableBackground
+    |> model_decisions.set defaultDecisions
+  , Cmd.none
+  )
+
+closeCaseBackgroundEditor model =
+  ( model 
+    |> model_caseBackgroundEditorOpen.set False
+  , Cmd.none
+  )
+
+
+
 update : Msg -> EditableModel -> (EditableModel, Cmd Out.Msg )
 update msg model =
   case msg of
@@ -24,18 +40,6 @@ update msg model =
     ChangedDropsPerMil string ->
       updateWhen string isValidFloatString model model_dropsPerMil ! []
         
-    OpenCaseBackgroundEditor ->
-      ( model
-          |> model_caseBackgroundEditorOpen.set True
-          |> model_background.set editableBackground
-          |> model_decisions.set defaultDecisions
-      , Cmd.none
-      )
-    CloseCaseBackgroundEditor ->
-      ( model_caseBackgroundEditorOpen.set False model
-      , Cmd Out.PickedScenario
-      )
-    
 updateWhen candidate pred model lens = 
   if pred candidate then
     lens.set candidate model

@@ -18,3 +18,7 @@ type Msg
     | AnimationClockTick Animation.Msg
 
     | ToScenario ScenarioMsg.Msg
+
+    | OpenCaseBackgroundEditor
+    | CloseCaseBackgroundEditor
+

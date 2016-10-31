@@ -37,17 +37,17 @@ apparatusPart = { getter = .apparatus, setter = apparatus' }
 
 -- Update
 
-initWithScenario : ScenarioModel.EditableModel -> Model
+initWithScenario : ScenarioModel.EditableModel -> (Model, Cmd Msg)
 initWithScenario scenario =
-  { scenario = scenario
-  , apparatus = Apparatus.unstarted <| DataExport.startingLevel scenario
-  , clock = Clock.startingState
-  }
+  ( { scenario = scenario
+    , apparatus = Apparatus.unstarted <| DataExport.startingLevel scenario
+    , clock = Clock.startingState
+    }
+  , Cmd.none
+  )
   
 init : ( Model, Cmd Msg )
-init = ( initWithScenario (ScenarioModel.scenario ScenarioModel.cowBackground)
-       , Cmd.none
-       )
+init = initWithScenario (ScenarioModel.scenario ScenarioModel.cowBackground)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -56,7 +56,7 @@ update msg model =
       Scenario.update msg' |> CmdFlow.change scenarioPart model
 
     PickedScenario scenario ->
-      initWithScenario scenario ! []
+      initWithScenario scenario
 
     ChoseDripRate dripRate ->
       CmdFlow.chainLike model
@@ -85,6 +85,15 @@ update msg model =
         
     StopSimulation ->
       Apparatus.showTrueFlow |> CmdFlow.change apparatusPart model
+
+    OpenCaseBackgroundEditor ->
+      model ! []
+        |> CmdFlow.augment scenarioPart Scenario.openCaseBackgroundEditor
+        |> CmdFlow.augment apparatusPart Apparatus.showTrueFlow
+        
+    CloseCaseBackgroundEditor ->
+      initWithScenario model.scenario
+        |> CmdFlow.augment scenarioPart Scenario.closeCaseBackgroundEditor
         
     AnimationClockTick tick ->
       model ! []

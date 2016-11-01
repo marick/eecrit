@@ -18,8 +18,7 @@ graphics = {width = "400px", height = "400px"}
 
 mainSvg contents  =
   row [] 
-    [ hr [] []
-    , Svg.svg
+    [ Svg.svg
         [ SA.version "1.1"
         , SA.x "0"
         , SA.y "0"
@@ -31,21 +30,18 @@ mainSvg contents  =
 
 view : Model -> Html Msg
 view model =
-  div [] 
+  div []
     [ div [class "header clearfix"]
         [ Scenario.viewScenarioChoices model.scenario
         , h3 [class "text-muted"] [text "IV Worksheet"]
         ]
-    , div [class "row marketing" ]
-        [ div [ class "col-sm-6" ]
-            [ text "foo" ]
-        , div [ class "col-sm-6" ]
-          [ text "bar" ]
+    , Scenario.viewCaseBackgroundEditor model.scenario
+    , div [class "row" ]
+        [ div [ class "col-sm-7" ]
+            [ mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
+            ]
+        , div [ class "col-sm-5" ]
+          [ Scenario.viewTreatmentEditor model.scenario
+          ]
         ]
     ]
-  -- [ Scenario.viewScenarioChoices model.scenario
-  -- , Scenario.viewCaseBackgroundEditor model.scenario
-  -- , mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
-  -- , Scenario.viewTreatmentEditor model.scenario
-  -- ]
-  

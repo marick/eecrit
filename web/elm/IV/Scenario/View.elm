@@ -6,7 +6,7 @@ module IV.Scenario.View exposing
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
-import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground)
+import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground, editableBackground)
 import IV.Scenario.DataExport as DataExport
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
@@ -20,35 +20,24 @@ viewScenarioChoices : EditableModel -> Html MainMsg.Msg
 viewScenarioChoices model =
   nav []
     [ ul [ class "nav nav-pills pull-right" ]
-        [ choiceLink (scenario cowBackground) model
-        , choiceLink (scenario calfBackground) model
-        , editLink model
+        [ scenarioChoice (scenario cowBackground) model
+        , scenarioChoice (scenario calfBackground) model
+        , editChoice (scenario editableBackground) model
         ]
     ]
 
-choiceLink possible current =
-  link_
+scenarioChoice possible current =
+  navChoice
     possible.background.tag
     (MainMsg.PickedScenario possible)
-    (possible == current)
+    (possible.background.tag == current.background.tag)
          
-editLink scenario =
-  link_
-    "Write your own"
+editChoice possible current =
+  navChoice
+    possible.background.tag
     MainMsg.OpenCaseBackgroundEditor
-    scenario.caseBackgroundEditorOpen
+    (possible.background.tag == current.background.tag)
          
-link_ label onClick isActive = 
-  li
-    [ role "presentation"
-    , classList [ ("active", isActive) ]
-    ]
-    [ a [ href "#"
-        , Events.onClick onClick
-        ]
-        [text label]
-    ]
-
 
 -- Case background editor
   
@@ -60,9 +49,13 @@ viewCaseBackgroundEditor model =
         False -> "none"
   in 
     div
-    [style
+    [ class "row"
+    , style
        [ ("border", "2px solid #AAA")
-       , ("padding", "1em")
+       , ("padding", "2em")
+       , ("margin-bottom", "2em")
+       , ("margin-left", "3em")
+       , ("margin-right", "3em")
        , ("display", display)
        ]
     ]
@@ -84,10 +77,10 @@ viewCaseBackgroundEditor model =
         , textInput [] model.background.dropsPerMil (changedText ChangedDropsPerMil)
         ]
     , p [] [text " "]
-    , row []
+    , row [ class "col-sm-12" ]
         [ textButton
             [ Events.onClick MainMsg.CloseCaseBackgroundEditor ]
-            "Close"
+            "Work With This"
         ]
     ]
 
@@ -153,9 +146,20 @@ local msg =
 
 textButton extraAttributes string =
   button
-  ( [ class "btn btn-xs"
+  ( [ class "btn btn-primary btn-xs"
     , type' "button"
     ] ++ extraAttributes
   )
   [ text string ]
   
+navChoice label onClick isActive = 
+  li
+    [ role "presentation"
+    , classList [ ("active", isActive) ]
+    ]
+    [ a [ href "#"
+        , Events.onClick onClick
+        ]
+        [text label]
+    ]
+

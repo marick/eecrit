@@ -46,7 +46,7 @@ defaultDecisions =
 -- Specific starting Scenarios
 
 editableBackground =
-  { tag = ""
+  { tag = "Write your own"
   , bagCapacityInLiters = "0"
   , bagContentsInLiters = "0"
   , bagType = "container"

@@ -6,3 +6,5 @@ import Html.Attributes exposing (..)
 row attrs elements =
   div ([class "row"] ++ attrs) elements
 
+role = attribute "role"
+

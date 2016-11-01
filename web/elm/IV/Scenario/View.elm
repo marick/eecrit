@@ -5,7 +5,7 @@ module IV.Scenario.View exposing
   )
 
 import Html exposing (..)
-import Html.Attributes as Attr
+import Html.Attributes as Attr exposing (..)
 import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground)
 import IV.Scenario.DataExport as DataExport
 import IV.Scenario.Msg exposing (Msg(..))
@@ -18,32 +18,37 @@ import IV.Pile.HtmlShorthand exposing (..)
 
 viewScenarioChoices : EditableModel -> Html MainMsg.Msg    
 viewScenarioChoices model =
-  div []
-    [ buttons model]
+  nav []
+    [ ul [ class "nav nav-pills pull-right" ]
+        [ choiceLink (scenario cowBackground) model
+        , choiceLink (scenario calfBackground) model
+        , editLink model
+        ]
+    ]
 
-buttons model = 
-  row []
-  [ scenarioButton (scenario cowBackground) model ""
-  , scenarioButton (scenario calfBackground) model "col-md-offset-2"
-  , textButton [ Events.onClick MainMsg.OpenCaseBackgroundEditor ] "Write your own"
-  ]
-  
-highlight buttonScenario currentScenario =
-  if buttonScenario == currentScenario then
-    " btn-primary "
-  else
-    " btn-default "
+choiceLink possible current =
+  link_
+    possible.background.tag
+    (MainMsg.PickedScenario possible)
+    (possible == current)
+         
+editLink scenario =
+  link_
+    "Write your own"
+    MainMsg.OpenCaseBackgroundEditor
+    scenario.caseBackgroundEditorOpen
+         
+link_ label onClick isActive = 
+  li
+    [ role "presentation"
+    , classList [ ("active", isActive) ]
+    ]
+    [ a [ href "#"
+        , Events.onClick onClick
+        ]
+        [text label]
+    ]
 
-scenarioButton : EditableModel -> EditableModel -> String -> Html MainMsg.Msg
-scenarioButton buttonScenario currentScenario additionalClassString =
-  let 
-    class = "btn col-sm-5 " ++
-            highlight buttonScenario currentScenario ++
-            additionalClassString
-  in
-    textButton
-      [Events.onClick <| MainMsg.PickedScenario buttonScenario] 
-      buttonScenario.background.tag
 
 -- Case background editor
   
@@ -55,7 +60,7 @@ viewCaseBackgroundEditor model =
         False -> "none"
   in 
     div
-    [Attr.style
+    [style
        [ ("border", "2px solid #AAA")
        , ("padding", "1em")
        , ("display", display)
@@ -99,9 +104,9 @@ description model =
 
 textInput extraAttributes value onInput =
   input
-  ([ Attr.type' "text"
+  ([ type' "text"
    , Attr.value value
-   , Attr.size 6
+   , size 6
    , Events.onInput onInput
    ] ++ extraAttributes)
   []
@@ -125,7 +130,7 @@ viewTreatmentEditor model =
         , text " until you plan to next look at the fluid level, then " 
         , button
             [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)
-            , Attr.class "btn btn-default btn-xs"
+            , class "btn btn-default btn-xs"
             ]
             [ text "Start the Clock" ]
         ]
@@ -148,8 +153,8 @@ local msg =
 
 textButton extraAttributes string =
   button
-  ( [ Attr.class "btn btn-xs"
-    , Attr.type' "button"
+  ( [ class "btn btn-xs"
+    , type' "button"
     ] ++ extraAttributes
   )
   [ text string ]

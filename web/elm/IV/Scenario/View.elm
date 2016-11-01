@@ -79,14 +79,17 @@ viewCaseBackgroundEditor model =
         ]
     , p [] [text " "]
     , row [ class "col-sm-12" ]
-        [ button
-            [ Events.onClick MainMsg.CloseCaseBackgroundEditor
-            , class "btn btn-primary btn-xs"
-            , type' "button"
-            ]
-            [ text "Work With This" ]
+        [ launchWhenDoneButton 
+            MainMsg.CloseCaseBackgroundEditor
+            (backgroundNeedsMoreWork model)
+            "Work With This"
         ]
     ]
+
+backgroundNeedsMoreWork model =
+  unfinishedField model.background.bagCapacityInLiters
+  || unfinishedField model.background.bagContentsInLiters
+  || unfinishedField model.background.dropsPerMil
 
 -- Treatment editor
     
@@ -142,38 +145,40 @@ viewTreatmentEditor model =
             [ disabled model.caseBackgroundEditorOpen ]
             model.decisions.simulationMinutes (changedText ChangedMinutesText)
         , text " until you plan to next look at the fluid level, then " 
-        , startClockButton model
+        , launchWhenDoneButton
+            (MainMsg.StartSimulation <| DataExport.runnableModel model)
+            (treatmentNeedsMoreUserWork model)
+            "Start the Clock"
         ]
     , p []
       [ text "To start over, click one of the buttons at the top." ]
     ]
 
-startClockButton model = 
-  let
-    needsWork = treatmentNeedsMoreUserWork model
-  in
-    button
-      [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)
-      , type' "button"
-      , classList [ ("btn", True)
-                  , ("btn-primary", not needsWork)
-                  , ("btn-xs", True)
-                  ]
-      , disabled needsWork
-      ]
-      [text "Start the Clock"]
 
+launchWhenDoneButton onClick needsWork label = 
+  button
+  [ Events.onClick onClick
+  , type' "button"
+  , classList [ ("btn", True)
+              , ("btn-primary", not needsWork)
+              , ("btn-xs", True)
+              ]
+  , disabled needsWork
+  ]
+  [text label]
+  
+  
+        
+unfinishedField string =
+  case String.toFloat string of
+    Err _ -> True
+    Ok x -> x == 0.0
             
 treatmentNeedsMoreUserWork model =
-  let
-    unfinished field = case String.toFloat field of
-                         Err _ -> True
-                         Ok x -> x == 0.0
-  in
-    model.caseBackgroundEditorOpen
-    || unfinished model.decisions.dripRate
-    || (   unfinished model.decisions.simulationHours
-        && unfinished model.decisions.simulationMinutes)
+  model.caseBackgroundEditorOpen
+  || unfinishedField model.decisions.dripRate
+  || (   unfinishedField model.decisions.simulationHours
+      && unfinishedField model.decisions.simulationMinutes)
 
 -- Private
 

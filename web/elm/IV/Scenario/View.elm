@@ -64,14 +64,15 @@ viewCaseBackgroundEditor model =
     , row []
         [ text "... the container's "
         , b [] [text "capacity"]
-        , text " in liters"
+        , text " in liters "
         , textInput [] model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
         ]
     , row []
         [ text "... the container's "
         , b [] [text "starting contents"]
-        , text " in liters"
+        , text " in liters "
         , textInput [] model.background.bagContentsInLiters (changedText ChangedBagContents)
+        , contentWarning model
         ]
     , row []
         [ text "... the number of drops per ml "
@@ -86,10 +87,30 @@ viewCaseBackgroundEditor model =
         ]
     ]
 
+contentWarning model =
+  let 
+    warning = if contentsTooBig model then
+                " Content exceeds the capacity!"
+              else
+                ""
+  in
+    span [style [("color", "red")]] [text warning]
+            
+
+contentsTooBig model =
+  let
+    val field = Result.withDefault 0 (String.toFloat field)
+    contentsText = model.background.bagContentsInLiters
+    capacityText = model.background.bagCapacityInLiters
+  in
+    not (unfinishedField capacityText)
+    && (val contentsText) > (val capacityText)
+    
 backgroundNeedsMoreWork model =
   unfinishedField model.background.bagCapacityInLiters
   || unfinishedField model.background.bagContentsInLiters
   || unfinishedField model.background.dropsPerMil
+  || contentsTooBig model
 
 -- Treatment editor
     

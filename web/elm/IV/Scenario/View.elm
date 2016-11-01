@@ -12,6 +12,7 @@ import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
 import IV.Pile.HtmlShorthand exposing (..)
+import String
 
 
 -- Top row of buttons
@@ -78,9 +79,12 @@ viewCaseBackgroundEditor model =
         ]
     , p [] [text " "]
     , row [ class "col-sm-12" ]
-        [ textButton
-            [ Events.onClick MainMsg.CloseCaseBackgroundEditor ]
-            "Work With This"
+        [ button
+            [ Events.onClick MainMsg.CloseCaseBackgroundEditor
+            , class "btn btn-primary btn-xs"
+            , type' "button"
+            ]
+            [ text "Work With This" ]
         ]
     ]
 
@@ -103,35 +107,73 @@ textInput extraAttributes value onInput =
    , Events.onInput onInput
    ] ++ extraAttributes)
   []
-  
+
+
+treatmentTextColor model =
+  let
+    color = case model.caseBackgroundEditorOpen of
+              True -> "grey"
+              False -> "black"
+  in
+    style [ ("color", color)
+          , ("background-color", "white")
+          ]
+    
 
 viewTreatmentEditor : EditableModel -> Html MainMsg.Msg
 viewTreatmentEditor model =
-  row []
+  row [ treatmentTextColor model ]
     [ p [] [text <| description model ] 
     , p
         []
         [ text "Using your calculations, set the drip rate to "
         , textInput
-            [Events.onBlur <| (MainMsg.ChoseDripRate (DataExport.dripRate model))]
+            [ Events.onBlur <| (MainMsg.ChoseDripRate (DataExport.dripRate model))
+            , disabled model.caseBackgroundEditorOpen
+            ]
             model.decisions.dripRate
             (changedText ChangedDripText)
         , text "drops/sec, set the hours "
-        , textInput [] model.decisions.simulationHours (changedText ChangedHoursText)
+        , textInput
+            [ disabled model.caseBackgroundEditorOpen ]
+            model.decisions.simulationHours (changedText ChangedHoursText)
         , text " and minutes "
-        , textInput [] model.decisions.simulationMinutes (changedText ChangedMinutesText)
+        , textInput
+            [ disabled model.caseBackgroundEditorOpen ]
+            model.decisions.simulationMinutes (changedText ChangedMinutesText)
         , text " until you plan to next look at the fluid level, then " 
-        , button
-            [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)
-            , class "btn btn-default btn-xs"
-            ]
-            [ text "Start the Clock" ]
+        , startClockButton model
         ]
     , p []
       [ text "To start over, click one of the buttons at the top." ]
     ]
 
+startClockButton model = 
+  let
+    needsWork = treatmentNeedsMoreUserWork model
+  in
+    button
+      [ Events.onClick <| MainMsg.StartSimulation (DataExport.runnableModel model)
+      , type' "button"
+      , classList [ ("btn", True)
+                  , ("btn-primary", not needsWork)
+                  , ("btn-xs", True)
+                  ]
+      , disabled needsWork
+      ]
+      [text "Start the Clock"]
 
+            
+treatmentNeedsMoreUserWork model =
+  let
+    unfinished field = case String.toFloat field of
+                         Err _ -> True
+                         Ok x -> x == 0.0
+  in
+    model.caseBackgroundEditorOpen
+    || unfinished model.decisions.dripRate
+    || (   unfinished model.decisions.simulationHours
+        && unfinished model.decisions.simulationMinutes)
 
 -- Private
 
@@ -144,14 +186,6 @@ local msg =
   MainMsg.ToScenario msg
 
 
-textButton extraAttributes string =
-  button
-  ( [ class "btn btn-primary btn-xs"
-    , type' "button"
-    ] ++ extraAttributes
-  )
-  [ text string ]
-  
 navChoice label onClick isActive = 
   li
     [ role "presentation"

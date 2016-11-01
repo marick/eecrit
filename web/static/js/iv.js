@@ -16835,22 +16835,85 @@ var _user$project$IV_Main$Model = F3(
 		return {scenario: a, clock: b, apparatus: c};
 	});
 
-var _user$project$IV_Pile_HtmlShorthand$role = _elm_lang$html$Html_Attributes$attribute('role');
-var _user$project$IV_Pile_HtmlShorthand$row = F2(
-	function (attrs, elements) {
+var _user$project$IV_Pile_HtmlShorthand$pSimple = function (string) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(string)
+			]));
+};
+var _user$project$IV_Pile_HtmlShorthand$greyableText = function (beGrey) {
+	var color = function () {
+		var _p0 = beGrey;
+		if (_p0 === true) {
+			return 'grey';
+		} else {
+			return 'black';
+		}
+	}();
+	return _elm_lang$html$Html_Attributes$style(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{ctor: '_Tuple2', _0: 'color', _1: color},
+				{ctor: '_Tuple2', _0: 'background-color', _1: 'white'}
+			]));
+};
+var _user$project$IV_Pile_HtmlShorthand$displayStyle = function (toShow) {
+	var _p1 = toShow;
+	if (_p1 === true) {
+		return {ctor: '_Tuple2', _0: 'display', _1: 'block'};
+	} else {
+		return {ctor: '_Tuple2', _0: 'display', _1: 'none'};
+	}
+};
+var _user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton = F3(
+	function (onClick, needsWork, label) {
 		return A2(
-			_elm_lang$html$Html$div,
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(onClick),
+					_elm_lang$html$Html_Attributes$type$('button'),
+					_elm_lang$html$Html_Attributes$classList(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{ctor: '_Tuple2', _0: 'btn', _1: true},
+							{
+							ctor: '_Tuple2',
+							_0: 'btn-primary',
+							_1: _elm_lang$core$Basics$not(needsWork)
+						},
+							{ctor: '_Tuple2', _0: 'btn-xs', _1: true}
+						])),
+					_elm_lang$html$Html_Attributes$disabled(needsWork)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(label)
+				]));
+	});
+var _user$project$IV_Pile_HtmlShorthand$textInput = F3(
+	function (extraAttributes, value, onInput) {
+		return A2(
+			_elm_lang$html$Html$input,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('row')
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$value(value),
+						_elm_lang$html$Html_Attributes$size(6),
+						_elm_lang$html$Html_Events$onInput(onInput)
 					]),
-				attrs),
-			elements);
+				extraAttributes),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
 	});
-
-var _user$project$IV_Scenario_View$navChoice = F3(
+var _user$project$IV_Pile_HtmlShorthand$role = _elm_lang$html$Html_Attributes$attribute('role');
+var _user$project$IV_Pile_HtmlShorthand$navChoice = F3(
 	function (label, onClick, isActive) {
 		return A2(
 			_elm_lang$html$Html$li,
@@ -16878,6 +16941,49 @@ var _user$project$IV_Scenario_View$navChoice = F3(
 						]))
 				]));
 	});
+var _user$project$IV_Pile_HtmlShorthand$mailTo = A2(
+	_elm_lang$html$Html$li,
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$IV_Pile_HtmlShorthand$role('presentation')
+		]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href('mailto:marick@roundingpegs.com?subject=IV%20simulation')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Report a Problem')
+				]))
+		]));
+var _user$project$IV_Pile_HtmlShorthand$row = F2(
+	function (attrs, elements) {
+		return A2(
+			_elm_lang$html$Html$div,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('row')
+					]),
+				attrs),
+			elements);
+	});
+var _user$project$IV_Pile_HtmlShorthand$rowSimple = function (string) {
+	return A2(
+		_user$project$IV_Pile_HtmlShorthand$row,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(string)
+			]));
+};
+
 var _user$project$IV_Scenario_View$local = function (msg) {
 	return _user$project$IV_Msg$ToScenario(msg);
 };
@@ -16897,65 +17003,6 @@ var _user$project$IV_Scenario_View$unfinishedField = function (string) {
 var _user$project$IV_Scenario_View$treatmentNeedsMoreUserWork = function (model) {
 	return model.caseBackgroundEditorOpen || (_user$project$IV_Scenario_View$unfinishedField(model.decisions.dripRate) || (_user$project$IV_Scenario_View$unfinishedField(model.decisions.simulationHours) && _user$project$IV_Scenario_View$unfinishedField(model.decisions.simulationMinutes)));
 };
-var _user$project$IV_Scenario_View$launchWhenDoneButton = F3(
-	function (onClick, needsWork, label) {
-		return A2(
-			_elm_lang$html$Html$button,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Events$onClick(onClick),
-					_elm_lang$html$Html_Attributes$type$('button'),
-					_elm_lang$html$Html_Attributes$classList(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							{ctor: '_Tuple2', _0: 'btn', _1: true},
-							{
-							ctor: '_Tuple2',
-							_0: 'btn-primary',
-							_1: _elm_lang$core$Basics$not(needsWork)
-						},
-							{ctor: '_Tuple2', _0: 'btn-xs', _1: true}
-						])),
-					_elm_lang$html$Html_Attributes$disabled(needsWork)
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text(label)
-				]));
-	});
-var _user$project$IV_Scenario_View$treatmentTextColor = function (model) {
-	var color = function () {
-		var _p1 = model.caseBackgroundEditorOpen;
-		if (_p1 === true) {
-			return 'grey';
-		} else {
-			return 'black';
-		}
-	}();
-	return _elm_lang$html$Html_Attributes$style(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{ctor: '_Tuple2', _0: 'color', _1: color},
-				{ctor: '_Tuple2', _0: 'background-color', _1: 'white'}
-			]));
-};
-var _user$project$IV_Scenario_View$textInput = F3(
-	function (extraAttributes, value, onInput) {
-		return A2(
-			_elm_lang$html$Html$input,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$type$('text'),
-						_elm_lang$html$Html_Attributes$value(value),
-						_elm_lang$html$Html_Attributes$size(6),
-						_elm_lang$html$Html_Events$onInput(onInput)
-					]),
-				extraAttributes),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
-	});
 var _user$project$IV_Scenario_View$description = function (model) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -16985,19 +17032,17 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 		_user$project$IV_Pile_HtmlShorthand$row,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Scenario_View$treatmentTextColor(model)
+				_user$project$IV_Pile_HtmlShorthand$greyableText(model.caseBackgroundEditorOpen),
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'margin', _1: '0 1em 0 1em'}
+					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$p,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_user$project$IV_Scenario_View$description(model))
-					])),
+				_user$project$IV_Pile_HtmlShorthand$pSimple(
+				_user$project$IV_Scenario_View$description(model)),
 				A2(
 				_elm_lang$html$Html$p,
 				_elm_lang$core$Native_List.fromArray(
@@ -17006,7 +17051,7 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 					[
 						_elm_lang$html$Html$text('Using your calculations, set the drip rate to '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Events$onBlur(
@@ -17018,7 +17063,7 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDripText)),
 						_elm_lang$html$Html$text('drops/sec, set the hours '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$disabled(model.caseBackgroundEditorOpen)
@@ -17027,7 +17072,7 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedHoursText)),
 						_elm_lang$html$Html$text(' and minutes '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$disabled(model.caseBackgroundEditorOpen)
@@ -17036,20 +17081,13 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedMinutesText)),
 						_elm_lang$html$Html$text(' until you plan to next look at the fluid level, then '),
 						A3(
-						_user$project$IV_Scenario_View$launchWhenDoneButton,
+						_user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton,
 						_user$project$IV_Msg$StartSimulation(
 							_user$project$IV_Scenario_DataExport$runnableModel(model)),
 						_user$project$IV_Scenario_View$treatmentNeedsMoreUserWork(model),
 						'Start the Clock')
 					])),
-				A2(
-				_elm_lang$html$Html$p,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('To start over, click one of the buttons at the top.')
-					]))
+				_user$project$IV_Pile_HtmlShorthand$pSimple('To start over, click one of the buttons at the top.')
 			]));
 };
 var _user$project$IV_Scenario_View$contentsTooBig = function (model) {
@@ -17087,14 +17125,6 @@ var _user$project$IV_Scenario_View$contentWarning = function (model) {
 			]));
 };
 var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
-	var display = function () {
-		var _p2 = model.caseBackgroundEditorOpen;
-		if (_p2 === true) {
-			return 'block';
-		} else {
-			return 'none';
-		}
-	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -17108,19 +17138,12 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 						{ctor: '_Tuple2', _0: 'margin-bottom', _1: '2em'},
 						{ctor: '_Tuple2', _0: 'margin-left', _1: '3em'},
 						{ctor: '_Tuple2', _0: 'margin-right', _1: '3em'},
-						{ctor: '_Tuple2', _0: 'display', _1: display}
+						_user$project$IV_Pile_HtmlShorthand$displayStyle(model.caseBackgroundEditorOpen)
 					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_user$project$IV_Pile_HtmlShorthand$row,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Set: ')
-					])),
+				_user$project$IV_Pile_HtmlShorthand$rowSimple('Set:'),
 				A2(
 				_user$project$IV_Pile_HtmlShorthand$row,
 				_elm_lang$core$Native_List.fromArray(
@@ -17138,7 +17161,7 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 							])),
 						_elm_lang$html$Html$text(' in liters '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
 						model.background.bagCapacityInLiters,
@@ -17161,7 +17184,7 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 							])),
 						_elm_lang$html$Html$text(' in liters '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
 						model.background.bagContentsInLiters,
@@ -17176,20 +17199,13 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 					[
 						_elm_lang$html$Html$text('... the number of drops per ml '),
 						A3(
-						_user$project$IV_Scenario_View$textInput,
+						_user$project$IV_Pile_HtmlShorthand$textInput,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
 						model.background.dropsPerMil,
 						_user$project$IV_Scenario_View$changedText(_user$project$IV_Scenario_Msg$ChangedDropsPerMil))
 					])),
-				A2(
-				_elm_lang$html$Html$p,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(' ')
-					])),
+				_user$project$IV_Pile_HtmlShorthand$pSimple(' '),
 				A2(
 				_user$project$IV_Pile_HtmlShorthand$row,
 				_elm_lang$core$Native_List.fromArray(
@@ -17199,7 +17215,7 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A3(
-						_user$project$IV_Scenario_View$launchWhenDoneButton,
+						_user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton,
 						_user$project$IV_Msg$CloseCaseBackgroundEditor,
 						_user$project$IV_Scenario_View$backgroundNeedsMoreWork(model),
 						'Work With This')
@@ -17209,7 +17225,7 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 var _user$project$IV_Scenario_View$editChoice = F2(
 	function (possible, current) {
 		return A3(
-			_user$project$IV_Scenario_View$navChoice,
+			_user$project$IV_Pile_HtmlShorthand$navChoice,
 			possible.background.tag,
 			_user$project$IV_Msg$OpenCaseBackgroundEditor,
 			_elm_lang$core$Native_Utils.eq(possible.background.tag, current.background.tag));
@@ -17217,7 +17233,7 @@ var _user$project$IV_Scenario_View$editChoice = F2(
 var _user$project$IV_Scenario_View$scenarioChoice = F2(
 	function (possible, current) {
 		return A3(
-			_user$project$IV_Scenario_View$navChoice,
+			_user$project$IV_Pile_HtmlShorthand$navChoice,
 			possible.background.tag,
 			_user$project$IV_Msg$PickedScenario(possible),
 			_elm_lang$core$Native_Utils.eq(possible.background.tag, current.background.tag));
@@ -17248,7 +17264,8 @@ var _user$project$IV_Scenario_View$viewScenarioChoices = function (model) {
 						A2(
 						_user$project$IV_Scenario_View$editChoice,
 						_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$editableBackground),
-						model)
+						model),
+						_user$project$IV_Pile_HtmlShorthand$mailTo
 					]))
 			]));
 };
@@ -17454,7 +17471,7 @@ var _user$project$IV_View$view = function (model) {
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('col-sm-7')
+								_elm_lang$html$Html_Attributes$class('col-sm-6')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
@@ -17468,7 +17485,7 @@ var _user$project$IV_View$view = function (model) {
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('col-sm-5')
+								_elm_lang$html$Html_Attributes$class('col-sm-6')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[

@@ -43,50 +43,44 @@ editChoice possible current =
 -- Case background editor
   
 viewCaseBackgroundEditor model =
-  let
-    display =
-      case model.caseBackgroundEditorOpen of 
-        True -> "block"
-        False -> "none"
-  in 
-    div
-    [ class "row"
-    , style
-       [ ("border", "2px solid #AAA")
-       , ("padding", "2em")
-       , ("margin-bottom", "2em")
-       , ("margin-left", "3em")
-       , ("margin-right", "3em")
-       , ("display", display)
-       ]
+  div
+  [ class "row"
+  , style
+      [ ("border", "2px solid #AAA")
+      , ("padding", "2em")
+      , ("margin-bottom", "2em")
+      , ("margin-left", "3em")
+      , ("margin-right", "3em")
+      , displayStyle model.caseBackgroundEditorOpen
+      ]
     ]
-    [ row [] [text "Set: "]
-    , row []
-        [ text "... the container's "
-        , b [] [text "capacity"]
-        , text " in liters "
-        , textInput [] model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
-        ]
-    , row []
-        [ text "... the container's "
-        , b [] [text "starting contents"]
-        , text " in liters "
-        , textInput [] model.background.bagContentsInLiters (changedText ChangedBagContents)
-        , contentWarning model
-        ]
-    , row []
-        [ text "... the number of drops per ml "
-        , textInput [] model.background.dropsPerMil (changedText ChangedDropsPerMil)
-        ]
-    , p [] [text " "]
-    , row [ class "col-sm-12" ]
-        [ launchWhenDoneButton 
-            MainMsg.CloseCaseBackgroundEditor
-            (backgroundNeedsMoreWork model)
-            "Work With This"
-        ]
+  [ row [] [text "Set: "]
+  , row []
+    [ text "... the container's "
+    , b [] [text "capacity"]
+    , text " in liters "
+    , textInput [] model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
     ]
-
+  , row []
+    [ text "... the container's "
+    , b [] [text "starting contents"]
+    , text " in liters "
+    , textInput [] model.background.bagContentsInLiters (changedText ChangedBagContents)
+    , contentWarning model
+    ]
+    , row []
+      [ text "... the number of drops per ml "
+      , textInput [] model.background.dropsPerMil (changedText ChangedDropsPerMil)
+      ]
+  , p [] [text " "]
+  , row [ class "col-sm-12" ]
+    [ launchWhenDoneButton 
+        MainMsg.CloseCaseBackgroundEditor
+        (backgroundNeedsMoreWork model)
+        "Work With This"
+    ]
+  ]
+  
 contentWarning model =
   let 
     warning = if contentsTooBig model then
@@ -122,15 +116,6 @@ description model =
   model.background.bagType ++ " that holds " ++
   model.background.bagCapacityInLiters ++ " liters."
 
-
-textInput extraAttributes value onInput =
-  input
-  ([ type' "text"
-   , Attr.value value
-   , size 6
-   , Events.onInput onInput
-   ] ++ extraAttributes)
-  []
 
 
 treatmentTextColor model =
@@ -175,21 +160,6 @@ viewTreatmentEditor model =
       [ text "To start over, click one of the buttons at the top." ]
     ]
 
-
-launchWhenDoneButton onClick needsWork label = 
-  button
-  [ Events.onClick onClick
-  , type' "button"
-  , classList [ ("btn", True)
-              , ("btn-primary", not needsWork)
-              , ("btn-xs", True)
-              ]
-  , disabled needsWork
-  ]
-  [text label]
-  
-  
-        
 unfinishedField string =
   case String.toFloat string of
     Err _ -> True
@@ -211,15 +181,4 @@ local : Msg -> MainMsg.Msg
 local msg =
   MainMsg.ToScenario msg
 
-
-navChoice label onClick isActive = 
-  li
-    [ role "presentation"
-    , classList [ ("active", isActive) ]
-    ]
-    [ a [ href "#"
-        , Events.onClick onClick
-        ]
-        [text label]
-    ]
 

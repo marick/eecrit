@@ -29,6 +29,13 @@ navChoice label onClick isActive =
         [text label]
     ]
 
+mailTo =
+  li [ role "presentation" ]
+    [ a [ href "mailto:marick@roundingpegs.com?subject=IV%20simulation" ]
+        [ text "Report a Problem" ]
+    ]
+
+    
 launchWhenDoneButton onClick needsWork label = 
   button
   [ Events.onClick onClick

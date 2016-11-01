@@ -24,6 +24,7 @@ viewScenarioChoices model =
         [ scenarioChoice (scenario cowBackground) model
         , scenarioChoice (scenario calfBackground) model
         , editChoice (scenario editableBackground) model
+        , mailTo
         ]
     ]
 

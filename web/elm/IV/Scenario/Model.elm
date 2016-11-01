@@ -51,7 +51,7 @@ editableBackground =
   , bagContentsInLiters = "0"
   , bagType = "container"
   , dropsPerMil = "15.0"
-  , animalDescription = "case"
+  , animalDescription = "a case"
   }
 
 cowBackground : CaseBackground

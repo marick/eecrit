@@ -46,3 +46,20 @@ displayStyle toShow =
   case toShow of 
     True -> ("display", "block")
     False -> ("display", "none")
+
+greyableText beGrey =
+  let
+    color = case beGrey of
+              True -> "grey"
+              False -> "black"
+  in
+    style [ ("color", color)
+          , ("background-color", "white")
+          ]
+
+
+pSimple string =
+  p [] [text string ]
+
+rowSimple string =
+  row [] [ text string ]

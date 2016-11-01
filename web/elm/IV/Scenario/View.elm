@@ -54,25 +54,28 @@ viewCaseBackgroundEditor model =
       , displayStyle model.caseBackgroundEditorOpen
       ]
     ]
-  [ row [] [text "Set: "]
+  [ rowSimple "Set:"
   , row []
-    [ text "... the container's "
-    , b [] [text "capacity"]
-    , text " in liters "
-    , textInput [] model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
-    ]
-  , row []
-    [ text "... the container's "
-    , b [] [text "starting contents"]
-    , text " in liters "
-    , textInput [] model.background.bagContentsInLiters (changedText ChangedBagContents)
-    , contentWarning model
-    ]
-    , row []
-      [ text "... the number of drops per ml "
-      , textInput [] model.background.dropsPerMil (changedText ChangedDropsPerMil)
+      [ text "... the container's "
+      , b [] [text "capacity"]
+      , text " in liters "
+      , textInput []
+          model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
       ]
-  , p [] [text " "]
+  , row []
+      [ text "... the container's "
+      , b [] [text "starting contents"]
+      , text " in liters "
+      , textInput []
+          model.background.bagContentsInLiters (changedText ChangedBagContents)
+      , contentWarning model
+      ]
+  , row []
+      [ text "... the number of drops per ml "
+      , textInput []
+          model.background.dropsPerMil (changedText ChangedDropsPerMil)
+      ]
+  , pSimple " "
   , row [ class "col-sm-12" ]
     [ launchWhenDoneButton 
         MainMsg.CloseCaseBackgroundEditor
@@ -117,22 +120,12 @@ description model =
   model.background.bagCapacityInLiters ++ " liters."
 
 
-
-treatmentTextColor model =
-  let
-    color = case model.caseBackgroundEditorOpen of
-              True -> "grey"
-              False -> "black"
-  in
-    style [ ("color", color)
-          , ("background-color", "white")
-          ]
-    
-
 viewTreatmentEditor : EditableModel -> Html MainMsg.Msg
 viewTreatmentEditor model =
-  row [ treatmentTextColor model ]
-    [ p [] [text <| description model ] 
+  row [ greyableText model.caseBackgroundEditorOpen
+      , style [ ("margin", "0 1em 0 1em") ]
+      ]
+    [ pSimple <| description model
     , p
         []
         [ text "Using your calculations, set the drip rate to "
@@ -145,34 +138,35 @@ viewTreatmentEditor model =
         , text "drops/sec, set the hours "
         , textInput
             [ disabled model.caseBackgroundEditorOpen ]
-            model.decisions.simulationHours (changedText ChangedHoursText)
+            model.decisions.simulationHours
+            (changedText ChangedHoursText)
         , text " and minutes "
         , textInput
             [ disabled model.caseBackgroundEditorOpen ]
-            model.decisions.simulationMinutes (changedText ChangedMinutesText)
+            model.decisions.simulationMinutes
+            (changedText ChangedMinutesText)
         , text " until you plan to next look at the fluid level, then " 
         , launchWhenDoneButton
             (MainMsg.StartSimulation <| DataExport.runnableModel model)
             (treatmentNeedsMoreUserWork model)
             "Start the Clock"
         ]
-    , p []
-      [ text "To start over, click one of the buttons at the top." ]
+    , pSimple "To start over, click one of the buttons at the top."
     ]
 
-unfinishedField string =
-  case String.toFloat string of
-    Err _ -> True
-    Ok x -> x == 0.0
-            
 treatmentNeedsMoreUserWork model =
   model.caseBackgroundEditorOpen
   || unfinishedField model.decisions.dripRate
   || (   unfinishedField model.decisions.simulationHours
       && unfinishedField model.decisions.simulationMinutes)
 
--- Private
+-- Util
 
+unfinishedField string =
+  case String.toFloat string of
+    Err _ -> True
+    Ok x -> x == 0.0
+            
 changedText : (String -> Msg) -> String -> MainMsg.Msg
 changedText msg string =
   local (msg string)

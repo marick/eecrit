@@ -3,7 +3,6 @@ module IV.Pile.SvgAttributes exposing (..)
 import Formatting exposing (..)
 import Svg
 import Svg.Attributes exposing (..)
-import VirtualDom
 import IV.Types exposing (..)
 import String
 
@@ -29,14 +28,6 @@ width' = useInt width
 
 -- Support for Transforms and the like
          
-transformOrigin' : Int -> Int -> Svg.Attribute msg
-transformOrigin' x y =
-  let 
-    argFormatter = print <| int <> s "px " <> int <> s "px"
-  in
-    VirtualDom.attribute "transform-origin" (argFormatter x y)
-
--- Transform arguments
 pointFmt = (float <> s "," <> float)
 translateFmt = (s "translate(" <> pointFmt <> s ")") 
 

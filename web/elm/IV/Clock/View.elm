@@ -5,6 +5,7 @@ module IV.Clock.View exposing
   )
 
 import Animation
+import Formatting exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import IV.Pile.SvgAttributes exposing (..)
@@ -18,17 +19,26 @@ view model =
   ]
 
 viewHands model =
-  Svg.g []
+  Svg.g [ ]
     [ defineArrowhead
     , line (Animation.render model.hourHand ++ hourHandBaseProperties) []
     , line (Animation.render model.minuteHand ++ minuteHandBaseProperties) []
     ]
 
+-- TODO: It's annoying that the clock center has to be set here, rather than
+-- with the static properties. However, I don't see the right way to combine
+-- a `style = "transform-origin: 260px 200px"` there with the rotation
+-- transform here. It must be something stupid. 
+    
 hourHandStartsAt hour =
-  [Animation.rotate (Animation.deg (30 * hour))]
+  [ originAtClockCenter
+  , Animation.rotate (Animation.deg (30 * hour))
+  ]
 
 minuteHandStartsAt minute =
-  [Animation.rotate (Animation.deg minute)]
+  [ originAtClockCenter
+  , Animation.rotate (Animation.deg minute)
+  ]
 
 -- Private
 
@@ -51,6 +61,12 @@ defineArrowhead =
         ]
     ]
 
+originAtClockCenter =
+  let 
+    argFormatter = print <| int <> s "px " <> int <> s "px"
+  in
+    Animation.exactly "transform-origin" <| argFormatter Clock.centerX Clock.centerY
+
 
 handProperties =
   [ x1' Clock.centerX
@@ -59,7 +75,6 @@ handProperties =
   -- y2 will depend on length of hand
   , stroke "black"
   , markerEnd "url(#arrow)"
-  , transformOrigin' Clock.centerX Clock.centerY
   ]
 hourHandBaseProperties =
   [ y2' (Clock.centerY - Clock.hourHandLength)

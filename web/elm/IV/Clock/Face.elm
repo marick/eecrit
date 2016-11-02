@@ -1,4 +1,4 @@
-module IV.Clock.StaticView exposing (render)
+module IV.Clock.Face exposing (view)
 
 import IV.Clock.ViewConstants as Clock
 import Svg exposing (..)
@@ -6,7 +6,7 @@ import Svg.Attributes exposing (..)
 import Formatting exposing (..)
 import IV.Pile.SvgAttributes exposing (..)
 
-render =
+view =
   g []
     ([ circle
        [ cx' Clock.centerX

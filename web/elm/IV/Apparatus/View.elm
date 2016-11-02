@@ -1,13 +1,13 @@
-module IV.Apparatus.View exposing (render)
+module IV.Apparatus.View exposing (view)
 
 import IV.Apparatus.ChamberView as ChamberView
 import IV.Apparatus.BagView as BagView
 import IV.Apparatus.HoseView as HoseView
 import IV.Apparatus.DropletView as DropletView
 
-render model =
-  [ DropletView.render model.droplet
-  , ChamberView.render model.chamberFluid
-  , BagView.render model.bagLevel
-  , HoseView.render model.hoseFluid
+view model =
+  [ DropletView.view model.droplet
+  , ChamberView.view model.chamberFluid
+  , BagView.view model.bagLevel
+  , HoseView.view model.hoseFluid
   ] 

@@ -39,7 +39,7 @@ view model =
     , Scenario.viewCaseBackgroundEditor model.scenario
     , div [class "row" ]
         [ div [ class "col-sm-6" ]
-            [ mainSvg (Apparatus.render model.apparatus ++ Clock.render model.clock)
+            [ mainSvg (Apparatus.view model.apparatus ++ Clock.view model.clock)
             ]
         , div [ class "col-sm-6" ]
           [ Scenario.viewTreatmentEditor model.scenario

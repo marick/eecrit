@@ -1,5 +1,5 @@
 module IV.Apparatus.ChamberView exposing
-  ( render
+  ( view
   , startingState
   , startDraining
   , animationClockTick)
@@ -18,7 +18,7 @@ configuration =
   , extraFigures = []
   }
 
-render animationState =
+view animationState =
   Rect.render configuration C.chamberOrigin animationState
 
 startingState = Rect.startingState configuration startingLevel

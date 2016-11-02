@@ -1,5 +1,5 @@
 module IV.Apparatus.BagView exposing
-  ( render
+  ( view
   , startingState
   , startDraining
   , animationClockTick
@@ -22,7 +22,7 @@ configuration =
   , extraFigures = [markings]
   }
 
-render animationState =
+view animationState =
   Rect.render configuration C.bagOrigin animationState
     
 startingState : Level -> AnimationState 

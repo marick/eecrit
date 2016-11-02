@@ -1,5 +1,5 @@
 module IV.Apparatus.HoseView exposing
-  ( render
+  ( view
   , startingState
   , startDraining
   , animationClockTick
@@ -16,7 +16,7 @@ configuration =
   , extraFigures = []
   }
 
-render animationState =
+view animationState =
   Rect.render configuration C.hoseOrigin animationState
 
 startingState = Rect.startingState configuration (Level 1.0)

@@ -1,4 +1,4 @@
-module IV.Apparatus.DropletView exposing ( render
+module IV.Apparatus.DropletView exposing ( view
                                          , missingDrop
                                          , hangingDrop
                                          , fallenDrop
@@ -11,7 +11,7 @@ import Svg
 import IV.Types exposing (..)
 import IV.Apparatus.ViewConstants as Apparatus
 
-render model =
+view model =
   Svg.polygon (Animation.render model) []
 
 missingDrop =

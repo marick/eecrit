@@ -7556,6 +7556,27 @@ var _arturopala$elm_monocle$Monocle_Lens$zip = F2(
 		return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 	});
 
+
+var _coreytrampe$elm_vendor$Native_Vendor = function(elm) {
+
+    //  http://davidwalsh.name/vendor-prefix
+    var styles = window.getComputedStyle(document.documentElement, '');
+    var vendorPrefix = (Array.prototype.slice
+        .call(styles)
+        .join('')
+        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+    )[1];
+
+    return  { prefix: vendorPrefix };
+}();
+
+var _coreytrampe$elm_vendor$Vendor$Unknown = {ctor: 'Unknown'};
+var _coreytrampe$elm_vendor$Vendor$O = {ctor: 'O'};
+var _coreytrampe$elm_vendor$Vendor$MS = {ctor: 'MS'};
+var _coreytrampe$elm_vendor$Vendor$Webkit = {ctor: 'Webkit'};
+var _coreytrampe$elm_vendor$Vendor$Moz = {ctor: 'Moz'};
+var _coreytrampe$elm_vendor$Vendor$prefix = _elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'webkit') ? _coreytrampe$elm_vendor$Vendor$Webkit : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'moz') ? _coreytrampe$elm_vendor$Vendor$Moz : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'ms') ? _coreytrampe$elm_vendor$Vendor$MS : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'o') ? _coreytrampe$elm_vendor$Vendor$O : _coreytrampe$elm_vendor$Vendor$Unknown)));
+
 var _elm_lang$core$Set$foldr = F3(
 	function (f, b, _p0) {
 		var _p1 = _p0;
@@ -17410,6 +17431,92 @@ var _user$project$IV_Clock_View$render = function (model) {
 		]);
 };
 
+var _user$project$IV_View$aboutThisBrowser = function () {
+	var letMeKnow = A2(
+		_elm_lang$html$Html$a,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$type$('button'),
+				_elm_lang$html$Html_Attributes$class('btn btn-default btn-xs'),
+				_elm_lang$html$Html_Attributes$href('mailto:marick@roundingpegs.com?subject=Browser%20report')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text('let me know')
+			]));
+	var $default = _elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$html$Html$text('Note: I don\'t know if the drawing or animation '),
+			_elm_lang$html$Html$text('will work on your browser. If it does, '),
+			letMeKnow
+		]);
+	var body = function () {
+		var _p0 = _coreytrampe$elm_vendor$Vendor$prefix;
+		switch (_p0.ctor) {
+			case 'Webkit':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Note: '),
+						_elm_lang$html$Html$text('This app\'s animation is known to work on the latest version of your browser. '),
+						_elm_lang$html$Html$text('If you are having problems, you can try upgrading.')
+					]);
+			case 'Moz':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$span,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$style(
+								_elm_lang$core$Native_List.fromArray(
+									[
+										{ctor: '_Tuple2', _0: 'color', _1: 'red'}
+									]))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('This app\'s drawing and animation is known '),
+								A2(
+								_elm_lang$html$Html$b,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('not')
+									])),
+								_elm_lang$html$Html$text(' to work on the Macintosh version of Firefox, and it '),
+								_elm_lang$html$Html$text(' probably doesn\'t work on any version. If it '),
+								A2(
+								_elm_lang$html$Html$b,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('does')
+									])),
+								_elm_lang$html$Html$text(' work, '),
+								letMeKnow
+							]))
+					]);
+			case 'MS':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Note: I don\'t have a Windows computer, so I don\'t know if '),
+						_elm_lang$html$Html$text('this will work with your browser. If it does, '),
+						letMeKnow
+					]);
+			default:
+				return $default;
+		}
+	}();
+	return A2(
+		_user$project$IV_Pile_HtmlShorthand$row,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('col-sm-12')
+			]),
+		body);
+}();
 var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
 var _user$project$IV_View$mainSvg = function (contents) {
 	return A2(
@@ -17491,7 +17598,8 @@ var _user$project$IV_View$view = function (model) {
 							[
 								_user$project$IV_Scenario_View$viewTreatmentEditor(model.scenario)
 							]))
-					]))
+					])),
+				_user$project$IV_View$aboutThisBrowser
 			]));
 };
 

@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Svg
 import Svg.Attributes as SA
+import Vendor
 import IV.Pile.HtmlShorthand exposing (..)
 
 import IV.Main exposing (Model)
@@ -44,4 +45,46 @@ view model =
           [ Scenario.viewTreatmentEditor model.scenario
           ]
         ]
+    , aboutThisBrowser
     ]
+
+
+aboutThisBrowser =
+  let
+    letMeKnow = a [ type' "button"
+                  , class "btn btn-default btn-xs"
+                  , href "mailto:marick@roundingpegs.com?subject=Browser%20report"
+                  ]
+                [ text "let me know" ]
+                     
+    default = [ text "Note: I don't know if the drawing or animation "
+              , text "will work on your browser. If it does, "
+              , letMeKnow
+              ]
+    body =
+      case Vendor.prefix of
+        Vendor.Webkit ->
+          [ text "Note: "
+          , text "This app's animation is known to work on the latest version of your browser. "
+          , text "If you are having problems, you can try upgrading."
+          ]
+        Vendor.Moz ->
+          [ span [style [("color", "red")]]
+              [ text "This app's drawing and animation is known "
+              , b [] [text "not"]
+              , text " to work on the Macintosh version of Firefox, and it "
+              , text " probably doesn't work on any version. If it "
+              , b [] [text "does"]
+              , text " work, "
+              , letMeKnow
+              ]
+          ] 
+        Vendor.MS ->
+          [ text "Note: I don't have a Windows computer, so I don't know if "
+          , text "this will work with your browser. If it does, "
+          , letMeKnow
+          ]
+        _ ->
+          default
+  in
+    row [ class "col-sm-12" ] body

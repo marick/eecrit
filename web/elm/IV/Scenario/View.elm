@@ -163,7 +163,14 @@ viewTreatmentEditor model =
             (treatmentNeedsMoreUserWork model)
             "Start the Clock"
         ]
-    , pSimple "To start over, click one of the buttons at the top."
+    , p
+        [style [ ("margin-top", "2em") ]]
+        [ text "If you don't like the result, "
+        , launchWhenDoneButton
+            MainMsg.RestartScenario
+            (treatmentNeedsMoreUserWork model)
+            "Start Over"
+        ]
     ]
 
 treatmentNeedsMoreUserWork model =

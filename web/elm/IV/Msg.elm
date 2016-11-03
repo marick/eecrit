@@ -14,6 +14,7 @@ type Msg
     | FluidRanOut
     | ChamberEmptied
     | PickedScenario ScenarioModel.EditableModel
+    | RestartScenario
 
     | AnimationClockTick Animation.Msg
 

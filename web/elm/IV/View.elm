@@ -45,9 +45,23 @@ view model =
           [ Scenario.viewTreatmentEditor model.scenario
           ]
         ]
-    , aboutThisBrowser
+    , footer [class "footer"] 
+        [ hr [] []
+        , aboutThisBrowser
+        , footerNav
+        ]
     ]
 
+footerNav =
+  nav []
+    [ ul [ class "nav nav-pills pull-right" ]
+        [ li
+            [ role "presentation" ]
+            [ a [ href "http://google.com" ] [text "About and Disclaimer"] ]
+        ]
+    ]
+
+    
 
 aboutThisBrowser =
   let

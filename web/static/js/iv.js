@@ -15564,16 +15564,23 @@ var _user$project$IV_Types$FullyEmptied = function (a) {
 	return {ctor: 'FullyEmptied', _0: a};
 };
 
-var _user$project$IV_Scenario_Model$editableBackground = {tag: 'Write your own', bagCapacityInLiters: '0', bagContentsInLiters: '0', bagType: 'container', dropsPerMil: '15.0', animalDescription: 'a case'};
+var _user$project$IV_Scenario_Model$emptyBackground = {tag: 'Write your own', bagCapacityInLiters: '0', bagContentsInLiters: '0', bagType: 'container', dropsPerMil: '15.0', animalDescription: 'a case'};
 var _user$project$IV_Scenario_Model$cowBackground = _elm_lang$core$Native_Utils.update(
-	_user$project$IV_Scenario_Model$editableBackground,
+	_user$project$IV_Scenario_Model$emptyBackground,
 	{tag: '1560 lb. cow', animalDescription: 'a 1560 lb 3d lactation purebred Holstein', bagCapacityInLiters: '20', bagContentsInLiters: '19', bagType: '5-gallon carboy'});
 var _user$project$IV_Scenario_Model$calfBackground = _elm_lang$core$Native_Utils.update(
-	_user$project$IV_Scenario_Model$editableBackground,
+	_user$project$IV_Scenario_Model$emptyBackground,
 	{tag: '90 lb. heifer calf', animalDescription: 'a 90 lb. 10-day-old Hereford heifer calf', bagCapacityInLiters: '2', bagContentsInLiters: '2', bagType: 'bag'});
-var _user$project$IV_Scenario_Model$defaultDecisions = {dripRate: '0', simulationHours: '0', simulationMinutes: '0'};
-var _user$project$IV_Scenario_Model$scenario = function (background) {
-	return {background: background, caseBackgroundEditorOpen: false, decisions: _user$project$IV_Scenario_Model$defaultDecisions};
+var _user$project$IV_Scenario_Model$emptyDecisions = {dripRate: '0', simulationHours: '0', simulationMinutes: '0'};
+var _user$project$IV_Scenario_Model$scenario = F2(
+	function (background, decisions) {
+		return {background: background, caseBackgroundEditorOpen: false, decisions: decisions};
+	});
+var _user$project$IV_Scenario_Model$preparedScenario = function (background) {
+	return A2(_user$project$IV_Scenario_Model$scenario, background, _user$project$IV_Scenario_Model$emptyDecisions);
+};
+var _user$project$IV_Scenario_Model$withEmptiedDecisions = function (editableModel) {
+	return _user$project$IV_Scenario_Model$preparedScenario(editableModel.background);
 };
 var _user$project$IV_Scenario_Model$EditableModel = F3(
 	function (a, b, c) {
@@ -15695,6 +15702,7 @@ var _user$project$IV_Msg$ToScenario = function (a) {
 var _user$project$IV_Msg$AnimationClockTick = function (a) {
 	return {ctor: 'AnimationClockTick', _0: a};
 };
+var _user$project$IV_Msg$RestartScenario = {ctor: 'RestartScenario'};
 var _user$project$IV_Msg$PickedScenario = function (a) {
 	return {ctor: 'PickedScenario', _0: a};
 };
@@ -15749,24 +15757,6 @@ var _user$project$IV_Pile_SvgAttributes$toSvgPoints = function (points) {
 		' ',
 		A2(_elm_lang$core$List$map, _user$project$IV_Pile_SvgAttributes$toSvgPoint, points));
 };
-var _user$project$IV_Pile_SvgAttributes$transformOrigin$ = F2(
-	function (x, y) {
-		var argFormatter = _krisajenkins$formatting$Formatting$print(
-			A2(
-				_krisajenkins$formatting$Formatting_ops['<>'],
-				_krisajenkins$formatting$Formatting$int,
-				A2(
-					_krisajenkins$formatting$Formatting_ops['<>'],
-					_krisajenkins$formatting$Formatting$s('px '),
-					A2(
-						_krisajenkins$formatting$Formatting_ops['<>'],
-						_krisajenkins$formatting$Formatting$int,
-						_krisajenkins$formatting$Formatting$s('px')))));
-		return A2(
-			_elm_lang$virtual_dom$VirtualDom$attribute,
-			'transform-origin',
-			A2(argFormatter, x, y));
-	});
 var _user$project$IV_Pile_SvgAttributes$useInt = F2(
 	function (stringFn, i) {
 		return stringFn(
@@ -15972,7 +15962,7 @@ var _user$project$IV_Apparatus_BagView$configuration = {
 	extraFigures: _elm_lang$core$Native_List.fromArray(
 		[_user$project$IV_Apparatus_BagView$markings])
 };
-var _user$project$IV_Apparatus_BagView$render = function (animationState) {
+var _user$project$IV_Apparatus_BagView$view = function (animationState) {
 	return A3(_user$project$IV_Apparatus_DrainingRectangle$render, _user$project$IV_Apparatus_BagView$configuration, _user$project$IV_Apparatus_ViewConstants$bagOrigin, animationState);
 };
 var _user$project$IV_Apparatus_BagView$startingState = function (level) {
@@ -15999,7 +15989,7 @@ var _user$project$IV_Apparatus_ChamberView$configuration = {
 	extraFigures: _elm_lang$core$Native_List.fromArray(
 		[])
 };
-var _user$project$IV_Apparatus_ChamberView$render = function (animationState) {
+var _user$project$IV_Apparatus_ChamberView$view = function (animationState) {
 	return A3(_user$project$IV_Apparatus_DrainingRectangle$render, _user$project$IV_Apparatus_ChamberView$configuration, _user$project$IV_Apparatus_ViewConstants$chamberOrigin, animationState);
 };
 var _user$project$IV_Apparatus_ChamberView$startDraining = function (animationState) {
@@ -16091,7 +16081,7 @@ var _user$project$IV_Apparatus_DropletView$missingDrop = _elm_lang$core$Native_L
 		_mdgriffith$elm_style_animation$Animation$points(_user$project$IV_Apparatus_DropletView$dropAtTop),
 		_mdgriffith$elm_style_animation$Animation$fill(_user$project$IV_Apparatus_ViewConstants$whiteColor)
 	]);
-var _user$project$IV_Apparatus_DropletView$render = function (model) {
+var _user$project$IV_Apparatus_DropletView$view = function (model) {
 	return A2(
 		_elm_lang$svg$Svg$polygon,
 		_mdgriffith$elm_style_animation$Animation$render(model),
@@ -16176,7 +16166,7 @@ var _user$project$IV_Apparatus_HoseView$configuration = {
 	extraFigures: _elm_lang$core$Native_List.fromArray(
 		[])
 };
-var _user$project$IV_Apparatus_HoseView$render = function (animationState) {
+var _user$project$IV_Apparatus_HoseView$view = function (animationState) {
 	return A3(_user$project$IV_Apparatus_DrainingRectangle$render, _user$project$IV_Apparatus_HoseView$configuration, _user$project$IV_Apparatus_ViewConstants$hoseOrigin, animationState);
 };
 var _user$project$IV_Apparatus_HoseView$startingState = A2(
@@ -16347,32 +16337,170 @@ var _user$project$IV_Clock_ViewConstants$minuteHandLength = 2 * _user$project$IV
 var _user$project$IV_Clock_ViewConstants$centerY = 200;
 var _user$project$IV_Clock_ViewConstants$centerX = 260;
 
-var _user$project$IV_Clock_AnimatedView$handProperties = _elm_lang$core$Native_List.fromArray(
+var _user$project$IV_Clock_Face$clockNumeral = function (value) {
+	var xy = function () {
+		var _p0 = value;
+		switch (_p0) {
+			case 12:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ViewConstants$centerX),
+						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$radius) + _user$project$IV_Clock_ViewConstants$numeralOffset)
+					]);
+			case 3:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ViewConstants$centerX + _user$project$IV_Clock_ViewConstants$radius) - _user$project$IV_Clock_ViewConstants$numeralOffset),
+						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ViewConstants$centerY)
+					]);
+			case 6:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ViewConstants$centerX),
+						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ViewConstants$centerY + _user$project$IV_Clock_ViewConstants$radius) - _user$project$IV_Clock_ViewConstants$numeralOffset)
+					]);
+			case 9:
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ViewConstants$centerX - _user$project$IV_Clock_ViewConstants$radius) + _user$project$IV_Clock_ViewConstants$numeralOffset),
+						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ViewConstants$centerY)
+					]);
+			default:
+				return _elm_lang$core$Native_List.fromArray(
+					[]);
+		}
+	}();
+	var common = _elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$svg$Svg_Attributes$fontSize(_user$project$IV_Clock_ViewConstants$numeralFontSize),
+			_elm_lang$svg$Svg_Attributes$dy('.3em'),
+			_elm_lang$svg$Svg_Attributes$textAnchor('middle')
+		]);
+	return A2(
+		_elm_lang$svg$Svg$text$,
+		A2(_elm_lang$core$Basics_ops['++'], common, xy),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg$text(
+				_elm_lang$core$Basics$toString(value))
+			]));
+};
+var _user$project$IV_Clock_Face$spacedInt = A2(
+	_krisajenkins$formatting$Formatting_ops['<>'],
+	_krisajenkins$formatting$Formatting$s(' '),
+	A2(
+		_krisajenkins$formatting$Formatting_ops['<>'],
+		_krisajenkins$formatting$Formatting$int,
+		_krisajenkins$formatting$Formatting$s(' ')));
+var _user$project$IV_Clock_Face$rotate$ = F3(
+	function (degrees, xCenter, yCenter) {
+		var fmt = A2(
+			_krisajenkins$formatting$Formatting_ops['<>'],
+			_krisajenkins$formatting$Formatting$s('rotate('),
+			A2(
+				_krisajenkins$formatting$Formatting_ops['<>'],
+				_user$project$IV_Clock_Face$spacedInt,
+				A2(
+					_krisajenkins$formatting$Formatting_ops['<>'],
+					_user$project$IV_Clock_Face$spacedInt,
+					A2(
+						_krisajenkins$formatting$Formatting_ops['<>'],
+						_user$project$IV_Clock_Face$spacedInt,
+						_krisajenkins$formatting$Formatting$s(')')))));
+		return A4(_krisajenkins$formatting$Formatting$print, fmt, degrees, xCenter, yCenter);
+	});
+var _user$project$IV_Clock_Face$transformForHour = function (hour) {
+	return _elm_lang$svg$Svg_Attributes$transform(
+		A3(_user$project$IV_Clock_Face$rotate$, hour * 30, _user$project$IV_Clock_ViewConstants$centerX, _user$project$IV_Clock_ViewConstants$centerY));
+};
+var _user$project$IV_Clock_Face$hourMarkers = function (hour) {
+	return A2(
+		_elm_lang$svg$Svg$line,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$IV_Pile_SvgAttributes$x1$(_user$project$IV_Clock_ViewConstants$centerX),
+				_user$project$IV_Pile_SvgAttributes$y1$(_user$project$IV_Clock_ViewConstants$centerY),
+				_user$project$IV_Pile_SvgAttributes$x2$(_user$project$IV_Clock_ViewConstants$centerX),
+				_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$hourMarkersLineLength),
+				_elm_lang$svg$Svg_Attributes$stroke('#000'),
+				_elm_lang$svg$Svg_Attributes$strokeWidth('1'),
+				_user$project$IV_Clock_Face$transformForHour(hour)
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+var _user$project$IV_Clock_Face$view = A2(
+	_elm_lang$svg$Svg$g,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$svg$Svg$circle,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$IV_Pile_SvgAttributes$cx$(_user$project$IV_Clock_ViewConstants$centerX),
+						_user$project$IV_Pile_SvgAttributes$cy$(_user$project$IV_Clock_ViewConstants$centerY),
+						_user$project$IV_Pile_SvgAttributes$r$(_user$project$IV_Clock_ViewConstants$radius),
+						_elm_lang$svg$Svg_Attributes$fill('#0B79CE')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_user$project$IV_Clock_Face$clockNumeral(12),
+				_user$project$IV_Clock_Face$clockNumeral(3),
+				_user$project$IV_Clock_Face$clockNumeral(6),
+				_user$project$IV_Clock_Face$clockNumeral(9)
+			]),
+		A2(
+			_elm_lang$core$List$map,
+			_user$project$IV_Clock_Face$hourMarkers,
+			_elm_lang$core$Native_List.fromArray(
+				[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]))));
+
+var _user$project$IV_Clock_View$handProperties = _elm_lang$core$Native_List.fromArray(
 	[
 		_user$project$IV_Pile_SvgAttributes$x1$(_user$project$IV_Clock_ViewConstants$centerX),
 		_user$project$IV_Pile_SvgAttributes$y1$(_user$project$IV_Clock_ViewConstants$centerY),
 		_user$project$IV_Pile_SvgAttributes$x2$(_user$project$IV_Clock_ViewConstants$centerX),
 		_elm_lang$svg$Svg_Attributes$stroke('black'),
-		_elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
-		A2(_user$project$IV_Pile_SvgAttributes$transformOrigin$, _user$project$IV_Clock_ViewConstants$centerX, _user$project$IV_Clock_ViewConstants$centerY)
+		_elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)')
 	]);
-var _user$project$IV_Clock_AnimatedView$hourHandBaseProperties = A2(
+var _user$project$IV_Clock_View$hourHandBaseProperties = A2(
 	_elm_lang$core$Basics_ops['++'],
 	_elm_lang$core$Native_List.fromArray(
 		[
 			_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$hourHandLength),
 			_elm_lang$svg$Svg_Attributes$strokeWidth('5')
 		]),
-	_user$project$IV_Clock_AnimatedView$handProperties);
-var _user$project$IV_Clock_AnimatedView$minuteHandBaseProperties = A2(
+	_user$project$IV_Clock_View$handProperties);
+var _user$project$IV_Clock_View$minuteHandBaseProperties = A2(
 	_elm_lang$core$Basics_ops['++'],
 	_elm_lang$core$Native_List.fromArray(
 		[
 			_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$minuteHandLength),
 			_elm_lang$svg$Svg_Attributes$strokeWidth('3')
 		]),
-	_user$project$IV_Clock_AnimatedView$handProperties);
-var _user$project$IV_Clock_AnimatedView$defineArrowhead = A2(
+	_user$project$IV_Clock_View$handProperties);
+var _user$project$IV_Clock_View$originAtClockCenter = function () {
+	var argFormatter = _krisajenkins$formatting$Formatting$print(
+		A2(
+			_krisajenkins$formatting$Formatting_ops['<>'],
+			_krisajenkins$formatting$Formatting$int,
+			A2(
+				_krisajenkins$formatting$Formatting_ops['<>'],
+				_krisajenkins$formatting$Formatting$s('px '),
+				A2(
+					_krisajenkins$formatting$Formatting_ops['<>'],
+					_krisajenkins$formatting$Formatting$int,
+					_krisajenkins$formatting$Formatting$s('px')))));
+	return A2(
+		_mdgriffith$elm_style_animation$Animation$exactly,
+		'transform-origin',
+		A2(argFormatter, _user$project$IV_Clock_ViewConstants$centerX, _user$project$IV_Clock_ViewConstants$centerY));
+}();
+var _user$project$IV_Clock_View$defineArrowhead = A2(
 	_elm_lang$svg$Svg$defs,
 	_elm_lang$core$Native_List.fromArray(
 		[]),
@@ -16403,34 +16531,36 @@ var _user$project$IV_Clock_AnimatedView$defineArrowhead = A2(
 						[]))
 				]))
 		]));
-var _user$project$IV_Clock_AnimatedView$minuteHandStartsAt = function (minute) {
+var _user$project$IV_Clock_View$minuteHandStartsAt = function (minute) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
+			_user$project$IV_Clock_View$originAtClockCenter,
 			_mdgriffith$elm_style_animation$Animation$rotate(
 			_mdgriffith$elm_style_animation$Animation$deg(minute))
 		]);
 };
-var _user$project$IV_Clock_AnimatedView$hourHandStartsAt = function (hour) {
+var _user$project$IV_Clock_View$hourHandStartsAt = function (hour) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
+			_user$project$IV_Clock_View$originAtClockCenter,
 			_mdgriffith$elm_style_animation$Animation$rotate(
 			_mdgriffith$elm_style_animation$Animation$deg(30 * hour))
 		]);
 };
-var _user$project$IV_Clock_AnimatedView$render = function (model) {
+var _user$project$IV_Clock_View$viewHands = function (model) {
 	return A2(
 		_elm_lang$svg$Svg$g,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$IV_Clock_AnimatedView$defineArrowhead,
+				_user$project$IV_Clock_View$defineArrowhead,
 				A2(
 				_elm_lang$svg$Svg$line,
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					_mdgriffith$elm_style_animation$Animation$render(model.hourHand),
-					_user$project$IV_Clock_AnimatedView$hourHandBaseProperties),
+					_user$project$IV_Clock_View$hourHandBaseProperties),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(
@@ -16438,10 +16568,17 @@ var _user$project$IV_Clock_AnimatedView$render = function (model) {
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					_mdgriffith$elm_style_animation$Animation$render(model.minuteHand),
-					_user$project$IV_Clock_AnimatedView$minuteHandBaseProperties),
+					_user$project$IV_Clock_View$minuteHandBaseProperties),
 				_elm_lang$core$Native_List.fromArray(
 					[]))
 			]));
+};
+var _user$project$IV_Clock_View$view = function (model) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$IV_Clock_Face$view,
+			_user$project$IV_Clock_View$viewHands(model)
+		]);
 };
 
 var _user$project$IV_Clock_Lenses$clock_minuteHand = function () {
@@ -16528,9 +16665,9 @@ var _user$project$IV_Clock_Main$startingHourRaw = 2;
 var _user$project$IV_Clock_Main$startingHour = _user$project$IV_Types$Hours(_user$project$IV_Clock_Main$startingHourRaw);
 var _user$project$IV_Clock_Main$startingState = {
 	hourHand: _mdgriffith$elm_style_animation$Animation$style(
-		_user$project$IV_Clock_AnimatedView$hourHandStartsAt(_user$project$IV_Clock_Main$startingHourRaw)),
+		_user$project$IV_Clock_View$hourHandStartsAt(_user$project$IV_Clock_Main$startingHourRaw)),
 	minuteHand: _mdgriffith$elm_style_animation$Animation$style(
-		_user$project$IV_Clock_AnimatedView$minuteHandStartsAt(0))
+		_user$project$IV_Clock_View$minuteHandStartsAt(0))
 };
 var _user$project$IV_Clock_Main$hourHandRotations = function (_p3) {
 	var _p4 = _p3;
@@ -16624,6 +16761,18 @@ var _user$project$IV_Scenario_Lenses$background_bagContents = function () {
 	};
 	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 }();
+var _user$project$IV_Scenario_Lenses$background_tag = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{tag: new2});
+		});
+	var get = function (arg1) {
+		return arg1.tag;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
 var _user$project$IV_Scenario_Lenses$background_bagCapacity = function () {
 	var set = F2(
 		function (new2, arg1) {
@@ -16660,6 +16809,7 @@ var _user$project$IV_Scenario_Lenses$model_background = function () {
 	};
 	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 }();
+var _user$project$IV_Scenario_Lenses$model_tag = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_tag);
 var _user$project$IV_Scenario_Lenses$model_bagCapacity = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_bagCapacity);
 var _user$project$IV_Scenario_Lenses$model_bagContents = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_bagContents);
 var _user$project$IV_Scenario_Lenses$model_dropsPerMil = A2(_arturopala$elm_monocle$Monocle_Lens$compose, _user$project$IV_Scenario_Lenses$model_background, _user$project$IV_Scenario_Lenses$background_dropsPerMil);
@@ -16737,10 +16887,10 @@ var _user$project$IV_Scenario_Main$openCaseBackgroundEditor = function (model) {
 		ctor: '_Tuple2',
 		_0: A2(
 			_user$project$IV_Scenario_Lenses$model_decisions.set,
-			_user$project$IV_Scenario_Model$defaultDecisions,
+			_user$project$IV_Scenario_Model$emptyDecisions,
 			A2(
 				_user$project$IV_Scenario_Lenses$model_background.set,
-				_user$project$IV_Scenario_Model$editableBackground,
+				_user$project$IV_Scenario_Model$emptyBackground,
 				A2(_user$project$IV_Scenario_Lenses$model_caseBackgroundEditorOpen.set, true, model))),
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
@@ -16793,7 +16943,7 @@ var _user$project$IV_Main$initWithScenario = function (scenario) {
 	};
 };
 var _user$project$IV_Main$init = _user$project$IV_Main$initWithScenario(
-	_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$cowBackground));
+	_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground));
 var _user$project$IV_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -16805,6 +16955,9 @@ var _user$project$IV_Main$update = F2(
 					_user$project$IV_Lenses$flow(model));
 			case 'PickedScenario':
 				return _user$project$IV_Main$initWithScenario(_p0._0);
+			case 'RestartScenario':
+				return _user$project$IV_Main$initWithScenario(
+					_user$project$IV_Scenario_Model$withEmptiedDecisions(model.scenario));
 			case 'ChoseDripRate':
 				return _user$project$IV_Main$showTrueFlow(
 					A2(
@@ -16915,6 +17068,10 @@ var _user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton = F3(
 				[
 					_elm_lang$html$Html$text(label)
 				]));
+	});
+var _user$project$IV_Pile_HtmlShorthand$launchButton = F2(
+	function (onClick, label) {
+		return A3(_user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton, onClick, false, label);
 	});
 var _user$project$IV_Pile_HtmlShorthand$textInput = F3(
 	function (extraAttributes, value, onInput) {
@@ -17108,7 +17265,25 @@ var _user$project$IV_Scenario_View$viewTreatmentEditor = function (model) {
 						_user$project$IV_Scenario_View$treatmentNeedsMoreUserWork(model),
 						'Start the Clock')
 					])),
-				_user$project$IV_Pile_HtmlShorthand$pSimple('To start over, click one of the buttons at the top.')
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								{ctor: '_Tuple2', _0: 'margin-top', _1: '2em'}
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('If you don\'t like the result, '),
+						A3(
+						_user$project$IV_Pile_HtmlShorthand$launchWhenDoneButton,
+						_user$project$IV_Msg$RestartScenario,
+						_user$project$IV_Scenario_View$treatmentNeedsMoreUserWork(model),
+						'Start Over')
+					]))
 			]));
 };
 var _user$project$IV_Scenario_View$contentsTooBig = function (model) {
@@ -17243,21 +17418,27 @@ var _user$project$IV_Scenario_View$viewCaseBackgroundEditor = function (model) {
 					]))
 			]));
 };
+var _user$project$IV_Scenario_View$sameTags = F2(
+	function (first, second) {
+		return _elm_lang$core$Native_Utils.eq(
+			_user$project$IV_Scenario_Lenses$model_tag.get(first),
+			_user$project$IV_Scenario_Lenses$model_tag.get(second));
+	});
 var _user$project$IV_Scenario_View$editChoice = F2(
 	function (possible, current) {
 		return A3(
 			_user$project$IV_Pile_HtmlShorthand$navChoice,
-			possible.background.tag,
+			_user$project$IV_Scenario_Lenses$model_tag.get(possible),
 			_user$project$IV_Msg$OpenCaseBackgroundEditor,
-			_elm_lang$core$Native_Utils.eq(possible.background.tag, current.background.tag));
+			A2(_user$project$IV_Scenario_View$sameTags, possible, current));
 	});
 var _user$project$IV_Scenario_View$scenarioChoice = F2(
 	function (possible, current) {
 		return A3(
 			_user$project$IV_Pile_HtmlShorthand$navChoice,
-			possible.background.tag,
+			_user$project$IV_Scenario_Lenses$model_tag.get(possible),
 			_user$project$IV_Msg$PickedScenario(possible),
-			_elm_lang$core$Native_Utils.eq(possible.background.tag, current.background.tag));
+			A2(_user$project$IV_Scenario_View$sameTags, possible, current));
 	});
 var _user$project$IV_Scenario_View$viewScenarioChoices = function (model) {
 	return A2(
@@ -17276,158 +17457,28 @@ var _user$project$IV_Scenario_View$viewScenarioChoices = function (model) {
 					[
 						A2(
 						_user$project$IV_Scenario_View$scenarioChoice,
-						_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$cowBackground),
+						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground),
 						model),
 						A2(
 						_user$project$IV_Scenario_View$scenarioChoice,
-						_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$calfBackground),
+						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$calfBackground),
 						model),
 						A2(
 						_user$project$IV_Scenario_View$editChoice,
-						_user$project$IV_Scenario_Model$scenario(_user$project$IV_Scenario_Model$editableBackground),
+						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$emptyBackground),
 						model),
 						_user$project$IV_Pile_HtmlShorthand$mailTo
 					]))
 			]));
 };
 
-var _user$project$IV_Apparatus_View$render = function (model) {
+var _user$project$IV_Apparatus_View$view = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
-			_user$project$IV_Apparatus_DropletView$render(model.droplet),
-			_user$project$IV_Apparatus_ChamberView$render(model.chamberFluid),
-			_user$project$IV_Apparatus_BagView$render(model.bagLevel),
-			_user$project$IV_Apparatus_HoseView$render(model.hoseFluid)
-		]);
-};
-
-var _user$project$IV_Clock_StaticView$clockNumeral = function (value) {
-	var xy = function () {
-		var _p0 = value;
-		switch (_p0) {
-			case 12:
-				return _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ViewConstants$centerX),
-						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$radius) + _user$project$IV_Clock_ViewConstants$numeralOffset)
-					]);
-			case 3:
-				return _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ViewConstants$centerX + _user$project$IV_Clock_ViewConstants$radius) - _user$project$IV_Clock_ViewConstants$numeralOffset),
-						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ViewConstants$centerY)
-					]);
-			case 6:
-				return _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Pile_SvgAttributes$x$(_user$project$IV_Clock_ViewConstants$centerX),
-						_user$project$IV_Pile_SvgAttributes$y$((_user$project$IV_Clock_ViewConstants$centerY + _user$project$IV_Clock_ViewConstants$radius) - _user$project$IV_Clock_ViewConstants$numeralOffset)
-					]);
-			case 9:
-				return _elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Pile_SvgAttributes$x$((_user$project$IV_Clock_ViewConstants$centerX - _user$project$IV_Clock_ViewConstants$radius) + _user$project$IV_Clock_ViewConstants$numeralOffset),
-						_user$project$IV_Pile_SvgAttributes$y$(_user$project$IV_Clock_ViewConstants$centerY)
-					]);
-			default:
-				return _elm_lang$core$Native_List.fromArray(
-					[]);
-		}
-	}();
-	var common = _elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$svg$Svg_Attributes$fontSize(_user$project$IV_Clock_ViewConstants$numeralFontSize),
-			_elm_lang$svg$Svg_Attributes$dy('.3em'),
-			_elm_lang$svg$Svg_Attributes$textAnchor('middle')
-		]);
-	return A2(
-		_elm_lang$svg$Svg$text$,
-		A2(_elm_lang$core$Basics_ops['++'], common, xy),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$svg$Svg$text(
-				_elm_lang$core$Basics$toString(value))
-			]));
-};
-var _user$project$IV_Clock_StaticView$spacedInt = A2(
-	_krisajenkins$formatting$Formatting_ops['<>'],
-	_krisajenkins$formatting$Formatting$s(' '),
-	A2(
-		_krisajenkins$formatting$Formatting_ops['<>'],
-		_krisajenkins$formatting$Formatting$int,
-		_krisajenkins$formatting$Formatting$s(' ')));
-var _user$project$IV_Clock_StaticView$rotate$ = F3(
-	function (degrees, xCenter, yCenter) {
-		var fmt = A2(
-			_krisajenkins$formatting$Formatting_ops['<>'],
-			_krisajenkins$formatting$Formatting$s('rotate('),
-			A2(
-				_krisajenkins$formatting$Formatting_ops['<>'],
-				_user$project$IV_Clock_StaticView$spacedInt,
-				A2(
-					_krisajenkins$formatting$Formatting_ops['<>'],
-					_user$project$IV_Clock_StaticView$spacedInt,
-					A2(
-						_krisajenkins$formatting$Formatting_ops['<>'],
-						_user$project$IV_Clock_StaticView$spacedInt,
-						_krisajenkins$formatting$Formatting$s(')')))));
-		return A4(_krisajenkins$formatting$Formatting$print, fmt, degrees, xCenter, yCenter);
-	});
-var _user$project$IV_Clock_StaticView$transformForHour = function (hour) {
-	return _elm_lang$svg$Svg_Attributes$transform(
-		A3(_user$project$IV_Clock_StaticView$rotate$, hour * 30, _user$project$IV_Clock_ViewConstants$centerX, _user$project$IV_Clock_ViewConstants$centerY));
-};
-var _user$project$IV_Clock_StaticView$hourMarkers = function (hour) {
-	return A2(
-		_elm_lang$svg$Svg$line,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$IV_Pile_SvgAttributes$x1$(_user$project$IV_Clock_ViewConstants$centerX),
-				_user$project$IV_Pile_SvgAttributes$y1$(_user$project$IV_Clock_ViewConstants$centerY),
-				_user$project$IV_Pile_SvgAttributes$x2$(_user$project$IV_Clock_ViewConstants$centerX),
-				_user$project$IV_Pile_SvgAttributes$y2$(_user$project$IV_Clock_ViewConstants$centerY - _user$project$IV_Clock_ViewConstants$hourMarkersLineLength),
-				_elm_lang$svg$Svg_Attributes$stroke('#000'),
-				_elm_lang$svg$Svg_Attributes$strokeWidth('1'),
-				_user$project$IV_Clock_StaticView$transformForHour(hour)
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[]));
-};
-var _user$project$IV_Clock_StaticView$render = A2(
-	_elm_lang$svg$Svg$g,
-	_elm_lang$core$Native_List.fromArray(
-		[]),
-	A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$svg$Svg$circle,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Pile_SvgAttributes$cx$(_user$project$IV_Clock_ViewConstants$centerX),
-						_user$project$IV_Pile_SvgAttributes$cy$(_user$project$IV_Clock_ViewConstants$centerY),
-						_user$project$IV_Pile_SvgAttributes$r$(_user$project$IV_Clock_ViewConstants$radius),
-						_elm_lang$svg$Svg_Attributes$fill('#0B79CE')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[])),
-				_user$project$IV_Clock_StaticView$clockNumeral(12),
-				_user$project$IV_Clock_StaticView$clockNumeral(3),
-				_user$project$IV_Clock_StaticView$clockNumeral(6),
-				_user$project$IV_Clock_StaticView$clockNumeral(9)
-			]),
-		A2(
-			_elm_lang$core$List$map,
-			_user$project$IV_Clock_StaticView$hourMarkers,
-			_elm_lang$core$Native_List.fromArray(
-				[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]))));
-
-var _user$project$IV_Clock_View$render = function (model) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$IV_Clock_StaticView$render,
-			_user$project$IV_Clock_AnimatedView$render(model)
+			_user$project$IV_Apparatus_DropletView$view(model.droplet),
+			_user$project$IV_Apparatus_ChamberView$view(model.chamberFluid),
+			_user$project$IV_Apparatus_BagView$view(model.bagLevel),
+			_user$project$IV_Apparatus_HoseView$view(model.hoseFluid)
 		]);
 };
 
@@ -17517,6 +17568,41 @@ var _user$project$IV_View$aboutThisBrowser = function () {
 			]),
 		body);
 }();
+var _user$project$IV_View$footerNav = A2(
+	_elm_lang$html$Html$nav,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$ul,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('nav nav-pills pull-right')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$li,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$IV_Pile_HtmlShorthand$role('presentation')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$a,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$href('http://google.com')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text('About and Disclaimer')
+								]))
+						]))
+				]))
+		]));
 var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
 var _user$project$IV_View$mainSvg = function (contents) {
 	return A2(
@@ -17585,8 +17671,8 @@ var _user$project$IV_View$view = function (model) {
 								_user$project$IV_View$mainSvg(
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_user$project$IV_Apparatus_View$render(model.apparatus),
-									_user$project$IV_Clock_View$render(model.clock)))
+									_user$project$IV_Apparatus_View$view(model.apparatus),
+									_user$project$IV_Clock_View$view(model.clock)))
 							])),
 						A2(
 						_elm_lang$html$Html$div,
@@ -17599,7 +17685,23 @@ var _user$project$IV_View$view = function (model) {
 								_user$project$IV_Scenario_View$viewTreatmentEditor(model.scenario)
 							]))
 					])),
-				_user$project$IV_View$aboutThisBrowser
+				A2(
+				_elm_lang$html$Html$footer,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('footer')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$hr,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_user$project$IV_View$aboutThisBrowser,
+						_user$project$IV_View$footerNav
+					]))
 			]));
 };
 

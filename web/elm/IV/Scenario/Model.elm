@@ -19,6 +19,10 @@ preparedScenario : CaseBackground -> EditableModel
 preparedScenario background =
   scenario background emptyDecisions
 
+withEmptiedDecisions : EditableModel -> EditableModel
+withEmptiedDecisions editableModel =
+  preparedScenario editableModel.background
+  
   
 type alias CaseBackground =
   { tag : String

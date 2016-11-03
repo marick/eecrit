@@ -47,7 +47,10 @@ launchWhenDoneButton onClick needsWork label =
   , disabled needsWork
   ]
   [text label]
-  
+
+
+launchButton onClick label = 
+  launchWhenDoneButton onClick False label
   
 displayStyle toShow =
   case toShow of 

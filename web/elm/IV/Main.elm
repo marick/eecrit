@@ -64,6 +64,9 @@ update msg model =
     PickedScenario scenario ->
       initWithScenario scenario
 
+    RestartScenario ->
+      initWithScenario <| ScenarioModel.withEmptiedDecisions model.scenario
+
     ChoseDripRate dripRate ->
       flow model
         |> changeDripRate dripRate

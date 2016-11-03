@@ -36,7 +36,7 @@ defmodule Eecrit.Router do
     get "/help", HelpController, :index
     # TODO: Remove this when more comfortable with embedding Elm
     get "/elm", ElmController, :index
-    get "/iv", IVController, :index
+    get "/iv/*path", IVController, :index
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 

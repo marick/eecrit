@@ -6,6 +6,7 @@ import Html.Attributes as Attr
 
 import IV.Lenses exposing (..)
 import IV.Msg exposing (..)
+import IV.Navigation as Navigation
 import IV.Types exposing (..)
 
 import IV.Apparatus.Main as Apparatus
@@ -36,8 +37,9 @@ initWithScenario scenario =
   , Cmd.none
   )
   
-init : ( Model, Cmd Msg )
-init = initWithScenario (ScenarioModel.preparedScenario ScenarioModel.cowBackground)
+init : Navigation.PageChoice -> ( Model, Cmd Msg )
+init page =
+  initWithScenario (ScenarioModel.preparedScenario ScenarioModel.cowBackground)
 
 
 changeDripRate dripRate = updateApparatus (Apparatus.changeDripRate dripRate)

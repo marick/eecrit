@@ -17,9 +17,11 @@
         "elm-lang/animation-frame": "1.0.0 <= v < 2.0.0",
         "elm-lang/core": "4.0.5 <= v < 5.0.0",
         "elm-lang/html": "1.1.0 <= v < 2.0.0",
+        "elm-lang/navigation": "1.0.0 <= v < 2.0.0",
         "elm-lang/svg": "1.0.0 <= v < 2.0.0",
         "elm-lang/virtual-dom": "1.1.0 <= v < 2.0.0",
         "evancz/elm-http": "3.0.1 <= v < 4.0.0",
+        "evancz/url-parser": "1.0.0 <= v < 2.0.0",
         "krisajenkins/formatting": "3.2.0 <= v < 4.0.0",
         "mdgriffith/elm-style-animation": "3.0.0 <= v < 4.0.0"
     },

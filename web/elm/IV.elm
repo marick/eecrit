@@ -3,15 +3,16 @@
 
 module IV exposing (main)
 
-import Html.App
 import IV.Main as Main
+import IV.Navigation as Navigation
 import IV.View as View
 
 main =
-    Html.App.program
+    Navigation.program Navigation.urlParser 
         { init = Main.init
         , view = View.view
         , update = Main.update
+        , urlUpdate = Navigation.urlUpdate
         , subscriptions = Main.subscriptions
         }
 

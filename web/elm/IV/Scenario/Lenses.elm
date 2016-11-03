@@ -39,6 +39,13 @@ background_bagCapacity =
   in
     Lens get set
 
+background_tag : Lens CaseBackground String
+background_tag =
+  let
+    get arg1 = arg1.tag
+    set new2 arg1 = { arg1 | tag = new2 }
+  in
+    Lens get set
 
 background_bagContents : Lens CaseBackground String
 background_bagContents =
@@ -86,13 +93,15 @@ decisions_simulationMinutes =
     Lens get set
 
 
--- Model down to Decisions
+-- Model down to leafs
 
 model_dripRate = Monocle.Lens.compose model_decisions decisions_dripRate
 model_simulationHours = Monocle.Lens.compose model_decisions decisions_simulationHours
 model_simulationMinutes = Monocle.Lens.compose model_decisions decisions_simulationMinutes
 
 
+-- model_xyx = Monocle.Lens.compose model_background background_xyx
+model_tag = Monocle.Lens.compose model_background background_tag
 model_bagCapacity = Monocle.Lens.compose model_background background_bagCapacity
 model_bagContents = Monocle.Lens.compose model_background background_bagContents
 model_dropsPerMil = Monocle.Lens.compose model_background background_dropsPerMil

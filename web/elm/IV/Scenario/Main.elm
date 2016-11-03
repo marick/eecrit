@@ -1,11 +1,13 @@
-module IV.Scenario.Main exposing (..)
+module IV.Scenario.Main exposing
+  ( update
+  , openCaseBackgroundEditor
+  , closeCaseBackgroundEditor
+  )
 
 import IV.Scenario.Msg exposing (..)
 import IV.Scenario.Model exposing (EditableModel, defaultDecisions, editableBackground)
 import IV.Scenario.Lenses exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
-import IV.Msg as Out
-
 
 openCaseBackgroundEditor model = 
   ( model
@@ -23,7 +25,7 @@ closeCaseBackgroundEditor model =
 
 
 
-update : Msg -> EditableModel -> (EditableModel, Cmd Out.Msg )
+update : Msg -> EditableModel -> (EditableModel, Cmd msg )
 update msg model =
   case msg of
     ChangedDripText string ->

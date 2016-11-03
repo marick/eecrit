@@ -8,6 +8,7 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
 import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground, editableBackground)
 import IV.Scenario.DataExport as DataExport
+import IV.Scenario.Lenses exposing (..)
 import IV.Scenario.Msg exposing (Msg(..))
 import IV.Msg as MainMsg
 import Html.Events as Events
@@ -30,16 +31,20 @@ viewScenarioChoices model =
 
 scenarioChoice possible current =
   navChoice
-    possible.background.tag
+    (model_tag.get possible)
     (MainMsg.PickedScenario possible)
-    (possible.background.tag == current.background.tag)
+    (sameTags possible current)
          
 editChoice possible current =
   navChoice
-    possible.background.tag
+    (model_tag.get possible)
     MainMsg.OpenCaseBackgroundEditor
-    (possible.background.tag == current.background.tag)
-         
+    (sameTags possible current)
+
+sameTags first second =
+  model_tag.get first == model_tag.get second
+
+  
 
 -- Case background editor
   
@@ -60,21 +65,27 @@ viewCaseBackgroundEditor model =
       [ text "... the container's "
       , b [] [text "capacity"]
       , text " in liters "
-      , textInput []
-          model.background.bagCapacityInLiters (changedText ChangedBagCapacity)
+      , textInput
+          []
+          model.background.bagCapacityInLiters
+          (changedText ChangedBagCapacity)
       ]
   , row []
       [ text "... the container's "
       , b [] [text "starting contents"]
       , text " in liters "
-      , textInput []
-          model.background.bagContentsInLiters (changedText ChangedBagContents)
+      , textInput
+          []
+          model.background.bagContentsInLiters
+          (changedText ChangedBagContents)
       , contentWarning model
       ]
   , row []
       [ text "... the number of drops per ml "
-      , textInput []
-          model.background.dropsPerMil (changedText ChangedDropsPerMil)
+      , textInput
+          []
+          model.background.dropsPerMil
+          (changedText ChangedDropsPerMil)
       ]
   , pSimple " "
   , row [ class "col-sm-12" ]

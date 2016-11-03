@@ -17,7 +17,7 @@ scenario background decisions =
   
 preparedScenario : CaseBackground -> EditableModel
 preparedScenario background =
-  scenario background defaultDecisions
+  scenario background emptyDecisions
 
   
 type alias CaseBackground =
@@ -38,7 +38,7 @@ type alias TreatmentDecisions =
   , simulationMinutes : String
   }
 
-defaultDecisions =
+emptyDecisions =
   { dripRate = "0"
   , simulationHours = "0"
   , simulationMinutes = "0"
@@ -46,7 +46,7 @@ defaultDecisions =
 
 -- Specific starting Scenarios
 
-editableBackground =
+emptyBackground =
   { tag = "Write your own"
   , bagCapacityInLiters = "0"
   , bagContentsInLiters = "0"
@@ -57,7 +57,7 @@ editableBackground =
 
 cowBackground : CaseBackground
 cowBackground = 
-  { editableBackground
+  { emptyBackground
     | tag = "1560 lb. cow"
     , animalDescription = "a 1560 lb 3d lactation purebred Holstein"
     , bagCapacityInLiters = "20"
@@ -67,7 +67,7 @@ cowBackground =
 
 calfBackground : CaseBackground
 calfBackground = 
-  { editableBackground
+  { emptyBackground
     | tag = "90 lb. heifer calf"
     , animalDescription = "a 90 lb. 10-day-old Hereford heifer calf"
     , bagCapacityInLiters = "2"

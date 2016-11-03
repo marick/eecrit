@@ -24,7 +24,7 @@ viewScenarioChoices model =
     [ ul [ class "nav nav-pills pull-right" ]
         [ scenarioChoice (preparedScenario Model.cowBackground) model
         , scenarioChoice (preparedScenario Model.calfBackground) model
-        , editChoice (preparedScenario Model.editableBackground) model
+        , editChoice (preparedScenario Model.emptyBackground) model
         , mailTo
         ]
     ]

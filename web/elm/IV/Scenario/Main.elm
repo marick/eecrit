@@ -12,8 +12,8 @@ import IV.Pile.ManagedStrings exposing (..)
 openCaseBackgroundEditor model = 
   ( model
     |> model_caseBackgroundEditorOpen.set True
-    |> model_background.set Model.editableBackground
-    |> model_decisions.set Model.defaultDecisions
+    |> model_background.set Model.emptyBackground
+    |> model_decisions.set Model.emptyDecisions
   , Cmd.none
   )
 

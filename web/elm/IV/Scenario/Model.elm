@@ -8,15 +8,16 @@ type alias EditableModel =
   , decisions : TreatmentDecisions
   }
 
-  
-scenario : CaseBackground -> EditableModel
-scenario background =
+scenario : CaseBackground -> TreatmentDecisions -> EditableModel
+scenario background decisions = 
   { background = background
   , caseBackgroundEditorOpen = False
-  , decisions = defaultDecisions
+  , decisions = decisions
   }
-
   
+preparedScenario : CaseBackground -> EditableModel
+preparedScenario background =
+  scenario background defaultDecisions
 
   
 type alias CaseBackground =

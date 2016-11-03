@@ -6,7 +6,7 @@ module IV.Scenario.View exposing
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
-import IV.Scenario.Model exposing (EditableModel, scenario, cowBackground, calfBackground, editableBackground)
+import IV.Scenario.Model as Model exposing (EditableModel, preparedScenario)
 import IV.Scenario.DataExport as DataExport
 import IV.Scenario.Lenses exposing (..)
 import IV.Scenario.Msg exposing (Msg(..))
@@ -22,9 +22,9 @@ viewScenarioChoices : EditableModel -> Html MainMsg.Msg
 viewScenarioChoices model =
   nav []
     [ ul [ class "nav nav-pills pull-right" ]
-        [ scenarioChoice (scenario cowBackground) model
-        , scenarioChoice (scenario calfBackground) model
-        , editChoice (scenario editableBackground) model
+        [ scenarioChoice (preparedScenario Model.cowBackground) model
+        , scenarioChoice (preparedScenario Model.calfBackground) model
+        , editChoice (preparedScenario Model.editableBackground) model
         , mailTo
         ]
     ]

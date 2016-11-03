@@ -37,7 +37,7 @@ initWithScenario scenario =
   )
   
 init : ( Model, Cmd Msg )
-init = initWithScenario (ScenarioModel.scenario ScenarioModel.cowBackground)
+init = initWithScenario (ScenarioModel.preparedScenario ScenarioModel.cowBackground)
 
 
 changeDripRate dripRate = updateApparatus (Apparatus.changeDripRate dripRate)

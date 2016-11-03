@@ -5,15 +5,15 @@ module IV.Scenario.Main exposing
   )
 
 import IV.Scenario.Msg exposing (..)
-import IV.Scenario.Model exposing (EditableModel, defaultDecisions, editableBackground)
+import IV.Scenario.Model as Model exposing (EditableModel)
 import IV.Scenario.Lenses exposing (..)
 import IV.Pile.ManagedStrings exposing (..)
 
 openCaseBackgroundEditor model = 
   ( model
     |> model_caseBackgroundEditorOpen.set True
-    |> model_background.set editableBackground
-    |> model_decisions.set defaultDecisions
+    |> model_background.set Model.editableBackground
+    |> model_decisions.set Model.defaultDecisions
   , Cmd.none
   )
 

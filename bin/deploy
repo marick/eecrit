@@ -1,0 +1,26 @@
+
+
+set -x
+set -e
+
+version="v`git log --oneline | wc -l | tr -d ' '`"
+today=`date '+%Y-%b-%d'`
+
+cat > web/elm/IV/Version.elm <<ENDOFTEXT
+
+-- Created at `date` by bin/deploy
+
+module IV.Version exposing (text, source)
+
+text = "Version ${version} of ${today}"
+
+source = "https://github.com/marick/eecrit/tree/${version}/web/elm/IV"
+
+ENDOFTEXT
+
+brunch build
+git commit -m "== deployed version $version" web/elm/IV/Version.elm web/static/js/iv.js
+git tag $version
+git push origin $version
+
+git push

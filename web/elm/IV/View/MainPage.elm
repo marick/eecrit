@@ -14,7 +14,6 @@ import IV.Msg exposing (Msg(..))
 import IV.Scenario.View as Scenario
 import IV.Apparatus.View as Apparatus
 import IV.Clock.View as Clock
-import IV.Version as Version
 
 graphics = {width = "400px", height = "400px"}
 
@@ -44,29 +43,9 @@ view model =
           [ Scenario.viewTreatmentEditor model.scenario
           ]
         ]
-    , Layout.footerWith aboutThisBrowser footerNav
+    , Layout.footerWith aboutThisBrowser Layout.defaultFooterNav
     ]
 
-
-footerNav =
-  nav []
-    [ ul [ class "nav nav-pills pull-right" ]
-        [ li
-            [ role "presentation" ]
-            [ a [ href "/iv/about"
-                , onClickWithoutPropagation NavigateToAboutPage
-                ]
-                [text "About and Disclaimer"] ]
-
-        , li
-            [ role "presentation" ]
-            [ a [ href Version.source ]
-                [ text Version.text ]
-            ]
-        ]
-    ]
-
-    
 
 aboutThisBrowser =
   let

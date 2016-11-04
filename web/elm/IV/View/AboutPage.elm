@@ -5,11 +5,14 @@ import Html.Attributes exposing (..)
 
 import IV.Msg exposing (Msg(..))
 import IV.Pile.HtmlShorthand exposing (..)
+import IV.View.Layout as Layout
 
 view : Html Msg
 view =
-  row [] 
-    [ p []
+  row []
+    
+    [ Layout.headerWith []
+    , p []
         [ text """
                 This application is intended to be used by teachers and students.
                 Any use of it in real medical situations is
@@ -38,6 +41,7 @@ view =
                 OTHER DEALINGS IN THE SOFTWARE.
                 """
         ]
+    , Layout.footerWith (span [] []) Layout.defaultFooterNav
     ]
 
      

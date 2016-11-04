@@ -29,6 +29,12 @@ textInput extraAttributes value onInput =
    ] ++ extraAttributes)
   []
 
+
+-- TODO: Try to make some sense of this    
+
+navElement stuff =     
+  li [ role "presentation" ] stuff
+
 navChoice label onClick isActive = 
   li
     [ role "presentation"

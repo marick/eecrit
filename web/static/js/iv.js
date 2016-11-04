@@ -16421,6 +16421,7 @@ var _user$project$IV_Scenario_DataExport$DataAsFloats = F6(
 		return {bagCapacityInLiters: a, bagContentsInLiters: b, dropsPerMil: c, dripRate: d, simulationHours: e, simulationMinutes: f};
 	});
 
+var _user$project$IV_Msg$NavigateToMainPage = {ctor: 'NavigateToMainPage'};
 var _user$project$IV_Msg$NavigateToAboutPage = {ctor: 'NavigateToAboutPage'};
 var _user$project$IV_Msg$CloseCaseBackgroundEditor = {ctor: 'CloseCaseBackgroundEditor'};
 var _user$project$IV_Msg$OpenCaseBackgroundEditor = {ctor: 'OpenCaseBackgroundEditor'};
@@ -17709,6 +17710,12 @@ var _user$project$IV_Main$update = F2(
 					_0: model,
 					_1: _elm_lang$navigation$Navigation$newUrl('/iv/about')
 				};
+			case 'NavigateToMainPage':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _elm_lang$navigation$Navigation$newUrl('/iv')
+				};
 			case 'ToScenario':
 				return A2(
 					_user$project$IV_Lenses$updateScenario,
@@ -17859,6 +17866,15 @@ var _user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation = function (ms
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
 var _user$project$IV_Pile_HtmlShorthand$role = _elm_lang$html$Html_Attributes$attribute('role');
+var _user$project$IV_Pile_HtmlShorthand$navElement = function (stuff) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$IV_Pile_HtmlShorthand$role('presentation')
+			]),
+		stuff);
+};
 var _user$project$IV_Pile_HtmlShorthand$navChoice = F3(
 	function (label, onClick, isActive) {
 		return A2(
@@ -17930,6 +17946,41 @@ var _user$project$IV_Pile_HtmlShorthand$rowSimple = function (string) {
 			]));
 };
 
+var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v473/web/elm/IV';
+var _user$project$IV_Version$text = 'Version v473 of 2016-Nov-04';
+
+var _user$project$IV_View_Layout$defaultFooterNav = _elm_lang$core$Native_List.fromArray(
+	[
+		_user$project$IV_Pile_HtmlShorthand$navElement(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$a,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$href('/iv/about'),
+						_user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation(_user$project$IV_Msg$NavigateToAboutPage)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('About and Disclaimer')
+					]))
+			])),
+		_user$project$IV_Pile_HtmlShorthand$navElement(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$a,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$href(_user$project$IV_Version$source)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(_user$project$IV_Version$text)
+					]))
+			]))
+	]);
 var _user$project$IV_View_Layout$footerWith = F2(
 	function (prefix, navs) {
 		return A2(
@@ -17947,7 +17998,20 @@ var _user$project$IV_View_Layout$footerWith = F2(
 					_elm_lang$core$Native_List.fromArray(
 						[])),
 					prefix,
-					navs
+					A2(
+					_elm_lang$html$Html$nav,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$ul,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('nav nav-pills pull-right')
+								]),
+							navs)
+						]))
 				]));
 	});
 var _user$project$IV_View_Layout$headerWith = function (navs) {
@@ -18293,9 +18357,6 @@ var _user$project$IV_Apparatus_View$view = function (model) {
 		]);
 };
 
-var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v473/web/elm/IV';
-var _user$project$IV_Version$text = 'Version v473 of 2016-Nov-04';
-
 var _user$project$IV_View_MainPage$aboutThisBrowser = function () {
 	var letMeKnow = A2(
 		_elm_lang$html$Html$a,
@@ -18382,61 +18443,6 @@ var _user$project$IV_View_MainPage$aboutThisBrowser = function () {
 			]),
 		body);
 }();
-var _user$project$IV_View_MainPage$footerNav = A2(
-	_elm_lang$html$Html$nav,
-	_elm_lang$core$Native_List.fromArray(
-		[]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			A2(
-			_elm_lang$html$Html$ul,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('nav nav-pills pull-right')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$li,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_user$project$IV_Pile_HtmlShorthand$role('presentation')
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_elm_lang$html$Html$a,
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html_Attributes$href('/iv/about'),
-									_user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation(_user$project$IV_Msg$NavigateToAboutPage)
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html$text('About and Disclaimer')
-								]))
-						])),
-					A2(
-					_elm_lang$html$Html$li,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_user$project$IV_Pile_HtmlShorthand$role('presentation')
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_elm_lang$html$Html$a,
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html_Attributes$href(_user$project$IV_Version$source)
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html$text(_user$project$IV_Version$text)
-								]))
-						]))
-				]))
-		]));
 var _user$project$IV_View_MainPage$graphics = {width: '400px', height: '400px'};
 var _user$project$IV_View_MainPage$mainSvg = function (contents) {
 	return A2(
@@ -18501,7 +18507,7 @@ var _user$project$IV_View_MainPage$view = function (model) {
 								_user$project$IV_Scenario_View$viewTreatmentEditor(model.scenario)
 							]))
 					])),
-				A2(_user$project$IV_View_Layout$footerWith, _user$project$IV_View_MainPage$aboutThisBrowser, _user$project$IV_View_MainPage$footerNav)
+				A2(_user$project$IV_View_Layout$footerWith, _user$project$IV_View_MainPage$aboutThisBrowser, _user$project$IV_View_Layout$defaultFooterNav)
 			]));
 };
 
@@ -18511,6 +18517,25 @@ var _user$project$IV_View_AboutPage$view = A2(
 		[]),
 	_elm_lang$core$Native_List.fromArray(
 		[
+			_user$project$IV_View_Layout$headerWith(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$IV_Pile_HtmlShorthand$navElement(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$a,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$href('/iv'),
+									_user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation(_user$project$IV_Msg$NavigateToMainPage)
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text('Back to the App')
+								]))
+						]))
+				])),
 			A2(
 			_elm_lang$html$Html$p,
 			_elm_lang$core$Native_List.fromArray(
@@ -18534,7 +18559,40 @@ var _user$project$IV_View_AboutPage$view = A2(
 				[]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('\n                The app is written in the Elm programming language and the source\n                is freely available under the MIT License.\n                ')
+					_elm_lang$html$Html$text('The app is written in the '),
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('http://elm-lang.org')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Elm programming language')
+						])),
+					_elm_lang$html$Html$text(' and the source is '),
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('https://github.com/marick/eecrit/tree/master/web/elm/IV')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('freely available')
+						])),
+					_elm_lang$html$Html$text(' under the '),
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('https://en.wikipedia.org/wiki/MIT_License')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('MIT License')
+						])),
+					_elm_lang$html$Html$text('.')
 				])),
 			A2(
 			_elm_lang$html$Html$hr,
@@ -18557,7 +18615,16 @@ var _user$project$IV_View_AboutPage$view = A2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html$text('\n                THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n                EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\n                OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n                NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\n                HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\n                WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n                FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\n                OTHER DEALINGS IN THE SOFTWARE.\n                ')
-				]))
+				])),
+			A2(
+			_user$project$IV_View_Layout$footerWith,
+			A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+			_user$project$IV_View_Layout$defaultFooterNav)
 		]));
 
 var _user$project$IV_View$view = function (model) {

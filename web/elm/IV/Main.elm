@@ -71,6 +71,11 @@ update msg model =
       , Navigation.newUrl "/iv/about"
       )
     
+    NavigateToMainPage ->
+      ( model
+      , Navigation.newUrl "/iv"
+      )
+    
     ToScenario msg' ->
       flow model
         |> updateScenario (Scenario.update msg')

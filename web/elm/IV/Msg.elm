@@ -24,3 +24,4 @@ type Msg
     | CloseCaseBackgroundEditor
 
     | NavigateToAboutPage
+    | NavigateToMainPage

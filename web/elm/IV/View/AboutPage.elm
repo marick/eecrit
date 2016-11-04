@@ -11,7 +11,14 @@ view : Html Msg
 view =
   row []
     
-    [ Layout.headerWith []
+    [ Layout.headerWith
+        [ navElement
+            [a [ href "/iv"
+                 , onClickWithoutPropagation NavigateToMainPage
+               ]
+               [ text "Back to the App" ]
+            ]
+        ]
     , p []
         [ text """
                 This application is intended to be used by teachers and students.

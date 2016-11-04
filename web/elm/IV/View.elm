@@ -15,6 +15,7 @@ import IV.Msg exposing (Msg(..))
 import IV.Scenario.View as Scenario
 import IV.Apparatus.View as Apparatus
 import IV.Clock.View as Clock
+import IV.Version as Version
 
 graphics = {width = "400px", height = "400px"}
 
@@ -72,6 +73,12 @@ footerNav =
                 , onClickWithoutPropagation NavigateToAboutPage
                 ]
                 [text "About and Disclaimer"] ]
+
+        , li
+            [ role "presentation" ]
+            [ a [ href "https://github.com/marick/eecrit/tree/master/web/elm/IV" ]
+                [ text Version.text ]
+            ]
         ]
     ]
 
@@ -116,7 +123,6 @@ aboutThisBrowser =
           default
   in
     row [ class "col-sm-12" ] body
-
 
 
 aboutView model =

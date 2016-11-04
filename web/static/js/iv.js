@@ -16159,20 +16159,29 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
-var _user$project$IV_Pile_CmdFlow$update = F3(
-	function (lens, f, _p0) {
+var _user$project$IV_Pile_CmdFlow$set = F3(
+	function (lens, newPart, _p0) {
 		var _p1 = _p0;
-		var _p3 = _p1._0;
-		var _p2 = f(
-			lens.get(_p3));
-		var newPart = _p2._0;
-		var newCmd = _p2._1;
 		return {
 			ctor: '_Tuple2',
-			_0: A2(lens.set, newPart, _p3),
+			_0: A2(lens.set, newPart, _p1._0),
+			_1: _p1._1
+		};
+	});
+var _user$project$IV_Pile_CmdFlow$update = F3(
+	function (lens, f, _p2) {
+		var _p3 = _p2;
+		var _p5 = _p3._0;
+		var _p4 = f(
+			lens.get(_p5));
+		var newPart = _p4._0;
+		var newCmd = _p4._1;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(lens.set, newPart, _p5),
 			_1: _elm_lang$core$Platform_Cmd$batch(
 				_elm_lang$core$Native_List.fromArray(
-					[_p1._1, newCmd]))
+					[_p3._1, newCmd]))
 		};
 	});
 var _user$project$IV_Pile_CmdFlow$flow = function (model) {
@@ -16215,14 +16224,29 @@ var _user$project$IV_Lenses$model_scenario = function () {
 	};
 	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 }();
-var _user$project$IV_Lenses$updateClock = function (f) {
-	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_clock, f);
+var _user$project$IV_Lenses$model_page = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{page: new2});
+		});
+	var get = function (arg1) {
+		return arg1.page;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$IV_Lenses$setPage = function (newVal) {
+	return A2(_user$project$IV_Pile_CmdFlow$set, _user$project$IV_Lenses$model_page, newVal);
 };
-var _user$project$IV_Lenses$updateApparatus = function (f) {
-	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_apparatus, f);
+var _user$project$IV_Lenses$updateClock = function (pairProducingF) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_clock, pairProducingF);
 };
-var _user$project$IV_Lenses$updateScenario = function (f) {
-	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_scenario, f);
+var _user$project$IV_Lenses$updateApparatus = function (pairProducingF) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_apparatus, pairProducingF);
+};
+var _user$project$IV_Lenses$updateScenario = function (pairProducingF) {
+	return A2(_user$project$IV_Pile_CmdFlow$update, _user$project$IV_Lenses$model_scenario, pairProducingF);
 };
 var _user$project$IV_Lenses$flow = _user$project$IV_Pile_CmdFlow$flow;
 
@@ -16397,6 +16421,7 @@ var _user$project$IV_Scenario_DataExport$DataAsFloats = F6(
 		return {bagCapacityInLiters: a, bagContentsInLiters: b, dropsPerMil: c, dripRate: d, simulationHours: e, simulationMinutes: f};
 	});
 
+var _user$project$IV_Msg$NavigateToAboutPage = {ctor: 'NavigateToAboutPage'};
 var _user$project$IV_Msg$CloseCaseBackgroundEditor = {ctor: 'CloseCaseBackgroundEditor'};
 var _user$project$IV_Msg$OpenCaseBackgroundEditor = {ctor: 'OpenCaseBackgroundEditor'};
 var _user$project$IV_Msg$ToScenario = function (a) {
@@ -16420,14 +16445,20 @@ var _user$project$IV_Msg$StartSimulation = function (a) {
 };
 
 var _user$project$IV_Navigation$urlUpdate = F2(
-	function (url, model) {
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	function (page, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{page: page}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
 var _user$project$IV_Navigation$program = _elm_lang$navigation$Navigation$program;
 var _user$project$IV_Navigation$AboutPage = {ctor: 'AboutPage'};
 var _user$project$IV_Navigation$MainPage = {ctor: 'MainPage'};
 var _user$project$IV_Navigation$stringParser = function (path) {
-	return _user$project$IV_Navigation$MainPage;
+	return A2(_elm_lang$core$String$contains, 'about', path) ? _user$project$IV_Navigation$AboutPage : _user$project$IV_Navigation$MainPage;
 };
 var _user$project$IV_Navigation$locationParser = function (location) {
 	return _user$project$IV_Navigation$stringParser(location.pathname);
@@ -17652,6 +17683,7 @@ var _user$project$IV_Main$initWithScenario = function (scenario) {
 	return {
 		ctor: '_Tuple2',
 		_0: {
+			page: _user$project$IV_Navigation$MainPage,
 			scenario: scenario,
 			apparatus: _user$project$IV_Apparatus_Main$unstarted(
 				_user$project$IV_Scenario_DataExport$startingLevel(scenario)),
@@ -17661,13 +17693,22 @@ var _user$project$IV_Main$initWithScenario = function (scenario) {
 	};
 };
 var _user$project$IV_Main$init = function (page) {
-	return _user$project$IV_Main$initWithScenario(
-		_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground));
+	return A2(
+		_user$project$IV_Lenses$setPage,
+		page,
+		_user$project$IV_Main$initWithScenario(
+			_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground)));
 };
 var _user$project$IV_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
+			case 'NavigateToAboutPage':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _elm_lang$navigation$Navigation$newUrl('/iv/about')
+				};
 			case 'ToScenario':
 				return A2(
 					_user$project$IV_Lenses$updateScenario,
@@ -17724,9 +17765,9 @@ var _user$project$IV_Main$update = F2(
 						_user$project$IV_Lenses$flow(model)));
 		}
 	});
-var _user$project$IV_Main$Model = F3(
-	function (a, b, c) {
-		return {scenario: a, clock: b, apparatus: c};
+var _user$project$IV_Main$Model = F4(
+	function (a, b, c, d) {
+		return {page: a, scenario: b, clock: c, apparatus: d};
 	});
 
 var _user$project$IV_Pile_HtmlShorthand$pSimple = function (string) {
@@ -17810,6 +17851,13 @@ var _user$project$IV_Pile_HtmlShorthand$textInput = F3(
 			_elm_lang$core$Native_List.fromArray(
 				[]));
 	});
+var _user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'click',
+		{stopPropagation: false, preventDefault: true},
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
 var _user$project$IV_Pile_HtmlShorthand$role = _elm_lang$html$Html_Attributes$attribute('role');
 var _user$project$IV_Pile_HtmlShorthand$navChoice = F3(
 	function (label, onClick, isActive) {
@@ -17830,8 +17878,8 @@ var _user$project$IV_Pile_HtmlShorthand$navChoice = F3(
 					_elm_lang$html$Html$a,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$href('#'),
-							_elm_lang$html$Html_Events$onClick(onClick)
+							_elm_lang$html$Html_Attributes$href('/iv'),
+							_user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation(onClick)
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
@@ -18202,6 +18250,11 @@ var _user$project$IV_Apparatus_View$view = function (model) {
 		]);
 };
 
+var _user$project$IV_Version$text = 'Version 464 (6baf0fe) of 2016-Nov-04';
+
+var _user$project$IV_View$aboutView = function (model) {
+	return _elm_lang$html$Html$text('hi');
+};
 var _user$project$IV_View$aboutThisBrowser = function () {
 	var letMeKnow = A2(
 		_elm_lang$html$Html$a,
@@ -18314,11 +18367,31 @@ var _user$project$IV_View$footerNav = A2(
 							_elm_lang$html$Html$a,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$href('http://google.com')
+									_elm_lang$html$Html_Attributes$href('/iv/about'),
+									_user$project$IV_Pile_HtmlShorthand$onClickWithoutPropagation(_user$project$IV_Msg$NavigateToAboutPage)
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[
 									_elm_lang$html$Html$text('About and Disclaimer')
+								]))
+						])),
+					A2(
+					_elm_lang$html$Html$li,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$IV_Pile_HtmlShorthand$role('presentation')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$a,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$href('https://github.com/marick/eecrit/tree/master/web/elm/IV')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(_user$project$IV_Version$text)
 								]))
 						]))
 				]))
@@ -18344,7 +18417,7 @@ var _user$project$IV_View$mainSvg = function (contents) {
 				contents)
 			]));
 };
-var _user$project$IV_View$view = function (model) {
+var _user$project$IV_View$scenarioView = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -18423,6 +18496,14 @@ var _user$project$IV_View$view = function (model) {
 						_user$project$IV_View$footerNav
 					]))
 			]));
+};
+var _user$project$IV_View$view = function (model) {
+	var _p1 = model.page;
+	if (_p1.ctor === 'MainPage') {
+		return _user$project$IV_View$scenarioView(model);
+	} else {
+		return _user$project$IV_View$aboutView(model);
+	}
 };
 
 var _user$project$IV$main = {

@@ -3,13 +3,15 @@ module IV.View exposing (view)
 import Animation
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events as Events
 import Svg
 import Svg.Attributes as SA
 import Vendor
 import IV.Pile.HtmlShorthand exposing (..)
 
 import IV.Main exposing (Model)
-import IV.Msg exposing (Msg)
+import IV.Navigation exposing (PageChoice(..))
+import IV.Msg exposing (Msg(..))
 import IV.Scenario.View as Scenario
 import IV.Apparatus.View as Apparatus
 import IV.Clock.View as Clock
@@ -31,6 +33,14 @@ mainSvg contents  =
 
 view : Model -> Html Msg
 view model =
+  case model.page of
+    MainPage -> 
+      scenarioView model
+    AboutPage ->
+      aboutView model
+    
+scenarioView : Model -> Html Msg
+scenarioView model =
   div []
     [ div [class "header clearfix"]
         [ Scenario.viewScenarioChoices model.scenario
@@ -52,12 +62,16 @@ view model =
         ]
     ]
 
+    
 footerNav =
   nav []
     [ ul [ class "nav nav-pills pull-right" ]
         [ li
             [ role "presentation" ]
-            [ a [ href "http://google.com" ] [text "About and Disclaimer"] ]
+            [ a [ href "/iv/about"
+                , onClickWithoutPropagation NavigateToAboutPage
+                ]
+                [text "About and Disclaimer"] ]
         ]
     ]
 
@@ -102,3 +116,8 @@ aboutThisBrowser =
           default
   in
     row [ class "col-sm-12" ] body
+
+
+
+aboutView model =
+  text "hi"

@@ -1,5 +1,6 @@
 module IV.Pile.CmdFlow exposing
   ( flow
+  , set
   , update
   )
 
@@ -19,3 +20,8 @@ update lens f (whole, cmd) =
     , Cmd.batch [cmd, newCmd]
     )
   
+set : (Lens whole part) -> part -> (whole, Cmd msg) -> (whole, Cmd msg)
+set lens newPart (whole, cmd) =
+  ( lens.set newPart whole
+  , cmd
+  )

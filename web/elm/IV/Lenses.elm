@@ -5,10 +5,19 @@ import IV.Pile.CmdFlow as CmdFlow
 
 
 flow = CmdFlow.flow
-updateScenario f = CmdFlow.update model_scenario f 
-updateApparatus f = CmdFlow.update model_apparatus f 
-updateClock f = CmdFlow.update model_clock f 
-  
+updateScenario pairProducingF = CmdFlow.update model_scenario pairProducingF
+updateApparatus pairProducingF = CmdFlow.update model_apparatus pairProducingF
+updateClock pairProducingF = CmdFlow.update model_clock pairProducingF 
+
+setPage newVal = CmdFlow.set model_page newVal
+
+model_page : Lens { m | page : whole } whole
+model_page =
+  let
+    get arg1 = arg1.page
+    set new2 arg1 = { arg1 | page = new2 }
+  in
+    Lens get set
 
 model_scenario : Lens { m | scenario : whole } whole
 model_scenario =

@@ -2,6 +2,7 @@ module IV.Navigation exposing (..)
 
 import Navigation
 import UrlParser
+import String
 
 type PageChoice 
   = MainPage
@@ -12,7 +13,10 @@ program = Navigation.program
     
 stringParser : String -> PageChoice
 stringParser path =
-  MainPage
+  if String.contains "about" path then
+    AboutPage
+  else
+    MainPage
 
 locationParser : Navigation.Location -> PageChoice
 locationParser location = 
@@ -21,6 +25,7 @@ locationParser location =
 urlParser = Navigation.makeParser locationParser
 
 
-urlUpdate : PageChoice -> model -> ( model, Cmd msg )
-urlUpdate url model =
-    (model, Cmd.none)
+urlUpdate page model =
+  ( { model | page = page }
+  , Cmd.none
+  )

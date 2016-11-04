@@ -3,10 +3,11 @@ module IV.Main exposing (..)
 import Animation
 import Animation.Messenger
 import Html.Attributes as Attr
+import Navigation
 
 import IV.Lenses exposing (..)
 import IV.Msg exposing (..)
-import IV.Navigation as Navigation
+import IV.Navigation as MyNav
 import IV.Types exposing (..)
 
 import IV.Apparatus.Main as Apparatus
@@ -15,11 +16,11 @@ import IV.Scenario.Main as Scenario
 import IV.Scenario.Model as ScenarioModel
 import IV.Scenario.DataExport as DataExport
 
-
 -- Model
 
 type alias Model =
-    { scenario : ScenarioModel.EditableModel -- this holds all the user-chosen data
+    { page : MyNav.PageChoice
+    , scenario : ScenarioModel.EditableModel -- this holds all the user-chosen data
 
     -- The following hold the animation states of component pieces
     , clock : Clock.Model
@@ -30,16 +31,22 @@ type alias Model =
 
 initWithScenario : ScenarioModel.EditableModel -> (Model, Cmd Msg)
 initWithScenario scenario =
-  ( { scenario = scenario
+  ( { page = MyNav.MainPage
+    , scenario = scenario
     , apparatus = Apparatus.unstarted <| DataExport.startingLevel scenario
     , clock = Clock.startingState
     }
   , Cmd.none
   )
+
+-- TODO: There needs to be a way to do per-page initialization instead
+-- of ininitializing everything no matter what page you enter on.
   
-init : Navigation.PageChoice -> ( Model, Cmd Msg )
+init : MyNav.PageChoice -> ( Model, Cmd Msg )
 init page =
-  initWithScenario (ScenarioModel.preparedScenario ScenarioModel.cowBackground)
+  ScenarioModel.preparedScenario ScenarioModel.cowBackground
+    |> initWithScenario
+    |> setPage page
 
 
 changeDripRate dripRate = updateApparatus (Apparatus.changeDripRate dripRate)
@@ -59,6 +66,11 @@ animateApparatus tick = updateApparatus (Apparatus.animationClockTick tick)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    NavigateToAboutPage ->
+      ( model
+      , Navigation.newUrl "/iv/about"
+      )
+    
     ToScenario msg' ->
       flow model
         |> updateScenario (Scenario.update msg')

@@ -3,12 +3,23 @@ module IV.Pile.HtmlShorthand exposing (..)
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
 import Html.Events as Events
+import Json.Decode as Json
 
 row attrs elements =
   div ([class "row"] ++ attrs) elements
 
 role = attribute "role"
 
+
+-- TODO: handle opening in a new tab/window?
+onClickWithoutPropagation msg = 
+  Events.onWithOptions "click"
+    { stopPropagation = False
+    , preventDefault = True
+    }
+    (Json.succeed msg)
+
+       
 textInput extraAttributes value onInput =
   input
   ([ type' "text"
@@ -23,8 +34,8 @@ navChoice label onClick isActive =
     [ role "presentation"
     , classList [ ("active", isActive) ]
     ]
-    [ a [ href "#"
-        , Events.onClick onClick
+    [ a [ href "/iv"
+        , onClickWithoutPropagation onClick
         ]
         [text label]
     ]

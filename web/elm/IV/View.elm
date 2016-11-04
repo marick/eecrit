@@ -76,7 +76,7 @@ footerNav =
 
         , li
             [ role "presentation" ]
-            [ a [ href "https://github.com/marick/eecrit/tree/master/web/elm/IV" ]
+            [ a [ href Version.source ]
                 [ text Version.text ]
             ]
         ]

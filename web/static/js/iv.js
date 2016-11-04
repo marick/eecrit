@@ -18250,8 +18250,8 @@ var _user$project$IV_Apparatus_View$view = function (model) {
 		]);
 };
 
-var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v472/web/elm/IV';
-var _user$project$IV_Version$text = 'Version v472 of 2016-Nov-04';
+var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v473/web/elm/IV';
+var _user$project$IV_Version$text = 'Version v473 of 2016-Nov-04';
 
 var _user$project$IV_View$aboutView = function (model) {
 	return _elm_lang$html$Html$text('hi');

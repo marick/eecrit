@@ -1,5 +1,7 @@
 
 
+(git branch | grep -q '\* master') || { echo "You can only deploy from master"; exit 1; }
+
 set -x
 set -e
 

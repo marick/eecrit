@@ -17930,6 +17930,62 @@ var _user$project$IV_Pile_HtmlShorthand$rowSimple = function (string) {
 			]));
 };
 
+var _user$project$IV_View_Layout$footerWith = F2(
+	function (prefix, navs) {
+		return A2(
+			_elm_lang$html$Html$footer,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('footer')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$hr,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[])),
+					prefix,
+					navs
+				]));
+	});
+var _user$project$IV_View_Layout$headerWith = function (navs) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('header clearfix')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$nav,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$ul,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('nav nav-pills pull-right')
+							]),
+						navs)
+					])),
+				A2(
+				_elm_lang$html$Html$h3,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('text-muted')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('IV Worksheet')
+					]))
+			]));
+};
+
 var _user$project$IV_Scenario_View$local = function (msg) {
 	return _user$project$IV_Msg$ToScenario(msg);
 };
@@ -18209,35 +18265,22 @@ var _user$project$IV_Scenario_View$scenarioChoice = F2(
 			A2(_user$project$IV_Scenario_View$sameTags, possible, current));
 	});
 var _user$project$IV_Scenario_View$viewScenarioChoices = function (model) {
-	return A2(
-		_elm_lang$html$Html$nav,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$ul,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('nav nav-pills pull-right')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_user$project$IV_Scenario_View$scenarioChoice,
-						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground),
-						model),
-						A2(
-						_user$project$IV_Scenario_View$scenarioChoice,
-						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$calfBackground),
-						model),
-						A2(
-						_user$project$IV_Scenario_View$editChoice,
-						_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$emptyBackground),
-						model),
-						_user$project$IV_Pile_HtmlShorthand$mailTo
-					]))
-			]));
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_user$project$IV_Scenario_View$scenarioChoice,
+			_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$cowBackground),
+			model),
+			A2(
+			_user$project$IV_Scenario_View$scenarioChoice,
+			_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$calfBackground),
+			model),
+			A2(
+			_user$project$IV_Scenario_View$editChoice,
+			_user$project$IV_Scenario_Model$preparedScenario(_user$project$IV_Scenario_Model$emptyBackground),
+			model),
+			_user$project$IV_Pile_HtmlShorthand$mailTo
+		]);
 };
 
 var _user$project$IV_Apparatus_View$view = function (model) {
@@ -18253,10 +18296,7 @@ var _user$project$IV_Apparatus_View$view = function (model) {
 var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v473/web/elm/IV';
 var _user$project$IV_Version$text = 'Version v473 of 2016-Nov-04';
 
-var _user$project$IV_View$aboutView = function (model) {
-	return _elm_lang$html$Html$text('hi');
-};
-var _user$project$IV_View$aboutThisBrowser = function () {
+var _user$project$IV_View_MainPage$aboutThisBrowser = function () {
 	var letMeKnow = A2(
 		_elm_lang$html$Html$a,
 		_elm_lang$core$Native_List.fromArray(
@@ -18342,7 +18382,7 @@ var _user$project$IV_View$aboutThisBrowser = function () {
 			]),
 		body);
 }();
-var _user$project$IV_View$footerNav = A2(
+var _user$project$IV_View_MainPage$footerNav = A2(
 	_elm_lang$html$Html$nav,
 	_elm_lang$core$Native_List.fromArray(
 		[]),
@@ -18397,8 +18437,8 @@ var _user$project$IV_View$footerNav = A2(
 						]))
 				]))
 		]));
-var _user$project$IV_View$graphics = {width: '400px', height: '400px'};
-var _user$project$IV_View$mainSvg = function (contents) {
+var _user$project$IV_View_MainPage$graphics = {width: '400px', height: '400px'};
+var _user$project$IV_View_MainPage$mainSvg = function (contents) {
 	return A2(
 		_user$project$IV_Pile_HtmlShorthand$row,
 		_elm_lang$core$Native_List.fromArray(
@@ -18412,39 +18452,21 @@ var _user$project$IV_View$mainSvg = function (contents) {
 						_elm_lang$svg$Svg_Attributes$version('1.1'),
 						_elm_lang$svg$Svg_Attributes$x('0'),
 						_elm_lang$svg$Svg_Attributes$y('0'),
-						_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View$graphics.width),
-						_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View$graphics.height)
+						_elm_lang$svg$Svg_Attributes$width(_user$project$IV_View_MainPage$graphics.width),
+						_elm_lang$svg$Svg_Attributes$height(_user$project$IV_View_MainPage$graphics.height)
 					]),
 				contents)
 			]));
 };
-var _user$project$IV_View$scenarioView = function (model) {
+var _user$project$IV_View_MainPage$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('header clearfix')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$IV_Scenario_View$viewScenarioChoices(model.scenario),
-						A2(
-						_elm_lang$html$Html$h3,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('text-muted')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('IV Worksheet')
-							]))
-					])),
+				_user$project$IV_View_Layout$headerWith(
+				_user$project$IV_Scenario_View$viewScenarioChoices(model.scenario)),
 				_user$project$IV_Scenario_View$viewCaseBackgroundEditor(model.scenario),
 				A2(
 				_elm_lang$html$Html$div,
@@ -18462,7 +18484,7 @@ var _user$project$IV_View$scenarioView = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_user$project$IV_View$mainSvg(
+								_user$project$IV_View_MainPage$mainSvg(
 								A2(
 									_elm_lang$core$Basics_ops['++'],
 									_user$project$IV_Apparatus_View$view(model.apparatus),
@@ -18479,31 +18501,71 @@ var _user$project$IV_View$scenarioView = function (model) {
 								_user$project$IV_Scenario_View$viewTreatmentEditor(model.scenario)
 							]))
 					])),
-				A2(
-				_elm_lang$html$Html$footer,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('footer')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$hr,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
-						_user$project$IV_View$aboutThisBrowser,
-						_user$project$IV_View$footerNav
-					]))
+				A2(_user$project$IV_View_Layout$footerWith, _user$project$IV_View_MainPage$aboutThisBrowser, _user$project$IV_View_MainPage$footerNav)
 			]));
 };
+
+var _user$project$IV_View_AboutPage$view = A2(
+	_user$project$IV_Pile_HtmlShorthand$row,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('\n                This application is intended to be used by teachers and students.\n                Any use of it in real medical situations is\n                '),
+					A2(
+					_elm_lang$html$Html$strong,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('at your own risk')
+						])),
+					_elm_lang$html$Html$text('. (See the scary legal boilerplate below.)')
+				])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('\n                The app is written in the Elm programming language and the source\n                is freely available under the MIT License.\n                ')
+				])),
+			A2(
+			_elm_lang$html$Html$hr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Copyright © 2016 Brian Marick')
+				])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('\n                THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n                EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\n                OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n                NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\n                HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\n                WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n                FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\n                OTHER DEALINGS IN THE SOFTWARE.\n                ')
+				]))
+		]));
+
 var _user$project$IV_View$view = function (model) {
-	var _p1 = model.page;
-	if (_p1.ctor === 'MainPage') {
-		return _user$project$IV_View$scenarioView(model);
+	var _p0 = model.page;
+	if (_p0.ctor === 'MainPage') {
+		return _user$project$IV_View_MainPage$view(model);
 	} else {
-		return _user$project$IV_View$aboutView(model);
+		return _user$project$IV_View_AboutPage$view;
 	}
 };
 

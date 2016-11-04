@@ -18,16 +18,13 @@ import String
 
 -- Top row of buttons
 
-viewScenarioChoices : EditableModel -> Html MainMsg.Msg    
+viewScenarioChoices : EditableModel -> List (Html MainMsg.Msg)
 viewScenarioChoices model =
-  nav []
-    [ ul [ class "nav nav-pills pull-right" ]
-        [ scenarioChoice (preparedScenario Model.cowBackground) model
-        , scenarioChoice (preparedScenario Model.calfBackground) model
-        , editChoice (preparedScenario Model.emptyBackground) model
-        , mailTo
-        ]
-    ]
+  [ scenarioChoice (preparedScenario Model.cowBackground) model
+  , scenarioChoice (preparedScenario Model.calfBackground) model
+  , editChoice (preparedScenario Model.emptyBackground) model
+  , mailTo
+  ]
 
 scenarioChoice possible current =
   navChoice

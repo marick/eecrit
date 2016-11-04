@@ -8,6 +8,7 @@ import Svg.Attributes as SA
 import Vendor
 import IV.Pile.HtmlShorthand exposing (..)
 
+import IV.View.Layout as Layout
 import IV.Main exposing (Model)
 import IV.Msg exposing (Msg(..))
 import IV.Scenario.View as Scenario
@@ -33,10 +34,7 @@ mainSvg contents  =
 view : Model -> Html Msg
 view model =
   div []
-    [ div [class "header clearfix"]
-        [ Scenario.viewScenarioChoices model.scenario
-        , h3 [class "text-muted"] [text "IV Worksheet"]
-        ]
+    [ Layout.headerWith (Scenario.viewScenarioChoices model.scenario)
     , Scenario.viewCaseBackgroundEditor model.scenario
     , div [class "row" ]
         [ div [ class "col-sm-6" ]
@@ -46,14 +44,10 @@ view model =
           [ Scenario.viewTreatmentEditor model.scenario
           ]
         ]
-    , footer [class "footer"] 
-        [ hr [] []
-        , aboutThisBrowser
-        , footerNav
-        ]
+    , Layout.footerWith aboutThisBrowser footerNav
     ]
 
-    
+
 footerNav =
   nav []
     [ ul [ class "nav nav-pills pull-right" ]

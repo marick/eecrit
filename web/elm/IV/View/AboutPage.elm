@@ -21,10 +21,16 @@ view =
         , text ". (See the scary legal boilerplate below.)"
         ]
     , p []
-        [ text """
-                The app is written in the Elm programming language and the source
-                is freely available under the MIT License.
-                """
+        [ text "The app is written in the "
+        , a [ href "http://elm-lang.org"]
+            [ text "Elm programming language" ]
+        , text " and the source is "
+        , a [ href "https://github.com/marick/eecrit/tree/master/web/elm/IV" ]
+            [ text "freely available" ]
+        , text " under the "
+        , a [ href "https://en.wikipedia.org/wiki/MIT_License" ]
+            [ text "MIT License"]
+        , text "."
         ]
     , hr [] []
     , p []

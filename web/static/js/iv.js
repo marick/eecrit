@@ -18250,8 +18250,8 @@ var _user$project$IV_Apparatus_View$view = function (model) {
 		]);
 };
 
-var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v469/web/elm/IV';
-var _user$project$IV_Version$text = 'Version v469 of 2016-Nov-04';
+var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v472/web/elm/IV';
+var _user$project$IV_Version$text = 'Version v472 of 2016-Nov-04';
 
 var _user$project$IV_View$aboutView = function (model) {
 	return _elm_lang$html$Html$text('hi');
@@ -18388,7 +18388,7 @@ var _user$project$IV_View$footerNav = A2(
 							_elm_lang$html$Html$a,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$href('https://github.com/marick/eecrit/tree/master/web/elm/IV')
+									_elm_lang$html$Html_Attributes$href(_user$project$IV_Version$source)
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[

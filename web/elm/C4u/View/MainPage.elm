@@ -12,5 +12,5 @@ view : Model -> Html Msg
 view model =
   div []
     [
-     text "hi"
+     text "So this is the beginning of the Critter4Us SPA"
     ]

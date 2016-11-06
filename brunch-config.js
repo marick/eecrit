@@ -55,8 +55,9 @@ exports.config = {
     },
     elmBrunch: {
       elmFolder: "web/elm",
-        mainModules: ["IV.elm"],
-      outputFolder: "../static/js"
+      mainModules: ["IV.elm", "C4u.elm"],
+      outputFolder: "../static/js",
+      outputFile: "critter4us.js"
     },
   },
 

@@ -36,29 +36,17 @@ $(document).ready(() => {
 })
 
 
-// From the book
-
-import Player from "./player"
-let video = document.getElementById("video")
-
-if(video) {
-  Player.init(video.id, video.getAttribute("data-player-id"), () => {
-    console.log("player ready!")
-  })
-}
-
 // Elm setup
 
-// import Elm from './registration'
-// const elmDiv = document.querySelector('#elm-target');
-// if (elmDiv) {
-//     Elm.Registration.embed(elmDiv);
-// }
+import Elm from './critter4us'
+
+const ivDiv = document.querySelector('#iv-target');
+if (ivDiv) {
+    Elm.IV.embed(ivDiv);
+}
 
 
-import Elm from './iv'
-
-const elmDiv = document.querySelector('#iv-target');
-if (elmDiv) {
-    Elm.IV.embed(elmDiv);
+const c4uDiv = document.querySelector('#c4u-target');
+if (c4uDiv) {
+    Elm.C4u.embed(c4uDiv);
 }

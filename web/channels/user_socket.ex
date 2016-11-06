@@ -3,6 +3,7 @@ defmodule Eecrit.UserSocket do
 
   ## Channels
   # channel "room:*", Eecrit.RoomChannel
+  channel "c4u", Eecrit.C4uChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket, timeout: 45_000

@@ -17274,6 +17274,13 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
+var _user$project$C4u_Msg$ReceiveMessage = function (a) {
+	return {ctor: 'ReceiveMessage', _0: a};
+};
+var _user$project$C4u_Msg$ChannelError = {ctor: 'ChannelError'};
+var _user$project$C4u_Msg$JoinError = {ctor: 'JoinError'};
+var _user$project$C4u_Msg$ClosedChannel = {ctor: 'ClosedChannel'};
+var _user$project$C4u_Msg$JoinedChannel = {ctor: 'JoinedChannel'};
 var _user$project$C4u_Msg$PhoenixMsg = function (a) {
 	return {ctor: 'PhoenixMsg', _0: a};
 };
@@ -17305,41 +17312,145 @@ var _user$project$C4u_Main$subscriptions = function (model) {
 var _user$project$C4u_Main$update = F2(
 	function (msg, model) {
 		var _p0 = A2(_elm_lang$core$Debug$log, 'update msg', msg);
-		if (_p0.ctor === 'Click') {
-			return A2(
-				_elm_lang$core$Platform_Cmd_ops['!'],
-				model,
-				_elm_lang$core$Native_List.fromArray(
-					[]));
-		} else {
-			var _p1 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$update, _p0._0, model.socket);
-			var socket = _p1._0;
-			var cmd = _p1._1;
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
+		switch (_p0.ctor) {
+			case 'Click':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
 					model,
-					{socket: socket}),
-				_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
-			};
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'PhoenixMsg':
+				var _p2 = _p0._0;
+				var _p1 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$update, _p2, model.socket);
+				var socket = _p1._0;
+				var cmd = _p1._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							socket: socket,
+							notes: A2(
+								_elm_lang$core$List_ops['::'],
+								_elm_lang$core$Basics$toString(_p2),
+								model.notes)
+						}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
+				};
+			case 'JoinedChannel':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							notes: A2(_elm_lang$core$List_ops['::'], 'joined channel', model.notes)
+						}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ClosedChannel':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							notes: A2(_elm_lang$core$List_ops['::'], 'closed channel', model.notes)
+						}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'JoinError':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							notes: A2(_elm_lang$core$List_ops['::'], 'error joining channel', model.notes)
+						}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ChannelError':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							notes: A2(_elm_lang$core$List_ops['::'], 'channel error', model.notes)
+						}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							notes: A2(
+								_elm_lang$core$List_ops['::'],
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'got message ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(msg),
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											' ',
+											_elm_lang$core$Basics$toString(_p0._0)))),
+								model.notes)
+						}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 		}
 	});
+var _user$project$C4u_Main$bareChannel = A2(
+	_fbonetti$elm_phoenix_socket$Phoenix_Channel$onError,
+	_elm_lang$core$Basics$always(_user$project$C4u_Msg$ChannelError),
+	A2(
+		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoinError,
+		_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinError),
+		A2(
+			_fbonetti$elm_phoenix_socket$Phoenix_Channel$onClose,
+			_elm_lang$core$Basics$always(_user$project$C4u_Msg$ClosedChannel),
+			A2(
+				_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
+				_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinedChannel),
+				_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('c4u')))));
+var _user$project$C4u_Main$bareSocket = A4(
+	_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
+	'ping',
+	'c4u',
+	_user$project$C4u_Msg$ReceiveMessage,
+	_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
+		_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://localhost:4000/socket/websocket')));
 var _user$project$C4u_Main$init = function (page) {
+	var _p3 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$join, _user$project$C4u_Main$bareChannel, _user$project$C4u_Main$bareSocket);
+	var socket = _p3._0;
+	var cmd = _p3._1;
 	return {
 		ctor: '_Tuple2',
 		_0: {
 			page: page,
-			socket: _fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-				_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://localhost:4000/socket/websocket'))
+			socket: socket,
+			notes: _elm_lang$core$Native_List.fromArray(
+				[])
 		},
-		_1: _elm_lang$core$Platform_Cmd$none
+		_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
 	};
 };
-var _user$project$C4u_Main$Model = F2(
-	function (a, b) {
-		return {page: a, socket: b};
+var _user$project$C4u_Main$Model = F3(
+	function (a, b, c) {
+		return {page: a, socket: b, notes: c};
 	});
 
+var _user$project$C4u_View_MainPage$entry = function (line) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(line)
+			]));
+};
 var _user$project$C4u_View_MainPage$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -17347,7 +17458,18 @@ var _user$project$C4u_View_MainPage$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text('So this is the beginning of the Critter4Us SPA')
+				_elm_lang$html$Html$text('So this is the beginning of the Critter4Us SPA'),
+				A2(
+				_elm_lang$html$Html$hr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$C4u_View_MainPage$entry, model.notes))
 			]));
 };
 

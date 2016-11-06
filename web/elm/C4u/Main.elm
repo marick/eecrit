@@ -8,22 +8,44 @@ import Phoenix.Push
 import C4u.Msg exposing (..)
 import C4u.Navigation as MyNav
 
+import Json.Encode as JE
+import Json.Decode as JD exposing ((:=))
 
 -- Model
 
 type alias Model =
     { page : MyNav.PageChoice
     , socket : Phoenix.Socket.Socket Msg
+    , notes : List String
     }
 
 -- Update
 
+bareSocket =
+  "ws://localhost:4000/socket/websocket"
+    |> Phoenix.Socket.init
+    |> Phoenix.Socket.withDebug
+    |> Phoenix.Socket.on "ping" "c4u" ReceiveMessage
+
+bareChannel =
+  "c4u"
+    |> Phoenix.Channel.init
+    |> Phoenix.Channel.onJoin (always JoinedChannel)
+    |> Phoenix.Channel.onClose (always ClosedChannel)
+    |> Phoenix.Channel.onJoinError (always JoinError)
+    |> Phoenix.Channel.onError (always ChannelError)
+       
 init : MyNav.PageChoice -> ( Model, Cmd Msg )
 init page =
-  ( { page = page
-    , socket = Phoenix.Socket.withDebug <| Phoenix.Socket.init "ws://localhost:4000/socket/websocket" }
-  , Cmd.none
-  )
+  let
+    ( socket, cmd ) = Phoenix.Socket.join bareChannel bareSocket
+  in
+    ( { page = page
+      , socket = socket
+      , notes = []
+      }
+    , Cmd.map PhoenixMsg cmd
+    )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -35,10 +57,25 @@ update msg model =
       let
         ( socket, cmd ) = Phoenix.Socket.update msg model.socket
       in
-        ( { model | socket = socket }
+        ( { model
+            | socket = socket
+            , notes = toString msg :: model.notes
+          }
         , Cmd.map PhoenixMsg cmd
         )
-    
+
+    JoinedChannel ->
+      { model | notes = "joined channel" :: model.notes } ! []
+
+    ClosedChannel ->
+      { model | notes = "closed channel" :: model.notes } ! []
+    JoinError ->
+      { model | notes = "error joining channel" :: model.notes } ! []
+    ChannelError ->
+      { model | notes = "channel error" :: model.notes } ! []
+
+    ReceiveMessage js -> 
+      { model | notes = ("got message " ++ toString msg ++ " " ++ toString js) :: model.notes } ! []
         
 -- Subscriptions
     

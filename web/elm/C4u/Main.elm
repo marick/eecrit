@@ -48,11 +48,22 @@ init page =
     )
 
 
+setValue value model =
+  let
+    payload = JE.object [ ("value", JE.int value) ]
+    push' = Phoenix.Push.init "value" "c4u" |> Phoenix.Push.withPayload payload
+    (socket, cmd) = Phoenix.Socket.push push' model.socket
+  in
+    ( { model
+        | notes = ("setting value to " ++ toString value) :: model.notes
+        , socket = socket
+      }
+    , Cmd.map PhoenixMsg cmd
+    )
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case Debug.log "update msg" msg of
-    Click ->
-      ( model ! [])
     PhoenixMsg msg ->
       let
         ( socket, cmd ) = Phoenix.Socket.update msg model.socket
@@ -76,7 +87,9 @@ update msg model =
 
     ReceiveMessage js -> 
       { model | notes = ("got message " ++ toString msg ++ " " ++ toString js) :: model.notes } ! []
-        
+    SetVal int ->
+      setValue int model
+
 -- Subscriptions
     
 subscriptions : Model -> Sub Msg

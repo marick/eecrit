@@ -13,4 +13,9 @@ defmodule Eecrit.C4uChannel do
     push socket, "ping", %{count: count}
     {:noreply, assign(socket, :count, count+1)}
   end
+
+  def handle_in("value", params, socket) do
+    IO.puts params["value"]
+    {:noreply, assign(socket, :count, params["value"])}
+  end
 end

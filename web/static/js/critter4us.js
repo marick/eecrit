@@ -17284,7 +17284,9 @@ var _user$project$C4u_Msg$JoinedChannel = {ctor: 'JoinedChannel'};
 var _user$project$C4u_Msg$PhoenixMsg = function (a) {
 	return {ctor: 'PhoenixMsg', _0: a};
 };
-var _user$project$C4u_Msg$Click = {ctor: 'Click'};
+var _user$project$C4u_Msg$SetVal = function (a) {
+	return {ctor: 'SetVal', _0: a};
+};
 
 var _user$project$C4u_Navigation$urlUpdate = F2(
 	function (page, model) {
@@ -17309,21 +17311,50 @@ var _user$project$C4u_Navigation$urlParser = _elm_lang$navigation$Navigation$mak
 var _user$project$C4u_Main$subscriptions = function (model) {
 	return A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$listen, model.socket, _user$project$C4u_Msg$PhoenixMsg);
 };
+var _user$project$C4u_Main$setValue = F2(
+	function (value, model) {
+		var payload = _elm_lang$core$Json_Encode$object(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					{
+					ctor: '_Tuple2',
+					_0: 'value',
+					_1: _elm_lang$core$Json_Encode$int(value)
+				}
+				]));
+		var push$ = A2(
+			_fbonetti$elm_phoenix_socket$Phoenix_Push$withPayload,
+			payload,
+			A2(_fbonetti$elm_phoenix_socket$Phoenix_Push$init, 'value', 'c4u'));
+		var _p0 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push$, model.socket);
+		var socket = _p0._0;
+		var cmd = _p0._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					notes: A2(
+						_elm_lang$core$List_ops['::'],
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'setting value to ',
+							_elm_lang$core$Basics$toString(value)),
+						model.notes),
+					socket: socket
+				}),
+			_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
+		};
+	});
 var _user$project$C4u_Main$update = F2(
 	function (msg, model) {
-		var _p0 = A2(_elm_lang$core$Debug$log, 'update msg', msg);
-		switch (_p0.ctor) {
-			case 'Click':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					_elm_lang$core$Native_List.fromArray(
-						[]));
+		var _p1 = A2(_elm_lang$core$Debug$log, 'update msg', msg);
+		switch (_p1.ctor) {
 			case 'PhoenixMsg':
-				var _p2 = _p0._0;
-				var _p1 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$update, _p2, model.socket);
-				var socket = _p1._0;
-				var cmd = _p1._1;
+				var _p3 = _p1._0;
+				var _p2 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$update, _p3, model.socket);
+				var socket = _p2._0;
+				var cmd = _p2._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -17332,7 +17363,7 @@ var _user$project$C4u_Main$update = F2(
 							socket: socket,
 							notes: A2(
 								_elm_lang$core$List_ops['::'],
-								_elm_lang$core$Basics$toString(_p2),
+								_elm_lang$core$Basics$toString(_p3),
 								model.notes)
 						}),
 					_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
@@ -17377,7 +17408,7 @@ var _user$project$C4u_Main$update = F2(
 						}),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
-			default:
+			case 'ReceiveMessage':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -17394,11 +17425,13 @@ var _user$project$C4u_Main$update = F2(
 										A2(
 											_elm_lang$core$Basics_ops['++'],
 											' ',
-											_elm_lang$core$Basics$toString(_p0._0)))),
+											_elm_lang$core$Basics$toString(_p1._0)))),
 								model.notes)
 						}),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
+			default:
+				return A2(_user$project$C4u_Main$setValue, _p1._0, model);
 		}
 	});
 var _user$project$C4u_Main$bareChannel = A2(
@@ -17422,9 +17455,9 @@ var _user$project$C4u_Main$bareSocket = A4(
 	_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://localhost:4000/socket/websocket')));
 var _user$project$C4u_Main$init = function (page) {
-	var _p3 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$join, _user$project$C4u_Main$bareChannel, _user$project$C4u_Main$bareSocket);
-	var socket = _p3._0;
-	var cmd = _p3._1;
+	var _p4 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$join, _user$project$C4u_Main$bareChannel, _user$project$C4u_Main$bareSocket);
+	var socket = _p4._0;
+	var cmd = _p4._1;
 	return {
 		ctor: '_Tuple2',
 		_0: {
@@ -17459,6 +17492,17 @@ var _user$project$C4u_View_MainPage$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$html$Html$text('So this is the beginning of the Critter4Us SPA'),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(
+						_user$project$C4u_Msg$SetVal(55))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('set to 5')
+					])),
 				A2(
 				_elm_lang$html$Html$hr,
 				_elm_lang$core$Native_List.fromArray(

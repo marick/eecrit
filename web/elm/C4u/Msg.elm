@@ -5,7 +5,7 @@ import Json.Encode as JE
 import Json.Decode as JD exposing ((:=))
 
 type Msg
-    = Click
+    = SetVal Int
     | PhoenixMsg (Phoenix.Socket.Msg Msg)
     | JoinedChannel
     | ClosedChannel

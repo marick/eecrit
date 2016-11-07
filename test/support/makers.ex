@@ -13,7 +13,7 @@ defmodule Eecrit.Test.Makers do
   # TODO: simplify this with macros or higher-level functions
 
   defp next_id do
-    :random.uniform(1_000_000_000)
+    :rand.uniform(1_000_000_000)
   end
 
   ## Ability Groups

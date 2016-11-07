@@ -8,7 +8,13 @@ defmodule Eecrit.SessionPlugsTest do
 
   describe "an `:add_current_user` function" do
     def subject(conn, user_id) do
-      SessionPlugs.add_current_user(conn, :_args, user_id).assigns.current_user
+      conn =
+        conn
+        # Sigh. This is needed so that Phoenix.Token.sign works.
+        |> Map.put(:private, %{phoenix_endpoint: Eecrit.Endpoint})
+        |> SessionPlugs.add_current_user(:_args, user_id)
+
+      conn.assigns.current_user
     end
     
     setup context do

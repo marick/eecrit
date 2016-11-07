@@ -1,6 +1,6 @@
 defmodule Eecrit.C4uChannel do
   use Eecrit.Web, :channel
-  import Logger
+  require Logger
 
   def join("c4u", _params, socket) do
     Logger.info "Got join request for c4u"

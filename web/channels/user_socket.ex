@@ -1,7 +1,7 @@
 defmodule Eecrit.UserSocket do
   use Phoenix.Socket
   alias Eecrit.SessionPlugs
-  import Logger
+  require Logger
 
   ## Channels
   # channel "room:*", Eecrit.RoomChannel
@@ -33,7 +33,7 @@ defmodule Eecrit.UserSocket do
     end
   end
 
-  def connect(params, socket) do
+  def connect(_params, _socket) do
     Logger.warn "Connection attempt with no authentication token"
     :error
   end

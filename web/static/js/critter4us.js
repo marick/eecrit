@@ -17450,17 +17450,17 @@ var _user$project$C4u_Main$bareChannel = function (flags) {
 					_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('c4u')))));
 };
 var _user$project$C4u_Main$bareSocket = function (flags) {
+	var uri = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'ws://localhost:4000/socket/websocket?auth_token=',
+		_evancz$elm_http$Http$uriEncode(flags.authToken));
 	return A4(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
 		'ping',
 		'c4u',
 		_user$project$C4u_Msg$ReceiveMessage,
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-			_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'ws://localhost:4000/socket/websocket?auth_token=',
-					_evancz$elm_http$Http$uriEncode(flags.authToken)))));
+			_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(uri)));
 };
 var _user$project$C4u_Main$init = F2(
 	function (flags, page) {

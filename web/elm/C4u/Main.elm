@@ -23,7 +23,11 @@ type alias Model =
 -- Update
 
 bareSocket flags =
-  ("ws://localhost:4000/socket/websocket?auth_token=" ++ (Http.uriEncode flags.authToken))
+  let
+    uri = "ws://localhost:4000/socket/websocket?auth_token=" ++
+          (Http.uriEncode flags.authToken)
+  in
+    uri
     |> Phoenix.Socket.init
     |> Phoenix.Socket.withDebug
     |> Phoenix.Socket.on "ping" "c4u" ReceiveMessage

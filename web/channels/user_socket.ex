@@ -48,7 +48,6 @@ defmodule Eecrit.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   def id(socket) do
-    IO.puts "socket assigns: #{inspect socket.assigns}"
-    nil # "users_socket:#{socket.assigns.user_id}"
+    "users_socket:#{socket.assigns.user_id}"
   end
 end

@@ -1,10 +1,11 @@
 defmodule Eecrit.UserSocket do
   use Phoenix.Socket
   alias Eecrit.SessionPlugs
+  import Logger
 
   ## Channels
   # channel "room:*", Eecrit.RoomChannel
-  channel "c4u", Eecrit.C4uChannel
+  channel "counter", Eecrit.C4uChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket, timeout: 45_000
@@ -24,16 +25,16 @@ defmodule Eecrit.UserSocket do
   def connect(%{"auth_token" => auth_token}, socket) do
     case Phoenix.Token.verify(socket, SessionPlugs.auth_token_name, auth_token) do
       {:ok, user_id} ->
+        Logger.info "Connection for user #{user_id}"
         {:ok, assign(socket, :user_id, user_id)}
       {:error, reason} ->
-        IO.puts "FAIL: #{reason}"
+        Logger.warn "Connection attempt failed authentication: #{reason}"
         :error
     end
   end
 
   def connect(params, socket) do
-    IO.puts "Bad connection: #{inspect params}"
-    IO.puts "socket: #{inspect socket}"
+    Logger.warn "Connection attempt with no authentication token"
     :error
   end
 

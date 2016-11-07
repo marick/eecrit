@@ -8,7 +8,7 @@ type PageChoice
   = MainPage
 
 -- TODO: This is unidiomatic?
-program = Navigation.program
+programWithFlags = Navigation.programWithFlags
     
 stringParser : String -> PageChoice
 stringParser path =

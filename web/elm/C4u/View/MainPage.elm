@@ -15,7 +15,8 @@ entry line =
 view : Model -> Html Msg
 view model =
   div []
-    [ text "So this is the beginning of the Critter4Us SPA"
+    [ text "So this is the beginning of the Critter4Us SPA : "
+    , text model.authToken
     , button [Events.onClick (SetVal 55)] [text "set to 5"]
     , hr [] []
     , ul [] (List.map entry model.notes)

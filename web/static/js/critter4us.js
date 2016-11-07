@@ -17298,7 +17298,7 @@ var _user$project$C4u_Navigation$urlUpdate = F2(
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$C4u_Navigation$program = _elm_lang$navigation$Navigation$program;
+var _user$project$C4u_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
 var _user$project$C4u_Navigation$MainPage = {ctor: 'MainPage'};
 var _user$project$C4u_Navigation$stringParser = function (path) {
 	return _user$project$C4u_Navigation$MainPage;
@@ -17348,7 +17348,7 @@ var _user$project$C4u_Main$setValue = F2(
 	});
 var _user$project$C4u_Main$update = F2(
 	function (msg, model) {
-		var _p1 = A2(_elm_lang$core$Debug$log, 'update msg', msg);
+		var _p1 = msg;
 		switch (_p1.ctor) {
 			case 'PhoenixMsg':
 				var _p3 = _p1._0;
@@ -17434,45 +17434,62 @@ var _user$project$C4u_Main$update = F2(
 				return A2(_user$project$C4u_Main$setValue, _p1._0, model);
 		}
 	});
-var _user$project$C4u_Main$bareChannel = A2(
-	_fbonetti$elm_phoenix_socket$Phoenix_Channel$onError,
-	_elm_lang$core$Basics$always(_user$project$C4u_Msg$ChannelError),
-	A2(
-		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoinError,
-		_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinError),
+var _user$project$C4u_Main$bareChannel = function (flags) {
+	return A2(
+		_fbonetti$elm_phoenix_socket$Phoenix_Channel$onError,
+		_elm_lang$core$Basics$always(_user$project$C4u_Msg$ChannelError),
 		A2(
-			_fbonetti$elm_phoenix_socket$Phoenix_Channel$onClose,
-			_elm_lang$core$Basics$always(_user$project$C4u_Msg$ClosedChannel),
+			_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoinError,
+			_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinError),
 			A2(
-				_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
-				_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinedChannel),
-				_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('c4u')))));
-var _user$project$C4u_Main$bareSocket = A4(
-	_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
-	'ping',
-	'c4u',
-	_user$project$C4u_Msg$ReceiveMessage,
-	_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-		_fbonetti$elm_phoenix_socket$Phoenix_Socket$init('ws://localhost:4000/socket/websocket')));
-var _user$project$C4u_Main$init = function (page) {
-	var _p4 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$join, _user$project$C4u_Main$bareChannel, _user$project$C4u_Main$bareSocket);
-	var socket = _p4._0;
-	var cmd = _p4._1;
-	return {
-		ctor: '_Tuple2',
-		_0: {
-			page: page,
-			socket: socket,
-			notes: _elm_lang$core$Native_List.fromArray(
-				[])
-		},
-		_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
-	};
+				_fbonetti$elm_phoenix_socket$Phoenix_Channel$onClose,
+				_elm_lang$core$Basics$always(_user$project$C4u_Msg$ClosedChannel),
+				A2(
+					_fbonetti$elm_phoenix_socket$Phoenix_Channel$onJoin,
+					_elm_lang$core$Basics$always(_user$project$C4u_Msg$JoinedChannel),
+					_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('c4u')))));
 };
-var _user$project$C4u_Main$Model = F3(
-	function (a, b, c) {
-		return {page: a, socket: b, notes: c};
+var _user$project$C4u_Main$bareSocket = function (flags) {
+	return A4(
+		_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
+		'ping',
+		'c4u',
+		_user$project$C4u_Msg$ReceiveMessage,
+		_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
+			_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'ws://localhost:4000/socket/websocket?auth_token=',
+					_evancz$elm_http$Http$uriEncode(flags.authToken)))));
+};
+var _user$project$C4u_Main$init = F2(
+	function (flags, page) {
+		var model = {page: page, authToken: flags.authToken};
+		var _p4 = A2(
+			_fbonetti$elm_phoenix_socket$Phoenix_Socket$join,
+			_user$project$C4u_Main$bareChannel(flags),
+			_user$project$C4u_Main$bareSocket(flags));
+		var socket = _p4._0;
+		var cmd = _p4._1;
+		return {
+			ctor: '_Tuple2',
+			_0: {
+				page: page,
+				authToken: flags.authToken,
+				socket: socket,
+				notes: _elm_lang$core$Native_List.fromArray(
+					[])
+			},
+			_1: A2(_elm_lang$core$Platform_Cmd$map, _user$project$C4u_Msg$PhoenixMsg, cmd)
+		};
 	});
+var _user$project$C4u_Main$Model = F4(
+	function (a, b, c, d) {
+		return {page: a, authToken: b, socket: c, notes: d};
+	});
+var _user$project$C4u_Main$Flags = function (a) {
+	return {authToken: a};
+};
 
 var _user$project$C4u_View_MainPage$entry = function (line) {
 	return A2(
@@ -17491,7 +17508,8 @@ var _user$project$C4u_View_MainPage$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text('So this is the beginning of the Critter4Us SPA'),
+				_elm_lang$html$Html$text('So this is the beginning of the Critter4Us SPA : '),
+				_elm_lang$html$Html$text(model.authToken),
 				A2(
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
@@ -17524,9 +17542,16 @@ var _user$project$C4u_View$view = function (model) {
 
 var _user$project$C4u$main = {
 	main: A2(
-		_user$project$C4u_Navigation$program,
+		_user$project$C4u_Navigation$programWithFlags,
 		_user$project$C4u_Navigation$urlParser,
-		{init: _user$project$C4u_Main$init, view: _user$project$C4u_View$view, update: _user$project$C4u_Main$update, urlUpdate: _user$project$C4u_Navigation$urlUpdate, subscriptions: _user$project$C4u_Main$subscriptions})
+		{init: _user$project$C4u_Main$init, view: _user$project$C4u_View$view, update: _user$project$C4u_Main$update, urlUpdate: _user$project$C4u_Navigation$urlUpdate, subscriptions: _user$project$C4u_Main$subscriptions}),
+	flags: A2(
+		_elm_lang$core$Json_Decode$andThen,
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'authToken', _elm_lang$core$Json_Decode$string),
+		function (authToken) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{authToken: authToken});
+		})
 };
 
 var _user$project$IV_Pile_CmdFlow$set = F3(

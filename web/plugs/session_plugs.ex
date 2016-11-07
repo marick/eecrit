@@ -27,10 +27,14 @@ defmodule Eecrit.SessionPlugs do
   @doc """
   See add_current_user/2. This takes a user_id for testing purposes.
   """
+
+  def auth_token_name, do: "user socket auth token"
   
   def add_current_user(conn, _opts, user_id) do
-    if user = user_id && fetch_user(user_id) do 
-      assign(conn, :current_user, user)
+    if user = user_id && fetch_user(user_id) do
+      conn
+      |> assign(:current_user, user)
+      |> assign(:auth_token, Phoenix.Token.sign(conn, auth_token_name, user.id))
     else
       assign(conn, :current_user, nil)
     end

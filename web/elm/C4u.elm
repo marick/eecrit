@@ -7,8 +7,9 @@ import C4u.Main as Main
 import C4u.Navigation as Navigation
 import C4u.View as View
 
+main : Program Main.Flags
 main =
-    Navigation.program Navigation.urlParser 
+    Navigation.programWithFlags Navigation.urlParser 
         { init = Main.init
         , view = View.view
         , update = Main.update

@@ -1,5 +1,6 @@
 defmodule Eecrit.UserSocket do
   use Phoenix.Socket
+  alias Eecrit.SessionPlugs
 
   ## Channels
   # channel "room:*", Eecrit.RoomChannel
@@ -20,9 +21,20 @@ defmodule Eecrit.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    IO.puts "Hey: a connection attempt"
-    {:ok, socket}
+  def connect(%{"auth_token" => auth_token}, socket) do
+    case Phoenix.Token.verify(socket, SessionPlugs.auth_token_name, auth_token) do
+      {:ok, user_id} ->
+        {:ok, assign(socket, :user_id, user_id)}
+      {:error, reason} ->
+        IO.puts "FAIL: #{reason}"
+        :error
+    end
+  end
+
+  def connect(params, socket) do
+    IO.puts "Bad connection: #{inspect params}"
+    IO.puts "socket: #{inspect socket}"
+    :error
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -35,5 +47,8 @@ defmodule Eecrit.UserSocket do
   #     Eecrit.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  def id(socket) do
+    IO.puts "socket assigns: #{inspect socket.assigns}"
+    nil # "users_socket:#{socket.assigns.user_id}"
+  end
 end

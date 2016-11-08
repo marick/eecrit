@@ -18,6 +18,7 @@
       </main>
     </div> <!-- /container -->
     <script>window.auth_token = "<%= assigns[:auth_token] %>"</script>
+    <script>window.socket_uri = "<%= Eecrit.Endpoint.socket_uri %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -17450,17 +17450,22 @@ var _user$project$C4u_Main$bareChannel = function (flags) {
 					_fbonetti$elm_phoenix_socket$Phoenix_Channel$init('c4u')))));
 };
 var _user$project$C4u_Main$bareSocket = function (flags) {
-	var uri = A2(
+	var baseUri = flags.socketUri;
+	var uriWithTransport = A2(_elm_lang$core$Basics_ops['++'], baseUri, '/websocket');
+	var uriWithToken = A2(
 		_elm_lang$core$Basics_ops['++'],
-		'ws://localhost:4000/socket/websocket?auth_token=',
-		_evancz$elm_http$Http$uriEncode(flags.authToken));
+		uriWithTransport,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'?auth_token=',
+			_evancz$elm_http$Http$uriEncode(flags.authToken)));
 	return A4(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
 		'ping',
 		'c4u',
 		_user$project$C4u_Msg$ReceiveMessage,
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
-			_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(uri)));
+			_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(uriWithToken)));
 };
 var _user$project$C4u_Main$init = F2(
 	function (flags, page) {
@@ -17487,9 +17492,10 @@ var _user$project$C4u_Main$Model = F4(
 	function (a, b, c, d) {
 		return {page: a, authToken: b, socket: c, notes: d};
 	});
-var _user$project$C4u_Main$Flags = function (a) {
-	return {authToken: a};
-};
+var _user$project$C4u_Main$Flags = F2(
+	function (a, b) {
+		return {authToken: a, socketUri: b};
+	});
 
 var _user$project$C4u_View_MainPage$entry = function (line) {
 	return A2(
@@ -17549,8 +17555,13 @@ var _user$project$C4u$main = {
 		_elm_lang$core$Json_Decode$andThen,
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'authToken', _elm_lang$core$Json_Decode$string),
 		function (authToken) {
-			return _elm_lang$core$Json_Decode$succeed(
-				{authToken: authToken});
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'socketUri', _elm_lang$core$Json_Decode$string),
+				function (socketUri) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{authToken: authToken, socketUri: socketUri});
+				});
 		})
 };
 

@@ -1,7 +1,14 @@
 defmodule Eecrit.Endpoint do
   use Phoenix.Endpoint, otp_app: :eecrit
 
-  socket "/socket", Eecrit.UserSocket
+
+  @socket_mount "/socket"
+  def socket_uri() do
+    ws_url = String.replace_leading(url(), "http:", "ws:")
+    ws_url <> @socket_mount
+  end
+
+  socket @socket_mount, Eecrit.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #

@@ -24,10 +24,11 @@ type alias Model =
 
 bareSocket flags =
   let
-    uri = "ws://localhost:4000/socket/websocket?auth_token=" ++
-          (Http.uriEncode flags.authToken)
+    baseUri = flags.socketUri
+    uriWithTransport = baseUri ++ "/websocket"
+    uriWithToken = uriWithTransport ++ "?auth_token=" ++ Http.uriEncode flags.authToken
   in
-    uri
+    uriWithToken
     |> Phoenix.Socket.init
     |> Phoenix.Socket.withDebug
     |> Phoenix.Socket.on "ping" "c4u" ReceiveMessage
@@ -42,6 +43,7 @@ bareChannel flags =
        
 type alias Flags =
   { authToken : String
+  , socketUri : String
   }
        
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )

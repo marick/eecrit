@@ -11,6 +11,12 @@ defmodule Eecrit.OldAnimalController do
     render(conn, "index.html", animals: animals, params: params)
   end
 
+  def elmindex(conn, params) do
+    animals =
+      OldAnimalSource.all_ordered(include_out_of_service: false)
+    render(conn, "elmindex.html", animals: animals, params: params)
+  end
+
   def new(conn, _params) do
     render_new(conn, OldAnimal.new_action_changeset)
   end

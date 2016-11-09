@@ -17274,6 +17274,121 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
+var _user$project$Animals$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Animals$one = function (animal) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(animal.name),
+				_elm_lang$html$Html$text(animal.kind)
+			]));
+};
+var _user$project$Animals$view = function (model) {
+	var _p0 = model.animals;
+	if (_p0.ctor === 'Nothing') {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('...loading...')
+				]));
+	} else {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(_elm_lang$core$List$map, _user$project$Animals$one, _p0._0));
+	}
+};
+var _user$project$Animals$update = F2(
+	function (msg, model) {
+		var _p1 = msg;
+		if (_p1.ctor === 'FetchFail') {
+			var _p2 = A2(
+				_elm_lang$core$Debug$log,
+				'fetch fail',
+				_elm_lang$core$Basics$toString(_p1._0));
+			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						animals: _elm_lang$core$Maybe$Just(_p1._0)
+					}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$Animals$Animal = F2(
+	function (a, b) {
+		return {name: a, kind: b};
+	});
+var _user$project$Animals$decodeAnimal = A3(
+	_elm_lang$core$Json_Decode$object2,
+	_user$project$Animals$Animal,
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'kind', _elm_lang$core$Json_Decode$string));
+var _user$project$Animals$decode = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['data']),
+	_elm_lang$core$Json_Decode$list(_user$project$Animals$decodeAnimal));
+var _user$project$Animals$Model = F3(
+	function (a, b, c) {
+		return {authToken: a, baseUri: b, animals: c};
+	});
+var _user$project$Animals$Flags = F2(
+	function (a, b) {
+		return {authToken: a, baseUri: b};
+	});
+var _user$project$Animals$MainPage = {ctor: 'MainPage'};
+var _user$project$Animals$FetchSucceed = function (a) {
+	return {ctor: 'FetchSucceed', _0: a};
+};
+var _user$project$Animals$FetchFail = function (a) {
+	return {ctor: 'FetchFail', _0: a};
+};
+var _user$project$Animals$fetch = function (baseUri) {
+	var url = A2(_elm_lang$core$Basics_ops['++'], baseUri, '/api/animals');
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Animals$FetchFail,
+		_user$project$Animals$FetchSucceed,
+		A2(_evancz$elm_http$Http$get, _user$project$Animals$decode, url));
+};
+var _user$project$Animals$init = function (flags) {
+	return {
+		ctor: '_Tuple2',
+		_0: {authToken: flags.authToken, baseUri: flags.baseUri, animals: _elm_lang$core$Maybe$Nothing},
+		_1: _user$project$Animals$fetch(flags.baseUri)
+	};
+};
+var _user$project$Animals$main = {
+	main: _elm_lang$html$Html_App$programWithFlags(
+		{init: _user$project$Animals$init, view: _user$project$Animals$view, update: _user$project$Animals$update, subscriptions: _user$project$Animals$subscriptions}),
+	flags: A2(
+		_elm_lang$core$Json_Decode$andThen,
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'authToken', _elm_lang$core$Json_Decode$string),
+		function (authToken) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'baseUri', _elm_lang$core$Json_Decode$string),
+				function (baseUri) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{authToken: authToken, baseUri: baseUri});
+				});
+		})
+};
+
 var _user$project$C4u_Msg$ReceiveMessage = function (a) {
 	return {ctor: 'ReceiveMessage', _0: a};
 };
@@ -20050,6 +20165,8 @@ var _user$project$IV$main = {
 };
 
 var Elm = {};
+Elm['Animals'] = Elm['Animals'] || {};
+_elm_lang$core$Native_Platform.addPublicModule(Elm['Animals'], 'Animals', typeof _user$project$Animals$main === 'undefined' ? null : _user$project$Animals$main);
 Elm['C4u'] = Elm['C4u'] || {};
 _elm_lang$core$Native_Platform.addPublicModule(Elm['C4u'], 'C4u', typeof _user$project$C4u$main === 'undefined' ? null : _user$project$C4u$main);
 Elm['IV'] = Elm['IV'] || {};

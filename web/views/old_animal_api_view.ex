@@ -6,7 +6,6 @@ defmodule Eecrit.OldAnimalApiView do
       old_animals
       |> Enum.map(&(Map.take(&1, [:name, :kind])))
       |> sort_animals
-
     %{data: data}
   end
 

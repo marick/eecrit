@@ -50,6 +50,7 @@ defmodule Eecrit.Router do
   scope "/", Eecrit do
     pipe_through [:browser, :require_login, :require_admin]
 
+    get "/animals/elmindex", OldAnimalController, :elmindex
     resources "/animals", OldAnimalController
     resources "/procedures", OldProcedureController
     resources "/procedure_descriptions", OldProcedureDescriptionController

@@ -10198,6 +10198,14 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _elm_lang$html$Html_Keyed$node = _elm_lang$virtual_dom$VirtualDom$keyedNode;
+var _elm_lang$html$Html_Keyed$ol = _elm_lang$html$Html_Keyed$node('ol');
+var _elm_lang$html$Html_Keyed$ul = _elm_lang$html$Html_Keyed$node('ul');
+
+var _elm_lang$html$Html_Lazy$lazy3 = _elm_lang$virtual_dom$VirtualDom$lazy3;
+var _elm_lang$html$Html_Lazy$lazy2 = _elm_lang$virtual_dom$VirtualDom$lazy2;
+var _elm_lang$html$Html_Lazy$lazy = _elm_lang$virtual_dom$VirtualDom$lazy;
+
 var _elm_lang$navigation$Native_Navigation = function() {
 
 function go(n)
@@ -11783,6 +11791,468 @@ var _evancz$elm_http$Http$post = F3(
 			decoder,
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
+
+var _evancz$elm_sortable_table$Table$findSorter = F2(
+	function (selectedColumn, columnData) {
+		findSorter:
+		while (true) {
+			var _p0 = columnData;
+			if (_p0.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				if (_elm_lang$core$Native_Utils.eq(_p0._0.name, selectedColumn)) {
+					return _elm_lang$core$Maybe$Just(_p0._0.sorter);
+				} else {
+					var _v1 = selectedColumn,
+						_v2 = _p0._1;
+					selectedColumn = _v1;
+					columnData = _v2;
+					continue findSorter;
+				}
+			}
+		}
+	});
+var _evancz$elm_sortable_table$Table$applySorter = F3(
+	function (isReversed, sorter, data) {
+		var _p1 = sorter;
+		switch (_p1.ctor) {
+			case 'None':
+				return data;
+			case 'Increasing':
+				return _p1._0(data);
+			case 'Decreasing':
+				return _elm_lang$core$List$reverse(
+					_p1._0(data));
+			case 'IncOrDec':
+				var _p2 = _p1._0;
+				return isReversed ? _elm_lang$core$List$reverse(
+					_p2(data)) : _p2(data);
+			default:
+				var _p3 = _p1._0;
+				return isReversed ? _p3(data) : _elm_lang$core$List$reverse(
+					_p3(data));
+		}
+	});
+var _evancz$elm_sortable_table$Table$sort = F3(
+	function (_p4, columnData, data) {
+		var _p5 = _p4;
+		var _p6 = A2(_evancz$elm_sortable_table$Table$findSorter, _p5._0, columnData);
+		if (_p6.ctor === 'Nothing') {
+			return data;
+		} else {
+			return A3(_evancz$elm_sortable_table$Table$applySorter, _p5._1, _p6._0, data);
+		}
+	});
+var _evancz$elm_sortable_table$Table$viewCell = F2(
+	function (data, _p7) {
+		var _p8 = _p7;
+		var details = _p8.viewData(data);
+		return A2(_elm_lang$html$Html$td, details.attributes, details.children);
+	});
+var _evancz$elm_sortable_table$Table$viewRowHelp = F3(
+	function (columns, toRowAttrs, data) {
+		return A2(
+			_elm_lang$html$Html$tr,
+			toRowAttrs(data),
+			A2(
+				_elm_lang$core$List$map,
+				_evancz$elm_sortable_table$Table$viewCell(data),
+				columns));
+	});
+var _evancz$elm_sortable_table$Table$viewRow = F4(
+	function (toId, columns, toRowAttrs, data) {
+		return {
+			ctor: '_Tuple2',
+			_0: toId(data),
+			_1: A4(_elm_lang$html$Html_Lazy$lazy3, _evancz$elm_sortable_table$Table$viewRowHelp, columns, toRowAttrs, data)
+		};
+	});
+var _evancz$elm_sortable_table$Table$simpleRowAttrs = function (_p9) {
+	return _elm_lang$core$Native_List.fromArray(
+		[]);
+};
+var _evancz$elm_sortable_table$Table$lightGrey = function (symbol) {
+	return A2(
+		_elm_lang$html$Html$span,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'color', _1: '#ccc'}
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], ' ', symbol))
+			]));
+};
+var _evancz$elm_sortable_table$Table$darkGrey = function (symbol) {
+	return A2(
+		_elm_lang$html$Html$span,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'color', _1: '#555'}
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				A2(_elm_lang$core$Basics_ops['++'], ' ', symbol))
+			]));
+};
+var _evancz$elm_sortable_table$Table$simpleTheadHelp = function (_p10) {
+	var _p11 = _p10;
+	var _p13 = _p11._0;
+	var content = function () {
+		var _p12 = _p11._1;
+		switch (_p12.ctor) {
+			case 'Unsortable':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(_p13)
+					]);
+			case 'Sortable':
+				return _elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(_p13),
+						_p12._0 ? _evancz$elm_sortable_table$Table$darkGrey('↓') : _evancz$elm_sortable_table$Table$lightGrey('↓')
+					]);
+			default:
+				if (_p12._0.ctor === 'Nothing') {
+					return _elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(_p13),
+							_evancz$elm_sortable_table$Table$lightGrey('↕')
+						]);
+				} else {
+					return _elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(_p13),
+							_evancz$elm_sortable_table$Table$darkGrey(
+							_p12._0._0 ? '↑' : '↓')
+						]);
+				}
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$th,
+		_elm_lang$core$Native_List.fromArray(
+			[_p11._2]),
+		content);
+};
+var _evancz$elm_sortable_table$Table$Customizations = F6(
+	function (a, b, c, d, e, f) {
+		return {tableAttrs: a, caption: b, thead: c, tfoot: d, tbodyAttrs: e, rowAttrs: f};
+	});
+var _evancz$elm_sortable_table$Table$HtmlDetails = F2(
+	function (a, b) {
+		return {attributes: a, children: b};
+	});
+var _evancz$elm_sortable_table$Table$simpleThead = function (headers) {
+	return A2(
+		_evancz$elm_sortable_table$Table$HtmlDetails,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(_elm_lang$core$List$map, _evancz$elm_sortable_table$Table$simpleTheadHelp, headers));
+};
+var _evancz$elm_sortable_table$Table$defaultCustomizations = {
+	tableAttrs: _elm_lang$core$Native_List.fromArray(
+		[]),
+	caption: _elm_lang$core$Maybe$Nothing,
+	thead: _evancz$elm_sortable_table$Table$simpleThead,
+	tfoot: _elm_lang$core$Maybe$Nothing,
+	tbodyAttrs: _elm_lang$core$Native_List.fromArray(
+		[]),
+	rowAttrs: _evancz$elm_sortable_table$Table$simpleRowAttrs
+};
+var _evancz$elm_sortable_table$Table$textDetails = function (str) {
+	return A2(
+		_evancz$elm_sortable_table$Table$HtmlDetails,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(str)
+			]));
+};
+var _evancz$elm_sortable_table$Table$ColumnData = F3(
+	function (a, b, c) {
+		return {name: a, viewData: b, sorter: c};
+	});
+var _evancz$elm_sortable_table$Table$State = F2(
+	function (a, b) {
+		return {ctor: 'State', _0: a, _1: b};
+	});
+var _evancz$elm_sortable_table$Table$initialSort = function (header) {
+	return A2(_evancz$elm_sortable_table$Table$State, header, false);
+};
+var _evancz$elm_sortable_table$Table$onClick = F3(
+	function (name, isReversed, toMsg) {
+		return A2(
+			_elm_lang$html$Html_Events$on,
+			'click',
+			A2(
+				_elm_lang$core$Json_Decode$map,
+				toMsg,
+				A3(
+					_elm_lang$core$Json_Decode$object2,
+					_evancz$elm_sortable_table$Table$State,
+					_elm_lang$core$Json_Decode$succeed(name),
+					_elm_lang$core$Json_Decode$succeed(isReversed))));
+	});
+var _evancz$elm_sortable_table$Table$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};
+var _evancz$elm_sortable_table$Table$config = function (_p14) {
+	var _p15 = _p14;
+	return _evancz$elm_sortable_table$Table$Config(
+		{
+			toId: _p15.toId,
+			toMsg: _p15.toMsg,
+			columns: A2(
+				_elm_lang$core$List$map,
+				function (_p16) {
+					var _p17 = _p16;
+					return _p17._0;
+				},
+				_p15.columns),
+			customizations: _evancz$elm_sortable_table$Table$defaultCustomizations
+		});
+};
+var _evancz$elm_sortable_table$Table$customConfig = function (_p18) {
+	var _p19 = _p18;
+	return _evancz$elm_sortable_table$Table$Config(
+		{
+			toId: _p19.toId,
+			toMsg: _p19.toMsg,
+			columns: A2(
+				_elm_lang$core$List$map,
+				function (_p20) {
+					var _p21 = _p20;
+					return _p21._0;
+				},
+				_p19.columns),
+			customizations: _p19.customizations
+		});
+};
+var _evancz$elm_sortable_table$Table$Reversible = function (a) {
+	return {ctor: 'Reversible', _0: a};
+};
+var _evancz$elm_sortable_table$Table$Sortable = function (a) {
+	return {ctor: 'Sortable', _0: a};
+};
+var _evancz$elm_sortable_table$Table$Unsortable = {ctor: 'Unsortable'};
+var _evancz$elm_sortable_table$Table$toHeaderInfo = F3(
+	function (_p23, toMsg, _p22) {
+		var _p24 = _p23;
+		var _p29 = _p24._0;
+		var _p28 = _p24._1;
+		var _p25 = _p22;
+		var _p27 = _p25.name;
+		var _p26 = _p25.sorter;
+		switch (_p26.ctor) {
+			case 'None':
+				return {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Unsortable,
+					_2: A3(_evancz$elm_sortable_table$Table$onClick, _p29, _p28, toMsg)
+				};
+			case 'Increasing':
+				return {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Sortable(
+						_elm_lang$core$Native_Utils.eq(_p27, _p29)),
+					_2: A3(_evancz$elm_sortable_table$Table$onClick, _p27, false, toMsg)
+				};
+			case 'Decreasing':
+				return {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Sortable(
+						_elm_lang$core$Native_Utils.eq(_p27, _p29)),
+					_2: A3(_evancz$elm_sortable_table$Table$onClick, _p27, false, toMsg)
+				};
+			case 'IncOrDec':
+				return _elm_lang$core$Native_Utils.eq(_p27, _p29) ? {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Reversible(
+						_elm_lang$core$Maybe$Just(_p28)),
+					_2: A3(
+						_evancz$elm_sortable_table$Table$onClick,
+						_p27,
+						_elm_lang$core$Basics$not(_p28),
+						toMsg)
+				} : {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Reversible(_elm_lang$core$Maybe$Nothing),
+					_2: A3(_evancz$elm_sortable_table$Table$onClick, _p27, false, toMsg)
+				};
+			default:
+				return _elm_lang$core$Native_Utils.eq(_p27, _p29) ? {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Reversible(
+						_elm_lang$core$Maybe$Just(_p28)),
+					_2: A3(
+						_evancz$elm_sortable_table$Table$onClick,
+						_p27,
+						_elm_lang$core$Basics$not(_p28),
+						toMsg)
+				} : {
+					ctor: '_Tuple3',
+					_0: _p27,
+					_1: _evancz$elm_sortable_table$Table$Reversible(_elm_lang$core$Maybe$Nothing),
+					_2: A3(_evancz$elm_sortable_table$Table$onClick, _p27, false, toMsg)
+				};
+		}
+	});
+var _evancz$elm_sortable_table$Table$view = F3(
+	function (_p30, state, data) {
+		var _p31 = _p30;
+		var _p35 = _p31._0.customizations;
+		var _p34 = _p31._0.columns;
+		var theadDetails = _p35.thead(
+			A2(
+				_elm_lang$core$List$map,
+				A2(_evancz$elm_sortable_table$Table$toHeaderInfo, state, _p31._0.toMsg),
+				_p34));
+		var thead = A2(_elm_lang$html$Html$thead, theadDetails.attributes, theadDetails.children);
+		var sortedData = A3(_evancz$elm_sortable_table$Table$sort, state, _p34, data);
+		var tbody = A3(
+			_elm_lang$html$Html_Keyed$node,
+			'tbody',
+			_p35.tbodyAttrs,
+			A2(
+				_elm_lang$core$List$map,
+				A3(_evancz$elm_sortable_table$Table$viewRow, _p31._0.toId, _p34, _p35.rowAttrs),
+				sortedData));
+		var withFoot = function () {
+			var _p32 = _p35.tfoot;
+			if (_p32.ctor === 'Nothing') {
+				return A2(
+					_elm_lang$core$List_ops['::'],
+					tbody,
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			} else {
+				return A2(
+					_elm_lang$core$List_ops['::'],
+					A2(_elm_lang$html$Html$tfoot, _p32._0.attributes, _p32._0.children),
+					A2(
+						_elm_lang$core$List_ops['::'],
+						tbody,
+						_elm_lang$core$Native_List.fromArray(
+							[])));
+			}
+		}();
+		return A2(
+			_elm_lang$html$Html$table,
+			_p35.tableAttrs,
+			function () {
+				var _p33 = _p35.caption;
+				if (_p33.ctor === 'Nothing') {
+					return A2(_elm_lang$core$List_ops['::'], thead, withFoot);
+				} else {
+					return A2(
+						_elm_lang$core$List_ops['::'],
+						A2(_elm_lang$html$Html$caption, _p33._0.attributes, _p33._0.children),
+						A2(_elm_lang$core$List_ops['::'], thead, withFoot));
+				}
+			}());
+	});
+var _evancz$elm_sortable_table$Table$Column = function (a) {
+	return {ctor: 'Column', _0: a};
+};
+var _evancz$elm_sortable_table$Table$customColumn = function (_p36) {
+	var _p37 = _p36;
+	return _evancz$elm_sortable_table$Table$Column(
+		A3(
+			_evancz$elm_sortable_table$Table$ColumnData,
+			_p37.name,
+			function (_p38) {
+				return _evancz$elm_sortable_table$Table$textDetails(
+					_p37.viewData(_p38));
+			},
+			_p37.sorter));
+};
+var _evancz$elm_sortable_table$Table$veryCustomColumn = _evancz$elm_sortable_table$Table$Column;
+var _evancz$elm_sortable_table$Table$DecOrInc = function (a) {
+	return {ctor: 'DecOrInc', _0: a};
+};
+var _evancz$elm_sortable_table$Table$decreasingOrIncreasingBy = function (toComparable) {
+	return _evancz$elm_sortable_table$Table$DecOrInc(
+		_elm_lang$core$List$sortBy(toComparable));
+};
+var _evancz$elm_sortable_table$Table$IncOrDec = function (a) {
+	return {ctor: 'IncOrDec', _0: a};
+};
+var _evancz$elm_sortable_table$Table$increasingOrDecreasingBy = function (toComparable) {
+	return _evancz$elm_sortable_table$Table$IncOrDec(
+		_elm_lang$core$List$sortBy(toComparable));
+};
+var _evancz$elm_sortable_table$Table$stringColumn = F2(
+	function (name, toStr) {
+		return _evancz$elm_sortable_table$Table$Column(
+			{
+				name: name,
+				viewData: function (_p39) {
+					return _evancz$elm_sortable_table$Table$textDetails(
+						toStr(_p39));
+				},
+				sorter: _evancz$elm_sortable_table$Table$increasingOrDecreasingBy(toStr)
+			});
+	});
+var _evancz$elm_sortable_table$Table$intColumn = F2(
+	function (name, toInt) {
+		return _evancz$elm_sortable_table$Table$Column(
+			{
+				name: name,
+				viewData: function (_p40) {
+					return _evancz$elm_sortable_table$Table$textDetails(
+						_elm_lang$core$Basics$toString(
+							toInt(_p40)));
+				},
+				sorter: _evancz$elm_sortable_table$Table$increasingOrDecreasingBy(toInt)
+			});
+	});
+var _evancz$elm_sortable_table$Table$floatColumn = F2(
+	function (name, toFloat) {
+		return _evancz$elm_sortable_table$Table$Column(
+			{
+				name: name,
+				viewData: function (_p41) {
+					return _evancz$elm_sortable_table$Table$textDetails(
+						_elm_lang$core$Basics$toString(
+							toFloat(_p41)));
+				},
+				sorter: _evancz$elm_sortable_table$Table$increasingOrDecreasingBy(toFloat)
+			});
+	});
+var _evancz$elm_sortable_table$Table$Decreasing = function (a) {
+	return {ctor: 'Decreasing', _0: a};
+};
+var _evancz$elm_sortable_table$Table$decreasingBy = function (toComparable) {
+	return _evancz$elm_sortable_table$Table$Decreasing(
+		_elm_lang$core$List$sortBy(toComparable));
+};
+var _evancz$elm_sortable_table$Table$Increasing = function (a) {
+	return {ctor: 'Increasing', _0: a};
+};
+var _evancz$elm_sortable_table$Table$increasingBy = function (toComparable) {
+	return _evancz$elm_sortable_table$Table$Increasing(
+		_elm_lang$core$List$sortBy(toComparable));
+};
+var _evancz$elm_sortable_table$Table$None = {ctor: 'None'};
+var _evancz$elm_sortable_table$Table$unsortable = _evancz$elm_sortable_table$Table$None;
 
 var _evancz$url_parser$UrlParser$oneOfHelp = F3(
 	function (choices, chunks, formatter) {
@@ -17288,44 +17758,34 @@ var _user$project$Animals$one = function (animal) {
 				_elm_lang$html$Html$text(animal.kind)
 			]));
 };
-var _user$project$Animals$view = function (model) {
-	var _p0 = model.animals;
-	if (_p0.ctor === 'Nothing') {
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text('...loading...')
-				]));
-	} else {
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			A2(_elm_lang$core$List$map, _user$project$Animals$one, _p0._0));
-	}
-};
 var _user$project$Animals$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'FetchFail') {
-			var _p2 = A2(
-				_elm_lang$core$Debug$log,
-				'fetch fail',
-				_elm_lang$core$Basics$toString(_p1._0));
-			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{
-						animals: _elm_lang$core$Maybe$Just(_p1._0)
-					}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'FetchFail':
+				var _p1 = A2(
+					_elm_lang$core$Debug$log,
+					'fetch fail',
+					_elm_lang$core$Basics$toString(_p0._0));
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'FetchSucceed':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: _elm_lang$core$Maybe$Just(_p0._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{tableState: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Animals$Animal = F2(
@@ -17342,15 +17802,62 @@ var _user$project$Animals$decode = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['data']),
 	_elm_lang$core$Json_Decode$list(_user$project$Animals$decodeAnimal));
-var _user$project$Animals$Model = F3(
-	function (a, b, c) {
-		return {authToken: a, baseUri: b, animals: c};
+var _user$project$Animals$Model = F4(
+	function (a, b, c, d) {
+		return {authToken: a, baseUri: b, animals: c, tableState: d};
 	});
 var _user$project$Animals$Flags = F2(
 	function (a, b) {
 		return {authToken: a, baseUri: b};
 	});
 var _user$project$Animals$MainPage = {ctor: 'MainPage'};
+var _user$project$Animals$SetTableState = function (a) {
+	return {ctor: 'SetTableState', _0: a};
+};
+var _user$project$Animals$config = _evancz$elm_sortable_table$Table$config(
+	{
+		toId: function (_) {
+			return _.name;
+		},
+		toMsg: _user$project$Animals$SetTableState,
+		columns: _elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_evancz$elm_sortable_table$Table$stringColumn,
+				'Name',
+				function (_) {
+					return _.name;
+				}),
+				A2(
+				_evancz$elm_sortable_table$Table$stringColumn,
+				'Kind',
+				function (_) {
+					return _.kind;
+				})
+			])
+	});
+var _user$project$Animals$view = function (model) {
+	var _p2 = model.animals;
+	if (_p2.ctor === 'Nothing') {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('...loading...')
+				]));
+	} else {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A3(_evancz$elm_sortable_table$Table$view, _user$project$Animals$config, model.tableState, _p2._0)
+				]));
+	}
+};
 var _user$project$Animals$FetchSucceed = function (a) {
 	return {ctor: 'FetchSucceed', _0: a};
 };
@@ -17368,7 +17875,12 @@ var _user$project$Animals$fetch = function (baseUri) {
 var _user$project$Animals$init = function (flags) {
 	return {
 		ctor: '_Tuple2',
-		_0: {authToken: flags.authToken, baseUri: flags.baseUri, animals: _elm_lang$core$Maybe$Nothing},
+		_0: {
+			authToken: flags.authToken,
+			baseUri: flags.baseUri,
+			animals: _elm_lang$core$Maybe$Nothing,
+			tableState: _evancz$elm_sortable_table$Table$initialSort('Name')
+		},
 		_1: _user$project$Animals$fetch(flags.baseUri)
 	};
 };

@@ -2,9 +2,11 @@ module Animals exposing (main)
 
 import Html exposing (..)
 import Html.App exposing (programWithFlags)
+import Html.Events exposing (onInput)
 import Http
 import Json.Decode as Json exposing ((:=))
 import Task
+import Table
 
 main : Program Flags
 main =
@@ -27,6 +29,7 @@ type alias Model =
   { authToken : String
   , baseUri : String
   , animals : Maybe (List Animal)
+  , tableState : Table.State
   }
     
 type alias Flags =
@@ -39,6 +42,7 @@ init flags  =
   ( { authToken = flags.authToken
     , baseUri = flags.baseUri
     , animals = Nothing
+    , tableState = Table.initialSort "Name"
     }
   , fetch flags.baseUri
   )
@@ -46,6 +50,7 @@ init flags  =
 type Msg
   = FetchFail Http.Error
   | FetchSucceed (List Animal)
+  | SetTableState Table.State
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -59,6 +64,11 @@ update msg model =
       ( { model | animals = Just parsedResult }
       , Cmd.none
       )
+
+    SetTableState state ->
+      ( { model | tableState = state }
+      , Cmd.none
+      )    
 
 
 one animal = 
@@ -75,7 +85,19 @@ view model =
         [ text "...loading..."
         ]
     Just animals ->
-      div [] (List.map one animals)
+      div []
+        [ Table.view config model.tableState animals ]
+
+config : Table.Config Animal Msg
+config =
+  Table.config
+    { toId = .name
+    , toMsg = SetTableState
+    , columns =
+        [ Table.stringColumn "Name" .name
+        , Table.stringColumn "Kind" .kind
+        ]
+    }
           
 
 subscriptions : Model -> Sub Msg

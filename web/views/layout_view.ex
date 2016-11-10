@@ -17,6 +17,28 @@ defmodule Eecrit.LayoutView do
 
   def expand_link_data(link_data, extras \\ []),
     do: link(link_data.name, [to: link_data.path] ++ extras)
+
+  def collapse_button(id) do
+    T.button(type: "button", class: "navbar-toggle",
+             data_toggle: "collapse", data_target: "#"<>id) do
+      [ T.span("Toggle header", class: "sr-only"),
+        T.span("", class: "icon-bar"),
+        T.span("", class: "icon-bar"),
+        T.span("", class: "icon-bar"),
+      ]
+    end
+  end
+
+  def collapsible_div(id, do: components) do
+    T.div components,
+      class: "collapse navbar-collapse", id: "navbar"
+  end
+
+  def ul_list(class, do: items) do
+    T.ul class: "nav navbar-nav navbar-right" do
+      Enum.map items, &T.li/1
+    end
+  end
   
   def navbar(conn) do
     data = navbar_data(conn)
@@ -24,15 +46,18 @@ defmodule Eecrit.LayoutView do
     T.nav role: "navigation", class: "navbar navbar-default" do
       T.div class: "container-fluid" do
         [T.div class: "navbar-header" do
-          expand_link_data(data.home, class: "navbar-brand")
-         end, 
-         T.p(data.who, class: "navbar-text"),
-         T.div class: "navbar-right" do 
-           T.ul class: "nav navbar-nav" do 
-             [
-               T.li expand_link_data(data.log_in_out)
-             ]
-           end
+          [ expand_link_data(data.home, class: "navbar-brand"),
+            collapse_button("navbar")
+          ]
+         end,
+         collapsible_div("navbar") do 
+           [ T.p(data.who, class: "navbar-text"),
+             ul_list("nav navbar-nav navbar-right") do
+               [expand_link_data(data.log_in_out),
+                expand_link_data(data.log_in_out),
+               ]
+             end
+           ]
          end
         ]
       end

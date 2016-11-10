@@ -1,13 +1,3 @@
 
-<h2><%= page_description(@params) %> </h2>
-<div class="input-group">
-  <span class="input-group-btn">
-<%= toggle_link(@conn, @params) %>
-<%= link "Add new animal", to: old_animal_path(@conn, :new), class: "btn btn-default" %>
-  </span>
-</div>
-
 <div id="animals-target">
 </div>
-
-<%= link "Add new animal", to: old_animal_path(@conn, :new), class: "btn btn-default" %>

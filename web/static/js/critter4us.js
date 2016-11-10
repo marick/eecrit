@@ -17744,29 +17744,68 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
+var _user$project$Animals$nullOrEmptyDecoder = _elm_lang$core$Json_Decode$oneOf(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$core$Json_Decode$null(''),
+			_elm_lang$core$Json_Decode$string
+		]));
 var _user$project$Animals$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Animals$one = function (animal) {
+var _user$project$Animals$caseInsensitiveColumn = F2(
+	function (name, accessor) {
+		return _evancz$elm_sortable_table$Table$customColumn(
+			{
+				name: name,
+				viewData: accessor,
+				sorter: _evancz$elm_sortable_table$Table$increasingOrDecreasingBy(
+					function (_p0) {
+						return _elm_lang$core$String$toLower(
+							accessor(_p0));
+					})
+			});
+	});
+var _user$project$Animals$buttons = function (animal) {
 	return A2(
-		_elm_lang$html$Html$div,
+		_evancz$elm_sortable_table$Table$HtmlDetails,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(animal.name),
-				_elm_lang$html$Html$text(animal.kind)
+				A2(
+				_elm_lang$html$Html$strong,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'edit etc buttons for id ',
+							_elm_lang$core$Basics$toString(animal.id)))
+					]))
 			]));
 };
+var _user$project$Animals$buttonColumn = _evancz$elm_sortable_table$Table$veryCustomColumn(
+	{name: '', viewData: _user$project$Animals$buttons, sorter: _evancz$elm_sortable_table$Table$unsortable});
+var _user$project$Animals$customizations = _elm_lang$core$Native_Utils.update(
+	_evancz$elm_sortable_table$Table$defaultCustomizations,
+	{
+		tableAttrs: _elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('table table-striped')
+			])
+	});
 var _user$project$Animals$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
 			case 'FetchFail':
-				var _p1 = A2(
+				var _p2 = A2(
 					_elm_lang$core$Debug$log,
 					'fetch fail',
-					_elm_lang$core$Basics$toString(_p0._0));
+					_elm_lang$core$Basics$toString(_p1._0));
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'FetchSucceed':
 				return {
@@ -17774,8 +17813,24 @@ var _user$project$Animals$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							animals: _elm_lang$core$Maybe$Just(_p0._0)
+							animals: _elm_lang$core$Maybe$Just(_p1._0)
 						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetTableState':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{tableState: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetNameFilter':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{nameFilter: _p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -17783,38 +17838,46 @@ var _user$project$Animals$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{tableState: _p0._0}),
+						{kindFilter: _p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
 	});
-var _user$project$Animals$Animal = F2(
-	function (a, b) {
-		return {name: a, kind: b};
+var _user$project$Animals$Animal = F4(
+	function (a, b, c, d) {
+		return {id: a, name: b, nickname: c, kind: d};
 	});
-var _user$project$Animals$decodeAnimal = A3(
-	_elm_lang$core$Json_Decode$object2,
+var _user$project$Animals$decodeAnimal = A5(
+	_elm_lang$core$Json_Decode$object4,
 	_user$project$Animals$Animal,
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'id', _elm_lang$core$Json_Decode$int),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'nickname', _user$project$Animals$nullOrEmptyDecoder),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'kind', _elm_lang$core$Json_Decode$string));
 var _user$project$Animals$decode = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
 		['data']),
 	_elm_lang$core$Json_Decode$list(_user$project$Animals$decodeAnimal));
-var _user$project$Animals$Model = F4(
-	function (a, b, c, d) {
-		return {authToken: a, baseUri: b, animals: c, tableState: d};
+var _user$project$Animals$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {authToken: a, baseUri: b, animals: c, tableState: d, nameFilter: e, kindFilter: f};
 	});
 var _user$project$Animals$Flags = F2(
 	function (a, b) {
 		return {authToken: a, baseUri: b};
 	});
 var _user$project$Animals$MainPage = {ctor: 'MainPage'};
+var _user$project$Animals$SetKindFilter = function (a) {
+	return {ctor: 'SetKindFilter', _0: a};
+};
+var _user$project$Animals$SetNameFilter = function (a) {
+	return {ctor: 'SetNameFilter', _0: a};
+};
 var _user$project$Animals$SetTableState = function (a) {
 	return {ctor: 'SetTableState', _0: a};
 };
-var _user$project$Animals$config = _evancz$elm_sortable_table$Table$config(
+var _user$project$Animals$config = _evancz$elm_sortable_table$Table$customConfig(
 	{
 		toId: function (_) {
 			return _.name;
@@ -17823,22 +17886,119 @@ var _user$project$Animals$config = _evancz$elm_sortable_table$Table$config(
 		columns: _elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_evancz$elm_sortable_table$Table$stringColumn,
+				_user$project$Animals$caseInsensitiveColumn,
 				'Name',
 				function (_) {
 					return _.name;
 				}),
 				A2(
-				_evancz$elm_sortable_table$Table$stringColumn,
+				_user$project$Animals$caseInsensitiveColumn,
 				'Kind',
 				function (_) {
 					return _.kind;
-				})
-			])
+				}),
+				_user$project$Animals$buttonColumn
+			]),
+		customizations: _user$project$Animals$customizations
+	});
+var _user$project$Animals$viewAnimals = F2(
+	function (model, animals) {
+		var filterBy = F2(
+			function (getter, filterString) {
+				return _elm_lang$core$List$filter(
+					function (_p3) {
+						return A2(
+							_elm_lang$core$String$contains,
+							filterString,
+							_elm_lang$core$String$toLower(
+								getter(_p3)));
+					});
+			});
+		var lowerKindFilter = _elm_lang$core$String$toLower(model.kindFilter);
+		var lowerNameFilter = _elm_lang$core$String$toLower(model.nameFilter);
+		var acceptable = A3(
+			filterBy,
+			function (_) {
+				return _.kind;
+			},
+			lowerKindFilter,
+			A3(
+				filterBy,
+				function (_) {
+					return _.name;
+				},
+				lowerNameFilter,
+				animals));
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('row')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$div,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('input-group')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$html$Html$span,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('input-group-addon')
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html$text('Filter by name')
+										])),
+									A2(
+									_elm_lang$html$Html$input,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$type$('text'),
+											_elm_lang$html$Html_Attributes$value(model.nameFilter),
+											_elm_lang$html$Html_Events$onInput(_user$project$Animals$SetNameFilter)
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[])),
+									A2(
+									_elm_lang$html$Html$span,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('input-group-addon')
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html$text('Filter by kind')
+										])),
+									A2(
+									_elm_lang$html$Html$input,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$type$('text'),
+											_elm_lang$html$Html_Attributes$value(model.kindFilter),
+											_elm_lang$html$Html_Events$onInput(_user$project$Animals$SetKindFilter)
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[]))
+								]))
+						])),
+					A3(_evancz$elm_sortable_table$Table$view, _user$project$Animals$config, model.tableState, acceptable)
+				]));
 	});
 var _user$project$Animals$view = function (model) {
-	var _p2 = model.animals;
-	if (_p2.ctor === 'Nothing') {
+	var _p4 = model.animals;
+	if (_p4.ctor === 'Nothing') {
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
@@ -17848,14 +18008,7 @@ var _user$project$Animals$view = function (model) {
 					_elm_lang$html$Html$text('...loading...')
 				]));
 	} else {
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A3(_evancz$elm_sortable_table$Table$view, _user$project$Animals$config, model.tableState, _p2._0)
-				]));
+		return A2(_user$project$Animals$viewAnimals, model, _p4._0);
 	}
 };
 var _user$project$Animals$FetchSucceed = function (a) {
@@ -17879,7 +18032,9 @@ var _user$project$Animals$init = function (flags) {
 			authToken: flags.authToken,
 			baseUri: flags.baseUri,
 			animals: _elm_lang$core$Maybe$Nothing,
-			tableState: _evancz$elm_sortable_table$Table$initialSort('Name')
+			tableState: _evancz$elm_sortable_table$Table$initialSort('Name'),
+			nameFilter: '',
+			kindFilter: ''
 		},
 		_1: _user$project$Animals$fetch(flags.baseUri)
 	};

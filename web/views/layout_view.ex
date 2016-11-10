@@ -11,7 +11,14 @@ defmodule Eecrit.LayoutView do
   def navbar_data(conn) do
     %{home: link_data("Critter4Us", page_path(conn, :index)),
       who: user_description(conn),
-      log_in_out: log_in_out_new(conn)
+      log_in_out: log_in_out_new(conn),
+      reports: [
+                link_data("Animal use", report_path(conn, :animal_use))
+               ],
+      manage: [
+               T.m_resource_link(conn, "Animals", Eecrit.OldAnimal),
+               T.m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
+              ]
     }
   end
 
@@ -35,9 +42,19 @@ defmodule Eecrit.LayoutView do
   end
 
   def ul_list(class, do: items) do
-    T.ul class: "nav navbar-nav navbar-right" do
+    T.ul class: class do
       Enum.map items, &T.li/1
     end
+  end
+
+  def dropdown(name, list_links) do
+    list_button = [ name, T.span("", class: "caret")]
+
+    whole =
+      T.a(class: "dropdown-toggle", data_toggle: "dropdown", href: "#") do
+      [list_button] ++ ul_list("dropdown-menu", do: list_links)
+    end
+    T.li(whole, class: "dropdown")
   end
   
   def navbar(conn) do
@@ -53,7 +70,8 @@ defmodule Eecrit.LayoutView do
          collapsible_div("navbar") do 
            [ T.p(data.who, class: "navbar-text"),
              ul_list("nav navbar-nav navbar-right") do
-               [expand_link_data(data.log_in_out),
+               [dropdown("Reports", (Enum.map data.reports, &expand_link_data/1)),
+                dropdown("Manage", data.manage),
                 expand_link_data(data.log_in_out),
                ]
              end

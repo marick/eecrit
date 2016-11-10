@@ -60,7 +60,7 @@ defmodule Eecrit.LayoutView do
   def navbar(conn) do
     data = navbar_data(conn)
 
-    T.nav role: "navigation", class: "navbar navbar-default" do
+    T.nav role: "navigation", class: "navbar navbar-default navbar-fixed-top" do
       T.div class: "container-fluid" do
         [T.div class: "navbar-header" do
           [ expand_link_data(data.home, class: "navbar-brand"),

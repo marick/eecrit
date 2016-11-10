@@ -12,22 +12,15 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ol class="breadcrumb text-right">
-            <%= navigation(@conn) %> 
-          </ol>
-        </nav>
-        <span class="logo"></span>
-      </header>
+  <%= navbar(@conn) %>
 
+  <div class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
+      
       <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+          <%= render @view_module, @view_template, assigns %>
+        </main>
     </div> <!-- /container -->
     <script>window.auth_token = "<%= assigns[:auth_token] %>"</script>
     <script>window.base_uri = "<%= Eecrit.Endpoint.url %>"</script>

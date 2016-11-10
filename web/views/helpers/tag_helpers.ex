@@ -98,6 +98,7 @@ defmodule Eecrit.TagHelpers do
   tag_wrapper(:p)
   tag_wrapper(:ul)
   tag_wrapper(:span)
+  tag_wrapper(:nav)
 
 
   def symbol_span(class), do: tag(:span, class: class)

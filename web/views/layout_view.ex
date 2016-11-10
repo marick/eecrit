@@ -1,21 +1,72 @@
 defmodule Eecrit.LayoutView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
-  use Eecrit.TagHelpers
+  import Eecrit.TagHelpers.Macros
+  alias Eecrit.TagHelpers, as: T
   alias Eecrit.AggregateViewWidgets
+
+  def link_data(name, path, extras \\ []),
+    do: %{name: name, path: path, extras: extras}
+  
+  def navbar_data(conn) do
+    %{home: link_data("Critter4Us", page_path(conn, :index)),
+      who: user_description(conn),
+      log_in_out: log_in_out_new(conn)
+    }
+  end
+
+  def expand_link_data(link_data, extras \\ []),
+    do: link(link_data.name, [to: link_data.path] ++ extras)
+  
+  def navbar(conn) do
+    data = navbar_data(conn)
+
+    T.nav role: "navigation", class: "navbar navbar-default" do
+      T.div class: "container-fluid" do
+        [T.div class: "navbar-header" do
+          expand_link_data(data.home, class: "navbar-brand")
+         end, 
+         T.p(data.who, class: "navbar-text"),
+         T.div class: "navbar-right" do 
+           T.ul class: "nav navbar-nav" do 
+             [
+               T.li expand_link_data(data.log_in_out)
+             ]
+           end
+         end
+        ]
+      end
+    end
+  end
+
+
+
+
+
+  ### 
+  
 
   def navigation(conn) do
     iolists = [
       link("Home", to: page_path(conn, :index)),
       AggregateViewWidgets.reports_launcher(conn),
-      m_resource_link(conn, "Animals", Eecrit.OldAnimal),
-      m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
+      T.m_resource_link(conn, "Animals", Eecrit.OldAnimal),
+      T.m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
       salutation(conn),
       organization(conn),
       log_in_out(conn),
     ]
 
-    Enum.map(iolists, &li/1)
+    Enum.map(iolists, &T.li/1)
+  end
+
+  def log_in_out_new(conn) do 
+    current_user = conn.assigns.current_user
+    if current_user == nil do
+      link_data("Log in", session_path(conn, :new))
+    else
+      link_data("Log out", session_path(conn, :delete, current_user), method: "delete")
+    end
   end
 
   def log_in_out(conn) do
@@ -25,6 +76,12 @@ defmodule Eecrit.LayoutView do
     else
       link("Log out", to: session_path(conn, :delete, current_user), method: "delete")
     end
+  end
+    
+  def user_description(conn) do
+    current_user = conn.assigns.current_user
+    build_if current_user,
+      do: "#{current_user.display_name} for #{current_user.current_organization.short_name}"
   end
     
   def salutation(conn) do

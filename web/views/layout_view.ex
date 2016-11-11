@@ -9,14 +9,24 @@ defmodule Eecrit.LayoutView do
   def navbar_data(conn) do
     %{home: Logical.path("Critter4Us", page_path(conn, :index)),
       user: conn.assigns.current_user,
-      dropdowns: dropdowns(conn)
-      reports: [Logical.path("Animal use", report_path(conn, :animal_use))
-               ],
-      manage: [Logical.resource(conn, "Animals", Eecrit.OldAnimal),
-               Logical.resource(conn, "Procedures", Eecrit.OldProcedure),
-              ]
+      reports: report_links(conn),
+      manage: manage_links(conn),
     }
   end
+
+  def report_links(conn) do
+    Logical.dropdown("Reports", [
+          Logical.path("Animal use", report_path(conn, :animal_use))
+        ])
+  end
+
+  def manage_links(conn) do
+    Logical.dropdown("Manage", [
+          Logical.resource(conn, "Animals", Eecrit.OldAnimal),
+          Logical.resource(conn, "Procedures", Eecrit.OldProcedure),
+        ])
+  end
+
 
   # Rendering
 
@@ -32,9 +42,8 @@ defmodule Eecrit.LayoutView do
          Bootstrap.collapsible_div("navbar") do 
            [ m_p(user_description(data.user), class: "navbar-text"),
              ul_list("nav navbar-nav navbar-right") do
-               [ Bootstrap.dropdown("Reports", (Enum.map data.reports, &Logical.to_html/1)),
-                 Bootstrap.dropdown("Manage", (Enum.map data.manage, &Logical.to_html/1)),
-
+               [ Bootstrap.dropdown(data.reports),
+                 Bootstrap.dropdown(data.manage),
                  log_in_out(conn, data.user)
                ] end
            ] end

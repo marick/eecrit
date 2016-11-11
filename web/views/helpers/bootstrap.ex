@@ -1,6 +1,7 @@
 defmodule Eecrit.Helpers.Bootstrap do
   use Eecrit.Helpers.Tags
   import Eecrit.Helpers.Aggregates
+  alias Eecrit.Helpers.Logical
 
   def collapsible_div(id, do: components) do
     div_tag components,
@@ -18,14 +19,15 @@ defmodule Eecrit.Helpers.Bootstrap do
     end
   end
 
-  def dropdown(_name, list_links) when list_links == [], do: []
-  def dropdown(name, list_links) do
-    list_button = [ name, span("", class: "caret")]
-    
-    whole =
-      a(class: "dropdown-toggle", data_toggle: "dropdown", href: "#") do
-        [list_button] ++ ul_list("dropdown-menu", do: list_links)
-      end
-    li(whole, class: "dropdown")
+  def dropdown(nil), do: []
+  def dropdown(logical) do
+    list_button = [ logical.name, span("", class: "caret")]
+    list_entries = Enum.map logical.elements, &Logical.to_html/1
+    dropdown_list = [list_button | ul_list("dropdown-menu", do: list_entries)]
+
+    showable = a(class: "dropdown-toggle", data_toggle: "dropdown", href: "#") do
+      dropdown_list
+    end
+    li(showable, class: "dropdown")
   end
 end

@@ -18,13 +18,14 @@ defmodule Eecrit.Helpers.Bootstrap do
     end
   end
 
+  def dropdown(_name, list_links) when list_links == [], do: []
   def dropdown(name, list_links) do
     list_button = [ name, span("", class: "caret")]
     
     whole =
       a(class: "dropdown-toggle", data_toggle: "dropdown", href: "#") do
-      [list_button] ++ ul_list("dropdown-menu", do: list_links)
-    end
+        [list_button] ++ ul_list("dropdown-menu", do: list_links)
+      end
     li(whole, class: "dropdown")
   end
 end

@@ -18,6 +18,12 @@ defmodule Eecrit.Router do
     plug :accepts, ["json"]
   end
 
+
+  scope "/v2", Eecrit do 
+    pipe_through :browser
+    get "/", V2PageController, :index
+  end  
+
   # TODO: I'm not sure where to store the fact that a user must have
   # ability X to access resource Y. Should it be here, to give a broad
   # overview? Or should it be attached to the resource (which would make

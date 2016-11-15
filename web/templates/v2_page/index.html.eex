@@ -1,1 +1,8 @@
+  <section class="section">
+    <div class="container content">
+      <p class="has-text-centered">
+        Main text
+      </p>
+    </div>
+  </section>
 

@@ -1,0 +1,12 @@
+  <section class="section">
+    <div class="container content">
+      <p class="has-text-centered">
+        Critter4Us is an app that lets schools of Veterinary Medicine manage teaching animals, especially focusing on (1) making it easy for faculty to reserve animals for teaching or labs, and (2) letting the administration keep track of who's doing what with which animals.
+      </p>
+      <p class="has-text-centered">
+        You can try it out by logging in with the
+        <%= link("default account", to: v2_session_path(@conn, :login)) %>.
+      </p>
+    </div>
+  </section>
+

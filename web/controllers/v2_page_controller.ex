@@ -1,9 +1,20 @@
 defmodule Eecrit.V2PageController do
   use Eecrit.Web, :controller
+  import Eecrit.Helpers.Bulma, only: [v2_default_layout: 2]
+  
+  plug :v2_default_layout
 
   def index(conn, _params) do
-    conn
-    |> put_layout("v2_layout.html")
-    |> render("index.html")
+    if conn.assigns.v2_current_user do
+      render(conn, "index.html")
+    else
+      redirect conn, to: v2_page_path(conn, :about)
+    end
   end
+
+  def about(conn, _params) do
+    render(conn, "about.html")
+  end
+
+
 end

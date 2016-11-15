@@ -1,6 +1,7 @@
 defmodule Eecrit.Router do
   use Eecrit.Web, :router
   import Eecrit.SessionPlugs, only: [add_current_user: 2,
+                                     v2_add_current_user: 2,
                                      require_login: 2,
                                      require_admin: 2,
                                      require_superuser: 2]
@@ -12,6 +13,7 @@ defmodule Eecrit.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :add_current_user
+    plug :v2_add_current_user
   end
 
   pipeline :api do
@@ -22,6 +24,9 @@ defmodule Eecrit.Router do
   scope "/v2", Eecrit do 
     pipe_through :browser
     get "/", V2PageController, :index
+    get "/about", V2PageController, :about
+    get "/login", V2SessionController, :login
+    get "/logout", V2SessionController, :logout
   end  
 
   # TODO: I'm not sure where to store the fact that a user must have

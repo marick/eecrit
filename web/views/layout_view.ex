@@ -6,6 +6,31 @@ defmodule Eecrit.LayoutView do
   alias Eecrit.Helpers.Logical
   alias Eecrit.Helpers.Bootstrap
 
+
+  # V2
+
+  def one_flash(conn, color, key) do
+    flash = get_flash(conn, key)
+    build_if flash do
+      nav class: "notification #{color}" do
+        flash
+      end
+    end
+  end
+
+  def v2_flash(conn) do
+    [one_flash(conn, "is-success", :success),
+     one_flash(conn, "is-info", :info), 
+     one_flash(conn, "is-danger", :error),
+    ]
+  end
+  
+
+  
+
+  # V1 
+
+  
   def navbar_data(conn) do
     %{home: Logical.path("Critter4Us", page_path(conn, :index)),
       user: conn.assigns.current_user,
@@ -58,7 +83,7 @@ defmodule Eecrit.LayoutView do
 
   # Todo: these don't have the right indentation when the window is small
 
-  def log_in_out(conn, current_user = nil) do 
+  def log_in_out(conn, _current_user = nil) do 
     link("Log in", to: session_path(conn, :new))
     |> p(class: "navbar-text")
   end

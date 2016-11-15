@@ -8,6 +8,14 @@ defmodule Eecrit.SessionPlugs do
   alias Eecrit.AbilityGroup
   alias Eecrit.Router.Helpers
 
+  def v2_add_current_user(conn, _opts) do
+    assign(conn, :v2_current_user, get_session(conn, :v2_logged_in))
+  end
+
+
+
+
+  
   @doc """
   Fetches a userid from the session. If found, looks up the user
   and assigns it to `conn.assigns.current_user`, which is otherwise

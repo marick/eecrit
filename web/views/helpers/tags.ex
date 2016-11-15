@@ -81,6 +81,7 @@ defmodule Eecrit.Helpers.Tags do
   tag_maker(:span)
   tag_maker(:nav)
   tag_maker(:a)
+  tag_maker(:img)
 
 
   def symbol_span(class), do: tag(:span, class: class)

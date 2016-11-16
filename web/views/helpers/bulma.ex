@@ -14,9 +14,10 @@ defmodule Eecrit.Helpers.Bulma do
   end
 
   def tab_button(button_text, path, extra_attributes \\ []) do 
-    span class: @tab_item_class do 
-      link(button_text,
-        [to: path, class: "button button-primary nav-item"] ++ extra_attributes)
-    end
+    link(button_text,
+      [form: [class: @tab_item_class],
+       to: path,
+       class: "button button-primary nav-item"]
+      ++ extra_attributes)
   end
 end

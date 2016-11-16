@@ -5,6 +5,7 @@ defmodule Eecrit.SessionPlugsTest do
   alias Eecrit.AbilityGroup
   alias Eecrit.Organization
   alias Eecrit.User
+  alias Phoenix.Controller
 
   describe "an `:add_current_user` function" do
     def subject(conn, user_id) do

@@ -1,25 +1,4 @@
 defmodule Eecrit.Helpers.Tags.Macros do
-  defmacro build_if(test, do: body) do
-    quote do
-      if unquote(test) do
-        unquote(body)
-      else
-        []
-      end
-    end
-  end
-
-  # Don't *think* there's a way to use a just-defined macro in another one.
-  defmacro build_unless(test, do: body) do
-    quote do
-      if !unquote(test) do
-        unquote(body)
-      else
-        []
-      end
-    end
-  end
-
   defmacro tag_maker(tag, function_name \\ nil) do
     function_name = function_name || tag
     maybe_function_name = "m_" <> Atom.to_string(function_name) |> String.to_atom
@@ -35,7 +14,7 @@ defmodule Eecrit.Helpers.Tags.Macros do
 end
 
 defmodule Eecrit.Helpers.Tags.Basics do
-  import Eecrit.Helpers.Tags.Macros
+  import Eecrit.ControlFlow
   import Phoenix.HTML.Tag, only: [content_tag: 2, content_tag: 3]
 
   def empty_content?(content) do
@@ -51,24 +30,25 @@ defmodule Eecrit.Helpers.Tags.Basics do
   end
 
   def maybe_content_tag(tag, content, params \\ []) do
-    build_unless empty_content?(content), do: content_tag(tag, content, params)
+    list_unless empty_content?(content), do: content_tag(tag, content, params)
   end
 end
 
 
 defmodule Eecrit.Helpers.Tags do
   use Phoenix.HTML
+  import Eecrit.ControlFlow
   import Eecrit.Helpers.Tags.Basics
   import Eecrit.Helpers.Tags.Macros
 
 
   def m_surround_content(prefix, content, suffix) do
-    build_unless empty_content?(content), do: [prefix, content, suffix]
+    list_unless empty_content?(content), do: [prefix, content, suffix]
   end
 
 
   def add_space(iolists) do
-    build_unless empty_content?(iolists), do: Enum.intersperse(iolists, " ")
+    list_unless empty_content?(iolists), do: Enum.intersperse(iolists, " ")
   end
 
   # TODO: should really build this from a list.
@@ -89,7 +69,6 @@ defmodule Eecrit.Helpers.Tags do
 
   defmacro __using__(_arg) do
     quote do
-      import Eecrit.Helpers.Tags.Macros
       import Eecrit.Helpers.Tags.Basics
       import Eecrit.Helpers.Tags
     end

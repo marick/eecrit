@@ -80,7 +80,7 @@ defmodule Eecrit.LayoutView do
 
   defp one_flash(conn, color, key) do
     flash = Controller.get_flash(conn, key)
-    build_if flash do
+    list_if flash do
       nav class: "notification #{color}" do
         flash
       end
@@ -145,7 +145,7 @@ defmodule Eecrit.LayoutView do
   end
 
   def user_description(current_user) do
-    build_if current_user,
+    list_if current_user,
       do: "#{current_user.display_name} for #{current_user.current_organization.short_name}"
   end
 

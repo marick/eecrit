@@ -1,6 +1,6 @@
 defmodule Eecrit.Helpers.Resources do
   use Phoenix.HTML
-  import Eecrit.Helpers.Tags.Macros
+  import Eecrit.ControlFlow
   import Canada.Can, only: [can?: 3]
 
   # TODO: Investigate if this table can be generated automatically.
@@ -19,7 +19,7 @@ defmodule Eecrit.Helpers.Resources do
 
   def m_resource_link(conn, text, model) do
     {current_user, path_fn} = correlates_of(conn, model)
-    build_if can?(current_user, :work_with, model),
+    list_if can?(current_user, :work_with, model),
       do: link(text, to: resource_index_path(conn, path_fn))
   end
 

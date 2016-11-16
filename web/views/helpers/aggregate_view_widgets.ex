@@ -1,6 +1,7 @@
 defmodule Eecrit.AggregateViewWidgets do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
+  import Eecrit.ControlFlow
   use Eecrit.TagHelpers
   alias Eecrit.TagHelpers, as: T   # TODO: this is a kludge to avoid conflicts
 
@@ -25,7 +26,7 @@ defmodule Eecrit.AggregateViewWidgets do
 
   def dropdown_launcher(conn, title, links, button_params \\ []) do
     # For whatever reason, a dropdown button list requires a menu and a button.
-    build_if can?(conn.assigns.current_user, :work_with, :reports) do 
+    list_if can?(conn.assigns.current_user, :work_with, :reports) do 
       button_part = dropdown_button(title, button_params)
       menu_part = links |> Enum.map(&li/1) |> T.ul(class: "dropdown-menu")
       T.div([button_part, menu_part], class: "btn-group")

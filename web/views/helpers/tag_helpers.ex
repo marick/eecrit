@@ -1,25 +1,4 @@
 defmodule Eecrit.TagHelpers.Macros do
-  defmacro build_if(test, do: body) do
-    quote do
-      if unquote(test) do
-        unquote(body)
-      else
-        []
-      end
-    end
-  end
-
-  # Don't *think* there's a way to use a just-defined macro in another one.
-  defmacro build_unless(test, do: body) do
-    quote do
-      if !unquote(test) do
-        unquote(body)
-      else
-        []
-      end
-    end
-  end
-
   defmacro tag_wrapper(tag) do
     quote do
       def unquote(tag)(content, params \\ []) do
@@ -32,6 +11,7 @@ end
 
 defmodule Eecrit.TagHelpers do
   use Phoenix.HTML
+  import Eecrit.ControlFlow
   import Eecrit.TagHelpers.Macros
   import Canada.Can, only: [can?: 3]
 
@@ -61,11 +41,11 @@ defmodule Eecrit.TagHelpers do
   end
 
   def m_content_tag(tag, content, params \\ []) do
-    build_unless empty_content?(content), do: content_tag(tag, content, params)
+    list_unless empty_content?(content), do: content_tag(tag, content, params)
   end
 
   def m_surround_content(prefix, content, suffix) do
-    build_unless empty_content?(content), do: [prefix, content, suffix]
+    list_unless empty_content?(content), do: [prefix, content, suffix]
   end
 
   def big_button(text, path) do
@@ -74,21 +54,21 @@ defmodule Eecrit.TagHelpers do
 
   def m_resource_button(conn, text, model) do
     {current_user, path_fn} = correlates_of(conn, model)
-    build_if can?(current_user, :work_with, model),
+    list_if can?(current_user, :work_with, model),
       do: big_button(text, resource_index_path(conn, path_fn))
   end
 
   def m_no_user_button(conn, text, path) do
-    build_unless conn.assigns.current_user, do: big_button(text, path)
+    list_unless conn.assigns.current_user, do: big_button(text, path)
   end
 
   def m_resource_link(conn, text, model) do
     {current_user, path_fn} = correlates_of(conn, model)
-    build_if can?(current_user, :work_with, model),
+    list_if can?(current_user, :work_with, model),
       do: link(text, to: resource_index_path(conn, path_fn))
   end
   def add_space(iolists) do
-    build_unless empty_content?(iolists), do: Enum.intersperse(iolists, " ")
+    list_unless empty_content?(iolists), do: Enum.intersperse(iolists, " ")
   end
 
   # TODO: should really build this from a list.

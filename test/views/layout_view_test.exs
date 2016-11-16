@@ -1,7 +1,7 @@
 defmodule Eecrit.LayoutViewTest do
   use Eecrit.ViewCase, async: true
   alias Eecrit.LayoutView
-  alias Eecrit.User
+  # alias Eecrit.User
 
   # test "a page renders without blowing up", %{conn: conn} do
   #   assert render_layout(conn) =~ "Critter4Us"

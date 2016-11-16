@@ -44,7 +44,7 @@ defmodule Eecrit.LayoutView do
   defp maybe_logout(so_far, conn) do
     current_user = conn.assigns.v2_current_user
     list_augment_if current_user, so_far do
-      Bulma.tab_button("Delete", v2_session_path(conn, :delete, current_user),
+      Bulma.tab_button("Log out", v2_session_path(conn, :delete, current_user),
         method: :delete)
     end
   end

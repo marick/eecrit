@@ -1,6 +1,6 @@
 defmodule Eecrit.V2PageController do
   use Eecrit.Web, :controller
-  import Eecrit.Helpers.Bulma, only: [v2_default_layout: 2]
+  import Eecrit.LayoutView, only: [v2_default_layout: 2]
   
   plug :v2_default_layout
 
@@ -15,6 +15,4 @@ defmodule Eecrit.V2PageController do
   def about(conn, _params) do
     render(conn, "about.html")
   end
-
-
 end

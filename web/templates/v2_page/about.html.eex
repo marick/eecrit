@@ -4,7 +4,7 @@
         Critter4Us is an app that lets schools of Veterinary Medicine manage teaching animals, especially focusing on (1) making it easy for faculty to reserve animals for teaching or labs, and (2) letting the administration keep track of who's doing what with which animals.
       </p>
         <%= form_for @conn, v2_session_path(@conn, :log_in_demo_user),
-            [as: :ignoredfornow, class: "has-text-centered"], fn form -> 
+            [as: :ignoredfornow, class: "has-text-centered"], fn _form -> 
               submit "Try it out with sample data",
                 class: "button is-primary"
             end

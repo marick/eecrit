@@ -1,6 +1,5 @@
 defmodule Eecrit.Helpers.Resources do
   use Phoenix.HTML
-  import Eecrit.Helpers.Tags.Basics
   import Eecrit.Helpers.Tags.Macros
   import Canada.Can, only: [can?: 3]
 

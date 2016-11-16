@@ -5,7 +5,7 @@ defmodule Eecrit.Helpers.Bootstrap do
 
   def collapsible_div(id, do: components) do
     div_tag components,
-      class: "collapse navbar-collapse", id: "navbar"
+      class: "collapse navbar-collapse", id: id
   end
 
   def collapse_button(corresponding_div_id) do

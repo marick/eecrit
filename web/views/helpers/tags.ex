@@ -60,7 +60,6 @@ defmodule Eecrit.Helpers.Tags do
   use Phoenix.HTML
   import Eecrit.Helpers.Tags.Basics
   import Eecrit.Helpers.Tags.Macros
-  import Canada.Can, only: [can?: 3]
 
 
   def m_surround_content(prefix, content, suffix) do

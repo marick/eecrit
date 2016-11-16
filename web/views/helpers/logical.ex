@@ -2,7 +2,6 @@ defmodule Eecrit.Helpers.Logical do
   use Eecrit.Web, :view
   use Eecrit.Helpers.Tags
   import Eecrit.Helpers.Resources
-  alias Eecrit.Helpers.Bootstrap
 
   # Define
   

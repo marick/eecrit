@@ -1,7 +1,6 @@
 defmodule Eecrit.V2SessionController do
   use Eecrit.Web, :controller
   import Phoenix.Controller
-  alias Plug.Conn
 
   def log_in_demo_user(conn, _params) do
     conn

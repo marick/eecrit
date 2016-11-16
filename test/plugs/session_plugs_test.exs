@@ -80,7 +80,7 @@ defmodule Eecrit.SessionPlugsTest do
     flash_from = fn(user, plug) ->
       result = run_plug.(user, plug)
       unless result.halted, do: raise "plug did not halt the conn"
-      result |> get_flash |> Dict.get("error")
+      result |> Controller.get_flash |> Dict.get("error")
     end
 
     no_user = nil

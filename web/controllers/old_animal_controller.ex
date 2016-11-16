@@ -12,7 +12,7 @@ defmodule Eecrit.OldAnimalController do
   end
 
   # TODO: How to get the layout but avoid having a zillion of these little files?
-  def elmindex(conn, params), do: render(conn, "elmindex.html")
+  def elmindex(conn, _params), do: render(conn, "elmindex.html")
 
   def new(conn, _params) do
     render_new(conn, OldAnimal.new_action_changeset)

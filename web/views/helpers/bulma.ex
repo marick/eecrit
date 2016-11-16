@@ -16,6 +16,7 @@ defmodule Eecrit.Helpers.Bulma do
   import Eecrit.Router.Helpers
   alias Phoenix.Controller
   alias Plug.Conn
+  use Eecrit.Helpers.Tags
 
   defp handler_to_tab_name(conn) do
     case {Controller.controller_module(conn), Controller.action_name(conn)} do
@@ -46,11 +47,16 @@ defmodule Eecrit.Helpers.Bulma do
   end
 
   defp maybe_logout(so_far, conn) do
-    augment_if conn.assigns.v2_current_user, so_far do 
-      tab_item(conn, "Logout", v2_session_path(conn, :logout))
+    augment_if conn.assigns.v2_current_user, so_far do
+      span class: "nav-item is-tab" do 
+        link("Logout", to: v2_session_path(conn, :delete, 38383838),
+          method: "delete", class: "button button-primary nav-item")
+      end
     end
   end
 
+# link("default account", to: v2_session_path(@conn, :log_in_demo_user))
+  
   defp navbar_items(conn) do
     []
     |> maybe_home(conn)

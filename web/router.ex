@@ -25,8 +25,8 @@ defmodule Eecrit.Router do
     pipe_through :browser
     get "/", V2PageController, :index
     get "/about", V2PageController, :about
-    get "/login", V2SessionController, :login
-    get "/logout", V2SessionController, :logout
+    resources "/sessions", V2SessionController, only: [:delete]
+    post "/log_in_demo_user", V2SessionController, :log_in_demo_user
   end  
 
   # TODO: I'm not sure where to store the fact that a user must have

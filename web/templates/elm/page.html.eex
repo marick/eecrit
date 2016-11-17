@@ -1,0 +1,8 @@
+
+<div id="<%= assigns.div %>">
+  <div class="message">
+    <div class="message-header is-centered">
+      This is unfinished.
+    </div>
+  </div>
+</div>

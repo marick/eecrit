@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script>window.auth_token = "<%= assigns[:auth_token] %>"</script>
+    <script>window.base_uri = "<%= Eecrit.Endpoint.url %>"</script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

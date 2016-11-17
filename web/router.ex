@@ -20,13 +20,15 @@ defmodule Eecrit.Router do
     plug :accepts, ["json"]
   end
 
-
   scope "/v2", Eecrit do 
-    pipe_through :browser
+    pipe_through [:browser]
+
     get "/", V2PageController, :index
     get "/about", V2PageController, :about
     resources "/sessions", V2SessionController, only: [:delete]
     post "/log_in_demo_user", V2SessionController, :log_in_demo_user
+
+    get "/*path", ElmController, :choose_page
   end  
 
   # TODO: I'm not sure where to store the fact that a user must have

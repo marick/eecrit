@@ -1,7 +1,9 @@
 defmodule Eecrit.LayoutView do
   use Eecrit.Web, :view
   import Eecrit.Router.Helpers
-  use Eecrit.Helpers.Tags
+
+  # use Eecrit.Helpers.Tags
+  alias Eecrit.Helpers.Tags
   import Eecrit.Helpers.Aggregates
   alias Eecrit.Helpers.Logical
   alias Eecrit.Helpers.Bootstrap
@@ -81,7 +83,7 @@ defmodule Eecrit.LayoutView do
   defp one_flash(conn, color, key) do
     flash = Controller.get_flash(conn, key)
     list_if flash do
-      nav class: "notification #{color}" do
+      Tags.nav class: "notification #{color}" do
         flash
       end
     end
@@ -99,65 +101,40 @@ defmodule Eecrit.LayoutView do
   ######## The below is all for *V1*
   #######
   
-  def navbar_data(conn) do
-    %{home: Logical.path("Critter4Us", page_path(conn, :index)),
-      user: conn.assigns.current_user,
-      reports: report_links(conn),
-      manage: manage_links(conn),
-    }
+  use Eecrit.TagHelpers
+  alias Eecrit.AggregateViewWidgets
+
+  def navigation(conn) do
+    iolists = [
+      link("Home", to: page_path(conn, :index)),
+      AggregateViewWidgets.reports_launcher(conn),
+      m_resource_link(conn, "Animals", Eecrit.OldAnimal),
+      m_resource_link(conn, "Procedures", Eecrit.OldProcedure),
+      salutation(conn),
+      organization(conn),
+      log_in_out(conn),
+    ]
+
+    Enum.map(iolists, &li/1)
   end
 
-  def report_links(conn) do
-    Logical.dropdown("Reports", [
-          Logical.path("Animal use", report_path(conn, :animal_use))
-        ])
-  end
-
-  def manage_links(conn) do
-    Logical.dropdown("Manage", [
-          Logical.resource(conn, "Animals", Eecrit.OldAnimal),
-          Logical.resource(conn, "Procedures", Eecrit.OldProcedure),
-        ])
-  end
-
-
-  # Rendering
-
-  def navbar(conn) do
-    data = navbar_data(conn)
-
-    nav role: "navigation", class: "navbar navbar-default navbar-fixed-top" do
-      div_tag class: "container-fluid" do
-        [div_tag class: "navbar-header" do
-          [ Logical.to_html(data.home, class: "navbar-brand"),
-            Bootstrap.collapse_button("navbar")
-          ] end,
-         Bootstrap.collapsible_div("navbar") do 
-           [ m_p(user_description(data.user), class: "navbar-text"),
-             ul_list("nav navbar-nav navbar-right") do
-               [ Bootstrap.dropdown(data.reports),
-                 Bootstrap.dropdown(data.manage),
-                 log_in_out(conn, data.user)
-               ] end
-           ] end
-        ] end
+  def log_in_out(conn) do
+    current_user = conn.assigns.current_user
+    if current_user == nil do
+      link("Log in", to: session_path(conn, :new))
+    else
+      link("Log out", to: session_path(conn, :delete, current_user), method: "delete")
     end
   end
-
-  def user_description(current_user) do
-    list_if current_user,
-      do: "#{current_user.display_name} for #{current_user.current_organization.short_name}"
+    
+  def salutation(conn) do
+    current_user = conn.assigns.current_user
+    list_if current_user, do: current_user.display_name
   end
 
-  # Todo: these don't have the right indentation when the window is small
-
-  def log_in_out(conn, _current_user = nil) do 
-    link("Log in", to: session_path(conn, :new))
-    |> p(class: "navbar-text")
+  def organization(conn) do
+    current_user = conn.assigns.current_user
+    list_if current_user, do: current_user.current_organization.short_name
   end
 
-  def log_in_out(conn, current_user) do
-    link("Log out", to: session_path(conn, :delete, current_user),
-      method: "delete", class: "navbar-text")
-  end
 end

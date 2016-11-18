@@ -8,7 +8,7 @@ set -e
 version="v`git log --oneline | wc -l | tr -d ' '`"
 today=`date '+%Y-%b-%d'`
 
-cat > web/elm/IV/Version.elm <<ENDOFTEXT
+cat > web/elm/IV/Version.elm <<END_OF_ELM_TEXT
 
 -- Created at `date` by bin/deploy
 
@@ -18,7 +18,18 @@ text = "Version ${version} of ${today}"
 
 source = "https://github.com/marick/eecrit/tree/${version}/web/elm/IV"
 
-ENDOFTEXT
+END_OF_ELM_TEXT
+
+cat > lib/eecrit/version.ex <<END_OF_ELIXIR_TEXT
+
+defmodule Eecrit.Version do
+
+  def version do
+    "Version ${version}, made public on ${today}"
+  end
+end
+
+END_OF_ELIXIR_TEXT
 
 brunch build
 git commit -m "== deployed version $version" web/elm/IV/Version.elm web/static/js/iv.js

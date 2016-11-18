@@ -38,23 +38,19 @@
     </div>
 
     <footer class="footer">
-      <nav class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <p >
-              Copyright © 2016 Brian Marick
-            </p>
-          </div>
-        </div>
-
-        <div class="level-right">
-          <p class="level-item">
-            <a href="<%= unfinished_path(@conn, :index)%>">
-              Terms and Disclaimer
-            </a>
-          </p>
-        </div>
-      </nav>
+      <div class="level">
+        <p class="level-item has-text-centered">
+            Copyright © 2016 Brian Marick
+        </p>
+        <p class="level-item has-text-centered">
+          <%= Eecrit.Version.version %>
+        </p>
+        <p class="level-item has-text-centered">
+          <a href="<%= unfinished_path(@conn, :index)%>">
+            Terms and Disclaimer
+          </a>
+        </p>
+      </div>
     </footer>
     
   </body>

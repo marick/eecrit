@@ -20134,8 +20134,8 @@ var _user$project$IV_Pile_HtmlShorthand$rowSimple = function (string) {
 			]));
 };
 
-var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v481/web/elm/IV';
-var _user$project$IV_Version$text = 'Version v481 of 2016-Nov-04';
+var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v523/web/elm/IV';
+var _user$project$IV_Version$text = 'Version v523 of 2016-Nov-18';
 
 var _user$project$IV_View_Layout$defaultFooterNav = _elm_lang$core$Native_List.fromArray(
 	[

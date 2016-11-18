@@ -6,6 +6,7 @@ defmodule Eecrit.Animal do
   @schema_prefix "demo"
   schema "animals" do
     field :name, :string
+    field :species, :string
     field :date_acquired, Ecto.Date
     field :date_removed, Ecto.Date
     field :tags, {:array, :string}

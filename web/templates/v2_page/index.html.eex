@@ -7,7 +7,10 @@
           <p class="card-header-title">
             Your dashboard
           </p>
-          <a class="card-header-icon">
+          <a class="card-header-icon"
+             title="Click any button to perform the action. You can customize your dashboard using the button at the bottom."
+             href="<%= unfinished_path(@conn, :index) %>"
+             >
             <span class="icon">
               <i class="fa fa-question-circle"></i>
             </span>
@@ -21,11 +24,19 @@
           </p>
           <p>&nbsp;</p>
           <p>
-            <a class="button is-small">
+          <i>The button below doesn't work yet.
+          </i>
+          </p>
+          <p>&nbsp;</p>
+          <p>
+            <a class="button is-small"
+               title="Go to a page where you can customize your dashboard."
+               href="<%= unfinished_path(@conn, :index) %>"
+               >
               <span class="icon">
                 <i class="fa fa-plus-circle"></i>
               </span>
-              <span>Work with your dashboard</span>
+              <span>Work with your dashboard <i></i></span>
             </a>
           </p>
         </div>
@@ -37,21 +48,40 @@
           <p class="card-header-title">
             Tasks
           </p>
-          <a class="card-header-icon">
+          <a class="card-header-icon"
+             title="Click a menu item (anything that highlights as you move the pointer over it) to be taken to a page where you can perform the task."
+             href="<%= unfinished_path(@conn, :index) %>"
+             >
             <span class="icon">
               <i class="fa fa-question-circle"></i>
             </span>
           </a>
         </header>
         <div class="card-content">
+          <p class="content">
+            <i>Only items marked <span class="icon is-small"> <i class="fa fa-check"></i> </span> are ready to use.</i>
+          </p>
           <aside class="menu">
             <p class="menu-label">
               Work with animals
             </p>
             <ul class="menu-list">
-              <li><a href="#">Add an animal</a></li>
-              <li><a href="#">View animals currently in service</a></li>
-              <li><a href="#">View all animals</a></li>
+              <li>
+                <a href="<%= unfinished_path(@conn, :index) %>">
+                  Add an animal
+                </a>
+              </li>
+              <li>
+                <a href="<%= unfinished_path(@conn, :index) %>">
+                  View animals currently in service
+                  <span class="icon is-small"> <i class="fa fa-check"></i> </span>
+                </a>
+              </li>
+              <li>
+                <a href="<%= unfinished_path(@conn, :index) %>">
+                  View all animals
+                </a>
+              </li>
             </ul>
           </aside>
         </div>

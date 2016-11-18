@@ -27,6 +27,7 @@ defmodule Eecrit.Router do
     get "/about", V2PageController, :about
     resources "/sessions", V2SessionController, only: [:delete]
     post "/log_in_demo_user", V2SessionController, :log_in_demo_user
+    get "/unfinished", UnfinishedController, :index
 
     get "/*path", ElmController, :choose_page
   end  

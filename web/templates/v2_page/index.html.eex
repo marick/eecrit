@@ -1,8 +1,61 @@
-  <section class="section">
-    <div class="container content">
-      <p class="has-text-centered">
-        Main text
-      </p>
-    </div>
-  </section>
+<section class="section">
+  <div class="columns">
+    <div class="column is-two-thirds">
 
+      <div class="card is-fullwidth">
+        <header class="card-header">
+          <p class="card-header-title">
+            Your dashboard
+          </p>
+          <a class="card-header-icon">
+            <span class="icon">
+              <i class="fa fa-question-circle"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <p>
+          <i>In the finished version, you'll be able to have big
+          buttons here that take you to your frequent tasks.
+          </i>
+          </p>
+          <p>&nbsp;</p>
+          <p>
+            <a class="button is-small">
+              <span class="icon">
+                <i class="fa fa-plus-circle"></i>
+              </span>
+              <span>Work with your dashboard</span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-third">
+      <div class="card is-fullwidth">
+        <header class="card-header">
+          <p class="card-header-title">
+            Tasks
+          </p>
+          <a class="card-header-icon">
+            <span class="icon">
+              <i class="fa fa-question-circle"></i>
+            </span>
+          </a>
+        </header>
+        <div class="card-content">
+          <aside class="menu">
+            <p class="menu-label">
+              Work with animals
+            </p>
+            <ul class="menu-list">
+              <li><a href="#">Add an animal</a></li>
+              <li><a href="#">View animals currently in service</a></li>
+              <li><a href="#">View all animals</a></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

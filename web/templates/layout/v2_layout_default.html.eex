@@ -36,6 +36,27 @@
       <%= render @view_module, @view_template, assigns %>
   
     </div>
+
+    <footer class="footer">
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <p >
+              Copyright © 2016 Brian Marick
+            </p>
+          </div>
+        </div>
+
+        <div class="level-right">
+          <p class="level-item">
+            <a href="<%= unfinished_path(@conn, :index)%>">
+              Terms and Disclaimer
+            </a>
+          </p>
+        </div>
+      </nav>
+    </footer>
+    
   </body>
 
   <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

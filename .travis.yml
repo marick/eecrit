@@ -1,11 +1,10 @@
 language: elixir
-sudo: required
 elixir:
   - 1.3.2
 otp_release:
   - 19.0.2
 services:
-  - postgresql: 9.5
+  - postgresql: "9.4"
 before_script:
   - psql -c 'create database eecrit_test;' -U postgres
   - psql -c 'create schema demo;' eecrit_test -U postgres

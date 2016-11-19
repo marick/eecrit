@@ -16,4 +16,8 @@ defmodule Eecrit.V2PageController do
   def about(conn, _params) do
     render(conn, "about.html")
   end
+
+  def experiment(conn, _params) do
+    render(conn, "experiment.html")
+  end
 end

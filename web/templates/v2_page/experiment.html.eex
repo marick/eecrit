@@ -1,0 +1,277 @@
+<section class="hero is-info">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        Animals
+      </h1>
+    </div>
+  </div>
+</section>
+
+
+<div class="tabs is-centered is-toggle">
+  <ul >
+    <li class="is-active"  >
+      <a style="background-color: #3273dc; border-width: 1; border-color: #3273dc; border-radius: 0px">
+        <span class="is-info">View Animals</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span>Add Animals</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span>Animal Help</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="columns is-centered">
+  <div class="column is-10">
+    <article class="message is-info">
+      <div class="message-header has-text-centered">
+        Filter by...
+        <a>
+          <span class="icon is-pulled-right">
+            <i class="fa fa-question-circle"></i>
+          </span>
+        </a>
+      </div>
+      <div class="message-body">
+        <div class="level">
+          <div class="level-item has-text-centered">
+            <p class="heading">Name</p>
+            <p class="control">
+              <input class="input" type="text" value="">
+            </p>
+          </div>
+          <div class="level-item has-text-centered">
+            <p class="heading">Species</p>
+              <span class="select">
+                <select>
+                  <option value="bovine">Bovine</option>
+                  <option value="equine" selected>Equine</option>
+                </select>
+              </span>
+          </div>
+          <div class="level-item has-text-centered">
+            <p class="heading">Tags</p>
+            <p class="control">
+              <input class="input" type="text" value="">
+            </p>
+          </div>
+
+          <div class="level-item has-text-centered">
+            <p class="heading">&nbsp;</p>
+              <label class="checkbox">
+                <input type="checkbox">
+                Include animals not in service
+              </label>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Athena (equine)
+      <span class="tag">
+        mare
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+  </header>
+</div>
+
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Jake (equine)
+      <span class="tag">
+        gelding
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+  </header>
+</div>
+
+
+<div class="card is-fullwidth" style="border-top: 2px solid; border-bottom: 2px solid">
+  <header class="card-header" style="background-color: whitesmoke">
+    <p class="card-header-title">
+      <i><u>Editing Ross</u></i>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-question-circle"></i>
+      </span>
+    </a>
+    <p class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-up"></i>
+      </span>
+    </p>
+    <p class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+  </header>
+  <div class="card-content">
+
+    <form>
+      <div class="columns">
+        <div class="column">
+      
+      <label class="label">Name</label>
+      <p class="control">
+        <input class="input" type="text" value="Ross">
+      </p>
+      
+      <label class="label">Tags</label>
+      <div class="content">
+        <p>
+          <span class="tag is-outlined">
+            stallion
+            <button class="delete is-small"></button>
+          </span>
+          <span class="tag">
+            aggressive
+            <button class="delete is-small"></button>
+          </span>
+        </p>
+        <p class="control">
+          <input class="input" type="text" placeholder="Add a tag" size="12">
+        </p>
+        
+      </div>
+
+        </div>
+        <div class="column">
+      
+      <label class="label">Species</label>
+      <p class="control">
+        <span class="select">
+          <select>
+            <option value="bovine">Bovine</option>
+            <option value="equine" selected>Equine</option>
+          </select>
+        </span>
+      </p>
+
+        <label class="label">Date added</label>
+        <p class="control">
+          <input class="input" type="text" value="3-Aug-2016">
+        </p>
+        
+        <label class="label">End of service</label>
+        <p class="control">
+          <input class="input" type="text" value="unscheduled">
+        </p>
+        </div>
+      </div>
+    </form>
+    
+
+  </div>
+  <footer class="card-footer">
+    <a class="card-footer-item button is-success" >
+      <span class="icon">
+        <i class="fa fa-check"></i>
+      </span>
+      Save
+    </a>
+    <a class="card-footer-item button is-danger" >
+      <span class="icon">
+        <i class="fa fa-times"></i>
+      </span>
+      Cancel
+    </a>
+  </footer>
+</div>
+
+
+<div class="card is-fullwidth" style="border-top: 2px solid; border-bottom: 2px solid">
+  <header class="card-header" style="background-color: whitesmoke">
+    <p class="card-header-title">
+      Xena (equine)
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-up"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+  </header>
+  <div class="card-content">
+    <div class="content">
+      <p>
+        <span class="tag is-outlined">
+          mare
+        </span>
+        <span class="tag">
+          see notes
+        </span>
+        <span class="tag">
+          skittish
+        </span>
+      </p>
+      <p>
+        Added 1 Jan 2016
+      </p>
+    </div>
+  </div>
+  <footer class="card-footer">
+    <a class="card-footer-item" >Edit</a>
+    <a class="card-footer-item" >Add animals like this one</a>
+  </footer>
+
+</div>

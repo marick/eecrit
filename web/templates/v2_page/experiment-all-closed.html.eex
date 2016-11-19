@@ -1,0 +1,133 @@
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Athena (equine)
+      <span class="tag">
+        mare
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-question-circle"></i>
+      </span>
+    </a>
+  </header>
+</div>
+
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Jake (equine)
+      <span class="tag">
+        gelding
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-question-circle"></i>
+      </span>
+    </a>
+  </header>
+</div>
+
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Ross (equine)
+      <span class="tag">
+        stallion
+      </span>
+      <span class="tag">
+        aggressive
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-question-circle"></i>
+      </span>
+    </a>
+  </header>
+</div>
+
+<div class="card is-fullwidth">
+  <header class="card-header">
+    <p class="card-header-title">
+      Xena (equine)
+      <span class="tag">
+        mare
+      </span>
+      <span class="tag">
+        see notes
+      </span>
+      <span class="tag">
+        ...
+      </span>
+    </p>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-caret-down"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-pencil"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+      <i class="fa fa-trash"></i>
+      </span>
+    </a>
+    <a class="card-header-icon">
+      <span class="icon">
+        <i class="fa fa-question-circle"></i>
+      </span>
+    </a>
+  </header>
+</div>
+

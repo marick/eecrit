@@ -5,7 +5,8 @@ defmodule Eecrit.AnimalController do
   alias Eecrit.ElmView
 
   def index(conn, _params) do
-    ElmView.start(conn, "animals-index")
+    # ElmView.start(conn, "animals-index")
+    render(conn, "index.html")
   end
 
   def new(conn, _params) do

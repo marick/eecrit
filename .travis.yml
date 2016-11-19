@@ -4,7 +4,7 @@ elixir:
 otp_release:
   - 18.2.1
 services:
-  - postgresql: 9.4
+  - postgresql: 9.5
 before_script:
   - psql -c 'create database eecrit_test;' -U postgres
   - psql -c 'create schema demo;' eecrit_test -U postgres

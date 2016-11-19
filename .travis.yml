@@ -7,5 +7,6 @@ services:
   - postgresql: 9.4
 before_script:
   - psql -c 'create database eecrit_test;' -U postgres
+  - psql -c 'create schema demo;' eecrit_test -U postgres
   - psql -c 'create database critter4us_test;' -U postgres
   - MIX_ENV=test mix ecto.migrate -r Eecrit.OldRepo

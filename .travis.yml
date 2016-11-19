@@ -4,7 +4,7 @@ elixir:
 otp_release:
   - 19.0.2
 addons:
-  - postgresql: "9.4"
+  - postgresql: "9.5"
 before_script:
   - psql --version
   - psql -c 'create database eecrit_test;' -U postgres

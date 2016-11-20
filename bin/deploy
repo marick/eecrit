@@ -32,7 +32,7 @@ end
 END_OF_ELIXIR_TEXT
 
 brunch build
-git commit -m "== deployed version $version" web/elm/IV/Version.elm web/static/js/iv.js
+git commit -m "== deployed version $version" web/elm/IV/Version.elm web/static/js/*.js
 git tag $version
 git push origin $version
 

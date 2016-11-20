@@ -46,14 +46,6 @@ if (ivDiv) {
 }
 
 
-const c4uDiv = document.querySelector('#c4u-target');
-if (c4uDiv) {
-    Elm.C4u.embed(c4uDiv, {
-        authToken: window.auth_token,
-        socketUri: window.socket_uri
-    });
-}
-
 const animalsDiv = document.querySelector('#animals-target');
 if (animalsDiv) {
     Elm.Animals.embed(animalsDiv, {

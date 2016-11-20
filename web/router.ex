@@ -52,7 +52,6 @@ defmodule Eecrit.Router do
     # TODO: Remove this when more comfortable with embedding Elm
     get "/elm", ElmController, :index
     get "/iv/*path", IVController, :index
-    get "/c4u/*path", C4uController, :index
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
@@ -65,7 +64,6 @@ defmodule Eecrit.Router do
   scope "/", Eecrit do
     pipe_through [:browser, :require_login, :require_admin]
 
-    get "/animals/elmindex", OldAnimalController, :elmindex
     resources "/animals", OldAnimalController
     resources "/procedures", OldProcedureController
     resources "/procedure_descriptions", OldProcedureDescriptionController

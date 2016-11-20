@@ -1,18 +1,18 @@
-<section class="hero is-info">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <h1 class="title">
-        Animals
-      </h1>
-    </div>
-  </div>
-</section>
+<!-- <section class="hero" > -->
+<!--   <div class="hero-body" style="background-color: whitesmoke"  > -->
+<!--     <div class="container has-text-centered" > -->
+<!--       <h1 class="title"> -->
+<!--         Animals -->
+<!--       </h1> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </section> -->
 
 
 <div class="tabs is-centered is-toggle">
   <ul >
     <li class="is-active"  >
-      <a style="background-color: #3273dc; border-width: 1; border-color: #3273dc; border-radius: 0px">
+      <a style="background-color: #4a4a4a; border-width: 1; border-color: #4a4a4a; border-radius: 0px">
         <span class="is-info">View Animals</span>
       </a>
     </li>
@@ -31,7 +31,7 @@
 
 <div class="columns is-centered">
   <div class="column is-10">
-    <article class="message is-info">
+    <article class="message">
       <div class="message-header has-text-centered">
         Filter by...
         <a>

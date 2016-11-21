@@ -52,9 +52,7 @@
         </p>
       </div>
     </footer>
-    
-  </body>
-
   <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  <%= if Map.has_key?(assigns, :elm_launcher), do: @elm_launcher, else: "" %>
 </body>
 </html>

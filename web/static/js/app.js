@@ -46,13 +46,12 @@ if (ivDiv) {
 }
 
 
-const animalsDiv = document.querySelector('#animals-target');
-if (animalsDiv) {
-    Elm.Animals.embed(animalsDiv, {
-        authToken: window.auth_token,
-        baseUri: window.base_uri
-    });
-}
+// const animalsDiv = document.querySelector('#animals-target');
+// if (animalsDiv) {
+//     Elm.Animals.embed(animalsDiv, {
+//         baseUri: "fred"
+//     });
+// }
 
 
 

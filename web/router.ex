@@ -5,6 +5,7 @@ defmodule Eecrit.Router do
                                      require_login: 2,
                                      require_admin: 2,
                                      require_superuser: 2]
+  import Eecrit.SinglePageAppPlugs, only: [default_to_no_single_page_app: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -14,6 +15,7 @@ defmodule Eecrit.Router do
     plug :put_secure_browser_headers
     plug :add_current_user
     plug :v2_add_current_user
+    plug :default_to_no_single_page_app
   end
 
   pipeline :api do

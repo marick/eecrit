@@ -11,7 +11,4 @@ import Animals.Navigation exposing (PageChoice(..))
 view : Model -> Html Msg
 view model =
   p []
-    [text <| "Args: "
-       ++ model.authToken ++ " and "
-       ++ model.givenPage]
-
+    [text <| "Args: " ++ model.authToken]

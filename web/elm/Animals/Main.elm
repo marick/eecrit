@@ -8,20 +8,19 @@ import String
 
 type alias Flags =
   { authToken : String
-  , page : String
+  , desire : String
   }
        
 type alias Model = 
   { page : MyNav.PageChoice
   , authToken : String
-  , givenPage : String
   }
-    
+
+
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingLocation =
-  ( { page = MyNav.AllAnimalsPage
+  ( { page = MyNav.desireToPage(flags.desire)
     , authToken = flags.authToken
-    , givenPage = flags.page
     }
   , Cmd.none
   )

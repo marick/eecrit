@@ -14,6 +14,13 @@ stringParser : String -> PageChoice
 stringParser path =
   AllAnimalsPage
 
+desireToPage : String -> PageChoice
+desireToPage desire =
+  case desire of
+    "ViewAllInUseAnimals" -> AllAnimalsPage
+    _ -> AllAnimalsPage
+    
+
 locationParser : Navigation.Location -> PageChoice
 locationParser location = 
   stringParser location.pathname

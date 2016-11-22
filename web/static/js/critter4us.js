@@ -16178,6 +16178,14 @@ var _user$project$Animals_Navigation$locationParser = function (location) {
 	return _user$project$Animals_Navigation$stringParser(location.pathname);
 };
 var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
+var _user$project$Animals_Navigation$desireToPage = function (desire) {
+	var _p0 = desire;
+	if (_p0 === 'ViewAllInUseAnimals') {
+		return _user$project$Animals_Navigation$AllAnimalsPage;
+	} else {
+		return _user$project$Animals_Navigation$AllAnimalsPage;
+	}
+};
 
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
@@ -16191,17 +16199,20 @@ var _user$project$Animals_Main$init = F2(
 	function (flags, startingLocation) {
 		return {
 			ctor: '_Tuple2',
-			_0: {page: _user$project$Animals_Navigation$AllAnimalsPage, authToken: flags.authToken, givenPage: flags.page},
+			_0: {
+				page: _user$project$Animals_Navigation$desireToPage(flags.desire),
+				authToken: flags.authToken
+			},
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
 var _user$project$Animals_Main$Flags = F2(
 	function (a, b) {
-		return {authToken: a, page: b};
+		return {authToken: a, desire: b};
 	});
-var _user$project$Animals_Main$Model = F3(
-	function (a, b, c) {
-		return {page: a, authToken: b, givenPage: c};
+var _user$project$Animals_Main$Model = F2(
+	function (a, b) {
+		return {page: a, authToken: b};
 	});
 var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
 
@@ -16213,13 +16224,7 @@ var _user$project$Animals_View$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$html$Html$text(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'Args: ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						model.authToken,
-						A2(_elm_lang$core$Basics_ops['++'], ' and ', model.givenPage))))
+				A2(_elm_lang$core$Basics_ops['++'], 'Args: ', model.authToken))
 			]));
 };
 
@@ -16234,10 +16239,10 @@ var _user$project$Animals$main = {
 		function (authToken) {
 			return A2(
 				_elm_lang$core$Json_Decode$andThen,
-				A2(_elm_lang$core$Json_Decode_ops[':='], 'page', _elm_lang$core$Json_Decode$string),
-				function (page) {
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'desire', _elm_lang$core$Json_Decode$string),
+				function (desire) {
 					return _elm_lang$core$Json_Decode$succeed(
-						{authToken: authToken, page: page});
+						{authToken: authToken, desire: desire});
 				});
 		})
 };

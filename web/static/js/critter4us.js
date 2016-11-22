@@ -16191,24 +16191,17 @@ var _user$project$Animals_Main$init = F2(
 	function (flags, startingLocation) {
 		return {
 			ctor: '_Tuple2',
-			_0: {
-				page: _user$project$Animals_Navigation$AllAnimalsPage,
-				aStringFlag: flags.aStringFlag,
-				aNumberFlag: A2(
-					_elm_lang$core$Result$withDefault,
-					-1,
-					_elm_lang$core$String$toInt(flags.aNumberFlag))
-			},
+			_0: {page: _user$project$Animals_Navigation$AllAnimalsPage, authToken: flags.authToken, givenPage: flags.page},
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
 var _user$project$Animals_Main$Flags = F2(
 	function (a, b) {
-		return {aStringFlag: a, aNumberFlag: b};
+		return {authToken: a, page: b};
 	});
 var _user$project$Animals_Main$Model = F3(
 	function (a, b, c) {
-		return {page: a, aStringFlag: b, aNumberFlag: c};
+		return {page: a, authToken: b, givenPage: c};
 	});
 var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
 
@@ -16222,14 +16215,11 @@ var _user$project$Animals_View$view = function (model) {
 				_elm_lang$html$Html$text(
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					'A new Animal has been started with argument \"',
+					'Args: ',
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						model.aStringFlag,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'\" and ',
-							_elm_lang$core$Basics$toString(model.aNumberFlag)))))
+						model.authToken,
+						A2(_elm_lang$core$Basics_ops['++'], ' and ', model.givenPage))))
 			]));
 };
 
@@ -16240,14 +16230,14 @@ var _user$project$Animals$main = {
 		{init: _user$project$Animals_Main$init, view: _user$project$Animals_View$view, update: _user$project$Animals_Main$update, urlUpdate: _user$project$Animals_Navigation$urlUpdate, subscriptions: _user$project$Animals_Main$subscriptions}),
 	flags: A2(
 		_elm_lang$core$Json_Decode$andThen,
-		A2(_elm_lang$core$Json_Decode_ops[':='], 'aNumberFlag', _elm_lang$core$Json_Decode$string),
-		function (aNumberFlag) {
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'authToken', _elm_lang$core$Json_Decode$string),
+		function (authToken) {
 			return A2(
 				_elm_lang$core$Json_Decode$andThen,
-				A2(_elm_lang$core$Json_Decode_ops[':='], 'aStringFlag', _elm_lang$core$Json_Decode$string),
-				function (aStringFlag) {
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'page', _elm_lang$core$Json_Decode$string),
+				function (page) {
 					return _elm_lang$core$Json_Decode$succeed(
-						{aNumberFlag: aNumberFlag, aStringFlag: aStringFlag});
+						{authToken: authToken, page: page});
 				});
 		})
 };

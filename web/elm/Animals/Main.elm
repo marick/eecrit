@@ -7,21 +7,21 @@ import String
 -- Model and Init
 
 type alias Flags =
-  { aStringFlag : String
-  , aNumberFlag : String
+  { authToken : String
+  , page : String
   }
        
 type alias Model = 
   { page : MyNav.PageChoice
-  , aStringFlag : String
-  , aNumberFlag : Int
+  , authToken : String
+  , givenPage : String
   }
     
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingLocation =
   ( { page = MyNav.AllAnimalsPage
-    , aStringFlag = flags.aStringFlag
-    , aNumberFlag = String.toInt flags.aNumberFlag |> Result.withDefault -1
+    , authToken = flags.authToken
+    , givenPage = flags.page
     }
   , Cmd.none
   )
@@ -47,6 +47,3 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.none
-    
-
-

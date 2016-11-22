@@ -8,7 +8,7 @@ defmodule Eecrit.AnimalController do
   plug :set_single_page_app_name, "Animals"
   
   def index(conn, _params) do
-    render_single_page_app(conn, aStringFlag: "string", aNumberFlag: 5845)
+    render_single_page_app(conn, page: "AllAnimals")
   end
 
   def new(_conn, _params) do

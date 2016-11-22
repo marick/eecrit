@@ -2,6 +2,7 @@ defmodule Eecrit.SinglePageAppPlugs do
   import Plug.Conn
   alias Phoenix.Controller
   alias Eecrit.ElmView
+  alias Plug.CSRFProtection
 
   @launcher :eecrit_spa_launcher
   @app_name_field :eecrit_spa_name
@@ -44,8 +45,9 @@ defmodule Eecrit.SinglePageAppPlugs do
   end
     
   def render_single_page_app(conn, flags \\ []) do
+    better_flags = [{:authToken, Plug.CSRFProtection.get_csrf_token} | flags]
     conn
-    |> enable_single_page_app(flags)
+    |> enable_single_page_app(better_flags)
     |> Controller.render(ElmView, "elm_hook.html")
   end
 end

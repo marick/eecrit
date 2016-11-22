@@ -11,7 +11,7 @@ import Animals.Navigation exposing (PageChoice(..))
 view : Model -> Html Msg
 view model =
   p []
-    [text <| "A new Animal has been started with argument \""
-       ++ model.aStringFlag ++ "\" and "
-       ++ toString(model.aNumberFlag)]
+    [text <| "Args: "
+       ++ model.authToken ++ " and "
+       ++ model.givenPage]
 

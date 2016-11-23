@@ -5,20 +5,22 @@ import UrlParser
 import String
 
 type PageChoice 
-  = AllAnimalsPage
+  = AllPage
+  | AddPage
+  | HelpPage
 
 -- TODO: This is unidiomatic?
 programWithFlags = Navigation.programWithFlags
     
 stringParser : String -> PageChoice
 stringParser path =
-  AllAnimalsPage
+  AllPage
 
 desireToPage : String -> PageChoice
 desireToPage desire =
   case desire of
-    "ViewAllInUseAnimals" -> AllAnimalsPage
-    _ -> AllAnimalsPage
+    "ViewAllInUseAnimals" -> AllPage
+    _ -> AllPage
     
 
 locationParser : Navigation.Location -> PageChoice

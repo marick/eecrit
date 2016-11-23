@@ -29,15 +29,24 @@ init flags startingLocation =
 -- Msg
 
 type Msg
-  = NoOp
+  = NavigateToAllPage
+  | NavigateToAddPage
+  | NavigateToHelpPage
 
 -- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    NoOp ->
-      ( model, Cmd.none )
+    ToAllPage ->
+      ( { model | page = MyNav.AllPage }
+      , Cmd.none )
+    ToAddPage ->
+      ( { model | page = MyNav.AddPage }
+      , Cmd.none )
+    ToHelpPage ->
+      ( { model | page = MyNav.HelpPage }
+      , Cmd.none )
 
 
 

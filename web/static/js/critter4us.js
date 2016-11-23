@@ -16170,9 +16170,11 @@ var _user$project$Animals_Navigation$urlUpdate = F2(
 		};
 	});
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
-var _user$project$Animals_Navigation$AllAnimalsPage = {ctor: 'AllAnimalsPage'};
+var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
+var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
+var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
 var _user$project$Animals_Navigation$stringParser = function (path) {
-	return _user$project$Animals_Navigation$AllAnimalsPage;
+	return _user$project$Animals_Navigation$AllPage;
 };
 var _user$project$Animals_Navigation$locationParser = function (location) {
 	return _user$project$Animals_Navigation$stringParser(location.pathname);
@@ -16181,9 +16183,9 @@ var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation
 var _user$project$Animals_Navigation$desireToPage = function (desire) {
 	var _p0 = desire;
 	if (_p0 === 'ViewAllInUseAnimals') {
-		return _user$project$Animals_Navigation$AllAnimalsPage;
+		return _user$project$Animals_Navigation$AllPage;
 	} else {
-		return _user$project$Animals_Navigation$AllAnimalsPage;
+		return _user$project$Animals_Navigation$AllPage;
 	}
 };
 
@@ -16193,7 +16195,32 @@ var _user$project$Animals_Main$subscriptions = function (model) {
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		switch (_p0.ctor) {
+			case 'ToAllPage':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{page: _user$project$Animals_Navigation$AllPage}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ToAddPage':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{page: _user$project$Animals_Navigation$AddPage}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{page: _user$project$Animals_Navigation$HelpPage}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
 	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingLocation) {
@@ -16214,17 +16241,144 @@ var _user$project$Animals_Main$Model = F2(
 	function (a, b) {
 		return {page: a, authToken: b};
 	});
-var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
+var _user$project$Animals_Main$ToHelpPage = {ctor: 'ToHelpPage'};
+var _user$project$Animals_Main$ToAddPage = {ctor: 'ToAddPage'};
+var _user$project$Animals_Main$ToAllPage = {ctor: 'ToAllPage'};
 
-var _user$project$Animals_View$view = function (model) {
+var _user$project$Pile_Bulma$tab = F2(
+	function (selectedPage, _p0) {
+		var _p1 = _p0;
+		var _p2 = _elm_lang$core$Native_Utils.eq(selectedPage, _p1._0) ? {
+			ctor: '_Tuple3',
+			_0: 'is-active',
+			_1: _elm_lang$core$Native_List.fromArray(
+				[
+					{ctor: '_Tuple2', _0: 'background-color', _1: '#4a4a4a'},
+					{ctor: '_Tuple2', _0: 'border-width', _1: '1'},
+					{ctor: '_Tuple2', _0: 'border-color', _1: '#4a4a4a'},
+					{ctor: '_Tuple2', _0: 'border-radius', _1: '0px'}
+				]),
+			_2: 'is-info'
+		} : {
+			ctor: '_Tuple3',
+			_0: '',
+			_1: _elm_lang$core$Native_List.fromArray(
+				[]),
+			_2: ''
+		};
+		var liClass = _p2._0;
+		var linkStyle = _p2._1;
+		var spanClass = _p2._2;
+		return A2(
+			_elm_lang$html$Html$li,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(liClass)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$style(linkStyle)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$span,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class(spanClass)
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(_p1._1)
+								]))
+						]))
+				]));
+	});
+var _user$project$Pile_Bulma$tabs = F2(
+	function (selectedPage, tabList) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('tabs is-centered is-toggle')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$ul,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$Pile_Bulma$tab(selectedPage),
+						tabList))
+				]));
+	});
+
+var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
-		_elm_lang$html$Html$p,
+		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text(
-				A2(_elm_lang$core$Basics_ops['++'], 'Args: ', model.authToken))
+				_elm_lang$html$Html$text('You are on the all animal page. It is not finished.')
+			]));
+};
+
+var _user$project$Animals_View_AddPageView$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text('You are on the add-animal page. It is not finished.')
+			]));
+};
+
+var _user$project$Animals_View_HelpPageView$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text('You are on the animal help page. It is not finished.')
+			]));
+};
+
+var _user$project$Animals_View$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_user$project$Pile_Bulma$tabs,
+				model.page,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Main$ToAllPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Main$ToAddPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Animal Help', _2: _user$project$Animals_Main$ToHelpPage}
+					])),
+				function () {
+				var _p0 = model.page;
+				switch (_p0.ctor) {
+					case 'AllPage':
+						return _user$project$Animals_View_AllPageView$view(model);
+					case 'AddPage':
+						return _user$project$Animals_View_AddPageView$view(model);
+					default:
+						return _user$project$Animals_View_HelpPageView$view(model);
+				}
+			}()
 			]));
 };
 

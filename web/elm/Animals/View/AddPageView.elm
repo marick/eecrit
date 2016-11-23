@@ -2,6 +2,7 @@ module Animals.View.AddPageView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Pile.Bulma as Bulma
 
 view model =
-  div [] [text "You are on the add-animal page. It is not finished." ]
+  Bulma.infoMessage "Can't Add Animals Yet" "The page hasn't been written yet."

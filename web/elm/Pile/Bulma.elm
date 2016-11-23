@@ -28,3 +28,19 @@ tabs selectedPage tabList =
   div [class "tabs is-centered is-toggle"]
     [ ul [] <| List.map (tab selectedPage) tabList
     ]
+
+shortenWidth content =
+  div [class "columns is-centered is-mobile"]
+    [ div [class "column is-10 has-text-centered"]
+        content
+    ] 
+
+message kind header body =
+  shortenWidth
+    [ article [class <| "message " ++ kind ]
+        [ div [ class "message-header" ] [ text header ] 
+        , div [ class "message-body"] [ text body ]
+        ]
+    ]
+
+infoMessage = message "is-info"

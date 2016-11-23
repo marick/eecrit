@@ -16170,24 +16170,19 @@ var _user$project$Animals_Navigation$urlUpdate = F2(
 		};
 	});
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
+var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
+var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
+var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
 var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
 var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
 var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
 var _user$project$Animals_Navigation$stringParser = function (path) {
-	return _user$project$Animals_Navigation$AllPage;
+	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage);
 };
 var _user$project$Animals_Navigation$locationParser = function (location) {
 	return _user$project$Animals_Navigation$stringParser(location.pathname);
 };
 var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
-var _user$project$Animals_Navigation$desireToPage = function (desire) {
-	var _p0 = desire;
-	if (_p0 === 'ViewAllInUseAnimals') {
-		return _user$project$Animals_Navigation$AllPage;
-	} else {
-		return _user$project$Animals_Navigation$AllPage;
-	}
-};
 
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
@@ -16196,7 +16191,7 @@ var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'ToAllPage':
+			case 'NavigateToAllPage':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -16204,7 +16199,7 @@ var _user$project$Animals_Main$update = F2(
 						{page: _user$project$Animals_Navigation$AllPage}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'ToAddPage':
+			case 'NavigateToAddPage':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -16223,28 +16218,80 @@ var _user$project$Animals_Main$update = F2(
 		}
 	});
 var _user$project$Animals_Main$init = F2(
-	function (flags, startingLocation) {
+	function (flags, startingPage) {
 		return {
 			ctor: '_Tuple2',
-			_0: {
-				page: _user$project$Animals_Navigation$desireToPage(flags.desire),
-				authToken: flags.authToken
-			},
+			_0: {page: startingPage, csrfToken: flags.csrfToken},
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$Animals_Main$Flags = F2(
-	function (a, b) {
-		return {authToken: a, desire: b};
-	});
+var _user$project$Animals_Main$Flags = function (a) {
+	return {csrfToken: a};
+};
 var _user$project$Animals_Main$Model = F2(
 	function (a, b) {
-		return {page: a, authToken: b};
+		return {page: a, csrfToken: b};
 	});
-var _user$project$Animals_Main$ToHelpPage = {ctor: 'ToHelpPage'};
-var _user$project$Animals_Main$ToAddPage = {ctor: 'ToAddPage'};
-var _user$project$Animals_Main$ToAllPage = {ctor: 'ToAllPage'};
+var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
+var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
+var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
 
+var _user$project$Pile_Bulma$shortenWidth = function (content) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('columns is-centered is-mobile')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('column is-10 has-text-centered')
+					]),
+				content)
+			]));
+};
+var _user$project$Pile_Bulma$message = F3(
+	function (kind, header, body) {
+		return _user$project$Pile_Bulma$shortenWidth(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$article,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'message ', kind))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$div,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('message-header')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(header)
+								])),
+							A2(
+							_elm_lang$html$Html$div,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('message-body')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(body)
+								]))
+						]))
+				]));
+	});
+var _user$project$Pile_Bulma$infoMessage = _user$project$Pile_Bulma$message('is-info');
 var _user$project$Pile_Bulma$tab = F2(
 	function (selectedPage, _p0) {
 		var _p1 = _p0;
@@ -16331,25 +16378,11 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 };
 
 var _user$project$Animals_View_AddPageView$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text('You are on the add-animal page. It is not finished.')
-			]));
+	return A2(_user$project$Pile_Bulma$infoMessage, 'Can\'t Add Animals Yet', 'The page hasn\'t been written yet.');
 };
 
 var _user$project$Animals_View_HelpPageView$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text('You are on the animal help page. It is not finished.')
-			]));
+	return A2(_user$project$Pile_Bulma$infoMessage, 'Unfinished', 'The help page hasn\'t been written yet.');
 };
 
 var _user$project$Animals_View$view = function (model) {
@@ -16364,9 +16397,9 @@ var _user$project$Animals_View$view = function (model) {
 				model.page,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Main$ToAllPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Main$ToAddPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Animal Help', _2: _user$project$Animals_Main$ToHelpPage}
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Main$NavigateToAllPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Main$NavigateToAddPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Animal Help', _2: _user$project$Animals_Main$NavigateToHelpPage}
 					])),
 				function () {
 				var _p0 = model.page;
@@ -16389,15 +16422,10 @@ var _user$project$Animals$main = {
 		{init: _user$project$Animals_Main$init, view: _user$project$Animals_View$view, update: _user$project$Animals_Main$update, urlUpdate: _user$project$Animals_Navigation$urlUpdate, subscriptions: _user$project$Animals_Main$subscriptions}),
 	flags: A2(
 		_elm_lang$core$Json_Decode$andThen,
-		A2(_elm_lang$core$Json_Decode_ops[':='], 'authToken', _elm_lang$core$Json_Decode$string),
-		function (authToken) {
-			return A2(
-				_elm_lang$core$Json_Decode$andThen,
-				A2(_elm_lang$core$Json_Decode_ops[':='], 'desire', _elm_lang$core$Json_Decode$string),
-				function (desire) {
-					return _elm_lang$core$Json_Decode$succeed(
-						{authToken: authToken, desire: desire});
-				});
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'csrfToken', _elm_lang$core$Json_Decode$string),
+		function (csrfToken) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{csrfToken: csrfToken});
 		})
 };
 

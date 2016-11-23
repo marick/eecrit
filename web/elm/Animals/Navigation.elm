@@ -9,19 +9,21 @@ type PageChoice
   | AddPage
   | HelpPage
 
+allPagePath = "/v2/animals"
+addPagePath = "/v2/animals/new"
+helpPagePath = "/v2/animals/help"
+
 -- TODO: This is unidiomatic?
 programWithFlags = Navigation.programWithFlags
     
 stringParser : String -> PageChoice
 stringParser path =
-  AllPage
-
-desireToPage : String -> PageChoice
-desireToPage desire =
-  case desire of
-    "ViewAllInUseAnimals" -> AllPage
-    _ -> AllPage
-    
+  if String.startsWith addPagePath path then 
+    AddPage
+  else if String.startsWith helpPagePath path then 
+    HelpPage
+  else
+    AllPage
 
 locationParser : Navigation.Location -> PageChoice
 locationParser location = 

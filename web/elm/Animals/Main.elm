@@ -7,20 +7,19 @@ import String
 -- Model and Init
 
 type alias Flags =
-  { authToken : String
-  , desire : String
+  { csrfToken : String
   }
        
 type alias Model = 
   { page : MyNav.PageChoice
-  , authToken : String
+  , csrfToken : String
   }
 
 
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
-init flags startingLocation =
-  ( { page = MyNav.desireToPage(flags.desire)
-    , authToken = flags.authToken
+init flags startingPage =
+  ( { page = startingPage
+    , csrfToken = flags.csrfToken
     }
   , Cmd.none
   )
@@ -38,13 +37,13 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    ToAllPage ->
+    NavigateToAllPage ->
       ( { model | page = MyNav.AllPage }
       , Cmd.none )
-    ToAddPage ->
+    NavigateToAddPage ->
       ( { model | page = MyNav.AddPage }
       , Cmd.none )
-    ToHelpPage ->
+    NavigateToHelpPage ->
       ( { model | page = MyNav.HelpPage }
       , Cmd.none )
 

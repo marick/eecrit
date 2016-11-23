@@ -17,7 +17,7 @@
       <nav class="nav has-shadow" id="top">
         <div class="nav-left" style="overflow-x: hidden">
           <a class="nav-item" href="<%= assigns.layout_data.left_picture_path %>">
-            <img src="../images/critter4us.png" alt="Critter4Us">
+            <img src="/images/critter4us.png" alt="Critter4Us">
           </a>
           <span class="nav-item" style="overflow-x: hidden">
             <%= assigns.layout_data.user  %>

@@ -16296,26 +16296,29 @@ var _user$project$Pile_Bulma$tab = F2(
 	function (selectedPage, _p0) {
 		var _p1 = _p0;
 		var _p2 = _elm_lang$core$Native_Utils.eq(selectedPage, _p1._0) ? {
-			ctor: '_Tuple3',
+			ctor: '_Tuple4',
 			_0: 'is-active',
-			_1: _elm_lang$core$Native_List.fromArray(
+			_1: 'is-disabled',
+			_2: _elm_lang$core$Native_List.fromArray(
 				[
 					{ctor: '_Tuple2', _0: 'background-color', _1: '#4a4a4a'},
 					{ctor: '_Tuple2', _0: 'border-width', _1: '1'},
 					{ctor: '_Tuple2', _0: 'border-color', _1: '#4a4a4a'},
 					{ctor: '_Tuple2', _0: 'border-radius', _1: '0px'}
 				]),
-			_2: 'is-info'
+			_3: 'is-info'
 		} : {
-			ctor: '_Tuple3',
+			ctor: '_Tuple4',
 			_0: '',
-			_1: _elm_lang$core$Native_List.fromArray(
+			_1: '',
+			_2: _elm_lang$core$Native_List.fromArray(
 				[]),
-			_2: ''
+			_3: ''
 		};
 		var liClass = _p2._0;
-		var linkStyle = _p2._1;
-		var spanClass = _p2._2;
+		var linkClass = _p2._1;
+		var linkStyle = _p2._2;
+		var spanClass = _p2._3;
 		return A2(
 			_elm_lang$html$Html$li,
 			_elm_lang$core$Native_List.fromArray(
@@ -16328,6 +16331,7 @@ var _user$project$Pile_Bulma$tab = F2(
 					_elm_lang$html$Html$a,
 					_elm_lang$core$Native_List.fromArray(
 						[
+							_elm_lang$html$Html_Attributes$class(linkClass),
 							_elm_lang$html$Html_Attributes$style(linkStyle)
 						]),
 					_elm_lang$core$Native_List.fromArray(

@@ -5,9 +5,10 @@ import Html.Attributes exposing (..)
 
 tab selectedPage (page, linkText, msg) =
   let
-    (liClass, linkStyle, spanClass) =
+    (liClass, linkClass, linkStyle, spanClass) =
       if selectedPage == page then
         ( "is-active"
+        , "is-disabled"
         , [ ("background-color", "#4a4a4a")
           , ("border-width", "1")
           , ("border-color", "#4a4a4a")
@@ -16,10 +17,10 @@ tab selectedPage (page, linkText, msg) =
         , "is-info"
         )
       else
-        ( "", [], "")
+        ( "", "", [], "")
   in
     li [ class liClass ]
-    [a [style linkStyle]
+     [a [ class linkClass , style linkStyle ]
        [ span [class spanClass] [text linkText] ]
     ]
     

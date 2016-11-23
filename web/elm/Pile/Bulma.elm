@@ -2,6 +2,7 @@ module Pile.Bulma exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Pile.HtmlShorthand exposing (..)
 
 tab selectedPage (page, linkText, msg) =
   let
@@ -20,7 +21,11 @@ tab selectedPage (page, linkText, msg) =
         ( "", "", [], "")
   in
     li [ class liClass ]
-     [a [ class linkClass , style linkStyle ]
+     [a [ class linkClass
+        , style linkStyle
+        , href "#" -- Note: without this, event won't be fired.
+        , onClickWithoutPropagation msg
+        ]
        [ span [class spanClass] [text linkText] ]
     ]
     

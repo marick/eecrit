@@ -1,4 +1,4 @@
-module IV.Pile.HtmlShorthand exposing (..)
+module Pile.HtmlShorthand exposing (..)
 
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)

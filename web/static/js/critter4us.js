@@ -16187,34 +16187,24 @@ var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _user$project$Animals_Main$goto = F2(
+	function (model, path) {
+		return {
+			ctor: '_Tuple2',
+			_0: model,
+			_1: _elm_lang$navigation$Navigation$newUrl(path)
+		};
+	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'NavigateToAllPage':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{page: _user$project$Animals_Navigation$AllPage}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
 			case 'NavigateToAddPage':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{page: _user$project$Animals_Navigation$AddPage}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
 			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{page: _user$project$Animals_Navigation$HelpPage}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
 		}
 	});
 var _user$project$Animals_Main$init = F2(
@@ -16235,6 +16225,14 @@ var _user$project$Animals_Main$Model = F2(
 var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
 var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
 var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
+
+var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'click',
+		{stopPropagation: false, preventDefault: true},
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
 
 var _user$project$Pile_Bulma$shortenWidth = function (content) {
 	return A2(
@@ -16332,7 +16330,9 @@ var _user$project$Pile_Bulma$tab = F2(
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_elm_lang$html$Html_Attributes$class(linkClass),
-							_elm_lang$html$Html_Attributes$style(linkStyle)
+							_elm_lang$html$Html_Attributes$style(linkStyle),
+							_elm_lang$html$Html_Attributes$href('#'),
+							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_p1._2)
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[

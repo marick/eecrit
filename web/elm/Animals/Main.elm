@@ -38,16 +38,16 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     NavigateToAllPage ->
-      ( { model | page = MyNav.AllPage }
-      , Cmd.none )
+      goto model MyNav.allPagePath
     NavigateToAddPage ->
-      ( { model | page = MyNav.AddPage }
-      , Cmd.none )
+      goto model MyNav.addPagePath
     NavigateToHelpPage ->
-      ( { model | page = MyNav.HelpPage }
-      , Cmd.none )
+      goto model MyNav.helpPagePath
 
-
+goto model path =
+  ( model
+  , Navigation.newUrl path
+  )
 
 -- Subscriptions
 

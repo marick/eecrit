@@ -44,6 +44,7 @@ update msg model =
     NavigateToHelpPage ->
       goto model MyNav.helpPagePath
 
+goto : Model -> String -> (Model, Cmd Msg)        
 goto model path =
   ( model
   , Navigation.newUrl path

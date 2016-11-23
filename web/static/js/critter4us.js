@@ -16377,7 +16377,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text('You are on the all animal page. It is not finished.')
+				A2(_user$project$Pile_Bulma$infoMessage, 'Unfinished', 'Expect to see more here soon.')
 			]));
 };
 

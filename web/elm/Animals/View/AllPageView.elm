@@ -2,6 +2,10 @@ module Animals.View.AllPageView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Pile.Bulma as Bulma
 
 view model =
-  div [] [text "You are on the all animal page. It is not finished." ]
+  div []
+    [
+     Bulma.infoMessage "Unfinished" "Expect to see more here soon."
+    ]

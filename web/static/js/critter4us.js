@@ -16608,18 +16608,18 @@ var _user$project$Animals_View_AllPageView$oneTag = function (tagText) {
 };
 var _user$project$Animals_View_AllPageView$oneIcon = function (iconSymbolName) {
 	return A2(
-		_elm_lang$html$Html$a,
+		_elm_lang$html$Html$td,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('card-header-icon')
+				_elm_lang$html$Html_Attributes$class('is-icon')
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$span,
+				_elm_lang$html$Html$a,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('icon')
+						_elm_lang$html$Html_Attributes$href('#')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -16646,41 +16646,44 @@ var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
 				' (',
 				A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'))));
 	return A2(
-		_elm_lang$html$Html$div,
+		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('card is-fullwidth')
-			]),
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$header,
+				_elm_lang$html$Html$td,
 				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('card-header')
-					]),
+					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
 						_elm_lang$html$Html$p,
 						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('card-header-title')
-							]),
-						A2(_elm_lang$core$List_ops['::'], animalText, animalTags)),
-						_user$project$Animals_View_AllPageView$oneIcon('fa-caret-down'),
-						_user$project$Animals_View_AllPageView$oneIcon('fa-pencil'),
-						_user$project$Animals_View_AllPageView$oneIcon('fa-plus'),
-						_user$project$Animals_View_AllPageView$oneIcon('fa-trash')
-					]))
+							[]),
+						A2(_elm_lang$core$List_ops['::'], animalText, animalTags))
+					])),
+				_user$project$Animals_View_AllPageView$oneIcon('fa-caret-down'),
+				_user$project$Animals_View_AllPageView$oneIcon('fa-pencil'),
+				_user$project$Animals_View_AllPageView$oneIcon('fa-plus'),
+				_user$project$Animals_View_AllPageView$oneIcon('fa-trash')
 			]));
 };
 var _user$project$Animals_View_AllPageView$animalList = function (model) {
 	return A2(
-		_elm_lang$html$Html$div,
+		_elm_lang$html$Html$table,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
-		A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneAnimal, model.animals));
+			[
+				_elm_lang$html$Html_Attributes$class('table')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneAnimal, model.animals))
+			]));
 };
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(

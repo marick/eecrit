@@ -13,8 +13,10 @@ view model =
     ]
 
 animalList model = 
-  div []
-    (List.map oneAnimal model.animals)
+  table [class "table"]
+    [ tbody []
+        (List.map oneAnimal model.animals)
+    ]
 
 oneAnimal animal =
   let
@@ -22,20 +24,17 @@ oneAnimal animal =
     animalTags = List.map oneTag animal.tags
 
   in
-    div [class "card is-fullwidth"]
-      [ header [class "card-header"]
-          [ p [class "card-header-title"]
-              ( animalText :: animalTags)
-          , oneIcon "fa-caret-down"
-          , oneIcon "fa-pencil"
-          , oneIcon "fa-plus"
-          , oneIcon "fa-trash"
-          ]
+    tr []
+      [ td [] [ p [] ( animalText :: animalTags)]
+      , oneIcon "fa-caret-down"
+      , oneIcon "fa-pencil"
+      , oneIcon "fa-plus"
+      , oneIcon "fa-trash"
       ]
 
 oneIcon iconSymbolName =
-  a [class "card-header-icon"]
-    [span [class "icon"]
+  td [class "is-icon"]
+    [a [href "#"]
        [i [class ("fa " ++ iconSymbolName)] []]
     ]
 

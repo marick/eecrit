@@ -19,7 +19,7 @@ view model =
     [ Bulma.tabs model.page
         [ (MyNav.AllPage, "View Animals", NavigateToAllPage)
         , (MyNav.AddPage, "Add Animals", NavigateToAddPage)
-        , (MyNav.HelpPage, "Animal Help", NavigateToHelpPage)
+        , (MyNav.HelpPage, "Help", NavigateToHelpPage)
         ]
     , case model.page of
         MyNav.AllPage -> AllPage.view model

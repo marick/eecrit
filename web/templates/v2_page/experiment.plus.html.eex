@@ -230,19 +230,19 @@
 </div>
 
 
-<div class="card is-fullwidth" style="border-top: 2px solid; border-bottom: 2px solid">
+<div class="card is-fullwidth">
   <header class="card-header" style="background-color: whitesmoke">
     <p class="card-header-title">
       Xena (equine)
     </p>
     <a class="card-header-icon">
       <span class="icon">
-        <i class="fa fa-caret-up"></i>
+      <i class="fa fa-pencil"></i>
       </span>
     </a>
     <a class="card-header-icon">
       <span class="icon">
-      <i class="fa fa-pencil"></i>
+      <i class="fa fa-plus"></i>
       </span>
     </a>
     <a class="card-header-icon">
@@ -269,9 +269,5 @@
       </p>
     </div>
   </div>
-  <footer class="card-footer">
-    <a class="card-footer-item" >Edit</a>
-    <a class="card-footer-item" >Add animals like this one</a>
-  </footer>
 
 </div>

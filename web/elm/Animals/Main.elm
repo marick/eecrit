@@ -9,17 +9,58 @@ import String
 type alias Flags =
   { csrfToken : String
   }
+
+type alias Animal =
+  { name : String
+  , species : String
+  , tags : List String
+  , dateAcquired : String
+  , dateRemoved : Maybe String
+  }
        
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
+  , animals : List Animal
   }
 
+athena =
+  { name = "Athena"
+  , species = "bovine"
+  , tags = [ "cow" ]
+  , dateAcquired = "1 Jan 2016"
+  , dateRemoved = Nothing
+  }
+
+jake =
+  { name = "Jake"
+  , species = "equine"
+  , tags = [ "gelding" ]
+  , dateAcquired = "1 Jan 2016"
+  , dateRemoved = Nothing
+  }
+
+ross =
+  { name = "Ross"
+  , species = "equine"
+  , tags = [ "stallion", "aggressive"]
+  , dateAcquired = "1 Jan 2016"
+  , dateRemoved = Nothing
+  }
+
+xena =
+  { name = "Xena"
+  , species = "equine"
+  , tags = [ "mare", "skittish" ]
+  , dateAcquired = "1 Jan 2016"
+  , dateRemoved = Nothing
+  }
 
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
   ( { page = startingPage
     , csrfToken = flags.csrfToken
+    , animals = [athena, jake, ross, xena]
     }
   , Cmd.none
   )

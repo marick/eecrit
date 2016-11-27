@@ -7,7 +7,7 @@ import Html.Events as Events
 import Pile.Bulma as Bulma
 import String
 import List
-import Animals.Main exposing (DisplayState(..), Msg(..))
+import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals)
 
 view model =
   div []
@@ -18,7 +18,7 @@ view model =
 animalList model = 
   table [class "table"]
     [ tbody []
-        (List.map oneAnimal model.animals)
+        (List.map oneAnimal (desiredAnimals model))
     ]
 
 oneAnimal animal =
@@ -118,19 +118,24 @@ filterFields model =
 
 
 nameField model =
-  centeredLevelItem [ headingP "Name", textInput ]
+  centeredLevelItem
+    [ headingP "Name"
+    , textInput model.nameFilter SetNameFilter
+    ]
 
 tagsField model =
-  centeredLevelItem [ headingP "Tag", textInput ]
-  
+  centeredLevelItem
+  [ headingP "Tag"
+  , textInput model.tagFilter SetTagFilter
+  ]
 
 speciesField model =
   centeredLevelItem
   [ p [class "heading"] [ text "Species" ]
   , standardSelect
-      [ defaultOption "Choose"
-      , textOption "bovine"
-      , textOption "equine"
+      [ textOption "" "Any"
+      , textOption "bovine" "bovine"
+      , textOption "equine" "equine"
       ]
   ]
 
@@ -142,16 +147,22 @@ standardSelect content =
   span [ class "select" ]
     [ select [] content ]
 
-textOption val = 
-  option [ value val ] [ text val ]
-
-defaultOption name =
-  option [value ""] [ text name ] 
-
+textOption val display = 
+  option
+    [ value val
+    , Events.onClick (SetSpeciesFilter val)
+    ]
+    [ text display ]
 
 headingP heading = 
   p [class "heading"] [text heading]
 
-textInput = 
+textInput val msg = 
   p [class "control"]
-    [input [class "input", type' "text", value ""] []]
+    [input
+       [ class "input"
+       , type' "text"
+       , value val
+       , Events.onInput msg]
+       []
+    ]

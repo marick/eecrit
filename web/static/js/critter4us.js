@@ -16215,6 +16215,55 @@ var _user$project$Animals_Main$toState = F3(
 				}),
 			animals);
 	});
+var _user$project$Animals_Main$desiredAnimals = function (model) {
+	var hasWanted = F2(
+		function (modelFilter, animalValue) {
+			var has = _elm_lang$core$String$toLower(animalValue);
+			var wanted = _elm_lang$core$String$toLower(
+				modelFilter(model));
+			return A2(_elm_lang$core$String$startsWith, wanted, has);
+		});
+	var hasDesiredSpecies = function (animal) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.speciesFilter;
+			},
+			animal.species);
+	};
+	var hasDesiredName = function (animal) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.nameFilter;
+			},
+			animal.name);
+	};
+	var hasDesiredTag = function (animal) {
+		return A2(
+			_elm_lang$core$List$any,
+			hasWanted(
+				function (_) {
+					return _.tagFilter;
+				}),
+			animal.tags);
+	};
+	return A2(
+		_elm_lang$core$List$sortBy,
+		function (_p0) {
+			return _elm_lang$core$String$toLower(
+				function (_) {
+					return _.name;
+				}(_p0));
+		},
+		A2(
+			_elm_lang$core$List$filter,
+			hasDesiredTag,
+			A2(
+				_elm_lang$core$List$filter,
+				hasDesiredName,
+				A2(_elm_lang$core$List$filter, hasDesiredSpecies, model.animals))));
+};
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
@@ -16222,9 +16271,9 @@ var _user$project$Animals_Main$Animal = F7(
 	function (a, b, c, d, e, f, g) {
 		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
 	});
-var _user$project$Animals_Main$Model = F3(
-	function (a, b, c) {
-		return {page: a, csrfToken: b, animals: c};
+var _user$project$Animals_Main$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f};
 	});
 var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
@@ -16251,7 +16300,7 @@ var _user$project$Animals_Main$jake = {
 };
 var _user$project$Animals_Main$ross = {
 	id: '3',
-	name: 'Ross',
+	name: 'ross',
 	species: 'equine',
 	tags: _elm_lang$core$Native_List.fromArray(
 		['stallion', 'aggressive']),
@@ -16277,15 +16326,18 @@ var _user$project$Animals_Main$init = F2(
 				page: startingPage,
 				csrfToken: flags.csrfToken,
 				animals: _elm_lang$core$Native_List.fromArray(
-					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$ross, _user$project$Animals_Main$xena])
+					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$xena, _user$project$Animals_Main$ross]),
+				nameFilter: '',
+				tagFilter: '',
+				speciesFilter: ''
 			},
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
 			case 'NavigateToAllPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
 			case 'NavigateToAddPage':
@@ -16298,7 +16350,7 @@ var _user$project$Animals_Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p0._0, model.animals)
+							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p1._0, model.animals)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -16308,16 +16360,49 @@ var _user$project$Animals_Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Compact, _p0._0, model.animals)
+							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Compact, _p1._0, model.animals)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'EditAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			default:
+			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'SetNameFilter':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{nameFilter: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetTagFilter':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{tagFilter: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{speciesFilter: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
+var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
+	return {ctor: 'SetSpeciesFilter', _0: a};
+};
+var _user$project$Animals_Main$SetTagFilter = function (a) {
+	return {ctor: 'SetTagFilter', _0: a};
+};
+var _user$project$Animals_Main$SetNameFilter = function (a) {
+	return {ctor: 'SetNameFilter', _0: a};
+};
 var _user$project$Animals_Main$MoreLikeThisAnimal = function (a) {
 	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
@@ -16478,25 +16563,29 @@ var _user$project$Pile_Bulma$tabs = F2(
 				]));
 	});
 
-var _user$project$Animals_View_AllPageView$textInput = A2(
-	_elm_lang$html$Html$p,
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$html$Html_Attributes$class('control')
-		]),
-	_elm_lang$core$Native_List.fromArray(
-		[
-			A2(
-			_elm_lang$html$Html$input,
+var _user$project$Animals_View_AllPageView$textInput = F2(
+	function (val, msg) {
+		return A2(
+			_elm_lang$html$Html$p,
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html_Attributes$class('input'),
-					_elm_lang$html$Html_Attributes$type$('text'),
-					_elm_lang$html$Html_Attributes$value('')
+					_elm_lang$html$Html_Attributes$class('control')
 				]),
 			_elm_lang$core$Native_List.fromArray(
-				[]))
-		]));
+				[
+					A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('input'),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(val),
+							_elm_lang$html$Html_Events$onInput(msg)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
 var _user$project$Animals_View_AllPageView$headingP = function (heading) {
 	return A2(
 		_elm_lang$html$Html$p,
@@ -16509,30 +16598,21 @@ var _user$project$Animals_View_AllPageView$headingP = function (heading) {
 				_elm_lang$html$Html$text(heading)
 			]));
 };
-var _user$project$Animals_View_AllPageView$defaultOption = function (name) {
-	return A2(
-		_elm_lang$html$Html$option,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$value('')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(name)
-			]));
-};
-var _user$project$Animals_View_AllPageView$textOption = function (val) {
-	return A2(
-		_elm_lang$html$Html$option,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$value(val)
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(val)
-			]));
-};
+var _user$project$Animals_View_AllPageView$textOption = F2(
+	function (val, display) {
+		return A2(
+			_elm_lang$html$Html$option,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$value(val),
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Animals_Main$SetSpeciesFilter(val))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(display)
+				]));
+	});
 var _user$project$Animals_View_AllPageView$standardSelect = function (content) {
 	return A2(
 		_elm_lang$html$Html$span,
@@ -16575,9 +16655,9 @@ var _user$project$Animals_View_AllPageView$speciesField = function (model) {
 				_user$project$Animals_View_AllPageView$standardSelect(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_user$project$Animals_View_AllPageView$defaultOption('Choose'),
-						_user$project$Animals_View_AllPageView$textOption('bovine'),
-						_user$project$Animals_View_AllPageView$textOption('equine')
+						A2(_user$project$Animals_View_AllPageView$textOption, '', 'Any'),
+						A2(_user$project$Animals_View_AllPageView$textOption, 'bovine', 'bovine'),
+						A2(_user$project$Animals_View_AllPageView$textOption, 'equine', 'equine')
 					]))
 			]));
 };
@@ -16586,7 +16666,7 @@ var _user$project$Animals_View_AllPageView$tagsField = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$Animals_View_AllPageView$headingP('Tag'),
-				_user$project$Animals_View_AllPageView$textInput
+				A2(_user$project$Animals_View_AllPageView$textInput, model.tagFilter, _user$project$Animals_Main$SetTagFilter)
 			]));
 };
 var _user$project$Animals_View_AllPageView$nameField = function (model) {
@@ -16594,7 +16674,7 @@ var _user$project$Animals_View_AllPageView$nameField = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$Animals_View_AllPageView$headingP('Name'),
-				_user$project$Animals_View_AllPageView$textInput
+				A2(_user$project$Animals_View_AllPageView$textInput, model.nameFilter, _user$project$Animals_Main$SetNameFilter)
 			]));
 };
 var _user$project$Animals_View_AllPageView$filterFields = function (model) {
@@ -16855,7 +16935,10 @@ var _user$project$Animals_View_AllPageView$animalList = function (model) {
 				_elm_lang$html$Html$tbody,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
-				A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneAnimal, model.animals))
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Animals_View_AllPageView$oneAnimal,
+					_user$project$Animals_Main$desiredAnimals(model)))
 			]));
 };
 var _user$project$Animals_View_AllPageView$view = function (model) {

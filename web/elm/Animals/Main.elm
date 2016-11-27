@@ -30,7 +30,11 @@ type alias Model =
   { page : MyNav.PageChoice
   , csrfToken : String
   , animals : List Animal
+  , nameFilter : String
+  , tagFilter : String
+  , speciesFilter : String
   }
+
 
 athena =
   { id = "1"
@@ -54,7 +58,7 @@ jake =
 
 ross =
   { id = "3"
-  , name = "Ross"
+  , name = "ross"
   , species = "equine"
   , tags = [ "stallion", "aggressive"]
   , dateAcquired = "1 Jan 2016"
@@ -76,12 +80,36 @@ init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
   ( { page = startingPage
     , csrfToken = flags.csrfToken
-    , animals = [athena, jake, ross, xena]
+    , animals = [athena, jake, xena, ross]
+    , nameFilter = ""
+    , tagFilter = ""
+    , speciesFilter = ""
     }
   , Cmd.none
   )
 
 
+desiredAnimals model = 
+  let
+    hasWanted modelFilter animalValue =
+      let 
+        wanted = model |> modelFilter |> String.toLower
+        has = animalValue |> String.toLower
+      in
+        String.startsWith wanted has
+
+    hasDesiredSpecies animal = hasWanted .speciesFilter animal.species
+    hasDesiredName animal = hasWanted .nameFilter animal.name
+    hasDesiredTag animal =
+      List.any (hasWanted .tagFilter) animal.tags
+
+  in
+    model.animals
+      |> List.filter hasDesiredSpecies
+      |> List.filter hasDesiredName
+      |> List.filter hasDesiredTag
+      |> List.sortBy (.name >> String.toLower)
+      
 -- Msg
 
 type alias Id = String
@@ -95,6 +123,10 @@ type Msg
   | ContractAnimal Id
   | EditAnimal Id
   | MoreLikeThisAnimal Id
+
+  | SetNameFilter String
+  | SetTagFilter String
+  | SetSpeciesFilter String
 
 -- Update
 
@@ -121,6 +153,18 @@ update msg model =
       )
     MoreLikeThisAnimal id ->
       ( model 
+      , Cmd.none
+      )
+    SetNameFilter s ->
+      ( { model | nameFilter = s }
+      , Cmd.none
+      )
+    SetTagFilter s ->
+      ( { model | tagFilter = s }
+      , Cmd.none
+      )
+    SetSpeciesFilter s ->
+      ( { model | speciesFilter = s }
       , Cmd.none
       )
 

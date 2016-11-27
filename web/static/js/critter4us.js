@@ -16685,13 +16685,13 @@ var _user$project$Animals_View_AllPageView$filterFields = function (model) {
 			_user$project$Animals_View_AllPageView$tagsField(model)
 		]);
 };
-var _user$project$Animals_View_AllPageView$filterMessage = F2(
-	function (model, content) {
+var _user$project$Animals_View_AllPageView$messageView = F3(
+	function (model, headerText, content) {
 		return A2(
-			_elm_lang$html$Html$div,
+			_elm_lang$html$Html$article,
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html_Attributes$class('columns is-centered')
+					_elm_lang$html$Html_Attributes$class('message')
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
@@ -16699,45 +16699,27 @@ var _user$project$Animals_View_AllPageView$filterMessage = F2(
 					_elm_lang$html$Html$div,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$class('column is-10')
+							_elm_lang$html$Html_Attributes$class('message-header has-text-centered')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(headerText)
+						])),
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('message-body')
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
 							A2(
-							_elm_lang$html$Html$article,
+							_elm_lang$html$Html$div,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$class('message')
+									_elm_lang$html$Html_Attributes$class('level')
 								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									A2(
-									_elm_lang$html$Html$div,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('message-header has-text-centered')
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html$text('Filter by...')
-										])),
-									A2(
-									_elm_lang$html$Html$div,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('message-body')
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											A2(
-											_elm_lang$html$Html$div,
-											_elm_lang$core$Native_List.fromArray(
-												[
-													_elm_lang$html$Html_Attributes$class('level')
-												]),
-											content)
-										]))
-								]))
+							content)
 						]))
 				]));
 	});
@@ -16949,9 +16931,50 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_user$project$Animals_View_AllPageView$filterMessage,
-				model,
-				_user$project$Animals_View_AllPageView$filterFields(model)),
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('columns is-centered')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('column is-3')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(
+								_user$project$Animals_View_AllPageView$messageView,
+								model,
+								'Effective Date',
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$Animals_View_AllPageView$centeredLevelItem(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_user$project$Animals_View_AllPageView$headingP('Click to change'),
+												A2(_user$project$Animals_View_AllPageView$textInput, '19-feb-1960', _user$project$Animals_Main$SetNameFilter)
+											]))
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('column is-8')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(
+								_user$project$Animals_View_AllPageView$messageView,
+								model,
+								'Filter by...',
+								_user$project$Animals_View_AllPageView$filterFields(model))
+							]))
+					])),
 				_user$project$Animals_View_AllPageView$animalList(model)
 			]));
 };

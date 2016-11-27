@@ -11,7 +11,19 @@ import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals)
 
 view model =
   div []
-    [ filterMessage model (filterFields model)
+    [ div [class "columns is-centered"]
+        [ div [class "column is-3"]
+            [ messageView model "Effective Date"
+                [
+                  centeredLevelItem
+                    [ headingP "Click to change"
+                    , textInput "19-feb-1960" SetNameFilter
+                    ]
+                ]
+            ]
+        , div [class "column is-8"]
+            [ messageView model "Filter by..." (filterFields model) ]
+        ]
     , animalList model 
     ]
 
@@ -92,23 +104,16 @@ moreLikeThis animal =
 oneTag tagText =
   span [ class "tag" ] [ text tagText ]
     
-filterMessage model content=
-  div [class "columns is-centered"]
-    [ div [class "column is-10"]
-        [ article [class "message"]
-            [ div [class "message-header has-text-centered"]
-               [ text "Filter by..."
-               ]
-            , div [class "message-body"]
-                [ div [class "level"]
-                    content
-                ]
-            ]
+messageView model headerText content=
+  article [class "message"]
+    [ div [class "message-header has-text-centered"]
+        [ text headerText
         ]
+    , div [class "message-body"]
+      [ div [class "level"]
+          content
+      ]
     ]
-
-
-    
 
 filterFields model =
   [ nameField model

@@ -16195,49 +16195,79 @@ var _user$project$Animals_Main$goto = F2(
 			_1: _elm_lang$navigation$Navigation$newUrl(path)
 		};
 	});
-var _user$project$Animals_Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'NavigateToAllPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
-			case 'NavigateToAddPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
-			default:
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
-		}
+var _user$project$Animals_Main$transformAnimal = F3(
+	function (pred, transformer, animal) {
+		return pred(animal) ? transformer(animal) : animal;
 	});
-var _user$project$Animals_Main$xena = {
-	name: 'Xena',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['mare', 'skittish']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing
+var _user$project$Animals_Main$toState = F3(
+	function (newState, id, animals) {
+		return A2(
+			_elm_lang$core$List$map,
+			A2(
+				_user$project$Animals_Main$transformAnimal,
+				function (a) {
+					return _elm_lang$core$Native_Utils.eq(a.id, id);
+				},
+				function (a) {
+					return _elm_lang$core$Native_Utils.update(
+						a,
+						{displayState: newState});
+				}),
+			animals);
+	});
+var _user$project$Animals_Main$Flags = function (a) {
+	return {csrfToken: a};
 };
-var _user$project$Animals_Main$ross = {
-	name: 'Ross',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['stallion', 'aggressive']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Animals_Main$jake = {
-	name: 'Jake',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['gelding']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing
-};
+var _user$project$Animals_Main$Animal = F7(
+	function (a, b, c, d, e, f, g) {
+		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
+	});
+var _user$project$Animals_Main$Model = F3(
+	function (a, b, c) {
+		return {page: a, csrfToken: b, animals: c};
+	});
+var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
+var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
 var _user$project$Animals_Main$athena = {
+	id: '1',
 	name: 'Athena',
 	species: 'bovine',
 	tags: _elm_lang$core$Native_List.fromArray(
 		['cow']),
 	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing
+	dateRemoved: _elm_lang$core$Maybe$Nothing,
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$jake = {
+	id: '2',
+	name: 'Jake',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['gelding']),
+	dateAcquired: '1 Jan 2016',
+	dateRemoved: _elm_lang$core$Maybe$Nothing,
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$ross = {
+	id: '3',
+	name: 'Ross',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['stallion', 'aggressive']),
+	dateAcquired: '1 Jan 2016',
+	dateRemoved: _elm_lang$core$Maybe$Nothing,
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$xena = {
+	id: '4',
+	name: 'Xena',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['mare', 'skittish']),
+	dateAcquired: '1 Jan 2016',
+	dateRemoved: _elm_lang$core$Maybe$Nothing,
+	displayState: _user$project$Animals_Main$Compact
 };
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
@@ -16252,17 +16282,54 @@ var _user$project$Animals_Main$init = F2(
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$Animals_Main$Flags = function (a) {
-	return {csrfToken: a};
+var _user$project$Animals_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NavigateToAllPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
+			case 'NavigateToAddPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
+			case 'NavigateToHelpPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
+			case 'ExpandAnimal':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p0._0, model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ContractAnimal':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Compact, _p0._0, model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'EditAnimal':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _user$project$Animals_Main$MoreLikeThisAnimal = function (a) {
+	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
-var _user$project$Animals_Main$Animal = F5(
-	function (a, b, c, d, e) {
-		return {name: a, species: b, tags: c, dateAcquired: d, dateRemoved: e};
-	});
-var _user$project$Animals_Main$Model = F3(
-	function (a, b, c) {
-		return {page: a, csrfToken: b, animals: c};
-	});
+var _user$project$Animals_Main$EditAnimal = function (a) {
+	return {ctor: 'EditAnimal', _0: a};
+};
+var _user$project$Animals_Main$ContractAnimal = function (a) {
+	return {ctor: 'ContractAnimal', _0: a};
+};
+var _user$project$Animals_Main$ExpandAnimal = function (a) {
+	return {ctor: 'ExpandAnimal', _0: a};
+};
 var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
 var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
 var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
@@ -16606,38 +16673,81 @@ var _user$project$Animals_View_AllPageView$oneTag = function (tagText) {
 				_elm_lang$html$Html$text(tagText)
 			]));
 };
-var _user$project$Animals_View_AllPageView$oneIcon = function (iconSymbolName) {
+var _user$project$Animals_View_AllPageView$oneIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$td,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('is-icon')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('#'),
+							_elm_lang$html$Html_Attributes$title(tooltip),
+							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$i,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class(
+									A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[]))
+						]))
+				]));
+	});
+var _user$project$Animals_View_AllPageView$expand = function (animal) {
+	return A3(
+		_user$project$Animals_View_AllPageView$oneIcon,
+		'fa-caret-down',
+		'Expand: show more about this animal',
+		_user$project$Animals_Main$ExpandAnimal(animal.id));
+};
+var _user$project$Animals_View_AllPageView$contract = function (animal) {
+	return A3(
+		_user$project$Animals_View_AllPageView$oneIcon,
+		'fa-caret-up',
+		'Expand: show less about this animal',
+		_user$project$Animals_Main$ContractAnimal(animal.id));
+};
+var _user$project$Animals_View_AllPageView$edit = function (animal) {
+	return A3(
+		_user$project$Animals_View_AllPageView$oneIcon,
+		'fa-pencil',
+		'Edit: make changes to this animal',
+		_user$project$Animals_Main$EditAnimal(animal.id));
+};
+var _user$project$Animals_View_AllPageView$moreLikeThis = function (animal) {
+	return A3(
+		_user$project$Animals_View_AllPageView$oneIcon,
+		'fa-plus',
+		'Copy: make more animals like this one',
+		_user$project$Animals_Main$MoreLikeThisAnimal(animal.id));
+};
+var _user$project$Animals_View_AllPageView$oneAnimalEditable = function (animal) {
 	return A2(
-		_elm_lang$html$Html$td,
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('is-icon')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$a,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$href('#')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$i,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class(
-								A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[]))
-					]))
+				_elm_lang$html$Html$text('editable')
 			]));
 };
-var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
-	var animalTags = A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneTag, animal.tags);
-	var animalText = _elm_lang$html$Html$text(
+var _user$project$Animals_View_AllPageView$animalTags = function (animal) {
+	return A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneTag, animal.tags);
+};
+var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) {
+	return _elm_lang$html$Html$text(
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			animal.name,
@@ -16645,6 +16755,8 @@ var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
 				_elm_lang$core$Basics_ops['++'],
 				' (',
 				A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'))));
+};
+var _user$project$Animals_View_AllPageView$oneAnimalCompact = function (animal) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
@@ -16661,13 +16773,74 @@ var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
 						_elm_lang$html$Html$p,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
-						A2(_elm_lang$core$List_ops['::'], animalText, animalTags))
+						A2(
+							_elm_lang$core$List_ops['::'],
+							_user$project$Animals_View_AllPageView$animalSalutation(animal),
+							_user$project$Animals_View_AllPageView$animalTags(animal)))
 					])),
-				_user$project$Animals_View_AllPageView$oneIcon('fa-caret-down'),
-				_user$project$Animals_View_AllPageView$oneIcon('fa-pencil'),
-				_user$project$Animals_View_AllPageView$oneIcon('fa-plus'),
-				_user$project$Animals_View_AllPageView$oneIcon('fa-trash')
+				_user$project$Animals_View_AllPageView$expand(animal),
+				_user$project$Animals_View_AllPageView$edit(animal),
+				_user$project$Animals_View_AllPageView$moreLikeThis(animal)
 			]));
+};
+var _user$project$Animals_View_AllPageView$oneAnimalExpanded = function (animal) {
+	return A2(
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'border-top', _1: '2px solid'},
+						{ctor: '_Tuple2', _0: 'border-bottom', _1: '2px solid'}
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animals_View_AllPageView$animalSalutation(animal)
+							])),
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_user$project$Animals_View_AllPageView$animalTags(animal)),
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], 'Added ', animal.dateAcquired))
+							]))
+					])),
+				_user$project$Animals_View_AllPageView$contract(animal),
+				_user$project$Animals_View_AllPageView$edit(animal),
+				_user$project$Animals_View_AllPageView$moreLikeThis(animal)
+			]));
+};
+var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
+	var _p0 = animal.displayState;
+	switch (_p0.ctor) {
+		case 'Compact':
+			return _user$project$Animals_View_AllPageView$oneAnimalCompact(animal);
+		case 'Expanded':
+			return _user$project$Animals_View_AllPageView$oneAnimalExpanded(animal);
+		default:
+			return _user$project$Animals_View_AllPageView$oneAnimalEditable(animal);
+	}
 };
 var _user$project$Animals_View_AllPageView$animalList = function (model) {
 	return A2(

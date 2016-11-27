@@ -2,9 +2,12 @@ module Animals.View.AllPageView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Pile.HtmlShorthand exposing (..)
+import Html.Events as Events
 import Pile.Bulma as Bulma
 import String
 import List
+import Animals.Main exposing (DisplayState(..), Msg(..))
 
 view model =
   div []
@@ -19,25 +22,72 @@ animalList model =
     ]
 
 oneAnimal animal =
-  let
-    animalText = text <| animal.name ++ " (" ++ animal.species ++ ")"
-    animalTags = List.map oneTag animal.tags
+  case animal.displayState of
+    Compact -> oneAnimalCompact animal
+    Expanded -> oneAnimalExpanded animal
+    Editable -> oneAnimalEditable animal
 
-  in
+animalSalutation animal =
+  text <| animal.name ++ " (" ++ animal.species ++ ")"
+
+animalTags animal =
+  List.map oneTag animal.tags
+                
+oneAnimalCompact animal = 
     tr []
-      [ td [] [ p [] ( animalText :: animalTags)]
-      , oneIcon "fa-caret-down"
-      , oneIcon "fa-pencil"
-      , oneIcon "fa-plus"
-      , oneIcon "fa-trash"
+      [ (td [] [ p [] ( animalSalutation animal  :: animalTags animal)])
+      , expand animal
+      , edit animal
+      , moreLikeThis animal
       ]
 
-oneIcon iconSymbolName =
+oneAnimalExpanded animal =
+    tr [ style [ ("border-top", "2px solid")
+               , ("border-bottom", "2px solid")
+               ]
+       ]
+      [ td []
+          [ p [] [ animalSalutation animal ]
+          , p [] (animalTags animal)
+          , p [] [text <| "Added " ++ animal.dateAcquired]
+          ]
+      , contract animal
+      , edit animal
+      , moreLikeThis animal
+      ]
+      
+
+oneAnimalEditable animal =
+  tr [] [ text "editable" ] 
+
+oneIcon iconSymbolName tooltip msg =
   td [class "is-icon"]
-    [a [href "#"]
+    [a [ href "#"
+       , title tooltip
+       , onClickWithoutPropagation msg
+       ]
        [i [class ("fa " ++ iconSymbolName)] []]
     ]
 
+expand animal =
+  oneIcon "fa-caret-down"
+    "Expand: show more about this animal"
+    (ExpandAnimal animal.id)
+      
+contract animal =
+  oneIcon "fa-caret-up"
+    "Expand: show less about this animal"
+    (ContractAnimal animal.id)
+      
+edit animal =
+  oneIcon "fa-pencil"
+    "Edit: make changes to this animal"
+    (EditAnimal animal.id)
+      
+moreLikeThis animal =
+  oneIcon "fa-plus"
+    "Copy: make more animals like this one"
+    (MoreLikeThisAnimal animal.id)
       
 oneTag tagText =
   span [ class "tag" ] [ text tagText ]

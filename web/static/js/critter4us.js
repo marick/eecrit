@@ -9567,6 +9567,207 @@ var _elm_lang$core$Color$Linear = F3(
 	});
 var _elm_lang$core$Color$linear = _elm_lang$core$Color$Linear;
 
+//import Result //
+
+var _elm_lang$core$Native_Date = function() {
+
+function fromString(str)
+{
+	var date = new Date(str);
+	return isNaN(date.getTime())
+		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
+		: _elm_lang$core$Result$Ok(date);
+}
+
+var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var monthTable =
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+return {
+	fromString: fromString,
+	year: function(d) { return d.getFullYear(); },
+	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
+	day: function(d) { return d.getDate(); },
+	hour: function(d) { return d.getHours(); },
+	minute: function(d) { return d.getMinutes(); },
+	second: function(d) { return d.getSeconds(); },
+	millisecond: function(d) { return d.getMilliseconds(); },
+	toTime: function(d) { return d.getTime(); },
+	fromTime: function(t) { return new Date(t); },
+	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+};
+
+}();
+var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
+var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
+var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
+var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
+var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
+var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
+var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
+var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
+var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
+var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
+var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
+var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
+var _elm_lang$core$Date$Date = {ctor: 'Date'};
+var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
+var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
+var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
+var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
+var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
+var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
+var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
+var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
+var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
+var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
+var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
+var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
+var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
+var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
+var _elm_lang$core$Date$May = {ctor: 'May'};
+var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
+var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
+var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
+var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[i - 1],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
 var _elm_lang$dom$Native_Dom = function() {
 
 function on(node)
@@ -11428,6 +11629,1641 @@ var _evancz$url_parser$UrlParser$format = F2(
 					}
 				}));
 	});
+
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond = 1000;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay = 24 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$dayOfWeekFromWeekdayNumber = function (n) {
+	var _p0 = n;
+	switch (_p0) {
+		case 1:
+			return _elm_lang$core$Date$Mon;
+		case 2:
+			return _elm_lang$core$Date$Tue;
+		case 3:
+			return _elm_lang$core$Date$Wed;
+		case 4:
+			return _elm_lang$core$Date$Thu;
+		case 5:
+			return _elm_lang$core$Date$Fri;
+		case 6:
+			return _elm_lang$core$Date$Sat;
+		default:
+			return _elm_lang$core$Date$Sun;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek = function (d) {
+	var _p1 = d;
+	switch (_p1.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber = function (n) {
+	var _p2 = n;
+	switch (_p2) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Feb;
+		case 3:
+			return _elm_lang$core$Date$Mar;
+		case 4:
+			return _elm_lang$core$Date$Apr;
+		case 5:
+			return _elm_lang$core$Date$May;
+		case 6:
+			return _elm_lang$core$Date$Jun;
+		case 7:
+			return _elm_lang$core$Date$Jul;
+		case 8:
+			return _elm_lang$core$Date$Aug;
+		case 9:
+			return _elm_lang$core$Date$Sep;
+		case 10:
+			return _elm_lang$core$Date$Oct;
+		case 11:
+			return _elm_lang$core$Date$Nov;
+		default:
+			return _elm_lang$core$Date$Dec;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth = function (m) {
+	var _p3 = m;
+	switch (_p3.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$months = _elm_lang$core$Native_List.fromArray(
+	[_elm_lang$core$Date$Jan, _elm_lang$core$Date$Feb, _elm_lang$core$Date$Mar, _elm_lang$core$Date$Apr, _elm_lang$core$Date$May, _elm_lang$core$Date$Jun, _elm_lang$core$Date$Jul, _elm_lang$core$Date$Aug, _elm_lang$core$Date$Sep, _elm_lang$core$Date$Oct, _elm_lang$core$Date$Nov, _elm_lang$core$Date$Dec]);
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear = function (y) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0);
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth = F2(
+	function (y, m) {
+		var _p4 = m;
+		switch (_p4.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth = F2(
+	function (y, m) {
+		var _p5 = m;
+		switch (_p5.ctor) {
+			case 'Jan':
+				return 0;
+			case 'Feb':
+				return 31;
+			case 'Mar':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 60 : 59;
+			case 'Apr':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 91 : 90;
+			case 'May':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 121 : 120;
+			case 'Jun':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 152 : 151;
+			case 'Jul':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 182 : 181;
+			case 'Aug':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 213 : 212;
+			case 'Sep':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 244 : 243;
+			case 'Oct':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 274 : 273;
+			case 'Nov':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 305 : 304;
+			default:
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 335 : 334;
+		}
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime = function (rd) {
+	return (rd - 719163) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber = function (rd) {
+	var _p0 = A2(_elm_lang$core$Basics_ops['%'], rd, 7);
+	if (_p0 === 0) {
+		return 7;
+	} else {
+		return _p0;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra = function (y) {
+	return (((y / 4) | 0) - ((y / 100) | 0)) + ((y / 400) | 0);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear = function (y) {
+	return (365 * (y - 1)) + _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra(y - 1);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear = function (y) {
+	var jan4RD = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, 4);
+	return (jan4RD - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(jan4RD)) + 1;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate = F3(
+	function (y, w, d) {
+		var week1Day0RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(y) - 1;
+		return (week1Day0RD + ((w - 1) * 7)) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate = F3(
+	function (y, m, d) {
+		var md = A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+		var yd = _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y);
+		return (yd + md) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie_ops = _justinmimbs$elm_date_extra$Date_Internal_RataDie_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'] = F2(
+	function (n, d) {
+		return {
+			ctor: '_Tuple2',
+			_0: (n / d) | 0,
+			_1: A2(_elm_lang$core$Basics_ops['%'], n, d)
+		};
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$year = function (rd) {
+	var _p1 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], rd, 146097);
+	var q400 = _p1._0;
+	var r400 = _p1._1;
+	var _p2 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r400, 36524);
+	var q100 = _p2._0;
+	var r100 = _p2._1;
+	var _p3 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r100, 1461);
+	var q4 = _p3._0;
+	var r4 = _p3._1;
+	var _p4 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r4, 365);
+	var q1 = _p4._0;
+	var r1 = _p4._1;
+	var n = _elm_lang$core$Native_Utils.eq(r1, 0) ? 0 : 1;
+	return ((((q400 * 400) + (q100 * 100)) + (q4 * 4)) + q1) + n;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay = function (rd) {
+	return rd - _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear = function (rd) {
+	var daysToThursday = 4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(rd);
+	return _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd + daysToThursday);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber = function (rd) {
+	var week1Day1RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(rd));
+	return (((rd - week1Day1RD) / 7) | 0) + 1;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$find = F2(
+	function (pred, list) {
+		find:
+		while (true) {
+			var _p5 = list;
+			if (_p5.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var _p6 = _p5._0;
+				if (pred(_p6)) {
+					return _elm_lang$core$Maybe$Just(_p6);
+				} else {
+					var _v2 = pred,
+						_v3 = _p5._1;
+					pred = _v2;
+					list = _v3;
+					continue find;
+				}
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$month = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		_elm_lang$core$Date$Jan,
+		A2(
+			_justinmimbs$elm_date_extra$Date_Internal_RataDie$find,
+			function (m) {
+				return _elm_lang$core$Native_Utils.cmp(
+					A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m),
+					od) < 0;
+			},
+			_elm_lang$core$List$reverse(_justinmimbs$elm_date_extra$Date_Extra_Facts$months)));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$day = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var m = _justinmimbs$elm_date_extra$Date_Internal_RataDie$month(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return od - A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts = F4(
+	function (hh, mm, ss, ms) {
+		return ((ms + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond * ss)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * mm)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour * hh);
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d)) + A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc = function (date) {
+	var utcTime = _elm_lang$core$Date$toTime(date);
+	var localTime = _elm_lang$core$Basics$toFloat(
+		A7(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date),
+			_elm_lang$core$Date$day(date),
+			_elm_lang$core$Date$hour(date),
+			_elm_lang$core$Date$minute(date),
+			_elm_lang$core$Date$second(date),
+			_elm_lang$core$Date$millisecond(date)));
+	return _elm_lang$core$Basics$floor(localTime - utcTime);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc = function (date) {
+	return (_justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc(date) / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber = function (date) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(
+		_elm_lang$core$Date$dayOfWeek(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay = function (date) {
+	var timeOfDayMS = A4(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts,
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+	return _elm_lang$core$Basics$toFloat(timeOfDayMS) / _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay = function (date) {
+	return A2(
+		_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date)) + _elm_lang$core$Date$day(date);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber = function (date) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth(
+		_elm_lang$core$Date$month(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter = function (date) {
+	return _elm_lang$core$Basics$ceiling(
+		function (n) {
+			return n / 3;
+		}(
+			_elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date))));
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc = function (date) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Date$toTime(date) - _elm_lang$core$Basics$toFloat(
+			_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm = function (length) {
+	var _p0 = length;
+	switch (_p0) {
+		case 1:
+			return 'abbreviated';
+		case 2:
+			return 'abbreviated';
+		case 3:
+			return 'abbreviated';
+		case 4:
+			return 'full';
+		case 5:
+			return 'narrow';
+		case 6:
+			return 'short';
+		default:
+			return 'invalid';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches = _elm_lang$core$Regex$regex('([yYQMwdDEeabhHmsSXx])\\1*|\'(?:[^\']|\'\')*?\'(?!\')');
+var _justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset = F3(
+	function (separator, minutesOptional, offset) {
+		var mm = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				A2(
+					_elm_lang$core$Basics_ops['%'],
+					_elm_lang$core$Basics$abs(offset),
+					60)));
+		var hh = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				(_elm_lang$core$Basics$abs(offset) / 60) | 0));
+		var sign = (_elm_lang$core$Native_Utils.cmp(offset, 0) > -1) ? '+' : '-';
+		return (minutesOptional && _elm_lang$core$Native_Utils.eq(mm, '00')) ? A2(_elm_lang$core$Basics_ops['++'], sign, hh) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			sign,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				hh,
+				A2(_elm_lang$core$Basics_ops['++'], separator, mm)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix = function (n) {
+	var nn = A2(_elm_lang$core$Basics_ops['%'], n, 100);
+	var _p1 = A2(
+		_elm_lang$core$Basics$min,
+		(_elm_lang$core$Native_Utils.cmp(nn, 20) < 0) ? nn : A2(_elm_lang$core$Basics_ops['%'], nn, 10),
+		4);
+	switch (_p1) {
+		case 0:
+			return 'th';
+		case 1:
+			return 'st';
+		case 2:
+			return 'nd';
+		case 3:
+			return 'rd';
+		case 4:
+			return 'th';
+		default:
+			return '';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix = function (n) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(n),
+		_justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix(n));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$hour12 = function (date) {
+	var _p2 = A2(
+		_elm_lang$core$Basics_ops['%'],
+		_elm_lang$core$Date$hour(date),
+		12);
+	if (_p2 === 0) {
+		return 12;
+	} else {
+		return _p2;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName = function (d) {
+	var _p3 = d;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$monthName = function (m) {
+	var _p4 = m;
+	switch (_p4.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$PM = {ctor: 'PM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Noon = {ctor: 'Noon'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$AM = {ctor: 'AM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight = {ctor: 'Midnight'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod = function (date) {
+	var onTheHour = _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$minute(date),
+		0) && (_elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$second(date),
+		0) && _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$millisecond(date),
+		0));
+	var hh = _elm_lang$core$Date$hour(date);
+	return (_elm_lang$core$Native_Utils.eq(hh, 0) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight : ((_elm_lang$core$Native_Utils.cmp(hh, 12) < 0) ? _justinmimbs$elm_date_extra$Date_Internal_Format$AM : ((_elm_lang$core$Native_Utils.eq(hh, 12) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Noon : _justinmimbs$elm_date_extra$Date_Internal_Format$PM));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$f = F3(
+	function (asUtc, date, match) {
+		f:
+		while (true) {
+			var length = _elm_lang$core$String$length(match);
+			var $char = A2(_elm_lang$core$String$left, 1, match);
+			var _p5 = $char;
+			switch (_p5) {
+				case 'y':
+					var _p6 = length;
+					if (_p6 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$year(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$year(date)));
+					}
+				case 'Y':
+					var _p7 = length;
+					if (_p7 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date)));
+					}
+				case 'Q':
+					var _p8 = length;
+					switch (_p8) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 3:
+							return A2(
+								F2(
+									function (x, y) {
+										return A2(_elm_lang$core$Basics_ops['++'], x, y);
+									}),
+								'Q',
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 5:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						default:
+							return '';
+					}
+				case 'M':
+					var _p9 = length;
+					switch (_p9) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date)));
+						case 3:
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+								_elm_lang$core$Date$month(date));
+						case 5:
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						default:
+							return '';
+					}
+				case 'w':
+					var _p10 = length;
+					switch (_p10) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date)));
+						default:
+							return '';
+					}
+				case 'd':
+					var _p11 = length;
+					switch (_p11) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$day(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$day(date)));
+						case 3:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_elm_lang$core$Date$day(date));
+						default:
+							return '';
+					}
+				case 'D':
+					var _p12 = length;
+					switch (_p12) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						case 3:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						default:
+							return '';
+					}
+				case 'E':
+					var _p13 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p13) {
+						case 'abbreviated':
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'full':
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+								_elm_lang$core$Date$dayOfWeek(date));
+						case 'narrow':
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'short':
+							return A2(
+								_elm_lang$core$String$left,
+								2,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						default:
+							return '';
+					}
+				case 'e':
+					var _p14 = length;
+					switch (_p14) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						default:
+							var _v15 = asUtc,
+								_v16 = date,
+								_v17 = _elm_lang$core$String$toUpper(match);
+							asUtc = _v15;
+							date = _v16;
+							match = _v17;
+							continue f;
+					}
+				case 'a':
+					var p = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+					var m = (_elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight) || _elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$AM)) ? 'A' : 'P';
+					var _p15 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p15) {
+						case 'abbreviated':
+							return A2(_elm_lang$core$Basics_ops['++'], m, 'M');
+						case 'full':
+							return A2(_elm_lang$core$Basics_ops['++'], m, '.M.');
+						case 'narrow':
+							return m;
+						default:
+							return '';
+					}
+				case 'b':
+					var _p16 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p16) {
+						case 'abbreviated':
+							var _p17 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p17.ctor) {
+								case 'Midnight':
+									return 'mid.';
+								case 'AM':
+									return 'am';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'pm';
+							}
+						case 'full':
+							var _p18 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p18.ctor) {
+								case 'Midnight':
+									return 'midnight';
+								case 'AM':
+									return 'a.m.';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'p.m.';
+							}
+						case 'narrow':
+							var _p19 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p19.ctor) {
+								case 'Midnight':
+									return 'md';
+								case 'AM':
+									return 'a';
+								case 'Noon':
+									return 'nn';
+								default:
+									return 'p';
+							}
+						default:
+							return '';
+					}
+				case 'h':
+					var _p20 = length;
+					switch (_p20) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date)));
+						default:
+							return '';
+					}
+				case 'H':
+					var _p21 = length;
+					switch (_p21) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$hour(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$hour(date)));
+						default:
+							return '';
+					}
+				case 'm':
+					var _p22 = length;
+					switch (_p22) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$minute(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$minute(date)));
+						default:
+							return '';
+					}
+				case 's':
+					var _p23 = length;
+					switch (_p23) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$second(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$second(date)));
+						default:
+							return '';
+					}
+				case 'S':
+					return A3(
+						_elm_lang$core$String$padRight,
+						length,
+						_elm_lang$core$Native_Utils.chr('0'),
+						A2(
+							_elm_lang$core$String$left,
+							length,
+							A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$millisecond(date)))));
+				case 'X':
+					if ((_elm_lang$core$Native_Utils.cmp(length, 4) < 0) && (asUtc || _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date),
+						0))) {
+						return 'Z';
+					} else {
+						var _v27 = asUtc,
+							_v28 = date,
+							_v29 = _elm_lang$core$String$toLower(match);
+						asUtc = _v27;
+						date = _v28;
+						match = _v29;
+						continue f;
+					}
+				case 'x':
+					var offset = asUtc ? 0 : _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date);
+					var _p24 = length;
+					switch (_p24) {
+						case 1:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', true, offset);
+						case 2:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', false, offset);
+						case 3:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, ':', false, offset);
+						default:
+							return '';
+					}
+				case '\'':
+					return _elm_lang$core$Native_Utils.eq(match, '\'\'') ? '\'' : A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('\'\''),
+						function (_p25) {
+							return '\'';
+						},
+						A3(_elm_lang$core$String$slice, 1, -1, match));
+				default:
+					return '';
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString = F3(
+	function (asUtc, pattern, date) {
+		var date$ = asUtc ? _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc(date) : date;
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches,
+			function (_p26) {
+				var _p27 = _p26;
+				return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$f, asUtc, date$, _p27.match);
+			},
+			pattern);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex = function () {
+	var time = 'T(\\d{2})(?:(\\:)?(\\d{2})(?:\\10(\\d{2}))?)?(\\.\\d+)?(?:(Z)|(?:([+\\-])(\\d{2})(?:\\:?(\\d{2}))?))?';
+	var ord = '\\-?(\\d{3})';
+	var week = '(\\-)?W(\\d{2})(?:\\5(\\d))?';
+	var cal = '(\\-)?(\\d{2})(?:\\2(\\d{2}))?';
+	var year = '(\\d{4})';
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'^',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				year,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'(?:',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						cal,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'|',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								week,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'|',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										ord,
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											')?',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'(?:',
+												A2(_elm_lang$core$Basics_ops['++'], time, ')?$'))))))))))));
+}();
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat = function (s) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toFloat(s));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt = function (s) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toInt(s));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse_ops = _justinmimbs$elm_date_extra$Date_Internal_Parse_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'] = _elm_lang$core$Basics$flip(_elm_lang$core$Maybe$withDefault);
+var _justinmimbs$elm_date_extra$Date_Internal_Parse_ops = _justinmimbs$elm_date_extra$Date_Internal_Parse_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='] = _elm_lang$core$Maybe$andThen;
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches = F6(
+	function (yyyy, calMM, calDD, weekWW, weekD, ordDDD) {
+		var y = A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+			_justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt(yyyy),
+			1);
+		var _p0 = {ctor: '_Tuple2', _0: calMM, _1: weekWW};
+		_v0_2:
+		do {
+			if (_p0.ctor === '_Tuple2') {
+				if (_p0._0.ctor === 'Just') {
+					if (_p0._1.ctor === 'Nothing') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate,
+							y,
+							_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+								A2(
+									_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+									A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], calMM, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+									1)),
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], calDD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1));
+					} else {
+						break _v0_2;
+					}
+				} else {
+					if (_p0._1.ctor === 'Just') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate,
+							y,
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], weekWW, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1),
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], weekD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1));
+					} else {
+						break _v0_2;
+					}
+				}
+			} else {
+				break _v0_2;
+			}
+		} while(false);
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate,
+			y,
+			A2(
+				_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+				A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], ordDDD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+				1));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches = F4(
+	function (timeHH, timeMM, timeSS, timeF) {
+		var f = A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+			A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], timeF, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat),
+			0.0);
+		var _p1 = function () {
+			var _p2 = A2(
+				_elm_lang$core$List$map,
+				function (m) {
+					return A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], m, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat);
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[timeHH, timeMM, timeSS]));
+			_v1_3:
+			do {
+				if (((_p2.ctor === '::') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === '::')) {
+					if (_p2._1._0.ctor === 'Just') {
+						if (_p2._1._1.ctor === '::') {
+							if (_p2._1._1._0.ctor === 'Just') {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0, _2: _p2._1._1._0._0 + f};
+								} else {
+									break _v1_3;
+								}
+							} else {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0 + f, _2: 0.0};
+								} else {
+									break _v1_3;
+								}
+							}
+						} else {
+							break _v1_3;
+						}
+					} else {
+						if (((_p2._1._1.ctor === '::') && (_p2._1._1._0.ctor === 'Nothing')) && (_p2._1._1._1.ctor === '[]')) {
+							return {ctor: '_Tuple3', _0: _p2._0._0 + f, _1: 0.0, _2: 0.0};
+						} else {
+							break _v1_3;
+						}
+					}
+				} else {
+					break _v1_3;
+				}
+			} while(false);
+			return {ctor: '_Tuple3', _0: 0.0, _1: 0.0, _2: 0.0};
+		}();
+		var hh = _p1._0;
+		var mm = _p1._1;
+		var ss = _p1._2;
+		return _elm_lang$core$Basics$round(
+			((hh * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour)) + (mm * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute))) + (ss * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches = F4(
+	function (tzZ, tzSign, tzHH, tzMM) {
+		var _p3 = {ctor: '_Tuple2', _0: tzZ, _1: tzSign};
+		_v2_2:
+		do {
+			if (_p3.ctor === '_Tuple2') {
+				if (_p3._0.ctor === 'Just') {
+					if ((_p3._0._0 === 'Z') && (_p3._1.ctor === 'Nothing')) {
+						return _elm_lang$core$Maybe$Just(0);
+					} else {
+						break _v2_2;
+					}
+				} else {
+					if (_p3._1.ctor === 'Just') {
+						var mm = A2(
+							_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+							A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], tzMM, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+							0);
+						var hh = A2(
+							_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+							A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], tzHH, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+							0);
+						return _elm_lang$core$Maybe$Just(
+							(_elm_lang$core$Native_Utils.eq(_p3._1._0, '+') ? 1 : -1) * ((hh * 60) + mm));
+					} else {
+						break _v2_2;
+					}
+				}
+			} else {
+				break _v2_2;
+			}
+		} while(false);
+		return _elm_lang$core$Maybe$Nothing;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches = function (matches) {
+	var _p4 = matches;
+	if (((((((((((((((((((_p4.ctor === '::') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === '::')) && (_p4._1._1.ctor === '::')) && (_p4._1._1._1.ctor === '::')) && (_p4._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '[]')) {
+		var offset = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var timeMS = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches, _p4._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var dateMS = A6(_justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches, _p4._0._0, _p4._1._1._0, _p4._1._1._1._0, _p4._1._1._1._1._1._0, _p4._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._0);
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: offset, _1: dateMS + timeMS});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString = function (s) {
+	return A2(
+		_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='],
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (_) {
+				return _.submatches;
+			},
+			_elm_lang$core$List$head(
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex,
+					s))),
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches);
+};
+
+var _justinmimbs$elm_date_extra$Date_Extra$unfold = F2(
+	function (f, seed) {
+		var _p0 = f(seed);
+		if (_p0.ctor === 'Nothing') {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		} else {
+			return A2(
+				_elm_lang$core$List_ops['::'],
+				_p0._0._0,
+				A2(_justinmimbs$elm_date_extra$Date_Extra$unfold, f, _p0._0._1));
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$toParts = function (date) {
+	return {
+		ctor: '_Tuple7',
+		_0: _elm_lang$core$Date$year(date),
+		_1: _elm_lang$core$Date$month(date),
+		_2: _elm_lang$core$Date$day(date),
+		_3: _elm_lang$core$Date$hour(date),
+		_4: _elm_lang$core$Date$minute(date),
+		_5: _elm_lang$core$Date$second(date),
+		_6: _elm_lang$core$Date$millisecond(date)
+	};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter = function (q) {
+	var _p1 = q;
+	switch (_p1) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Apr;
+		case 3:
+			return _elm_lang$core$Date$Jul;
+		default:
+			return _elm_lang$core$Date$Oct;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra$clamp = F3(
+	function (min, max, date) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(min)) < 0) ? min : ((_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(max)) > 0) ? max : date);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$isBetween = F3(
+	function (date1, date2, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween,
+			_elm_lang$core$Date$toTime(date1),
+			_elm_lang$core$Date$toTime(date2),
+			_elm_lang$core$Date$toTime(date));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$compare = F2(
+	function (a, b) {
+		return A2(
+			_elm_lang$core$Basics$compare,
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$equal = F2(
+	function (a, b) {
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc = _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc;
+var _justinmimbs$elm_date_extra$Date_Extra$weekYear = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear;
+var _justinmimbs$elm_date_extra$Date_Extra$weekNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$weekdayNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek = F2(
+	function (d, date) {
+		return _elm_lang$core$Basics$negate(
+			A2(
+				_elm_lang$core$Basics_ops['%'],
+				(_justinmimbs$elm_date_extra$Date_Extra$weekdayNumber(date) - _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(d)) + 7,
+				7));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fractionalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$quarter = _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter;
+var _justinmimbs$elm_date_extra$Date_Extra$monthNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalMonth = function (date) {
+	return (_elm_lang$core$Date$year(date) * 12) + _justinmimbs$elm_date_extra$Date_Extra$monthNumber(date);
+};
+var _justinmimbs$elm_date_extra$Date_Extra$diffMonth = F2(
+	function (date1, date2) {
+		var fractionalMonth = function (date) {
+			return (_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Date$day(date) - 1) + _justinmimbs$elm_date_extra$Date_Extra$fractionalDay(date)) / 31;
+		};
+		var ordinalMonth$ = function (date) {
+			return _elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date)) + fractionalMonth(date);
+		};
+		return _elm_lang$core$Basics$truncate(
+			ordinalMonth$(date2) - ordinalMonth$(date1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(true);
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcIsoString = _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX');
+var _justinmimbs$elm_date_extra$Date_Extra$toFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(false);
+var _justinmimbs$elm_date_extra$Date_Extra$toIsoString = _justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx');
+var _justinmimbs$elm_date_extra$Date_Extra$fromTime = function (_p2) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p2));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime = function (_p3) {
+	var _p4 = _p3;
+	var _p6 = _p4._1;
+	var _p5 = _p4._0;
+	if (_p5.ctor === 'Just') {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * _p5._0));
+	} else {
+		var offset0 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(
+			_justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6));
+		var date1 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset0));
+		var offset1 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date1);
+		if (_elm_lang$core$Native_Utils.eq(offset0, offset1)) {
+			return date1;
+		} else {
+			var date2 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset1));
+			var offset2 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date2);
+			return _elm_lang$core$Native_Utils.eq(offset1, offset2) ? date2 : date1;
+		}
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A7(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts, y, m, d, hh, mm, ss, ms)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$addMonths = F2(
+	function (n, date) {
+		var om = (_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date) + n) + -1;
+		var y$ = (om / 12) | 0;
+		var m$ = _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+			A2(_elm_lang$core$Basics_ops['%'], om, 12) + 1);
+		var _p7 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p7._0;
+		var m = _p7._1;
+		var d = _p7._2;
+		var hh = _p7._3;
+		var mm = _p7._4;
+		var ss = _p7._5;
+		var ms = _p7._6;
+		var d$ = A2(
+			_elm_lang$core$Basics$min,
+			d,
+			A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y$, m$));
+		return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y$, m$, d$, hh, mm, ss, ms);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$add = F3(
+	function (interval, n, date) {
+		var _p8 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p8._0;
+		var m = _p8._1;
+		var d = _p8._2;
+		var hh = _p8._3;
+		var mm = _p8._4;
+		var ss = _p8._5;
+		var ms = _p8._6;
+		var _p9 = interval;
+		switch (_p9.ctor) {
+			case 'Millisecond':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n));
+			case 'Second':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond));
+			case 'Minute':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+			case 'Hour':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour));
+			case 'Day':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + n, hh, mm, ss, ms);
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n, date);
+			case 'Year':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 12, date);
+			case 'Quarter':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 3, date);
+			case 'Week':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+			default:
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$floor = F2(
+	function (interval, date) {
+		var _p10 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p10._0;
+		var m = _p10._1;
+		var d = _p10._2;
+		var hh = _p10._3;
+		var mm = _p10._4;
+		var ss = _p10._5;
+		var _p11 = interval;
+		switch (_p11.ctor) {
+			case 'Millisecond':
+				return date;
+			case 'Second':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, ss, 0);
+			case 'Minute':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, 0, 0);
+			case 'Hour':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, 0, 0, 0);
+			case 'Day':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+			case 'Month':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1);
+			case 'Year':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Jan, 1);
+			case 'Quarter':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					_justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date)),
+					1);
+			case 'Week':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Monday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Tuesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Tue, date));
+			case 'Wednesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Wed, date));
+			case 'Thursday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Thu, date));
+			case 'Friday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Fri, date));
+			case 'Saturday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sat, date));
+			default:
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sun, date));
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ceiling = F2(
+	function (interval, date) {
+		var floored = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, interval, date);
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(floored)) ? date : A3(_justinmimbs$elm_date_extra$Date_Extra$add, interval, 1, floored);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$range = F4(
+	function (interval, step, start, end) {
+		var next = function (date) {
+			return (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$Date$toTime(date),
+				_elm_lang$core$Date$toTime(end)) > -1) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+				{
+					ctor: '_Tuple2',
+					_0: date,
+					_1: A3(
+						_justinmimbs$elm_date_extra$Date_Extra$add,
+						interval,
+						A2(_elm_lang$core$Basics$max, 1, step),
+						date)
+				});
+		};
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Extra$unfold,
+			next,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$ceiling, interval, start));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromIsoString = function (s) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		_justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime,
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString(s));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromSpec = F3(
+	function (_p14, _p13, _p12) {
+		var _p15 = _p14;
+		var _p16 = _p13;
+		var _p17 = _p12;
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{ctor: '_Tuple2', _0: _p15._0, _1: _p17._0 + _p16._0});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Offset = function (a) {
+	return {ctor: 'Offset', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$utc = _justinmimbs$elm_date_extra$Date_Extra$Offset(
+	_elm_lang$core$Maybe$Just(0));
+var _justinmimbs$elm_date_extra$Date_Extra$offset = function (minutes) {
+	return _justinmimbs$elm_date_extra$Date_Extra$Offset(
+		_elm_lang$core$Maybe$Just(minutes));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$local = _justinmimbs$elm_date_extra$Date_Extra$Offset(_elm_lang$core$Maybe$Nothing);
+var _justinmimbs$elm_date_extra$Date_Extra$TimeMS = function (a) {
+	return {ctor: 'TimeMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$noTime = _justinmimbs$elm_date_extra$Date_Extra$TimeMS(0);
+var _justinmimbs$elm_date_extra$Date_Extra$atTime = F4(
+	function (hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$TimeMS(
+			A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$DateMS = function (a) {
+	return {ctor: 'DateMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$calendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$weekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Sunday = {ctor: 'Sunday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Saturday = {ctor: 'Saturday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Friday = {ctor: 'Friday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Thursday = {ctor: 'Thursday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Wednesday = {ctor: 'Wednesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Tuesday = {ctor: 'Tuesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Monday = {ctor: 'Monday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Week = {ctor: 'Week'};
+var _justinmimbs$elm_date_extra$Date_Extra$Quarter = {ctor: 'Quarter'};
+var _justinmimbs$elm_date_extra$Date_Extra$Year = {ctor: 'Year'};
+var _justinmimbs$elm_date_extra$Date_Extra$Month = {ctor: 'Month'};
+var _justinmimbs$elm_date_extra$Date_Extra$Day = {ctor: 'Day'};
+var _justinmimbs$elm_date_extra$Date_Extra$diff = F3(
+	function (interval, date1, date2) {
+		var diffMS = _elm_lang$core$Basics$floor(
+			_elm_lang$core$Date$toTime(date2) - _elm_lang$core$Date$toTime(date1));
+		var _p18 = interval;
+		switch (_p18.ctor) {
+			case 'Millisecond':
+				return diffMS;
+			case 'Second':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond) | 0;
+			case 'Minute':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+			case 'Hour':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour) | 0;
+			case 'Day':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay) | 0;
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2);
+			case 'Year':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 12) | 0;
+			case 'Quarter':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 3) | 0;
+			case 'Week':
+				return (A3(_justinmimbs$elm_date_extra$Date_Extra$diff, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2) / 7) | 0;
+			default:
+				var _p19 = _p18;
+				return (A3(
+					_justinmimbs$elm_date_extra$Date_Extra$diff,
+					_justinmimbs$elm_date_extra$Date_Extra$Day,
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p19, date1),
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p19, date2)) / 7) | 0;
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Hour = {ctor: 'Hour'};
+var _justinmimbs$elm_date_extra$Date_Extra$Minute = {ctor: 'Minute'};
+var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
+	function (interval, date1, date2) {
+		equalBy:
+		while (true) {
+			var _p20 = interval;
+			switch (_p20.ctor) {
+				case 'Millisecond':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$toTime(date1),
+						_elm_lang$core$Date$toTime(date2));
+				case 'Second':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$second(date1),
+						_elm_lang$core$Date$second(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Minute, date1, date2);
+				case 'Minute':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$minute(date1),
+						_elm_lang$core$Date$minute(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Hour, date1, date2);
+				case 'Hour':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$hour(date1),
+						_elm_lang$core$Date$hour(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2);
+				case 'Day':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$day(date1),
+						_elm_lang$core$Date$day(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Month, date1, date2);
+				case 'Month':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$month(date1),
+						_elm_lang$core$Date$month(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Year':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$year(date1),
+						_elm_lang$core$Date$year(date2));
+				case 'Quarter':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Week':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date2)) && _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date2));
+				default:
+					var _p21 = _p20;
+					var _v11 = _justinmimbs$elm_date_extra$Date_Extra$Day,
+						_v12 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p21, date1),
+						_v13 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p21, date2);
+					interval = _v11;
+					date1 = _v12;
+					date2 = _v13;
+					continue equalBy;
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
+var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
 
 var _krisajenkins$formatting$Formatting$html = function (_p0) {
 	var _p1 = _p0;
@@ -16271,10 +18107,14 @@ var _user$project$Animals_Main$Animal = F7(
 	function (a, b, c, d, e, f, g) {
 		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
 	});
-var _user$project$Animals_Main$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f};
+var _user$project$Animals_Main$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h};
 	});
+var _user$project$Animals_Main$At = function (a) {
+	return {ctor: 'At', _0: a};
+};
+var _user$project$Animals_Main$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
@@ -16318,32 +18158,33 @@ var _user$project$Animals_Main$xena = {
 	dateRemoved: _elm_lang$core$Maybe$Nothing,
 	displayState: _user$project$Animals_Main$Compact
 };
-var _user$project$Animals_Main$init = F2(
-	function (flags, startingPage) {
-		return {
-			ctor: '_Tuple2',
-			_0: {
-				page: startingPage,
-				csrfToken: flags.csrfToken,
-				animals: _elm_lang$core$Native_List.fromArray(
-					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$xena, _user$project$Animals_Main$ross]),
-				nameFilter: '',
-				tagFilter: '',
-				speciesFilter: ''
-			},
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
-	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
 		switch (_p1.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'NavigateToAllPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
 			case 'NavigateToAddPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
 			case 'NavigateToHelpPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
+			case 'SetToday':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							today: A2(_elm_lang$core$Debug$log, 'date', _p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'OpenDatePicker':
+				return A2(
+					_elm_lang$core$Debug$log,
+					'opened',
+					{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
 			case 'ExpandAnimal':
 				return {
 					ctor: '_Tuple2',
@@ -16394,6 +18235,7 @@ var _user$project$Animals_Main$update = F2(
 				};
 		}
 	});
+var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
 };
@@ -16415,6 +18257,37 @@ var _user$project$Animals_Main$ContractAnimal = function (a) {
 var _user$project$Animals_Main$ExpandAnimal = function (a) {
 	return {ctor: 'ExpandAnimal', _0: a};
 };
+var _user$project$Animals_Main$OpenDatePicker = {ctor: 'OpenDatePicker'};
+var _user$project$Animals_Main$SetToday = function (a) {
+	return {ctor: 'SetToday', _0: a};
+};
+var _user$project$Animals_Main$askTodaysDate = A3(
+	_elm_lang$core$Task$perform,
+	_elm_lang$core$Basics$always(
+		_user$project$Animals_Main$SetToday(_elm_lang$core$Maybe$Nothing)),
+	function (_p2) {
+		return _user$project$Animals_Main$SetToday(
+			_elm_lang$core$Maybe$Just(_p2));
+	},
+	_elm_lang$core$Date$now);
+var _user$project$Animals_Main$init = F2(
+	function (flags, startingPage) {
+		return {
+			ctor: '_Tuple2',
+			_0: {
+				page: startingPage,
+				csrfToken: flags.csrfToken,
+				animals: _elm_lang$core$Native_List.fromArray(
+					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$xena, _user$project$Animals_Main$ross]),
+				nameFilter: '',
+				tagFilter: '',
+				speciesFilter: '',
+				effectiveDate: _user$project$Animals_Main$Today,
+				today: _elm_lang$core$Maybe$Nothing
+			},
+			_1: _user$project$Animals_Main$askTodaysDate
+		};
+	});
 var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
 var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
 var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
@@ -16680,13 +18553,22 @@ var _user$project$Animals_View_AllPageView$nameField = function (model) {
 var _user$project$Animals_View_AllPageView$filterFields = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
-			_user$project$Animals_View_AllPageView$nameField(model),
-			_user$project$Animals_View_AllPageView$speciesField(model),
-			_user$project$Animals_View_AllPageView$tagsField(model)
+			A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('level')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$Animals_View_AllPageView$nameField(model),
+					_user$project$Animals_View_AllPageView$speciesField(model),
+					_user$project$Animals_View_AllPageView$tagsField(model)
+				]))
 		]);
 };
 var _user$project$Animals_View_AllPageView$messageView = F3(
-	function (model, headerText, content) {
+	function (model, headerList, contentList) {
 		return A2(
 			_elm_lang$html$Html$article,
 			_elm_lang$core$Native_List.fromArray(
@@ -16701,26 +18583,14 @@ var _user$project$Animals_View_AllPageView$messageView = F3(
 						[
 							_elm_lang$html$Html_Attributes$class('message-header has-text-centered')
 						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(headerText)
-						])),
+					headerList),
 					A2(
 					_elm_lang$html$Html$div,
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_elm_lang$html$Html_Attributes$class('message-body')
 						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_elm_lang$html$Html$div,
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html_Attributes$class('level')
-								]),
-							content)
-						]))
+					contentList)
 				]));
 	});
 var _user$project$Animals_View_AllPageView$oneTag = function (tagText) {
@@ -16735,7 +18605,55 @@ var _user$project$Animals_View_AllPageView$oneTag = function (tagText) {
 				_elm_lang$html$Html$text(tagText)
 			]));
 };
-var _user$project$Animals_View_AllPageView$oneIcon = F3(
+var _user$project$Animals_View_AllPageView$rightIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href('#'),
+					_elm_lang$html$Html_Attributes$class('icon is-pulled-right'),
+					_elm_lang$html$Html_Attributes$title(tooltip),
+					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$i,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _user$project$Animals_View_AllPageView$plainIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href('#'),
+					_elm_lang$html$Html_Attributes$class('icon'),
+					_elm_lang$html$Html_Attributes$title(tooltip),
+					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$i,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _user$project$Animals_View_AllPageView$tdIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
 			_elm_lang$html$Html$td,
@@ -16769,28 +18687,28 @@ var _user$project$Animals_View_AllPageView$oneIcon = F3(
 	});
 var _user$project$Animals_View_AllPageView$expand = function (animal) {
 	return A3(
-		_user$project$Animals_View_AllPageView$oneIcon,
+		_user$project$Animals_View_AllPageView$tdIcon,
 		'fa-caret-down',
 		'Expand: show more about this animal',
 		_user$project$Animals_Main$ExpandAnimal(animal.id));
 };
 var _user$project$Animals_View_AllPageView$contract = function (animal) {
 	return A3(
-		_user$project$Animals_View_AllPageView$oneIcon,
+		_user$project$Animals_View_AllPageView$tdIcon,
 		'fa-caret-up',
 		'Expand: show less about this animal',
 		_user$project$Animals_Main$ContractAnimal(animal.id));
 };
 var _user$project$Animals_View_AllPageView$edit = function (animal) {
 	return A3(
-		_user$project$Animals_View_AllPageView$oneIcon,
+		_user$project$Animals_View_AllPageView$tdIcon,
 		'fa-pencil',
 		'Edit: make changes to this animal',
 		_user$project$Animals_Main$EditAnimal(animal.id));
 };
 var _user$project$Animals_View_AllPageView$moreLikeThis = function (animal) {
 	return A3(
-		_user$project$Animals_View_AllPageView$oneIcon,
+		_user$project$Animals_View_AllPageView$tdIcon,
 		'fa-plus',
 		'Copy: make more animals like this one',
 		_user$project$Animals_Main$MoreLikeThisAnimal(animal.id));
@@ -16923,6 +18841,25 @@ var _user$project$Animals_View_AllPageView$animalList = function (model) {
 					_user$project$Animals_Main$desiredAnimals(model)))
 			]));
 };
+var _user$project$Animals_View_AllPageView$effectiveDateString = function (model) {
+	var todayIfKnown = function () {
+		var _p1 = model.today;
+		if (_p1.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p1._0);
+		}
+	}();
+	var _p2 = model.effectiveDate;
+	if (_p2.ctor === 'Today') {
+		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p2._0);
+	}
+};
+var _user$project$Animals_View_AllPageView$standardDate = function (date) {
+	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
+};
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -16942,21 +18879,31 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('column is-3')
+								_elm_lang$html$Html_Attributes$class('column is-4')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A3(
 								_user$project$Animals_View_AllPageView$messageView,
 								model,
-								'Effective Date',
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_user$project$Animals_View_AllPageView$centeredLevelItem(
+										_elm_lang$html$Html$text('Animals as of...'),
+										A3(_user$project$Animals_View_AllPageView$rightIcon, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Main$NoOp)
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$p,
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_user$project$Animals_View_AllPageView$headingP('Click to change'),
-												A2(_user$project$Animals_View_AllPageView$textInput, '19-feb-1960', _user$project$Animals_Main$SetNameFilter)
+												_elm_lang$html$Html_Attributes$class('has-text-centered')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text(
+												_user$project$Animals_View_AllPageView$effectiveDateString(model)),
+												A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$OpenDatePicker)
 											]))
 									]))
 							])),
@@ -16964,14 +18911,18 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('column is-8')
+								_elm_lang$html$Html_Attributes$class('column is-7')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A3(
 								_user$project$Animals_View_AllPageView$messageView,
 								model,
-								'Filter by...',
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('Filter by...'),
+										A3(_user$project$Animals_View_AllPageView$rightIcon, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Main$NoOp)
+									]),
 								_user$project$Animals_View_AllPageView$filterFields(model))
 							]))
 					])),

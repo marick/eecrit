@@ -4,12 +4,18 @@ import Navigation
 import Animals.Navigation as MyNav
 import String
 import List
+import Date
+import Task
 
 -- Model and Init
 
 type alias Flags =
   { csrfToken : String
   }
+
+type EffectiveDate 
+  = Today
+  | At Date.Date
 
 type DisplayState
   = Compact
@@ -33,6 +39,8 @@ type alias Model =
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
+  , effectiveDate : EffectiveDate
+  , today : Maybe Date.Date
   }
 
 
@@ -76,6 +84,9 @@ xena =
   , displayState = Compact
   }
 
+askTodaysDate =
+  Task.perform (always (SetToday Nothing)) (Just >> SetToday) Date.now
+  
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
   ( { page = startingPage
@@ -84,8 +95,10 @@ init flags startingPage =
     , nameFilter = ""
     , tagFilter = ""
     , speciesFilter = ""
+    , effectiveDate = Today
+    , today = Nothing
     }
-  , Cmd.none
+  , askTodaysDate
   )
 
 
@@ -119,6 +132,9 @@ type Msg
   | NavigateToAddPage
   | NavigateToHelpPage
 
+  | SetToday (Maybe Date.Date)
+  | OpenDatePicker
+
   | ExpandAnimal Id
   | ContractAnimal Id
   | EditAnimal Id
@@ -128,17 +144,29 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
+  | NoOp
+
 -- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    NoOp ->
+      ( model, Cmd.none )
     NavigateToAllPage ->
       goto model MyNav.allPagePath
     NavigateToAddPage ->
       goto model MyNav.addPagePath
     NavigateToHelpPage ->
       goto model MyNav.helpPagePath
+
+    SetToday value ->
+      ( { model | today = Debug.log "date" value }
+      , Cmd.none
+      )
+    OpenDatePicker ->
+      Debug.log "opened" ( model, Cmd.none )
+      
     ExpandAnimal id ->
       ( { model | animals = toState Expanded id model.animals }
       , Cmd.none

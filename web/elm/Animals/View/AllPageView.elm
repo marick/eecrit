@@ -7,25 +7,54 @@ import Html.Events as Events
 import Pile.Bulma as Bulma
 import String
 import List
-import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals)
+import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals, EffectiveDate(..))
+import Date.Extra exposing (toFormattedString)
 
 view model =
   div []
     [ div [class "columns is-centered"]
-        [ div [class "column is-3"]
-            [ messageView model "Effective Date"
-                [
-                  centeredLevelItem
-                    [ headingP "Click to change"
-                    , textInput "19-feb-1960" SetNameFilter
-                    ]
-                ]
-            ]
-        , div [class "column is-8"]
-            [ messageView model "Filter by..." (filterFields model) ]
+        [ div [class "column is-4"]
+
+          [ messageView model
+              [ text "Animals as of..."
+              , rightIcon "fa-question-circle" "Help on animals and dates" NoOp
+              ]
+              [ p [class "has-text-centered"]
+                  [ text (effectiveDateString model)
+                  , plainIcon "fa-caret-down" "Pick a date from a calendar" OpenDatePicker
+                  ]
+              ]
+          ]
+            
+        , div [class "column is-7"]
+          [ messageView model 
+             [ text "Filter by..."
+             , rightIcon "fa-question-circle" "Help on filtering" NoOp
+             ]
+             (filterFields model)
+          ]
         ]
     , animalList model 
     ]
+
+standardDate date =
+  toFormattedString "MM d, y" date
+
+    
+effectiveDateString model =
+  let
+    todayIfKnown =
+      case model.today of
+        Nothing ->
+          ""
+        Just date ->
+          toFormattedString " (MMM d)" date
+  in
+    case model.effectiveDate of
+      Today -> 
+        "Today" ++ todayIfKnown
+      At date ->
+        toFormattedString "MMM d, y" date
 
 animalList model = 
   table [class "table"]
@@ -72,7 +101,7 @@ oneAnimalExpanded animal =
 oneAnimalEditable animal =
   tr [] [ text "editable" ] 
 
-oneIcon iconSymbolName tooltip msg =
+tdIcon iconSymbolName tooltip msg =
   td [class "is-icon"]
     [a [ href "#"
        , title tooltip
@@ -81,44 +110,58 @@ oneIcon iconSymbolName tooltip msg =
        [i [class ("fa " ++ iconSymbolName)] []]
     ]
 
+plainIcon iconSymbolName tooltip msg =
+  a [ href "#"
+    , class "icon"
+    , title tooltip
+    , onClickWithoutPropagation msg
+    ]
+    [i [class ("fa " ++ iconSymbolName)] []]
+
+    
+rightIcon iconSymbolName tooltip msg =
+  a [ href "#"
+    , class "icon is-pulled-right"
+    , title tooltip
+    , onClickWithoutPropagation msg
+    ]
+    [i [class ("fa " ++ iconSymbolName)] []]
+
 expand animal =
-  oneIcon "fa-caret-down"
+  tdIcon "fa-caret-down"
     "Expand: show more about this animal"
     (ExpandAnimal animal.id)
       
 contract animal =
-  oneIcon "fa-caret-up"
+  tdIcon "fa-caret-up"
     "Expand: show less about this animal"
     (ContractAnimal animal.id)
       
 edit animal =
-  oneIcon "fa-pencil"
+  tdIcon "fa-pencil"
     "Edit: make changes to this animal"
     (EditAnimal animal.id)
       
 moreLikeThis animal =
-  oneIcon "fa-plus"
+  tdIcon "fa-plus"
     "Copy: make more animals like this one"
     (MoreLikeThisAnimal animal.id)
       
 oneTag tagText =
   span [ class "tag" ] [ text tagText ]
     
-messageView model headerText content=
+messageView model headerList contentList  =
   article [class "message"]
-    [ div [class "message-header has-text-centered"]
-        [ text headerText
-        ]
-    , div [class "message-body"]
-      [ div [class "level"]
-          content
-      ]
+    [ div [class "message-header has-text-centered"] headerList
+    , div [class "message-body"] contentList
     ]
 
 filterFields model =
-  [ nameField model
-  , speciesField model
-  , tagsField model 
+  [ div [class "level"]
+      [ nameField model
+      , speciesField model
+      , tagsField model 
+      ]
   ]
 
 

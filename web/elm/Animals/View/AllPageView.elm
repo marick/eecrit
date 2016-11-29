@@ -9,10 +9,10 @@ import Pile.Calendar as Calendar
 import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals)
 
 
-dateControl hasOpenPicker effectiveDate =
+dateControl hasOpenPicker displayString calendarToggleMsg=
   p [class "has-text-centered"]
-    [ text (Calendar.formatDate effectiveDate)
-    , plainIcon "fa-caret-down" "Pick a date from a calendar" ToggleDatePicker
+    [ text displayString
+    , plainIcon "fa-caret-down" "Pick a date from a calendar" calendarToggleMsg
     ]
 
 view model =

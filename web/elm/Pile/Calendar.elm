@@ -5,31 +5,32 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Date exposing (Date, Month(..))
 import Date.Extra
-import DateSelectorDropdown
+import DateSelector
 
+-- TODO: switch to Html.map with 0.18
+import VirtualDom
 
 type EffectiveDate 
   = Today
   | At Date.Date
 
-type alias CalendarDate =
-  { effectiveDate : EffectiveDate
-  , today : Maybe Date
-  , datePickerOpen : Bool
-  }
-
 view launcher calendarToggleMsg dateSelectedMsg edate =
-  DateSelectorDropdown.viewWithButton
-    launcher
-    calendarToggleMsg
-    dateSelectedMsg
-    edate.datePickerOpen
-    (bound (-) edate)
-    (bound (+) edate)
-    (dateToShow edate)
+  let
+    min = (bound (-) edate)
+    max = (bound (+) edate)
+    selected = dateToShow edate
+    dateSelectorView =
+      if edate.datePickerOpen then
+        Just (DateSelector.view min max selected |> VirtualDom.map dateSelectedMsg)
+      else
+        Nothing
+  in
+    skeleton
+      calendarToggleMsg
+      (launcher edate.datePickerOpen (enhancedDateString edate) calendarToggleMsg)
+      dateSelectorView
 
   
-enhancedDateString : CalendarDate -> String   
 enhancedDateString edate =
   let
     todayIfKnown =
@@ -60,7 +61,7 @@ bound shiftFunction edate =
     Just date -> shiftByYears shiftFunction date
 
 skeleton : msg -> Html msg -> Maybe (Html msg) -> Html msg
-skeleton close control maybeContent =
+skeleton calendarToggleMsg control maybeContent =
   let
     controlContainer =
       div
@@ -78,7 +79,7 @@ skeleton close control maybeContent =
           [ class "dropdown-open" ]
           [ div
               [ class "dropdown--page-cover"
-              , onClick close
+              , onClick calendarToggleMsg
               ]
               []
           , controlContainer

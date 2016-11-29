@@ -13704,97 +13704,6 @@ var _justinmimbs$elm_date_selector$DateSelector$view = F3(
 					])));
 	});
 
-var _justinmimbs$elm_date_selector$Dropdown$view = F3(
-	function (close, button, maybeContent) {
-		var buttonContainer = A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[button]));
-		var _p0 = maybeContent;
-		if (_p0.ctor === 'Nothing') {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('dropdown')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[buttonContainer]));
-		} else {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('dropdown-open')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
-								_elm_lang$html$Html_Events$onClick(close)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
-						buttonContainer,
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[_p0._0]))
-					]));
-		}
-	});
-
-var _justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton = F3(
-	function (toggle, isOpen, maybeDate) {
-		return A2(
-			_elm_lang$html$Html$input,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$value(
-					A2(
-						_elm_lang$core$Maybe$withDefault,
-						'',
-						A2(
-							_elm_lang$core$Maybe$map,
-							_justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd'),
-							maybeDate))),
-					_elm_lang$html$Html_Attributes$readonly(true),
-					_elm_lang$html$Html_Events$onClick(toggle)
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
-	});
-var _justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton = F7(
-	function (viewButton, close, toSelect, isOpen, minimum, maximum, selected) {
-		var dateSelectorView = isOpen ? _elm_lang$core$Maybe$Just(
-			A2(
-				_elm_lang$html$Html_App$map,
-				toSelect,
-				A3(_justinmimbs$elm_date_selector$DateSelector$view, minimum, maximum, selected))) : _elm_lang$core$Maybe$Nothing;
-		return A3(
-			_justinmimbs$elm_date_selector$Dropdown$view,
-			close,
-			A2(viewButton, isOpen, selected),
-			dateSelectorView);
-	});
-var _justinmimbs$elm_date_selector$DateSelectorDropdown$view = function (toggle) {
-	return A2(
-		_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
-		_justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton(toggle),
-		toggle);
-};
-
 var _krisajenkins$formatting$Formatting$html = function (_p0) {
 	var _p1 = _p0;
 	return _p1._0(_elm_lang$html$Html$text);
@@ -18562,7 +18471,7 @@ var _user$project$Pile_Calendar$standardDate = function (date) {
 	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
 };
 var _user$project$Pile_Calendar$skeleton = F3(
-	function (close, control, maybeContent) {
+	function (calendarToggleMsg, control, maybeContent) {
 		var controlContainer = A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
@@ -18595,7 +18504,7 @@ var _user$project$Pile_Calendar$skeleton = F3(
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
-								_elm_lang$html$Html_Events$onClick(close)
+								_elm_lang$html$Html_Events$onClick(calendarToggleMsg)
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[])),
@@ -18657,31 +18566,35 @@ var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
 };
 var _user$project$Pile_Calendar$view = F4(
 	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
-		return A7(
-			_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
-			launcher,
+		var selected = _user$project$Pile_Calendar$dateToShow(edate);
+		var max = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			edate);
+		var min = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x - y;
+				}),
+			edate);
+		var dateSelectorView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$virtual_dom$VirtualDom$map,
+				dateSelectedMsg,
+				A3(_justinmimbs$elm_date_selector$DateSelector$view, min, max, selected))) : _elm_lang$core$Maybe$Nothing;
+		return A3(
+			_user$project$Pile_Calendar$skeleton,
 			calendarToggleMsg,
-			dateSelectedMsg,
-			edate.datePickerOpen,
-			A2(
-				_user$project$Pile_Calendar$bound,
-				F2(
-					function (x, y) {
-						return x - y;
-					}),
-				edate),
-			A2(
-				_user$project$Pile_Calendar$bound,
-				F2(
-					function (x, y) {
-						return x + y;
-					}),
-				edate),
-			_user$project$Pile_Calendar$dateToShow(edate));
-	});
-var _user$project$Pile_Calendar$CalendarDate = F3(
-	function (a, b, c) {
-		return {effectiveDate: a, today: b, datePickerOpen: c};
+			A3(
+				launcher,
+				edate.datePickerOpen,
+				_user$project$Pile_Calendar$enhancedDateString(edate),
+				calendarToggleMsg),
+			dateSelectorView);
 	});
 var _user$project$Pile_Calendar$At = function (a) {
 	return {ctor: 'At', _0: a};
@@ -19523,8 +19436,8 @@ var _user$project$Animals_View_AllPageView$animalList = function (model) {
 					_user$project$Animals_Main$desiredAnimals(model)))
 			]));
 };
-var _user$project$Animals_View_AllPageView$dateControl = F2(
-	function (hasOpenPicker, effectiveDate) {
+var _user$project$Animals_View_AllPageView$dateControl = F3(
+	function (hasOpenPicker, displayString, calendarToggleMsg) {
 		return A2(
 			_elm_lang$html$Html$p,
 			_elm_lang$core$Native_List.fromArray(
@@ -19533,9 +19446,8 @@ var _user$project$Animals_View_AllPageView$dateControl = F2(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text(
-					_user$project$Pile_Calendar$formatDate(effectiveDate)),
-					A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$ToggleDatePicker)
+					_elm_lang$html$Html$text(displayString),
+					A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', calendarToggleMsg)
 				]));
 	});
 var _user$project$Animals_View_AllPageView$view = function (model) {

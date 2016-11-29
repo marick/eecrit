@@ -13265,6 +13265,445 @@ var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
 var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
 var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
 
+var _justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames = _elm_lang$core$Native_List.fromArray(
+	['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+var _justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader = A2(
+	_elm_lang$html$Html$thead,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(
+				_elm_lang$core$List$map,
+				function (name) {
+					return A2(
+						_elm_lang$html$Html$th,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(name)
+							]));
+				},
+				_justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames))
+		]));
+var _justinmimbs$elm_date_selector$DateSelector$monthNames = _elm_lang$core$Native_List.fromArray(
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+var _justinmimbs$elm_date_selector$DateSelector$classNameFromState = function (state) {
+	var _p0 = state;
+	switch (_p0.ctor) {
+		case 'Normal':
+			return '';
+		case 'Dimmed':
+			return 'date-selector--dimmed';
+		case 'Disabled':
+			return 'date-selector--disabled';
+		default:
+			return 'date-selector--selected';
+	}
+};
+var _justinmimbs$elm_date_selector$DateSelector$dateWithMonth = F2(
+	function (date, m) {
+		var d = _elm_lang$core$Date$day(date);
+		var y = _elm_lang$core$Date$year(date);
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+			y,
+			m,
+			A2(
+				_elm_lang$core$Basics$min,
+				d,
+				A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y, m)));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$dateWithYear = F2(
+	function (date, y) {
+		var d = _elm_lang$core$Date$day(date);
+		var m = _elm_lang$core$Date$month(date);
+		return (_elm_lang$core$Native_Utils.eq(m, _elm_lang$core$Date$Feb) && (_elm_lang$core$Native_Utils.eq(d, 29) && _elm_lang$core$Basics$not(
+			_justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y)))) ? A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Feb, 28) : A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+	});
+var _justinmimbs$elm_date_selector$DateSelector$monthDates = F2(
+	function (y, m) {
+		var start = A2(
+			_justinmimbs$elm_date_extra$Date_Extra$floor,
+			_justinmimbs$elm_date_extra$Date_Extra$Monday,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1));
+		return A4(
+			_justinmimbs$elm_date_extra$Date_Extra$range,
+			_justinmimbs$elm_date_extra$Date_Extra$Day,
+			1,
+			start,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$add, _justinmimbs$elm_date_extra$Date_Extra$Day, 42, start));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$isBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$chunk = F2(
+	function (n, list) {
+		return _elm_lang$core$List$isEmpty(list) ? _elm_lang$core$Native_List.fromArray(
+			[]) : A2(
+			_elm_lang$core$List_ops['::'],
+			A2(_elm_lang$core$List$take, n, list),
+			A2(
+				_justinmimbs$elm_date_selector$DateSelector$chunk,
+				n,
+				A2(_elm_lang$core$List$drop, n, list)));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$Selected = {ctor: 'Selected'};
+var _justinmimbs$elm_date_selector$DateSelector$Disabled = {ctor: 'Disabled'};
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled = A2(
+	_elm_lang$html$Html$ol,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	A2(
+		_elm_lang$core$List$map,
+		function (name) {
+			return A2(
+				_elm_lang$html$Html$li,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class(
+						_justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(name)
+					]));
+		},
+		_justinmimbs$elm_date_selector$DateSelector$monthNames));
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled = function (date) {
+	var disabled = _justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled);
+	var weeks = A2(
+		_justinmimbs$elm_date_selector$DateSelector$chunk,
+		7,
+		A2(
+			_justinmimbs$elm_date_selector$DateSelector$monthDates,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date)));
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(
+					_elm_lang$core$List$map,
+					function (week) {
+						return A2(
+							_elm_lang$html$Html$tr,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							A2(
+								_elm_lang$core$List$map,
+								function (date) {
+									return A2(
+										_elm_lang$html$Html$td,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class(disabled)
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text(
+												_elm_lang$core$Basics$toString(
+													_elm_lang$core$Date$day(date)))
+											]));
+								},
+								week));
+					},
+					weeks))
+			]));
+};
+var _justinmimbs$elm_date_selector$DateSelector$Dimmed = {ctor: 'Dimmed'};
+var _justinmimbs$elm_date_selector$DateSelector$Normal = {ctor: 'Normal'};
+var _justinmimbs$elm_date_selector$DateSelector$isSelectable = function (state) {
+	return _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Normal) || _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Dimmed);
+};
+var _justinmimbs$elm_date_selector$DateSelector$viewYearList = F3(
+	function (minimum, maximum, maybeSelected) {
+		var isSelectedYear = A2(
+			_elm_lang$core$Maybe$withDefault,
+			function (_p1) {
+				return false;
+			},
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (selected) {
+					return F2(
+						function (x, y) {
+							return _elm_lang$core$Native_Utils.eq(x, y);
+						})(
+						_elm_lang$core$Date$year(selected));
+				},
+				maybeSelected));
+		var years = _elm_lang$core$Native_List.range(
+			_elm_lang$core$Date$year(minimum),
+			_elm_lang$core$Date$year(maximum));
+		return A2(
+			_elm_lang$html$Html$ol,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						_justinmimbs$elm_date_selector$DateSelector$dateWithYear(
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								A3(
+									_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+									_elm_lang$core$Date$year(minimum),
+									_elm_lang$core$Date$Jan,
+									1),
+								maybeSelected)),
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							_elm_lang$core$Native_List.fromArray(
+								['target', 'year']),
+							_elm_lang$core$Json_Decode$int)))
+				]),
+			A2(
+				_elm_lang$core$List$map,
+				function (y) {
+					var state = isSelectedYear(y) ? _justinmimbs$elm_date_selector$DateSelector$Selected : _justinmimbs$elm_date_selector$DateSelector$Normal;
+					return A2(
+						_elm_lang$html$Html$li,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class(
+									_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+								]),
+							_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$html$Html_Attributes$property,
+									'year',
+									_elm_lang$core$Json_Encode$int(y))
+								]) : _elm_lang$core$Native_List.fromArray(
+								[])),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(y))
+							]));
+				},
+				years));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthList = F3(
+	function (minimum, maximum, selected) {
+		var last = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(maximum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(maximum) : 12;
+		var first = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(minimum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(minimum) : 1;
+		return A2(
+			_elm_lang$html$Html$ol,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						function (_p2) {
+							return A2(
+								_justinmimbs$elm_date_selector$DateSelector$dateWithMonth,
+								selected,
+								_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(_p2));
+						},
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							_elm_lang$core$Native_List.fromArray(
+								['target', 'monthNumber']),
+							_elm_lang$core$Json_Decode$int)))
+				]),
+			A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (i, name) {
+						var n = i + 1;
+						var state = _elm_lang$core$Native_Utils.eq(
+							n,
+							_justinmimbs$elm_date_extra$Date_Extra$monthNumber(selected)) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (_elm_lang$core$Basics$not(
+							A3(_justinmimbs$elm_date_selector$DateSelector$isBetween, first, last, n)) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : _justinmimbs$elm_date_selector$DateSelector$Normal);
+						return A2(
+							_elm_lang$html$Html$li,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class(
+										_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+									]),
+								_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html_Attributes$property,
+										'monthNumber',
+										_elm_lang$core$Json_Encode$int(n))
+									]) : _elm_lang$core$Native_List.fromArray(
+									[])),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(name)
+								]));
+					}),
+				_justinmimbs$elm_date_selector$DateSelector$monthNames));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTable = F3(
+	function (minimum, maximum, selected) {
+		var weeks = A2(
+			_justinmimbs$elm_date_selector$DateSelector$chunk,
+			7,
+			A2(
+				_justinmimbs$elm_date_selector$DateSelector$monthDates,
+				_elm_lang$core$Date$year(selected),
+				_elm_lang$core$Date$month(selected)));
+		return A2(
+			_elm_lang$html$Html$table,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+					A2(
+					_elm_lang$html$Html$tbody,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html_Events$on,
+							'click',
+							A2(
+								_elm_lang$core$Json_Decode$map,
+								_elm_lang$core$Date$fromTime,
+								A2(
+									_elm_lang$core$Json_Decode$at,
+									_elm_lang$core$Native_List.fromArray(
+										['target', 'time']),
+									_elm_lang$core$Json_Decode$float)))
+						]),
+					A2(
+						_elm_lang$core$List$map,
+						function (week) {
+							return A2(
+								_elm_lang$html$Html$tr,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								A2(
+									_elm_lang$core$List$map,
+									function (date) {
+										var state = A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date, selected) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (_elm_lang$core$Basics$not(
+											A3(_justinmimbs$elm_date_extra$Date_Extra$isBetween, minimum, maximum, date)) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : ((!_elm_lang$core$Native_Utils.eq(
+											_elm_lang$core$Date$month(date),
+											_elm_lang$core$Date$month(selected))) ? _justinmimbs$elm_date_selector$DateSelector$Dimmed : _justinmimbs$elm_date_selector$DateSelector$Normal));
+										return A2(
+											_elm_lang$html$Html$td,
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class(
+														_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+													]),
+												_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+													[
+														A2(
+														_elm_lang$html$Html_Attributes$property,
+														'time',
+														_elm_lang$core$Json_Encode$float(
+															_elm_lang$core$Date$toTime(date)))
+													]) : _elm_lang$core$Native_List.fromArray(
+													[])),
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_elm_lang$html$Html$text(
+													_elm_lang$core$Basics$toString(
+														_elm_lang$core$Date$day(date)))
+												]));
+									},
+									week));
+						},
+						weeks))
+				]));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$view = F3(
+	function (minimum, maximum, maybeSelected) {
+		return A2(
+			_elm_lang$html$Html_App$map,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$clamp, minimum, maximum),
+			A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$classList(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								{ctor: '_Tuple2', _0: 'date-selector', _1: true},
+								{
+								ctor: '_Tuple2',
+								_0: 'date-selector--scrollable-year',
+								_1: _elm_lang$core$Native_Utils.cmp(
+									_elm_lang$core$Date$year(maximum) - _elm_lang$core$Date$year(minimum),
+									12) > -1
+							}
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(_justinmimbs$elm_date_selector$DateSelector$viewYearList, minimum, maximum, maybeSelected)
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$core$Maybe$withDefault,
+								_justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled,
+								A2(
+									_elm_lang$core$Maybe$map,
+									A2(_justinmimbs$elm_date_selector$DateSelector$viewMonthList, minimum, maximum),
+									maybeSelected))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								function () {
+								var _p3 = maybeSelected;
+								if (_p3.ctor === 'Just') {
+									return A3(_justinmimbs$elm_date_selector$DateSelector$viewDateTable, minimum, maximum, _p3._0);
+								} else {
+									return _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled(minimum);
+								}
+							}()
+							]))
+					])));
+	});
+
 var _krisajenkins$formatting$Formatting$html = function (_p0) {
 	var _p1 = _p0;
 	return _p1._0(_elm_lang$html$Html$text);
@@ -18185,6 +18624,11 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Debug$log,
 					'opened',
 					{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
+			case 'SelectDate':
+				return A2(
+					_elm_lang$core$Debug$log,
+					'selected',
+					{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
 			case 'ExpandAnimal':
 				return {
 					ctor: '_Tuple2',
@@ -18256,6 +18700,9 @@ var _user$project$Animals_Main$ContractAnimal = function (a) {
 };
 var _user$project$Animals_Main$ExpandAnimal = function (a) {
 	return {ctor: 'ExpandAnimal', _0: a};
+};
+var _user$project$Animals_Main$SelectDate = function (a) {
+	return {ctor: 'SelectDate', _0: a};
 };
 var _user$project$Animals_Main$OpenDatePicker = {ctor: 'OpenDatePicker'};
 var _user$project$Animals_Main$SetToday = function (a) {
@@ -18860,6 +19307,9 @@ var _user$project$Animals_View_AllPageView$effectiveDateString = function (model
 var _user$project$Animals_View_AllPageView$standardDate = function (date) {
 	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
 };
+var _user$project$Animals_View_AllPageView$now = A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, 2016, _elm_lang$core$Date$Sep, 15, 9, 0, 0, 0);
+var _user$project$Animals_View_AllPageView$max = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2017, _elm_lang$core$Date$Sep, 15);
+var _user$project$Animals_View_AllPageView$min = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2011, _elm_lang$core$Date$Mar, 15);
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -18905,6 +19355,30 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 												_user$project$Animals_View_AllPageView$effectiveDateString(model)),
 												A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$OpenDatePicker)
 											]))
+									])),
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$h1,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text(
+												A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'EEE MMM d, yyyy', _user$project$Animals_View_AllPageView$now))
+											])),
+										A2(
+										_elm_lang$virtual_dom$VirtualDom$map,
+										_user$project$Animals_Main$SelectDate,
+										A3(
+											_justinmimbs$elm_date_selector$DateSelector$view,
+											_user$project$Animals_View_AllPageView$min,
+											_user$project$Animals_View_AllPageView$max,
+											_elm_lang$core$Maybe$Just(_user$project$Animals_View_AllPageView$now)))
 									]))
 							])),
 						A2(

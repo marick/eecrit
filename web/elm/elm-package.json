@@ -26,6 +26,7 @@
         "fbonetti/elm-phoenix-socket": "2.0.0 <= v < 3.0.0",
         "folkertdev/outmessage": "1.0.2 <= v < 2.0.0",
         "justinmimbs/elm-date-extra": "2.0.0 <= v < 3.0.0",
+        "justinmimbs/elm-date-selector": "1.0.1 <= v < 2.0.0",
         "krisajenkins/formatting": "3.2.0 <= v < 4.0.0",
         "mdgriffith/elm-style-animation": "3.0.0 <= v < 4.0.0"
     },

@@ -134,6 +134,7 @@ type Msg
 
   | SetToday (Maybe Date.Date)
   | OpenDatePicker
+  | SelectDate Date.Date
 
   | ExpandAnimal Id
   | ContractAnimal Id
@@ -166,6 +167,8 @@ update msg model =
       )
     OpenDatePicker ->
       Debug.log "opened" ( model, Cmd.none )
+    SelectDate date ->
+      Debug.log "selected" (model, Cmd.none)
       
     ExpandAnimal id ->
       ( { model | animals = toState Expanded id model.animals }

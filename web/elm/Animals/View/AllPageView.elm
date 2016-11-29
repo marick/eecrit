@@ -8,7 +8,17 @@ import Pile.Bulma as Bulma
 import String
 import List
 import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals, EffectiveDate(..))
-import Date.Extra exposing (toFormattedString)
+import Date exposing (Month(..))
+import Date.Extra exposing (toFormattedString, fromCalendarDate, fromParts)
+import DateSelector
+
+-- TODO: replace this with Html.map upon 0.18 upgrade.
+import VirtualDom
+
+
+min = (fromCalendarDate 2011 Mar 15)
+max = (fromCalendarDate 2017 Sep 15)
+now = (fromParts 2016 Sep 15 9 0 0 0)
 
 view model =
   div []
@@ -24,7 +34,12 @@ view model =
                   , plainIcon "fa-caret-down" "Pick a date from a calendar" OpenDatePicker
                   ]
               ]
+          ,  div []
+            [ h1 [] [ text <| toFormattedString "EEE MMM d, yyyy" now ]
+            , DateSelector.view min max (Just now) |> VirtualDom.map SelectDate
+            ]            
           ]
+
             
         , div [class "column is-7"]
           [ messageView model 

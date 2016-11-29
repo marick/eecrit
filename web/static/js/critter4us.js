@@ -19389,31 +19389,38 @@ var _user$project$Animals_View_AllPageView$animalList = function (model) {
 					_user$project$Animals_Main$desiredAnimals(model)))
 			]));
 };
-var _user$project$Animals_View_AllPageView$effectiveDateString = function (model) {
-	var todayIfKnown = function () {
-		var _p1 = model.today;
-		if (_p1.ctor === 'Nothing') {
-			return '';
-		} else {
-			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p1._0);
-		}
-	}();
-	var _p2 = model.effectiveDate;
-	if (_p2.ctor === 'Today') {
-		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
-	} else {
-		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p2._0);
-	}
-};
 var _user$project$Animals_View_AllPageView$standardDate = function (date) {
 	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
 };
+var _user$project$Animals_View_AllPageView$formatDate = function (date) {
+	var _p1 = date;
+	if (_p1.ctor === 'Nothing') {
+		return '';
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p1._0);
+	}
+};
+var _user$project$Animals_View_AllPageView$dateControl = F2(
+	function (hasOpenPicker, effectiveDate) {
+		return A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('has-text-centered')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(
+					_user$project$Animals_View_AllPageView$formatDate(effectiveDate)),
+					A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$ToggleDatePicker)
+				]));
+	});
 var _user$project$Animals_View_AllPageView$showDate = function (model) {
-	var _p3 = model.effectiveDate;
-	if (_p3.ctor === 'Today') {
+	var _p2 = model.effectiveDate;
+	if (_p2.ctor === 'Today') {
 		return model.today;
 	} else {
-		return _elm_lang$core$Maybe$Just(_p3._0);
+		return _elm_lang$core$Maybe$Just(_p2._0);
 	}
 };
 var _user$project$Animals_View_AllPageView$shiftByYears = F2(
@@ -19426,14 +19433,14 @@ var _user$project$Animals_View_AllPageView$shiftByYears = F2(
 	});
 var _user$project$Animals_View_AllPageView$bound = F2(
 	function (shiftFunction, model) {
-		var _p4 = _user$project$Animals_View_AllPageView$showDate(model);
-		if (_p4.ctor === 'Nothing') {
+		var _p3 = _user$project$Animals_View_AllPageView$showDate(model);
+		if (_p3.ctor === 'Nothing') {
 			return A2(
 				_user$project$Animals_View_AllPageView$shiftByYears,
 				shiftFunction,
 				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
 		} else {
-			return A2(_user$project$Animals_View_AllPageView$shiftByYears, shiftFunction, _p4._0);
+			return A2(_user$project$Animals_View_AllPageView$shiftByYears, shiftFunction, _p3._0);
 		}
 	});
 var _user$project$Animals_View_AllPageView$view = function (model) {
@@ -19443,26 +19450,6 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A6(
-				_justinmimbs$elm_date_selector$DateSelectorDropdown$view,
-				_user$project$Animals_Main$ToggleDatePicker,
-				_user$project$Animals_Main$SelectDate,
-				model.datePickerOpen,
-				A2(
-					_user$project$Animals_View_AllPageView$bound,
-					F2(
-						function (x, y) {
-							return x - y;
-						}),
-					model),
-				A2(
-					_user$project$Animals_View_AllPageView$bound,
-					F2(
-						function (x, y) {
-							return x + y;
-						}),
-					model),
-				_user$project$Animals_View_AllPageView$showDate(model)),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -19489,18 +19476,27 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
+										A7(
+										_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
+										_user$project$Animals_View_AllPageView$dateControl,
+										_user$project$Animals_Main$ToggleDatePicker,
+										_user$project$Animals_Main$SelectDate,
+										model.datePickerOpen,
 										A2(
-										_elm_lang$html$Html$p,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('has-text-centered')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text(
-												_user$project$Animals_View_AllPageView$effectiveDateString(model)),
-												A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$ToggleDatePicker)
-											]))
+											_user$project$Animals_View_AllPageView$bound,
+											F2(
+												function (x, y) {
+													return x - y;
+												}),
+											model),
+										A2(
+											_user$project$Animals_View_AllPageView$bound,
+											F2(
+												function (x, y) {
+													return x + y;
+												}),
+											model),
+										_user$project$Animals_View_AllPageView$showDate(model))
 									]))
 							])),
 						A2(

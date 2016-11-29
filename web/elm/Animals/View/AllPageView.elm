@@ -25,31 +25,40 @@ showDate model =
   case model.effectiveDate of 
     Today -> model.today
     At date -> Just date
-  
+
+formatDate date =
+  case date of
+    Nothing -> ""
+    Just d -> toFormattedString "MMM d, y" d
+
+dateControl hasOpenPicker effectiveDate =
+  p [class "has-text-centered"]
+    [ text (formatDate effectiveDate)
+    , plainIcon "fa-caret-down" "Pick a date from a calendar" ToggleDatePicker
+    ]
 
 view model =
   div []
-    [
-     DateSelectorDropdown.view
-       ToggleDatePicker
-       SelectDate
-       model.datePickerOpen
-       (bound (-) model)
-       (bound (+) model)
-       (showDate model)
-
-    , div [class "columns is-centered"]
+    [ div [class "columns is-centered"]
         [ div [class "column is-4"]
 
           [ messageView model
               [ text "Animals as of..."
               , rightIcon "fa-question-circle" "Help on animals and dates" NoOp
               ]
-              [ p [class "has-text-centered"]
-                  [ text (effectiveDateString model)
-                  , plainIcon "fa-caret-down" "Pick a date from a calendar" ToggleDatePicker
-                  ]
-              ]
+              [ DateSelectorDropdown.viewWithButton
+                  dateControl
+                  ToggleDatePicker
+                  SelectDate
+                  model.datePickerOpen
+                  (bound (-) model)
+                  (bound (+) model)
+                  (showDate model)
+              ] 
+              
+
+
+              
           ]                  
             
         , div [class "column is-7"]
@@ -67,20 +76,21 @@ standardDate date =
   toFormattedString "MM d, y" date
 
     
-effectiveDateString model =
-  let
-    todayIfKnown =
-      case model.today of
-        Nothing ->
-          ""
-        Just date ->
-          toFormattedString " (MMM d)" date
-  in
-    case model.effectiveDate of
-      Today -> 
-        "Today" ++ todayIfKnown
-      At date ->
-        toFormattedString "MMM d, y" date
+-- effectiveDateString model =
+--   let
+--     todayIfKnown =
+--       case model.today of
+--         Nothing ->
+--           ""
+--         Just date ->
+--           toFormattedString " (MMM d)" date
+--   in
+--     case model.effectiveDate of
+--       Today -> 
+--         "Today" ++ todayIfKnown
+--       At date ->
+--         toFormattedString "MMM d, y" date
+
 
 animalList model = 
   table [class "table"]

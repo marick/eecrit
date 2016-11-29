@@ -41,6 +41,7 @@ type alias Model =
   , speciesFilter : String
   , effectiveDate : EffectiveDate
   , today : Maybe Date.Date
+  , datePickerOpen : Bool
   }
 
 
@@ -97,6 +98,7 @@ init flags startingPage =
     , speciesFilter = ""
     , effectiveDate = Today
     , today = Nothing
+    , datePickerOpen = False
     }
   , askTodaysDate
   )
@@ -133,7 +135,7 @@ type Msg
   | NavigateToHelpPage
 
   | SetToday (Maybe Date.Date)
-  | OpenDatePicker
+  | ToggleDatePicker
   | SelectDate Date.Date
 
   | ExpandAnimal Id
@@ -162,13 +164,17 @@ update msg model =
       goto model MyNav.helpPagePath
 
     SetToday value ->
-      ( { model | today = Debug.log "date" value }
+      ( { model | today = value }
       , Cmd.none
       )
-    OpenDatePicker ->
-      Debug.log "opened" ( model, Cmd.none )
+    ToggleDatePicker ->
+      ( { model | datePickerOpen = True }
+      , Cmd.none
+      )
     SelectDate date ->
-      Debug.log "selected" (model, Cmd.none)
+      ( { model | effectiveDate = At (Debug.log "set date" date) }
+      , Cmd.none
+      )
       
     ExpandAnimal id ->
       ( { model | animals = toState Expanded id model.animals }

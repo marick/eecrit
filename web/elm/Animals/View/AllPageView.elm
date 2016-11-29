@@ -9,20 +9,31 @@ import String
 import List
 import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals, EffectiveDate(..))
 import Date exposing (Month(..))
-import Date.Extra exposing (toFormattedString, fromCalendarDate, fromParts)
+import Date.Extra exposing (toFormattedString, fromCalendarDate, fromParts, Interval(..))
 import DateSelector
 
 -- TODO: replace this with Html.map upon 0.18 upgrade.
 import VirtualDom
 
 
-min = (fromCalendarDate 2011 Mar 15)
-max = (fromCalendarDate 2017 Sep 15)
-now = (fromParts 2016 Sep 15 9 0 0 0)
+shiftByYears shiftFunction date =
+  Date.Extra.add Year (shiftFunction 0 5) date
+
+bound shiftFunction model =
+  case showDate model of
+    Nothing -> shiftByYears shiftFunction (fromCalendarDate 2018 Jan 1)
+    Just date -> shiftByYears shiftFunction date
+
+showDate model =
+  case model.effectiveDate of 
+    Today -> model.today
+    At date -> Just date
+  
 
 view model =
   div []
-    [ div [class "columns is-centered"]
+    [ DateSelector.view (bound (-) model) (bound (+) model) (showDate model) |> VirtualDom.map SelectDate
+    , div [class "columns is-centered"]
         [ div [class "column is-4"]
 
           [ messageView model
@@ -31,15 +42,10 @@ view model =
               ]
               [ p [class "has-text-centered"]
                   [ text (effectiveDateString model)
-                  , plainIcon "fa-caret-down" "Pick a date from a calendar" OpenDatePicker
+                  , plainIcon "fa-caret-down" "Pick a date from a calendar" ToggleDatePicker
                   ]
               ]
-          ,  div []
-            [ h1 [] [ text <| toFormattedString "EEE MMM d, yyyy" now ]
-            , DateSelector.view min max (Just now) |> VirtualDom.map SelectDate
-            ]            
-          ]
-
+          ]                  
             
         , div [class "column is-7"]
           [ messageView model 

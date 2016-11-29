@@ -18546,9 +18546,9 @@ var _user$project$Animals_Main$Animal = F7(
 	function (a, b, c, d, e, f, g) {
 		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
 	});
-var _user$project$Animals_Main$Model = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h};
+var _user$project$Animals_Main$Model = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
 	});
 var _user$project$Animals_Main$At = function (a) {
 	return {ctor: 'At', _0: a};
@@ -18614,21 +18614,28 @@ var _user$project$Animals_Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
+						{today: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ToggleDatePicker':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{datePickerOpen: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SelectDate':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
 						{
-							today: A2(_elm_lang$core$Debug$log, 'date', _p1._0)
+							effectiveDate: _user$project$Animals_Main$At(
+								A2(_elm_lang$core$Debug$log, 'set date', _p1._0))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'OpenDatePicker':
-				return A2(
-					_elm_lang$core$Debug$log,
-					'opened',
-					{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
-			case 'SelectDate':
-				return A2(
-					_elm_lang$core$Debug$log,
-					'selected',
-					{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
 			case 'ExpandAnimal':
 				return {
 					ctor: '_Tuple2',
@@ -18704,7 +18711,7 @@ var _user$project$Animals_Main$ExpandAnimal = function (a) {
 var _user$project$Animals_Main$SelectDate = function (a) {
 	return {ctor: 'SelectDate', _0: a};
 };
-var _user$project$Animals_Main$OpenDatePicker = {ctor: 'OpenDatePicker'};
+var _user$project$Animals_Main$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
 var _user$project$Animals_Main$SetToday = function (a) {
 	return {ctor: 'SetToday', _0: a};
 };
@@ -18730,7 +18737,8 @@ var _user$project$Animals_Main$init = F2(
 				tagFilter: '',
 				speciesFilter: '',
 				effectiveDate: _user$project$Animals_Main$Today,
-				today: _elm_lang$core$Maybe$Nothing
+				today: _elm_lang$core$Maybe$Nothing,
+				datePickerOpen: false
 			},
 			_1: _user$project$Animals_Main$askTodaysDate
 		};
@@ -19307,9 +19315,34 @@ var _user$project$Animals_View_AllPageView$effectiveDateString = function (model
 var _user$project$Animals_View_AllPageView$standardDate = function (date) {
 	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
 };
-var _user$project$Animals_View_AllPageView$now = A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, 2016, _elm_lang$core$Date$Sep, 15, 9, 0, 0, 0);
-var _user$project$Animals_View_AllPageView$max = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2017, _elm_lang$core$Date$Sep, 15);
-var _user$project$Animals_View_AllPageView$min = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2011, _elm_lang$core$Date$Mar, 15);
+var _user$project$Animals_View_AllPageView$showDate = function (model) {
+	var _p3 = model.effectiveDate;
+	if (_p3.ctor === 'Today') {
+		return model.today;
+	} else {
+		return _elm_lang$core$Maybe$Just(_p3._0);
+	}
+};
+var _user$project$Animals_View_AllPageView$shiftByYears = F2(
+	function (shiftFunction, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$add,
+			_justinmimbs$elm_date_extra$Date_Extra$Year,
+			A2(shiftFunction, 0, 5),
+			date);
+	});
+var _user$project$Animals_View_AllPageView$bound = F2(
+	function (shiftFunction, model) {
+		var _p4 = _user$project$Animals_View_AllPageView$showDate(model);
+		if (_p4.ctor === 'Nothing') {
+			return A2(
+				_user$project$Animals_View_AllPageView$shiftByYears,
+				shiftFunction,
+				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
+		} else {
+			return A2(_user$project$Animals_View_AllPageView$shiftByYears, shiftFunction, _p4._0);
+		}
+	});
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -19317,6 +19350,26 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
+				A2(
+				_elm_lang$virtual_dom$VirtualDom$map,
+				_user$project$Animals_Main$SelectDate,
+				A3(
+					_justinmimbs$elm_date_selector$DateSelector$view,
+					A2(
+						_user$project$Animals_View_AllPageView$bound,
+						F2(
+							function (x, y) {
+								return x - y;
+							}),
+						model),
+					A2(
+						_user$project$Animals_View_AllPageView$bound,
+						F2(
+							function (x, y) {
+								return x + y;
+							}),
+						model),
+					_user$project$Animals_View_AllPageView$showDate(model))),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -19353,32 +19406,8 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 											[
 												_elm_lang$html$Html$text(
 												_user$project$Animals_View_AllPageView$effectiveDateString(model)),
-												A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$OpenDatePicker)
+												A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$ToggleDatePicker)
 											]))
-									])),
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$h1,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text(
-												A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'EEE MMM d, yyyy', _user$project$Animals_View_AllPageView$now))
-											])),
-										A2(
-										_elm_lang$virtual_dom$VirtualDom$map,
-										_user$project$Animals_Main$SelectDate,
-										A3(
-											_justinmimbs$elm_date_selector$DateSelector$view,
-											_user$project$Animals_View_AllPageView$min,
-											_user$project$Animals_View_AllPageView$max,
-											_elm_lang$core$Maybe$Just(_user$project$Animals_View_AllPageView$now)))
 									]))
 							])),
 						A2(

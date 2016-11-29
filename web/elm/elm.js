@@ -7893,10 +7893,6 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
-var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
-var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
-var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
-
 //import Result //
 
 var _elm_lang$core$Native_Date = function() {
@@ -7963,1018 +7959,2890 @@ var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
 var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
 var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
 
-var _elm_lang$dom$Native_Dom = function() {
+//import Maybe, Native.List //
 
-function on(node)
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
 {
-	return function(eventName, decoder, toTask)
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
 	{
-		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
-
-			function performTask(event)
-			{
-				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
-				if (result.ctor === 'Ok')
-				{
-					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
-				}
-			}
-
-			node.addEventListener(eventName, performTask);
-
-			return function()
-			{
-				node.removeEventListener(eventName, performTask);
-			};
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
 		});
-	};
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
 }
 
-var rAF = typeof requestAnimationFrame !== 'undefined'
-	? requestAnimationFrame
-	: function(callback) { callback(); };
-
-function withNode(id, doStuff)
+function replace(n, re, replacer, string)
 {
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
 	{
-		rAF(function()
+		if (count++ >= n)
 		{
-			var node = document.getElementById(id);
-			if (node === null)
-			{
-				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
-				return;
-			}
-			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[i - 1],
+			number: count
 		});
-	});
+	}
+	return string.replace(re, jsReplacer);
 }
 
-
-// FOCUS
-
-function focus(id)
+function split(n, re, str)
 {
-	return withNode(id, function(node) {
-		node.focus();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function blur(id)
-{
-	return withNode(id, function(node) {
-		node.blur();
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SCROLLING
-
-function getScrollTop(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollTop;
-	});
-}
-
-function setScrollTop(id, desiredScrollTop)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = desiredScrollTop;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toBottom(id)
-{
-	return withNode(id, function(node) {
-		node.scrollTop = node.scrollHeight;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function getScrollLeft(id)
-{
-	return withNode(id, function(node) {
-		return node.scrollLeft;
-	});
-}
-
-function setScrollLeft(id, desiredScrollLeft)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = desiredScrollLeft;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-function toRight(id)
-{
-	return withNode(id, function(node) {
-		node.scrollLeft = node.scrollWidth;
-		return _elm_lang$core$Native_Utils.Tuple0;
-	});
-}
-
-
-// SIZE
-
-function width(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollWidth;
-			case 'VisibleContent':
-				return node.clientWidth;
-			case 'VisibleContentWithBorders':
-				return node.offsetWidth;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.right - rect.left;
-		}
-	});
-}
-
-function height(options, id)
-{
-	return withNode(id, function(node) {
-		switch (options.ctor)
-		{
-			case 'Content':
-				return node.scrollHeight;
-			case 'VisibleContent':
-				return node.clientHeight;
-			case 'VisibleContentWithBorders':
-				return node.offsetHeight;
-			case 'VisibleContentWithBordersAndMargins':
-				var rect = node.getBoundingClientRect();
-				return rect.bottom - rect.top;
-		}
-	});
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	return _elm_lang$core$Native_List.fromArray(out);
 }
 
 return {
-	onDocument: F3(on(document)),
-	onWindow: F3(on(window)),
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
 
-	focus: focus,
-	blur: blur,
-
-	getScrollTop: getScrollTop,
-	setScrollTop: F2(setScrollTop),
-	getScrollLeft: getScrollLeft,
-	setScrollLeft: F2(setScrollLeft),
-	toBottom: toBottom,
-	toRight: toRight,
-
-	height: F2(height),
-	width: F2(width)
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
 };
 
 }();
 
-var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
-var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
-
-var _elm_lang$navigation$Native_Navigation = function() {
-
-function go(n)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		if (n !== 0)
-		{
-			history.go(n);
-		}
-		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
 	});
-}
-
-function pushState(url)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		history.pushState({}, '', url);
-		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
-	});
-}
-
-function replaceState(url)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		history.replaceState({}, '', url);
-		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
-	});
-}
-
-function getLocation()
-{
-	var location = document.location;
-
-	return {
-		href: location.href,
-		host: location.host,
-		hostname: location.hostname,
-		protocol: location.protocol,
-		origin: location.origin,
-		port_: location.port,
-		pathname: location.pathname,
-		search: location.search,
-		hash: location.hash,
-		username: location.username,
-		password: location.password
-	};
-}
-
-
-return {
-	go: go,
-	pushState: pushState,
-	replaceState: replaceState,
-	getLocation: getLocation
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
 };
+var _elm_lang$core$Regex$All = {ctor: 'All'};
 
-}();
-
-var _elm_lang$navigation$Navigation$replaceState = _elm_lang$navigation$Native_Navigation.replaceState;
-var _elm_lang$navigation$Navigation$pushState = _elm_lang$navigation$Native_Navigation.pushState;
-var _elm_lang$navigation$Navigation$go = _elm_lang$navigation$Native_Navigation.go;
-var _elm_lang$navigation$Navigation$spawnPopState = function (router) {
-	return _elm_lang$core$Process$spawn(
-		A3(
-			_elm_lang$dom$Dom_LowLevel$onWindow,
-			'popstate',
-			_elm_lang$core$Json_Decode$value,
-			function (_p0) {
-				return A2(
-					_elm_lang$core$Platform$sendToSelf,
-					router,
-					_elm_lang$navigation$Native_Navigation.getLocation(
-						{ctor: '_Tuple0'}));
-			}));
+var _elm_lang$html$Html_Attributes$attribute = _elm_lang$virtual_dom$VirtualDom$attribute;
+var _elm_lang$html$Html_Attributes$contextmenu = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'contextmenu', value);
 };
-var _elm_lang$navigation$Navigation_ops = _elm_lang$navigation$Navigation_ops || {};
-_elm_lang$navigation$Navigation_ops['&>'] = F2(
-	function (task1, task2) {
+var _elm_lang$html$Html_Attributes$draggable = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'draggable', value);
+};
+var _elm_lang$html$Html_Attributes$list = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'list', value);
+};
+var _elm_lang$html$Html_Attributes$maxlength = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'maxlength',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$datetime = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'datetime', value);
+};
+var _elm_lang$html$Html_Attributes$pubdate = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$attribute, 'pubdate', value);
+};
+var _elm_lang$html$Html_Attributes$colspan = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'colspan',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$rowspan = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$attribute,
+		'rowspan',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$property = _elm_lang$virtual_dom$VirtualDom$property;
+var _elm_lang$html$Html_Attributes$stringProperty = F2(
+	function (name, string) {
 		return A2(
-			_elm_lang$core$Task$andThen,
-			task1,
-			function (_p1) {
-				return task2;
-			});
+			_elm_lang$html$Html_Attributes$property,
+			name,
+			_elm_lang$core$Json_Encode$string(string));
 	});
-var _elm_lang$navigation$Navigation$notify = F3(
-	function (router, subs, location) {
-		var send = function (_p2) {
-			var _p3 = _p2;
-			return A2(
-				_elm_lang$core$Platform$sendToApp,
-				router,
-				_p3._0(location));
-		};
+var _elm_lang$html$Html_Attributes$class = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'className', name);
+};
+var _elm_lang$html$Html_Attributes$id = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'id', name);
+};
+var _elm_lang$html$Html_Attributes$title = function (name) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'title', name);
+};
+var _elm_lang$html$Html_Attributes$accesskey = function ($char) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'accessKey',
+		_elm_lang$core$String$fromChar($char));
+};
+var _elm_lang$html$Html_Attributes$dir = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'dir', value);
+};
+var _elm_lang$html$Html_Attributes$dropzone = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'dropzone', value);
+};
+var _elm_lang$html$Html_Attributes$itemprop = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'itemprop', value);
+};
+var _elm_lang$html$Html_Attributes$lang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'lang', value);
+};
+var _elm_lang$html$Html_Attributes$tabindex = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'tabIndex',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$charset = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'charset', value);
+};
+var _elm_lang$html$Html_Attributes$content = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'content', value);
+};
+var _elm_lang$html$Html_Attributes$httpEquiv = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'httpEquiv', value);
+};
+var _elm_lang$html$Html_Attributes$language = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'language', value);
+};
+var _elm_lang$html$Html_Attributes$src = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'src', value);
+};
+var _elm_lang$html$Html_Attributes$height = function (value) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'height',
+		_elm_lang$core$Basics$toString(value));
+};
+var _elm_lang$html$Html_Attributes$width = function (value) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'width',
+		_elm_lang$core$Basics$toString(value));
+};
+var _elm_lang$html$Html_Attributes$alt = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'alt', value);
+};
+var _elm_lang$html$Html_Attributes$preload = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'preload', value);
+};
+var _elm_lang$html$Html_Attributes$poster = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'poster', value);
+};
+var _elm_lang$html$Html_Attributes$kind = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'kind', value);
+};
+var _elm_lang$html$Html_Attributes$srclang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'srclang', value);
+};
+var _elm_lang$html$Html_Attributes$sandbox = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'sandbox', value);
+};
+var _elm_lang$html$Html_Attributes$srcdoc = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'srcdoc', value);
+};
+var _elm_lang$html$Html_Attributes$type$ = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'type', value);
+};
+var _elm_lang$html$Html_Attributes$value = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'value', value);
+};
+var _elm_lang$html$Html_Attributes$defaultValue = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'defaultValue', value);
+};
+var _elm_lang$html$Html_Attributes$placeholder = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'placeholder', value);
+};
+var _elm_lang$html$Html_Attributes$accept = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'accept', value);
+};
+var _elm_lang$html$Html_Attributes$acceptCharset = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'acceptCharset', value);
+};
+var _elm_lang$html$Html_Attributes$action = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'action', value);
+};
+var _elm_lang$html$Html_Attributes$autocomplete = function (bool) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'autocomplete',
+		bool ? 'on' : 'off');
+};
+var _elm_lang$html$Html_Attributes$autosave = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'autosave', value);
+};
+var _elm_lang$html$Html_Attributes$enctype = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'enctype', value);
+};
+var _elm_lang$html$Html_Attributes$formaction = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'formAction', value);
+};
+var _elm_lang$html$Html_Attributes$minlength = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'minLength',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$method = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'method', value);
+};
+var _elm_lang$html$Html_Attributes$name = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'name', value);
+};
+var _elm_lang$html$Html_Attributes$pattern = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'pattern', value);
+};
+var _elm_lang$html$Html_Attributes$size = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'size',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$for = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'htmlFor', value);
+};
+var _elm_lang$html$Html_Attributes$form = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'form', value);
+};
+var _elm_lang$html$Html_Attributes$max = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'max', value);
+};
+var _elm_lang$html$Html_Attributes$min = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'min', value);
+};
+var _elm_lang$html$Html_Attributes$step = function (n) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'step', n);
+};
+var _elm_lang$html$Html_Attributes$cols = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'cols',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$rows = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'rows',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$wrap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'wrap', value);
+};
+var _elm_lang$html$Html_Attributes$usemap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'useMap', value);
+};
+var _elm_lang$html$Html_Attributes$shape = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'shape', value);
+};
+var _elm_lang$html$Html_Attributes$coords = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'coords', value);
+};
+var _elm_lang$html$Html_Attributes$challenge = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'challenge', value);
+};
+var _elm_lang$html$Html_Attributes$keytype = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'keytype', value);
+};
+var _elm_lang$html$Html_Attributes$align = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'align', value);
+};
+var _elm_lang$html$Html_Attributes$cite = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'cite', value);
+};
+var _elm_lang$html$Html_Attributes$href = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'href', value);
+};
+var _elm_lang$html$Html_Attributes$target = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'target', value);
+};
+var _elm_lang$html$Html_Attributes$downloadAs = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'download', value);
+};
+var _elm_lang$html$Html_Attributes$hreflang = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'hreflang', value);
+};
+var _elm_lang$html$Html_Attributes$media = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'media', value);
+};
+var _elm_lang$html$Html_Attributes$ping = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'ping', value);
+};
+var _elm_lang$html$Html_Attributes$rel = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'rel', value);
+};
+var _elm_lang$html$Html_Attributes$start = function (n) {
+	return A2(
+		_elm_lang$html$Html_Attributes$stringProperty,
+		'start',
+		_elm_lang$core$Basics$toString(n));
+};
+var _elm_lang$html$Html_Attributes$headers = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'headers', value);
+};
+var _elm_lang$html$Html_Attributes$scope = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'scope', value);
+};
+var _elm_lang$html$Html_Attributes$manifest = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$stringProperty, 'manifest', value);
+};
+var _elm_lang$html$Html_Attributes$boolProperty = F2(
+	function (name, bool) {
 		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			_elm_lang$core$Task$sequence(
-				A2(_elm_lang$core$List$map, send, subs)),
-			_elm_lang$core$Task$succeed(
-				{ctor: '_Tuple0'}));
+			_elm_lang$html$Html_Attributes$property,
+			name,
+			_elm_lang$core$Json_Encode$bool(bool));
 	});
-var _elm_lang$navigation$Navigation$onSelfMsg = F3(
-	function (router, location, state) {
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			A3(_elm_lang$navigation$Navigation$notify, router, state.subs, location),
-			_elm_lang$core$Task$succeed(state));
+var _elm_lang$html$Html_Attributes$hidden = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'hidden', bool);
+};
+var _elm_lang$html$Html_Attributes$contenteditable = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'contentEditable', bool);
+};
+var _elm_lang$html$Html_Attributes$spellcheck = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'spellcheck', bool);
+};
+var _elm_lang$html$Html_Attributes$async = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'async', bool);
+};
+var _elm_lang$html$Html_Attributes$defer = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'defer', bool);
+};
+var _elm_lang$html$Html_Attributes$scoped = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'scoped', bool);
+};
+var _elm_lang$html$Html_Attributes$autoplay = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'autoplay', bool);
+};
+var _elm_lang$html$Html_Attributes$controls = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'controls', bool);
+};
+var _elm_lang$html$Html_Attributes$loop = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'loop', bool);
+};
+var _elm_lang$html$Html_Attributes$default = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'default', bool);
+};
+var _elm_lang$html$Html_Attributes$seamless = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'seamless', bool);
+};
+var _elm_lang$html$Html_Attributes$checked = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'checked', bool);
+};
+var _elm_lang$html$Html_Attributes$selected = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'selected', bool);
+};
+var _elm_lang$html$Html_Attributes$autofocus = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'autofocus', bool);
+};
+var _elm_lang$html$Html_Attributes$disabled = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'disabled', bool);
+};
+var _elm_lang$html$Html_Attributes$multiple = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'multiple', bool);
+};
+var _elm_lang$html$Html_Attributes$novalidate = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'noValidate', bool);
+};
+var _elm_lang$html$Html_Attributes$readonly = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'readOnly', bool);
+};
+var _elm_lang$html$Html_Attributes$required = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'required', bool);
+};
+var _elm_lang$html$Html_Attributes$ismap = function (value) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'isMap', value);
+};
+var _elm_lang$html$Html_Attributes$download = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'download', bool);
+};
+var _elm_lang$html$Html_Attributes$reversed = function (bool) {
+	return A2(_elm_lang$html$Html_Attributes$boolProperty, 'reversed', bool);
+};
+var _elm_lang$html$Html_Attributes$classList = function (list) {
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Basics$fst,
+				A2(_elm_lang$core$List$filter, _elm_lang$core$Basics$snd, list))));
+};
+var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
+
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode_ops[':='], 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'checked']),
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'value']),
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
 	});
-var _elm_lang$navigation$Navigation$cmdHelp = F3(
-	function (router, subs, cmd) {
-		var _p4 = cmd;
+
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond = 1000;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay = 24 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$dayOfWeekFromWeekdayNumber = function (n) {
+	var _p0 = n;
+	switch (_p0) {
+		case 1:
+			return _elm_lang$core$Date$Mon;
+		case 2:
+			return _elm_lang$core$Date$Tue;
+		case 3:
+			return _elm_lang$core$Date$Wed;
+		case 4:
+			return _elm_lang$core$Date$Thu;
+		case 5:
+			return _elm_lang$core$Date$Fri;
+		case 6:
+			return _elm_lang$core$Date$Sat;
+		default:
+			return _elm_lang$core$Date$Sun;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek = function (d) {
+	var _p1 = d;
+	switch (_p1.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber = function (n) {
+	var _p2 = n;
+	switch (_p2) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Feb;
+		case 3:
+			return _elm_lang$core$Date$Mar;
+		case 4:
+			return _elm_lang$core$Date$Apr;
+		case 5:
+			return _elm_lang$core$Date$May;
+		case 6:
+			return _elm_lang$core$Date$Jun;
+		case 7:
+			return _elm_lang$core$Date$Jul;
+		case 8:
+			return _elm_lang$core$Date$Aug;
+		case 9:
+			return _elm_lang$core$Date$Sep;
+		case 10:
+			return _elm_lang$core$Date$Oct;
+		case 11:
+			return _elm_lang$core$Date$Nov;
+		default:
+			return _elm_lang$core$Date$Dec;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth = function (m) {
+	var _p3 = m;
+	switch (_p3.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$months = _elm_lang$core$Native_List.fromArray(
+	[_elm_lang$core$Date$Jan, _elm_lang$core$Date$Feb, _elm_lang$core$Date$Mar, _elm_lang$core$Date$Apr, _elm_lang$core$Date$May, _elm_lang$core$Date$Jun, _elm_lang$core$Date$Jul, _elm_lang$core$Date$Aug, _elm_lang$core$Date$Sep, _elm_lang$core$Date$Oct, _elm_lang$core$Date$Nov, _elm_lang$core$Date$Dec]);
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear = function (y) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0);
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth = F2(
+	function (y, m) {
+		var _p4 = m;
 		switch (_p4.ctor) {
-			case 'Jump':
-				return _elm_lang$navigation$Navigation$go(_p4._0);
-			case 'New':
-				return A2(
-					_elm_lang$core$Task$andThen,
-					_elm_lang$navigation$Navigation$pushState(_p4._0),
-					A2(_elm_lang$navigation$Navigation$notify, router, subs));
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
 			default:
-				return A2(
-					_elm_lang$core$Task$andThen,
-					_elm_lang$navigation$Navigation$replaceState(_p4._0),
-					A2(_elm_lang$navigation$Navigation$notify, router, subs));
+				return 31;
 		}
 	});
-var _elm_lang$navigation$Navigation$updateHelp = F2(
-	function (func, _p5) {
-		var _p6 = _p5;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth = F2(
+	function (y, m) {
+		var _p5 = m;
+		switch (_p5.ctor) {
+			case 'Jan':
+				return 0;
+			case 'Feb':
+				return 31;
+			case 'Mar':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 60 : 59;
+			case 'Apr':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 91 : 90;
+			case 'May':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 121 : 120;
+			case 'Jun':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 152 : 151;
+			case 'Jul':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 182 : 181;
+			case 'Aug':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 213 : 212;
+			case 'Sep':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 244 : 243;
+			case 'Oct':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 274 : 273;
+			case 'Nov':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 305 : 304;
+			default:
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 335 : 334;
+		}
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime = function (rd) {
+	return (rd - 719163) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber = function (rd) {
+	var _p0 = A2(_elm_lang$core$Basics_ops['%'], rd, 7);
+	if (_p0 === 0) {
+		return 7;
+	} else {
+		return _p0;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra = function (y) {
+	return (((y / 4) | 0) - ((y / 100) | 0)) + ((y / 400) | 0);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear = function (y) {
+	return (365 * (y - 1)) + _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra(y - 1);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear = function (y) {
+	var jan4RD = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, 4);
+	return (jan4RD - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(jan4RD)) + 1;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate = F3(
+	function (y, w, d) {
+		var week1Day0RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(y) - 1;
+		return (week1Day0RD + ((w - 1) * 7)) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate = F3(
+	function (y, m, d) {
+		var md = A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+		var yd = _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y);
+		return (yd + md) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie_ops = _justinmimbs$elm_date_extra$Date_Internal_RataDie_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'] = F2(
+	function (n, d) {
 		return {
 			ctor: '_Tuple2',
-			_0: _p6._0,
-			_1: A2(_elm_lang$core$Platform_Cmd$map, func, _p6._1)
+			_0: (n / d) | 0,
+			_1: A2(_elm_lang$core$Basics_ops['%'], n, d)
 		};
 	});
-var _elm_lang$navigation$Navigation$subscription = _elm_lang$core$Native_Platform.leaf('Navigation');
-var _elm_lang$navigation$Navigation$command = _elm_lang$core$Native_Platform.leaf('Navigation');
-var _elm_lang$navigation$Navigation$Location = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return function (k) {
-											return {href: a, host: b, hostname: c, protocol: d, origin: e, port_: f, pathname: g, search: h, hash: i, username: j, password: k};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$year = function (rd) {
+	var _p1 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], rd, 146097);
+	var q400 = _p1._0;
+	var r400 = _p1._1;
+	var _p2 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r400, 36524);
+	var q100 = _p2._0;
+	var r100 = _p2._1;
+	var _p3 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r100, 1461);
+	var q4 = _p3._0;
+	var r4 = _p3._1;
+	var _p4 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie_ops['///'], r4, 365);
+	var q1 = _p4._0;
+	var r1 = _p4._1;
+	var n = _elm_lang$core$Native_Utils.eq(r1, 0) ? 0 : 1;
+	return ((((q400 * 400) + (q100 * 100)) + (q4 * 4)) + q1) + n;
 };
-var _elm_lang$navigation$Navigation$State = F2(
-	function (a, b) {
-		return {subs: a, process: b};
-	});
-var _elm_lang$navigation$Navigation$init = _elm_lang$core$Task$succeed(
-	A2(
-		_elm_lang$navigation$Navigation$State,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Maybe$Nothing));
-var _elm_lang$navigation$Navigation$onEffects = F4(
-	function (router, cmds, subs, _p7) {
-		var _p8 = _p7;
-		var _p10 = _p8.process;
-		var stepState = function () {
-			var _p9 = {ctor: '_Tuple2', _0: subs, _1: _p10};
-			_v4_2:
-			do {
-				if (_p9._0.ctor === '[]') {
-					if (_p9._1.ctor === 'Just') {
-						return A2(
-							_elm_lang$navigation$Navigation_ops['&>'],
-							_elm_lang$core$Process$kill(_p9._1._0),
-							_elm_lang$core$Task$succeed(
-								A2(_elm_lang$navigation$Navigation$State, subs, _elm_lang$core$Maybe$Nothing)));
-					} else {
-						break _v4_2;
-					}
-				} else {
-					if (_p9._1.ctor === 'Nothing') {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							_elm_lang$navigation$Navigation$spawnPopState(router),
-							function (pid) {
-								return _elm_lang$core$Task$succeed(
-									A2(
-										_elm_lang$navigation$Navigation$State,
-										subs,
-										_elm_lang$core$Maybe$Just(pid)));
-							});
-					} else {
-						break _v4_2;
-					}
-				}
-			} while(false);
-			return _elm_lang$core$Task$succeed(
-				A2(_elm_lang$navigation$Navigation$State, subs, _p10));
-		}();
-		return A2(
-			_elm_lang$navigation$Navigation_ops['&>'],
-			_elm_lang$core$Task$sequence(
-				A2(
-					_elm_lang$core$List$map,
-					A2(_elm_lang$navigation$Navigation$cmdHelp, router, subs),
-					cmds)),
-			stepState);
-	});
-var _elm_lang$navigation$Navigation$UserMsg = function (a) {
-	return {ctor: 'UserMsg', _0: a};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay = function (rd) {
+	return rd - _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd));
 };
-var _elm_lang$navigation$Navigation$Change = function (a) {
-	return {ctor: 'Change', _0: a};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear = function (rd) {
+	var daysToThursday = 4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(rd);
+	return _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd + daysToThursday);
 };
-var _elm_lang$navigation$Navigation$Parser = function (a) {
-	return {ctor: 'Parser', _0: a};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber = function (rd) {
+	var week1Day1RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(rd));
+	return (((rd - week1Day1RD) / 7) | 0) + 1;
 };
-var _elm_lang$navigation$Navigation$makeParser = _elm_lang$navigation$Navigation$Parser;
-var _elm_lang$navigation$Navigation$Modify = function (a) {
-	return {ctor: 'Modify', _0: a};
-};
-var _elm_lang$navigation$Navigation$modifyUrl = function (url) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Modify(url));
-};
-var _elm_lang$navigation$Navigation$New = function (a) {
-	return {ctor: 'New', _0: a};
-};
-var _elm_lang$navigation$Navigation$newUrl = function (url) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$New(url));
-};
-var _elm_lang$navigation$Navigation$Jump = function (a) {
-	return {ctor: 'Jump', _0: a};
-};
-var _elm_lang$navigation$Navigation$back = function (n) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Jump(0 - n));
-};
-var _elm_lang$navigation$Navigation$forward = function (n) {
-	return _elm_lang$navigation$Navigation$command(
-		_elm_lang$navigation$Navigation$Jump(n));
-};
-var _elm_lang$navigation$Navigation$cmdMap = F2(
-	function (_p11, myCmd) {
-		var _p12 = myCmd;
-		switch (_p12.ctor) {
-			case 'Jump':
-				return _elm_lang$navigation$Navigation$Jump(_p12._0);
-			case 'New':
-				return _elm_lang$navigation$Navigation$New(_p12._0);
-			default:
-				return _elm_lang$navigation$Navigation$Modify(_p12._0);
-		}
-	});
-var _elm_lang$navigation$Navigation$Monitor = function (a) {
-	return {ctor: 'Monitor', _0: a};
-};
-var _elm_lang$navigation$Navigation$programWithFlags = F2(
-	function (_p13, stuff) {
-		var _p14 = _p13;
-		var _p16 = _p14._0;
-		var location = _elm_lang$navigation$Native_Navigation.getLocation(
-			{ctor: '_Tuple0'});
-		var init = function (flags) {
-			return A2(
-				_elm_lang$navigation$Navigation$updateHelp,
-				_elm_lang$navigation$Navigation$UserMsg,
-				A2(
-					stuff.init,
-					flags,
-					_p16(location)));
-		};
-		var view = function (model) {
-			return A2(
-				_elm_lang$html$Html_App$map,
-				_elm_lang$navigation$Navigation$UserMsg,
-				stuff.view(model));
-		};
-		var subs = function (model) {
-			return _elm_lang$core$Platform_Sub$batch(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$navigation$Navigation$subscription(
-						_elm_lang$navigation$Navigation$Monitor(_elm_lang$navigation$Navigation$Change)),
-						A2(
-						_elm_lang$core$Platform_Sub$map,
-						_elm_lang$navigation$Navigation$UserMsg,
-						stuff.subscriptions(model))
-					]));
-		};
-		var update = F2(
-			function (msg, model) {
-				return A2(
-					_elm_lang$navigation$Navigation$updateHelp,
-					_elm_lang$navigation$Navigation$UserMsg,
-					function () {
-						var _p15 = msg;
-						if (_p15.ctor === 'Change') {
-							return A2(
-								stuff.urlUpdate,
-								_p16(_p15._0),
-								model);
-						} else {
-							return A2(stuff.update, _p15._0, model);
-						}
-					}());
-			});
-		return _elm_lang$html$Html_App$programWithFlags(
-			{init: init, view: view, update: update, subscriptions: subs});
-	});
-var _elm_lang$navigation$Navigation$program = F2(
-	function (parser, stuff) {
-		return A2(
-			_elm_lang$navigation$Navigation$programWithFlags,
-			parser,
-			_elm_lang$core$Native_Utils.update(
-				stuff,
-				{
-					init: function (_p17) {
-						return stuff.init;
-					}
-				}));
-	});
-var _elm_lang$navigation$Navigation$subMap = F2(
-	function (func, _p18) {
-		var _p19 = _p18;
-		return _elm_lang$navigation$Navigation$Monitor(
-			function (_p20) {
-				return func(
-					_p19._0(_p20));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
-
-var _evancz$url_parser$UrlParser$oneOfHelp = F3(
-	function (choices, chunks, formatter) {
-		oneOfHelp:
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$find = F2(
+	function (pred, list) {
+		find:
 		while (true) {
-			var _p0 = choices;
-			if (_p0.ctor === '[]') {
-				return _elm_lang$core$Result$Err('Tried many parsers, but none of them worked!');
-			} else {
-				var _p1 = A2(_p0._0._0, chunks, formatter);
-				if (_p1.ctor === 'Err') {
-					var _v2 = _p0._1,
-						_v3 = chunks,
-						_v4 = formatter;
-					choices = _v2;
-					chunks = _v3;
-					formatter = _v4;
-					continue oneOfHelp;
-				} else {
-					return _elm_lang$core$Result$Ok(_p1._0);
-				}
-			}
-		}
-	});
-var _evancz$url_parser$UrlParser$Chunks = F2(
-	function (a, b) {
-		return {seen: a, rest: b};
-	});
-var _evancz$url_parser$UrlParser$parse = F3(
-	function (input, _p2, url) {
-		var _p3 = _p2;
-		var _p4 = A2(
-			_p3._0,
-			A2(
-				_evancz$url_parser$UrlParser$Chunks,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				A2(_elm_lang$core$String$split, '/', url)),
-			input);
-		if (_p4.ctor === 'Err') {
-			return _elm_lang$core$Result$Err(_p4._0);
-		} else {
-			var _p7 = _p4._0._1;
-			var _p6 = _p4._0._0.rest;
-			var _p5 = _p6;
+			var _p5 = list;
 			if (_p5.ctor === '[]') {
-				return _elm_lang$core$Result$Ok(_p7);
+				return _elm_lang$core$Maybe$Nothing;
 			} else {
-				if ((_p5._0 === '') && (_p5._1.ctor === '[]')) {
-					return _elm_lang$core$Result$Ok(_p7);
+				var _p6 = _p5._0;
+				if (pred(_p6)) {
+					return _elm_lang$core$Maybe$Just(_p6);
 				} else {
-					return _elm_lang$core$Result$Err(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'The parser worked, but /',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								A2(_elm_lang$core$String$join, '/', _p6),
-								' was left over.')));
+					var _v2 = pred,
+						_v3 = _p5._1;
+					pred = _v2;
+					list = _v3;
+					continue find;
 				}
 			}
 		}
 	});
-var _evancz$url_parser$UrlParser$Parser = function (a) {
-	return {ctor: 'Parser', _0: a};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$month = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		_elm_lang$core$Date$Jan,
+		A2(
+			_justinmimbs$elm_date_extra$Date_Internal_RataDie$find,
+			function (m) {
+				return _elm_lang$core$Native_Utils.cmp(
+					A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m),
+					od) < 0;
+			},
+			_elm_lang$core$List$reverse(_justinmimbs$elm_date_extra$Date_Extra_Facts$months)));
 };
-var _evancz$url_parser$UrlParser$s = function (str) {
-	return _evancz$url_parser$UrlParser$Parser(
-		F2(
-			function (_p8, result) {
-				var _p9 = _p8;
-				var _p12 = _p9.rest;
-				var _p10 = _p12;
-				if (_p10.ctor === '[]') {
-					return _elm_lang$core$Result$Err(
-						A2(_elm_lang$core$Basics_ops['++'], 'Got to the end of the URL but wanted /', str));
-				} else {
-					var _p11 = _p10._0;
-					return _elm_lang$core$Native_Utils.eq(_p11, str) ? _elm_lang$core$Result$Ok(
-						{
-							ctor: '_Tuple2',
-							_0: A2(
-								_evancz$url_parser$UrlParser$Chunks,
-								A2(_elm_lang$core$List_ops['::'], _p11, _p9.seen),
-								_p10._1),
-							_1: result
-						}) : _elm_lang$core$Result$Err(
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$day = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var m = _justinmimbs$elm_date_extra$Date_Internal_RataDie$month(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return od - A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts = F4(
+	function (hh, mm, ss, ms) {
+		return ((ms + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond * ss)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * mm)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour * hh);
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d)) + A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc = function (date) {
+	var utcTime = _elm_lang$core$Date$toTime(date);
+	var localTime = _elm_lang$core$Basics$toFloat(
+		A7(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date),
+			_elm_lang$core$Date$day(date),
+			_elm_lang$core$Date$hour(date),
+			_elm_lang$core$Date$minute(date),
+			_elm_lang$core$Date$second(date),
+			_elm_lang$core$Date$millisecond(date)));
+	return _elm_lang$core$Basics$floor(localTime - utcTime);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc = function (date) {
+	return (_justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc(date) / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber = function (date) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(
+		_elm_lang$core$Date$dayOfWeek(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay = function (date) {
+	var timeOfDayMS = A4(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts,
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+	return _elm_lang$core$Basics$toFloat(timeOfDayMS) / _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay = function (date) {
+	return A2(
+		_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date)) + _elm_lang$core$Date$day(date);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber = function (date) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth(
+		_elm_lang$core$Date$month(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter = function (date) {
+	return _elm_lang$core$Basics$ceiling(
+		function (n) {
+			return n / 3;
+		}(
+			_elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date))));
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc = function (date) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Date$toTime(date) - _elm_lang$core$Basics$toFloat(
+			_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm = function (length) {
+	var _p0 = length;
+	switch (_p0) {
+		case 1:
+			return 'abbreviated';
+		case 2:
+			return 'abbreviated';
+		case 3:
+			return 'abbreviated';
+		case 4:
+			return 'full';
+		case 5:
+			return 'narrow';
+		case 6:
+			return 'short';
+		default:
+			return 'invalid';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches = _elm_lang$core$Regex$regex('([yYQMwdDEeabhHmsSXx])\\1*|\'(?:[^\']|\'\')*?\'(?!\')');
+var _justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset = F3(
+	function (separator, minutesOptional, offset) {
+		var mm = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				A2(
+					_elm_lang$core$Basics_ops['%'],
+					_elm_lang$core$Basics$abs(offset),
+					60)));
+		var hh = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				(_elm_lang$core$Basics$abs(offset) / 60) | 0));
+		var sign = (_elm_lang$core$Native_Utils.cmp(offset, 0) > -1) ? '+' : '-';
+		return (minutesOptional && _elm_lang$core$Native_Utils.eq(mm, '00')) ? A2(_elm_lang$core$Basics_ops['++'], sign, hh) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			sign,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				hh,
+				A2(_elm_lang$core$Basics_ops['++'], separator, mm)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix = function (n) {
+	var nn = A2(_elm_lang$core$Basics_ops['%'], n, 100);
+	var _p1 = A2(
+		_elm_lang$core$Basics$min,
+		(_elm_lang$core$Native_Utils.cmp(nn, 20) < 0) ? nn : A2(_elm_lang$core$Basics_ops['%'], nn, 10),
+		4);
+	switch (_p1) {
+		case 0:
+			return 'th';
+		case 1:
+			return 'st';
+		case 2:
+			return 'nd';
+		case 3:
+			return 'rd';
+		case 4:
+			return 'th';
+		default:
+			return '';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix = function (n) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(n),
+		_justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix(n));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$hour12 = function (date) {
+	var _p2 = A2(
+		_elm_lang$core$Basics_ops['%'],
+		_elm_lang$core$Date$hour(date),
+		12);
+	if (_p2 === 0) {
+		return 12;
+	} else {
+		return _p2;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName = function (d) {
+	var _p3 = d;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$monthName = function (m) {
+	var _p4 = m;
+	switch (_p4.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$PM = {ctor: 'PM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Noon = {ctor: 'Noon'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$AM = {ctor: 'AM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight = {ctor: 'Midnight'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod = function (date) {
+	var onTheHour = _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$minute(date),
+		0) && (_elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$second(date),
+		0) && _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$millisecond(date),
+		0));
+	var hh = _elm_lang$core$Date$hour(date);
+	return (_elm_lang$core$Native_Utils.eq(hh, 0) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight : ((_elm_lang$core$Native_Utils.cmp(hh, 12) < 0) ? _justinmimbs$elm_date_extra$Date_Internal_Format$AM : ((_elm_lang$core$Native_Utils.eq(hh, 12) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Noon : _justinmimbs$elm_date_extra$Date_Internal_Format$PM));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$f = F3(
+	function (asUtc, date, match) {
+		f:
+		while (true) {
+			var length = _elm_lang$core$String$length(match);
+			var $char = A2(_elm_lang$core$String$left, 1, match);
+			var _p5 = $char;
+			switch (_p5) {
+				case 'y':
+					var _p6 = length;
+					if (_p6 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$year(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$year(date)));
+					}
+				case 'Y':
+					var _p7 = length;
+					if (_p7 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date)));
+					}
+				case 'Q':
+					var _p8 = length;
+					switch (_p8) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 3:
+							return A2(
+								F2(
+									function (x, y) {
+										return A2(_elm_lang$core$Basics_ops['++'], x, y);
+									}),
+								'Q',
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 5:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						default:
+							return '';
+					}
+				case 'M':
+					var _p9 = length;
+					switch (_p9) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date)));
+						case 3:
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+								_elm_lang$core$Date$month(date));
+						case 5:
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						default:
+							return '';
+					}
+				case 'w':
+					var _p10 = length;
+					switch (_p10) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date)));
+						default:
+							return '';
+					}
+				case 'd':
+					var _p11 = length;
+					switch (_p11) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$day(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$day(date)));
+						case 3:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_elm_lang$core$Date$day(date));
+						default:
+							return '';
+					}
+				case 'D':
+					var _p12 = length;
+					switch (_p12) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						case 3:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						default:
+							return '';
+					}
+				case 'E':
+					var _p13 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p13) {
+						case 'abbreviated':
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'full':
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+								_elm_lang$core$Date$dayOfWeek(date));
+						case 'narrow':
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'short':
+							return A2(
+								_elm_lang$core$String$left,
+								2,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						default:
+							return '';
+					}
+				case 'e':
+					var _p14 = length;
+					switch (_p14) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						default:
+							var _v15 = asUtc,
+								_v16 = date,
+								_v17 = _elm_lang$core$String$toUpper(match);
+							asUtc = _v15;
+							date = _v16;
+							match = _v17;
+							continue f;
+					}
+				case 'a':
+					var p = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+					var m = (_elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight) || _elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$AM)) ? 'A' : 'P';
+					var _p15 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p15) {
+						case 'abbreviated':
+							return A2(_elm_lang$core$Basics_ops['++'], m, 'M');
+						case 'full':
+							return A2(_elm_lang$core$Basics_ops['++'], m, '.M.');
+						case 'narrow':
+							return m;
+						default:
+							return '';
+					}
+				case 'b':
+					var _p16 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p16) {
+						case 'abbreviated':
+							var _p17 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p17.ctor) {
+								case 'Midnight':
+									return 'mid.';
+								case 'AM':
+									return 'am';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'pm';
+							}
+						case 'full':
+							var _p18 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p18.ctor) {
+								case 'Midnight':
+									return 'midnight';
+								case 'AM':
+									return 'a.m.';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'p.m.';
+							}
+						case 'narrow':
+							var _p19 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p19.ctor) {
+								case 'Midnight':
+									return 'md';
+								case 'AM':
+									return 'a';
+								case 'Noon':
+									return 'nn';
+								default:
+									return 'p';
+							}
+						default:
+							return '';
+					}
+				case 'h':
+					var _p20 = length;
+					switch (_p20) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date)));
+						default:
+							return '';
+					}
+				case 'H':
+					var _p21 = length;
+					switch (_p21) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$hour(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$hour(date)));
+						default:
+							return '';
+					}
+				case 'm':
+					var _p22 = length;
+					switch (_p22) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$minute(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$minute(date)));
+						default:
+							return '';
+					}
+				case 's':
+					var _p23 = length;
+					switch (_p23) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$second(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$second(date)));
+						default:
+							return '';
+					}
+				case 'S':
+					return A3(
+						_elm_lang$core$String$padRight,
+						length,
+						_elm_lang$core$Native_Utils.chr('0'),
+						A2(
+							_elm_lang$core$String$left,
+							length,
+							A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$millisecond(date)))));
+				case 'X':
+					if ((_elm_lang$core$Native_Utils.cmp(length, 4) < 0) && (asUtc || _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date),
+						0))) {
+						return 'Z';
+					} else {
+						var _v27 = asUtc,
+							_v28 = date,
+							_v29 = _elm_lang$core$String$toLower(match);
+						asUtc = _v27;
+						date = _v28;
+						match = _v29;
+						continue f;
+					}
+				case 'x':
+					var offset = asUtc ? 0 : _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date);
+					var _p24 = length;
+					switch (_p24) {
+						case 1:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', true, offset);
+						case 2:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', false, offset);
+						case 3:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, ':', false, offset);
+						default:
+							return '';
+					}
+				case '\'':
+					return _elm_lang$core$Native_Utils.eq(match, '\'\'') ? '\'' : A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('\'\''),
+						function (_p25) {
+							return '\'';
+						},
+						A3(_elm_lang$core$String$slice, 1, -1, match));
+				default:
+					return '';
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString = F3(
+	function (asUtc, pattern, date) {
+		var date$ = asUtc ? _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc(date) : date;
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches,
+			function (_p26) {
+				var _p27 = _p26;
+				return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$f, asUtc, date$, _p27.match);
+			},
+			pattern);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex = function () {
+	var time = 'T(\\d{2})(?:(\\:)?(\\d{2})(?:\\10(\\d{2}))?)?(\\.\\d+)?(?:(Z)|(?:([+\\-])(\\d{2})(?:\\:?(\\d{2}))?))?';
+	var ord = '\\-?(\\d{3})';
+	var week = '(\\-)?W(\\d{2})(?:\\5(\\d))?';
+	var cal = '(\\-)?(\\d{2})(?:\\2(\\d{2}))?';
+	var year = '(\\d{4})';
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'^',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				year,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'(?:',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						cal,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							'Wanted /',
+							'|',
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								str,
+								week,
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									' but got /',
-									A2(_elm_lang$core$String$join, '/', _p12)))));
-				}
-			}));
-};
-var _evancz$url_parser$UrlParser$custom = F2(
-	function (tipe, stringToSomething) {
-		return _evancz$url_parser$UrlParser$Parser(
-			F2(
-				function (_p13, func) {
-					var _p14 = _p13;
-					var _p15 = _p14.rest;
-					if (_p15.ctor === '[]') {
-						return _elm_lang$core$Result$Err(
-							A2(_elm_lang$core$Basics_ops['++'], 'Got to the end of the URL but wanted /', tipe));
-					} else {
-						var _p17 = _p15._0;
-						var _p16 = stringToSomething(_p17);
-						if (_p16.ctor === 'Ok') {
-							return _elm_lang$core$Result$Ok(
-								{
-									ctor: '_Tuple2',
-									_0: A2(
-										_evancz$url_parser$UrlParser$Chunks,
-										A2(_elm_lang$core$List_ops['::'], _p17, _p14.seen),
-										_p15._1),
-									_1: func(_p16._0)
-								});
-						} else {
-							return _elm_lang$core$Result$Err(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									'Parsing `',
+									'|',
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										_p17,
-										A2(_elm_lang$core$Basics_ops['++'], '` went wrong: ', _p16._0))));
+										ord,
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											')?',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'(?:',
+												A2(_elm_lang$core$Basics_ops['++'], time, ')?$'))))))))))));
+}();
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat = function (s) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toFloat(s));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt = function (s) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toInt(s));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse_ops = _justinmimbs$elm_date_extra$Date_Internal_Parse_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'] = _elm_lang$core$Basics$flip(_elm_lang$core$Maybe$withDefault);
+var _justinmimbs$elm_date_extra$Date_Internal_Parse_ops = _justinmimbs$elm_date_extra$Date_Internal_Parse_ops || {};
+_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='] = _elm_lang$core$Maybe$andThen;
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches = F6(
+	function (yyyy, calMM, calDD, weekWW, weekD, ordDDD) {
+		var y = A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+			_justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt(yyyy),
+			1);
+		var _p0 = {ctor: '_Tuple2', _0: calMM, _1: weekWW};
+		_v0_2:
+		do {
+			if (_p0.ctor === '_Tuple2') {
+				if (_p0._0.ctor === 'Just') {
+					if (_p0._1.ctor === 'Nothing') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate,
+							y,
+							_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+								A2(
+									_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+									A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], calMM, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+									1)),
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], calDD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1));
+					} else {
+						break _v0_2;
+					}
+				} else {
+					if (_p0._1.ctor === 'Just') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate,
+							y,
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], weekWW, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1),
+							A2(
+								_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+								A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], weekD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+								1));
+					} else {
+						break _v0_2;
+					}
+				}
+			} else {
+				break _v0_2;
+			}
+		} while(false);
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate,
+			y,
+			A2(
+				_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+				A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], ordDDD, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+				1));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches = F4(
+	function (timeHH, timeMM, timeSS, timeF) {
+		var f = A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+			A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], timeF, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat),
+			0.0);
+		var _p1 = function () {
+			var _p2 = A2(
+				_elm_lang$core$List$map,
+				function (m) {
+					return A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], m, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat);
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[timeHH, timeMM, timeSS]));
+			_v1_3:
+			do {
+				if (((_p2.ctor === '::') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === '::')) {
+					if (_p2._1._0.ctor === 'Just') {
+						if (_p2._1._1.ctor === '::') {
+							if (_p2._1._1._0.ctor === 'Just') {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0, _2: _p2._1._1._0._0 + f};
+								} else {
+									break _v1_3;
+								}
+							} else {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0 + f, _2: 0.0};
+								} else {
+									break _v1_3;
+								}
+							}
+						} else {
+							break _v1_3;
+						}
+					} else {
+						if (((_p2._1._1.ctor === '::') && (_p2._1._1._0.ctor === 'Nothing')) && (_p2._1._1._1.ctor === '[]')) {
+							return {ctor: '_Tuple3', _0: _p2._0._0 + f, _1: 0.0, _2: 0.0};
+						} else {
+							break _v1_3;
 						}
 					}
-				}));
+				} else {
+					break _v1_3;
+				}
+			} while(false);
+			return {ctor: '_Tuple3', _0: 0.0, _1: 0.0, _2: 0.0};
+		}();
+		var hh = _p1._0;
+		var mm = _p1._1;
+		var ss = _p1._2;
+		return _elm_lang$core$Basics$round(
+			((hh * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour)) + (mm * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute))) + (ss * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond)));
 	});
-var _evancz$url_parser$UrlParser$string = A2(_evancz$url_parser$UrlParser$custom, 'STRING', _elm_lang$core$Result$Ok);
-var _evancz$url_parser$UrlParser$int = A2(_evancz$url_parser$UrlParser$custom, 'NUMBER', _elm_lang$core$String$toInt);
-var _evancz$url_parser$UrlParser_ops = _evancz$url_parser$UrlParser_ops || {};
-_evancz$url_parser$UrlParser_ops['</>'] = F2(
-	function (_p19, _p18) {
-		var _p20 = _p19;
-		var _p21 = _p18;
-		return _evancz$url_parser$UrlParser$Parser(
-			F2(
-				function (chunks, func) {
-					return A2(
-						_elm_lang$core$Result$andThen,
-						A2(_p20._0, chunks, func),
-						function (_p22) {
-							var _p23 = _p22;
-							return A2(_p21._0, _p23._0, _p23._1);
-						});
-				}));
-	});
-var _evancz$url_parser$UrlParser$oneOf = function (choices) {
-	return _evancz$url_parser$UrlParser$Parser(
-		_evancz$url_parser$UrlParser$oneOfHelp(choices));
-};
-var _evancz$url_parser$UrlParser$format = F2(
-	function (input, _p24) {
-		var _p25 = _p24;
-		return _evancz$url_parser$UrlParser$Parser(
-			F2(
-				function (chunks, func) {
-					var _p26 = A2(_p25._0, chunks, input);
-					if (_p26.ctor === 'Err') {
-						return _elm_lang$core$Result$Err(_p26._0);
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches = F4(
+	function (tzZ, tzSign, tzHH, tzMM) {
+		var _p3 = {ctor: '_Tuple2', _0: tzZ, _1: tzSign};
+		_v2_2:
+		do {
+			if (_p3.ctor === '_Tuple2') {
+				if (_p3._0.ctor === 'Just') {
+					if ((_p3._0._0 === 'Z') && (_p3._1.ctor === 'Nothing')) {
+						return _elm_lang$core$Maybe$Just(0);
 					} else {
-						return _elm_lang$core$Result$Ok(
-							{
-								ctor: '_Tuple2',
-								_0: _p26._0._0,
-								_1: func(_p26._0._1)
-							});
+						break _v2_2;
 					}
-				}));
+				} else {
+					if (_p3._1.ctor === 'Just') {
+						var mm = A2(
+							_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+							A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], tzMM, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+							0);
+						var hh = A2(
+							_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['?'],
+							A2(_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='], tzHH, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt),
+							0);
+						return _elm_lang$core$Maybe$Just(
+							(_elm_lang$core$Native_Utils.eq(_p3._1._0, '+') ? 1 : -1) * ((hh * 60) + mm));
+					} else {
+						break _v2_2;
+					}
+				}
+			} else {
+				break _v2_2;
+			}
+		} while(false);
+		return _elm_lang$core$Maybe$Nothing;
 	});
-
-var _user$project$Animals_Navigation$urlUpdate = F2(
-	function (page, model) {
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{page: page}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
-	});
-var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
-var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
-var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
-var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
-var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
-var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
-var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
-var _user$project$Animals_Navigation$stringParser = function (path) {
-	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage);
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches = function (matches) {
+	var _p4 = matches;
+	if (((((((((((((((((((_p4.ctor === '::') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === '::')) && (_p4._1._1.ctor === '::')) && (_p4._1._1._1.ctor === '::')) && (_p4._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '[]')) {
+		var offset = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var timeMS = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches, _p4._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var dateMS = A6(_justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches, _p4._0._0, _p4._1._1._0, _p4._1._1._1._0, _p4._1._1._1._1._1._0, _p4._1._1._1._1._1._1._0, _p4._1._1._1._1._1._1._1._0);
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: offset, _1: dateMS + timeMS});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
 };
-var _user$project$Animals_Navigation$locationParser = function (location) {
-	return _user$project$Animals_Navigation$stringParser(location.pathname);
-};
-var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
-
-var _user$project$Animals_Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _user$project$Animals_Main$goto = F2(
-	function (model, path) {
-		return {
-			ctor: '_Tuple2',
-			_0: model,
-			_1: _elm_lang$navigation$Navigation$newUrl(path)
-		};
-	});
-var _user$project$Animals_Main$transformAnimal = F3(
-	function (pred, transformer, animal) {
-		return pred(animal) ? transformer(animal) : animal;
-	});
-var _user$project$Animals_Main$toState = F3(
-	function (newState, id, animals) {
-		return A2(
-			_elm_lang$core$List$map,
-			A2(
-				_user$project$Animals_Main$transformAnimal,
-				function (a) {
-					return _elm_lang$core$Native_Utils.eq(a.id, id);
-				},
-				function (a) {
-					return _elm_lang$core$Native_Utils.update(
-						a,
-						{displayState: newState});
-				}),
-			animals);
-	});
-var _user$project$Animals_Main$desiredAnimals = function (model) {
-	var hasWanted = F2(
-		function (modelFilter, animalValue) {
-			var has = _elm_lang$core$String$toLower(animalValue);
-			var wanted = _elm_lang$core$String$toLower(
-				modelFilter(model));
-			return A2(_elm_lang$core$String$startsWith, wanted, has);
-		});
-	var hasDesiredSpecies = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.speciesFilter;
-			},
-			animal.species);
-	};
-	var hasDesiredName = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.nameFilter;
-			},
-			animal.name);
-	};
-	var hasDesiredTag = function (animal) {
-		return A2(
-			_elm_lang$core$List$any,
-			hasWanted(
-				function (_) {
-					return _.tagFilter;
-				}),
-			animal.tags);
-	};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString = function (s) {
 	return A2(
-		_elm_lang$core$List$sortBy,
-		function (_p0) {
-			return _elm_lang$core$String$toLower(
-				function (_) {
-					return _.name;
-				}(_p0));
-		},
+		_justinmimbs$elm_date_extra$Date_Internal_Parse_ops['>>='],
 		A2(
-			_elm_lang$core$List$filter,
-			hasDesiredTag,
-			A2(
-				_elm_lang$core$List$filter,
-				hasDesiredName,
-				A2(_elm_lang$core$List$filter, hasDesiredSpecies, model.animals))));
+			_elm_lang$core$Maybe$map,
+			function (_) {
+				return _.submatches;
+			},
+			_elm_lang$core$List$head(
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex,
+					s))),
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches);
 };
-var _user$project$Animals_Main$Flags = function (a) {
-	return {csrfToken: a};
-};
-var _user$project$Animals_Main$Animal = F7(
-	function (a, b, c, d, e, f, g) {
-		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
-	});
-var _user$project$Animals_Main$Model = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h};
-	});
-var _user$project$Animals_Main$At = function (a) {
-	return {ctor: 'At', _0: a};
-};
-var _user$project$Animals_Main$Today = {ctor: 'Today'};
-var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
-var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
-var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Main$athena = {
-	id: '1',
-	name: 'Athena',
-	species: 'bovine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['cow']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$jake = {
-	id: '2',
-	name: 'Jake',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['gelding']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$ross = {
-	id: '3',
-	name: 'ross',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['stallion', 'aggressive']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$xena = {
-	id: '4',
-	name: 'Xena',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['mare', 'skittish']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$update = F2(
-	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'NavigateToAllPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
-			case 'NavigateToAddPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
-			case 'NavigateToHelpPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
-			case 'SetToday':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{today: _p1._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'OpenDatePicker':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'SelectDate':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							effectiveDate: _user$project$Animals_Main$At(_p1._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ExpandAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p1._0, model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ContractAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Compact, _p1._0, model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'EditAnimal':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'MoreLikeThisAnimal':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'SetNameFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{nameFilter: _p1._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SetTagFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{tagFilter: _p1._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{speciesFilter: _p1._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+
+var _justinmimbs$elm_date_extra$Date_Extra$unfold = F2(
+	function (f, seed) {
+		var _p0 = f(seed);
+		if (_p0.ctor === 'Nothing') {
+			return _elm_lang$core$Native_List.fromArray(
+				[]);
+		} else {
+			return A2(
+				_elm_lang$core$List_ops['::'],
+				_p0._0._0,
+				A2(_justinmimbs$elm_date_extra$Date_Extra$unfold, f, _p0._0._1));
 		}
 	});
-var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
-var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
-	return {ctor: 'SetSpeciesFilter', _0: a};
+var _justinmimbs$elm_date_extra$Date_Extra$toParts = function (date) {
+	return {
+		ctor: '_Tuple7',
+		_0: _elm_lang$core$Date$year(date),
+		_1: _elm_lang$core$Date$month(date),
+		_2: _elm_lang$core$Date$day(date),
+		_3: _elm_lang$core$Date$hour(date),
+		_4: _elm_lang$core$Date$minute(date),
+		_5: _elm_lang$core$Date$second(date),
+		_6: _elm_lang$core$Date$millisecond(date)
+	};
 };
-var _user$project$Animals_Main$SetTagFilter = function (a) {
-	return {ctor: 'SetTagFilter', _0: a};
+var _justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter = function (q) {
+	var _p1 = q;
+	switch (_p1) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Apr;
+		case 3:
+			return _elm_lang$core$Date$Jul;
+		default:
+			return _elm_lang$core$Date$Oct;
+	}
 };
-var _user$project$Animals_Main$SetNameFilter = function (a) {
-	return {ctor: 'SetNameFilter', _0: a};
-};
-var _user$project$Animals_Main$MoreLikeThisAnimal = function (a) {
-	return {ctor: 'MoreLikeThisAnimal', _0: a};
-};
-var _user$project$Animals_Main$EditAnimal = function (a) {
-	return {ctor: 'EditAnimal', _0: a};
-};
-var _user$project$Animals_Main$ContractAnimal = function (a) {
-	return {ctor: 'ContractAnimal', _0: a};
-};
-var _user$project$Animals_Main$ExpandAnimal = function (a) {
-	return {ctor: 'ExpandAnimal', _0: a};
-};
-var _user$project$Animals_Main$SelectDate = function (a) {
-	return {ctor: 'SelectDate', _0: a};
-};
-var _user$project$Animals_Main$OpenDatePicker = {ctor: 'OpenDatePicker'};
-var _user$project$Animals_Main$SetToday = function (a) {
-	return {ctor: 'SetToday', _0: a};
-};
-var _user$project$Animals_Main$askTodaysDate = A3(
-	_elm_lang$core$Task$perform,
-	_elm_lang$core$Basics$always(
-		_user$project$Animals_Main$SetToday(_elm_lang$core$Maybe$Nothing)),
-	function (_p2) {
-		return _user$project$Animals_Main$SetToday(
-			_elm_lang$core$Maybe$Just(_p2));
-	},
-	_elm_lang$core$Date$now);
-var _user$project$Animals_Main$init = F2(
-	function (flags, startingPage) {
-		return {
-			ctor: '_Tuple2',
-			_0: {
-				page: startingPage,
-				csrfToken: flags.csrfToken,
-				animals: _elm_lang$core$Native_List.fromArray(
-					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$xena, _user$project$Animals_Main$ross]),
-				nameFilter: '',
-				tagFilter: '',
-				speciesFilter: '',
-				effectiveDate: _user$project$Animals_Main$Today,
-				today: _elm_lang$core$Maybe$Nothing
-			},
-			_1: _user$project$Animals_Main$askTodaysDate
-		};
+var _justinmimbs$elm_date_extra$Date_Extra$clamp = F3(
+	function (min, max, date) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(min)) < 0) ? min : ((_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(max)) > 0) ? max : date);
 	});
-var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
-var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
-var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
+var _justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$isBetween = F3(
+	function (date1, date2, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween,
+			_elm_lang$core$Date$toTime(date1),
+			_elm_lang$core$Date$toTime(date2),
+			_elm_lang$core$Date$toTime(date));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$compare = F2(
+	function (a, b) {
+		return A2(
+			_elm_lang$core$Basics$compare,
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$equal = F2(
+	function (a, b) {
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc = _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc;
+var _justinmimbs$elm_date_extra$Date_Extra$weekYear = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear;
+var _justinmimbs$elm_date_extra$Date_Extra$weekNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$weekdayNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek = F2(
+	function (d, date) {
+		return _elm_lang$core$Basics$negate(
+			A2(
+				_elm_lang$core$Basics_ops['%'],
+				(_justinmimbs$elm_date_extra$Date_Extra$weekdayNumber(date) - _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(d)) + 7,
+				7));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fractionalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$quarter = _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter;
+var _justinmimbs$elm_date_extra$Date_Extra$monthNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalMonth = function (date) {
+	return (_elm_lang$core$Date$year(date) * 12) + _justinmimbs$elm_date_extra$Date_Extra$monthNumber(date);
+};
+var _justinmimbs$elm_date_extra$Date_Extra$diffMonth = F2(
+	function (date1, date2) {
+		var fractionalMonth = function (date) {
+			return (_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Date$day(date) - 1) + _justinmimbs$elm_date_extra$Date_Extra$fractionalDay(date)) / 31;
+		};
+		var ordinalMonth$ = function (date) {
+			return _elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date)) + fractionalMonth(date);
+		};
+		return _elm_lang$core$Basics$truncate(
+			ordinalMonth$(date2) - ordinalMonth$(date1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(true);
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcIsoString = _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX');
+var _justinmimbs$elm_date_extra$Date_Extra$toFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(false);
+var _justinmimbs$elm_date_extra$Date_Extra$toIsoString = _justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx');
+var _justinmimbs$elm_date_extra$Date_Extra$fromTime = function (_p2) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p2));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime = function (_p3) {
+	var _p4 = _p3;
+	var _p6 = _p4._1;
+	var _p5 = _p4._0;
+	if (_p5.ctor === 'Just') {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * _p5._0));
+	} else {
+		var offset0 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(
+			_justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6));
+		var date1 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset0));
+		var offset1 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date1);
+		if (_elm_lang$core$Native_Utils.eq(offset0, offset1)) {
+			return date1;
+		} else {
+			var date2 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset1));
+			var offset2 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date2);
+			return _elm_lang$core$Native_Utils.eq(offset1, offset2) ? date2 : date1;
+		}
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A7(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts, y, m, d, hh, mm, ss, ms)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$addMonths = F2(
+	function (n, date) {
+		var om = (_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date) + n) + -1;
+		var y$ = (om / 12) | 0;
+		var m$ = _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+			A2(_elm_lang$core$Basics_ops['%'], om, 12) + 1);
+		var _p7 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p7._0;
+		var m = _p7._1;
+		var d = _p7._2;
+		var hh = _p7._3;
+		var mm = _p7._4;
+		var ss = _p7._5;
+		var ms = _p7._6;
+		var d$ = A2(
+			_elm_lang$core$Basics$min,
+			d,
+			A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y$, m$));
+		return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y$, m$, d$, hh, mm, ss, ms);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$add = F3(
+	function (interval, n, date) {
+		var _p8 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p8._0;
+		var m = _p8._1;
+		var d = _p8._2;
+		var hh = _p8._3;
+		var mm = _p8._4;
+		var ss = _p8._5;
+		var ms = _p8._6;
+		var _p9 = interval;
+		switch (_p9.ctor) {
+			case 'Millisecond':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n));
+			case 'Second':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond));
+			case 'Minute':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+			case 'Hour':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour));
+			case 'Day':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + n, hh, mm, ss, ms);
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n, date);
+			case 'Year':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 12, date);
+			case 'Quarter':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 3, date);
+			case 'Week':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+			default:
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$floor = F2(
+	function (interval, date) {
+		var _p10 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p10._0;
+		var m = _p10._1;
+		var d = _p10._2;
+		var hh = _p10._3;
+		var mm = _p10._4;
+		var ss = _p10._5;
+		var _p11 = interval;
+		switch (_p11.ctor) {
+			case 'Millisecond':
+				return date;
+			case 'Second':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, ss, 0);
+			case 'Minute':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, 0, 0);
+			case 'Hour':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, 0, 0, 0);
+			case 'Day':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+			case 'Month':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1);
+			case 'Year':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Jan, 1);
+			case 'Quarter':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					_justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date)),
+					1);
+			case 'Week':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Monday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Tuesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Tue, date));
+			case 'Wednesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Wed, date));
+			case 'Thursday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Thu, date));
+			case 'Friday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Fri, date));
+			case 'Saturday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sat, date));
+			default:
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sun, date));
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ceiling = F2(
+	function (interval, date) {
+		var floored = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, interval, date);
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(floored)) ? date : A3(_justinmimbs$elm_date_extra$Date_Extra$add, interval, 1, floored);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$range = F4(
+	function (interval, step, start, end) {
+		var next = function (date) {
+			return (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$Date$toTime(date),
+				_elm_lang$core$Date$toTime(end)) > -1) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+				{
+					ctor: '_Tuple2',
+					_0: date,
+					_1: A3(
+						_justinmimbs$elm_date_extra$Date_Extra$add,
+						interval,
+						A2(_elm_lang$core$Basics$max, 1, step),
+						date)
+				});
+		};
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Extra$unfold,
+			next,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$ceiling, interval, start));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromIsoString = function (s) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		_justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime,
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString(s));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromSpec = F3(
+	function (_p14, _p13, _p12) {
+		var _p15 = _p14;
+		var _p16 = _p13;
+		var _p17 = _p12;
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{ctor: '_Tuple2', _0: _p15._0, _1: _p17._0 + _p16._0});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Offset = function (a) {
+	return {ctor: 'Offset', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$utc = _justinmimbs$elm_date_extra$Date_Extra$Offset(
+	_elm_lang$core$Maybe$Just(0));
+var _justinmimbs$elm_date_extra$Date_Extra$offset = function (minutes) {
+	return _justinmimbs$elm_date_extra$Date_Extra$Offset(
+		_elm_lang$core$Maybe$Just(minutes));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$local = _justinmimbs$elm_date_extra$Date_Extra$Offset(_elm_lang$core$Maybe$Nothing);
+var _justinmimbs$elm_date_extra$Date_Extra$TimeMS = function (a) {
+	return {ctor: 'TimeMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$noTime = _justinmimbs$elm_date_extra$Date_Extra$TimeMS(0);
+var _justinmimbs$elm_date_extra$Date_Extra$atTime = F4(
+	function (hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$TimeMS(
+			A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$DateMS = function (a) {
+	return {ctor: 'DateMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$calendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$weekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Sunday = {ctor: 'Sunday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Saturday = {ctor: 'Saturday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Friday = {ctor: 'Friday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Thursday = {ctor: 'Thursday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Wednesday = {ctor: 'Wednesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Tuesday = {ctor: 'Tuesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Monday = {ctor: 'Monday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Week = {ctor: 'Week'};
+var _justinmimbs$elm_date_extra$Date_Extra$Quarter = {ctor: 'Quarter'};
+var _justinmimbs$elm_date_extra$Date_Extra$Year = {ctor: 'Year'};
+var _justinmimbs$elm_date_extra$Date_Extra$Month = {ctor: 'Month'};
+var _justinmimbs$elm_date_extra$Date_Extra$Day = {ctor: 'Day'};
+var _justinmimbs$elm_date_extra$Date_Extra$diff = F3(
+	function (interval, date1, date2) {
+		var diffMS = _elm_lang$core$Basics$floor(
+			_elm_lang$core$Date$toTime(date2) - _elm_lang$core$Date$toTime(date1));
+		var _p18 = interval;
+		switch (_p18.ctor) {
+			case 'Millisecond':
+				return diffMS;
+			case 'Second':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond) | 0;
+			case 'Minute':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+			case 'Hour':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour) | 0;
+			case 'Day':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay) | 0;
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2);
+			case 'Year':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 12) | 0;
+			case 'Quarter':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 3) | 0;
+			case 'Week':
+				return (A3(_justinmimbs$elm_date_extra$Date_Extra$diff, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2) / 7) | 0;
+			default:
+				var _p19 = _p18;
+				return (A3(
+					_justinmimbs$elm_date_extra$Date_Extra$diff,
+					_justinmimbs$elm_date_extra$Date_Extra$Day,
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p19, date1),
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p19, date2)) / 7) | 0;
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Hour = {ctor: 'Hour'};
+var _justinmimbs$elm_date_extra$Date_Extra$Minute = {ctor: 'Minute'};
+var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
+	function (interval, date1, date2) {
+		equalBy:
+		while (true) {
+			var _p20 = interval;
+			switch (_p20.ctor) {
+				case 'Millisecond':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$toTime(date1),
+						_elm_lang$core$Date$toTime(date2));
+				case 'Second':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$second(date1),
+						_elm_lang$core$Date$second(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Minute, date1, date2);
+				case 'Minute':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$minute(date1),
+						_elm_lang$core$Date$minute(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Hour, date1, date2);
+				case 'Hour':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$hour(date1),
+						_elm_lang$core$Date$hour(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2);
+				case 'Day':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$day(date1),
+						_elm_lang$core$Date$day(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Month, date1, date2);
+				case 'Month':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$month(date1),
+						_elm_lang$core$Date$month(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Year':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$year(date1),
+						_elm_lang$core$Date$year(date2));
+				case 'Quarter':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Week':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date2)) && _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date2));
+				default:
+					var _p21 = _p20;
+					var _v11 = _justinmimbs$elm_date_extra$Date_Extra$Day,
+						_v12 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p21, date1),
+						_v13 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p21, date2);
+					interval = _v11;
+					date1 = _v12;
+					date2 = _v13;
+					continue equalBy;
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
+var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
+
+var _justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames = _elm_lang$core$Native_List.fromArray(
+	['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+var _justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader = A2(
+	_elm_lang$html$Html$thead,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(
+				_elm_lang$core$List$map,
+				function (name) {
+					return A2(
+						_elm_lang$html$Html$th,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(name)
+							]));
+				},
+				_justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames))
+		]));
+var _justinmimbs$elm_date_selector$DateSelector$monthNames = _elm_lang$core$Native_List.fromArray(
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+var _justinmimbs$elm_date_selector$DateSelector$classNameFromState = function (state) {
+	var _p0 = state;
+	switch (_p0.ctor) {
+		case 'Normal':
+			return '';
+		case 'Dimmed':
+			return 'date-selector--dimmed';
+		case 'Disabled':
+			return 'date-selector--disabled';
+		default:
+			return 'date-selector--selected';
+	}
+};
+var _justinmimbs$elm_date_selector$DateSelector$dateWithMonth = F2(
+	function (date, m) {
+		var d = _elm_lang$core$Date$day(date);
+		var y = _elm_lang$core$Date$year(date);
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+			y,
+			m,
+			A2(
+				_elm_lang$core$Basics$min,
+				d,
+				A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y, m)));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$dateWithYear = F2(
+	function (date, y) {
+		var d = _elm_lang$core$Date$day(date);
+		var m = _elm_lang$core$Date$month(date);
+		return (_elm_lang$core$Native_Utils.eq(m, _elm_lang$core$Date$Feb) && (_elm_lang$core$Native_Utils.eq(d, 29) && _elm_lang$core$Basics$not(
+			_justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y)))) ? A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Feb, 28) : A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+	});
+var _justinmimbs$elm_date_selector$DateSelector$monthDates = F2(
+	function (y, m) {
+		var start = A2(
+			_justinmimbs$elm_date_extra$Date_Extra$floor,
+			_justinmimbs$elm_date_extra$Date_Extra$Monday,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1));
+		return A4(
+			_justinmimbs$elm_date_extra$Date_Extra$range,
+			_justinmimbs$elm_date_extra$Date_Extra$Day,
+			1,
+			start,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$add, _justinmimbs$elm_date_extra$Date_Extra$Day, 42, start));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$isBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$chunk = F2(
+	function (n, list) {
+		return _elm_lang$core$List$isEmpty(list) ? _elm_lang$core$Native_List.fromArray(
+			[]) : A2(
+			_elm_lang$core$List_ops['::'],
+			A2(_elm_lang$core$List$take, n, list),
+			A2(
+				_justinmimbs$elm_date_selector$DateSelector$chunk,
+				n,
+				A2(_elm_lang$core$List$drop, n, list)));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$Selected = {ctor: 'Selected'};
+var _justinmimbs$elm_date_selector$DateSelector$Disabled = {ctor: 'Disabled'};
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled = A2(
+	_elm_lang$html$Html$ol,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	A2(
+		_elm_lang$core$List$map,
+		function (name) {
+			return A2(
+				_elm_lang$html$Html$li,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class(
+						_justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(name)
+					]));
+		},
+		_justinmimbs$elm_date_selector$DateSelector$monthNames));
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled = function (date) {
+	var disabled = _justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled);
+	var weeks = A2(
+		_justinmimbs$elm_date_selector$DateSelector$chunk,
+		7,
+		A2(
+			_justinmimbs$elm_date_selector$DateSelector$monthDates,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date)));
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(
+					_elm_lang$core$List$map,
+					function (week) {
+						return A2(
+							_elm_lang$html$Html$tr,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							A2(
+								_elm_lang$core$List$map,
+								function (date) {
+									return A2(
+										_elm_lang$html$Html$td,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class(disabled)
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text(
+												_elm_lang$core$Basics$toString(
+													_elm_lang$core$Date$day(date)))
+											]));
+								},
+								week));
+					},
+					weeks))
+			]));
+};
+var _justinmimbs$elm_date_selector$DateSelector$Dimmed = {ctor: 'Dimmed'};
+var _justinmimbs$elm_date_selector$DateSelector$Normal = {ctor: 'Normal'};
+var _justinmimbs$elm_date_selector$DateSelector$isSelectable = function (state) {
+	return _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Normal) || _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Dimmed);
+};
+var _justinmimbs$elm_date_selector$DateSelector$viewYearList = F3(
+	function (minimum, maximum, maybeSelected) {
+		var isSelectedYear = A2(
+			_elm_lang$core$Maybe$withDefault,
+			function (_p1) {
+				return false;
+			},
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (selected) {
+					return F2(
+						function (x, y) {
+							return _elm_lang$core$Native_Utils.eq(x, y);
+						})(
+						_elm_lang$core$Date$year(selected));
+				},
+				maybeSelected));
+		var years = _elm_lang$core$Native_List.range(
+			_elm_lang$core$Date$year(minimum),
+			_elm_lang$core$Date$year(maximum));
+		return A2(
+			_elm_lang$html$Html$ol,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						_justinmimbs$elm_date_selector$DateSelector$dateWithYear(
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								A3(
+									_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+									_elm_lang$core$Date$year(minimum),
+									_elm_lang$core$Date$Jan,
+									1),
+								maybeSelected)),
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							_elm_lang$core$Native_List.fromArray(
+								['target', 'year']),
+							_elm_lang$core$Json_Decode$int)))
+				]),
+			A2(
+				_elm_lang$core$List$map,
+				function (y) {
+					var state = isSelectedYear(y) ? _justinmimbs$elm_date_selector$DateSelector$Selected : _justinmimbs$elm_date_selector$DateSelector$Normal;
+					return A2(
+						_elm_lang$html$Html$li,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class(
+									_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+								]),
+							_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$html$Html_Attributes$property,
+									'year',
+									_elm_lang$core$Json_Encode$int(y))
+								]) : _elm_lang$core$Native_List.fromArray(
+								[])),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(y))
+							]));
+				},
+				years));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthList = F3(
+	function (minimum, maximum, selected) {
+		var last = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(maximum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(maximum) : 12;
+		var first = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(minimum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(minimum) : 1;
+		return A2(
+			_elm_lang$html$Html$ol,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						function (_p2) {
+							return A2(
+								_justinmimbs$elm_date_selector$DateSelector$dateWithMonth,
+								selected,
+								_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(_p2));
+						},
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							_elm_lang$core$Native_List.fromArray(
+								['target', 'monthNumber']),
+							_elm_lang$core$Json_Decode$int)))
+				]),
+			A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (i, name) {
+						var n = i + 1;
+						var state = _elm_lang$core$Native_Utils.eq(
+							n,
+							_justinmimbs$elm_date_extra$Date_Extra$monthNumber(selected)) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (_elm_lang$core$Basics$not(
+							A3(_justinmimbs$elm_date_selector$DateSelector$isBetween, first, last, n)) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : _justinmimbs$elm_date_selector$DateSelector$Normal);
+						return A2(
+							_elm_lang$html$Html$li,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class(
+										_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+									]),
+								_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html_Attributes$property,
+										'monthNumber',
+										_elm_lang$core$Json_Encode$int(n))
+									]) : _elm_lang$core$Native_List.fromArray(
+									[])),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(name)
+								]));
+					}),
+				_justinmimbs$elm_date_selector$DateSelector$monthNames));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTable = F3(
+	function (minimum, maximum, selected) {
+		var weeks = A2(
+			_justinmimbs$elm_date_selector$DateSelector$chunk,
+			7,
+			A2(
+				_justinmimbs$elm_date_selector$DateSelector$monthDates,
+				_elm_lang$core$Date$year(selected),
+				_elm_lang$core$Date$month(selected)));
+		return A2(
+			_elm_lang$html$Html$table,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+					A2(
+					_elm_lang$html$Html$tbody,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html_Events$on,
+							'click',
+							A2(
+								_elm_lang$core$Json_Decode$map,
+								_elm_lang$core$Date$fromTime,
+								A2(
+									_elm_lang$core$Json_Decode$at,
+									_elm_lang$core$Native_List.fromArray(
+										['target', 'time']),
+									_elm_lang$core$Json_Decode$float)))
+						]),
+					A2(
+						_elm_lang$core$List$map,
+						function (week) {
+							return A2(
+								_elm_lang$html$Html$tr,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								A2(
+									_elm_lang$core$List$map,
+									function (date) {
+										var state = A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date, selected) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (_elm_lang$core$Basics$not(
+											A3(_justinmimbs$elm_date_extra$Date_Extra$isBetween, minimum, maximum, date)) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : ((!_elm_lang$core$Native_Utils.eq(
+											_elm_lang$core$Date$month(date),
+											_elm_lang$core$Date$month(selected))) ? _justinmimbs$elm_date_selector$DateSelector$Dimmed : _justinmimbs$elm_date_selector$DateSelector$Normal));
+										return A2(
+											_elm_lang$html$Html$td,
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class(
+														_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state))
+													]),
+												_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Native_List.fromArray(
+													[
+														A2(
+														_elm_lang$html$Html_Attributes$property,
+														'time',
+														_elm_lang$core$Json_Encode$float(
+															_elm_lang$core$Date$toTime(date)))
+													]) : _elm_lang$core$Native_List.fromArray(
+													[])),
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_elm_lang$html$Html$text(
+													_elm_lang$core$Basics$toString(
+														_elm_lang$core$Date$day(date)))
+												]));
+									},
+									week));
+						},
+						weeks))
+				]));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$view = F3(
+	function (minimum, maximum, maybeSelected) {
+		return A2(
+			_elm_lang$html$Html_App$map,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$clamp, minimum, maximum),
+			A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$classList(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								{ctor: '_Tuple2', _0: 'date-selector', _1: true},
+								{
+								ctor: '_Tuple2',
+								_0: 'date-selector--scrollable-year',
+								_1: _elm_lang$core$Native_Utils.cmp(
+									_elm_lang$core$Date$year(maximum) - _elm_lang$core$Date$year(minimum),
+									12) > -1
+							}
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(_justinmimbs$elm_date_selector$DateSelector$viewYearList, minimum, maximum, maybeSelected)
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$core$Maybe$withDefault,
+								_justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled,
+								A2(
+									_elm_lang$core$Maybe$map,
+									A2(_justinmimbs$elm_date_selector$DateSelector$viewMonthList, minimum, maximum),
+									maybeSelected))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								function () {
+								var _p3 = maybeSelected;
+								if (_p3.ctor === 'Just') {
+									return A3(_justinmimbs$elm_date_selector$DateSelector$viewDateTable, minimum, maximum, _p3._0);
+								} else {
+									return _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled(minimum);
+								}
+							}()
+							]))
+					])));
+	});
+
+var _justinmimbs$elm_date_selector$Dropdown$view = F3(
+	function (close, button, maybeContent) {
+		var buttonContainer = A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[button]));
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[buttonContainer]));
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown-open')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+								_elm_lang$html$Html_Events$onClick(close)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						buttonContainer,
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[_p0._0]))
+					]));
+		}
+	});
+
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton = F3(
+	function (toggle, isOpen, maybeDate) {
+		return A2(
+			_elm_lang$html$Html$input,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$value(
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						A2(
+							_elm_lang$core$Maybe$map,
+							_justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd'),
+							maybeDate))),
+					_elm_lang$html$Html_Attributes$readonly(true),
+					_elm_lang$html$Html_Events$onClick(toggle)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton = F7(
+	function (viewButton, close, toSelect, isOpen, minimum, maximum, selected) {
+		var dateSelectorView = isOpen ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$html$Html_App$map,
+				toSelect,
+				A3(_justinmimbs$elm_date_selector$DateSelector$view, minimum, maximum, selected))) : _elm_lang$core$Maybe$Nothing;
+		return A3(
+			_justinmimbs$elm_date_selector$Dropdown$view,
+			close,
+			A2(viewButton, isOpen, selected),
+			dateSelectorView);
+	});
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$view = function (toggle) {
+	return A2(
+		_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
+		_justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton(toggle),
+		toggle);
+};
+
+var _user$project$Pile_Calendar$skeleton = F3(
+	function (close, control, maybeContent) {
+		var controlContainer = A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[control]));
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[controlContainer]));
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown-open')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+								_elm_lang$html$Html_Events$onClick(close)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						controlContainer,
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[_p0._0]))
+					]));
+		}
+	});
+var _user$project$Pile_Calendar$shiftByYears = F2(
+	function (shiftFunction, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$add,
+			_justinmimbs$elm_date_extra$Date_Extra$Year,
+			A2(shiftFunction, 0, 5),
+			date);
+	});
+var _user$project$Pile_Calendar$dateToShow = function (edate) {
+	var _p1 = edate.effectiveDate;
+	if (_p1.ctor === 'Today') {
+		return edate.today;
+	} else {
+		return _elm_lang$core$Maybe$Just(_p1._0);
+	}
+};
+var _user$project$Pile_Calendar$bound = F2(
+	function (shiftFunction, edate) {
+		var _p2 = _user$project$Pile_Calendar$dateToShow(edate);
+		if (_p2.ctor === 'Nothing') {
+			return A2(
+				_user$project$Pile_Calendar$shiftByYears,
+				shiftFunction,
+				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
+		} else {
+			return A2(_user$project$Pile_Calendar$shiftByYears, shiftFunction, _p2._0);
+		}
+	});
+var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
+	var todayIfKnown = function () {
+		var _p3 = edate.today;
+		if (_p3.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p3._0);
+		}
+	}();
+	var _p4 = edate.effectiveDate;
+	if (_p4.ctor === 'Today') {
+		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p4._0);
+	}
+};
+var _user$project$Pile_Calendar$view = F4(
+	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
+		return A7(
+			_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
+			launcher,
+			calendarToggleMsg,
+			dateSelectedMsg,
+			edate.datePickerOpen,
+			A2(
+				_user$project$Pile_Calendar$bound,
+				F2(
+					function (x, y) {
+						return x - y;
+					}),
+				edate),
+			A2(
+				_user$project$Pile_Calendar$bound,
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				edate),
+			_user$project$Pile_Calendar$dateToShow(edate));
+	});
+var _user$project$Pile_Calendar$CalendarDate = F3(
+	function (a, b, c) {
+		return {effectiveDate: a, today: b, datePickerOpen: c};
+	});
+var _user$project$Pile_Calendar$At = function (a) {
+	return {ctor: 'At', _0: a};
+};
+var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 
 var Elm = {};
-Elm['Animals'] = Elm['Animals'] || {};
-Elm['Animals']['Main'] = Elm['Animals']['Main'] || {};
-_elm_lang$core$Native_Platform.addPublicModule(Elm['Animals']['Main'], 'Animals.Main', typeof _user$project$Animals_Main$main === 'undefined' ? null : _user$project$Animals_Main$main);
+Elm['Pile'] = Elm['Pile'] || {};
+Elm['Pile']['Calendar'] = Elm['Pile']['Calendar'] || {};
+_elm_lang$core$Native_Platform.addPublicModule(Elm['Pile']['Calendar'], 'Pile.Calendar', typeof _user$project$Pile_Calendar$main === 'undefined' ? null : _user$project$Pile_Calendar$main);
 
 if (typeof define === "function" && define['amd'])
 {

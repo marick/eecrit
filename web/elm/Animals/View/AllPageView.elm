@@ -5,35 +5,13 @@ import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Html.Events as Events
 import Pile.Bulma as Bulma
-import String
-import List
-import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals, EffectiveDate(..))
-import Date exposing (Month(..))
-import Date.Extra exposing (toFormattedString, fromCalendarDate, fromParts, Interval(..))
-import DateSelectorDropdown
+import Pile.Calendar as Calendar
+import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals)
 
-
-shiftByYears shiftFunction date =
-  Date.Extra.add Year (shiftFunction 0 5) date
-
-bound shiftFunction model =
-  case showDate model of
-    Nothing -> shiftByYears shiftFunction (fromCalendarDate 2018 Jan 1)
-    Just date -> shiftByYears shiftFunction date
-
-showDate model =
-  case model.effectiveDate of 
-    Today -> model.today
-    At date -> Just date
-
-formatDate date =
-  case date of
-    Nothing -> ""
-    Just d -> toFormattedString "MMM d, y" d
 
 dateControl hasOpenPicker effectiveDate =
   p [class "has-text-centered"]
-    [ text (formatDate effectiveDate)
+    [ text (Calendar.formatDate effectiveDate)
     , plainIcon "fa-caret-down" "Pick a date from a calendar" ToggleDatePicker
     ]
 
@@ -41,26 +19,13 @@ view model =
   div []
     [ div [class "columns is-centered"]
         [ div [class "column is-4"]
-
-          [ messageView model
-              [ text "Animals as of..."
-              , rightIcon "fa-question-circle" "Help on animals and dates" NoOp
-              ]
-              [ DateSelectorDropdown.viewWithButton
-                  dateControl
-                  ToggleDatePicker
-                  SelectDate
-                  model.datePickerOpen
-                  (bound (-) model)
-                  (bound (+) model)
-                  (showDate model)
-              ] 
-              
-
-
-              
-          ]                  
-            
+            [ messageView model
+                [ text "Animals as of..."
+                , rightIcon "fa-question-circle" "Help on animals and dates" NoOp
+                ]
+                [ Calendar.view dateControl ToggleDatePicker SelectDate model
+                ] 
+            ]                  
         , div [class "column is-7"]
           [ messageView model 
              [ text "Filter by..."
@@ -71,25 +36,6 @@ view model =
         ]
     , animalList model 
     ]
-
-standardDate date =
-  toFormattedString "MM d, y" date
-
-    
--- effectiveDateString model =
---   let
---     todayIfKnown =
---       case model.today of
---         Nothing ->
---           ""
---         Just date ->
---           toFormattedString " (MMM d)" date
---   in
---     case model.effectiveDate of
---       Today -> 
---         "Today" ++ todayIfKnown
---       At date ->
---         toFormattedString "MMM d, y" date
 
 
 animalList model = 

@@ -6,16 +6,13 @@ import String
 import List
 import Date
 import Task
+import Pile.Calendar exposing (EffectiveDate(..))
 
 -- Model and Init
 
 type alias Flags =
   { csrfToken : String
   }
-
-type EffectiveDate 
-  = Today
-  | At Date.Date
 
 type DisplayState
   = Compact

@@ -18550,6 +18550,144 @@ var _user$project$Animals_Navigation$locationParser = function (location) {
 };
 var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
 
+var _user$project$Pile_Calendar$formatDate = function (date) {
+	var _p0 = date;
+	if (_p0.ctor === 'Nothing') {
+		return '';
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p0._0);
+	}
+};
+var _user$project$Pile_Calendar$standardDate = function (date) {
+	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
+};
+var _user$project$Pile_Calendar$skeleton = F3(
+	function (close, control, maybeContent) {
+		var controlContainer = A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[control]));
+		var _p1 = maybeContent;
+		if (_p1.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[controlContainer]));
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown-open')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+								_elm_lang$html$Html_Events$onClick(close)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						controlContainer,
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[_p1._0]))
+					]));
+		}
+	});
+var _user$project$Pile_Calendar$shiftByYears = F2(
+	function (shiftFunction, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$add,
+			_justinmimbs$elm_date_extra$Date_Extra$Year,
+			A2(shiftFunction, 0, 5),
+			date);
+	});
+var _user$project$Pile_Calendar$dateToShow = function (edate) {
+	var _p2 = edate.effectiveDate;
+	if (_p2.ctor === 'Today') {
+		return edate.today;
+	} else {
+		return _elm_lang$core$Maybe$Just(_p2._0);
+	}
+};
+var _user$project$Pile_Calendar$bound = F2(
+	function (shiftFunction, edate) {
+		var _p3 = _user$project$Pile_Calendar$dateToShow(edate);
+		if (_p3.ctor === 'Nothing') {
+			return A2(
+				_user$project$Pile_Calendar$shiftByYears,
+				shiftFunction,
+				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
+		} else {
+			return A2(_user$project$Pile_Calendar$shiftByYears, shiftFunction, _p3._0);
+		}
+	});
+var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
+	var todayIfKnown = function () {
+		var _p4 = edate.today;
+		if (_p4.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p4._0);
+		}
+	}();
+	var _p5 = edate.effectiveDate;
+	if (_p5.ctor === 'Today') {
+		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p5._0);
+	}
+};
+var _user$project$Pile_Calendar$view = F4(
+	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
+		return A7(
+			_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
+			launcher,
+			calendarToggleMsg,
+			dateSelectedMsg,
+			edate.datePickerOpen,
+			A2(
+				_user$project$Pile_Calendar$bound,
+				F2(
+					function (x, y) {
+						return x - y;
+					}),
+				edate),
+			A2(
+				_user$project$Pile_Calendar$bound,
+				F2(
+					function (x, y) {
+						return x + y;
+					}),
+				edate),
+			_user$project$Pile_Calendar$dateToShow(edate));
+	});
+var _user$project$Pile_Calendar$CalendarDate = F3(
+	function (a, b, c) {
+		return {effectiveDate: a, today: b, datePickerOpen: c};
+	});
+var _user$project$Pile_Calendar$At = function (a) {
+	return {ctor: 'At', _0: a};
+};
+var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
+
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
@@ -18641,10 +18779,6 @@ var _user$project$Animals_Main$Model = F9(
 	function (a, b, c, d, e, f, g, h, i) {
 		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
 	});
-var _user$project$Animals_Main$At = function (a) {
-	return {ctor: 'At', _0: a};
-};
-var _user$project$Animals_Main$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
@@ -18724,7 +18858,7 @@ var _user$project$Animals_Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							effectiveDate: _user$project$Animals_Main$At(
+							effectiveDate: _user$project$Pile_Calendar$At(
 								A2(_elm_lang$core$Debug$log, 'set date', _p1._0))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
@@ -18829,7 +18963,7 @@ var _user$project$Animals_Main$init = F2(
 				nameFilter: '',
 				tagFilter: '',
 				speciesFilter: '',
-				effectiveDate: _user$project$Animals_Main$Today,
+				effectiveDate: _user$project$Pile_Calendar$Today,
 				today: _elm_lang$core$Maybe$Nothing,
 				datePickerOpen: false
 			},
@@ -19389,17 +19523,6 @@ var _user$project$Animals_View_AllPageView$animalList = function (model) {
 					_user$project$Animals_Main$desiredAnimals(model)))
 			]));
 };
-var _user$project$Animals_View_AllPageView$standardDate = function (date) {
-	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
-};
-var _user$project$Animals_View_AllPageView$formatDate = function (date) {
-	var _p1 = date;
-	if (_p1.ctor === 'Nothing') {
-		return '';
-	} else {
-		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p1._0);
-	}
-};
 var _user$project$Animals_View_AllPageView$dateControl = F2(
 	function (hasOpenPicker, effectiveDate) {
 		return A2(
@@ -19411,37 +19534,9 @@ var _user$project$Animals_View_AllPageView$dateControl = F2(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html$text(
-					_user$project$Animals_View_AllPageView$formatDate(effectiveDate)),
+					_user$project$Pile_Calendar$formatDate(effectiveDate)),
 					A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', _user$project$Animals_Main$ToggleDatePicker)
 				]));
-	});
-var _user$project$Animals_View_AllPageView$showDate = function (model) {
-	var _p2 = model.effectiveDate;
-	if (_p2.ctor === 'Today') {
-		return model.today;
-	} else {
-		return _elm_lang$core$Maybe$Just(_p2._0);
-	}
-};
-var _user$project$Animals_View_AllPageView$shiftByYears = F2(
-	function (shiftFunction, date) {
-		return A3(
-			_justinmimbs$elm_date_extra$Date_Extra$add,
-			_justinmimbs$elm_date_extra$Date_Extra$Year,
-			A2(shiftFunction, 0, 5),
-			date);
-	});
-var _user$project$Animals_View_AllPageView$bound = F2(
-	function (shiftFunction, model) {
-		var _p3 = _user$project$Animals_View_AllPageView$showDate(model);
-		if (_p3.ctor === 'Nothing') {
-			return A2(
-				_user$project$Animals_View_AllPageView$shiftByYears,
-				shiftFunction,
-				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
-		} else {
-			return A2(_user$project$Animals_View_AllPageView$shiftByYears, shiftFunction, _p3._0);
-		}
 	});
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
@@ -19476,27 +19571,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										A7(
-										_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
-										_user$project$Animals_View_AllPageView$dateControl,
-										_user$project$Animals_Main$ToggleDatePicker,
-										_user$project$Animals_Main$SelectDate,
-										model.datePickerOpen,
-										A2(
-											_user$project$Animals_View_AllPageView$bound,
-											F2(
-												function (x, y) {
-													return x - y;
-												}),
-											model),
-										A2(
-											_user$project$Animals_View_AllPageView$bound,
-											F2(
-												function (x, y) {
-													return x + y;
-												}),
-											model),
-										_user$project$Animals_View_AllPageView$showDate(model))
+										A4(_user$project$Pile_Calendar$view, _user$project$Animals_View_AllPageView$dateControl, _user$project$Animals_Main$ToggleDatePicker, _user$project$Animals_Main$SelectDate, model)
 									]))
 							])),
 						A2(

@@ -3,6 +3,7 @@ module Pile.Bulma exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
+import Html.Events as Events
 
 tab selectedPage (page, linkText, msg) =
   let
@@ -50,3 +51,77 @@ message kind header body =
     ]
 
 infoMessage = message "is-info"
+
+
+
+tdIcon iconSymbolName tooltip msg =
+  td [class "is-icon"]
+    [a [ href "#"
+       , title tooltip
+       , onClickWithoutPropagation msg
+       ]
+       [i [class ("fa " ++ iconSymbolName)] []]
+    ]
+
+plainIcon iconSymbolName tooltip msg =
+  a [ href "#"
+    , class "icon"
+    , title tooltip
+    , onClickWithoutPropagation msg
+    ]
+    [i [class ("fa " ++ iconSymbolName)] []]
+
+    
+rightIcon iconSymbolName tooltip msg =
+  a [ href "#"
+    , class "icon is-pulled-right"
+    , title tooltip
+    , onClickWithoutPropagation msg
+    ]
+    [i [class ("fa " ++ iconSymbolName)] []]
+
+              
+oneTag tagText =
+  span [ class "tag" ] [ text tagText ]
+    
+messageView headerList contentList  =
+  article [class "message"]
+    [ div [class "message-header has-text-centered"] headerList
+    , div [class "message-body"] contentList
+    ]
+
+centeredLevelItem content =
+  div [class "level-item has-text-centered"]
+    content
+
+simpleSelect content = 
+  span [ class "select" ]
+    [ select [] content ]
+
+headingP heading = 
+  p [class "heading"] [text heading]
+
+simpleTextInput val msg = 
+  p [class "control"]
+    [input
+       [ class "input"
+       , type' "text"
+       , value val
+       , Events.onInput msg]
+       []
+    ]
+
+centeredColumns contents =
+  div [class "columns is-centered"] contents
+
+column n contents =
+  div [class ("column is-" ++ (toString n))] contents
+
+
+
+headerlessTable body = 
+  table [class "table"]
+    [ tbody [] body ]
+
+distributeHorizontally contents =
+  div [class "level"] contents

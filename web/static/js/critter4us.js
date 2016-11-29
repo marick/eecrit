@@ -18459,18 +18459,7 @@ var _user$project$Animals_Navigation$locationParser = function (location) {
 };
 var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
 
-var _user$project$Pile_Calendar$formatDate = function (date) {
-	var _p0 = date;
-	if (_p0.ctor === 'Nothing') {
-		return '';
-	} else {
-		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p0._0);
-	}
-};
-var _user$project$Pile_Calendar$standardDate = function (date) {
-	return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MM d, y', date);
-};
-var _user$project$Pile_Calendar$skeleton = F3(
+var _user$project$Pile_Calendar$visibilityController = F3(
 	function (calendarToggleMsg, control, maybeContent) {
 		var controlContainer = A2(
 			_elm_lang$html$Html$div,
@@ -18480,8 +18469,8 @@ var _user$project$Pile_Calendar$skeleton = F3(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[control]));
-		var _p1 = maybeContent;
-		if (_p1.ctor === 'Nothing') {
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -18516,52 +18505,49 @@ var _user$project$Pile_Calendar$skeleton = F3(
 								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
 							]),
 						_elm_lang$core$Native_List.fromArray(
-							[_p1._0]))
+							[_p0._0]))
 					]));
 		}
 	});
-var _user$project$Pile_Calendar$shiftByYears = F2(
-	function (shiftFunction, date) {
-		return A3(
-			_justinmimbs$elm_date_extra$Date_Extra$add,
-			_justinmimbs$elm_date_extra$Date_Extra$Year,
-			A2(shiftFunction, 0, 5),
-			date);
-	});
+var _user$project$Pile_Calendar$defaultDate = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1);
 var _user$project$Pile_Calendar$dateToShow = function (edate) {
-	var _p2 = edate.effectiveDate;
-	if (_p2.ctor === 'Today') {
+	var _p1 = edate.effectiveDate;
+	if (_p1.ctor === 'Today') {
 		return edate.today;
 	} else {
-		return _elm_lang$core$Maybe$Just(_p2._0);
+		return _elm_lang$core$Maybe$Just(_p1._0);
 	}
 };
 var _user$project$Pile_Calendar$bound = F2(
 	function (shiftFunction, edate) {
-		var _p3 = _user$project$Pile_Calendar$dateToShow(edate);
-		if (_p3.ctor === 'Nothing') {
-			return A2(
-				_user$project$Pile_Calendar$shiftByYears,
-				shiftFunction,
-				A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1));
+		var shiftByYears = function (date) {
+			return A3(
+				_justinmimbs$elm_date_extra$Date_Extra$add,
+				_justinmimbs$elm_date_extra$Date_Extra$Year,
+				A2(shiftFunction, 0, 5),
+				date);
+		};
+		var _p2 = _user$project$Pile_Calendar$dateToShow(edate);
+		if (_p2.ctor === 'Nothing') {
+			return shiftByYears(_user$project$Pile_Calendar$defaultDate);
 		} else {
-			return A2(_user$project$Pile_Calendar$shiftByYears, shiftFunction, _p3._0);
+			return shiftByYears(_p2._0);
 		}
 	});
 var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
 	var todayIfKnown = function () {
-		var _p4 = edate.today;
-		if (_p4.ctor === 'Nothing') {
+		var _p3 = edate.today;
+		if (_p3.ctor === 'Nothing') {
 			return '';
 		} else {
-			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p4._0);
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p3._0);
 		}
 	}();
-	var _p5 = edate.effectiveDate;
-	if (_p5.ctor === 'Today') {
+	var _p4 = edate.effectiveDate;
+	if (_p4.ctor === 'Today') {
 		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
 	} else {
-		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p5._0);
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p4._0);
 	}
 };
 var _user$project$Pile_Calendar$view = F4(
@@ -18581,20 +18567,20 @@ var _user$project$Pile_Calendar$view = F4(
 					return x - y;
 				}),
 			edate);
-		var dateSelectorView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
+		var calendarBodyView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
 			A2(
 				_elm_lang$virtual_dom$VirtualDom$map,
 				dateSelectedMsg,
 				A3(_justinmimbs$elm_date_selector$DateSelector$view, min, max, selected))) : _elm_lang$core$Maybe$Nothing;
 		return A3(
-			_user$project$Pile_Calendar$skeleton,
+			_user$project$Pile_Calendar$visibilityController,
 			calendarToggleMsg,
 			A3(
 				launcher,
 				edate.datePickerOpen,
 				_user$project$Pile_Calendar$enhancedDateString(edate),
 				calendarToggleMsg),
-			dateSelectorView);
+			calendarBodyView);
 	});
 var _user$project$Pile_Calendar$At = function (a) {
 	return {ctor: 'At', _0: a};
@@ -18632,7 +18618,7 @@ var _user$project$Animals_Main$toState = F3(
 				}),
 			animals);
 	});
-var _user$project$Animals_Main$desiredAnimals = function (model) {
+var _user$project$Animals_Main$filteredAnimals = function (model) {
 	var hasWanted = F2(
 		function (modelFilter, animalValue) {
 			var has = _elm_lang$core$String$toLower(animalValue);
@@ -18895,6 +18881,232 @@ var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) 
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
 
+var _user$project$Pile_Bulma$distributeHorizontally = function (contents) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('level')
+			]),
+		contents);
+};
+var _user$project$Pile_Bulma$headerlessTable = function (body) {
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('table')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				body)
+			]));
+};
+var _user$project$Pile_Bulma$column = F2(
+	function (n, contents) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'column is-',
+						_elm_lang$core$Basics$toString(n)))
+				]),
+			contents);
+	});
+var _user$project$Pile_Bulma$centeredColumns = function (contents) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('columns is-centered')
+			]),
+		contents);
+};
+var _user$project$Pile_Bulma$simpleTextInput = F2(
+	function (val, msg) {
+		return A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('control')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('input'),
+							_elm_lang$html$Html_Attributes$type$('text'),
+							_elm_lang$html$Html_Attributes$value(val),
+							_elm_lang$html$Html_Events$onInput(msg)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _user$project$Pile_Bulma$headingP = function (heading) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('heading')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(heading)
+			]));
+};
+var _user$project$Pile_Bulma$simpleSelect = function (content) {
+	return A2(
+		_elm_lang$html$Html$span,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('select')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$select,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				content)
+			]));
+};
+var _user$project$Pile_Bulma$centeredLevelItem = function (content) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('level-item has-text-centered')
+			]),
+		content);
+};
+var _user$project$Pile_Bulma$messageView = F2(
+	function (headerList, contentList) {
+		return A2(
+			_elm_lang$html$Html$article,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('message')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('message-header has-text-centered')
+						]),
+					headerList),
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('message-body')
+						]),
+					contentList)
+				]));
+	});
+var _user$project$Pile_Bulma$oneTag = function (tagText) {
+	return A2(
+		_elm_lang$html$Html$span,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('tag')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(tagText)
+			]));
+};
+var _user$project$Pile_Bulma$rightIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href('#'),
+					_elm_lang$html$Html_Attributes$class('icon is-pulled-right'),
+					_elm_lang$html$Html_Attributes$title(tooltip),
+					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$i,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _user$project$Pile_Bulma$plainIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href('#'),
+					_elm_lang$html$Html_Attributes$class('icon'),
+					_elm_lang$html$Html_Attributes$title(tooltip),
+					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$i,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
+var _user$project$Pile_Bulma$tdIcon = F3(
+	function (iconSymbolName, tooltip, msg) {
+		return A2(
+			_elm_lang$html$Html$td,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('is-icon')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('#'),
+							_elm_lang$html$Html_Attributes$title(tooltip),
+							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$i,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class(
+									A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[]))
+						]))
+				]));
+	});
 var _user$project$Pile_Bulma$shortenWidth = function (content) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -19031,295 +19243,46 @@ var _user$project$Pile_Bulma$tabs = F2(
 				]));
 	});
 
-var _user$project$Animals_View_AllPageView$textInput = F2(
-	function (val, msg) {
-		return A2(
-			_elm_lang$html$Html$p,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('control')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$input,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class('input'),
-							_elm_lang$html$Html_Attributes$type$('text'),
-							_elm_lang$html$Html_Attributes$value(val),
-							_elm_lang$html$Html_Events$onInput(msg)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[]))
-				]));
+var _user$project$Animals_View_AllPageView$filterHelp = function (iconType) {
+	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Main$NoOp);
+};
+var _user$project$Animals_View_AllPageView$calendarHelp = function (iconType) {
+	return A3(iconType, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Main$NoOp);
+};
+var _user$project$Animals_View_AllPageView$moreLikeThis = F2(
+	function (animal, iconType) {
+		return A3(
+			iconType,
+			'fa-plus',
+			'Copy: make more animals like this one',
+			_user$project$Animals_Main$MoreLikeThisAnimal(animal.id));
 	});
-var _user$project$Animals_View_AllPageView$headingP = function (heading) {
-	return A2(
-		_elm_lang$html$Html$p,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('heading')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(heading)
-			]));
-};
-var _user$project$Animals_View_AllPageView$textOption = F2(
-	function (val, display) {
-		return A2(
-			_elm_lang$html$Html$option,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$value(val),
-					_elm_lang$html$Html_Events$onClick(
-					_user$project$Animals_Main$SetSpeciesFilter(val))
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text(display)
-				]));
+var _user$project$Animals_View_AllPageView$edit = F2(
+	function (animal, iconType) {
+		return A3(
+			iconType,
+			'fa-pencil',
+			'Edit: make changes to this animal',
+			_user$project$Animals_Main$EditAnimal(animal.id));
 	});
-var _user$project$Animals_View_AllPageView$standardSelect = function (content) {
-	return A2(
-		_elm_lang$html$Html$span,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('select')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$select,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				content)
-			]));
-};
-var _user$project$Animals_View_AllPageView$centeredLevelItem = function (content) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('level-item has-text-centered')
-			]),
-		content);
-};
-var _user$project$Animals_View_AllPageView$speciesField = function (model) {
-	return _user$project$Animals_View_AllPageView$centeredLevelItem(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$p,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('heading')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Species')
-					])),
-				_user$project$Animals_View_AllPageView$standardSelect(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(_user$project$Animals_View_AllPageView$textOption, '', 'Any'),
-						A2(_user$project$Animals_View_AllPageView$textOption, 'bovine', 'bovine'),
-						A2(_user$project$Animals_View_AllPageView$textOption, 'equine', 'equine')
-					]))
-			]));
-};
-var _user$project$Animals_View_AllPageView$tagsField = function (model) {
-	return _user$project$Animals_View_AllPageView$centeredLevelItem(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$Animals_View_AllPageView$headingP('Tag'),
-				A2(_user$project$Animals_View_AllPageView$textInput, model.tagFilter, _user$project$Animals_Main$SetTagFilter)
-			]));
-};
-var _user$project$Animals_View_AllPageView$nameField = function (model) {
-	return _user$project$Animals_View_AllPageView$centeredLevelItem(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$Animals_View_AllPageView$headingP('Name'),
-				A2(_user$project$Animals_View_AllPageView$textInput, model.nameFilter, _user$project$Animals_Main$SetNameFilter)
-			]));
-};
-var _user$project$Animals_View_AllPageView$filterFields = function (model) {
-	return _elm_lang$core$Native_List.fromArray(
-		[
-			A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('level')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$Animals_View_AllPageView$nameField(model),
-					_user$project$Animals_View_AllPageView$speciesField(model),
-					_user$project$Animals_View_AllPageView$tagsField(model)
-				]))
-		]);
-};
-var _user$project$Animals_View_AllPageView$messageView = F3(
-	function (model, headerList, contentList) {
-		return A2(
-			_elm_lang$html$Html$article,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('message')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$div,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class('message-header has-text-centered')
-						]),
-					headerList),
-					A2(
-					_elm_lang$html$Html$div,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class('message-body')
-						]),
-					contentList)
-				]));
+var _user$project$Animals_View_AllPageView$contract = F2(
+	function (animal, iconType) {
+		return A3(
+			iconType,
+			'fa-caret-up',
+			'Expand: show less about this animal',
+			_user$project$Animals_Main$ContractAnimal(animal.id));
 	});
-var _user$project$Animals_View_AllPageView$oneTag = function (tagText) {
-	return A2(
-		_elm_lang$html$Html$span,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('tag')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(tagText)
-			]));
-};
-var _user$project$Animals_View_AllPageView$rightIcon = F3(
-	function (iconSymbolName, tooltip, msg) {
-		return A2(
-			_elm_lang$html$Html$a,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$href('#'),
-					_elm_lang$html$Html_Attributes$class('icon is-pulled-right'),
-					_elm_lang$html$Html_Attributes$title(tooltip),
-					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$i,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class(
-							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[]))
-				]));
+var _user$project$Animals_View_AllPageView$expand = F2(
+	function (animal, iconType) {
+		return A3(
+			iconType,
+			'fa-caret-down',
+			'Expand: show more about this animal',
+			_user$project$Animals_Main$ExpandAnimal(animal.id));
 	});
-var _user$project$Animals_View_AllPageView$plainIcon = F3(
-	function (iconSymbolName, tooltip, msg) {
-		return A2(
-			_elm_lang$html$Html$a,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$href('#'),
-					_elm_lang$html$Html_Attributes$class('icon'),
-					_elm_lang$html$Html_Attributes$title(tooltip),
-					_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$i,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class(
-							A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[]))
-				]));
-	});
-var _user$project$Animals_View_AllPageView$tdIcon = F3(
-	function (iconSymbolName, tooltip, msg) {
-		return A2(
-			_elm_lang$html$Html$td,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('is-icon')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$a,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$href('#'),
-							_elm_lang$html$Html_Attributes$title(tooltip),
-							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_elm_lang$html$Html$i,
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html_Attributes$class(
-									A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName))
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[]))
-						]))
-				]));
-	});
-var _user$project$Animals_View_AllPageView$expand = function (animal) {
-	return A3(
-		_user$project$Animals_View_AllPageView$tdIcon,
-		'fa-caret-down',
-		'Expand: show more about this animal',
-		_user$project$Animals_Main$ExpandAnimal(animal.id));
-};
-var _user$project$Animals_View_AllPageView$contract = function (animal) {
-	return A3(
-		_user$project$Animals_View_AllPageView$tdIcon,
-		'fa-caret-up',
-		'Expand: show less about this animal',
-		_user$project$Animals_Main$ContractAnimal(animal.id));
-};
-var _user$project$Animals_View_AllPageView$edit = function (animal) {
-	return A3(
-		_user$project$Animals_View_AllPageView$tdIcon,
-		'fa-pencil',
-		'Edit: make changes to this animal',
-		_user$project$Animals_Main$EditAnimal(animal.id));
-};
-var _user$project$Animals_View_AllPageView$moreLikeThis = function (animal) {
-	return A3(
-		_user$project$Animals_View_AllPageView$tdIcon,
-		'fa-plus',
-		'Copy: make more animals like this one',
-		_user$project$Animals_Main$MoreLikeThisAnimal(animal.id));
-};
-var _user$project$Animals_View_AllPageView$oneAnimalEditable = function (animal) {
-	return A2(
-		_elm_lang$html$Html$tr,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text('editable')
-			]));
-};
 var _user$project$Animals_View_AllPageView$animalTags = function (animal) {
-	return A2(_elm_lang$core$List$map, _user$project$Animals_View_AllPageView$oneTag, animal.tags);
+	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$oneTag, animal.tags);
 };
 var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) {
 	return _elm_lang$html$Html$text(
@@ -19331,34 +19294,17 @@ var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) 
 				' (',
 				A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'))));
 };
-var _user$project$Animals_View_AllPageView$oneAnimalCompact = function (animal) {
+var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$td,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$p,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						A2(
-							_elm_lang$core$List_ops['::'],
-							_user$project$Animals_View_AllPageView$animalSalutation(animal),
-							_user$project$Animals_View_AllPageView$animalTags(animal)))
-					])),
-				_user$project$Animals_View_AllPageView$expand(animal),
-				_user$project$Animals_View_AllPageView$edit(animal),
-				_user$project$Animals_View_AllPageView$moreLikeThis(animal)
+				_elm_lang$html$Html$text('editable')
 			]));
 };
-var _user$project$Animals_View_AllPageView$oneAnimalExpanded = function (animal) {
+var _user$project$Animals_View_AllPageView$animalViewExpanded = function (animal) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
@@ -19401,43 +19347,104 @@ var _user$project$Animals_View_AllPageView$oneAnimalExpanded = function (animal)
 								A2(_elm_lang$core$Basics_ops['++'], 'Added ', animal.dateAcquired))
 							]))
 					])),
-				_user$project$Animals_View_AllPageView$contract(animal),
-				_user$project$Animals_View_AllPageView$edit(animal),
-				_user$project$Animals_View_AllPageView$moreLikeThis(animal)
+				A2(_user$project$Animals_View_AllPageView$contract, animal, _user$project$Pile_Bulma$tdIcon),
+				A2(_user$project$Animals_View_AllPageView$edit, animal, _user$project$Pile_Bulma$tdIcon),
+				A2(_user$project$Animals_View_AllPageView$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
 			]));
 };
-var _user$project$Animals_View_AllPageView$oneAnimal = function (animal) {
+var _user$project$Animals_View_AllPageView$animalViewCompact = function (animal) {
+	return A2(
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						A2(
+							_elm_lang$core$List_ops['::'],
+							_user$project$Animals_View_AllPageView$animalSalutation(animal),
+							_user$project$Animals_View_AllPageView$animalTags(animal)))
+					])),
+				A2(_user$project$Animals_View_AllPageView$expand, animal, _user$project$Pile_Bulma$tdIcon),
+				A2(_user$project$Animals_View_AllPageView$edit, animal, _user$project$Pile_Bulma$tdIcon),
+				A2(_user$project$Animals_View_AllPageView$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
+			]));
+};
+var _user$project$Animals_View_AllPageView$animalView = function (animal) {
 	var _p0 = animal.displayState;
 	switch (_p0.ctor) {
 		case 'Compact':
-			return _user$project$Animals_View_AllPageView$oneAnimalCompact(animal);
+			return _user$project$Animals_View_AllPageView$animalViewCompact(animal);
 		case 'Expanded':
-			return _user$project$Animals_View_AllPageView$oneAnimalExpanded(animal);
+			return _user$project$Animals_View_AllPageView$animalViewExpanded(animal);
 		default:
-			return _user$project$Animals_View_AllPageView$oneAnimalEditable(animal);
+			return _user$project$Animals_View_AllPageView$animalViewEditable(animal);
 	}
 };
-var _user$project$Animals_View_AllPageView$animalList = function (model) {
-	return A2(
-		_elm_lang$html$Html$table,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('table')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$tbody,
+var _user$project$Animals_View_AllPageView$speciesFilter = function (model) {
+	var textOption = F2(
+		function (val, display) {
+			return A2(
+				_elm_lang$html$Html$option,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
-				A2(
-					_elm_lang$core$List$map,
-					_user$project$Animals_View_AllPageView$oneAnimal,
-					_user$project$Animals_Main$desiredAnimals(model)))
+					[
+						_elm_lang$html$Html_Attributes$value(val),
+						_elm_lang$html$Html_Events$onClick(
+						_user$project$Animals_Main$SetSpeciesFilter(val))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(display)
+					]));
+		});
+	return _user$project$Pile_Bulma$centeredLevelItem(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Pile_Bulma$headingP('Species'),
+				_user$project$Pile_Bulma$simpleSelect(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(textOption, '', 'Any'),
+						A2(textOption, 'bovine', 'bovine'),
+						A2(textOption, 'equine', 'equine')
+					]))
+			]));
+};
+var _user$project$Animals_View_AllPageView$tagsFilter = function (model) {
+	return _user$project$Pile_Bulma$centeredLevelItem(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Pile_Bulma$headingP('Tag'),
+				A2(_user$project$Pile_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Main$SetTagFilter)
+			]));
+};
+var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
+	return _user$project$Pile_Bulma$centeredLevelItem(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Pile_Bulma$headingP('Name'),
+				A2(_user$project$Pile_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Main$SetNameFilter)
 			]));
 };
 var _user$project$Animals_View_AllPageView$dateControl = F3(
 	function (hasOpenPicker, displayString, calendarToggleMsg) {
+		var iconF = function () {
+			var _p1 = hasOpenPicker;
+			if (_p1 === false) {
+				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
+			} else {
+				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
+			}
+		}();
 		return A2(
 			_elm_lang$html$Html$p,
 			_elm_lang$core$Native_List.fromArray(
@@ -19447,7 +19454,7 @@ var _user$project$Animals_View_AllPageView$dateControl = F3(
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html$text(displayString),
-					A3(_user$project$Animals_View_AllPageView$plainIcon, 'fa-caret-down', 'Pick a date from a calendar', calendarToggleMsg)
+					iconF(calendarToggleMsg)
 				]));
 	});
 var _user$project$Animals_View_AllPageView$view = function (model) {
@@ -19457,29 +19464,20 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('columns is-centered')
-					]),
+				_user$project$Pile_Bulma$centeredColumns(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
-						_elm_lang$html$Html$div,
+						_user$project$Pile_Bulma$column,
+						4,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('column is-4')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A3(
-								_user$project$Animals_View_AllPageView$messageView,
-								model,
+								A2(
+								_user$project$Pile_Bulma$messageView,
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('Animals as of...'),
-										A3(_user$project$Animals_View_AllPageView$rightIcon, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Main$NoOp)
+										_user$project$Animals_View_AllPageView$calendarHelp(_user$project$Pile_Bulma$rightIcon)
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
@@ -19487,25 +19485,34 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 									]))
 							])),
 						A2(
-						_elm_lang$html$Html$div,
+						_user$project$Pile_Bulma$column,
+						7,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html_Attributes$class('column is-7')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A3(
-								_user$project$Animals_View_AllPageView$messageView,
-								model,
+								A2(
+								_user$project$Pile_Bulma$messageView,
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('Filter by...'),
-										A3(_user$project$Animals_View_AllPageView$rightIcon, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Main$NoOp)
+										_user$project$Animals_View_AllPageView$filterHelp(_user$project$Pile_Bulma$rightIcon)
 									]),
-								_user$project$Animals_View_AllPageView$filterFields(model))
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$Pile_Bulma$distributeHorizontally(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_user$project$Animals_View_AllPageView$nameFilter(model),
+												_user$project$Animals_View_AllPageView$speciesFilter(model),
+												_user$project$Animals_View_AllPageView$tagsFilter(model)
+											]))
+									]))
 							]))
 					])),
-				_user$project$Animals_View_AllPageView$animalList(model)
+				_user$project$Pile_Bulma$headerlessTable(
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Animals_View_AllPageView$animalView,
+					_user$project$Animals_Main$filteredAnimals(model)))
 			]));
 };
 

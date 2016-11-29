@@ -1,4 +1,4 @@
-module Pile.Calendar exposing (..)
+module Pile.Calendar exposing (EffectiveDate(..), view)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
@@ -19,16 +19,16 @@ view launcher calendarToggleMsg dateSelectedMsg edate =
     min = (bound (-) edate)
     max = (bound (+) edate)
     selected = dateToShow edate
-    dateSelectorView =
+    calendarBodyView =
       if edate.datePickerOpen then
         Just (DateSelector.view min max selected |> VirtualDom.map dateSelectedMsg)
       else
         Nothing
   in
-    skeleton
+    visibilityController
       calendarToggleMsg
       (launcher edate.datePickerOpen (enhancedDateString edate) calendarToggleMsg)
-      dateSelectorView
+      calendarBodyView
 
   
 enhancedDateString edate =
@@ -51,17 +51,19 @@ dateToShow edate =
     Today -> edate.today
     At date -> Just date
 
-
-shiftByYears shiftFunction date =
-  Date.Extra.add Date.Extra.Year (shiftFunction 0 5) date
+defaultDate = Date.Extra.fromCalendarDate 2018 Jan 1
 
 bound shiftFunction edate =
-  case dateToShow edate of
-    Nothing -> shiftByYears shiftFunction (Date.Extra.fromCalendarDate 2018 Jan 1)
-    Just date -> shiftByYears shiftFunction date
+  let
+    shiftByYears date =
+      Date.Extra.add Date.Extra.Year (shiftFunction 0 5) date
+  in
+    case dateToShow edate of
+      Nothing -> shiftByYears defaultDate
+      Just date -> shiftByYears date
 
-skeleton : msg -> Html msg -> Maybe (Html msg) -> Html msg
-skeleton calendarToggleMsg control maybeContent =
+visibilityController : msg -> Html msg -> Maybe (Html msg) -> Html msg
+visibilityController calendarToggleMsg control maybeContent =
   let
     controlContainer =
       div
@@ -87,15 +89,3 @@ skeleton calendarToggleMsg control maybeContent =
               [ class "dropdown--content-container" ]
               [ content ]
           ]
-
-
-standardDate date =
-  Date.Extra.toFormattedString "MM d, y" date
-
-    
-formatDate date =
-  case date of
-    Nothing -> ""
-    Just d -> Date.Extra.toFormattedString "MMM d, y" d
-
-          

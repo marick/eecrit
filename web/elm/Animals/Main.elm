@@ -101,7 +101,7 @@ init flags startingPage =
   )
 
 
-desiredAnimals model = 
+filteredAnimals model = 
   let
     hasWanted modelFilter animalValue =
       let 

@@ -10,10 +10,7 @@ import List
 import Animals.Main exposing (DisplayState(..), Msg(..), desiredAnimals, EffectiveDate(..))
 import Date exposing (Month(..))
 import Date.Extra exposing (toFormattedString, fromCalendarDate, fromParts, Interval(..))
-import DateSelector
-
--- TODO: replace this with Html.map upon 0.18 upgrade.
-import VirtualDom
+import DateSelectorDropdown
 
 
 shiftByYears shiftFunction date =
@@ -32,7 +29,15 @@ showDate model =
 
 view model =
   div []
-    [ DateSelector.view (bound (-) model) (bound (+) model) (showDate model) |> VirtualDom.map SelectDate
+    [
+     DateSelectorDropdown.view
+       ToggleDatePicker
+       SelectDate
+       model.datePickerOpen
+       (bound (-) model)
+       (bound (+) model)
+       (showDate model)
+
     , div [class "columns is-centered"]
         [ div [class "column is-4"]
 

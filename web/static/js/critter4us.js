@@ -13704,6 +13704,97 @@ var _justinmimbs$elm_date_selector$DateSelector$view = F3(
 					])));
 	});
 
+var _justinmimbs$elm_date_selector$Dropdown$view = F3(
+	function (close, button, maybeContent) {
+		var buttonContainer = A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[button]));
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[buttonContainer]));
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown-open')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+								_elm_lang$html$Html_Events$onClick(close)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						buttonContainer,
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[_p0._0]))
+					]));
+		}
+	});
+
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton = F3(
+	function (toggle, isOpen, maybeDate) {
+		return A2(
+			_elm_lang$html$Html$input,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$value(
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						A2(
+							_elm_lang$core$Maybe$map,
+							_justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd'),
+							maybeDate))),
+					_elm_lang$html$Html_Attributes$readonly(true),
+					_elm_lang$html$Html_Events$onClick(toggle)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton = F7(
+	function (viewButton, close, toSelect, isOpen, minimum, maximum, selected) {
+		var dateSelectorView = isOpen ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$html$Html_App$map,
+				toSelect,
+				A3(_justinmimbs$elm_date_selector$DateSelector$view, minimum, maximum, selected))) : _elm_lang$core$Maybe$Nothing;
+		return A3(
+			_justinmimbs$elm_date_selector$Dropdown$view,
+			close,
+			A2(viewButton, isOpen, selected),
+			dateSelectorView);
+	});
+var _justinmimbs$elm_date_selector$DateSelectorDropdown$view = function (toggle) {
+	return A2(
+		_justinmimbs$elm_date_selector$DateSelectorDropdown$viewWithButton,
+		_justinmimbs$elm_date_selector$DateSelectorDropdown$defaultViewButton(toggle),
+		toggle);
+};
+
 var _krisajenkins$formatting$Formatting$html = function (_p0) {
 	var _p1 = _p0;
 	return _p1._0(_elm_lang$html$Html$text);
@@ -18622,7 +18713,9 @@ var _user$project$Animals_Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{datePickerOpen: true}),
+						{
+							datePickerOpen: _elm_lang$core$Basics$not(model.datePickerOpen)
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SelectDate':
@@ -19350,26 +19443,26 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$virtual_dom$VirtualDom$map,
+				A6(
+				_justinmimbs$elm_date_selector$DateSelectorDropdown$view,
+				_user$project$Animals_Main$ToggleDatePicker,
 				_user$project$Animals_Main$SelectDate,
-				A3(
-					_justinmimbs$elm_date_selector$DateSelector$view,
-					A2(
-						_user$project$Animals_View_AllPageView$bound,
-						F2(
-							function (x, y) {
-								return x - y;
-							}),
-						model),
-					A2(
-						_user$project$Animals_View_AllPageView$bound,
-						F2(
-							function (x, y) {
-								return x + y;
-							}),
-						model),
-					_user$project$Animals_View_AllPageView$showDate(model))),
+				model.datePickerOpen,
+				A2(
+					_user$project$Animals_View_AllPageView$bound,
+					F2(
+						function (x, y) {
+							return x - y;
+						}),
+					model),
+				A2(
+					_user$project$Animals_View_AllPageView$bound,
+					F2(
+						function (x, y) {
+							return x + y;
+						}),
+					model),
+				_user$project$Animals_View_AllPageView$showDate(model)),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(

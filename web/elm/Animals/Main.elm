@@ -168,7 +168,7 @@ update msg model =
       , Cmd.none
       )
     ToggleDatePicker ->
-      ( { model | datePickerOpen = True }
+      ( { model | datePickerOpen = not model.datePickerOpen }
       , Cmd.none
       )
     SelectDate date ->

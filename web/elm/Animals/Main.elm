@@ -202,7 +202,7 @@ update msg model =
       , Cmd.none
       )
     EditAnimal id ->
-      ( model
+      ( { model | animals = toState Editable id model.animals }
       , Cmd.none
       )
     MoreLikeThisAnimal id ->
@@ -227,6 +227,8 @@ transformAnimal pred transformer animal =
     transformer animal
   else
     animal
+
+
       
 toState newState id animals =
   List.map

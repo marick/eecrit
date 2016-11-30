@@ -19480,7 +19480,15 @@ var _user$project$Animals_Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'EditAnimal':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(_user$project$Animals_Main$toState, _user$project$Animals_Main$Editable, _p1._0, model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'SetNameFilter':
@@ -19837,7 +19845,27 @@ var _user$project$Pile_Bulma$messageView = F2(
 					contentList)
 				]));
 	});
-var _user$project$Pile_Bulma$oneTag = function (tagText) {
+var _user$project$Pile_Bulma$deletableTag = function (tagText) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('tag is-primary control')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(tagText),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('delete')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
+var _user$project$Pile_Bulma$readOnlyTag = function (tagText) {
 	return A2(
 		_elm_lang$html$Html$span,
 		_elm_lang$core$Native_List.fromArray(
@@ -20084,6 +20112,9 @@ var _user$project$Pile_Bulma$tabs = F2(
 				]));
 	});
 
+var _user$project$Animals_View_AllPageView$editHelp = function (iconType) {
+	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Main$NoOp);
+};
 var _user$project$Animals_View_AllPageView$filterHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Main$NoOp);
 };
@@ -20123,17 +20154,20 @@ var _user$project$Animals_View_AllPageView$expand = F2(
 			_user$project$Animals_Main$ExpandAnimal(animal.id));
 	});
 var _user$project$Animals_View_AllPageView$animalTags = function (animal) {
-	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$oneTag, animal.tags);
+	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
+};
+var _user$project$Animals_View_AllPageView$parentheticalSpecies = function (animal) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		' (',
+		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
 };
 var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) {
 	return _elm_lang$html$Html$text(
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				' (',
-				A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'))));
+			_user$project$Animals_View_AllPageView$parentheticalSpecies(animal)));
 };
 var _user$project$Animals_View_AllPageView$boolExplanation = F2(
 	function (b, explanation) {
@@ -20229,28 +20263,206 @@ var _user$project$Animals_View_AllPageView$animalProperties = function (animal) 
 		_elm_lang$core$Native_List.fromArray(
 			['Available', 'Primary billing']));
 };
+var _user$project$Animals_View_AllPageView$emphasizeBorder = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'border-top', _1: '2px solid'},
+			{ctor: '_Tuple2', _0: 'border-bottom', _1: '2px solid'}
+		]));
 var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[_user$project$Animals_View_AllPageView$emphasizeBorder]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html$text('editable')
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('control is-horizontal')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control-label')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$label,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('label')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Name')
+											]))
+									])),
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control is-grouped')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$p,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('control')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$input,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('input'),
+														_elm_lang$html$Html_Attributes$type$('text'),
+														_elm_lang$html$Html_Attributes$value(
+														_elm_community$string_extra$String_Extra$toSentenceCase(animal.name))
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[]))
+											]))
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('control is-horizontal')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control-label')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$label,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('label')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Tags')
+											]))
+									])),
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control is-grouped')
+									]),
+								A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$deletableTag, animal.tags))
+							])),
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$a,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('button is-success pull-left')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$span,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('icon')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$i,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('fa fa-check')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[]))
+											])),
+										_elm_lang$html$Html$text('Save')
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$p,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$a,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('button is-danger pull-right')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$span,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('icon')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$i,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('fa fa-times')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[]))
+											])),
+										_elm_lang$html$Html$text('Cancel')
+									]))
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_user$project$Animals_View_AllPageView$editHelp(_user$project$Pile_Bulma$tdIcon)
 			]));
 };
 var _user$project$Animals_View_AllPageView$animalViewExpanded = function (animal) {
 	return A2(
 		_elm_lang$html$Html$tr,
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$style(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						{ctor: '_Tuple2', _0: 'border-top', _1: '2px solid'},
-						{ctor: '_Tuple2', _0: 'border-bottom', _1: '2px solid'}
-					]))
-			]),
+			[_user$project$Animals_View_AllPageView$emphasizeBorder]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(

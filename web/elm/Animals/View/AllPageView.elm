@@ -103,23 +103,61 @@ animalViewCompact animal =
       ]
 
 animalViewExpanded animal =
-    tr [ style [ ("border-top", "2px solid")
-               , ("border-bottom", "2px solid")
-               ]
-       ]
-      [ td []
-          [ p [] [ animalSalutation animal ]
-          , p [] (animalTags animal)
-          , animalProperties animal |> Bulma.propertyTable
-          ]
-      , contract animal Bulma.tdIcon
-      , edit animal Bulma.tdIcon
-      , moreLikeThis animal Bulma.tdIcon
-      ]
-
+  tr [ emphasizeBorder ]
+    [ td []
+        [ p [] [ animalSalutation animal ]
+        , p [] (animalTags animal)
+        , animalProperties animal |> Bulma.propertyTable
+        ]
+    , contract animal Bulma.tdIcon
+    , edit animal Bulma.tdIcon
+    , moreLikeThis animal Bulma.tdIcon
+    ]
+    
 animalViewEditable animal =
-  tr [] [text "editable"]
+  tr [ emphasizeBorder ]
+    [ td []
+        [ div [class "control is-horizontal"]
+            [ div [class "control-label"] [label [class "label"] [text "Name"]]
+            , div [class "control is-grouped"]
+              [ p [class "control"]
+                  [ input [ class "input"
+                          , type' "text"
+                          , value (toSentenceCase animal.name)
+                          ] []
+                  ]
+              ]
+            ]
+        , div [class "control is-horizontal"]
+            [ div [class "control-label"] [label [class "label"] [text "Tags"]]
+            , p [class "control is-grouped"]
+              (List.map Bulma.deletableTag animal.tags)
+            ]
 
+        , p []
+          [ a [class "button is-success pull-left"]
+              [ span [class "icon"] [i [class "fa fa-check"] []]
+              , text "Save"
+              ]
+          ]
+
+        , p []
+          [ a [class "button is-danger pull-right"]
+              [ span [class "icon"] [i [class "fa fa-times"] []]
+              , text "Cancel"
+              ]
+          ]
+        ]
+    , td [] []
+    , td [] []
+    , editHelp Bulma.tdIcon
+    ]
+    
+emphasizeBorder =
+  style [ ("border-top", "2px solid")
+        , ("border-bottom", "2px solid")
+        ]
+    
 boolExplanation b explanation = 
   let
     icon = case b of
@@ -148,12 +186,14 @@ animalProperties animal =
   in  
     List.map row ["Available", "Primary billing"]
 
+parentheticalSpecies animal =
+  " (" ++ animal.species ++ ")"
 
 animalSalutation animal =
-  text <| (toSentenceCase animal.name) ++ " (" ++ animal.species ++ ")"
+  text <| (toSentenceCase animal.name) ++ (parentheticalSpecies animal)
 
 animalTags animal =
-  List.map Bulma.oneTag animal.tags
+  List.map Bulma.readOnlyTag animal.tags
 
 
 -- Various icons
@@ -183,3 +223,7 @@ calendarHelp iconType =
 
 filterHelp iconType = 
   iconType "fa-question-circle" "Help on filtering" NoOp    
+
+editHelp iconType = 
+  iconType "fa-question-circle" "Help on editing" NoOp    
+    

@@ -88,8 +88,14 @@ coloredIcon iconName color =
 trueIcon = coloredIcon "fa-check" "green"
 falseIcon = coloredIcon "fa-times" "red"
               
-oneTag tagText =
+readOnlyTag tagText =
   span [ class "tag" ] [ text tagText ]
+    
+deletableTag tagText =
+  p [ class "tag is-primary control" ]
+    [ text tagText
+    , button [class "delete"] []
+    ]
     
 messageView headerList contentList  =
   article [class "message"]

@@ -4,8 +4,10 @@ import Navigation
 import Animals.Navigation as MyNav
 import String
 import List
-import Date
+import Date exposing (Date)
+import Date.Extra
 import Task
+import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
 
 -- Model and Init
@@ -19,13 +21,22 @@ type DisplayState
   | Expanded
   | Editable
 
+type DictValue
+  = AsInt Int
+  | AsFloat Float
+  | AsString String
+  | AsDate Date
+  | AsBool Bool (Maybe String)
+
+type alias AnimalProperties =
+  Dict String DictValue
+
 type alias Animal =
   { id : String
   , name : String
   , species : String
   , tags : List String
-  , dateAcquired : String
-  , dateRemoved : Maybe String
+  , properties : AnimalProperties
   , displayState : DisplayState
   }
        
@@ -37,7 +48,7 @@ type alias Model =
   , tagFilter : String
   , speciesFilter : String
   , effectiveDate : EffectiveDate
-  , today : Maybe Date.Date
+  , today : Maybe Date
   , datePickerOpen : Bool
   }
 
@@ -47,8 +58,9 @@ athena =
   , name = "Athena"
   , species = "bovine"
   , tags = [ "cow" ]
-  , dateAcquired = "1 Jan 2016"
-  , dateRemoved = Nothing
+  , properties = Dict.fromList [ ("Available", AsBool True Nothing)
+                               , ("Primary billing", AsString "Marick")
+                               ]
   , displayState = Compact
   }
 
@@ -57,8 +69,7 @@ jake =
   , name = "Jake"
   , species = "equine"
   , tags = [ "gelding" ]
-  , dateAcquired = "1 Jan 2016"
-  , dateRemoved = Nothing
+  , properties = Dict.fromList [ ("Available", AsBool True Nothing) ] 
   , displayState = Compact
   }
 
@@ -67,8 +78,9 @@ ross =
   , name = "ross"
   , species = "equine"
   , tags = [ "stallion", "aggressive"]
-  , dateAcquired = "1 Jan 2016"
-  , dateRemoved = Nothing
+  , properties = Dict.fromList [ ("Available", AsBool True Nothing)
+                               , ("Primary billing", AsString "Forman")
+                               ] 
   , displayState = Compact
   }
 
@@ -77,8 +89,10 @@ xena =
   , name = "Xena"
   , species = "equine"
   , tags = [ "mare", "skittish" ]
-  , dateAcquired = "1 Jan 2016"
-  , dateRemoved = Nothing
+  , properties = Dict.fromList [ ("Available", AsBool False (Just "off for the summer"))
+                               , ("Primary billing", AsString "Forman")
+                               ]
+                                    
   , displayState = Compact
   }
 
@@ -128,12 +142,14 @@ type alias Id = String
 
 type Msg
   = NavigateToAllPage
+  | NavigateToSpreadsheetPage
+  | NavigateToSummaryPage
   | NavigateToAddPage
   | NavigateToHelpPage
 
-  | SetToday (Maybe Date.Date)
+  | SetToday (Maybe Date)
   | ToggleDatePicker
-  | SelectDate Date.Date
+  | SelectDate Date
 
   | ExpandAnimal Id
   | ContractAnimal Id
@@ -155,6 +171,10 @@ update msg model =
       ( model, Cmd.none )
     NavigateToAllPage ->
       goto model MyNav.allPagePath
+    NavigateToSpreadsheetPage ->
+      goto model MyNav.spreadsheetPagePath
+    NavigateToSummaryPage ->
+      goto model MyNav.summaryPagePath
     NavigateToAddPage ->
       goto model MyNav.addPagePath
     NavigateToHelpPage ->

@@ -80,6 +80,13 @@ rightIcon iconSymbolName tooltip msg =
     ]
     [i [class ("fa " ++ iconSymbolName)] []]
 
+coloredIcon iconName color =
+  i [class ("fa " ++ iconName)
+    , style [("color", color)]
+    ] []
+
+trueIcon = coloredIcon "fa-check" "green"
+falseIcon = coloredIcon "fa-times" "red"
               
 oneTag tagText =
   span [ class "tag" ] [ text tagText ]
@@ -121,6 +128,12 @@ column n contents =
 
 headerlessTable body = 
   table [class "table"]
+    [ tbody [] body ]
+
+propertyTable body = 
+  table [ style [("width", "auto")]
+        , class "table is-bordered"
+        ]
     [ tbody [] body ]
 
 distributeHorizontally contents =

@@ -6,13 +6,15 @@ import Pile.HtmlShorthand exposing (..)
 import Html.Events as Events
 import Pile.Bulma as Bulma 
 import Pile.Calendar as Calendar
-import Animals.Main as Main exposing (DisplayState(..), Msg(..))
-
+import Animals.Main as Main exposing (DisplayState(..), Msg(..), DictValue(..))
+import List
+import Dict
+import String.Extra exposing (toSentenceCase)
 
 view model =
   div []
     [ Bulma.centeredColumns
-        [ Bulma.column 4
+        [ Bulma.column 3
             [ Bulma.messageView
                 [ text "Animals as of..."
                 , calendarHelp Bulma.rightIcon
@@ -20,7 +22,7 @@ view model =
                 [ Calendar.view dateControl ToggleDatePicker SelectDate model
                 ] 
             ]                  
-        , Bulma.column 7
+        , Bulma.column 8
             [ Bulma.messageView 
                 [ text "Filter by..."
                 , filterHelp Bulma.rightIcon
@@ -108,19 +110,47 @@ animalViewExpanded animal =
       [ td []
           [ p [] [ animalSalutation animal ]
           , p [] (animalTags animal)
-          , p [] [text <| "Added " ++ animal.dateAcquired]
+          , animalProperties animal |> Bulma.propertyTable
           ]
       , contract animal Bulma.tdIcon
       , edit animal Bulma.tdIcon
       , moreLikeThis animal Bulma.tdIcon
       ]
-      
+
 animalViewEditable animal =
-  tr [] [ text "editable" ] 
+  tr [] [text "editable"]
+
+boolExplanation b explanation = 
+  let
+    icon = case b of
+             True -> Bulma.trueIcon
+             False -> Bulma.falseIcon
+    suffix = case explanation of
+               Nothing -> ""
+               Just s -> " (" ++ s ++ ")"
+  in
+    [icon, text suffix]
+      
+animalProperties animal =
+  let
+    explanation value =
+      case value of
+        Nothing -> [span [style [("color", "red")]] [text "unknown"]]
+        Just (AsBool b m) -> boolExplanation b m
+        Just (AsString s) -> [text s]
+        _ -> [text "unimplemented"]
+
+    row key = 
+      tr []
+        [ td [] [text key]
+        , td [] (Dict.get key animal.properties |> explanation)
+        ]
+  in  
+    List.map row ["Available", "Primary billing"]
 
 
 animalSalutation animal =
-  text <| animal.name ++ " (" ++ animal.species ++ ")"
+  text <| (toSentenceCase animal.name) ++ " (" ++ animal.species ++ ")"
 
 animalTags animal =
   List.map Bulma.oneTag animal.tags

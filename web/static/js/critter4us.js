@@ -8771,6 +8771,870 @@ var _elm_community$list_extra$List_Extra$init = function () {
 var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
 	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
 
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[i - 1],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeft: F2(function sll(a, offset) { return a << offset; }),
+	shiftRightArithmatic: F2(function sra(a, offset) { return a >> offset; }),
+	shiftRightLogical: F2(function srl(a, offset) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightLogical = _elm_lang$core$Native_Bitwise.shiftRightLogical;
+var _elm_lang$core$Bitwise$shiftRight = _elm_lang$core$Native_Bitwise.shiftRightArithmatic;
+var _elm_lang$core$Bitwise$shiftLeft = _elm_lang$core$Native_Bitwise.shiftLeft;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
+var _elm_community$string_extra$String_Extra$replacementCodePoint = 65533;
+var _elm_community$string_extra$String_Extra$toCodePoints = function (string) {
+	var allCodeUnits = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Char$toCode,
+		_elm_lang$core$String$toList(string));
+	var combineAndReverse = F2(
+		function (codeUnits, accumulated) {
+			combineAndReverse:
+			while (true) {
+				var _p0 = codeUnits;
+				if (_p0.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p4 = _p0._0;
+					var _p3 = _p0._1;
+					if ((_elm_lang$core$Native_Utils.cmp(_p4, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 55295) < 1)) {
+						var _v1 = _p3,
+							_v2 = A2(_elm_lang$core$List_ops['::'], _p4, accumulated);
+						codeUnits = _v1;
+						accumulated = _v2;
+						continue combineAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p4, 55296) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 56319) < 1)) {
+							var _p1 = _p3;
+							if (_p1.ctor === '[]') {
+								return A2(_elm_lang$core$List_ops['::'], _elm_community$string_extra$String_Extra$replacementCodePoint, accumulated);
+							} else {
+								var _p2 = _p1._0;
+								if ((_elm_lang$core$Native_Utils.cmp(_p2, 56320) > -1) && (_elm_lang$core$Native_Utils.cmp(_p2, 57343) < 1)) {
+									var codePoint = (65536 + ((_p4 - 55296) * 1024)) + (_p2 - 56320);
+									var _v4 = _p1._1,
+										_v5 = A2(_elm_lang$core$List_ops['::'], codePoint, accumulated);
+									codeUnits = _v4;
+									accumulated = _v5;
+									continue combineAndReverse;
+								} else {
+									var _v6 = _p3,
+										_v7 = A2(_elm_lang$core$List_ops['::'], _elm_community$string_extra$String_Extra$replacementCodePoint, accumulated);
+									codeUnits = _v6;
+									accumulated = _v7;
+									continue combineAndReverse;
+								}
+							}
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p4, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 65535) < 1)) {
+								var _v8 = _p3,
+									_v9 = A2(_elm_lang$core$List_ops['::'], _p4, accumulated);
+								codeUnits = _v8;
+								accumulated = _v9;
+								continue combineAndReverse;
+							} else {
+								var _v10 = _p3,
+									_v11 = A2(_elm_lang$core$List_ops['::'], _elm_community$string_extra$String_Extra$replacementCodePoint, accumulated);
+								codeUnits = _v10;
+								accumulated = _v11;
+								continue combineAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	return _elm_lang$core$List$reverse(
+		A2(
+			combineAndReverse,
+			allCodeUnits,
+			_elm_lang$core$Native_List.fromArray(
+				[])));
+};
+var _elm_community$string_extra$String_Extra$fromCodePoints = function (allCodePoints) {
+	var splitAndReverse = F2(
+		function (codePoints, accumulated) {
+			splitAndReverse:
+			while (true) {
+				var _p5 = codePoints;
+				if (_p5.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p7 = _p5._1;
+					var _p6 = _p5._0;
+					if ((_elm_lang$core$Native_Utils.cmp(_p6, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 55295) < 1)) {
+						var _v13 = _p7,
+							_v14 = A2(_elm_lang$core$List_ops['::'], _p6, accumulated);
+						codePoints = _v13;
+						accumulated = _v14;
+						continue splitAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p6, 65536) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 1114111) < 1)) {
+							var subtracted = _p6 - 65536;
+							var leading = A2(_elm_lang$core$Bitwise$shiftRight, subtracted, 10) + 55296;
+							var trailing = A2(_elm_lang$core$Bitwise$and, subtracted, 1023) + 56320;
+							var _v15 = _p7,
+								_v16 = A2(
+								_elm_lang$core$List_ops['::'],
+								trailing,
+								A2(_elm_lang$core$List_ops['::'], leading, accumulated));
+							codePoints = _v15;
+							accumulated = _v16;
+							continue splitAndReverse;
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p6, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 65535) < 1)) {
+								var _v17 = _p7,
+									_v18 = A2(_elm_lang$core$List_ops['::'], _p6, accumulated);
+								codePoints = _v17;
+								accumulated = _v18;
+								continue splitAndReverse;
+							} else {
+								var _v19 = _p7,
+									_v20 = A2(_elm_lang$core$List_ops['::'], _elm_community$string_extra$String_Extra$replacementCodePoint, accumulated);
+								codePoints = _v19;
+								accumulated = _v20;
+								continue splitAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	var allCodeUnits = _elm_lang$core$List$reverse(
+		A2(
+			splitAndReverse,
+			allCodePoints,
+			_elm_lang$core$Native_List.fromArray(
+				[])));
+	return _elm_lang$core$String$fromList(
+		A2(_elm_lang$core$List$map, _elm_lang$core$Char$fromCode, allCodeUnits));
+};
+var _elm_community$string_extra$String_Extra$fromFloat = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$fromInt = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$leftOfBack = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				A2(_elm_lang$core$Basics$flip, _elm_lang$core$String$left, string),
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$rightOfBack = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p8) {
+					return A3(
+						_elm_lang$core$Basics$flip,
+						_elm_lang$core$String$dropLeft,
+						string,
+						A2(
+							F2(
+								function (x, y) {
+									return x + y;
+								}),
+							_elm_lang$core$String$length(pattern),
+							_p8));
+				},
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$leftOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p9) {
+					return A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						_elm_lang$core$Maybe$oneOf(
+							function (_) {
+								return _.submatches;
+							}(_p9)));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'^(.*?)',
+							_elm_lang$core$Regex$escape(pattern))),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$rightOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p10) {
+					return A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						_elm_lang$core$Maybe$oneOf(
+							function (_) {
+								return _.submatches;
+							}(_p10)));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Regex$escape(pattern),
+							'(.*)$')),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$stripTags = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('<\\/?[^>]+>'),
+		_elm_lang$core$Basics$always(''),
+		string);
+};
+var _elm_community$string_extra$String_Extra$toSentenceHelper = F3(
+	function (lastPart, sentence, list) {
+		toSentenceHelper:
+		while (true) {
+			var _p11 = list;
+			if (_p11.ctor === '[]') {
+				return sentence;
+			} else {
+				if (_p11._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], lastPart, _p11._0));
+				} else {
+					var _v22 = lastPart,
+						_v23 = A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], ', ', _p11._0)),
+						_v24 = _p11._1;
+					lastPart = _v22;
+					sentence = _v23;
+					list = _v24;
+					continue toSentenceHelper;
+				}
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$toSentenceBaseCase = function (list) {
+	var _p12 = list;
+	_v25_2:
+	do {
+		if (_p12.ctor === '::') {
+			if (_p12._1.ctor === '[]') {
+				return _p12._0;
+			} else {
+				if (_p12._1._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p12._0,
+						A2(_elm_lang$core$Basics_ops['++'], ' and ', _p12._1._0));
+				} else {
+					break _v25_2;
+				}
+			}
+		} else {
+			break _v25_2;
+		}
+	} while(false);
+	return '';
+};
+var _elm_community$string_extra$String_Extra$toSentenceOxford = function (list) {
+	var _p13 = list;
+	if (((_p13.ctor === '::') && (_p13._1.ctor === '::')) && (_p13._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			', and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p13._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p13._1._0)),
+			A2(_elm_lang$core$List_ops['::'], _p13._1._1._0, _p13._1._1._1));
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$toSentence = function (list) {
+	var _p14 = list;
+	if (((_p14.ctor === '::') && (_p14._1.ctor === '::')) && (_p14._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			' and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p14._1._0)),
+			A2(_elm_lang$core$List_ops['::'], _p14._1._1._0, _p14._1._1._1));
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$ellipsisWith = F3(
+	function (howLong, append, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$String$left,
+				howLong - _elm_lang$core$String$length(append),
+				string),
+			append);
+	});
+var _elm_community$string_extra$String_Extra$ellipsis = F2(
+	function (howLong, string) {
+		return A3(_elm_community$string_extra$String_Extra$ellipsisWith, howLong, '...', string);
+	});
+var _elm_community$string_extra$String_Extra$countOccurrences = F2(
+	function (needle, haystack) {
+		return (_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(needle),
+			0) || _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(haystack),
+			0)) ? 0 : _elm_lang$core$List$length(
+			A2(_elm_lang$core$String$indexes, needle, haystack));
+	});
+var _elm_community$string_extra$String_Extra$unindent = function (multilineSting) {
+	var isNotWhitespace = function ($char) {
+		return (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr(' '))) && (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr('\t')));
+	};
+	var countLeadingWhitespace = F2(
+		function (count, line) {
+			countLeadingWhitespace:
+			while (true) {
+				var _p15 = _elm_lang$core$String$uncons(line);
+				if (_p15.ctor === 'Nothing') {
+					return count;
+				} else {
+					var _p17 = _p15._0._1;
+					var _p16 = _p15._0._0;
+					switch (_p16.valueOf()) {
+						case ' ':
+							var _v30 = count + 1,
+								_v31 = _p17;
+							count = _v30;
+							line = _v31;
+							continue countLeadingWhitespace;
+						case '\t':
+							var _v32 = count + 1,
+								_v33 = _p17;
+							count = _v32;
+							line = _v33;
+							continue countLeadingWhitespace;
+						default:
+							return count;
+					}
+				}
+			}
+		});
+	var lines = _elm_lang$core$String$lines(multilineSting);
+	var minLead = A2(
+		_elm_lang$core$Maybe$withDefault,
+		0,
+		_elm_lang$core$List$minimum(
+			A2(
+				_elm_lang$core$List$map,
+				countLeadingWhitespace(0),
+				A2(
+					_elm_lang$core$List$filter,
+					_elm_lang$core$String$any(isNotWhitespace),
+					lines))));
+	return A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$dropLeft(minLead),
+			lines));
+};
+var _elm_community$string_extra$String_Extra$dasherize = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('-'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([A-Z])'),
+				function (_p18) {
+					return A2(
+						_elm_lang$core$String$append,
+						'-',
+						function (_) {
+							return _.match;
+						}(_p18));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$underscored = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('_'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([a-z\\d])([A-Z]+)'),
+				function (_p19) {
+					return A2(
+						_elm_lang$core$String$join,
+						'_',
+						A2(
+							_elm_lang$core$List$filterMap,
+							_elm_lang$core$Basics$identity,
+							function (_) {
+								return _.submatches;
+							}(_p19)));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$unsurround = F2(
+	function (wrap, string) {
+		if (A2(_elm_lang$core$String$startsWith, wrap, string) && A2(_elm_lang$core$String$endsWith, wrap, string)) {
+			var length = _elm_lang$core$String$length(wrap);
+			return A2(
+				_elm_lang$core$String$dropRight,
+				length,
+				A2(_elm_lang$core$String$dropLeft, length, string));
+		} else {
+			return string;
+		}
+	});
+var _elm_community$string_extra$String_Extra$unquote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$unsurround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$surround = F2(
+	function (wrap, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			wrap,
+			A2(_elm_lang$core$Basics_ops['++'], string, wrap));
+	});
+var _elm_community$string_extra$String_Extra$quote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$surround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$camelize = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('[-_\\s]+(.)?'),
+		function (_p20) {
+			var _p21 = _p20;
+			var _p22 = _p21.submatches;
+			if ((_p22.ctor === '::') && (_p22._0.ctor === 'Just')) {
+				return _elm_lang$core$String$toUpper(_p22._0._0);
+			} else {
+				return '';
+			}
+		},
+		_elm_lang$core$String$trim(string));
+};
+var _elm_community$string_extra$String_Extra$isBlank = function (string) {
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('^\\s*$'),
+		string);
+};
+var _elm_community$string_extra$String_Extra$clean = function (string) {
+	return _elm_lang$core$String$trim(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('\\s\\s+'),
+			_elm_lang$core$Basics$always(' '),
+			string));
+};
+var _elm_community$string_extra$String_Extra$softBreakRegexp = function (width) {
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'.{1,',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(width),
+				'}(\\s+|$)|\\S+?(\\s+|$)')));
+};
+var _elm_community$string_extra$String_Extra$softEllipsis = F2(
+	function (howLong, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A3(
+			_elm_lang$core$Basics$flip,
+			_elm_lang$core$String$append,
+			'...',
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([\\.,;:\\s])+$'),
+				_elm_lang$core$Basics$always(''),
+				A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_community$string_extra$String_Extra$softBreakRegexp(howLong),
+							string)))));
+	});
+var _elm_community$string_extra$String_Extra$softBreak = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.cmp(width, 0) < 1) ? _elm_lang$core$Native_List.fromArray(
+			[]) : A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_community$string_extra$String_Extra$softBreakRegexp(width),
+				string));
+	});
+var _elm_community$string_extra$String_Extra$softWrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$softBreak, width, string));
+	});
+var _elm_community$string_extra$String_Extra$softWrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$softWrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$breaker = F3(
+	function (width, string, acc) {
+		breaker:
+		while (true) {
+			var _p23 = string;
+			if (_p23 === '') {
+				return _elm_lang$core$List$reverse(acc);
+			} else {
+				var _v37 = width,
+					_v38 = A2(_elm_lang$core$String$dropLeft, width, string),
+					_v39 = A2(
+					_elm_lang$core$List_ops['::'],
+					A3(_elm_lang$core$String$slice, 0, width, string),
+					acc);
+				width = _v37;
+				string = _v38;
+				acc = _v39;
+				continue breaker;
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$break = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.eq(width, 0) || _elm_lang$core$Native_Utils.eq(string, '')) ? _elm_lang$core$Native_List.fromArray(
+			[string]) : A3(
+			_elm_community$string_extra$String_Extra$breaker,
+			width,
+			string,
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _elm_community$string_extra$String_Extra$wrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$break, width, string));
+	});
+var _elm_community$string_extra$String_Extra$wrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$wrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$replaceSlice = F4(
+	function (substitution, start, end, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_elm_lang$core$String$slice, 0, start, string),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				substitution,
+				A3(
+					_elm_lang$core$String$slice,
+					end,
+					_elm_lang$core$String$length(string),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$insertAt = F3(
+	function (insert, pos, string) {
+		return A4(_elm_community$string_extra$String_Extra$replaceSlice, insert, pos, pos, string);
+	});
+var _elm_community$string_extra$String_Extra$replace = F3(
+	function (search, substitution, string) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(
+				_elm_lang$core$Regex$escape(search)),
+			function (_p24) {
+				return substitution;
+			},
+			string);
+	});
+var _elm_community$string_extra$String_Extra$changeCase = F2(
+	function (mutator, word) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p25) {
+					var _p26 = _p25;
+					return A2(
+						_elm_lang$core$String$cons,
+						mutator(_p26._0),
+						_p26._1);
+				},
+				_elm_lang$core$String$uncons(word)));
+	});
+var _elm_community$string_extra$String_Extra$toSentenceCase = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toUpper, word);
+};
+var _elm_community$string_extra$String_Extra$toTitleCase = function (ws) {
+	var uppercaseMatch = A3(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\w+'),
+		function (_p27) {
+			return _elm_community$string_extra$String_Extra$toSentenceCase(
+				function (_) {
+					return _.match;
+				}(_p27));
+		});
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('^([a-z])|\\s+([a-z])'),
+		function (_p28) {
+			return uppercaseMatch(
+				function (_) {
+					return _.match;
+				}(_p28));
+		},
+		ws);
+};
+var _elm_community$string_extra$String_Extra$classify = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		A3(
+			_elm_community$string_extra$String_Extra$replace,
+			' ',
+			'',
+			_elm_community$string_extra$String_Extra$camelize(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('[\\W_]'),
+					_elm_lang$core$Basics$always(' '),
+					string))));
+};
+var _elm_community$string_extra$String_Extra$humanize = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		_elm_lang$core$String$toLower(
+			_elm_lang$core$String$trim(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('_id$|[-_\\s]+'),
+					_elm_lang$core$Basics$always(' '),
+					A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('[A-Z]'),
+						function (_p29) {
+							return A2(
+								_elm_lang$core$String$append,
+								'-',
+								function (_) {
+									return _.match;
+								}(_p29));
+						},
+						string)))));
+};
+var _elm_community$string_extra$String_Extra$decapitalize = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toLower, word);
+};
+
 var _elm_lang$animation_frame$Native_AnimationFrame = function()
 {
 
@@ -9632,141 +10496,6 @@ var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
 var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
 var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
 var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
-
-//import Maybe, Native.List //
-
-var _elm_lang$core$Native_Regex = function() {
-
-function escape(str)
-{
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-function caseInsensitive(re)
-{
-	return new RegExp(re.source, 'gi');
-}
-function regex(raw)
-{
-	return new RegExp(raw, 'g');
-}
-
-function contains(re, string)
-{
-	return string.match(re) !== null;
-}
-
-function find(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var out = [];
-	var number = 0;
-	var string = str;
-	var lastIndex = re.lastIndex;
-	var prevLastIndex = -1;
-	var result;
-	while (number++ < n && (result = re.exec(string)))
-	{
-		if (prevLastIndex === re.lastIndex) break;
-		var i = result.length - 1;
-		var subs = new Array(i);
-		while (i > 0)
-		{
-			var submatch = result[i];
-			subs[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		out.push({
-			match: result[0],
-			submatches: _elm_lang$core$Native_List.fromArray(subs),
-			index: result.index,
-			number: number
-		});
-		prevLastIndex = re.lastIndex;
-	}
-	re.lastIndex = lastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-function replace(n, re, replacer, string)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var count = 0;
-	function jsReplacer(match)
-	{
-		if (count++ >= n)
-		{
-			return match;
-		}
-		var i = arguments.length - 3;
-		var submatches = new Array(i);
-		while (i > 0)
-		{
-			var submatch = arguments[i];
-			submatches[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		return replacer({
-			match: match,
-			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[i - 1],
-			number: count
-		});
-	}
-	return string.replace(re, jsReplacer);
-}
-
-function split(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	if (n === Infinity)
-	{
-		return _elm_lang$core$Native_List.fromArray(str.split(re));
-	}
-	var string = str;
-	var result;
-	var out = [];
-	var start = re.lastIndex;
-	while (n--)
-	{
-		if (!(result = re.exec(string))) break;
-		out.push(string.slice(start, result.index));
-		start = re.lastIndex;
-	}
-	out.push(string.slice(start));
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-return {
-	regex: regex,
-	caseInsensitive: caseInsensitive,
-	escape: escape,
-
-	contains: F2(contains),
-	find: F3(find),
-	replace: F4(replace),
-	split: F3(split)
-};
-
-}();
-
-var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
-var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
-var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
-var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
-var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
-var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
-var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
-var _elm_lang$core$Regex$Match = F4(
-	function (a, b, c, d) {
-		return {match: a, submatches: b, index: c, number: d};
-	});
-var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
-var _elm_lang$core$Regex$AtMost = function (a) {
-	return {ctor: 'AtMost', _0: a};
-};
-var _elm_lang$core$Regex$All = {ctor: 'All'};
 
 var _elm_lang$dom$Native_Dom = function() {
 
@@ -18447,12 +19176,16 @@ var _user$project$Animals_Navigation$urlUpdate = F2(
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
 var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
 var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
+var _user$project$Animals_Navigation$summaryPagePath = '/v2/animals/summary';
+var _user$project$Animals_Navigation$spreadsheetPagePath = '/v2/animals/spreadsheet';
 var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
 var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
 var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
+var _user$project$Animals_Navigation$SummaryPage = {ctor: 'SummaryPage'};
+var _user$project$Animals_Navigation$SpreadsheetPage = {ctor: 'SpreadsheetPage'};
 var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
 var _user$project$Animals_Navigation$stringParser = function (path) {
-	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage);
+	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$spreadsheetPagePath, path) ? _user$project$Animals_Navigation$SpreadsheetPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$summaryPagePath, path) ? _user$project$Animals_Navigation$SummaryPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage)));
 };
 var _user$project$Animals_Navigation$locationParser = function (location) {
 	return _user$project$Animals_Navigation$stringParser(location.pathname);
@@ -18670,9 +19403,9 @@ var _user$project$Animals_Main$filteredAnimals = function (model) {
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
-var _user$project$Animals_Main$Animal = F7(
-	function (a, b, c, d, e, f, g) {
-		return {id: a, name: b, species: c, tags: d, dateAcquired: e, dateRemoved: f, displayState: g};
+var _user$project$Animals_Main$Animal = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, name: b, species: c, tags: d, properties: e, displayState: f};
 	});
 var _user$project$Animals_Main$Model = F9(
 	function (a, b, c, d, e, f, g, h, i) {
@@ -18681,46 +19414,6 @@ var _user$project$Animals_Main$Model = F9(
 var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Main$athena = {
-	id: '1',
-	name: 'Athena',
-	species: 'bovine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['cow']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$jake = {
-	id: '2',
-	name: 'Jake',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['gelding']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$ross = {
-	id: '3',
-	name: 'ross',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['stallion', 'aggressive']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
-var _user$project$Animals_Main$xena = {
-	id: '4',
-	name: 'Xena',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['mare', 'skittish']),
-	dateAcquired: '1 Jan 2016',
-	dateRemoved: _elm_lang$core$Maybe$Nothing,
-	displayState: _user$project$Animals_Main$Compact
-};
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
@@ -18729,6 +19422,10 @@ var _user$project$Animals_Main$update = F2(
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'NavigateToAllPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
+			case 'NavigateToSpreadsheetPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$spreadsheetPagePath);
+			case 'NavigateToSummaryPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$summaryPagePath);
 			case 'NavigateToAddPage':
 				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
 			case 'NavigateToHelpPage':
@@ -18812,6 +19509,108 @@ var _user$project$Animals_Main$update = F2(
 				};
 		}
 	});
+var _user$project$Animals_Main$AsBool = F2(
+	function (a, b) {
+		return {ctor: 'AsBool', _0: a, _1: b};
+	});
+var _user$project$Animals_Main$jake = {
+	id: '2',
+	name: 'Jake',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['gelding']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			}
+			])),
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$AsDate = function (a) {
+	return {ctor: 'AsDate', _0: a};
+};
+var _user$project$Animals_Main$AsString = function (a) {
+	return {ctor: 'AsString', _0: a};
+};
+var _user$project$Animals_Main$athena = {
+	id: '1',
+	name: 'Athena',
+	species: 'bovine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['cow']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Main$AsString('Marick')
+			}
+			])),
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$ross = {
+	id: '3',
+	name: 'ross',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['stallion', 'aggressive']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Main$AsString('Forman')
+			}
+			])),
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$xena = {
+	id: '4',
+	name: 'Xena',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['mare', 'skittish']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(
+					_user$project$Animals_Main$AsBool,
+					false,
+					_elm_lang$core$Maybe$Just('off for the summer'))
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Main$AsString('Forman')
+			}
+			])),
+	displayState: _user$project$Animals_Main$Compact
+};
+var _user$project$Animals_Main$AsFloat = function (a) {
+	return {ctor: 'AsFloat', _0: a};
+};
+var _user$project$Animals_Main$AsInt = function (a) {
+	return {ctor: 'AsInt', _0: a};
+};
 var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -18871,6 +19670,8 @@ var _user$project$Animals_Main$init = F2(
 	});
 var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
 var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
+var _user$project$Animals_Main$NavigateToSummaryPage = {ctor: 'NavigateToSummaryPage'};
+var _user$project$Animals_Main$NavigateToSpreadsheetPage = {ctor: 'NavigateToSpreadsheetPage'};
 var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
 
 var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) {
@@ -18889,6 +19690,27 @@ var _user$project$Pile_Bulma$distributeHorizontally = function (contents) {
 				_elm_lang$html$Html_Attributes$class('level')
 			]),
 		contents);
+};
+var _user$project$Pile_Bulma$propertyTable = function (body) {
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'width', _1: 'auto'}
+					])),
+				_elm_lang$html$Html_Attributes$class('table is-bordered')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				body)
+			]));
 };
 var _user$project$Pile_Bulma$headerlessTable = function (body) {
 	return A2(
@@ -19027,6 +19849,25 @@ var _user$project$Pile_Bulma$oneTag = function (tagText) {
 				_elm_lang$html$Html$text(tagText)
 			]));
 };
+var _user$project$Pile_Bulma$coloredIcon = F2(
+	function (iconName, color) {
+		return A2(
+			_elm_lang$html$Html$i,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconName)),
+					_elm_lang$html$Html_Attributes$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{ctor: '_Tuple2', _0: 'color', _1: color}
+						]))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _user$project$Pile_Bulma$trueIcon = A2(_user$project$Pile_Bulma$coloredIcon, 'fa-check', 'green');
+var _user$project$Pile_Bulma$falseIcon = A2(_user$project$Pile_Bulma$coloredIcon, 'fa-times', 'red');
 var _user$project$Pile_Bulma$rightIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
@@ -19288,11 +20129,105 @@ var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) 
 	return _elm_lang$html$Html$text(
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			animal.name,
+			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				' (',
 				A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'))));
+};
+var _user$project$Animals_View_AllPageView$boolExplanation = F2(
+	function (b, explanation) {
+		var suffix = function () {
+			var _p0 = explanation;
+			if (_p0.ctor === 'Nothing') {
+				return '';
+			} else {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					' (',
+					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
+			}
+		}();
+		var icon = function () {
+			var _p1 = b;
+			if (_p1 === true) {
+				return _user$project$Pile_Bulma$trueIcon;
+			} else {
+				return _user$project$Pile_Bulma$falseIcon;
+			}
+		}();
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				icon,
+				_elm_lang$html$Html$text(suffix)
+			]);
+	});
+var _user$project$Animals_View_AllPageView$animalProperties = function (animal) {
+	var explanation = function (value) {
+		var _p2 = value;
+		if (_p2.ctor === 'Nothing') {
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$span,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									{ctor: '_Tuple2', _0: 'color', _1: 'red'}
+								]))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('unknown')
+						]))
+				]);
+		} else {
+			switch (_p2._0.ctor) {
+				case 'AsBool':
+					return A2(_user$project$Animals_View_AllPageView$boolExplanation, _p2._0._0, _p2._0._1);
+				case 'AsString':
+					return _elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(_p2._0._0)
+						]);
+				default:
+					return _elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('unimplemented')
+						]);
+			}
+		}
+	};
+	var row = function (key) {
+		return A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(key)
+						])),
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					explanation(
+						A2(_elm_lang$core$Dict$get, key, animal.properties)))
+				]));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		row,
+		_elm_lang$core$Native_List.fromArray(
+			['Available', 'Primary billing']));
 };
 var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal) {
 	return A2(
@@ -19337,15 +20272,8 @@ var _user$project$Animals_View_AllPageView$animalViewExpanded = function (animal
 						_elm_lang$core$Native_List.fromArray(
 							[]),
 						_user$project$Animals_View_AllPageView$animalTags(animal)),
-						A2(
-						_elm_lang$html$Html$p,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(
-								A2(_elm_lang$core$Basics_ops['++'], 'Added ', animal.dateAcquired))
-							]))
+						_user$project$Pile_Bulma$propertyTable(
+						_user$project$Animals_View_AllPageView$animalProperties(animal))
 					])),
 				A2(_user$project$Animals_View_AllPageView$contract, animal, _user$project$Pile_Bulma$tdIcon),
 				A2(_user$project$Animals_View_AllPageView$edit, animal, _user$project$Pile_Bulma$tdIcon),
@@ -19380,8 +20308,8 @@ var _user$project$Animals_View_AllPageView$animalViewCompact = function (animal)
 			]));
 };
 var _user$project$Animals_View_AllPageView$animalView = function (animal) {
-	var _p0 = animal.displayState;
-	switch (_p0.ctor) {
+	var _p3 = animal.displayState;
+	switch (_p3.ctor) {
 		case 'Compact':
 			return _user$project$Animals_View_AllPageView$animalViewCompact(animal);
 		case 'Expanded':
@@ -19438,8 +20366,8 @@ var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
 var _user$project$Animals_View_AllPageView$dateControl = F3(
 	function (hasOpenPicker, displayString, calendarToggleMsg) {
 		var iconF = function () {
-			var _p1 = hasOpenPicker;
-			if (_p1 === false) {
+			var _p4 = hasOpenPicker;
+			if (_p4 === false) {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
 			} else {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
@@ -19469,7 +20397,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 					[
 						A2(
 						_user$project$Pile_Bulma$column,
-						4,
+						3,
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
@@ -19486,7 +20414,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 							])),
 						A2(
 						_user$project$Pile_Bulma$column,
-						7,
+						8,
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
@@ -19516,6 +20444,14 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 			]));
 };
 
+var _user$project$Animals_View_SpreadsheetPageView$view = function (model) {
+	return A2(_user$project$Pile_Bulma$infoMessage, 'No spreadsheet', 'The page hasn\'t been written yet.');
+};
+
+var _user$project$Animals_View_SummaryPageView$view = function (model) {
+	return A2(_user$project$Pile_Bulma$infoMessage, 'No summary', 'The page hasn\'t been written yet.');
+};
+
 var _user$project$Animals_View_AddPageView$view = function (model) {
 	return A2(_user$project$Pile_Bulma$infoMessage, 'Can\'t Add Animals Yet', 'The page hasn\'t been written yet.');
 };
@@ -19537,6 +20473,8 @@ var _user$project$Animals_View$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Main$NavigateToAllPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SpreadsheetPage, _1: 'Spreadsheet View', _2: _user$project$Animals_Main$NavigateToSpreadsheetPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SummaryPage, _1: 'Summary View', _2: _user$project$Animals_Main$NavigateToSummaryPage},
 						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Main$NavigateToAddPage},
 						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Help', _2: _user$project$Animals_Main$NavigateToHelpPage}
 					])),
@@ -19545,6 +20483,10 @@ var _user$project$Animals_View$view = function (model) {
 				switch (_p0.ctor) {
 					case 'AllPage':
 						return _user$project$Animals_View_AllPageView$view(model);
+					case 'SpreadsheetPage':
+						return _user$project$Animals_View_SpreadsheetPageView$view(model);
+					case 'SummaryPage':
+						return _user$project$Animals_View_SummaryPageView$view(model);
 					case 'AddPage':
 						return _user$project$Animals_View_AddPageView$view(model);
 					default:

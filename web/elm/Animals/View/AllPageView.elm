@@ -147,6 +147,13 @@ editableName animal =
     Just editable ->
       editable.name
     
+editableTags animal =
+  case animal.editableCopy of
+    Nothing ->
+      []
+    Just editable ->
+      editable.tags
+    
 animalViewEditable animal =
   tr [ emphasizeBorder ]
     [ td []
@@ -165,7 +172,8 @@ animalViewEditable animal =
         , div [class "control is-horizontal"]
             [ div [class "control-label"] [label [class "label"] [text "Tags"]]
             , p [class "control is-grouped"]
-              (List.map Bulma.deletableTag animal.tags)
+              (List.map (Bulma.deletableTag (DeleteTagWithName animal.id))
+                 (editableTags animal))
             ]
 
         , p []

@@ -91,6 +91,8 @@ update msg model =
       transformOne model id (Animal.toState Editable >> Animal.makeEditableCopy)
     SetEditedName id name ->
       transformOne model id (Animal.setEditedName name)
+    DeleteTagWithName id name ->
+      transformOne model id (Animal.deleteTag name)
     CancelAnimalEdit id ->
       transformOne model id (Animal.toState Expanded >> Animal.cancelEditableCopy)
     SaveAnimalEdit id ->

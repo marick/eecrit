@@ -19210,6 +19210,10 @@ var _user$project$Animals_Msg$SaveAnimalEdit = function (a) {
 var _user$project$Animals_Msg$CancelAnimalEdit = function (a) {
 	return {ctor: 'CancelAnimalEdit', _0: a};
 };
+var _user$project$Animals_Msg$DeleteTagWithName = F2(
+	function (a, b) {
+		return {ctor: 'DeleteTagWithName', _0: a, _1: b};
+	});
 var _user$project$Animals_Msg$SetEditedName = F2(
 	function (a, b) {
 		return {ctor: 'SetEditedName', _0: a, _1: b};
@@ -19369,6 +19373,21 @@ var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
 			editableCopy: _elm_lang$core$Maybe$Just(extracted)
 		});
 };
+var _user$project$Animals_Animal$deleteTag = F2(
+	function (name, animal) {
+		var setter = function (editableCopy) {
+			return _elm_lang$core$Native_Utils.update(
+				editableCopy,
+				{
+					tags: A2(_elm_community$list_extra$List_Extra$remove, name, animal.tags)
+				});
+		};
+		return _elm_lang$core$Native_Utils.update(
+			animal,
+			{
+				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
+			});
+	});
 var _user$project$Animals_Animal$setEditedName = F2(
 	function (newName, animal) {
 		var setter = function (editableCopy) {
@@ -19647,6 +19666,12 @@ var _user$project$Animals_Main$update = F2(
 					model,
 					_p0._0,
 					_user$project$Animals_Animal$setEditedName(_p0._1));
+			case 'DeleteTagWithName':
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					_user$project$Animals_Animal$deleteTag(_p0._1));
 			case 'CancelAnimalEdit':
 				return A3(
 					_user$project$Animals_Main$transformOne,
@@ -19870,26 +19895,29 @@ var _user$project$Pile_Bulma$messageView = F2(
 					contentList)
 				]));
 	});
-var _user$project$Pile_Bulma$deletableTag = function (tagText) {
-	return A2(
-		_elm_lang$html$Html$p,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('tag is-primary control')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(tagText),
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('delete')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[]))
-			]));
-};
+var _user$project$Pile_Bulma$deletableTag = F2(
+	function (msg, tagText) {
+		return A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('tag is-primary control')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(tagText),
+					A2(
+					_elm_lang$html$Html$button,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('delete'),
+							_elm_lang$html$Html_Events$onClick(
+							msg(tagText))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
 var _user$project$Pile_Bulma$readOnlyTag = function (tagText) {
 	return A2(
 		_elm_lang$html$Html$span,
@@ -20294,12 +20322,21 @@ var _user$project$Animals_View_AllPageView$emphasizeBorder = _elm_lang$html$Html
 			{ctor: '_Tuple2', _0: 'border-top', _1: '2px solid'},
 			{ctor: '_Tuple2', _0: 'border-bottom', _1: '2px solid'}
 		]));
-var _user$project$Animals_View_AllPageView$editableName = function (animal) {
+var _user$project$Animals_View_AllPageView$editableTags = function (animal) {
 	var _p3 = animal.editableCopy;
 	if (_p3.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return _p3._0.tags;
+	}
+};
+var _user$project$Animals_View_AllPageView$editableName = function (animal) {
+	var _p4 = animal.editableCopy;
+	if (_p4.ctor === 'Nothing') {
 		return '';
 	} else {
-		return _p3._0.name;
+		return _p4._0.name;
 	}
 };
 var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal) {
@@ -20407,7 +20444,11 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 									[
 										_elm_lang$html$Html_Attributes$class('control is-grouped')
 									]),
-								A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$deletableTag, animal.tags))
+								A2(
+									_elm_lang$core$List$map,
+									_user$project$Pile_Bulma$deletableTag(
+										_user$project$Animals_Msg$DeleteTagWithName(animal.id)),
+									_user$project$Animals_View_AllPageView$editableTags(animal)))
 							])),
 						A2(
 						_elm_lang$html$Html$p,
@@ -20559,8 +20600,8 @@ var _user$project$Animals_View_AllPageView$animalViewCompact = function (animal)
 			]));
 };
 var _user$project$Animals_View_AllPageView$animalView = function (animal) {
-	var _p4 = animal.displayState;
-	switch (_p4.ctor) {
+	var _p5 = animal.displayState;
+	switch (_p5.ctor) {
 		case 'Compact':
 			return _user$project$Animals_View_AllPageView$animalViewCompact(animal);
 		case 'Expanded':
@@ -20617,8 +20658,8 @@ var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
 var _user$project$Animals_View_AllPageView$dateControl = F3(
 	function (hasOpenPicker, displayString, calendarToggleMsg) {
 		var iconF = function () {
-			var _p5 = hasOpenPicker;
-			if (_p5 === false) {
+			var _p6 = hasOpenPicker;
+			if (_p6 === false) {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
 			} else {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
@@ -20671,11 +20712,11 @@ var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
 	};
 	return A2(
 		_elm_lang$core$List$sortBy,
-		function (_p6) {
+		function (_p7) {
 			return _elm_lang$core$String$toLower(
 				function (_) {
 					return _.name;
-				}(_p6));
+				}(_p7));
 		},
 		A2(
 			_elm_lang$core$List$filter,

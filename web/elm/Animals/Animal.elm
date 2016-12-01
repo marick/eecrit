@@ -3,6 +3,7 @@ module Animals.Animal exposing (..)
 import Animals.Types exposing (..)
 import Animals.Msg exposing (..)
 import List
+import List.Extra
 
 toState newState animal =
   { animal | displayState = newState }
@@ -10,6 +11,13 @@ toState newState animal =
 setEditedName newName animal =
   let
     setter editableCopy = { editableCopy | name = newName }
+  in
+    { animal | editableCopy = Maybe.map setter animal.editableCopy }
+
+deleteTag name animal = 
+  let
+    setter editableCopy =
+      { editableCopy | tags = List.Extra.remove name animal.tags }
   in
     { animal | editableCopy = Maybe.map setter animal.editableCopy }
 

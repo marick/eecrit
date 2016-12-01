@@ -91,10 +91,13 @@ falseIcon = coloredIcon "fa-times" "red"
 readOnlyTag tagText =
   span [ class "tag" ] [ text tagText ]
     
-deletableTag tagText =
+deletableTag msg tagText =
   p [ class "tag is-primary control" ]
     [ text tagText
-    , button [class "delete"] []
+    , button
+        [ class "delete"
+        , Events.onClick (msg tagText)
+        ] []
     ]
     
 messageView headerList contentList  =

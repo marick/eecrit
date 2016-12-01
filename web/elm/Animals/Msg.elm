@@ -19,6 +19,7 @@ type Msg
   | ContractAnimal Id
   | EditAnimal Id
   | SetEditedName Id String
+  | DeleteTagWithName Id String
   | CancelAnimalEdit Id
   | SaveAnimalEdit Id
 

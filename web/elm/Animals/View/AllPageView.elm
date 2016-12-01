@@ -113,6 +113,13 @@ animalViewExpanded animal =
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
+
+editableName animal =
+  case animal.editableCopy of
+    Nothing ->
+      ""
+    Just editable ->
+      editable.name
     
 animalViewEditable animal =
   tr [ emphasizeBorder ]
@@ -123,7 +130,8 @@ animalViewEditable animal =
               [ p [class "control"]
                   [ input [ class "input"
                           , type' "text"
-                          , value (toSentenceCase animal.name)
+                          , value (editableName animal)
+                          , Events.onInput (SetEditedName animal.id)
                           ] []
                   ]
               ]
@@ -135,14 +143,18 @@ animalViewEditable animal =
             ]
 
         , p []
-          [ a [class "button is-success pull-left"]
+          [ a [ class "button is-success pull-left"
+              , onClickWithoutPropagation (SaveAnimalEdit animal.id)
+              ]
               [ span [class "icon"] [i [class "fa fa-check"] []]
               , text "Save"
               ]
           ]
 
         , p []
-          [ a [class "button is-danger pull-right"]
+          [ a [ class "button is-danger pull-right"
+              , onClickWithoutPropagation (CancelAnimalEdit animal.id)
+              ]
               [ span [class "icon"] [i [class "fa fa-times"] []]
               , text "Cancel"
               ]

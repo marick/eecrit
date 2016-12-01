@@ -38,8 +38,15 @@ type alias Animal =
   , tags : List String
   , properties : AnimalProperties
   , displayState : DisplayState
+  , editableCopy : Maybe EditableAnimal
   }
-       
+
+type alias EditableAnimal =
+  { name : String
+  , tags : List String
+  }
+
+
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
@@ -62,6 +69,7 @@ athena =
                                , ("Primary billing", AsString "Marick")
                                ]
   , displayState = Compact
+  , editableCopy = Nothing
   }
 
 jake =
@@ -71,6 +79,7 @@ jake =
   , tags = [ "gelding" ]
   , properties = Dict.fromList [ ("Available", AsBool True Nothing) ] 
   , displayState = Compact
+  , editableCopy = Nothing
   }
 
 ross =
@@ -82,6 +91,7 @@ ross =
                                , ("Primary billing", AsString "Forman")
                                ] 
   , displayState = Compact
+  , editableCopy = Nothing
   }
 
 xena =
@@ -94,6 +104,7 @@ xena =
                                ]
                                     
   , displayState = Compact
+  , editableCopy = Nothing
   }
 
 askTodaysDate =
@@ -154,6 +165,10 @@ type Msg
   | ExpandAnimal Id
   | ContractAnimal Id
   | EditAnimal Id
+  | SetEditedName Id String
+  | CancelAnimalEdit Id
+  | SaveAnimalEdit Id
+
   | MoreLikeThisAnimal Id
 
   | SetNameFilter String
@@ -189,26 +204,48 @@ update msg model =
       , Cmd.none
       )
     SelectDate date ->
-      ( { model | effectiveDate = At (Debug.log "set date" date) }
+      ( { model | effectiveDate = At date }
       , Cmd.none
       )
       
-    ExpandAnimal id ->
-      ( { model | animals = toState Expanded id model.animals }
-      , Cmd.none
-      )
-    ContractAnimal id ->
-      ( { model | animals = toState Compact id model.animals }
-      , Cmd.none
-      )
-    EditAnimal id ->
-      ( { model | animals = toState Editable id model.animals }
-      , Cmd.none
-      )
     MoreLikeThisAnimal id ->
       ( model 
       , Cmd.none
       )
+
+    ExpandAnimal id ->
+      ( { model | animals = transformAnimal (toState Expanded) id model.animals }
+      , Cmd.none
+      )
+    ContractAnimal id ->
+      ( { model | animals = transformAnimal (toState Compact) id model.animals }
+      , Cmd.none
+      )
+    EditAnimal id ->
+      ( { model | animals =
+            transformAnimal (toState Editable >> makeEditableCopy) id model.animals
+        }
+      , Cmd.none
+      )
+
+    SetEditedName id name ->
+      ( { model | animals =
+            transformAnimal (setEditedName name) id model.animals }
+      , Cmd.none
+      )
+
+    CancelAnimalEdit id ->
+      ( { model | animals =
+            transformAnimal (toState Expanded >> cancelEditableCopy) id model.animals
+        }
+      , Cmd.none )
+
+    SaveAnimalEdit id ->
+      ( { model | animals =
+            transformAnimal (toState Expanded >> replaceEditableCopy) id model.animals
+        }
+      , Cmd.none )
+
     SetNameFilter s ->
       ( { model | nameFilter = s }
       , Cmd.none
@@ -222,19 +259,51 @@ update msg model =
       , Cmd.none
       )
 
-transformAnimal pred transformer animal =
-  if pred animal then
-    transformer animal
-  else
-    animal
+toState newState animal =
+  { animal | displayState = newState }
+
+setEditedName newName animal =
+  let
+    setter editableCopy = { editableCopy | name = newName }
+  in
+    { animal | editableCopy = Maybe.map setter animal.editableCopy }
+
+makeEditableCopy animal =
+  let
+    extracted =
+      { name = animal.name
+      , tags = animal.tags
+      }
+  in
+    { animal | editableCopy = Just extracted }
 
 
+-- TODO: Lack of valid editable copy should make Save unclickable.
       
-toState newState id animals =
-  List.map
-    (transformAnimal (\ a -> a.id == id)
-       (\ a -> { a | displayState = newState }))
-    animals
+replaceEditableCopy animal =
+  case animal.editableCopy of
+    Nothing -> -- impossible
+      animal
+    (Just newValues) -> 
+      { animal
+        | name = newValues.name
+        , tags = newValues.tags
+          
+        , editableCopy = Nothing
+      }
+  
+cancelEditableCopy animal = 
+  { animal | editableCopy = Nothing }
+      
+transformAnimal transformer id animals =
+  let
+    doOne animal =
+      if animal.id == id then
+        transformer animal
+      else
+        animal
+  in
+    List.map doOne animals
 
       
 goto : Model -> String -> (Model, Cmd Msg)        

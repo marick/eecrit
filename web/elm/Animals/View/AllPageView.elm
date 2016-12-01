@@ -1,12 +1,13 @@
 module Animals.View.AllPageView exposing (view)
 
+import Animals.Types exposing (..)
+import Animals.Main as Main exposing (Msg(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Html.Events as Events
 import Pile.Bulma as Bulma 
 import Pile.Calendar as Calendar
-import Animals.Main as Main exposing (DisplayState(..), Msg(..), DictValue(..))
 import List
 import Dict
 import String.Extra exposing (toSentenceCase)

@@ -1,7 +1,10 @@
 module Animals.Main exposing (..)
 
-import Navigation
+import Animals.Types exposing (..)
+import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
+
+import Navigation
 import String
 import List
 import Date exposing (Date)
@@ -11,41 +14,9 @@ import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
 
 -- Model and Init
-
 type alias Flags =
   { csrfToken : String
   }
-
-type DisplayState
-  = Compact
-  | Expanded
-  | Editable
-
-type DictValue
-  = AsInt Int
-  | AsFloat Float
-  | AsString String
-  | AsDate Date
-  | AsBool Bool (Maybe String)
-
-type alias AnimalProperties =
-  Dict String DictValue
-
-type alias Animal =
-  { id : String
-  , name : String
-  , species : String
-  , tags : List String
-  , properties : AnimalProperties
-  , displayState : DisplayState
-  , editableCopy : Maybe EditableAnimal
-  }
-
-type alias EditableAnimal =
-  { name : String
-  , tags : List String
-  }
-
 
 type alias Model = 
   { page : MyNav.PageChoice
@@ -60,52 +31,6 @@ type alias Model =
   }
 
 
-athena =
-  { id = "1"
-  , name = "Athena"
-  , species = "bovine"
-  , tags = [ "cow" ]
-  , properties = Dict.fromList [ ("Available", AsBool True Nothing)
-                               , ("Primary billing", AsString "Marick")
-                               ]
-  , displayState = Compact
-  , editableCopy = Nothing
-  }
-
-jake =
-  { id = "2"
-  , name = "Jake"
-  , species = "equine"
-  , tags = [ "gelding" ]
-  , properties = Dict.fromList [ ("Available", AsBool True Nothing) ] 
-  , displayState = Compact
-  , editableCopy = Nothing
-  }
-
-ross =
-  { id = "3"
-  , name = "ross"
-  , species = "equine"
-  , tags = [ "stallion", "aggressive"]
-  , properties = Dict.fromList [ ("Available", AsBool True Nothing)
-                               , ("Primary billing", AsString "Forman")
-                               ] 
-  , displayState = Compact
-  , editableCopy = Nothing
-  }
-
-xena =
-  { id = "4"
-  , name = "Xena"
-  , species = "equine"
-  , tags = [ "mare", "skittish" ]
-  , properties = Dict.fromList [ ("Available", AsBool False (Just "off for the summer"))
-                               , ("Primary billing", AsString "Forman")
-                               ]
-                                    
-  , displayState = Compact
-  , editableCopy = Nothing
-  }
 
 askTodaysDate =
   Task.perform (always (SetToday Nothing)) (Just >> SetToday) Date.now
@@ -114,7 +39,7 @@ init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
   ( { page = startingPage
     , csrfToken = flags.csrfToken
-    , animals = [athena, jake, xena, ross]
+    , animals = OutsideWorld.fetchAnimals
     , nameFilter = ""
     , tagFilter = ""
     , speciesFilter = ""

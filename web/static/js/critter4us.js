@@ -19163,6 +19163,127 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
+var _user$project$Animals_Types$Animal = F7(
+	function (a, b, c, d, e, f, g) {
+		return {id: a, name: b, species: c, tags: d, properties: e, displayState: f, editableCopy: g};
+	});
+var _user$project$Animals_Types$EditableAnimal = F2(
+	function (a, b) {
+		return {name: a, tags: b};
+	});
+var _user$project$Animals_Types$Editable = {ctor: 'Editable'};
+var _user$project$Animals_Types$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Types$Compact = {ctor: 'Compact'};
+var _user$project$Animals_Types$AsBool = F2(
+	function (a, b) {
+		return {ctor: 'AsBool', _0: a, _1: b};
+	});
+var _user$project$Animals_Types$AsDate = function (a) {
+	return {ctor: 'AsDate', _0: a};
+};
+var _user$project$Animals_Types$AsString = function (a) {
+	return {ctor: 'AsString', _0: a};
+};
+var _user$project$Animals_Types$AsFloat = function (a) {
+	return {ctor: 'AsFloat', _0: a};
+};
+var _user$project$Animals_Types$AsInt = function (a) {
+	return {ctor: 'AsInt', _0: a};
+};
+
+var _user$project$Animals_OutsideWorld$xena = {
+	id: '4',
+	name: 'Xena',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['mare', 'skittish']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(
+					_user$project$Animals_Types$AsBool,
+					false,
+					_elm_lang$core$Maybe$Just('off for the summer'))
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Types$AsString('Forman')
+			}
+			])),
+	displayState: _user$project$Animals_Types$Compact,
+	editableCopy: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Animals_OutsideWorld$ross = {
+	id: '3',
+	name: 'ross',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['stallion', 'aggressive']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Types$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Types$AsString('Forman')
+			}
+			])),
+	displayState: _user$project$Animals_Types$Compact,
+	editableCopy: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Animals_OutsideWorld$jake = {
+	id: '2',
+	name: 'Jake',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['gelding']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Types$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			}
+			])),
+	displayState: _user$project$Animals_Types$Compact,
+	editableCopy: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Animals_OutsideWorld$athena = {
+	id: '1',
+	name: 'Athena',
+	species: 'bovine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['cow']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Types$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Types$AsString('Marick')
+			}
+			])),
+	displayState: _user$project$Animals_Types$Compact,
+	editableCopy: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$Animals_OutsideWorld$fetchAnimals = _elm_lang$core$Native_List.fromArray(
+	[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake]);
+
 var _user$project$Animals_Navigation$urlUpdate = F2(
 	function (page, model) {
 		return {
@@ -19381,6 +19502,171 @@ var _user$project$Animals_Main$toState = F2(
 			animal,
 			{displayState: newState});
 	});
+var _user$project$Animals_Main$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'NavigateToAllPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
+			case 'NavigateToSpreadsheetPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$spreadsheetPagePath);
+			case 'NavigateToSummaryPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$summaryPagePath);
+			case 'NavigateToAddPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
+			case 'NavigateToHelpPage':
+				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
+			case 'SetToday':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{today: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ToggleDatePicker':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							datePickerOpen: _elm_lang$core$Basics$not(model.datePickerOpen)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SelectDate':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							effectiveDate: _user$project$Pile_Calendar$At(_p2._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'MoreLikeThisAnimal':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'ExpandAnimal':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								_user$project$Animals_Main$toState(_user$project$Animals_Types$Expanded),
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ContractAnimal':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								_user$project$Animals_Main$toState(_user$project$Animals_Types$Compact),
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'EditAnimal':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								function (_p3) {
+									return _user$project$Animals_Main$makeEditableCopy(
+										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Editable, _p3));
+								},
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetEditedName':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								_user$project$Animals_Main$setEditedName(_p2._1),
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'CancelAnimalEdit':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								function (_p4) {
+									return _user$project$Animals_Main$cancelEditableCopy(
+										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Expanded, _p4));
+								},
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SaveAnimalEdit':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							animals: A3(
+								_user$project$Animals_Main$transformAnimal,
+								function (_p5) {
+									return _user$project$Animals_Main$replaceEditableCopy(
+										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Expanded, _p5));
+								},
+								_p2._0,
+								model.animals)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetNameFilter':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{nameFilter: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetTagFilter':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{tagFilter: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{speciesFilter: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
 var _user$project$Animals_Main$filteredAnimals = function (model) {
 	var hasWanted = F2(
 		function (modelFilter, animalValue) {
@@ -19416,11 +19702,11 @@ var _user$project$Animals_Main$filteredAnimals = function (model) {
 	};
 	return A2(
 		_elm_lang$core$List$sortBy,
-		function (_p2) {
+		function (_p6) {
 			return _elm_lang$core$String$toLower(
 				function (_) {
 					return _.name;
-				}(_p2));
+				}(_p6));
 		},
 		A2(
 			_elm_lang$core$List$filter,
@@ -19433,292 +19719,10 @@ var _user$project$Animals_Main$filteredAnimals = function (model) {
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
-var _user$project$Animals_Main$Animal = F7(
-	function (a, b, c, d, e, f, g) {
-		return {id: a, name: b, species: c, tags: d, properties: e, displayState: f, editableCopy: g};
-	});
-var _user$project$Animals_Main$EditableAnimal = F2(
-	function (a, b) {
-		return {name: a, tags: b};
-	});
 var _user$project$Animals_Main$Model = F9(
 	function (a, b, c, d, e, f, g, h, i) {
 		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
 	});
-var _user$project$Animals_Main$Editable = {ctor: 'Editable'};
-var _user$project$Animals_Main$Expanded = {ctor: 'Expanded'};
-var _user$project$Animals_Main$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Main$update = F2(
-	function (msg, model) {
-		var _p3 = msg;
-		switch (_p3.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'NavigateToAllPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
-			case 'NavigateToSpreadsheetPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$spreadsheetPagePath);
-			case 'NavigateToSummaryPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$summaryPagePath);
-			case 'NavigateToAddPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
-			case 'NavigateToHelpPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
-			case 'SetToday':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{today: _p3._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ToggleDatePicker':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							datePickerOpen: _elm_lang$core$Basics$not(model.datePickerOpen)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SelectDate':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							effectiveDate: _user$project$Pile_Calendar$At(_p3._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'MoreLikeThisAnimal':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'ExpandAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$toState(_user$project$Animals_Main$Expanded),
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'ContractAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$toState(_user$project$Animals_Main$Compact),
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'EditAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p4) {
-									return _user$project$Animals_Main$makeEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Main$Editable, _p4));
-								},
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SetEditedName':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$setEditedName(_p3._1),
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'CancelAnimalEdit':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p5) {
-									return _user$project$Animals_Main$cancelEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p5));
-								},
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SaveAnimalEdit':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p6) {
-									return _user$project$Animals_Main$replaceEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Main$Expanded, _p6));
-								},
-								_p3._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SetNameFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{nameFilter: _p3._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'SetTagFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{tagFilter: _p3._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{speciesFilter: _p3._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-		}
-	});
-var _user$project$Animals_Main$AsBool = F2(
-	function (a, b) {
-		return {ctor: 'AsBool', _0: a, _1: b};
-	});
-var _user$project$Animals_Main$jake = {
-	id: '2',
-	name: 'Jake',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['gelding']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			}
-			])),
-	displayState: _user$project$Animals_Main$Compact,
-	editableCopy: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Animals_Main$AsDate = function (a) {
-	return {ctor: 'AsDate', _0: a};
-};
-var _user$project$Animals_Main$AsString = function (a) {
-	return {ctor: 'AsString', _0: a};
-};
-var _user$project$Animals_Main$athena = {
-	id: '1',
-	name: 'Athena',
-	species: 'bovine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['cow']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Main$AsString('Marick')
-			}
-			])),
-	displayState: _user$project$Animals_Main$Compact,
-	editableCopy: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Animals_Main$ross = {
-	id: '3',
-	name: 'ross',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['stallion', 'aggressive']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Main$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Main$AsString('Forman')
-			}
-			])),
-	displayState: _user$project$Animals_Main$Compact,
-	editableCopy: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Animals_Main$xena = {
-	id: '4',
-	name: 'Xena',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['mare', 'skittish']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(
-					_user$project$Animals_Main$AsBool,
-					false,
-					_elm_lang$core$Maybe$Just('off for the summer'))
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Main$AsString('Forman')
-			}
-			])),
-	displayState: _user$project$Animals_Main$Compact,
-	editableCopy: _elm_lang$core$Maybe$Nothing
-};
-var _user$project$Animals_Main$AsFloat = function (a) {
-	return {ctor: 'AsFloat', _0: a};
-};
-var _user$project$Animals_Main$AsInt = function (a) {
-	return {ctor: 'AsInt', _0: a};
-};
 var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -19771,18 +19775,7 @@ var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
 		return {
 			ctor: '_Tuple2',
-			_0: {
-				page: startingPage,
-				csrfToken: flags.csrfToken,
-				animals: _elm_lang$core$Native_List.fromArray(
-					[_user$project$Animals_Main$athena, _user$project$Animals_Main$jake, _user$project$Animals_Main$xena, _user$project$Animals_Main$ross]),
-				nameFilter: '',
-				tagFilter: '',
-				speciesFilter: '',
-				effectiveDate: _user$project$Pile_Calendar$Today,
-				today: _elm_lang$core$Maybe$Nothing,
-				datePickerOpen: false
-			},
+			_0: {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_OutsideWorld$fetchAnimals, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false},
 			_1: _user$project$Animals_Main$askTodaysDate
 		};
 	});

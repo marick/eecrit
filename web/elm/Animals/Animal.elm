@@ -2,10 +2,11 @@ module Animals.Animal exposing (..)
 
 import Animals.Types exposing (..)
 import Animals.Msg exposing (..)
+import Dict
 import List
 import List.Extra as List
 
-toState newState animal =
+toState newState animal = 
   { animal | displayState = newState }
 
 setEditedName newName animal =
@@ -47,15 +48,14 @@ replaceEditableCopy animal =
   
 cancelEditableCopy animal = 
   { animal | editableCopy = Nothing }
-      
-transformAnimal transformer id animals =
-  let
-    doOne animal =
-      if animal.id == id then
-        transformer animal
-      else
-        animal
-  in
-    List.map doOne animals
 
-      
+-- Animal groupings
+
+asDict animals =
+  let
+    tuple animal = (animal.id, animal)
+  in
+    animals |> List.map tuple |> Dict.fromList
+    
+transformAnimal transformer id animals =
+  Dict.update id (Maybe.map transformer) animals

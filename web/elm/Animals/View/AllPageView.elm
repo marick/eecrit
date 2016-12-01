@@ -57,6 +57,7 @@ filteredAnimals model =
 
   in
     model.animals
+      |> Dict.values
       |> List.filter hasDesiredSpecies
       |> List.filter hasDesiredName
       |> List.filter hasDesiredTag

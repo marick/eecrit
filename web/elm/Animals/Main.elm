@@ -23,7 +23,7 @@ type alias Flags =
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
-  , animals : List Animal
+  , animals : Dict Id Animal
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -40,7 +40,7 @@ init flags startingPage =
     model =
       { page = startingPage
       , csrfToken = flags.csrfToken
-      , animals = []
+      , animals = Dict.empty
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
@@ -49,7 +49,7 @@ init flags startingPage =
       , datePickerOpen = False
       }
   in
-  model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
+    model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
 -- Update
 
@@ -72,7 +72,7 @@ update msg model =
       , Cmd.none
       )
     SetAnimals animals ->
-      ( { model | animals = animals }
+      ( { model | animals = Animal.asDict animals }
       , Cmd.none
       )
 

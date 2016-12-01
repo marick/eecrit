@@ -1,6 +1,7 @@
 module Animals.Main exposing (..)
 
 import Animals.Types exposing (..)
+import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
 
@@ -9,7 +10,6 @@ import String
 import List
 import Date exposing (Date)
 import Date.Extra
-import Task
 import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
 
@@ -32,9 +32,6 @@ type alias Model =
 
 
 
-askTodaysDate =
-  Task.perform (always (SetToday Nothing)) (Just >> SetToday) Date.now
-  
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
   ( { page = startingPage
@@ -47,60 +44,9 @@ init flags startingPage =
     , today = Nothing
     , datePickerOpen = False
     }
-  , askTodaysDate
+  , OutsideWorld.askTodaysDate
   )
 
-
-filteredAnimals model = 
-  let
-    hasWanted modelFilter animalValue =
-      let 
-        wanted = model |> modelFilter |> String.toLower
-        has = animalValue |> String.toLower
-      in
-        String.startsWith wanted has
-
-    hasDesiredSpecies animal = hasWanted .speciesFilter animal.species
-    hasDesiredName animal = hasWanted .nameFilter animal.name
-    hasDesiredTag animal =
-      List.any (hasWanted .tagFilter) animal.tags
-
-  in
-    model.animals
-      |> List.filter hasDesiredSpecies
-      |> List.filter hasDesiredName
-      |> List.filter hasDesiredTag
-      |> List.sortBy (.name >> String.toLower)
-      
--- Msg
-
-type alias Id = String
-
-type Msg
-  = NavigateToAllPage
-  | NavigateToSpreadsheetPage
-  | NavigateToSummaryPage
-  | NavigateToAddPage
-  | NavigateToHelpPage
-
-  | SetToday (Maybe Date)
-  | ToggleDatePicker
-  | SelectDate Date
-
-  | ExpandAnimal Id
-  | ContractAnimal Id
-  | EditAnimal Id
-  | SetEditedName Id String
-  | CancelAnimalEdit Id
-  | SaveAnimalEdit Id
-
-  | MoreLikeThisAnimal Id
-
-  | SetNameFilter String
-  | SetTagFilter String
-  | SetSpeciesFilter String
-
-  | NoOp
 
 -- Update
 

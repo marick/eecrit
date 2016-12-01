@@ -5,7 +5,8 @@ import Html.Attributes exposing (..)
 import Html.App exposing (programWithFlags)
 import Html.Events as Events
 
-import Animals.Main exposing (Model, Msg(..))
+import Animals.Msg exposing (Msg(..))
+import Animals.Main exposing (Model)
 import Animals.Navigation as MyNav
 import Pile.Bulma as Bulma
 

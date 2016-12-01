@@ -19191,6 +19191,51 @@ var _user$project$Animals_Types$AsInt = function (a) {
 	return {ctor: 'AsInt', _0: a};
 };
 
+var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
+var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
+	return {ctor: 'SetSpeciesFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetTagFilter = function (a) {
+	return {ctor: 'SetTagFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetNameFilter = function (a) {
+	return {ctor: 'SetNameFilter', _0: a};
+};
+var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
+	return {ctor: 'MoreLikeThisAnimal', _0: a};
+};
+var _user$project$Animals_Msg$SaveAnimalEdit = function (a) {
+	return {ctor: 'SaveAnimalEdit', _0: a};
+};
+var _user$project$Animals_Msg$CancelAnimalEdit = function (a) {
+	return {ctor: 'CancelAnimalEdit', _0: a};
+};
+var _user$project$Animals_Msg$SetEditedName = F2(
+	function (a, b) {
+		return {ctor: 'SetEditedName', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$EditAnimal = function (a) {
+	return {ctor: 'EditAnimal', _0: a};
+};
+var _user$project$Animals_Msg$ContractAnimal = function (a) {
+	return {ctor: 'ContractAnimal', _0: a};
+};
+var _user$project$Animals_Msg$ExpandAnimal = function (a) {
+	return {ctor: 'ExpandAnimal', _0: a};
+};
+var _user$project$Animals_Msg$SelectDate = function (a) {
+	return {ctor: 'SelectDate', _0: a};
+};
+var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
+var _user$project$Animals_Msg$SetToday = function (a) {
+	return {ctor: 'SetToday', _0: a};
+};
+var _user$project$Animals_Msg$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
+var _user$project$Animals_Msg$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
+var _user$project$Animals_Msg$NavigateToSummaryPage = {ctor: 'NavigateToSummaryPage'};
+var _user$project$Animals_Msg$NavigateToSpreadsheetPage = {ctor: 'NavigateToSpreadsheetPage'};
+var _user$project$Animals_Msg$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
+
 var _user$project$Animals_OutsideWorld$xena = {
 	id: '4',
 	name: 'Xena',
@@ -19283,6 +19328,15 @@ var _user$project$Animals_OutsideWorld$athena = {
 };
 var _user$project$Animals_OutsideWorld$fetchAnimals = _elm_lang$core$Native_List.fromArray(
 	[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake]);
+var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
+	_elm_lang$core$Task$perform,
+	_elm_lang$core$Basics$always(
+		_user$project$Animals_Msg$SetToday(_elm_lang$core$Maybe$Nothing)),
+	function (_p0) {
+		return _user$project$Animals_Msg$SetToday(
+			_elm_lang$core$Maybe$Just(_p0));
+	},
+	_elm_lang$core$Date$now);
 
 var _user$project$Animals_Navigation$urlUpdate = F2(
 	function (page, model) {
@@ -19667,55 +19721,14 @@ var _user$project$Animals_Main$update = F2(
 				};
 		}
 	});
-var _user$project$Animals_Main$filteredAnimals = function (model) {
-	var hasWanted = F2(
-		function (modelFilter, animalValue) {
-			var has = _elm_lang$core$String$toLower(animalValue);
-			var wanted = _elm_lang$core$String$toLower(
-				modelFilter(model));
-			return A2(_elm_lang$core$String$startsWith, wanted, has);
-		});
-	var hasDesiredSpecies = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.speciesFilter;
-			},
-			animal.species);
-	};
-	var hasDesiredName = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.nameFilter;
-			},
-			animal.name);
-	};
-	var hasDesiredTag = function (animal) {
-		return A2(
-			_elm_lang$core$List$any,
-			hasWanted(
-				function (_) {
-					return _.tagFilter;
-				}),
-			animal.tags);
-	};
-	return A2(
-		_elm_lang$core$List$sortBy,
-		function (_p6) {
-			return _elm_lang$core$String$toLower(
-				function (_) {
-					return _.name;
-				}(_p6));
-		},
-		A2(
-			_elm_lang$core$List$filter,
-			hasDesiredTag,
-			A2(
-				_elm_lang$core$List$filter,
-				hasDesiredName,
-				A2(_elm_lang$core$List$filter, hasDesiredSpecies, model.animals))));
-};
+var _user$project$Animals_Main$init = F2(
+	function (flags, startingPage) {
+		return {
+			ctor: '_Tuple2',
+			_0: {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_OutsideWorld$fetchAnimals, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false},
+			_1: _user$project$Animals_OutsideWorld$askTodaysDate
+		};
+	});
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
@@ -19723,67 +19736,6 @@ var _user$project$Animals_Main$Model = F9(
 	function (a, b, c, d, e, f, g, h, i) {
 		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
 	});
-var _user$project$Animals_Main$NoOp = {ctor: 'NoOp'};
-var _user$project$Animals_Main$SetSpeciesFilter = function (a) {
-	return {ctor: 'SetSpeciesFilter', _0: a};
-};
-var _user$project$Animals_Main$SetTagFilter = function (a) {
-	return {ctor: 'SetTagFilter', _0: a};
-};
-var _user$project$Animals_Main$SetNameFilter = function (a) {
-	return {ctor: 'SetNameFilter', _0: a};
-};
-var _user$project$Animals_Main$MoreLikeThisAnimal = function (a) {
-	return {ctor: 'MoreLikeThisAnimal', _0: a};
-};
-var _user$project$Animals_Main$SaveAnimalEdit = function (a) {
-	return {ctor: 'SaveAnimalEdit', _0: a};
-};
-var _user$project$Animals_Main$CancelAnimalEdit = function (a) {
-	return {ctor: 'CancelAnimalEdit', _0: a};
-};
-var _user$project$Animals_Main$SetEditedName = F2(
-	function (a, b) {
-		return {ctor: 'SetEditedName', _0: a, _1: b};
-	});
-var _user$project$Animals_Main$EditAnimal = function (a) {
-	return {ctor: 'EditAnimal', _0: a};
-};
-var _user$project$Animals_Main$ContractAnimal = function (a) {
-	return {ctor: 'ContractAnimal', _0: a};
-};
-var _user$project$Animals_Main$ExpandAnimal = function (a) {
-	return {ctor: 'ExpandAnimal', _0: a};
-};
-var _user$project$Animals_Main$SelectDate = function (a) {
-	return {ctor: 'SelectDate', _0: a};
-};
-var _user$project$Animals_Main$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
-var _user$project$Animals_Main$SetToday = function (a) {
-	return {ctor: 'SetToday', _0: a};
-};
-var _user$project$Animals_Main$askTodaysDate = A3(
-	_elm_lang$core$Task$perform,
-	_elm_lang$core$Basics$always(
-		_user$project$Animals_Main$SetToday(_elm_lang$core$Maybe$Nothing)),
-	function (_p7) {
-		return _user$project$Animals_Main$SetToday(
-			_elm_lang$core$Maybe$Just(_p7));
-	},
-	_elm_lang$core$Date$now);
-var _user$project$Animals_Main$init = F2(
-	function (flags, startingPage) {
-		return {
-			ctor: '_Tuple2',
-			_0: {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_OutsideWorld$fetchAnimals, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false},
-			_1: _user$project$Animals_Main$askTodaysDate
-		};
-	});
-var _user$project$Animals_Main$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
-var _user$project$Animals_Main$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
-var _user$project$Animals_Main$NavigateToSummaryPage = {ctor: 'NavigateToSummaryPage'};
-var _user$project$Animals_Main$NavigateToSpreadsheetPage = {ctor: 'NavigateToSpreadsheetPage'};
-var _user$project$Animals_Main$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
 
 var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) {
 	return A3(
@@ -20216,13 +20168,13 @@ var _user$project$Pile_Bulma$tabs = F2(
 	});
 
 var _user$project$Animals_View_AllPageView$editHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Main$NoOp);
+	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Msg$NoOp);
 };
 var _user$project$Animals_View_AllPageView$filterHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Main$NoOp);
+	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Msg$NoOp);
 };
 var _user$project$Animals_View_AllPageView$calendarHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Main$NoOp);
+	return A3(iconType, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Msg$NoOp);
 };
 var _user$project$Animals_View_AllPageView$moreLikeThis = F2(
 	function (animal, iconType) {
@@ -20230,7 +20182,7 @@ var _user$project$Animals_View_AllPageView$moreLikeThis = F2(
 			iconType,
 			'fa-plus',
 			'Copy: make more animals like this one',
-			_user$project$Animals_Main$MoreLikeThisAnimal(animal.id));
+			_user$project$Animals_Msg$MoreLikeThisAnimal(animal.id));
 	});
 var _user$project$Animals_View_AllPageView$edit = F2(
 	function (animal, iconType) {
@@ -20238,7 +20190,7 @@ var _user$project$Animals_View_AllPageView$edit = F2(
 			iconType,
 			'fa-pencil',
 			'Edit: make changes to this animal',
-			_user$project$Animals_Main$EditAnimal(animal.id));
+			_user$project$Animals_Msg$EditAnimal(animal.id));
 	});
 var _user$project$Animals_View_AllPageView$contract = F2(
 	function (animal, iconType) {
@@ -20246,7 +20198,7 @@ var _user$project$Animals_View_AllPageView$contract = F2(
 			iconType,
 			'fa-caret-up',
 			'Expand: show less about this animal',
-			_user$project$Animals_Main$ContractAnimal(animal.id));
+			_user$project$Animals_Msg$ContractAnimal(animal.id));
 	});
 var _user$project$Animals_View_AllPageView$expand = F2(
 	function (animal, iconType) {
@@ -20254,7 +20206,7 @@ var _user$project$Animals_View_AllPageView$expand = F2(
 			iconType,
 			'fa-caret-down',
 			'Expand: show more about this animal',
-			_user$project$Animals_Main$ExpandAnimal(animal.id));
+			_user$project$Animals_Msg$ExpandAnimal(animal.id));
 	});
 var _user$project$Animals_View_AllPageView$animalTags = function (animal) {
 	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
@@ -20445,7 +20397,7 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 														_elm_lang$html$Html_Attributes$value(
 														_user$project$Animals_View_AllPageView$editableName(animal)),
 														_elm_lang$html$Html_Events$onInput(
-														_user$project$Animals_Main$SetEditedName(animal.id))
+														_user$project$Animals_Msg$SetEditedName(animal.id))
 													]),
 												_elm_lang$core$Native_List.fromArray(
 													[]))
@@ -20499,7 +20451,7 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 									[
 										_elm_lang$html$Html_Attributes$class('button is-success pull-left'),
 										_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-										_user$project$Animals_Main$SaveAnimalEdit(animal.id))
+										_user$project$Animals_Msg$SaveAnimalEdit(animal.id))
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
@@ -20535,7 +20487,7 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 									[
 										_elm_lang$html$Html_Attributes$class('button is-danger pull-right'),
 										_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-										_user$project$Animals_Main$CancelAnimalEdit(animal.id))
+										_user$project$Animals_Msg$CancelAnimalEdit(animal.id))
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
@@ -20656,7 +20608,7 @@ var _user$project$Animals_View_AllPageView$speciesFilter = function (model) {
 					[
 						_elm_lang$html$Html_Attributes$value(val),
 						_elm_lang$html$Html_Events$onClick(
-						_user$project$Animals_Main$SetSpeciesFilter(val))
+						_user$project$Animals_Msg$SetSpeciesFilter(val))
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -20681,7 +20633,7 @@ var _user$project$Animals_View_AllPageView$tagsFilter = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$Pile_Bulma$headingP('Tag'),
-				A2(_user$project$Pile_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Main$SetTagFilter)
+				A2(_user$project$Pile_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Msg$SetTagFilter)
 			]));
 };
 var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
@@ -20689,7 +20641,7 @@ var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_user$project$Pile_Bulma$headingP('Name'),
-				A2(_user$project$Pile_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Main$SetNameFilter)
+				A2(_user$project$Pile_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Msg$SetNameFilter)
 			]));
 };
 var _user$project$Animals_View_AllPageView$dateControl = F3(
@@ -20714,6 +20666,55 @@ var _user$project$Animals_View_AllPageView$dateControl = F3(
 					iconF(calendarToggleMsg)
 				]));
 	});
+var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
+	var hasWanted = F2(
+		function (modelFilter, animalValue) {
+			var has = _elm_lang$core$String$toLower(animalValue);
+			var wanted = _elm_lang$core$String$toLower(
+				modelFilter(model));
+			return A2(_elm_lang$core$String$startsWith, wanted, has);
+		});
+	var hasDesiredSpecies = function (animal) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.speciesFilter;
+			},
+			animal.species);
+	};
+	var hasDesiredName = function (animal) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.nameFilter;
+			},
+			animal.name);
+	};
+	var hasDesiredTag = function (animal) {
+		return A2(
+			_elm_lang$core$List$any,
+			hasWanted(
+				function (_) {
+					return _.tagFilter;
+				}),
+			animal.tags);
+	};
+	return A2(
+		_elm_lang$core$List$sortBy,
+		function (_p6) {
+			return _elm_lang$core$String$toLower(
+				function (_) {
+					return _.name;
+				}(_p6));
+		},
+		A2(
+			_elm_lang$core$List$filter,
+			hasDesiredTag,
+			A2(
+				_elm_lang$core$List$filter,
+				hasDesiredName,
+				A2(_elm_lang$core$List$filter, hasDesiredSpecies, model.animals))));
+};
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -20738,7 +20739,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										A4(_user$project$Pile_Calendar$view, _user$project$Animals_View_AllPageView$dateControl, _user$project$Animals_Main$ToggleDatePicker, _user$project$Animals_Main$SelectDate, model)
+										A4(_user$project$Pile_Calendar$view, _user$project$Animals_View_AllPageView$dateControl, _user$project$Animals_Msg$ToggleDatePicker, _user$project$Animals_Msg$SelectDate, model)
 									]))
 							])),
 						A2(
@@ -20769,7 +20770,7 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 				A2(
 					_elm_lang$core$List$map,
 					_user$project$Animals_View_AllPageView$animalView,
-					_user$project$Animals_Main$filteredAnimals(model)))
+					_user$project$Animals_View_AllPageView$filteredAnimals(model)))
 			]));
 };
 
@@ -20801,11 +20802,11 @@ var _user$project$Animals_View$view = function (model) {
 				model.page,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Main$NavigateToAllPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SpreadsheetPage, _1: 'Spreadsheet View', _2: _user$project$Animals_Main$NavigateToSpreadsheetPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SummaryPage, _1: 'Summary View', _2: _user$project$Animals_Main$NavigateToSummaryPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Main$NavigateToAddPage},
-						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Help', _2: _user$project$Animals_Main$NavigateToHelpPage}
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AllPage, _1: 'View Animals', _2: _user$project$Animals_Msg$NavigateToAllPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SpreadsheetPage, _1: 'Spreadsheet View', _2: _user$project$Animals_Msg$NavigateToSpreadsheetPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$SummaryPage, _1: 'Summary View', _2: _user$project$Animals_Msg$NavigateToSummaryPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$AddPage, _1: 'Add Animals', _2: _user$project$Animals_Msg$NavigateToAddPage},
+						{ctor: '_Tuple3', _0: _user$project$Animals_Navigation$HelpPage, _1: 'Help', _2: _user$project$Animals_Msg$NavigateToHelpPage}
 					])),
 				function () {
 				var _p0 = model.page;

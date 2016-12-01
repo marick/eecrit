@@ -1,7 +1,16 @@
-module Animals.OutsideWorld exposing (fetchAnimals)
+module Animals.OutsideWorld exposing
+  ( fetchAnimals
+  , askTodaysDate
+  )
 
 import Animals.Types exposing (..)
+import Animals.Msg exposing (..)
+import Date
 import Dict
+import Task
+
+askTodaysDate =
+  Task.perform (always (SetToday Nothing)) (Just >> SetToday) Date.now
 
 fetchAnimals = [athena, ross, xena, jake]
 

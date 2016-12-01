@@ -1,7 +1,7 @@
 module Animals.View.AllPageView exposing (view)
 
 import Animals.Types exposing (..)
-import Animals.Main as Main exposing (Msg(..))
+import Animals.Msg exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
@@ -10,6 +10,7 @@ import Pile.Bulma as Bulma
 import Pile.Calendar as Calendar
 import List
 import Dict
+import String
 import String.Extra exposing (toSentenceCase)
 
 view model =
@@ -36,8 +37,32 @@ view model =
                 ]
             ]
         ]
-    , Main.filteredAnimals model |> List.map animalView |> Bulma.headerlessTable 
+    , filteredAnimals model |> List.map animalView |> Bulma.headerlessTable 
     ]
+
+
+filteredAnimals model = 
+  let
+    hasWanted modelFilter animalValue =
+      let 
+        wanted = model |> modelFilter |> String.toLower
+        has = animalValue |> String.toLower
+      in
+        String.startsWith wanted has
+
+    hasDesiredSpecies animal = hasWanted .speciesFilter animal.species
+    hasDesiredName animal = hasWanted .nameFilter animal.name
+    hasDesiredTag animal =
+      List.any (hasWanted .tagFilter) animal.tags
+
+  in
+    model.animals
+      |> List.filter hasDesiredSpecies
+      |> List.filter hasDesiredName
+      |> List.filter hasDesiredTag
+      |> List.sortBy (.name >> String.toLower)
+      
+    
     
 -- The calendar
 

@@ -3,6 +3,7 @@ module Animals.Main exposing (..)
 import Animals.Types exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
+import Animals.Animal as Animal
 import Animals.Navigation as MyNav
 
 import Navigation
@@ -56,15 +57,15 @@ update msg model =
     NoOp ->
       ( model, Cmd.none )
     NavigateToAllPage ->
-      goto model MyNav.allPagePath
+      MyNav.toAllPagePath model
     NavigateToSpreadsheetPage ->
-      goto model MyNav.spreadsheetPagePath
+      MyNav.toSpreadsheetPagePath model
     NavigateToSummaryPage ->
-      goto model MyNav.summaryPagePath
+      MyNav.toSummaryPagePath model
     NavigateToAddPage ->
-      goto model MyNav.addPagePath
+      MyNav.toAddPagePath model
     NavigateToHelpPage ->
-      goto model MyNav.helpPagePath
+      MyNav.toHelpPagePath model
 
     SetToday value ->
       ( { model | today = value }
@@ -85,37 +86,17 @@ update msg model =
       )
 
     ExpandAnimal id ->
-      ( { model | animals = transformAnimal (toState Expanded) id model.animals }
-      , Cmd.none
-      )
+      transformOne model id (Animal.toState Expanded)
     ContractAnimal id ->
-      ( { model | animals = transformAnimal (toState Compact) id model.animals }
-      , Cmd.none
-      )
+      transformOne model id (Animal.toState Compact)
     EditAnimal id ->
-      ( { model | animals =
-            transformAnimal (toState Editable >> makeEditableCopy) id model.animals
-        }
-      , Cmd.none
-      )
-
+      transformOne model id (Animal.toState Editable >> Animal.makeEditableCopy)
     SetEditedName id name ->
-      ( { model | animals =
-            transformAnimal (setEditedName name) id model.animals }
-      , Cmd.none
-      )
-
+      transformOne model id (Animal.setEditedName name)
     CancelAnimalEdit id ->
-      ( { model | animals =
-            transformAnimal (toState Expanded >> cancelEditableCopy) id model.animals
-        }
-      , Cmd.none )
-
+      transformOne model id (Animal.toState Expanded >> Animal.cancelEditableCopy)
     SaveAnimalEdit id ->
-      ( { model | animals =
-            transformAnimal (toState Expanded >> replaceEditableCopy) id model.animals
-        }
-      , Cmd.none )
+      transformOne model id (Animal.toState Expanded >> Animal.replaceEditableCopy)
 
     SetNameFilter s ->
       ( { model | nameFilter = s }
@@ -130,58 +111,8 @@ update msg model =
       , Cmd.none
       )
 
-toState newState animal =
-  { animal | displayState = newState }
-
-setEditedName newName animal =
-  let
-    setter editableCopy = { editableCopy | name = newName }
-  in
-    { animal | editableCopy = Maybe.map setter animal.editableCopy }
-
-makeEditableCopy animal =
-  let
-    extracted =
-      { name = animal.name
-      , tags = animal.tags
-      }
-  in
-    { animal | editableCopy = Just extracted }
-
-
--- TODO: Lack of valid editable copy should make Save unclickable.
-      
-replaceEditableCopy animal =
-  case animal.editableCopy of
-    Nothing -> -- impossible
-      animal
-    (Just newValues) -> 
-      { animal
-        | name = newValues.name
-        , tags = newValues.tags
-          
-        , editableCopy = Nothing
-      }
-  
-cancelEditableCopy animal = 
-  { animal | editableCopy = Nothing }
-      
-transformAnimal transformer id animals =
-  let
-    doOne animal =
-      if animal.id == id then
-        transformer animal
-      else
-        animal
-  in
-    List.map doOne animals
-
-      
-goto : Model -> String -> (Model, Cmd Msg)        
-goto model path =
-  ( model
-  , Navigation.newUrl path
-  )
+transformOne model id f = 
+  { model | animals = Animal.transformAnimal f id model.animals } ! []
 
 -- Subscriptions
 

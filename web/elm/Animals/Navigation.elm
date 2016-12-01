@@ -17,6 +17,19 @@ summaryPagePath = "/v2/animals/summary"
 addPagePath = "/v2/animals/new"
 helpPagePath = "/v2/animals/help"
 
+
+goto : String -> model -> (model, Cmd msg)
+goto path model =
+  ( model
+  , Navigation.newUrl path
+  )
+               
+toAllPagePath = goto allPagePath
+toSpreadsheetPagePath = goto spreadsheetPagePath
+toSummaryPagePath = goto summaryPagePath
+toAddPagePath = goto addPagePath
+toHelpPagePath = goto helpPagePath
+
 -- TODO: This is unidiomatic?
 programWithFlags = Navigation.programWithFlags
     

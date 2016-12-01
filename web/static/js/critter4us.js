@@ -19349,11 +19349,24 @@ var _user$project$Animals_Navigation$urlUpdate = F2(
 		};
 	});
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
+var _user$project$Animals_Navigation$goto = F2(
+	function (path, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: model,
+			_1: _elm_lang$navigation$Navigation$newUrl(path)
+		};
+	});
 var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
+var _user$project$Animals_Navigation$toHelpPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$helpPagePath);
 var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
+var _user$project$Animals_Navigation$toAddPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$addPagePath);
 var _user$project$Animals_Navigation$summaryPagePath = '/v2/animals/summary';
+var _user$project$Animals_Navigation$toSummaryPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$summaryPagePath);
 var _user$project$Animals_Navigation$spreadsheetPagePath = '/v2/animals/spreadsheet';
+var _user$project$Animals_Navigation$toSpreadsheetPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$spreadsheetPagePath);
 var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
+var _user$project$Animals_Navigation$toAllPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$allPagePath);
 var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
 var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
 var _user$project$Animals_Navigation$SummaryPage = {ctor: 'SummaryPage'};
@@ -19495,30 +19508,19 @@ var _user$project$Pile_Calendar$At = function (a) {
 };
 var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 
-var _user$project$Animals_Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _user$project$Animals_Main$goto = F2(
-	function (model, path) {
-		return {
-			ctor: '_Tuple2',
-			_0: model,
-			_1: _elm_lang$navigation$Navigation$newUrl(path)
-		};
-	});
-var _user$project$Animals_Main$transformAnimal = F3(
+var _user$project$Animals_Animal$transformAnimal = F3(
 	function (transformer, id, animals) {
 		var doOne = function (animal) {
 			return _elm_lang$core$Native_Utils.eq(animal.id, id) ? transformer(animal) : animal;
 		};
 		return A2(_elm_lang$core$List$map, doOne, animals);
 	});
-var _user$project$Animals_Main$cancelEditableCopy = function (animal) {
+var _user$project$Animals_Animal$cancelEditableCopy = function (animal) {
 	return _elm_lang$core$Native_Utils.update(
 		animal,
 		{editableCopy: _elm_lang$core$Maybe$Nothing});
 };
-var _user$project$Animals_Main$replaceEditableCopy = function (animal) {
+var _user$project$Animals_Animal$replaceEditableCopy = function (animal) {
 	var _p0 = animal.editableCopy;
 	if (_p0.ctor === 'Nothing') {
 		return animal;
@@ -19529,7 +19531,7 @@ var _user$project$Animals_Main$replaceEditableCopy = function (animal) {
 			{name: _p1.name, tags: _p1.tags, editableCopy: _elm_lang$core$Maybe$Nothing});
 	}
 };
-var _user$project$Animals_Main$makeEditableCopy = function (animal) {
+var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
 	var extracted = {name: animal.name, tags: animal.tags};
 	return _elm_lang$core$Native_Utils.update(
 		animal,
@@ -19537,7 +19539,7 @@ var _user$project$Animals_Main$makeEditableCopy = function (animal) {
 			editableCopy: _elm_lang$core$Maybe$Just(extracted)
 		});
 };
-var _user$project$Animals_Main$setEditedName = F2(
+var _user$project$Animals_Animal$setEditedName = F2(
 	function (newName, animal) {
 		var setter = function (editableCopy) {
 			return _elm_lang$core$Native_Utils.update(
@@ -19550,34 +19552,50 @@ var _user$project$Animals_Main$setEditedName = F2(
 				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
 			});
 	});
-var _user$project$Animals_Main$toState = F2(
+var _user$project$Animals_Animal$toState = F2(
 	function (newState, animal) {
 		return _elm_lang$core$Native_Utils.update(
 			animal,
 			{displayState: newState});
 	});
+
+var _user$project$Animals_Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Animals_Main$transformOne = F3(
+	function (model, id, f) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{
+					animals: A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals)
+				}),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
-		var _p2 = msg;
-		switch (_p2.ctor) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
 			case 'NoOp':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'NavigateToAllPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$allPagePath);
+				return _user$project$Animals_Navigation$toAllPagePath(model);
 			case 'NavigateToSpreadsheetPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$spreadsheetPagePath);
+				return _user$project$Animals_Navigation$toSpreadsheetPagePath(model);
 			case 'NavigateToSummaryPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$summaryPagePath);
+				return _user$project$Animals_Navigation$toSummaryPagePath(model);
 			case 'NavigateToAddPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$addPagePath);
+				return _user$project$Animals_Navigation$toAddPagePath(model);
 			case 'NavigateToHelpPage':
-				return A2(_user$project$Animals_Main$goto, model, _user$project$Animals_Navigation$helpPagePath);
+				return _user$project$Animals_Navigation$toHelpPagePath(model);
 			case 'SetToday':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{today: _p2._0}),
+						{today: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'ToggleDatePicker':
@@ -19596,111 +19614,63 @@ var _user$project$Animals_Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							effectiveDate: _user$project$Pile_Calendar$At(_p2._0)
+							effectiveDate: _user$project$Pile_Calendar$At(_p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'ExpandAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$toState(_user$project$Animals_Types$Expanded),
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					_user$project$Animals_Animal$toState(_user$project$Animals_Types$Expanded));
 			case 'ContractAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$toState(_user$project$Animals_Types$Compact),
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					_user$project$Animals_Animal$toState(_user$project$Animals_Types$Compact));
 			case 'EditAnimal':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p3) {
-									return _user$project$Animals_Main$makeEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Editable, _p3));
-								},
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					function (_p1) {
+						return _user$project$Animals_Animal$makeEditableCopy(
+							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Editable, _p1));
+					});
 			case 'SetEditedName':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								_user$project$Animals_Main$setEditedName(_p2._1),
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					_user$project$Animals_Animal$setEditedName(_p0._1));
 			case 'CancelAnimalEdit':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p4) {
-									return _user$project$Animals_Main$cancelEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Expanded, _p4));
-								},
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					function (_p2) {
+						return _user$project$Animals_Animal$cancelEditableCopy(
+							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Expanded, _p2));
+					});
 			case 'SaveAnimalEdit':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: A3(
-								_user$project$Animals_Main$transformAnimal,
-								function (_p5) {
-									return _user$project$Animals_Main$replaceEditableCopy(
-										A2(_user$project$Animals_Main$toState, _user$project$Animals_Types$Expanded, _p5));
-								},
-								_p2._0,
-								model.animals)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					function (_p3) {
+						return _user$project$Animals_Animal$replaceEditableCopy(
+							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Expanded, _p3));
+					});
 			case 'SetNameFilter':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{nameFilter: _p2._0}),
+						{nameFilter: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SetTagFilter':
@@ -19708,7 +19678,7 @@ var _user$project$Animals_Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{tagFilter: _p2._0}),
+						{tagFilter: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -19716,7 +19686,7 @@ var _user$project$Animals_Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{speciesFilter: _p2._0}),
+						{speciesFilter: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}

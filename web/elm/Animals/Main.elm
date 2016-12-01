@@ -1,7 +1,6 @@
 module Animals.Main exposing (..)
 
 import Animals.Types exposing (..)
-import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Animal as Animal
@@ -124,9 +123,12 @@ update msg model =
       
 
 transformOne model id f =
-  model
-    |> model_animals.set (Animal.transformAnimal f id model.animals)
-    |> Return.singleton
+  let
+    newAnimals = (Animal.transformAnimal f id model.animals)
+  in
+    ( { model | animals = newAnimals }
+    , Cmd.none
+    )
 
 -- Subscriptions
 

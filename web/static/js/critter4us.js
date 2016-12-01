@@ -19407,31 +19407,6 @@ var _user$project$Animals_Types$AsInt = function (a) {
 	return {ctor: 'AsInt', _0: a};
 };
 
-var _user$project$Animals_Lenses$model_animals = function () {
-	var set = F2(
-		function (new2, arg1) {
-			return _elm_lang$core$Native_Utils.update(
-				arg1,
-				{animals: new2});
-		});
-	var get = function (arg1) {
-		return arg1.animals;
-	};
-	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
-}();
-var _user$project$Animals_Lenses$model_page = function () {
-	var set = F2(
-		function (new2, arg1) {
-			return _elm_lang$core$Native_Utils.update(
-				arg1,
-				{page: new2});
-		});
-	var get = function (arg1) {
-		return arg1.page;
-	};
-	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
-}();
-
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -19668,12 +19643,16 @@ var _user$project$Animals_Animal$toState = F2(
 			{displayState: newState});
 	});
 
-var _user$project$Animals_Navigation$urlUpdate = function (page) {
-	return function (_p0) {
-		return _Fresheyeball$elm_return$Return$singleton(
-			A2(_user$project$Animals_Lenses$model_page.set, page, _p0));
-	};
-};
+var _user$project$Animals_Navigation$urlUpdate = F2(
+	function (newPage, model) {
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_elm_lang$core$Native_Utils.update(
+				model,
+				{page: newPage}),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
 var _user$project$Animals_Navigation$goto = F2(
 	function (path, model) {
@@ -19839,11 +19818,14 @@ var _user$project$Animals_Main$subscriptions = function (model) {
 };
 var _user$project$Animals_Main$transformOne = F3(
 	function (model, id, f) {
-		return _Fresheyeball$elm_return$Return$singleton(
-			A2(
-				_user$project$Animals_Lenses$model_animals.set,
-				A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals),
-				model));
+		var newAnimals = A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals);
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{animals: newAnimals}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {

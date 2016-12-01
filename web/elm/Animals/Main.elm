@@ -6,11 +6,9 @@ import Animals.OutsideWorld as OutsideWorld
 import Animals.Animal as Animal
 import Animals.Navigation as MyNav
 
-import Navigation
 import String
 import List
 import Date exposing (Date)
-import Date.Extra
 import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
 

@@ -2,16 +2,7 @@ module Animals.Animal exposing (..)
 
 import Animals.Types exposing (..)
 import Animals.Msg exposing (..)
-import Animals.OutsideWorld as OutsideWorld
-import Animals.Navigation as MyNav
-
-import Navigation
-import String
 import List
-import Date exposing (Date)
-import Date.Extra
-import Dict exposing (Dict)
-import Pile.Calendar exposing (EffectiveDate(..))
 
 toState newState animal =
   { animal | displayState = newState }

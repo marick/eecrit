@@ -19338,6 +19338,57 @@ var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
 	},
 	_elm_lang$core$Date$now);
 
+var _user$project$Animals_Animal$transformAnimal = F3(
+	function (transformer, id, animals) {
+		var doOne = function (animal) {
+			return _elm_lang$core$Native_Utils.eq(animal.id, id) ? transformer(animal) : animal;
+		};
+		return A2(_elm_lang$core$List$map, doOne, animals);
+	});
+var _user$project$Animals_Animal$cancelEditableCopy = function (animal) {
+	return _elm_lang$core$Native_Utils.update(
+		animal,
+		{editableCopy: _elm_lang$core$Maybe$Nothing});
+};
+var _user$project$Animals_Animal$replaceEditableCopy = function (animal) {
+	var _p0 = animal.editableCopy;
+	if (_p0.ctor === 'Nothing') {
+		return animal;
+	} else {
+		var _p1 = _p0._0;
+		return _elm_lang$core$Native_Utils.update(
+			animal,
+			{name: _p1.name, tags: _p1.tags, editableCopy: _elm_lang$core$Maybe$Nothing});
+	}
+};
+var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
+	var extracted = {name: animal.name, tags: animal.tags};
+	return _elm_lang$core$Native_Utils.update(
+		animal,
+		{
+			editableCopy: _elm_lang$core$Maybe$Just(extracted)
+		});
+};
+var _user$project$Animals_Animal$setEditedName = F2(
+	function (newName, animal) {
+		var setter = function (editableCopy) {
+			return _elm_lang$core$Native_Utils.update(
+				editableCopy,
+				{name: newName});
+		};
+		return _elm_lang$core$Native_Utils.update(
+			animal,
+			{
+				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
+			});
+	});
+var _user$project$Animals_Animal$toState = F2(
+	function (newState, animal) {
+		return _elm_lang$core$Native_Utils.update(
+			animal,
+			{displayState: newState});
+	});
+
 var _user$project$Animals_Navigation$urlUpdate = F2(
 	function (page, model) {
 		return {
@@ -19507,57 +19558,6 @@ var _user$project$Pile_Calendar$At = function (a) {
 	return {ctor: 'At', _0: a};
 };
 var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
-
-var _user$project$Animals_Animal$transformAnimal = F3(
-	function (transformer, id, animals) {
-		var doOne = function (animal) {
-			return _elm_lang$core$Native_Utils.eq(animal.id, id) ? transformer(animal) : animal;
-		};
-		return A2(_elm_lang$core$List$map, doOne, animals);
-	});
-var _user$project$Animals_Animal$cancelEditableCopy = function (animal) {
-	return _elm_lang$core$Native_Utils.update(
-		animal,
-		{editableCopy: _elm_lang$core$Maybe$Nothing});
-};
-var _user$project$Animals_Animal$replaceEditableCopy = function (animal) {
-	var _p0 = animal.editableCopy;
-	if (_p0.ctor === 'Nothing') {
-		return animal;
-	} else {
-		var _p1 = _p0._0;
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{name: _p1.name, tags: _p1.tags, editableCopy: _elm_lang$core$Maybe$Nothing});
-	}
-};
-var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
-	var extracted = {name: animal.name, tags: animal.tags};
-	return _elm_lang$core$Native_Utils.update(
-		animal,
-		{
-			editableCopy: _elm_lang$core$Maybe$Just(extracted)
-		});
-};
-var _user$project$Animals_Animal$setEditedName = F2(
-	function (newName, animal) {
-		var setter = function (editableCopy) {
-			return _elm_lang$core$Native_Utils.update(
-				editableCopy,
-				{name: newName});
-		};
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{
-				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
-			});
-	});
-var _user$project$Animals_Animal$toState = F2(
-	function (newState, animal) {
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{displayState: newState});
-	});
 
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;

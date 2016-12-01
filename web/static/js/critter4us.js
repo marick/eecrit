@@ -2729,6 +2729,222 @@ var _elm_lang$core$Platform_Sub$none = _elm_lang$core$Platform_Sub$batch(
 var _elm_lang$core$Platform_Sub$map = _elm_lang$core$Native_Platform.map;
 var _elm_lang$core$Platform_Sub$Sub = {ctor: 'Sub'};
 
+var _Fresheyeball$elm_return$Respond$comap = F2(
+	function (f, fa) {
+		return function (_p0) {
+			return fa(
+				f(_p0));
+		};
+	});
+var _Fresheyeball$elm_return$Respond$zero = _elm_lang$core$Basics$always(_elm_lang$core$Platform_Cmd$none);
+var _Fresheyeball$elm_return$Respond$sum = F2(
+	function (rs, a) {
+		return _elm_lang$core$Platform_Cmd$batch(
+			A2(
+				_elm_lang$core$List$map,
+				function (r) {
+					return r(a);
+				},
+				rs));
+	});
+var _Fresheyeball$elm_return$Respond$append = F3(
+	function (f, g, a) {
+		return _elm_lang$core$Platform_Cmd$batch(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					f(a),
+					g(a)
+				]));
+	});
+
+var _Fresheyeball$elm_return$Return$sequence = function () {
+	var f = F2(
+		function (_p1, _p0) {
+			var _p2 = _p1;
+			var _p3 = _p0;
+			return A2(
+				_elm_lang$core$Platform_Cmd_ops['!'],
+				A2(_elm_lang$core$List_ops['::'], _p2._0, _p3._0),
+				_elm_lang$core$Native_List.fromArray(
+					[_p2._1, _p3._1]));
+		});
+	return A2(
+		_elm_lang$core$List$foldr,
+		f,
+		{
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_List.fromArray(
+				[]),
+			_1: _elm_lang$core$Platform_Cmd$none
+		});
+}();
+var _Fresheyeball$elm_return$Return$mapCmd = F2(
+	function (f, _p4) {
+		var _p5 = _p4;
+		return {
+			ctor: '_Tuple2',
+			_0: _p5._0,
+			_1: A2(_elm_lang$core$Platform_Cmd$map, f, _p5._1)
+		};
+	});
+var _Fresheyeball$elm_return$Return$effect_ = F2(
+	function (f, _p6) {
+		var _p7 = _p6;
+		var _p8 = _p7._0;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_p8,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_p7._1,
+					f(_p8)
+				]));
+	});
+var _Fresheyeball$elm_return$Return$command = F2(
+	function (cmd, _p9) {
+		var _p10 = _p9;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_p10._0,
+			_elm_lang$core$Native_List.fromArray(
+				[cmd, _p10._1]));
+	});
+var _Fresheyeball$elm_return$Return$return = _elm_lang$core$Basics$curry(_elm_lang$core$Basics$identity);
+var _Fresheyeball$elm_return$Return$andThen = F2(
+	function (_p11, f) {
+		var _p12 = _p11;
+		var _p13 = f(_p12._0);
+		var model$ = _p13._0;
+		var cmd$ = _p13._1;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model$,
+			_elm_lang$core$Native_List.fromArray(
+				[_p12._1, cmd$]));
+	});
+var _Fresheyeball$elm_return$Return_ops = _Fresheyeball$elm_return$Return_ops || {};
+_Fresheyeball$elm_return$Return_ops['<<<'] = F3(
+	function (f, f$, model) {
+		return A2(
+			_Fresheyeball$elm_return$Return$andThen,
+			f$(model),
+			f);
+	});
+var _Fresheyeball$elm_return$Return_ops = _Fresheyeball$elm_return$Return_ops || {};
+_Fresheyeball$elm_return$Return_ops['>>>'] = _elm_lang$core$Basics$flip(
+	F2(
+		function (x, y) {
+			return A2(_Fresheyeball$elm_return$Return_ops['<<<'], x, y);
+		}));
+var _Fresheyeball$elm_return$Return$flatten = A2(_elm_lang$core$Basics$flip, _Fresheyeball$elm_return$Return$andThen, _elm_lang$core$Basics$identity);
+var _Fresheyeball$elm_return$Return$singleton = A2(
+	_elm_lang$core$Basics$flip,
+	F2(
+		function (v0, v1) {
+			return {ctor: '_Tuple2', _0: v0, _1: v1};
+		}),
+	_elm_lang$core$Platform_Cmd$none);
+var _Fresheyeball$elm_return$Return$dropCmd = function (_p14) {
+	return _Fresheyeball$elm_return$Return$singleton(
+		_elm_lang$core$Basics$fst(_p14));
+};
+var _Fresheyeball$elm_return$Return$map5 = F6(
+	function (f, _p19, _p18, _p17, _p16, _p15) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		var _p22 = _p17;
+		var _p23 = _p16;
+		var _p24 = _p15;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A5(f, _p20._0, _p21._0, _p22._0, _p23._0, _p24._0),
+			_elm_lang$core$Native_List.fromArray(
+				[_p20._1, _p21._1, _p22._1, _p23._1, _p24._1]));
+	});
+var _Fresheyeball$elm_return$Return$map4 = F5(
+	function (f, _p28, _p27, _p26, _p25) {
+		var _p29 = _p28;
+		var _p30 = _p27;
+		var _p31 = _p26;
+		var _p32 = _p25;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A4(f, _p29._0, _p30._0, _p31._0, _p32._0),
+			_elm_lang$core$Native_List.fromArray(
+				[_p29._1, _p30._1, _p31._1, _p32._1]));
+	});
+var _Fresheyeball$elm_return$Return$map3 = F4(
+	function (f, _p35, _p34, _p33) {
+		var _p36 = _p35;
+		var _p37 = _p34;
+		var _p38 = _p33;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A3(f, _p36._0, _p37._0, _p38._0),
+			_elm_lang$core$Native_List.fromArray(
+				[_p36._1, _p37._1, _p38._1]));
+	});
+var _Fresheyeball$elm_return$Return$map2 = F3(
+	function (f, _p40, _p39) {
+		var _p41 = _p40;
+		var _p42 = _p39;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A2(f, _p41._0, _p42._0),
+			_elm_lang$core$Native_List.fromArray(
+				[_p41._1, _p42._1]));
+	});
+var _Fresheyeball$elm_return$Return$mapBoth = F3(
+	function (f, f$, _p43) {
+		var _p44 = _p43;
+		return {
+			ctor: '_Tuple2',
+			_0: f$(_p44._0),
+			_1: A2(_elm_lang$core$Platform_Cmd$map, f, _p44._1)
+		};
+	});
+var _Fresheyeball$elm_return$Return$andMap = F2(
+	function (_p46, _p45) {
+		var _p47 = _p46;
+		var _p48 = _p45;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			_p47._0(_p48._0),
+			_elm_lang$core$Native_List.fromArray(
+				[_p47._1, _p48._1]));
+	});
+var _Fresheyeball$elm_return$Return$mapWith = _elm_lang$core$Basics$curry(_Fresheyeball$elm_return$Return$andMap);
+var _Fresheyeball$elm_return$Return$map = F2(
+	function (f, _p49) {
+		var _p50 = _p49;
+		return {
+			ctor: '_Tuple2',
+			_0: f(_p50._0),
+			_1: _p50._1
+		};
+	});
+var _Fresheyeball$elm_return$Return$zero = _elm_lang$core$Basics$identity;
+var _Fresheyeball$elm_return$Return$pipel = A2(
+	_elm_lang$core$List$foldl,
+	F2(
+		function (x, y) {
+			return function (_p51) {
+				return y(
+					x(_p51));
+			};
+		}),
+	_Fresheyeball$elm_return$Return$zero);
+var _Fresheyeball$elm_return$Return$piper = A2(
+	_elm_lang$core$List$foldr,
+	F2(
+		function (x, y) {
+			return function (_p52) {
+				return x(
+					y(_p52));
+			};
+		}),
+	_Fresheyeball$elm_return$Return$zero);
+
 //import Native.List //
 
 var _elm_lang$core$Native_Array = function() {
@@ -19191,6 +19407,31 @@ var _user$project$Animals_Types$AsInt = function (a) {
 	return {ctor: 'AsInt', _0: a};
 };
 
+var _user$project$Animals_Lenses$model_animals = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{animals: new2});
+		});
+	var get = function (arg1) {
+		return arg1.animals;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+var _user$project$Animals_Lenses$model_page = function () {
+	var set = F2(
+		function (new2, arg1) {
+			return _elm_lang$core$Native_Utils.update(
+				arg1,
+				{page: new2});
+		});
+	var get = function (arg1) {
+		return arg1.page;
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
+}();
+
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -19408,16 +19649,12 @@ var _user$project$Animals_Animal$toState = F2(
 			{displayState: newState});
 	});
 
-var _user$project$Animals_Navigation$urlUpdate = F2(
-	function (page, model) {
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{page: page}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
-	});
+var _user$project$Animals_Navigation$urlUpdate = function (page) {
+	return function (_p0) {
+		return _Fresheyeball$elm_return$Return$singleton(
+			A2(_user$project$Animals_Lenses$model_page.set, page, _p0));
+	};
+};
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
 var _user$project$Animals_Navigation$goto = F2(
 	function (path, model) {
@@ -19583,15 +19820,11 @@ var _user$project$Animals_Main$subscriptions = function (model) {
 };
 var _user$project$Animals_Main$transformOne = F3(
 	function (model, id, f) {
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{
-					animals: A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals)
-				}),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
+		return _Fresheyeball$elm_return$Return$singleton(
+			A2(
+				_user$project$Animals_Lenses$model_animals.set,
+				A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals),
+				model));
 	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {

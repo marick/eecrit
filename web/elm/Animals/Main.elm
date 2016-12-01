@@ -1,6 +1,7 @@
 module Animals.Main exposing (..)
 
 import Animals.Types exposing (..)
+import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Animal as Animal
@@ -11,6 +12,8 @@ import List
 import Date exposing (Date)
 import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
+import Return
+
 
 -- Model and Init
 type alias Flags =
@@ -111,8 +114,10 @@ update msg model =
       , Cmd.none
       )
 
-transformOne model id f = 
-  { model | animals = Animal.transformAnimal f id model.animals } ! []
+transformOne model id f =
+  model
+    |> model_animals.set (Animal.transformAnimal f id model.animals)
+    |> Return.singleton
 
 -- Subscriptions
 

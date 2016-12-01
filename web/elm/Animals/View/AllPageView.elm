@@ -11,7 +11,7 @@ import Pile.Calendar as Calendar
 import List
 import Dict
 import String
-import String.Extra exposing (toSentenceCase)
+import String.Extra as String
 
 view model =
   div []
@@ -236,7 +236,7 @@ parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
 
 animalSalutation animal =
-  text <| (toSentenceCase animal.name) ++ (parentheticalSpecies animal)
+  text <| (String.toSentenceCase animal.name) ++ (parentheticalSpecies animal)
 
 animalTags animal =
   List.map Bulma.readOnlyTag animal.tags

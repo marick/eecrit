@@ -53,7 +53,8 @@ filteredAnimals model =
     hasDesiredSpecies animal = hasWanted .speciesFilter animal.species
     hasDesiredName animal = hasWanted .nameFilter animal.name
     hasDesiredTag animal =
-      List.any (hasWanted .tagFilter) animal.tags
+      String.isEmpty model.tagFilter || 
+        List.any (hasWanted .tagFilter) animal.tags
 
   in
     model.animals

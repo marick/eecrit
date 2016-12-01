@@ -19596,11 +19596,19 @@ var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
 
 var _user$project$Animals_Animal$transformAnimal = F3(
 	function (transformer, id, animals) {
-		var doOne = function (animal) {
-			return _elm_lang$core$Native_Utils.eq(animal.id, id) ? transformer(animal) : animal;
-		};
-		return A2(_elm_lang$core$List$map, doOne, animals);
+		return A3(
+			_elm_lang$core$Dict$update,
+			id,
+			_elm_lang$core$Maybe$map(transformer),
+			animals);
 	});
+var _user$project$Animals_Animal$asDict = function (animals) {
+	var tuple = function (animal) {
+		return {ctor: '_Tuple2', _0: animal.id, _1: animal};
+	};
+	return _elm_lang$core$Dict$fromList(
+		A2(_elm_lang$core$List$map, tuple, animals));
+};
 var _user$project$Animals_Animal$cancelEditableCopy = function (animal) {
 	return _elm_lang$core$Native_Utils.update(
 		animal,
@@ -19864,7 +19872,9 @@ var _user$project$Animals_Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{animals: _p0._0}),
+						{
+							animals: _user$project$Animals_Animal$asDict(_p0._0)
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'ToggleDatePicker':
@@ -19970,18 +19980,7 @@ var _user$project$Animals_Main$update = F2(
 	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
-		var model = {
-			page: startingPage,
-			csrfToken: flags.csrfToken,
-			animals: _elm_lang$core$Native_List.fromArray(
-				[]),
-			nameFilter: '',
-			tagFilter: '',
-			speciesFilter: '',
-			effectiveDate: _user$project$Pile_Calendar$Today,
-			today: _elm_lang$core$Maybe$Nothing,
-			datePickerOpen: false
-		};
+		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _elm_lang$core$Dict$empty, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			model,
@@ -20966,7 +20965,7 @@ var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
 			animal.name);
 	};
 	var hasDesiredTag = function (animal) {
-		return A2(
+		return _elm_lang$core$String$isEmpty(model.tagFilter) || A2(
 			_elm_lang$core$List$any,
 			hasWanted(
 				function (_) {
@@ -20988,7 +20987,10 @@ var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
 			A2(
 				_elm_lang$core$List$filter,
 				hasDesiredName,
-				A2(_elm_lang$core$List$filter, hasDesiredSpecies, model.animals))));
+				A2(
+					_elm_lang$core$List$filter,
+					hasDesiredSpecies,
+					_elm_lang$core$Dict$values(model.animals)))));
 };
 var _user$project$Animals_View_AllPageView$view = function (model) {
 	return A2(

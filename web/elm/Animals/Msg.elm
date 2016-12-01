@@ -1,5 +1,6 @@
 module Animals.Msg exposing (Id, Msg(..))
 
+import Animals.Types exposing (..)
 import Date exposing (Date)
 
 type alias Id = String
@@ -12,6 +13,8 @@ type Msg
   | NavigateToHelpPage
 
   | SetToday (Maybe Date)
+  | SetAnimals (List Animal)
+
   | ToggleDatePicker
   | SelectDate Date
 

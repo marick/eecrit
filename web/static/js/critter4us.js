@@ -19472,6 +19472,9 @@ var _user$project$Animals_Msg$SelectDate = function (a) {
 	return {ctor: 'SelectDate', _0: a};
 };
 var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
+var _user$project$Animals_Msg$SetAnimals = function (a) {
+	return {ctor: 'SetAnimals', _0: a};
+};
 var _user$project$Animals_Msg$SetToday = function (a) {
 	return {ctor: 'SetToday', _0: a};
 };
@@ -19571,8 +19574,16 @@ var _user$project$Animals_OutsideWorld$athena = {
 	displayState: _user$project$Animals_Types$Compact,
 	editableCopy: _elm_lang$core$Maybe$Nothing
 };
-var _user$project$Animals_OutsideWorld$fetchAnimals = _elm_lang$core$Native_List.fromArray(
-	[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake]);
+var _user$project$Animals_OutsideWorld$fetchAnimals = A3(
+	_elm_lang$core$Task$perform,
+	_elm_lang$core$Basics$always(
+		_user$project$Animals_Msg$SetAnimals(
+			_elm_lang$core$Native_List.fromArray(
+				[]))),
+	_user$project$Animals_Msg$SetAnimals,
+	_elm_lang$core$Task$succeed(
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake])));
 var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
 	_elm_lang$core$Task$perform,
 	_elm_lang$core$Basics$always(
@@ -19830,8 +19841,6 @@ var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'NavigateToAllPage':
 				return _user$project$Animals_Navigation$toAllPagePath(model);
 			case 'NavigateToSpreadsheetPage':
@@ -19848,6 +19857,14 @@ var _user$project$Animals_Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{today: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SetAnimals':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{animals: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'ToggleDatePicker':
@@ -19939,7 +19956,7 @@ var _user$project$Animals_Main$update = F2(
 						{tagFilter: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'SetSpeciesFilter':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -19947,15 +19964,29 @@ var _user$project$Animals_Main$update = F2(
 						{speciesFilter: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
+			default:
+				return _Fresheyeball$elm_return$Return$singleton(model);
 		}
 	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
-		return {
-			ctor: '_Tuple2',
-			_0: {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_OutsideWorld$fetchAnimals, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false},
-			_1: _user$project$Animals_OutsideWorld$askTodaysDate
+		var model = {
+			page: startingPage,
+			csrfToken: flags.csrfToken,
+			animals: _elm_lang$core$Native_List.fromArray(
+				[]),
+			nameFilter: '',
+			tagFilter: '',
+			speciesFilter: '',
+			effectiveDate: _user$project$Pile_Calendar$Today,
+			today: _elm_lang$core$Maybe$Nothing,
+			datePickerOpen: false
 		};
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			_elm_lang$core$Native_List.fromArray(
+				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
 	});
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};

@@ -36,27 +36,26 @@ type alias Model =
 
 init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
 init flags startingPage =
-  ( { page = startingPage
-    , csrfToken = flags.csrfToken
-    , animals = OutsideWorld.fetchAnimals
-    , nameFilter = ""
-    , tagFilter = ""
-    , speciesFilter = ""
-    , effectiveDate = Today
-    , today = Nothing
-    , datePickerOpen = False
-    }
-  , OutsideWorld.askTodaysDate
-  )
-
+  let
+    model =
+      { page = startingPage
+      , csrfToken = flags.csrfToken
+      , animals = []
+      , nameFilter = ""
+      , tagFilter = ""
+      , speciesFilter = ""
+      , effectiveDate = Today
+      , today = Nothing
+      , datePickerOpen = False
+      }
+  in
+  model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
 -- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    NoOp ->
-      ( model, Cmd.none )
     NavigateToAllPage ->
       MyNav.toAllPagePath model
     NavigateToSpreadsheetPage ->
@@ -72,6 +71,12 @@ update msg model =
       ( { model | today = value }
       , Cmd.none
       )
+    SetAnimals animals ->
+      ( { model | animals = animals }
+      , Cmd.none
+      )
+
+
     ToggleDatePicker ->
       ( { model | datePickerOpen = not model.datePickerOpen }
       , Cmd.none
@@ -113,6 +118,10 @@ update msg model =
       ( { model | speciesFilter = s }
       , Cmd.none
       )
+
+    NoOp ->
+      Return.singleton model
+      
 
 transformOne model id f =
   model

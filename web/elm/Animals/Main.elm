@@ -70,19 +70,12 @@ update msg model =
     SetToday value ->
       model_today.set value model ! []
     SetAnimals animals ->
-      ( { model | animals = Animal.asDict animals }
-      , Cmd.none
-      )
-
+      model_animals.set (Animal.asDict animals) model ! []
 
     ToggleDatePicker ->
-      ( { model | datePickerOpen = not model.datePickerOpen }
-      , Cmd.none
-      )
+      model_datePickerOpen.update not model ! []
     SelectDate date ->
-      ( { model | effectiveDate = At date }
-      , Cmd.none
-      )
+      model_effectiveDate.set (At date) model ! []
       
     MoreLikeThisAnimal id ->
       ( model 
@@ -105,20 +98,14 @@ update msg model =
       transformOne model id (animal_displayState.set Expanded >> Animal.saveEditableCopy)
 
     SetNameFilter s ->
-      ( { model | nameFilter = s }
-      , Cmd.none
-      )
+      model_nameFilter.set s model ! []
     SetTagFilter s ->
-      ( { model | tagFilter = s }
-      , Cmd.none
-      )
+      model_tagFilter.set s model ! []
     SetSpeciesFilter s ->
-      ( { model | speciesFilter = s }
-      , Cmd.none
-      )
+      model_speciesFilter.set s model ! []
 
     NoOp ->
-      Return.singleton model
+      model ! []
       
 
 transformOne model id f =

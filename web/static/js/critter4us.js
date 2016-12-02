@@ -19907,6 +19907,61 @@ var _user$project$Animals_Lenses$animal_displayState = A2(
 				w,
 				{displayState: p});
 		}));
+var _user$project$Animals_Lenses$model_datePickerOpen = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.datePickerOpen;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{datePickerOpen: p});
+		}));
+var _user$project$Animals_Lenses$model_effectiveDate = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.effectiveDate;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{effectiveDate: p});
+		}));
+var _user$project$Animals_Lenses$model_nameFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.nameFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{nameFilter: p});
+		}));
+var _user$project$Animals_Lenses$model_speciesFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.speciesFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{speciesFilter: p});
+		}));
+var _user$project$Animals_Lenses$model_tagFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tagFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tagFilter: p});
+		}));
 var _user$project$Animals_Lenses$model_animals = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20348,35 +20403,29 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetAnimals':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							animals: _user$project$Animals_Animal$asDict(_p0._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Lenses$model_animals.set,
+						_user$project$Animals_Animal$asDict(_p0._0),
+						model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'ToggleDatePicker':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							datePickerOpen: _elm_lang$core$Basics$not(model.datePickerOpen)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Lenses$model_datePickerOpen.update, _elm_lang$core$Basics$not, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'SelectDate':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							effectiveDate: _user$project$Pile_Calendar$At(_p0._0)
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Lenses$model_effectiveDate.set,
+						_user$project$Pile_Calendar$At(_p0._0),
+						model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'ExpandAnimal':
@@ -20431,31 +20480,29 @@ var _user$project$Animals_Main$update = F2(
 							A2(_user$project$Animals_Lenses$animal_displayState.set, _user$project$Animals_Types$Expanded, _p3));
 					});
 			case 'SetNameFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{nameFilter: _p0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Lenses$model_nameFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'SetTagFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{tagFilter: _p0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Lenses$model_tagFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'SetSpeciesFilter':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{speciesFilter: _p0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Lenses$model_speciesFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			default:
-				return _Fresheyeball$elm_return$Return$singleton(model);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 		}
 	});
 var _user$project$Animals_Main$init = F2(

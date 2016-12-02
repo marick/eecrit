@@ -1,6 +1,7 @@
 module Animals.Main exposing (..)
 
 import Animals.Types exposing (..)
+import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Animal as Animal
@@ -67,9 +68,7 @@ update msg model =
       MyNav.toHelpPagePath model
 
     SetToday value ->
-      ( { model | today = value }
-      , Cmd.none
-      )
+      model_today.set value model ! []
     SetAnimals animals ->
       ( { model | animals = Animal.asDict animals }
       , Cmd.none
@@ -91,19 +90,19 @@ update msg model =
       )
 
     ExpandAnimal id ->
-      transformOne model id (Animal.toState Expanded)
+      transformOne model id (animal_displayState.set Expanded)
     ContractAnimal id ->
-      transformOne model id (Animal.toState Compact)
+      transformOne model id (animal_displayState.set Compact)
     EditAnimal id ->
-      transformOne model id (Animal.toState Editable >> Animal.makeEditableCopy)
+      transformOne model id (animal_displayState.set Editable >> Animal.makeEditableCopy)
     SetEditedName id name ->
-      transformOne model id (Animal.setEditedName name)
+      transformOne model id (animal_editedName.set name)
     DeleteTagWithName id name ->
       transformOne model id (Animal.deleteTag name)
     CancelAnimalEdit id ->
-      transformOne model id (Animal.toState Expanded >> Animal.cancelEditableCopy)
+      transformOne model id (animal_displayState.set Expanded >> Animal.cancelEditableCopy)
     SaveAnimalEdit id ->
-      transformOne model id (Animal.toState Expanded >> Animal.replaceEditableCopy)
+      transformOne model id (animal_displayState.set Expanded >> Animal.saveEditableCopy)
 
     SetNameFilter s ->
       ( { model | nameFilter = s }
@@ -123,12 +122,7 @@ update msg model =
       
 
 transformOne model id f =
-  let
-    newAnimals = (Animal.transformAnimal f id model.animals)
-  in
-    ( { model | animals = newAnimals }
-    , Cmd.none
-    )
+  model_animals.update (Animal.transformAnimal f id) model ! []
 
 -- Subscriptions
 

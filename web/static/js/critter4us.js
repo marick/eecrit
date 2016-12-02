@@ -7772,6 +7772,278 @@ var _arturopala$elm_monocle$Monocle_Lens$zip = F2(
 		return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 	});
 
+var _arturopala$elm_monocle$Monocle_Prism$modifyOption = F2(
+	function (prism, f) {
+		return function (_p0) {
+			return A2(
+				_elm_lang$core$Maybe$map,
+				function (_p1) {
+					return prism.reverseGet(
+						f(_p1));
+				},
+				prism.getOption(_p0));
+		};
+	});
+var _arturopala$elm_monocle$Monocle_Prism$modify = F2(
+	function (prism, f) {
+		var m = function (x) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				x,
+				A3(_arturopala$elm_monocle$Monocle_Prism$modifyOption, prism, f, x));
+		};
+		return m;
+	});
+var _arturopala$elm_monocle$Monocle_Prism$isMatching = F2(
+	function (prism, a) {
+		var _p2 = prism.getOption(a);
+		if (_p2.ctor === 'Just') {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var _arturopala$elm_monocle$Monocle_Prism$Prism = F2(
+	function (a, b) {
+		return {getOption: a, reverseGet: b};
+	});
+var _arturopala$elm_monocle$Monocle_Prism$compose = F2(
+	function (outer, inner) {
+		var getOption = function (x) {
+			var _p3 = outer.getOption(x);
+			if (_p3.ctor === 'Just') {
+				return inner.getOption(_p3._0);
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		};
+		return A2(
+			_arturopala$elm_monocle$Monocle_Prism$Prism,
+			getOption,
+			function (_p4) {
+				return outer.reverseGet(
+					inner.reverseGet(_p4));
+			});
+	});
+var _arturopala$elm_monocle$Monocle_Prism$composeIso = F2(
+	function (outer, inner) {
+		var getOption = function (x) {
+			var _p5 = outer.getOption(x);
+			if (_p5.ctor === 'Just') {
+				return _elm_lang$core$Maybe$Just(
+					inner.get(_p5._0));
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		};
+		return A2(
+			_arturopala$elm_monocle$Monocle_Prism$Prism,
+			getOption,
+			function (_p6) {
+				return outer.reverseGet(
+					inner.reverseGet(_p6));
+			});
+	});
+var _arturopala$elm_monocle$Monocle_Prism$fromIso = function (iso) {
+	return A2(
+		_arturopala$elm_monocle$Monocle_Prism$Prism,
+		function (_p7) {
+			return _elm_lang$core$Maybe$Just(
+				iso.get(_p7));
+		},
+		iso.reverseGet);
+};
+
+var _arturopala$elm_monocle$Monocle_Optional$modifyOption = F2(
+	function (opt, f) {
+		var mf = function (a) {
+			return A2(
+				_elm_lang$core$Maybe$map,
+				function (b) {
+					return A2(opt.set, b, a);
+				},
+				A2(
+					_elm_lang$core$Maybe$map,
+					f,
+					opt.getOption(a)));
+		};
+		return mf;
+	});
+var _arturopala$elm_monocle$Monocle_Optional$modify = F2(
+	function (opt, f) {
+		var mf = function (a) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				a,
+				A3(_arturopala$elm_monocle$Monocle_Optional$modifyOption, opt, f, a));
+		};
+		return mf;
+	});
+var _arturopala$elm_monocle$Monocle_Optional$Optional = F2(
+	function (a, b) {
+		return {getOption: a, set: b};
+	});
+var _arturopala$elm_monocle$Monocle_Optional$compose = F2(
+	function (outer, inner) {
+		var getOption = function (a) {
+			var _p0 = outer.getOption(a);
+			if (_p0.ctor === 'Just') {
+				return inner.getOption(_p0._0);
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		};
+		var set = F2(
+			function (c, a) {
+				return A2(
+					_elm_lang$core$Maybe$withDefault,
+					a,
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (b) {
+							return A2(outer.set, b, a);
+						},
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (b) {
+								return A2(inner.set, c, b);
+							},
+							outer.getOption(a))));
+			});
+		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
+	});
+var _arturopala$elm_monocle$Monocle_Optional$composeLens = F2(
+	function (opt, lens) {
+		var getOption = function (a) {
+			var _p1 = opt.getOption(a);
+			if (_p1.ctor === 'Just') {
+				return _elm_lang$core$Maybe$Just(
+					lens.get(_p1._0));
+			} else {
+				return _elm_lang$core$Maybe$Nothing;
+			}
+		};
+		var set = F2(
+			function (c, a) {
+				return A2(
+					_elm_lang$core$Maybe$withDefault,
+					a,
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (b) {
+							return A2(opt.set, b, a);
+						},
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (b) {
+								return A2(lens.set, c, b);
+							},
+							opt.getOption(a))));
+			});
+		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
+	});
+var _arturopala$elm_monocle$Monocle_Optional$fromPrism = function (prism) {
+	var set = F2(
+		function (b, _p2) {
+			return prism.reverseGet(b);
+		});
+	return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, prism.getOption, set);
+};
+var _arturopala$elm_monocle$Monocle_Optional$fromLens = function (lens) {
+	var getOption = function (a) {
+		return _elm_lang$core$Maybe$Just(
+			lens.get(a));
+	};
+	return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, lens.set);
+};
+var _arturopala$elm_monocle$Monocle_Optional$zip = F2(
+	function (left, right) {
+		var set = F2(
+			function (_p4, _p3) {
+				var _p5 = _p4;
+				var _p6 = _p3;
+				return {
+					ctor: '_Tuple2',
+					_0: A2(left.set, _p5._0, _p6._0),
+					_1: A2(right.set, _p5._1, _p6._1)
+				};
+			});
+		var getOption = function (_p7) {
+			var _p8 = _p7;
+			return function (ma) {
+				return A2(
+					_elm_lang$core$Maybe$andThen,
+					ma,
+					function (c) {
+						return A2(
+							_elm_lang$core$Maybe$map,
+							function (d) {
+								return {ctor: '_Tuple2', _0: c, _1: d};
+							},
+							right.getOption(_p8._1));
+					});
+			}(
+				left.getOption(_p8._0));
+		};
+		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
+	});
+
+var _arturopala$elm_monocle$Monocle_Common$second = {
+	get: _elm_lang$core$Basics$snd,
+	set: F2(
+		function (b, _p0) {
+			var _p1 = _p0;
+			return {ctor: '_Tuple2', _0: _p1._0, _1: b};
+		})
+};
+var _arturopala$elm_monocle$Monocle_Common$first = {
+	get: _elm_lang$core$Basics$fst,
+	set: F2(
+		function (a, _p2) {
+			var _p3 = _p2;
+			return {ctor: '_Tuple2', _0: a, _1: _p3._1};
+		})
+};
+var _arturopala$elm_monocle$Monocle_Common$id = {
+	get: function (_) {
+		return _.id;
+	},
+	set: F2(
+		function (id, record) {
+			return _elm_lang$core$Native_Utils.update(
+				record,
+				{id: id});
+		})
+};
+var _arturopala$elm_monocle$Monocle_Common$result = {
+	getOption: _elm_lang$core$Result$toMaybe,
+	set: function (_p4) {
+		return _elm_lang$core$Basics$always(
+			_elm_lang$core$Result$Ok(_p4));
+	}
+};
+var _arturopala$elm_monocle$Monocle_Common$dict = function (key) {
+	return {
+		getOption: _elm_lang$core$Dict$get(key),
+		set: _elm_lang$core$Dict$insert(key)
+	};
+};
+var _arturopala$elm_monocle$Monocle_Common$array = function (index) {
+	return {
+		getOption: _elm_lang$core$Array$get(index),
+		set: _elm_lang$core$Array$set(index)
+	};
+};
+var _arturopala$elm_monocle$Monocle_Common$maybe = {
+	getOption: _elm_lang$core$Basics$identity,
+	set: function (_p5) {
+		return _elm_lang$core$Basics$always(
+			_elm_lang$core$Maybe$Just(_p5));
+	}
+};
+var _arturopala$elm_monocle$Monocle_Common_ops = _arturopala$elm_monocle$Monocle_Common_ops || {};
+_arturopala$elm_monocle$Monocle_Common_ops['=>'] = _arturopala$elm_monocle$Monocle_Optional$compose;
+
 
 var _coreytrampe$elm_vendor$Native_Vendor = function(elm) {
 
@@ -8986,6 +9258,181 @@ var _elm_community$list_extra$List_Extra$init = function () {
 }();
 var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
 	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
+
+var _elm_community$maybe_extra$Maybe_Extra$filter = F2(
+	function (f, m) {
+		var _p0 = A2(_elm_lang$core$Maybe$map, f, m);
+		if ((_p0.ctor === 'Just') && (_p0._0 === true)) {
+			return m;
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$traverseArray = function (f) {
+	var step = F2(
+		function (e, acc) {
+			var _p1 = f(e);
+			if (_p1.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$Array$push(_p1._0),
+					acc);
+			}
+		});
+	return A2(
+		_elm_lang$core$Array$foldl,
+		step,
+		_elm_lang$core$Maybe$Just(_elm_lang$core$Array$empty));
+};
+var _elm_community$maybe_extra$Maybe_Extra$combineArray = _elm_community$maybe_extra$Maybe_Extra$traverseArray(_elm_lang$core$Basics$identity);
+var _elm_community$maybe_extra$Maybe_Extra$traverse = function (f) {
+	var step = F2(
+		function (e, acc) {
+			var _p2 = f(e);
+			if (_p2.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return A2(
+					_elm_lang$core$Maybe$map,
+					F2(
+						function (x, y) {
+							return A2(_elm_lang$core$List_ops['::'], x, y);
+						})(_p2._0),
+					acc);
+			}
+		});
+	return A2(
+		_elm_lang$core$List$foldr,
+		step,
+		_elm_lang$core$Maybe$Just(
+			_elm_lang$core$Native_List.fromArray(
+				[])));
+};
+var _elm_community$maybe_extra$Maybe_Extra$combine = _elm_community$maybe_extra$Maybe_Extra$traverse(_elm_lang$core$Basics$identity);
+var _elm_community$maybe_extra$Maybe_Extra$maybeToArray = function (m) {
+	var _p3 = m;
+	if (_p3.ctor === 'Nothing') {
+		return _elm_lang$core$Array$empty;
+	} else {
+		return A2(_elm_lang$core$Array$repeat, 1, _p3._0);
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$maybeToList = function (m) {
+	var _p4 = m;
+	if (_p4.ctor === 'Nothing') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		return _elm_lang$core$Native_List.fromArray(
+			[_p4._0]);
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$orElse = F2(
+	function (ma, mb) {
+		var _p5 = mb;
+		if (_p5.ctor === 'Nothing') {
+			return ma;
+		} else {
+			return mb;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$orElseLazy = F2(
+	function (fma, mb) {
+		var _p6 = mb;
+		if (_p6.ctor === 'Nothing') {
+			return fma(
+				{ctor: '_Tuple0'});
+		} else {
+			return mb;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$orLazy = F2(
+	function (ma, fmb) {
+		var _p7 = ma;
+		if (_p7.ctor === 'Nothing') {
+			return fmb(
+				{ctor: '_Tuple0'});
+		} else {
+			return ma;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$or = F2(
+	function (ma, mb) {
+		var _p8 = ma;
+		if (_p8.ctor === 'Nothing') {
+			return mb;
+		} else {
+			return ma;
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$prev = _elm_lang$core$Maybe$map2(_elm_lang$core$Basics$always);
+var _elm_community$maybe_extra$Maybe_Extra$next = _elm_lang$core$Maybe$map2(
+	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
+var _elm_community$maybe_extra$Maybe_Extra$andMap = F2(
+	function (f, x) {
+		return A2(
+			_elm_lang$core$Maybe$andThen,
+			x,
+			function (x$) {
+				return A2(
+					_elm_lang$core$Maybe$andThen,
+					f,
+					function (f$) {
+						return _elm_lang$core$Maybe$Just(
+							f$(x$));
+					});
+			});
+	});
+var _elm_community$maybe_extra$Maybe_Extra$unpack = F3(
+	function (d, f, m) {
+		var _p9 = m;
+		if (_p9.ctor === 'Nothing') {
+			return d(
+				{ctor: '_Tuple0'});
+		} else {
+			return f(_p9._0);
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$unwrap = F3(
+	function (d, f, m) {
+		var _p10 = m;
+		if (_p10.ctor === 'Nothing') {
+			return d;
+		} else {
+			return f(_p10._0);
+		}
+	});
+var _elm_community$maybe_extra$Maybe_Extra$isJust = function (m) {
+	var _p11 = m;
+	if (_p11.ctor === 'Nothing') {
+		return false;
+	} else {
+		return true;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$isNothing = function (m) {
+	var _p12 = m;
+	if (_p12.ctor === 'Nothing') {
+		return true;
+	} else {
+		return false;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra$join = function (mx) {
+	var _p13 = mx;
+	if (_p13.ctor === 'Just') {
+		return _p13._0;
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _elm_community$maybe_extra$Maybe_Extra_ops = _elm_community$maybe_extra$Maybe_Extra_ops || {};
+_elm_community$maybe_extra$Maybe_Extra_ops['?'] = F2(
+	function (mx, x) {
+		return A2(_elm_lang$core$Maybe$withDefault, x, mx);
+	});
 
 //import Maybe, Native.List //
 
@@ -19407,6 +19854,147 @@ var _user$project$Animals_Types$AsInt = function (a) {
 	return {ctor: 'AsInt', _0: a};
 };
 
+var _user$project$Animals_Lenses$optionalUpdate = F4(
+	function (getPartMaybe, setPart, partTransformer, whole) {
+		var whenPartExistsF = function (part) {
+			return A2(
+				setPart,
+				partTransformer(part),
+				whole);
+		};
+		return A3(
+			_elm_community$maybe_extra$Maybe_Extra$unwrap,
+			whole,
+			whenPartExistsF,
+			getPartMaybe(whole));
+	});
+var _user$project$Animals_Lenses$extractOptional = function (u) {
+	return {getOption: u.getOption, set: u.set};
+};
+var _user$project$Animals_Lenses$opt = F2(
+	function (getPartMaybe, setPart) {
+		return {
+			getOption: getPartMaybe,
+			set: setPart,
+			maybeUpdate: A2(_user$project$Animals_Lenses$optionalUpdate, getPartMaybe, setPart)
+		};
+	});
+var _user$project$Animals_Lenses$lensUpdate = F4(
+	function (getPart, setPart, partTransformer, whole) {
+		return A2(
+			setPart,
+			partTransformer(
+				getPart(whole)),
+			whole);
+	});
+var _user$project$Animals_Lenses$extractLens = function (u) {
+	return {get: u.get, set: u.set};
+};
+var _user$project$Animals_Lenses$lens = F2(
+	function (getPart, setPart) {
+		return {
+			get: getPart,
+			set: setPart,
+			update: A2(_user$project$Animals_Lenses$lensUpdate, getPart, setPart)
+		};
+	});
+var _user$project$Animals_Lenses$composeLens = F2(
+	function (left, right) {
+		var right_ = _user$project$Animals_Lenses$extractLens(right);
+		var left_ = _user$project$Animals_Lenses$extractOptional(left);
+		var composed = A2(_arturopala$elm_monocle$Monocle_Optional$composeLens, left_, right_);
+		return A2(_user$project$Animals_Lenses$opt, composed.getOption, composed.set);
+	});
+var _user$project$Animals_Lenses$editableCopy_tags = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Lenses$editableCopy_name = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Lenses$animal_editableCopy = A2(
+	_user$project$Animals_Lenses$opt,
+	function (_) {
+		return _.editableCopy;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{
+					editableCopy: _elm_lang$core$Maybe$Just(p)
+				});
+		}));
+var _user$project$Animals_Lenses$animal_editedName = A2(_user$project$Animals_Lenses$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_name);
+var _user$project$Animals_Lenses$animal_editedTags = A2(_user$project$Animals_Lenses$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_tags);
+var _user$project$Animals_Lenses$animal_displayState = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.displayState;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{displayState: p});
+		}));
+var _user$project$Animals_Lenses$model_animals = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.animals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animals: p});
+		}));
+var _user$project$Animals_Lenses$model_today = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.today;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{today: p});
+		}));
+var _user$project$Animals_Lenses$model_page = A2(
+	_user$project$Animals_Lenses$lens,
+	function (_) {
+		return _.page;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{page: p});
+		}));
+var _user$project$Animals_Lenses$UpdatingLens = F3(
+	function (a, b, c) {
+		return {get: a, set: b, update: c};
+	});
+var _user$project$Animals_Lenses$UpdatingOptional = F3(
+	function (a, b, c) {
+		return {getOption: a, set: b, maybeUpdate: c};
+	});
+
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -19589,7 +20177,7 @@ var _user$project$Animals_Animal$cancelEditableCopy = function (animal) {
 		animal,
 		{editableCopy: _elm_lang$core$Maybe$Nothing});
 };
-var _user$project$Animals_Animal$replaceEditableCopy = function (animal) {
+var _user$project$Animals_Animal$saveEditableCopy = function (animal) {
 	var _p0 = animal.editableCopy;
 	if (_p0.ctor === 'Nothing') {
 		return animal;
@@ -19601,55 +20189,21 @@ var _user$project$Animals_Animal$replaceEditableCopy = function (animal) {
 	}
 };
 var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
-	var extracted = {name: animal.name, tags: animal.tags};
-	return _elm_lang$core$Native_Utils.update(
-		animal,
-		{
-			editableCopy: _elm_lang$core$Maybe$Just(extracted)
-		});
+	return A2(
+		_user$project$Animals_Lenses$animal_editableCopy.set,
+		{name: animal.name, tags: animal.tags},
+		animal);
 };
-var _user$project$Animals_Animal$deleteTag = F2(
-	function (name, animal) {
-		var setter = function (editableCopy) {
-			return _elm_lang$core$Native_Utils.update(
-				editableCopy,
-				{
-					tags: A2(_elm_community$list_extra$List_Extra$remove, name, animal.tags)
-				});
-		};
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{
-				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
-			});
-	});
-var _user$project$Animals_Animal$setEditedName = F2(
-	function (newName, animal) {
-		var setter = function (editableCopy) {
-			return _elm_lang$core$Native_Utils.update(
-				editableCopy,
-				{name: newName});
-		};
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{
-				editableCopy: A2(_elm_lang$core$Maybe$map, setter, animal.editableCopy)
-			});
-	});
-var _user$project$Animals_Animal$toState = F2(
-	function (newState, animal) {
-		return _elm_lang$core$Native_Utils.update(
-			animal,
-			{displayState: newState});
-	});
+var _user$project$Animals_Animal$deleteTag = function (name) {
+	return _user$project$Animals_Lenses$animal_editedTags.maybeUpdate(
+		_elm_community$list_extra$List_Extra$remove(name));
+};
 
 var _user$project$Animals_Navigation$urlUpdate = F2(
 	function (newPage, model) {
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
-			_elm_lang$core$Native_Utils.update(
-				model,
-				{page: newPage}),
+			A2(_user$project$Animals_Lenses$model_page.set, newPage, model),
 			_elm_lang$core$Native_List.fromArray(
 				[]));
 	});
@@ -19818,14 +20372,14 @@ var _user$project$Animals_Main$subscriptions = function (model) {
 };
 var _user$project$Animals_Main$transformOne = F3(
 	function (model, id, f) {
-		var newAnimals = A3(_user$project$Animals_Animal$transformAnimal, f, id, model.animals);
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{animals: newAnimals}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			A2(
+				_user$project$Animals_Lenses$model_animals.update,
+				A2(_user$project$Animals_Animal$transformAnimal, f, id),
+				model),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
 	});
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
@@ -19842,13 +20396,11 @@ var _user$project$Animals_Main$update = F2(
 			case 'NavigateToHelpPage':
 				return _user$project$Animals_Navigation$toHelpPagePath(model);
 			case 'SetToday':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{today: _p0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Lenses$model_today.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'SetAnimals':
 				return {
 					ctor: '_Tuple2',
@@ -19886,13 +20438,13 @@ var _user$project$Animals_Main$update = F2(
 					_user$project$Animals_Main$transformOne,
 					model,
 					_p0._0,
-					_user$project$Animals_Animal$toState(_user$project$Animals_Types$Expanded));
+					_user$project$Animals_Lenses$animal_displayState.set(_user$project$Animals_Types$Expanded));
 			case 'ContractAnimal':
 				return A3(
 					_user$project$Animals_Main$transformOne,
 					model,
 					_p0._0,
-					_user$project$Animals_Animal$toState(_user$project$Animals_Types$Compact));
+					_user$project$Animals_Lenses$animal_displayState.set(_user$project$Animals_Types$Compact));
 			case 'EditAnimal':
 				return A3(
 					_user$project$Animals_Main$transformOne,
@@ -19900,14 +20452,14 @@ var _user$project$Animals_Main$update = F2(
 					_p0._0,
 					function (_p1) {
 						return _user$project$Animals_Animal$makeEditableCopy(
-							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Editable, _p1));
+							A2(_user$project$Animals_Lenses$animal_displayState.set, _user$project$Animals_Types$Editable, _p1));
 					});
 			case 'SetEditedName':
 				return A3(
 					_user$project$Animals_Main$transformOne,
 					model,
 					_p0._0,
-					_user$project$Animals_Animal$setEditedName(_p0._1));
+					_user$project$Animals_Lenses$animal_editedName.set(_p0._1));
 			case 'DeleteTagWithName':
 				return A3(
 					_user$project$Animals_Main$transformOne,
@@ -19921,7 +20473,7 @@ var _user$project$Animals_Main$update = F2(
 					_p0._0,
 					function (_p2) {
 						return _user$project$Animals_Animal$cancelEditableCopy(
-							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Expanded, _p2));
+							A2(_user$project$Animals_Lenses$animal_displayState.set, _user$project$Animals_Types$Expanded, _p2));
 					});
 			case 'SaveAnimalEdit':
 				return A3(
@@ -19929,8 +20481,8 @@ var _user$project$Animals_Main$update = F2(
 					model,
 					_p0._0,
 					function (_p3) {
-						return _user$project$Animals_Animal$replaceEditableCopy(
-							A2(_user$project$Animals_Animal$toState, _user$project$Animals_Types$Expanded, _p3));
+						return _user$project$Animals_Animal$saveEditableCopy(
+							A2(_user$project$Animals_Lenses$animal_displayState.set, _user$project$Animals_Types$Expanded, _p3));
 					});
 			case 'SetNameFilter':
 				return {

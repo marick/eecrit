@@ -3,6 +3,7 @@ module Animals.Navigation exposing (..)
 import Navigation
 import UrlParser
 import String
+import Animals.Lenses exposing (..)
 
 type PageChoice 
   = AllPage
@@ -53,4 +54,4 @@ locationParser location =
 urlParser = Navigation.makeParser locationParser
 
 urlUpdate newPage model =
-  { model | page = newPage} ! []
+  model_page.set newPage model ! [] 

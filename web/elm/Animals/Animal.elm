@@ -1,40 +1,27 @@
 module Animals.Animal exposing (..)
 
 import Animals.Types exposing (..)
+import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Dict
 import List
 import List.Extra as List
+import Maybe.Extra as Maybe
 
-toState newState animal = 
-  { animal | displayState = newState }
-
-setEditedName newName animal =
-  let
-    setter editableCopy = { editableCopy | name = newName }
-  in
-    { animal | editableCopy = Maybe.map setter animal.editableCopy }
-
-deleteTag name animal = 
-  let
-    setter editableCopy =
-      { editableCopy | tags = List.remove name animal.tags }
-  in
-    { animal | editableCopy = Maybe.map setter animal.editableCopy }
+deleteTag name =
+  animal_editedTags.maybeUpdate (List.remove name)
 
 makeEditableCopy animal =
-  let
-    extracted =
-      { name = animal.name
-      , tags = animal.tags
-      }
-  in
-    { animal | editableCopy = Just extracted }
+  animal_editableCopy.set
+    { name = animal.name
+    , tags = animal.tags
+    }
+    animal
 
 
 -- TODO: Lack of valid editable copy should make Save unclickable.
       
-replaceEditableCopy animal =
+saveEditableCopy animal =
   case animal.editableCopy of
     Nothing -> -- impossible
       animal
@@ -45,8 +32,10 @@ replaceEditableCopy animal =
           
         , editableCopy = Nothing
       }
-  
-cancelEditableCopy animal = 
+
+-- TODO: It's interesting that there's no way to
+-- use an Optional to set the value to Nothing.
+cancelEditableCopy animal =
   { animal | editableCopy = Nothing }
 
 -- Animal groupings

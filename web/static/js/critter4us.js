@@ -7988,62 +7988,6 @@ var _arturopala$elm_monocle$Monocle_Optional$zip = F2(
 		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
 	});
 
-var _arturopala$elm_monocle$Monocle_Common$second = {
-	get: _elm_lang$core$Basics$snd,
-	set: F2(
-		function (b, _p0) {
-			var _p1 = _p0;
-			return {ctor: '_Tuple2', _0: _p1._0, _1: b};
-		})
-};
-var _arturopala$elm_monocle$Monocle_Common$first = {
-	get: _elm_lang$core$Basics$fst,
-	set: F2(
-		function (a, _p2) {
-			var _p3 = _p2;
-			return {ctor: '_Tuple2', _0: a, _1: _p3._1};
-		})
-};
-var _arturopala$elm_monocle$Monocle_Common$id = {
-	get: function (_) {
-		return _.id;
-	},
-	set: F2(
-		function (id, record) {
-			return _elm_lang$core$Native_Utils.update(
-				record,
-				{id: id});
-		})
-};
-var _arturopala$elm_monocle$Monocle_Common$result = {
-	getOption: _elm_lang$core$Result$toMaybe,
-	set: function (_p4) {
-		return _elm_lang$core$Basics$always(
-			_elm_lang$core$Result$Ok(_p4));
-	}
-};
-var _arturopala$elm_monocle$Monocle_Common$dict = function (key) {
-	return {
-		getOption: _elm_lang$core$Dict$get(key),
-		set: _elm_lang$core$Dict$insert(key)
-	};
-};
-var _arturopala$elm_monocle$Monocle_Common$array = function (index) {
-	return {
-		getOption: _elm_lang$core$Array$get(index),
-		set: _elm_lang$core$Array$set(index)
-	};
-};
-var _arturopala$elm_monocle$Monocle_Common$maybe = {
-	getOption: _elm_lang$core$Basics$identity,
-	set: function (_p5) {
-		return _elm_lang$core$Basics$always(
-			_elm_lang$core$Maybe$Just(_p5));
-	}
-};
-var _arturopala$elm_monocle$Monocle_Common_ops = _arturopala$elm_monocle$Monocle_Common_ops || {};
-_arturopala$elm_monocle$Monocle_Common_ops['=>'] = _arturopala$elm_monocle$Monocle_Optional$compose;
-
 
 var _coreytrampe$elm_vendor$Native_Vendor = function(elm) {
 
@@ -19854,7 +19798,31 @@ var _user$project$Animals_Types$AsInt = function (a) {
 	return {ctor: 'AsInt', _0: a};
 };
 
-var _user$project$Animals_Lenses$optionalUpdate = F4(
+var _user$project$Pile_UpdatingLens$lensUpdate = F4(
+	function (getPart, setPart, partTransformer, whole) {
+		return A2(
+			setPart,
+			partTransformer(
+				getPart(whole)),
+			whole);
+	});
+var _user$project$Pile_UpdatingLens$extractLens = function (u) {
+	return {get: u.get, set: u.set};
+};
+var _user$project$Pile_UpdatingLens$lens = F2(
+	function (getPart, setPart) {
+		return {
+			get: getPart,
+			set: setPart,
+			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
+		};
+	});
+var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
+	function (a, b, c) {
+		return {get: a, set: b, update: c};
+	});
+
+var _user$project$Pile_UpdatingOptional$optionalUpdate = F4(
 	function (getPartMaybe, setPart, partTransformer, whole) {
 		var whenPartExistsF = function (part) {
 			return A2(
@@ -19868,45 +19836,31 @@ var _user$project$Animals_Lenses$optionalUpdate = F4(
 			whenPartExistsF,
 			getPartMaybe(whole));
 	});
-var _user$project$Animals_Lenses$extractOptional = function (u) {
+var _user$project$Pile_UpdatingOptional$extractOptional = function (u) {
 	return {getOption: u.getOption, set: u.set};
 };
-var _user$project$Animals_Lenses$opt = F2(
+var _user$project$Pile_UpdatingOptional$opt = F2(
 	function (getPartMaybe, setPart) {
 		return {
 			getOption: getPartMaybe,
 			set: setPart,
-			maybeUpdate: A2(_user$project$Animals_Lenses$optionalUpdate, getPartMaybe, setPart)
+			maybeUpdate: A2(_user$project$Pile_UpdatingOptional$optionalUpdate, getPartMaybe, setPart)
 		};
 	});
-var _user$project$Animals_Lenses$lensUpdate = F4(
-	function (getPart, setPart, partTransformer, whole) {
-		return A2(
-			setPart,
-			partTransformer(
-				getPart(whole)),
-			whole);
-	});
-var _user$project$Animals_Lenses$extractLens = function (u) {
-	return {get: u.get, set: u.set};
-};
-var _user$project$Animals_Lenses$lens = F2(
-	function (getPart, setPart) {
-		return {
-			get: getPart,
-			set: setPart,
-			update: A2(_user$project$Animals_Lenses$lensUpdate, getPart, setPart)
-		};
-	});
-var _user$project$Animals_Lenses$composeLens = F2(
+var _user$project$Pile_UpdatingOptional$composeLens = F2(
 	function (left, right) {
-		var right_ = _user$project$Animals_Lenses$extractLens(right);
-		var left_ = _user$project$Animals_Lenses$extractOptional(left);
+		var right_ = _user$project$Pile_UpdatingLens$extractLens(right);
+		var left_ = _user$project$Pile_UpdatingOptional$extractOptional(left);
 		var composed = A2(_arturopala$elm_monocle$Monocle_Optional$composeLens, left_, right_);
-		return A2(_user$project$Animals_Lenses$opt, composed.getOption, composed.set);
+		return A2(_user$project$Pile_UpdatingOptional$opt, composed.getOption, composed.set);
 	});
+var _user$project$Pile_UpdatingOptional$UpdatingOptional = F3(
+	function (a, b, c) {
+		return {getOption: a, set: b, maybeUpdate: c};
+	});
+
 var _user$project$Animals_Lenses$editableCopy_tags = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.tags;
 	},
@@ -19917,7 +19871,7 @@ var _user$project$Animals_Lenses$editableCopy_tags = A2(
 				{tags: p});
 		}));
 var _user$project$Animals_Lenses$editableCopy_name = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.name;
 	},
@@ -19928,7 +19882,7 @@ var _user$project$Animals_Lenses$editableCopy_name = A2(
 				{name: p});
 		}));
 var _user$project$Animals_Lenses$animal_editableCopy = A2(
-	_user$project$Animals_Lenses$opt,
+	_user$project$Pile_UpdatingOptional$opt,
 	function (_) {
 		return _.editableCopy;
 	},
@@ -19940,10 +19894,10 @@ var _user$project$Animals_Lenses$animal_editableCopy = A2(
 					editableCopy: _elm_lang$core$Maybe$Just(p)
 				});
 		}));
-var _user$project$Animals_Lenses$animal_editedName = A2(_user$project$Animals_Lenses$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_name);
-var _user$project$Animals_Lenses$animal_editedTags = A2(_user$project$Animals_Lenses$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_tags);
+var _user$project$Animals_Lenses$animal_editedName = A2(_user$project$Pile_UpdatingOptional$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_name);
+var _user$project$Animals_Lenses$animal_editedTags = A2(_user$project$Pile_UpdatingOptional$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_tags);
 var _user$project$Animals_Lenses$animal_displayState = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.displayState;
 	},
@@ -19954,7 +19908,7 @@ var _user$project$Animals_Lenses$animal_displayState = A2(
 				{displayState: p});
 		}));
 var _user$project$Animals_Lenses$model_animals = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.animals;
 	},
@@ -19965,7 +19919,7 @@ var _user$project$Animals_Lenses$model_animals = A2(
 				{animals: p});
 		}));
 var _user$project$Animals_Lenses$model_today = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.today;
 	},
@@ -19976,7 +19930,7 @@ var _user$project$Animals_Lenses$model_today = A2(
 				{today: p});
 		}));
 var _user$project$Animals_Lenses$model_page = A2(
-	_user$project$Animals_Lenses$lens,
+	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.page;
 	},
@@ -19986,14 +19940,6 @@ var _user$project$Animals_Lenses$model_page = A2(
 				w,
 				{page: p});
 		}));
-var _user$project$Animals_Lenses$UpdatingLens = F3(
-	function (a, b, c) {
-		return {get: a, set: b, update: c};
-	});
-var _user$project$Animals_Lenses$UpdatingOptional = F3(
-	function (a, b, c) {
-		return {getOption: a, set: b, maybeUpdate: c};
-	});
 
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {

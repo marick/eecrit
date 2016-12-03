@@ -161,28 +161,21 @@ editableTags animal =
 animalViewEditable animal =
   tr [ emphasizeBorder ]
     [ td []
-        [ div [class "control is-horizontal"]
-            [ div [class "control-label"] [label [class "label"] [text "Name"]]
-            , div [class "control is-grouped"]
-              [ p [class "control"]
-                  [ input [ class "input"
-                          , type' "text"
-                          , value (editableName animal)
-                          , Events.onInput (SetEditedName animal.id)
-                          ] []
-                  ]
-              ]
-            ]
-        , div [class "control is-horizontal"]
-            [ div [class "control-label"] [label [class "label"] [text "Tags"]]
-            , p [class "control is-grouped"]
+        [ Bulma.controlRow "Name"
+            (Bulma.oneReasonablySizedControl
+               (input [ class "input"
+                      , type' "text"
+                      , value (editableName animal)
+                      , Events.onInput (SetEditedName animal.id)
+                      ] []))
+        , Bulma.controlRow "Tags"
+           (Bulma.horizontalControls 
               (List.map (Bulma.deletableTag (DeleteTagWithName animal.id))
                  (editableTags animal))
-            ]
-        -- TODO: Make carriage return work                          
-        , div [class "control is-horizontal"]
-            [ div [class "control-label"] [label [class "label"] [text "New Tag"]]
-            , div [class "control is-grouped"]
+            )
+
+        , Bulma.controlRow "New Tag" 
+           (Bulma.horizontalControls
               [ p [class "control"]
                   [ input [ class "input"
                           , type' "text"
@@ -194,25 +187,10 @@ animalViewEditable animal =
                    , onClickWithoutPropagation (CreateNewTag animal.id)
                    ]
                   [ text "Add" ]
-              ]
-            ]
-        , p []
-          [ a [ class "button is-success pull-left"
-              , onClickWithoutPropagation (SaveAnimalEdit animal.id)
-              ]
-              [ span [class "icon"] [i [class "fa fa-check"] []]
-              , text "Save"
-              ]
-          ]
-
-        , p []
-          [ a [ class "button is-danger pull-right"
-              , onClickWithoutPropagation (CancelAnimalEdit animal.id)
-              ]
-              [ span [class "icon"] [i [class "fa fa-times"] []]
-              , text "Cancel"
-              ]
-          ]
+              ])
+            
+        , Bulma.leftwardSuccess (SaveAnimalEdit animal.id)
+        , Bulma.rightwardCancel (CancelAnimalEdit animal.id)
         ]
     , td [] []
     , td [] []

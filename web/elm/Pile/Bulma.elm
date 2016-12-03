@@ -147,3 +147,43 @@ propertyTable body =
 
 distributeHorizontally contents =
   div [class "level"] contents
+
+
+controlRow labelText controlPart = 
+  div [class "control is-horizontal"]
+    [ div [class "control-label"] [label [class "label"] [text labelText]]
+    , controlPart
+    ]
+        
+oneReasonablySizedControl control = 
+  div [class "control is-grouped"]
+    [ p [class "control"]
+        [ control
+        ]
+    ]
+
+horizontalControls controls =
+  div [class "control is-grouped"]
+    controls
+
+
+leftwardSuccess msg =
+  p []
+    [ a [ class "button is-success pull-left"
+        , onClickWithoutPropagation msg
+        ]
+        [ span [class "icon"] [i [class "fa fa-check"] []]
+        , text "Save"
+        ]
+    ]
+
+rightwardCancel msg = 
+  p []
+    [ a [ class "button is-danger pull-right"
+        , onClickWithoutPropagation msg
+        ]
+        [ span [class "icon"] [i [class "fa fa-times"] []]
+        , text "Cancel"
+        ]
+    ]
+    

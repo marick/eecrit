@@ -20587,6 +20587,140 @@ var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) 
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
 
+var _user$project$Pile_Bulma$rightwardCancel = function (msg) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$a,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('button is-danger pull-right'),
+						_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$span,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('icon')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$i,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('fa fa-times')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							])),
+						_elm_lang$html$Html$text('Cancel')
+					]))
+			]));
+};
+var _user$project$Pile_Bulma$leftwardSuccess = function (msg) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$a,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('button is-success pull-left'),
+						_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$span,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('icon')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$i,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('fa fa-check')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[]))
+							])),
+						_elm_lang$html$Html$text('Save')
+					]))
+			]));
+};
+var _user$project$Pile_Bulma$horizontalControls = function (controls) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('control is-grouped')
+			]),
+		controls);
+};
+var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('control is-grouped')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('control')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[control]))
+			]));
+};
+var _user$project$Pile_Bulma$controlRow = F2(
+	function (labelText, controlPart) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('control is-horizontal')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('control-label')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$label,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('label')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html$text(labelText)
+								]))
+						])),
+					controlPart
+				]));
+	});
 var _user$project$Pile_Bulma$distributeHorizontally = function (contents) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -21200,249 +21334,79 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('control is-horizontal')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$div,
+						_user$project$Pile_Bulma$controlRow,
+						'Name',
+						_user$project$Pile_Bulma$oneReasonablySizedControl(
+							A2(
+								_elm_lang$html$Html$input,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$class('control-label')
+										_elm_lang$html$Html_Attributes$class('input'),
+										_elm_lang$html$Html_Attributes$type$('text'),
+										_elm_lang$html$Html_Attributes$value(
+										_user$project$Animals_View_AllPageView$editableName(animal)),
+										_elm_lang$html$Html_Events$onInput(
+										_user$project$Animals_Msg$SetEditedName(animal.id))
 									]),
 								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$label,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('label')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('Name')
-											]))
-									])),
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('control is-grouped')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$p,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('control')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												A2(
-												_elm_lang$html$Html$input,
-												_elm_lang$core$Native_List.fromArray(
-													[
-														_elm_lang$html$Html_Attributes$class('input'),
-														_elm_lang$html$Html_Attributes$type$('text'),
-														_elm_lang$html$Html_Attributes$value(
-														_user$project$Animals_View_AllPageView$editableName(animal)),
-														_elm_lang$html$Html_Events$onInput(
-														_user$project$Animals_Msg$SetEditedName(animal.id))
-													]),
-												_elm_lang$core$Native_List.fromArray(
-													[]))
-											]))
-									]))
-							])),
+									[])))),
 						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('control is-horizontal')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('control-label')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$label,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('label')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('Tags')
-											]))
-									])),
-								A2(
-								_elm_lang$html$Html$p,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('control is-grouped')
-									]),
-								A2(
-									_elm_lang$core$List$map,
-									_user$project$Pile_Bulma$deletableTag(
-										_user$project$Animals_Msg$DeleteTagWithName(animal.id)),
-									_user$project$Animals_View_AllPageView$editableTags(animal)))
-							])),
+						_user$project$Pile_Bulma$controlRow,
+						'Tags',
+						_user$project$Pile_Bulma$horizontalControls(
+							A2(
+								_elm_lang$core$List$map,
+								_user$project$Pile_Bulma$deletableTag(
+									_user$project$Animals_Msg$DeleteTagWithName(animal.id)),
+								_user$project$Animals_View_AllPageView$editableTags(animal)))),
 						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('control is-horizontal')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('control-label')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$label,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('label')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('New Tag')
-											]))
-									])),
-								A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('control is-grouped')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$p,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('control')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												A2(
-												_elm_lang$html$Html$input,
-												_elm_lang$core$Native_List.fromArray(
-													[
-														_elm_lang$html$Html_Attributes$class('input'),
-														_elm_lang$html$Html_Attributes$type$('text'),
-														_elm_lang$html$Html_Attributes$value(
-														A2(
-															_elm_community$maybe_extra$Maybe_Extra_ops['?'],
-															_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
-															'')),
-														_elm_lang$html$Html_Events$onInput(
-														_user$project$Animals_Msg$SetTentativeTag(animal.id))
-													]),
-												_elm_lang$core$Native_List.fromArray(
-													[]))
-											])),
-										A2(
-										_elm_lang$html$Html$a,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('button is-success is-small'),
-												_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-												_user$project$Animals_Msg$CreateNewTag(animal.id))
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('Add')
-											]))
-									]))
-							])),
-						A2(
-						_elm_lang$html$Html$p,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$a,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('button is-success pull-left'),
-										_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-										_user$project$Animals_Msg$SaveAnimalEdit(animal.id))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$span,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('icon')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												A2(
-												_elm_lang$html$Html$i,
-												_elm_lang$core$Native_List.fromArray(
-													[
-														_elm_lang$html$Html_Attributes$class('fa fa-check')
-													]),
-												_elm_lang$core$Native_List.fromArray(
-													[]))
-											])),
-										_elm_lang$html$Html$text('Save')
-									]))
-							])),
-						A2(
-						_elm_lang$html$Html$p,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$a,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('button is-danger pull-right'),
-										_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-										_user$project$Animals_Msg$CancelAnimalEdit(animal.id))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$span,
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html_Attributes$class('icon')
-											]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												A2(
-												_elm_lang$html$Html$i,
-												_elm_lang$core$Native_List.fromArray(
-													[
-														_elm_lang$html$Html_Attributes$class('fa fa-times')
-													]),
-												_elm_lang$core$Native_List.fromArray(
-													[]))
-											])),
-										_elm_lang$html$Html$text('Cancel')
-									]))
-							]))
+						_user$project$Pile_Bulma$controlRow,
+						'New Tag',
+						_user$project$Pile_Bulma$horizontalControls(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$html$Html$p,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('control')
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											A2(
+											_elm_lang$html$Html$input,
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_elm_lang$html$Html_Attributes$class('input'),
+													_elm_lang$html$Html_Attributes$type$('text'),
+													_elm_lang$html$Html_Attributes$value(
+													A2(
+														_elm_community$maybe_extra$Maybe_Extra_ops['?'],
+														_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
+														'')),
+													_elm_lang$html$Html_Events$onInput(
+													_user$project$Animals_Msg$SetTentativeTag(animal.id))
+												]),
+											_elm_lang$core$Native_List.fromArray(
+												[]))
+										])),
+									A2(
+									_elm_lang$html$Html$a,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('button is-success is-small'),
+											_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
+											_user$project$Animals_Msg$CreateNewTag(animal.id))
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html$text('Add')
+										]))
+								]))),
+						_user$project$Pile_Bulma$leftwardSuccess(
+						_user$project$Animals_Msg$SaveAnimalEdit(animal.id)),
+						_user$project$Pile_Bulma$rightwardCancel(
+						_user$project$Animals_Msg$CancelAnimalEdit(animal.id))
 					])),
 				A2(
 				_elm_lang$html$Html$td,

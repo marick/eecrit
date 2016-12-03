@@ -11,10 +11,26 @@ import Maybe.Extra as Maybe
 deleteTag name =
   animal_editedTags.maybeUpdate (List.remove name)
 
+noReallyThereIsAnEditableCopyWhenThisIsCalled animal =
+  case animal.editableCopy of
+    Nothing ->
+      ([], "this will never happen")
+    (Just copy) ->
+      (copy.tags, copy.tentativeTag)
+    
+promoteTentativeTag animal =
+  let
+    (tags, newTag) = noReallyThereIsAnEditableCopyWhenThisIsCalled animal
+  in
+    animal
+      |> animal_editedTags.set (newTag :: tags)
+      |> animal_tentativeTag.set ""
+
 makeEditableCopy animal =
   animal_editableCopy.set
     { name = animal.name
     , tags = animal.tags
+    , tentativeTag = ""
     }
     animal
 

@@ -23,6 +23,8 @@ type Msg
   | EditAnimal Id
   | SetEditedName Id String
   | DeleteTagWithName Id String
+  | SetTentativeTag Id String
+  | CreateNewTag Id
   | CancelAnimalEdit Id
   | SaveAnimalEdit Id
 

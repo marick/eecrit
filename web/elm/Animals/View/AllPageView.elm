@@ -1,6 +1,7 @@
 module Animals.View.AllPageView exposing (view)
 
 import Animals.Types exposing (..)
+import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -12,6 +13,7 @@ import List
 import Dict
 import String
 import String.Extra as String
+import Maybe.Extra as Maybe exposing ((?))
 
 view model =
   div []
@@ -177,7 +179,23 @@ animalViewEditable animal =
               (List.map (Bulma.deletableTag (DeleteTagWithName animal.id))
                  (editableTags animal))
             ]
-
+        -- TODO: Make carriage return work                          
+        , div [class "control is-horizontal"]
+            [ div [class "control-label"] [label [class "label"] [text "New Tag"]]
+            , div [class "control is-grouped"]
+              [ p [class "control"]
+                  [ input [ class "input"
+                          , type' "text"
+                          , value ((animal_tentativeTag.getOption animal) ? "")
+                          , Events.onInput (SetTentativeTag animal.id)
+                          ] []
+                  ]
+               , a [ class "button is-success is-small"
+                   , onClickWithoutPropagation (CreateNewTag animal.id)
+                   ]
+                  [ text "Add" ]
+              ]
+            ]
         , p []
           [ a [ class "button is-success pull-left"
               , onClickWithoutPropagation (SaveAnimalEdit animal.id)

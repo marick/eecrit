@@ -19774,9 +19774,9 @@ var _user$project$Animals_Types$Animal = F7(
 	function (a, b, c, d, e, f, g) {
 		return {id: a, name: b, species: c, tags: d, properties: e, displayState: f, editableCopy: g};
 	});
-var _user$project$Animals_Types$EditableAnimal = F2(
-	function (a, b) {
-		return {name: a, tags: b};
+var _user$project$Animals_Types$EditableAnimal = F3(
+	function (a, b, c) {
+		return {name: a, tags: b, tentativeTag: c};
 	});
 var _user$project$Animals_Types$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Types$Expanded = {ctor: 'Expanded'};
@@ -19859,6 +19859,17 @@ var _user$project$Pile_UpdatingOptional$UpdatingOptional = F3(
 		return {getOption: a, set: b, maybeUpdate: c};
 	});
 
+var _user$project$Animals_Lenses$editableCopy_tentativeTag = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tentativeTag;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tentativeTag: p});
+		}));
 var _user$project$Animals_Lenses$editableCopy_tags = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -19896,6 +19907,7 @@ var _user$project$Animals_Lenses$animal_editableCopy = A2(
 		}));
 var _user$project$Animals_Lenses$animal_editedName = A2(_user$project$Pile_UpdatingOptional$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_name);
 var _user$project$Animals_Lenses$animal_editedTags = A2(_user$project$Pile_UpdatingOptional$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_tags);
+var _user$project$Animals_Lenses$animal_tentativeTag = A2(_user$project$Pile_UpdatingOptional$composeLens, _user$project$Animals_Lenses$animal_editableCopy, _user$project$Animals_Lenses$editableCopy_tentativeTag);
 var _user$project$Animals_Lenses$animal_displayState = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20015,6 +20027,13 @@ var _user$project$Animals_Msg$SaveAnimalEdit = function (a) {
 var _user$project$Animals_Msg$CancelAnimalEdit = function (a) {
 	return {ctor: 'CancelAnimalEdit', _0: a};
 };
+var _user$project$Animals_Msg$CreateNewTag = function (a) {
+	return {ctor: 'CreateNewTag', _0: a};
+};
+var _user$project$Animals_Msg$SetTentativeTag = F2(
+	function (a, b) {
+		return {ctor: 'SetTentativeTag', _0: a, _1: b};
+	});
 var _user$project$Animals_Msg$DeleteTagWithName = F2(
 	function (a, b) {
 		return {ctor: 'DeleteTagWithName', _0: a, _1: b};
@@ -20192,8 +20211,34 @@ var _user$project$Animals_Animal$saveEditableCopy = function (animal) {
 var _user$project$Animals_Animal$makeEditableCopy = function (animal) {
 	return A2(
 		_user$project$Animals_Lenses$animal_editableCopy.set,
-		{name: animal.name, tags: animal.tags},
+		{name: animal.name, tags: animal.tags, tentativeTag: ''},
 		animal);
+};
+var _user$project$Animals_Animal$noReallyThereIsAnEditableCopyWhenThisIsCalled = function (animal) {
+	var _p2 = animal.editableCopy;
+	if (_p2.ctor === 'Nothing') {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_List.fromArray(
+				[]),
+			_1: 'this will never happen'
+		};
+	} else {
+		var _p3 = _p2._0;
+		return {ctor: '_Tuple2', _0: _p3.tags, _1: _p3.tentativeTag};
+	}
+};
+var _user$project$Animals_Animal$promoteTentativeTag = function (animal) {
+	var _p4 = _user$project$Animals_Animal$noReallyThereIsAnEditableCopyWhenThisIsCalled(animal);
+	var tags = _p4._0;
+	var newTag = _p4._1;
+	return A2(
+		_user$project$Animals_Lenses$animal_tentativeTag.set,
+		'',
+		A2(
+			_user$project$Animals_Lenses$animal_editedTags.set,
+			A2(_elm_lang$core$List_ops['::'], newTag, tags),
+			animal));
 };
 var _user$project$Animals_Animal$deleteTag = function (name) {
 	return _user$project$Animals_Lenses$animal_editedTags.maybeUpdate(
@@ -20461,6 +20506,14 @@ var _user$project$Animals_Main$update = F2(
 					model,
 					_p0._0,
 					_user$project$Animals_Animal$deleteTag(_p0._1));
+			case 'SetTentativeTag':
+				return A3(
+					_user$project$Animals_Main$transformOne,
+					model,
+					_p0._0,
+					_user$project$Animals_Lenses$animal_tentativeTag.set(_p0._1));
+			case 'CreateNewTag':
+				return A3(_user$project$Animals_Main$transformOne, model, _p0._0, _user$project$Animals_Animal$promoteTentativeTag);
 			case 'CancelAnimalEdit':
 				return A3(
 					_user$project$Animals_Main$transformOne,
@@ -21239,6 +21292,80 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 									_user$project$Pile_Bulma$deletableTag(
 										_user$project$Animals_Msg$DeleteTagWithName(animal.id)),
 									_user$project$Animals_View_AllPageView$editableTags(animal)))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('control is-horizontal')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control-label')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$label,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('label')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('New Tag')
+											]))
+									])),
+								A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('control is-grouped')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$p,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('control')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$input,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$class('input'),
+														_elm_lang$html$Html_Attributes$type$('text'),
+														_elm_lang$html$Html_Attributes$value(
+														A2(
+															_elm_community$maybe_extra$Maybe_Extra_ops['?'],
+															_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
+															'')),
+														_elm_lang$html$Html_Events$onInput(
+														_user$project$Animals_Msg$SetTentativeTag(animal.id))
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[]))
+											])),
+										A2(
+										_elm_lang$html$Html$a,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('button is-success is-small'),
+												_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
+												_user$project$Animals_Msg$CreateNewTag(animal.id))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Add')
+											]))
+									]))
 							])),
 						A2(
 						_elm_lang$html$Html$p,

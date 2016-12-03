@@ -31,5 +31,6 @@ type alias Animal =
 type alias EditableAnimal =
   { name : String
   , tags : List String
+  , tentativeTag : String
   }
 

@@ -92,6 +92,10 @@ update msg model =
       transformOne model id (animal_editedName.set name)
     DeleteTagWithName id name ->
       transformOne model id (Animal.deleteTag name)
+    SetTentativeTag id tag ->
+      transformOne model id (animal_tentativeTag.set tag)
+    CreateNewTag id ->
+      transformOne model id (Animal.promoteTentativeTag)
     CancelAnimalEdit id ->
       transformOne model id (animal_displayState.set Expanded >> Animal.cancelEditableCopy)
     SaveAnimalEdit id ->

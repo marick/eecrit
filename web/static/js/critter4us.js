@@ -20237,7 +20237,11 @@ var _user$project$Animals_Animal$promoteTentativeTag = function (animal) {
 		'',
 		A2(
 			_user$project$Animals_Lenses$animal_editedTags.set,
-			A2(_elm_lang$core$List_ops['::'], newTag, tags),
+			A2(
+				_elm_lang$core$List$append,
+				tags,
+				_elm_lang$core$Native_List.fromArray(
+					[newTag])),
 			animal));
 };
 var _user$project$Animals_Animal$deleteTag = function (name) {

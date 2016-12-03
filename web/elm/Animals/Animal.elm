@@ -23,7 +23,7 @@ promoteTentativeTag animal =
     (tags, newTag) = noReallyThereIsAnEditableCopyWhenThisIsCalled animal
   in
     animal
-      |> animal_editedTags.set (newTag :: tags)
+      |> animal_editedTags.set (List.append tags [newTag])
       |> animal_tentativeTag.set ""
 
 makeEditableCopy animal =

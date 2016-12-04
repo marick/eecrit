@@ -162,33 +162,20 @@ animalViewEditable animal =
   tr [ emphasizeBorder ]
     [ td []
         [ Bulma.controlRow "Name"
-            (Bulma.oneReasonablySizedControl
-               (input [ class "input"
-                      , type' "text"
-                      , value (editableName animal)
-                      , Events.onInput (SetEditedName animal.id)
-                      ] []))
+            <| Bulma.soleTextInputInRow [ value (editableName animal)
+                                        , Events.onInput (SetEditedName animal.id)
+                                        ]
         , Bulma.controlRow "Tags"
-           (Bulma.horizontalControls 
+            <| Bulma.horizontalControls 
               (List.map (Bulma.deletableTag (DeleteTagWithName animal.id))
                  (editableTags animal))
-            )
 
-        , Bulma.controlRow "New Tag" 
-           (Bulma.horizontalControls
-              [ p [class "control"]
-                  [ input [ class "input"
-                          , type' "text"
-                          , value ((animal_tentativeTag.getOption animal) ? "")
-                          , Events.onInput (SetTentativeTag animal.id)
-                          , onEnter (CreateNewTag animal.id)
-                          ] []
-                  ]
-               , a [ class "button is-success is-small"
-                   , onClickWithoutPropagation (CreateNewTag animal.id)
-                   ]
-                  [ text "Add" ]
-              ])
+        , Bulma.controlRow "New Tag"
+            <| Bulma.textInputWithSubmit
+                 "Add"
+                 ((animal_tentativeTag.getOption animal) ? "")
+                 (SetTentativeTag animal.id)
+                 (CreateNewTag animal.id)
             
         , Bulma.leftwardSuccess (SaveAnimalEdit animal.id)
         , Bulma.rightwardCancel (CancelAnimalEdit animal.id)

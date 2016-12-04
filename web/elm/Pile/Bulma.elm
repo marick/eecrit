@@ -166,6 +166,34 @@ horizontalControls controls =
   div [class "control is-grouped"]
     controls
 
+oneTextInputInRow extraAttributes =
+  p [class "control"]
+    [ input ([ class "input"
+            , type' "text"
+            ] ++ extraAttributes)
+        []
+    ]
+
+soleTextInputInRow extraAttributes =
+  oneReasonablySizedControl
+    (input ([ class "input"
+            , type' "text"
+            ]  ++ extraAttributes)
+       [])
+  
+    
+textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
+  horizontalControls
+    [ oneTextInputInRow
+        [ value fieldValue
+        , Events.onInput inputMsg
+        , onEnter submitMsg
+        ]
+    , a [ class "button is-success is-small"
+        , onClickWithoutPropagation submitMsg
+        ]
+        [ text buttonLabel ]
+    ]
 
 leftwardSuccess msg =
   p []

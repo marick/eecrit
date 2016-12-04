@@ -20670,6 +20670,29 @@ var _user$project$Pile_Bulma$leftwardSuccess = function (msg) {
 					]))
 			]));
 };
+var _user$project$Pile_Bulma$oneTextInputInRow = function (extraAttributes) {
+	return A2(
+		_elm_lang$html$Html$p,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('control')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$input,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('input'),
+							_elm_lang$html$Html_Attributes$type$('text')
+						]),
+					extraAttributes),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
+};
 var _user$project$Pile_Bulma$horizontalControls = function (controls) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -20679,6 +20702,31 @@ var _user$project$Pile_Bulma$horizontalControls = function (controls) {
 			]),
 		controls);
 };
+var _user$project$Pile_Bulma$textInputWithSubmit = F4(
+	function (buttonLabel, fieldValue, inputMsg, submitMsg) {
+		return _user$project$Pile_Bulma$horizontalControls(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$Pile_Bulma$oneTextInputInRow(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$value(fieldValue),
+							_elm_lang$html$Html_Events$onInput(inputMsg),
+							_user$project$Pile_HtmlShorthand$onEnter(submitMsg)
+						])),
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('button is-success is-small'),
+							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(submitMsg)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(buttonLabel)
+						]))
+				]));
+	});
 var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -20697,6 +20745,21 @@ var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
 				_elm_lang$core$Native_List.fromArray(
 					[control]))
 			]));
+};
+var _user$project$Pile_Bulma$soleTextInputInRow = function (extraAttributes) {
+	return _user$project$Pile_Bulma$oneReasonablySizedControl(
+		A2(
+			_elm_lang$html$Html$input,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('input'),
+						_elm_lang$html$Html_Attributes$type$('text')
+					]),
+				extraAttributes),
+			_elm_lang$core$Native_List.fromArray(
+				[])));
 };
 var _user$project$Pile_Bulma$controlRow = F2(
 	function (labelText, controlPart) {
@@ -21345,20 +21408,14 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 						A2(
 						_user$project$Pile_Bulma$controlRow,
 						'Name',
-						_user$project$Pile_Bulma$oneReasonablySizedControl(
-							A2(
-								_elm_lang$html$Html$input,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('input'),
-										_elm_lang$html$Html_Attributes$type$('text'),
-										_elm_lang$html$Html_Attributes$value(
-										_user$project$Animals_View_AllPageView$editableName(animal)),
-										_elm_lang$html$Html_Events$onInput(
-										_user$project$Animals_Msg$SetEditedName(animal.id))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[])))),
+						_user$project$Pile_Bulma$soleTextInputInRow(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$value(
+									_user$project$Animals_View_AllPageView$editableName(animal)),
+									_elm_lang$html$Html_Events$onInput(
+									_user$project$Animals_Msg$SetEditedName(animal.id))
+								]))),
 						A2(
 						_user$project$Pile_Bulma$controlRow,
 						'Tags',
@@ -21371,49 +21428,15 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 						A2(
 						_user$project$Pile_Bulma$controlRow,
 						'New Tag',
-						_user$project$Pile_Bulma$horizontalControls(
-							_elm_lang$core$Native_List.fromArray(
-								[
-									A2(
-									_elm_lang$html$Html$p,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('control')
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											A2(
-											_elm_lang$html$Html$input,
-											_elm_lang$core$Native_List.fromArray(
-												[
-													_elm_lang$html$Html_Attributes$class('input'),
-													_elm_lang$html$Html_Attributes$type$('text'),
-													_elm_lang$html$Html_Attributes$value(
-													A2(
-														_elm_community$maybe_extra$Maybe_Extra_ops['?'],
-														_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
-														'')),
-													_elm_lang$html$Html_Events$onInput(
-													_user$project$Animals_Msg$SetTentativeTag(animal.id)),
-													_user$project$Pile_HtmlShorthand$onEnter(
-													_user$project$Animals_Msg$CreateNewTag(animal.id))
-												]),
-											_elm_lang$core$Native_List.fromArray(
-												[]))
-										])),
-									A2(
-									_elm_lang$html$Html$a,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('button is-success is-small'),
-											_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(
-											_user$project$Animals_Msg$CreateNewTag(animal.id))
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html$text('Add')
-										]))
-								]))),
+						A4(
+							_user$project$Pile_Bulma$textInputWithSubmit,
+							'Add',
+							A2(
+								_elm_community$maybe_extra$Maybe_Extra_ops['?'],
+								_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
+								''),
+							_user$project$Animals_Msg$SetTentativeTag(animal.id),
+							_user$project$Animals_Msg$CreateNewTag(animal.id))),
 						_user$project$Pile_Bulma$leftwardSuccess(
 						_user$project$Animals_Msg$SaveAnimalEdit(animal.id)),
 						_user$project$Pile_Bulma$rightwardCancel(

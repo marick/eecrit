@@ -13,3 +13,14 @@ onClickWithoutPropagation msg =
     }
     (Json.succeed msg)
 
+
+onEnter : msg -> Attribute msg
+onEnter msg =
+    let
+        isEnter code =
+            if code == 13 then
+                Json.succeed msg
+            else
+                Json.fail "not ENTER"
+    in
+        Events.on "keydown" (Events.keyCode `Json.andThen` isEnter)

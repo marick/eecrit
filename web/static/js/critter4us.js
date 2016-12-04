@@ -20579,6 +20579,15 @@ var _user$project$Animals_Main$Model = F9(
 		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
 	});
 
+var _user$project$Pile_HtmlShorthand$onEnter = function (msg) {
+	var isEnter = function (code) {
+		return _elm_lang$core$Native_Utils.eq(code, 13) ? _elm_lang$core$Json_Decode$succeed(msg) : _elm_lang$core$Json_Decode$fail('not ENTER');
+	};
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'keydown',
+		A2(_elm_lang$core$Json_Decode$andThen, _elm_lang$html$Html_Events$keyCode, isEnter));
+};
 var _user$project$Pile_HtmlShorthand$onClickWithoutPropagation = function (msg) {
 	return A3(
 		_elm_lang$html$Html_Events$onWithOptions,
@@ -21385,7 +21394,9 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 														_user$project$Animals_Lenses$animal_tentativeTag.getOption(animal),
 														'')),
 													_elm_lang$html$Html_Events$onInput(
-													_user$project$Animals_Msg$SetTentativeTag(animal.id))
+													_user$project$Animals_Msg$SetTentativeTag(animal.id)),
+													_user$project$Pile_HtmlShorthand$onEnter(
+													_user$project$Animals_Msg$CreateNewTag(animal.id))
 												]),
 											_elm_lang$core$Native_List.fromArray(
 												[]))

@@ -181,6 +181,7 @@ animalViewEditable animal =
                           , type' "text"
                           , value ((animal_tentativeTag.getOption animal) ? "")
                           , Events.onInput (SetTentativeTag animal.id)
+                          , onEnter (CreateNewTag animal.id)
                           ] []
                   ]
                , a [ class "button is-success is-small"

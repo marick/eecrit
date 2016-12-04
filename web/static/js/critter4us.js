@@ -21275,72 +21275,56 @@ var _user$project$Animals_View_AllPageView$animalSalutation = function (animal) 
 			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
 			_user$project$Animals_View_AllPageView$parentheticalSpecies(animal)));
 };
-var _user$project$Animals_View_AllPageView$boolExplanation = F2(
-	function (b, explanation) {
-		var suffix = function () {
-			var _p0 = explanation;
-			if (_p0.ctor === 'Nothing') {
-				return '';
-			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					' (',
-					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
-			}
-		}();
-		var icon = function () {
-			var _p1 = b;
-			if (_p1 === true) {
-				return _user$project$Pile_Bulma$trueIcon;
-			} else {
-				return _user$project$Pile_Bulma$falseIcon;
-			}
-		}();
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				icon,
-				_elm_lang$html$Html$text(suffix)
-			]);
-	});
-var _user$project$Animals_View_AllPageView$animalProperties = function (animal) {
-	var explanation = function (value) {
-		var _p2 = value;
-		if (_p2.ctor === 'Nothing') {
+var _user$project$Animals_View_AllPageView$propertyEditValue = function (pval) {
+	var _p0 = pval;
+	switch (_p0.ctor) {
+		case 'AsBool':
 			return _elm_lang$core$Native_List.fromArray(
 				[
-					A2(
-					_elm_lang$html$Html$span,
+					_user$project$Pile_Bulma$horizontalControls(
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$style(
+							A2(
+							_elm_lang$html$Html$input,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									{ctor: '_Tuple2', _0: 'color', _1: 'red'}
+									_elm_lang$html$Html_Attributes$type$('checkbox'),
+									_elm_lang$html$Html_Attributes$class('control'),
+									_elm_lang$html$Html_Attributes$checked(_p0._0)
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							_user$project$Pile_Bulma$oneTextInputInRow(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$value(
+									A2(_elm_lang$core$Maybe$withDefault, '', _p0._1)),
+									_elm_lang$html$Html_Attributes$placeholder('notes if desired')
 								]))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text('unknown')
 						]))
 				]);
-		} else {
-			switch (_p2._0.ctor) {
-				case 'AsBool':
-					return A2(_user$project$Animals_View_AllPageView$boolExplanation, _p2._0._0, _p2._0._1);
-				case 'AsString':
-					return _elm_lang$core$Native_List.fromArray(
+		case 'AsString':
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_user$project$Pile_Bulma$soleTextInputInRow(
+					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html$text(_p2._0._0)
-						]);
-				default:
-					return _elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text('unimplemented')
-						]);
-			}
-		}
-	};
-	var row = function (key) {
+							_elm_lang$html$Html_Attributes$value(_p0._0)
+						]))
+				]);
+		default:
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('unimplemented')
+				]);
+	}
+};
+var _user$project$Animals_View_AllPageView$propertyPairs = function (animal) {
+	return _elm_lang$core$Dict$toList(animal.properties);
+};
+var _user$project$Animals_View_AllPageView$editableAnimalProperties = function (animal) {
+	var row = function (_p1) {
+		var _p2 = _p1;
 		return A2(
 			_elm_lang$html$Html$tr,
 			_elm_lang$core$Native_List.fromArray(
@@ -21353,21 +21337,92 @@ var _user$project$Animals_View_AllPageView$animalProperties = function (animal) 
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html$text(key)
+							_elm_lang$html$Html$text(_p2._0)
 						])),
 					A2(
 					_elm_lang$html$Html$td,
 					_elm_lang$core$Native_List.fromArray(
 						[]),
-					explanation(
-						A2(_elm_lang$core$Dict$get, key, animal.properties)))
+					_user$project$Animals_View_AllPageView$propertyEditValue(_p2._1))
 				]));
 	};
 	return A2(
 		_elm_lang$core$List$map,
 		row,
-		_elm_lang$core$Native_List.fromArray(
-			['Available', 'Primary billing']));
+		_user$project$Animals_View_AllPageView$propertyPairs(animal));
+};
+var _user$project$Animals_View_AllPageView$boolExplanation = F2(
+	function (b, explanation) {
+		var suffix = function () {
+			var _p3 = explanation;
+			if (_p3.ctor === 'Nothing') {
+				return '';
+			} else {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					' (',
+					A2(_elm_lang$core$Basics_ops['++'], _p3._0, ')'));
+			}
+		}();
+		var icon = function () {
+			var _p4 = b;
+			if (_p4 === true) {
+				return _user$project$Pile_Bulma$trueIcon;
+			} else {
+				return _user$project$Pile_Bulma$falseIcon;
+			}
+		}();
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				icon,
+				_elm_lang$html$Html$text(suffix)
+			]);
+	});
+var _user$project$Animals_View_AllPageView$propertyDisplayValue = function (value) {
+	var _p5 = value;
+	switch (_p5.ctor) {
+		case 'AsBool':
+			return A2(_user$project$Animals_View_AllPageView$boolExplanation, _p5._0, _p5._1);
+		case 'AsString':
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(_p5._0)
+				]);
+		default:
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('unimplemented')
+				]);
+	}
+};
+var _user$project$Animals_View_AllPageView$animalProperties = function (animal) {
+	var row = function (_p6) {
+		var _p7 = _p6;
+		return A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(_p7._0)
+						])),
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_user$project$Animals_View_AllPageView$propertyDisplayValue(_p7._1))
+				]));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		row,
+		_user$project$Animals_View_AllPageView$propertyPairs(animal));
 };
 var _user$project$Animals_View_AllPageView$emphasizeBorder = _elm_lang$html$Html_Attributes$style(
 	_elm_lang$core$Native_List.fromArray(
@@ -21376,20 +21431,20 @@ var _user$project$Animals_View_AllPageView$emphasizeBorder = _elm_lang$html$Html
 			{ctor: '_Tuple2', _0: 'border-bottom', _1: '2px solid'}
 		]));
 var _user$project$Animals_View_AllPageView$editableTags = function (animal) {
-	var _p3 = animal.editableCopy;
-	if (_p3.ctor === 'Nothing') {
+	var _p8 = animal.editableCopy;
+	if (_p8.ctor === 'Nothing') {
 		return _elm_lang$core$Native_List.fromArray(
 			[]);
 	} else {
-		return _p3._0.tags;
+		return _p8._0.tags;
 	}
 };
 var _user$project$Animals_View_AllPageView$editableName = function (animal) {
-	var _p4 = animal.editableCopy;
-	if (_p4.ctor === 'Nothing') {
+	var _p9 = animal.editableCopy;
+	if (_p9.ctor === 'Nothing') {
 		return '';
 	} else {
-		return _p4._0.name;
+		return _p9._0.name;
 	}
 };
 var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal) {
@@ -21437,6 +21492,12 @@ var _user$project$Animals_View_AllPageView$animalViewEditable = function (animal
 								''),
 							_user$project$Animals_Msg$SetTentativeTag(animal.id),
 							_user$project$Animals_Msg$CreateNewTag(animal.id))),
+						A2(
+						_user$project$Pile_Bulma$controlRow,
+						'Properties',
+						_user$project$Pile_Bulma$oneReasonablySizedControl(
+							_user$project$Pile_Bulma$propertyTable(
+								_user$project$Animals_View_AllPageView$editableAnimalProperties(animal)))),
 						_user$project$Pile_Bulma$leftwardSuccess(
 						_user$project$Animals_Msg$SaveAnimalEdit(animal.id)),
 						_user$project$Pile_Bulma$rightwardCancel(
@@ -21519,8 +21580,8 @@ var _user$project$Animals_View_AllPageView$animalViewCompact = function (animal)
 			]));
 };
 var _user$project$Animals_View_AllPageView$animalView = function (animal) {
-	var _p5 = animal.displayState;
-	switch (_p5.ctor) {
+	var _p10 = animal.displayState;
+	switch (_p10.ctor) {
 		case 'Compact':
 			return _user$project$Animals_View_AllPageView$animalViewCompact(animal);
 		case 'Expanded':
@@ -21577,8 +21638,8 @@ var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
 var _user$project$Animals_View_AllPageView$dateControl = F3(
 	function (hasOpenPicker, displayString, calendarToggleMsg) {
 		var iconF = function () {
-			var _p6 = hasOpenPicker;
-			if (_p6 === false) {
+			var _p11 = hasOpenPicker;
+			if (_p11 === false) {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
 			} else {
 				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
@@ -21631,11 +21692,11 @@ var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
 	};
 	return A2(
 		_elm_lang$core$List$sortBy,
-		function (_p7) {
+		function (_p12) {
 			return _elm_lang$core$String$toLower(
 				function (_) {
 					return _.name;
-				}(_p7));
+				}(_p12));
 		},
 		A2(
 			_elm_lang$core$List$filter,

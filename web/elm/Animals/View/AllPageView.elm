@@ -177,6 +177,10 @@ animalViewEditable animal =
                  (SetTentativeTag animal.id)
                  (CreateNewTag animal.id)
             
+        , Bulma.controlRow "Properties"
+            <| Bulma.oneReasonablySizedControl
+                 (editableAnimalProperties animal |> Bulma.propertyTable)
+
         , Bulma.leftwardSuccess (SaveAnimalEdit animal.id)
         , Bulma.rightwardCancel (CancelAnimalEdit animal.id)
         ]
@@ -200,23 +204,53 @@ boolExplanation b explanation =
                Just s -> " (" ++ s ++ ")"
   in
     [icon, text suffix]
-      
+
+
+propertyPairs animal =
+  Dict.toList (animal.properties)
+
+
+propertyDisplayValue value =     
+  case value of
+    AsBool b m -> boolExplanation b m
+    AsString s -> [text s]
+    _ -> [text "unimplemented"]
+
+propertyEditValue pval =
+  case pval of
+    AsBool b m ->
+      [ Bulma.horizontalControls 
+          [ input [type' "checkbox", class "control", checked b]  []
+          , Bulma.oneTextInputInRow
+              [ value (Maybe.withDefault "" m)
+              , placeholder "notes if desired"
+              ]
+          ]
+      ]
+    AsString s ->
+      [Bulma.soleTextInputInRow [value s]]
+    _ -> [text "unimplemented"]
+
+    
 animalProperties animal =
   let
-    explanation value =
-      case value of
-        Nothing -> [span [style [("color", "red")]] [text "unknown"]]
-        Just (AsBool b m) -> boolExplanation b m
-        Just (AsString s) -> [text s]
-        _ -> [text "unimplemented"]
-
-    row key = 
+    row (key, value) = 
       tr []
         [ td [] [text key]
-        , td [] (Dict.get key animal.properties |> explanation)
+        , td [] (propertyDisplayValue value)
         ]
-  in  
-    List.map row ["Available", "Primary billing"]
+  in
+      List.map row (propertyPairs animal)
+
+editableAnimalProperties animal =
+  let
+    row (key, value) = 
+      tr []
+        [ td [] [text key]
+        , td [] (propertyEditValue value)
+        ]
+  in
+      List.map row (propertyPairs animal)
 
 parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"

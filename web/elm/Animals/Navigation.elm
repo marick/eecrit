@@ -7,14 +7,10 @@ import Animals.Lenses exposing (..)
 
 type PageChoice 
   = AllPage
-  | SpreadsheetPage
-  | SummaryPage
   | AddPage
   | HelpPage
 
 allPagePath = "/v2/animals"
-spreadsheetPagePath = "/v2/animals/spreadsheet"
-summaryPagePath = "/v2/animals/summary"
 addPagePath = "/v2/animals/new"
 helpPagePath = "/v2/animals/help"
 
@@ -26,8 +22,6 @@ goto path model =
   )
                
 toAllPagePath = goto allPagePath
-toSpreadsheetPagePath = goto spreadsheetPagePath
-toSummaryPagePath = goto summaryPagePath
 toAddPagePath = goto addPagePath
 toHelpPagePath = goto helpPagePath
 
@@ -38,10 +32,6 @@ stringParser : String -> PageChoice
 stringParser path =
   if String.startsWith addPagePath path then 
     AddPage
-  else if String.startsWith spreadsheetPagePath path then 
-    SpreadsheetPage
-  else if String.startsWith summaryPagePath path then 
-    SummaryPage
   else if String.startsWith helpPagePath path then 
     HelpPage
   else

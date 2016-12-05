@@ -58,10 +58,6 @@ update msg model =
   case msg of
     NavigateToAllPage ->
       MyNav.toAllPagePath model
-    NavigateToSpreadsheetPage ->
-      MyNav.toSpreadsheetPagePath model
-    NavigateToSummaryPage ->
-      MyNav.toSummaryPagePath model
     NavigateToAddPage ->
       MyNav.toAddPagePath model
     NavigateToHelpPage ->

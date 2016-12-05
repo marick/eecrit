@@ -7,8 +7,6 @@ type alias Id = String
 
 type Msg
   = NavigateToAllPage
-  | NavigateToSpreadsheetPage
-  | NavigateToSummaryPage
   | NavigateToAddPage
   | NavigateToHelpPage
 

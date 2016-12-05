@@ -19,11 +19,6 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
 
-    ToggleDatePicker ->
-      model_datePickerOpen.update not model ! []
-    SelectDate date ->
-      model_effectiveDate.set (At date) model ! []
-      
     MoreLikeThisAnimal id ->
       ( model 
       , Cmd.none
@@ -47,13 +42,6 @@ update msg model =
       transformOne model id (animal_displayState.set Expanded >> Animal.cancelEditableCopy)
     SaveAnimalEdit id ->
       transformOne model id (animal_displayState.set Expanded >> Animal.saveEditableCopy)
-
-    SetNameFilter s ->
-      model_nameFilter.set s model ! []
-    SetTagFilter s ->
-      model_tagFilter.set s model ! []
-    SetSpeciesFilter s ->
-      model_speciesFilter.set s model ! []
 
     NoOp ->
       model ! []

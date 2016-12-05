@@ -7,9 +7,6 @@ type alias Id = String
 
 type Msg
 
-  | ToggleDatePicker
-  | SelectDate Date
-
   | ExpandAnimal Id
   | ContractAnimal Id
   | EditAnimal Id
@@ -22,6 +19,3 @@ type Msg
 
   | MoreLikeThisAnimal Id
 
-  | SetNameFilter String
-  | SetTagFilter String
-  | SetSpeciesFilter String

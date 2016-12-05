@@ -72,6 +72,18 @@ update msg model =
     SetAnimals animals ->
       model_animals.set (Animal.asDict animals) model ! []
 
+    ToggleDatePicker ->
+      model_datePickerOpen.update not model ! []
+    SelectDate date ->
+      model_effectiveDate.set (At date) model ! []
+      
+    SetNameFilter s ->
+      model_nameFilter.set s model ! []
+    SetTagFilter s ->
+      model_tagFilter.set s model ! []
+    SetSpeciesFilter s ->
+      model_speciesFilter.set s model ! []
+
     NoOp ->
       model ! []
       

@@ -15,5 +15,12 @@ type Msg
   | SetToday (Maybe Date)
   | SetAnimals (List PersistentAnimal)
 
+  | ToggleDatePicker
+  | SelectDate Date
+
+  | SetNameFilter String
+  | SetTagFilter String
+  | SetSpeciesFilter String
+
   | NoOp
 

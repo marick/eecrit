@@ -1,12 +1,7 @@
-module Animals.Types exposing (..)
+module Animals.Animal.Types exposing (..)
 
 import Dict exposing (Dict)
 import Date exposing (Date)
-
-type DisplayState
-  = Compact
-  | Expanded
-  | Editable
 
 type DictValue
   = AsInt Int
@@ -17,20 +12,23 @@ type DictValue
 
 type alias AnimalProperties =
   Dict String DictValue
-
-type alias Animal =
+    
+type alias PersistentAnimal =
   { id : String
   , name : String
   , species : String
   , tags : List String
   , properties : AnimalProperties
-  , displayState : DisplayState
-  , editableCopy : Maybe EditableAnimal
   }
 
-type alias EditableAnimal =
+type alias TemporaryAnimal = 
   { name : String
   , tags : List String
   , tentativeTag : String
   }
+
+type DisplayedAnimal
+  = Compact PersistentAnimal
+  | Expanded PersistentAnimal
+  | Editable PersistentAnimal TemporaryAnimal
 

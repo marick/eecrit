@@ -4,11 +4,11 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.App exposing (programWithFlags)
 import Html.Events as Events
+import Pile.Bulma as Bulma
 
 import Animals.Msg exposing (Msg(..))
 import Animals.Main exposing (Model)
 import Animals.Navigation as MyNav
-import Pile.Bulma as Bulma
 
 import Animals.View.AllPageView as AllPage
 import Animals.View.SpreadsheetPageView as SpreadsheetPage

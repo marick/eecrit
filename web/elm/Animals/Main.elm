@@ -80,9 +80,43 @@ update msg model =
     SetSpeciesFilter s ->
       model_speciesFilter.set s model ! []
 
+    MoreLikeThisAnimal id ->
+      ( model 
+      , Cmd.none
+      )
+
+    ExpandAnimal id ->
+      unfinished model
+      -- transformOne model id (animal_displayState.set Expanded)
+    ContractAnimal id ->
+      unfinished model
+      -- transformOne model id (animal_displayState.set Compact)
+    EditAnimal id ->
+      unfinished model
+      -- transformOne model id (animal_displayState.set Editable >> Animal.makeEditableCopy)
+    SetEditedName id name ->
+      unfinished model
+      -- transformOne model id (animal_editedName.set name)
+    DeleteTagWithName id name ->
+      unfinished model
+      -- transformOne model id (Animal.deleteTag name)
+    SetTentativeTag id tag ->
+      unfinished model
+      -- transformOne model id (animal_tentativeTag.set tag)
+    CreateNewTag id ->
+      unfinished model
+      -- transformOne model id (Animal.promoteTentativeTag)
+    CancelAnimalEdit id ->
+      unfinished model
+      -- transformOne model id (animal_displayState.set Expanded >> Animal.cancelEditableCopy)
+    SaveAnimalEdit id ->
+      unfinished model
+      -- transformOne model id (animal_displayState.set Expanded >> Animal.saveEditableCopy)
+
     NoOp ->
       model ! []
-      
+
+unfinished model = model ! []
 
 -- Subscriptions
 

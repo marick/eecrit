@@ -1,4 +1,4 @@
-module Animals.Animal.Types exposing (..)
+module Animals.Types exposing (..)
 
 import Dict exposing (Dict)
 import Date exposing (Date)

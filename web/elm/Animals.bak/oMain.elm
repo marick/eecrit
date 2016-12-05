@@ -19,11 +19,6 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
 
-    SetToday value ->
-      model_today.set value model ! []
-    SetAnimals animals ->
-      model_animals.set (Animal.asDict animals) model ! []
-
     ToggleDatePicker ->
       model_datePickerOpen.update not model ! []
     SelectDate date ->

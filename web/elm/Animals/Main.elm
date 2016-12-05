@@ -1,9 +1,11 @@
 module Animals.Main exposing (..)
 
-import Animals.Animal.Types exposing (..)
+import Animals.Animal as Animal
+import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
+import Animals.Types exposing (..)
 
 import String
 import List
@@ -66,9 +68,9 @@ update msg model =
       MyNav.toHelpPagePath model
 
     SetToday value ->
-      model ! []
+      model_today.set value model ! []
     SetAnimals animals ->
-      model ! []
+      model_animals.set (Animal.asDict animals) model ! []
 
     NoOp ->
       model ! []

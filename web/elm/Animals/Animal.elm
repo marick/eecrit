@@ -11,6 +11,6 @@ import Maybe.Extra as Maybe
       
 asDict animals =
   let
-    tuple animal = (animal.id, Compact animal)
+    tuple animal = (animal.id, DisplayedAnimal animal Compact)
   in
     animals |> List.map tuple |> Dict.fromList

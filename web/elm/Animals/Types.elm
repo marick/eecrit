@@ -21,14 +21,18 @@ type alias PersistentAnimal =
   , properties : AnimalProperties
   }
 
-type alias TemporaryAnimal = 
+type alias ChangingAnimalValues = 
   { name : String
   , tags : List String
   , tentativeTag : String
   }
 
-type DisplayedAnimal
-  = Compact PersistentAnimal
-  | Expanded PersistentAnimal
-  | Editable PersistentAnimal TemporaryAnimal
-
+type AnimalDisplay
+  = Compact
+  | Expanded
+  | Editable ChangingAnimalValues
+  
+type alias DisplayedAnimal = 
+  { persistent : PersistentAnimal
+  , display : AnimalDisplay
+  }

@@ -42,8 +42,33 @@ view model =
                 ]
             ]
         ]
---    , filteredAnimals model |> List.map animalView |> Bulma.headerlessTable 
+    , filteredAnimals model |> List.map AnimalView.view |> Bulma.headerlessTable 
     ]
+
+
+filteredAnimals model = 
+  let
+    hasWanted modelFilter animalValue =
+      let 
+        wanted = model |> modelFilter |> String.toLower
+        has = animalValue |> String.toLower
+      in
+        String.startsWith wanted has
+
+    hasDesiredSpecies animal = hasWanted .speciesFilter animal.persistent.species
+    hasDesiredName animal = hasWanted .nameFilter animal.persistent.name
+    hasDesiredTag animal =
+      String.isEmpty model.tagFilter || 
+        List.any (hasWanted .tagFilter) animal.persistent.tags
+
+  in
+    model.animals
+      |> Dict.values
+      |> List.filter hasDesiredSpecies
+      |> List.filter hasDesiredName
+      |> List.filter hasDesiredTag
+      |> List.sortBy (.persistent >> .name >> String.toLower)
+
 
 -- The calendar
 

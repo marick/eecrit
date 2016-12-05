@@ -2,48 +2,11 @@ module Animals.View.AllPageView exposing (view)
 
 
 
-filteredAnimals model = 
-  let
-    hasWanted modelFilter animalValue =
-      let 
-        wanted = model |> modelFilter |> String.toLower
-        has = animalValue |> String.toLower
-      in
-        String.startsWith wanted has
-
-    hasDesiredSpecies animal = hasWanted .speciesFilter animal.species
-    hasDesiredName animal = hasWanted .nameFilter animal.name
-    hasDesiredTag animal =
-      String.isEmpty model.tagFilter || 
-        List.any (hasWanted .tagFilter) animal.tags
-
-  in
-    model.animals
-      |> Dict.values
-      |> List.filter hasDesiredSpecies
-      |> List.filter hasDesiredName
-      |> List.filter hasDesiredTag
-      |> List.sortBy (.name >> String.toLower)
-      
-    
     
 
 -- The animals
 
 
-animalView animal =
-  case animal.displayState of
-    Compact -> animalViewCompact animal
-    Expanded -> animalViewExpanded animal
-    Editable -> animalViewEditable animal
-
-animalViewCompact animal = 
-    tr []
-      [ (td [] [ p [] ( animalSalutation animal  :: animalTags animal)])
-      , expand animal Bulma.tdIcon
-      , edit animal Bulma.tdIcon
-      , moreLikeThis animal Bulma.tdIcon
-      ]
 
 animalViewExpanded animal =
   tr [ emphasizeBorder ]
@@ -164,14 +127,4 @@ editableAnimalProperties animal =
         ]
   in
       List.map row (propertyPairs animal)
-
-parentheticalSpecies animal =
-  " (" ++ animal.species ++ ")"
-
-animalSalutation animal =
-  text <| (String.toSentenceCase animal.name) ++ (parentheticalSpecies animal)
-
-animalTags animal =
-  List.map Bulma.readOnlyTag animal.tags
-
 

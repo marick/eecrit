@@ -15,8 +15,33 @@ import Animals.Types exposing (..)
 import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 
-view animal =
-  p [] []
+
+view {persistent, display} =
+  case display of
+    Compact -> compactView persistent
+    Expanded -> expandedView persistent
+    Editable changing -> editableView persistent changing
+
+compactView animal =
+  tr []
+    [ (td [] [ p [] ( animalSalutation animal  :: animalTags animal)])
+    , expand animal Bulma.tdIcon
+    , edit animal Bulma.tdIcon
+    , moreLikeThis animal Bulma.tdIcon
+    ]
+expandedView animal =
+  p [] [text animal.id]
+editableView animal changes =
+  p [] [text animal.id]
+
+animalSalutation animal =
+  text <| (String.toSentenceCase animal.name) ++ (parentheticalSpecies animal)
+
+animalTags animal =
+  List.map Bulma.readOnlyTag animal.tags
+
+parentheticalSpecies animal =
+  " (" ++ animal.species ++ ")"
 
 
 -- Various icons

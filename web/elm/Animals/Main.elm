@@ -88,16 +88,6 @@ update msg model =
     ReviseDisplayedAnimal animal ->
       model_animals.update (Dict.insert animal.persistent.id animal) model ! []
       
-    DeleteTagWithName id name ->
-      unfinished model
-      -- transformOne model id (Animal.deleteTag name)
-    SetTentativeTag id tag ->
-      unfinished model
-      -- transformOne model id (animal_tentativeTag.set tag)
-    CreateNewTag id ->
-      unfinished model
-      -- transformOne model id (Animal.promoteTentativeTag)
-
     NoOp ->
       model ! []
 

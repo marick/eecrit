@@ -19865,6 +19865,39 @@ var _user$project$Pile_UpdatingOptional$UpdatingOptional = F3(
 		return {getOption: a, set: b, maybeUpdate: c};
 	});
 
+var _user$project$Animals_Lenses$form_tentativeTag = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tentativeTag;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tentativeTag: p});
+		}));
+var _user$project$Animals_Lenses$form_tags = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Lenses$form_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
 var _user$project$Animals_Lenses$model_datePickerOpen = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -19958,21 +19991,6 @@ var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
 	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
-var _user$project$Animals_Msg$CreateNewTag = function (a) {
-	return {ctor: 'CreateNewTag', _0: a};
-};
-var _user$project$Animals_Msg$SetTentativeTag = F2(
-	function (a, b) {
-		return {ctor: 'SetTentativeTag', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$DeleteTagWithName = F2(
-	function (a, b) {
-		return {ctor: 'DeleteTagWithName', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$SetEditedName = F2(
-	function (a, b) {
-		return {ctor: 'SetEditedName', _0: a, _1: b};
-	});
 var _user$project$Animals_Msg$ReviseDisplayedAnimal = function (a) {
 	return {ctor: 'ReviseDisplayedAnimal', _0: a};
 };
@@ -20355,14 +20373,6 @@ var _user$project$Animals_Main$update = F2(
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
-			case 'SetEditedName':
-				return _user$project$Animals_Main$unfinished(model);
-			case 'DeleteTagWithName':
-				return _user$project$Animals_Main$unfinished(model);
-			case 'SetTentativeTag':
-				return _user$project$Animals_Main$unfinished(model);
-			case 'CreateNewTag':
-				return _user$project$Animals_Main$unfinished(model);
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -21178,6 +21188,66 @@ var _user$project$Animals_View_AnimalView$animalProperties = function (animal) {
 		row,
 		_user$project$Animals_View_AnimalView$propertyPairs(animal));
 };
+var _user$project$Animals_View_AnimalView$newTagControl = F2(
+	function (animal, changes) {
+		var submitChanges = A2(
+			_user$project$Animals_Lenses$form_tentativeTag.set,
+			'',
+			A2(
+				_user$project$Animals_Lenses$form_tags.set,
+				A2(
+					_elm_lang$core$List$append,
+					changes.tags,
+					_elm_lang$core$Native_List.fromArray(
+						[changes.tentativeTag])),
+				changes));
+		var onSubmit = A2(
+			_user$project$Animals_View_AnimalView$revise,
+			animal,
+			_user$project$Animals_Types$Editable(submitChanges));
+		var onInput = function (value) {
+			return A2(
+				_user$project$Animals_View_AnimalView$revise,
+				animal,
+				_user$project$Animals_Types$Editable(
+					A2(_user$project$Animals_Lenses$form_tentativeTag.set, value, changes)));
+		};
+		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', changes.tentativeTag, onInput, onSubmit);
+	});
+var _user$project$Animals_View_AnimalView$deleteTagControl = F2(
+	function (animal, changes) {
+		var onDelete = function (name) {
+			return A2(
+				_user$project$Animals_View_AnimalView$revise,
+				animal,
+				_user$project$Animals_Types$Editable(
+					A2(
+						_user$project$Animals_Lenses$form_tags.update,
+						_elm_community$list_extra$List_Extra$remove(name),
+						changes)));
+		};
+		return _user$project$Pile_Bulma$horizontalControls(
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Pile_Bulma$deletableTag(onDelete),
+				changes.tags));
+	});
+var _user$project$Animals_View_AnimalView$nameEditControl = F2(
+	function (animal, changes) {
+		var onInput = function (value) {
+			return A2(
+				_user$project$Animals_View_AnimalView$revise,
+				animal,
+				_user$project$Animals_Types$Editable(
+					A2(_user$project$Animals_Lenses$form_name.set, value, changes)));
+		};
+		return _user$project$Pile_Bulma$soleTextInputInRow(
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$value(changes.name),
+					_elm_lang$html$Html_Events$onInput(onInput)
+				]));
+	});
 var _user$project$Animals_View_AnimalView$editableView = F2(
 	function (animal, changes) {
 		return A2(
@@ -21195,31 +21265,15 @@ var _user$project$Animals_View_AnimalView$editableView = F2(
 							A2(
 							_user$project$Pile_Bulma$controlRow,
 							'Name',
-							_user$project$Pile_Bulma$soleTextInputInRow(
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$value(changes.name),
-										_elm_lang$html$Html_Events$onInput(
-										_user$project$Animals_Msg$SetEditedName(animal.id))
-									]))),
+							A2(_user$project$Animals_View_AnimalView$nameEditControl, animal, changes)),
 							A2(
 							_user$project$Pile_Bulma$controlRow,
 							'Tags',
-							_user$project$Pile_Bulma$horizontalControls(
-								A2(
-									_elm_lang$core$List$map,
-									_user$project$Pile_Bulma$deletableTag(
-										_user$project$Animals_Msg$DeleteTagWithName(animal.id)),
-									changes.tags))),
+							A2(_user$project$Animals_View_AnimalView$deleteTagControl, animal, changes)),
 							A2(
 							_user$project$Pile_Bulma$controlRow,
 							'New Tag',
-							A4(
-								_user$project$Pile_Bulma$textInputWithSubmit,
-								'Add',
-								changes.tentativeTag,
-								_user$project$Animals_Msg$SetTentativeTag(animal.id),
-								_user$project$Animals_Msg$CreateNewTag(animal.id))),
+							A2(_user$project$Animals_View_AnimalView$newTagControl, animal, changes)),
 							_user$project$Pile_Bulma$leftwardSuccess(
 							A2(
 								_user$project$Animals_View_AnimalView$revise,

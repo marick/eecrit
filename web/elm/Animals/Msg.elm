@@ -22,10 +22,6 @@ type Msg
 
   | ReviseDisplayedAnimal DisplayedAnimal
 
-  | DeleteTagWithName Id String
-  | SetTentativeTag Id String
-  | CreateNewTag Id
-
   | MoreLikeThisAnimal Id
 
   | NoOp

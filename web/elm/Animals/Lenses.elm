@@ -13,3 +13,6 @@ model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 model_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p })
 
 
+form_name = lens .name (\ p w -> { w | name = p })
+form_tags = lens .tags (\ p w -> { w | tags = p })
+form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })

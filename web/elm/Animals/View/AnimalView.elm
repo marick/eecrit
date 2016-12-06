@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
 import List
+import List.Extra as List
 import String
 import String.Extra as String
 
@@ -42,24 +43,50 @@ expandedView animal =
     , moreLikeThis animal Bulma.tdIcon
     ]
 
+
+
+
+nameEditControl animal changes = 
+  let
+    onInput value = revise animal <| Editable (form_name.set value changes)
+  in
+    Bulma.soleTextInputInRow [ value changes.name
+                             , Events.onInput onInput
+                             ]
+
+
+deleteTagControl animal changes =
+  let
+    onDelete name =
+      revise animal <| Editable <| form_tags.update (List.remove name) changes
+  in
+    Bulma.horizontalControls 
+      (List.map (Bulma.deletableTag onDelete) changes.tags)
+
+
+newTagControl animal changes =
+  let
+    onInput value = revise animal <| Editable (form_tentativeTag.set value changes)
+    submitChanges =
+      changes
+      |> form_tags.set (List.append changes.tags [changes.tentativeTag])
+      |> form_tentativeTag.set ""
+    onSubmit =
+      revise animal (Editable submitChanges)
+  in
+    Bulma.textInputWithSubmit
+      "Add"
+      changes.tentativeTag
+      onInput
+      onSubmit
+      
+        
 editableView animal changes =
   tr [ emphasizeBorder ]
     [ td []
-        [ Bulma.controlRow "Name"
-            <| Bulma.soleTextInputInRow [ value changes.name
-                                        , Events.onInput (SetEditedName animal.id)
-                                        ]
-        , Bulma.controlRow "Tags"
-            <| Bulma.horizontalControls 
-              (List.map (Bulma.deletableTag (DeleteTagWithName animal.id))
-                 changes.tags)
-
-        , Bulma.controlRow "New Tag"
-            <| Bulma.textInputWithSubmit
-                 "Add"
-                 changes.tentativeTag
-                 (SetTentativeTag animal.id)
-                 (CreateNewTag animal.id)
+        [ Bulma.controlRow "Name" <| nameEditControl animal changes
+        , Bulma.controlRow "Tags" <| deleteTagControl animal changes
+        , Bulma.controlRow "New Tag" <| newTagControl animal changes
             
         -- , Bulma.controlRow "Properties"
         --     <| Bulma.oneReasonablySizedControl

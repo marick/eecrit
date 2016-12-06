@@ -22,7 +22,6 @@ type Msg
 
   | ReviseDisplayedAnimal DisplayedAnimal
 
-  | SetEditedName Id String
   | DeleteTagWithName Id String
   | SetTentativeTag Id String
   | CreateNewTag Id

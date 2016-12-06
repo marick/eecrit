@@ -11,8 +11,6 @@ import Animals.Main exposing (Model)
 import Animals.Navigation as MyNav
 
 import Animals.View.AllPageView as AllPage
-import Animals.View.SpreadsheetPageView as SpreadsheetPage
-import Animals.View.SummaryPageView as SummaryPage
 import Animals.View.AddPageView as AddPage
 import Animals.View.HelpPageView as HelpPage
 

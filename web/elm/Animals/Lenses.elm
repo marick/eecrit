@@ -11,3 +11,5 @@ model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
 model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
 model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 model_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p })
+
+

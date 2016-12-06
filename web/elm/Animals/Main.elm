@@ -85,8 +85,8 @@ update msg model =
       , Cmd.none
       )
 
-    ReviseDisplayedAnimal id animal ->
-      model_animals.update (Dict.insert id animal) model ! []
+    ReviseDisplayedAnimal animal ->
+      model_animals.update (Dict.insert animal.persistent.id animal) model ! []
       
     SetEditedName id name ->
       unfinished model

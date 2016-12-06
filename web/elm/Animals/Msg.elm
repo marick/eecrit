@@ -20,7 +20,7 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | ReviseDisplayedAnimal Id DisplayedAnimal
+  | ReviseDisplayedAnimal DisplayedAnimal
 
   | SetEditedName Id String
   | DeleteTagWithName Id String

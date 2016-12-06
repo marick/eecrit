@@ -152,9 +152,7 @@ parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
 
 revise persistentAnimal newDisplay =
-  ReviseDisplayedAnimal
-    persistentAnimal.id
-    (DisplayedAnimal persistentAnimal newDisplay)
+  ReviseDisplayedAnimal <| DisplayedAnimal persistentAnimal newDisplay
 
 changingAnimalValues source =
   { name = source.name

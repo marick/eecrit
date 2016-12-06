@@ -100,12 +100,6 @@ update msg model =
     CreateNewTag id ->
       unfinished model
       -- transformOne model id (Animal.promoteTentativeTag)
-    CancelAnimalEdit id ->
-      unfinished model
-      -- transformOne model id (animal_displayState.set Expanded >> Animal.cancelEditableCopy)
-    SaveAnimalEdit id ->
-      unfinished model
-      -- transformOne model id (animal_displayState.set Expanded >> Animal.saveEditableCopy)
 
     NoOp ->
       model ! []

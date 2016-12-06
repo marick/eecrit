@@ -65,8 +65,8 @@ editableView animal changes =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties changes |> Bulma.propertyTable)
 
-        , Bulma.leftwardSuccess (SaveAnimalEdit animal.id)
-        , Bulma.rightwardCancel (CancelAnimalEdit animal.id)
+        , Bulma.leftwardSuccess (revise (applyEdits animal changes) Expanded)
+        , Bulma.rightwardCancel (revise animal Expanded)
         ]
     , td [] []
     , td [] []
@@ -159,6 +159,13 @@ changingAnimalValues source =
   , tags = source.tags
   , tentativeTag = ""
   , properties = source.properties
+  }
+
+applyEdits source changes =
+  { source
+      | name = changes.name
+      , tags = changes.tags
+      , properties = changes.properties
   }
 
 -- Various icons

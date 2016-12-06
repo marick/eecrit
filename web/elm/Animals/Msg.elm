@@ -26,8 +26,6 @@ type Msg
   | DeleteTagWithName Id String
   | SetTentativeTag Id String
   | CreateNewTag Id
-  | CancelAnimalEdit Id
-  | SaveAnimalEdit Id
 
   | MoreLikeThisAnimal Id
 

@@ -88,9 +88,6 @@ update msg model =
     ReviseDisplayedAnimal id animal ->
       model_animals.update (Dict.insert id animal) model ! []
       
-    EditAnimal id ->
-      unfinished model
-      -- transformOne model id (animal_displayState.set Editable >> Animal.makeEditableCopy)
     SetEditedName id name ->
       unfinished model
       -- transformOne model id (animal_editedName.set name)

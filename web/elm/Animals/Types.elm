@@ -25,6 +25,7 @@ type alias ChangingAnimalValues =
   { name : String
   , tags : List String
   , tentativeTag : String
+  , properties : AnimalProperties
   }
 
 type AnimalDisplay

@@ -127,6 +127,3 @@ calendarHelp iconType =
 filterHelp iconType = 
   iconType "fa-question-circle" "Help on filtering" NoOp    
 
-editHelp iconType = 
-  iconType "fa-question-circle" "Help on editing" NoOp    
-    

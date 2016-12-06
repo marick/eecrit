@@ -29,10 +29,62 @@ compactView animal =
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
+
 expandedView animal =
-  p [] [text animal.id]
+  tr [ emphasizeBorder ]
+    [ td []
+        [ p [] [ animalSalutation animal ]
+        , p [] (animalTags animal)
+        , animalProperties animal |> Bulma.propertyTable
+        ]
+    , contract animal Bulma.tdIcon
+    , edit animal Bulma.tdIcon
+    , moreLikeThis animal Bulma.tdIcon
+    ]
+
 editableView animal changes =
   p [] [text animal.id]
+
+
+-- Helpers
+
+propertyPairs animal =
+  Dict.toList (animal.properties)
+
+emphasizeBorder =
+  style [ ("border-top", "2px solid")
+        , ("border-bottom", "2px solid")
+        ]
+    
+
+animalProperties animal =
+  let
+    row (key, value) = 
+      tr []
+        [ td [] [text key]
+        , td [] (propertyDisplayValue value)
+        ]
+  in
+      List.map row (propertyPairs animal)
+
+propertyDisplayValue value =     
+  case value of
+    AsBool b m -> boolExplanation b m
+    AsString s -> [text s]
+    _ -> [text "unimplemented"]
+
+boolExplanation b explanation = 
+  let
+    icon = case b of
+             True -> Bulma.trueIcon
+             False -> Bulma.falseIcon
+    suffix = case explanation of
+               Nothing -> ""
+               Just s -> " (" ++ s ++ ")"
+  in
+    [icon, text suffix]
+
+
 
 animalSalutation animal =
   text <| (String.toSentenceCase animal.name) ++ (parentheticalSpecies animal)
@@ -43,18 +95,22 @@ animalTags animal =
 parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
 
+revise persistentAnimal newDisplay =
+  ReviseDisplayedAnimal
+    persistentAnimal.id
+    (DisplayedAnimal persistentAnimal newDisplay)
 
 -- Various icons
 
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (ExpandAnimal animal.id)
+    (revise animal Expanded)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Expand: show less about this animal"
-    (ContractAnimal animal.id)
+    (revise animal Compact)
       
 edit animal iconType =
   iconType "fa-pencil"

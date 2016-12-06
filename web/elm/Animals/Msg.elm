@@ -1,6 +1,6 @@
 module Animals.Msg exposing (Id, Msg(..))
 
-import Animals.Types exposing (PersistentAnimal)
+import Animals.Types exposing (..)
 import Date exposing (Date)
 
 type alias Id = String
@@ -20,8 +20,8 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | ExpandAnimal Id
-  | ContractAnimal Id
+  | ReviseDisplayedAnimal Id DisplayedAnimal
+
   | EditAnimal Id
   | SetEditedName Id String
   | DeleteTagWithName Id String

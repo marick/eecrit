@@ -8,18 +8,6 @@ module Animals.View.AllPageView exposing (view)
 
 
 
-animalViewExpanded animal =
-  tr [ emphasizeBorder ]
-    [ td []
-        [ p [] [ animalSalutation animal ]
-        , p [] (animalTags animal)
-        , animalProperties animal |> Bulma.propertyTable
-        ]
-    , contract animal Bulma.tdIcon
-    , edit animal Bulma.tdIcon
-    , moreLikeThis animal Bulma.tdIcon
-    ]
-
 editableName animal =
   case animal.editableCopy of
     Nothing ->
@@ -65,32 +53,6 @@ animalViewEditable animal =
     , editHelp Bulma.tdIcon
     ]
     
-emphasizeBorder =
-  style [ ("border-top", "2px solid")
-        , ("border-bottom", "2px solid")
-        ]
-    
-boolExplanation b explanation = 
-  let
-    icon = case b of
-             True -> Bulma.trueIcon
-             False -> Bulma.falseIcon
-    suffix = case explanation of
-               Nothing -> ""
-               Just s -> " (" ++ s ++ ")"
-  in
-    [icon, text suffix]
-
-
-propertyPairs animal =
-  Dict.toList (animal.properties)
-
-
-propertyDisplayValue value =     
-  case value of
-    AsBool b m -> boolExplanation b m
-    AsString s -> [text s]
-    _ -> [text "unimplemented"]
 
 propertyEditValue pval =
   case pval of
@@ -108,16 +70,6 @@ propertyEditValue pval =
     _ -> [text "unimplemented"]
 
     
-animalProperties animal =
-  let
-    row (key, value) = 
-      tr []
-        [ td [] [text key]
-        , td [] (propertyDisplayValue value)
-        ]
-  in
-      List.map row (propertyPairs animal)
-
 editableAnimalProperties animal =
   let
     row (key, value) = 

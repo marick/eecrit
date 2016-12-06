@@ -85,12 +85,9 @@ update msg model =
       , Cmd.none
       )
 
-    ExpandAnimal id ->
-      unfinished model
-      -- transformOne model id (animal_displayState.set Expanded)
-    ContractAnimal id ->
-      unfinished model
-      -- transformOne model id (animal_displayState.set Compact)
+    ReviseDisplayedAnimal id animal ->
+      model_animals.update (Dict.insert id animal) model ! []
+      
     EditAnimal id ->
       unfinished model
       -- transformOne model id (animal_displayState.set Editable >> Animal.makeEditableCopy)

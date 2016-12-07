@@ -16,7 +16,7 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Types exposing (..)
 import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
-import Animals.View.AnimalView as AnimalView
+import Animals.Animal.View as AnimalView
 
 view model =
   div []

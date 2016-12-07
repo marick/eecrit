@@ -1,4 +1,4 @@
-module Animals.View.AnimalView exposing (view)
+module Animals.Animal.View exposing (view)
 
 import Dict
 import Html exposing (..)

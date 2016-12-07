@@ -53,8 +53,8 @@ editableView animal changes =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties changes |> Bulma.propertyTable)
 
-        , Bulma.leftwardSuccess (revise (applyEdits animal changes) Expanded)
-        , Bulma.rightwardCancel (revise animal Expanded)
+        , Bulma.leftwardSuccess (displayDifferently (applyEdits animal changes) Expanded)
+        , Bulma.rightwardCancel (displayDifferently animal Expanded)
         ]
     , td [] []
     , td [] []
@@ -119,17 +119,17 @@ parentheticalSpecies animal =
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (revise animal Expanded)
+    (displayDifferently animal Expanded)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Expand: show less about this animal"
-    (revise animal Compact)
+    (displayDifferently animal Compact)
       
 edit animal iconType =
   iconType "fa-pencil"
     "Edit: make changes to this animal"
-    (revise animal <| Editable (changingAnimalValues animal))
+    (beginEditing animal)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"

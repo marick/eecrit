@@ -15,46 +15,54 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-revise : Animal -> Display -> Msg
-revise animal newDisplay =
+displayDifferently : Animal -> Display -> Msg
+displayDifferently animal newDisplay =
   ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay
 
-nameEditControl animal changes = 
+updateForm : Animal -> Form -> Msg
+updateForm animal form =
+  displayDifferently animal (Editable form)
+
+beginEditing : Animal -> Msg
+beginEditing animal =
+  updateForm animal (extractForm animal)
+
+nameEditControl animal form = 
   let
-    onInput value = revise animal <| Editable (form_name.set value changes)
+    onInput value = updateForm animal (form_name.set value form)
   in
-    Bulma.soleTextInputInRow [ value changes.name
+    Bulma.soleTextInputInRow [ value form.name
                              , Events.onInput onInput
                              ]
 
-deleteTagControl animal changes =
+deleteTagControl animal form =
   let
     onDelete name =
-      revise animal <| Editable <| form_tags.update (List.remove name) changes
+      updateForm animal (form_tags.update (List.remove name) form)
   in
     Bulma.horizontalControls 
-      (List.map (Bulma.deletableTag onDelete) changes.tags)
+      (List.map (Bulma.deletableTag onDelete) form.tags)
 
 
-newTagControl animal changes =
+newTagControl animal form =
   let
-    onInput value = revise animal <| Editable (form_tentativeTag.set value changes)
-    submitChanges =
-      changes
-      |> form_tags.set (List.append changes.tags [changes.tentativeTag])
+    onInput value = updateForm animal (form_tentativeTag.set value form)
+    submitForm =
+      form
+      |> form_tags.set (List.append form.tags [form.tentativeTag])
       |> form_tentativeTag.set ""
     onSubmit =
-      revise animal (Editable submitChanges)
+      updateForm animal submitForm
   in
     Bulma.textInputWithSubmit
       "Add"
-      changes.tentativeTag
+      form.tentativeTag
       onInput
       onSubmit
       
 
 
--- editableAnimalProperties changes =
+-- editableAnimalProperties form =
 --   let
 --     row (key, value) = 
 --       tr []
@@ -62,7 +70,7 @@ newTagControl animal changes =
 --         , td [] (propertyEditValue value)
 --         ]
 --   in
---     List.map row changes.properties
+--     List.map row form.properties
 
 -- propertyEditValue pval =
 --   case pval of
@@ -80,16 +88,3 @@ newTagControl animal changes =
 --     _ ->
 --       [text "unimplemented"]
 
-changingAnimalValues source =
-  { name = source.name
-  , tags = source.tags
-  , tentativeTag = ""
-  , properties = source.properties
-  }
-
-applyEdits source changes =
-  { source
-      | name = changes.name
-      , tags = changes.tags
-      , properties = changes.properties
-  }

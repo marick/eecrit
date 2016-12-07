@@ -12,9 +12,48 @@ import String.Extra as String
 import Pile.Bulma as Bulma 
 import Pile.HtmlShorthand exposing (..)
 
-import Animals.Types exposing (..)
+import Animals.Animal.Model exposing (..)
 import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
+
+revise : PersistentAnimal -> AnimalDisplay -> Msg
+revise persistentAnimal newDisplay =
+  ReviseDisplayedAnimal <| DisplayedAnimal persistentAnimal newDisplay
+
+nameEditControl animal changes = 
+  let
+    onInput value = revise animal <| Editable (form_name.set value changes)
+  in
+    Bulma.soleTextInputInRow [ value changes.name
+                             , Events.onInput onInput
+                             ]
+
+deleteTagControl animal changes =
+  let
+    onDelete name =
+      revise animal <| Editable <| form_tags.update (List.remove name) changes
+  in
+    Bulma.horizontalControls 
+      (List.map (Bulma.deletableTag onDelete) changes.tags)
+
+
+newTagControl animal changes =
+  let
+    onInput value = revise animal <| Editable (form_tentativeTag.set value changes)
+    submitChanges =
+      changes
+      |> form_tags.set (List.append changes.tags [changes.tentativeTag])
+      |> form_tentativeTag.set ""
+    onSubmit =
+      revise animal (Editable submitChanges)
+  in
+    Bulma.textInputWithSubmit
+      "Add"
+      changes.tentativeTag
+      onInput
+      onSubmit
+      
+
 
 -- editableAnimalProperties changes =
 --   let

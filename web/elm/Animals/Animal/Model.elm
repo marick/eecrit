@@ -1,7 +1,12 @@
-module Animals.Types exposing (..)
+module Animals.Animal.Model exposing
+  (
+  ..
+  )
 
 import Dict exposing (Dict)
 import Date exposing (Date)
+
+
 
 type DictValue
   = AsInt Int
@@ -37,3 +42,13 @@ type alias DisplayedAnimal =
   { persistent : PersistentAnimal
   , display : AnimalDisplay
   }
+
+
+-- Working with many animals
+
+asDict animals =
+  let
+    tuple animal = (animal.id, DisplayedAnimal animal Compact)
+  in
+    animals |> List.map tuple |> Dict.fromList
+

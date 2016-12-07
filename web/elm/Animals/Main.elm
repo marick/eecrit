@@ -1,11 +1,10 @@
 module Animals.Main exposing (..)
 
-import Animals.Animal as Animal
 import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
-import Animals.Types exposing (..)
+import Animals.Animal.Model as Animal
 
 import String
 import List
@@ -23,7 +22,7 @@ type alias Flags =
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
-  , animals : Dict Id DisplayedAnimal
+  , animals : Dict Id Animal.DisplayedAnimal
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String

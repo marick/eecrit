@@ -1,6 +1,6 @@
 module Animals.Msg exposing (Id, Msg(..))
 
-import Animals.Types exposing (..)
+import Animals.Animal.Model exposing (..)
 import Date exposing (Date)
 
 type alias Id = String

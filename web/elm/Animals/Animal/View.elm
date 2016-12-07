@@ -15,7 +15,7 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Types exposing (..)
 import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
-
+import Animals.Animal.Edit exposing (..)
 
 view {persistent, display} =
   case display of
@@ -32,7 +32,7 @@ compactView animal =
     ]
 
 expandedView animal =
-  tr [ emphasizeBorder ]
+  Bulma.highlightedRow []
     [ td []
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
@@ -82,7 +82,7 @@ newTagControl animal changes =
       
         
 editableView animal changes =
-  tr [ emphasizeBorder ]
+  Bulma.highlightedRow []
     [ td []
         [ Bulma.controlRow "Name" <| nameEditControl animal changes
         , Bulma.controlRow "Tags" <| deleteTagControl animal changes
@@ -103,42 +103,11 @@ editableView animal changes =
 
 -- Helpers
 
--- editableAnimalProperties changes =
---   let
---     row (key, value) = 
---       tr []
---         [ td [] [text key]
---         , td [] (propertyEditValue value)
---         ]
---   in
---     List.map row changes.properties
-
--- propertyEditValue pval =
---   case pval of
---     AsBool b m ->
---       [ Bulma.horizontalControls 
---           [ input [type' "checkbox", class "control", checked b]  []
---           , Bulma.oneTextInputInRow
---               [ value (Maybe.withDefault "" m)
---               , placeholder "notes if desired"
---               ]
---           ]
---       ]
---     AsString s ->
---       [Bulma.soleTextInputInRow [value s]]
---     _ ->
---       [text "unimplemented"]
-
 
 
 propertyPairs animal =
   Dict.toList (animal.properties)
 
-emphasizeBorder =
-  style [ ("border-top", "2px solid")
-        , ("border-bottom", "2px solid")
-        ]
-    
 
 animalProperties animal =
   let
@@ -181,19 +150,6 @@ parentheticalSpecies animal =
 revise persistentAnimal newDisplay =
   ReviseDisplayedAnimal <| DisplayedAnimal persistentAnimal newDisplay
 
-changingAnimalValues source =
-  { name = source.name
-  , tags = source.tags
-  , tentativeTag = ""
-  , properties = source.properties
-  }
-
-applyEdits source changes =
-  { source
-      | name = changes.name
-      , tags = changes.tags
-      , properties = changes.properties
-  }
 
 -- Various icons
 

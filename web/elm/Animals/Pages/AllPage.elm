@@ -54,11 +54,11 @@ filteredAnimals model =
       in
         String.startsWith wanted has
 
-    hasDesiredSpecies animal = hasWanted .speciesFilter animal.persistent.species
-    hasDesiredName animal = hasWanted .nameFilter animal.persistent.name
+    hasDesiredSpecies animal = hasWanted .speciesFilter animal.animal.species
+    hasDesiredName animal = hasWanted .nameFilter animal.animal.name
     hasDesiredTag animal =
       String.isEmpty model.tagFilter || 
-        List.any (hasWanted .tagFilter) animal.persistent.tags
+        List.any (hasWanted .tagFilter) animal.animal.tags
 
   in
     model.animals
@@ -66,7 +66,7 @@ filteredAnimals model =
       |> List.filter hasDesiredSpecies
       |> List.filter hasDesiredName
       |> List.filter hasDesiredTag
-      |> List.sortBy (.persistent >> .name >> String.toLower)
+      |> List.sortBy (.animal >> .name >> String.toLower)
 
 
 -- The calendar

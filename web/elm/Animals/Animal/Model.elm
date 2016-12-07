@@ -20,7 +20,7 @@ type DictValue
 type alias AnimalProperties =
   Dict String DictValue
     
-type alias PersistentAnimal =
+type alias Animal =
   { id : String
   , name : String
   , species : String
@@ -28,21 +28,21 @@ type alias PersistentAnimal =
   , properties : AnimalProperties
   }
 
-type alias ChangingAnimalValues = 
+type alias Form = 
   { name : String
   , tags : List String
   , tentativeTag : String
   , properties : AnimalProperties
   }
 
-type AnimalDisplay
+type Display
   = Compact
   | Expanded
-  | Editable ChangingAnimalValues
+  | Editable Form
   
 type alias DisplayedAnimal = 
-  { persistent : PersistentAnimal
-  , display : AnimalDisplay
+  { animal : Animal
+  , display : Display
   }
 
 

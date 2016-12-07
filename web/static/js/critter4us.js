@@ -19611,17 +19611,17 @@ var _user$project$Animals_Animal_Model$form_name = A2(
 				w,
 				{name: p});
 		}));
-var _user$project$Animals_Animal_Model$PersistentAnimal = F5(
+var _user$project$Animals_Animal_Model$Animal = F5(
 	function (a, b, c, d, e) {
 		return {id: a, name: b, species: c, tags: d, properties: e};
 	});
-var _user$project$Animals_Animal_Model$ChangingAnimalValues = F4(
+var _user$project$Animals_Animal_Model$Form = F4(
 	function (a, b, c, d) {
 		return {name: a, tags: b, tentativeTag: c, properties: d};
 	});
 var _user$project$Animals_Animal_Model$DisplayedAnimal = F2(
 	function (a, b) {
-		return {persistent: a, display: b};
+		return {animal: a, display: b};
 	});
 var _user$project$Animals_Animal_Model$AsBool = F2(
 	function (a, b) {
@@ -20107,7 +20107,7 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
 						_user$project$Animals_Main$model_animals.update,
-						A2(_elm_lang$core$Dict$insert, _p1.persistent.id, _p1),
+						A2(_elm_lang$core$Dict$insert, _p1.animal.id, _p1),
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
@@ -20800,9 +20800,9 @@ var _user$project$Animals_Animal_Edit$changingAnimalValues = function (source) {
 	return {name: source.name, tags: source.tags, tentativeTag: '', properties: source.properties};
 };
 var _user$project$Animals_Animal_Edit$revise = F2(
-	function (persistentAnimal, newDisplay) {
+	function (animal, newDisplay) {
 		return _user$project$Animals_Msg$ReviseDisplayedAnimal(
-			A2(_user$project$Animals_Animal_Model$DisplayedAnimal, persistentAnimal, newDisplay));
+			A2(_user$project$Animals_Animal_Model$DisplayedAnimal, animal, newDisplay));
 	});
 var _user$project$Animals_Animal_Edit$nameEditControl = F2(
 	function (animal, changes) {
@@ -21108,7 +21108,7 @@ var _user$project$Animals_Animal_View$compactView = function (animal) {
 };
 var _user$project$Animals_Animal_View$view = function (_p5) {
 	var _p6 = _p5;
-	var _p8 = _p6.persistent;
+	var _p8 = _p6.animal;
 	var _p7 = _p6.display;
 	switch (_p7.ctor) {
 		case 'Compact':
@@ -21207,7 +21207,7 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 			function (_) {
 				return _.speciesFilter;
 			},
-			animal.persistent.species);
+			animal.animal.species);
 	};
 	var hasDesiredName = function (animal) {
 		return A2(
@@ -21215,7 +21215,7 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 			function (_) {
 				return _.nameFilter;
 			},
-			animal.persistent.name);
+			animal.animal.name);
 	};
 	var hasDesiredTag = function (animal) {
 		return _elm_lang$core$String$isEmpty(model.tagFilter) || A2(
@@ -21224,7 +21224,7 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 				function (_) {
 					return _.tagFilter;
 				}),
-			animal.persistent.tags);
+			animal.animal.tags);
 	};
 	return A2(
 		_elm_lang$core$List$sortBy,
@@ -21234,7 +21234,7 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 					return _.name;
 				}(
 					function (_) {
-						return _.persistent;
+						return _.animal;
 					}(_p1)));
 		},
 		A2(

@@ -15,9 +15,9 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-revise : PersistentAnimal -> AnimalDisplay -> Msg
-revise persistentAnimal newDisplay =
-  ReviseDisplayedAnimal <| DisplayedAnimal persistentAnimal newDisplay
+revise : Animal -> Display -> Msg
+revise animal newDisplay =
+  ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay
 
 nameEditControl animal changes = 
   let

@@ -16,11 +16,11 @@ import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
-view {persistent, display} =
+view {animal, display} =
   case display of
-    Compact -> compactView persistent
-    Expanded -> expandedView persistent
-    Editable changing -> editableView persistent changing
+    Compact -> compactView animal
+    Expanded -> expandedView animal
+    Editable changing -> editableView animal changing
 
 compactView animal =
   tr []

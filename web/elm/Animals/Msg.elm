@@ -11,7 +11,7 @@ type Msg
   | NavigateToHelpPage
 
   | SetToday (Maybe Date)
-  | SetAnimals (List PersistentAnimal)
+  | SetAnimals (List Animal)
 
   | ToggleDatePicker
   | SelectDate Date

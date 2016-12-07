@@ -93,8 +93,8 @@ update msg model =
       , Cmd.none
       )
 
-    ReviseDisplayedAnimal animal ->
-      model_animals.update (Dict.insert animal.persistent.id animal) model ! []
+    ReviseDisplayedAnimal displayed ->
+      model_animals.update (Dict.insert displayed.animal.id displayed) model ! []
       
     NoOp ->
       model ! []

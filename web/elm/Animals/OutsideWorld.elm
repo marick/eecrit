@@ -4,7 +4,6 @@ module Animals.OutsideWorld exposing
   )
 
 import Animals.Animal.Model exposing (..)
-import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Date
 import Dict

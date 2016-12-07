@@ -7772,222 +7772,6 @@ var _arturopala$elm_monocle$Monocle_Lens$zip = F2(
 		return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 	});
 
-var _arturopala$elm_monocle$Monocle_Prism$modifyOption = F2(
-	function (prism, f) {
-		return function (_p0) {
-			return A2(
-				_elm_lang$core$Maybe$map,
-				function (_p1) {
-					return prism.reverseGet(
-						f(_p1));
-				},
-				prism.getOption(_p0));
-		};
-	});
-var _arturopala$elm_monocle$Monocle_Prism$modify = F2(
-	function (prism, f) {
-		var m = function (x) {
-			return A2(
-				_elm_lang$core$Maybe$withDefault,
-				x,
-				A3(_arturopala$elm_monocle$Monocle_Prism$modifyOption, prism, f, x));
-		};
-		return m;
-	});
-var _arturopala$elm_monocle$Monocle_Prism$isMatching = F2(
-	function (prism, a) {
-		var _p2 = prism.getOption(a);
-		if (_p2.ctor === 'Just') {
-			return true;
-		} else {
-			return false;
-		}
-	});
-var _arturopala$elm_monocle$Monocle_Prism$Prism = F2(
-	function (a, b) {
-		return {getOption: a, reverseGet: b};
-	});
-var _arturopala$elm_monocle$Monocle_Prism$compose = F2(
-	function (outer, inner) {
-		var getOption = function (x) {
-			var _p3 = outer.getOption(x);
-			if (_p3.ctor === 'Just') {
-				return inner.getOption(_p3._0);
-			} else {
-				return _elm_lang$core$Maybe$Nothing;
-			}
-		};
-		return A2(
-			_arturopala$elm_monocle$Monocle_Prism$Prism,
-			getOption,
-			function (_p4) {
-				return outer.reverseGet(
-					inner.reverseGet(_p4));
-			});
-	});
-var _arturopala$elm_monocle$Monocle_Prism$composeIso = F2(
-	function (outer, inner) {
-		var getOption = function (x) {
-			var _p5 = outer.getOption(x);
-			if (_p5.ctor === 'Just') {
-				return _elm_lang$core$Maybe$Just(
-					inner.get(_p5._0));
-			} else {
-				return _elm_lang$core$Maybe$Nothing;
-			}
-		};
-		return A2(
-			_arturopala$elm_monocle$Monocle_Prism$Prism,
-			getOption,
-			function (_p6) {
-				return outer.reverseGet(
-					inner.reverseGet(_p6));
-			});
-	});
-var _arturopala$elm_monocle$Monocle_Prism$fromIso = function (iso) {
-	return A2(
-		_arturopala$elm_monocle$Monocle_Prism$Prism,
-		function (_p7) {
-			return _elm_lang$core$Maybe$Just(
-				iso.get(_p7));
-		},
-		iso.reverseGet);
-};
-
-var _arturopala$elm_monocle$Monocle_Optional$modifyOption = F2(
-	function (opt, f) {
-		var mf = function (a) {
-			return A2(
-				_elm_lang$core$Maybe$map,
-				function (b) {
-					return A2(opt.set, b, a);
-				},
-				A2(
-					_elm_lang$core$Maybe$map,
-					f,
-					opt.getOption(a)));
-		};
-		return mf;
-	});
-var _arturopala$elm_monocle$Monocle_Optional$modify = F2(
-	function (opt, f) {
-		var mf = function (a) {
-			return A2(
-				_elm_lang$core$Maybe$withDefault,
-				a,
-				A3(_arturopala$elm_monocle$Monocle_Optional$modifyOption, opt, f, a));
-		};
-		return mf;
-	});
-var _arturopala$elm_monocle$Monocle_Optional$Optional = F2(
-	function (a, b) {
-		return {getOption: a, set: b};
-	});
-var _arturopala$elm_monocle$Monocle_Optional$compose = F2(
-	function (outer, inner) {
-		var getOption = function (a) {
-			var _p0 = outer.getOption(a);
-			if (_p0.ctor === 'Just') {
-				return inner.getOption(_p0._0);
-			} else {
-				return _elm_lang$core$Maybe$Nothing;
-			}
-		};
-		var set = F2(
-			function (c, a) {
-				return A2(
-					_elm_lang$core$Maybe$withDefault,
-					a,
-					A2(
-						_elm_lang$core$Maybe$map,
-						function (b) {
-							return A2(outer.set, b, a);
-						},
-						A2(
-							_elm_lang$core$Maybe$map,
-							function (b) {
-								return A2(inner.set, c, b);
-							},
-							outer.getOption(a))));
-			});
-		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
-	});
-var _arturopala$elm_monocle$Monocle_Optional$composeLens = F2(
-	function (opt, lens) {
-		var getOption = function (a) {
-			var _p1 = opt.getOption(a);
-			if (_p1.ctor === 'Just') {
-				return _elm_lang$core$Maybe$Just(
-					lens.get(_p1._0));
-			} else {
-				return _elm_lang$core$Maybe$Nothing;
-			}
-		};
-		var set = F2(
-			function (c, a) {
-				return A2(
-					_elm_lang$core$Maybe$withDefault,
-					a,
-					A2(
-						_elm_lang$core$Maybe$map,
-						function (b) {
-							return A2(opt.set, b, a);
-						},
-						A2(
-							_elm_lang$core$Maybe$map,
-							function (b) {
-								return A2(lens.set, c, b);
-							},
-							opt.getOption(a))));
-			});
-		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
-	});
-var _arturopala$elm_monocle$Monocle_Optional$fromPrism = function (prism) {
-	var set = F2(
-		function (b, _p2) {
-			return prism.reverseGet(b);
-		});
-	return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, prism.getOption, set);
-};
-var _arturopala$elm_monocle$Monocle_Optional$fromLens = function (lens) {
-	var getOption = function (a) {
-		return _elm_lang$core$Maybe$Just(
-			lens.get(a));
-	};
-	return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, lens.set);
-};
-var _arturopala$elm_monocle$Monocle_Optional$zip = F2(
-	function (left, right) {
-		var set = F2(
-			function (_p4, _p3) {
-				var _p5 = _p4;
-				var _p6 = _p3;
-				return {
-					ctor: '_Tuple2',
-					_0: A2(left.set, _p5._0, _p6._0),
-					_1: A2(right.set, _p5._1, _p6._1)
-				};
-			});
-		var getOption = function (_p7) {
-			var _p8 = _p7;
-			return function (ma) {
-				return A2(
-					_elm_lang$core$Maybe$andThen,
-					ma,
-					function (c) {
-						return A2(
-							_elm_lang$core$Maybe$map,
-							function (d) {
-								return {ctor: '_Tuple2', _0: c, _1: d};
-							},
-							right.getOption(_p8._1));
-					});
-			}(
-				left.getOption(_p8._0));
-		};
-		return A2(_arturopala$elm_monocle$Monocle_Optional$Optional, getOption, set);
-	});
-
 
 var _coreytrampe$elm_vendor$Native_Vendor = function(elm) {
 
@@ -19794,44 +19578,7 @@ var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
 		return {get: a, set: b, update: c};
 	});
 
-var _user$project$Pile_UpdatingOptional$optionalUpdate = F4(
-	function (getPartMaybe, setPart, partTransformer, whole) {
-		var whenPartExistsF = function (part) {
-			return A2(
-				setPart,
-				partTransformer(part),
-				whole);
-		};
-		return A3(
-			_elm_community$maybe_extra$Maybe_Extra$unwrap,
-			whole,
-			whenPartExistsF,
-			getPartMaybe(whole));
-	});
-var _user$project$Pile_UpdatingOptional$extractOptional = function (u) {
-	return {getOption: u.getOption, set: u.set};
-};
-var _user$project$Pile_UpdatingOptional$opt = F2(
-	function (getPartMaybe, setPart) {
-		return {
-			getOption: getPartMaybe,
-			set: setPart,
-			maybeUpdate: A2(_user$project$Pile_UpdatingOptional$optionalUpdate, getPartMaybe, setPart)
-		};
-	});
-var _user$project$Pile_UpdatingOptional$composeLens = F2(
-	function (left, right) {
-		var right_ = _user$project$Pile_UpdatingLens$extractLens(right);
-		var left_ = _user$project$Pile_UpdatingOptional$extractOptional(left);
-		var composed = A2(_arturopala$elm_monocle$Monocle_Optional$composeLens, left_, right_);
-		return A2(_user$project$Pile_UpdatingOptional$opt, composed.getOption, composed.set);
-	});
-var _user$project$Pile_UpdatingOptional$UpdatingOptional = F3(
-	function (a, b, c) {
-		return {getOption: a, set: b, maybeUpdate: c};
-	});
-
-var _user$project$Animals_Lenses$form_tentativeTag = A2(
+var _user$project$Animals_Animal_Model$form_tentativeTag = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.tentativeTag;
@@ -19842,7 +19589,7 @@ var _user$project$Animals_Lenses$form_tentativeTag = A2(
 				w,
 				{tentativeTag: p});
 		}));
-var _user$project$Animals_Lenses$form_tags = A2(
+var _user$project$Animals_Animal_Model$form_tags = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.tags;
@@ -19853,7 +19600,7 @@ var _user$project$Animals_Lenses$form_tags = A2(
 				w,
 				{tags: p});
 		}));
-var _user$project$Animals_Lenses$form_name = A2(
+var _user$project$Animals_Animal_Model$form_name = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
 		return _.name;
@@ -19864,95 +19611,6 @@ var _user$project$Animals_Lenses$form_name = A2(
 				w,
 				{name: p});
 		}));
-var _user$project$Animals_Lenses$model_datePickerOpen = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.datePickerOpen;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{datePickerOpen: p});
-		}));
-var _user$project$Animals_Lenses$model_effectiveDate = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.effectiveDate;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{effectiveDate: p});
-		}));
-var _user$project$Animals_Lenses$model_nameFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.nameFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{nameFilter: p});
-		}));
-var _user$project$Animals_Lenses$model_speciesFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.speciesFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{speciesFilter: p});
-		}));
-var _user$project$Animals_Lenses$model_tagFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tagFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tagFilter: p});
-		}));
-var _user$project$Animals_Lenses$model_animals = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.animals;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{animals: p});
-		}));
-var _user$project$Animals_Lenses$model_today = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.today;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{today: p});
-		}));
-var _user$project$Animals_Lenses$model_page = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.page;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{page: p});
-		}));
-
 var _user$project$Animals_Animal_Model$PersistentAnimal = F5(
 	function (a, b, c, d, e) {
 		return {id: a, name: b, species: c, tags: d, properties: e};
@@ -20132,11 +19790,13 @@ var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
 
 var _user$project$Animals_Navigation$urlUpdate = F2(
 	function (newPage, model) {
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			A2(_user$project$Animals_Lenses$model_page.set, newPage, model),
-			_elm_lang$core$Native_List.fromArray(
-				[]));
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{page: newPage}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
 var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
 var _user$project$Animals_Navigation$goto = F2(
@@ -20295,13 +19955,92 @@ var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Animals_Main$unfinished = function (model) {
-	return A2(
-		_elm_lang$core$Platform_Cmd_ops['!'],
-		model,
-		_elm_lang$core$Native_List.fromArray(
-			[]));
-};
+var _user$project$Animals_Main$init = F2(
+	function (flags, startingPage) {
+		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _elm_lang$core$Dict$empty, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			_elm_lang$core$Native_List.fromArray(
+				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
+	});
+var _user$project$Animals_Main$model_datePickerOpen = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.datePickerOpen;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{datePickerOpen: p});
+		}));
+var _user$project$Animals_Main$model_effectiveDate = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.effectiveDate;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{effectiveDate: p});
+		}));
+var _user$project$Animals_Main$model_nameFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.nameFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{nameFilter: p});
+		}));
+var _user$project$Animals_Main$model_speciesFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.speciesFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{speciesFilter: p});
+		}));
+var _user$project$Animals_Main$model_tagFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tagFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tagFilter: p});
+		}));
+var _user$project$Animals_Main$model_animals = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animals: p});
+		}));
+var _user$project$Animals_Main$model_today = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.today;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{today: p});
+		}));
 var _user$project$Animals_Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -20315,14 +20054,14 @@ var _user$project$Animals_Main$update = F2(
 			case 'SetToday':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Lenses$model_today.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_today.set, _p0._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetAnimals':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Lenses$model_animals.set,
+						_user$project$Animals_Main$model_animals.set,
 						_user$project$Animals_Animal_Model$asDict(_p0._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
@@ -20330,14 +20069,14 @@ var _user$project$Animals_Main$update = F2(
 			case 'ToggleDatePicker':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Lenses$model_datePickerOpen.update, _elm_lang$core$Basics$not, model),
+					A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SelectDate':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Lenses$model_effectiveDate.set,
+						_user$project$Animals_Main$model_effectiveDate.set,
 						_user$project$Pile_Calendar$At(_p0._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
@@ -20345,19 +20084,19 @@ var _user$project$Animals_Main$update = F2(
 			case 'SetNameFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Lenses$model_nameFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_nameFilter.set, _p0._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetTagFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Lenses$model_tagFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_tagFilter.set, _p0._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetSpeciesFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Lenses$model_speciesFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_speciesFilter.set, _p0._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'MoreLikeThisAnimal':
@@ -20367,7 +20106,7 @@ var _user$project$Animals_Main$update = F2(
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Lenses$model_animals.update,
+						_user$project$Animals_Main$model_animals.update,
 						A2(_elm_lang$core$Dict$insert, _p1.persistent.id, _p1),
 						model),
 					_elm_lang$core$Native_List.fromArray(
@@ -20380,15 +20119,17 @@ var _user$project$Animals_Main$update = F2(
 						[]));
 		}
 	});
-var _user$project$Animals_Main$init = F2(
-	function (flags, startingPage) {
-		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _elm_lang$core$Dict$empty, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
-	});
+var _user$project$Animals_Main$model_page = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.page;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{page: p});
+		}));
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
@@ -21070,7 +20811,7 @@ var _user$project$Animals_Animal_Edit$nameEditControl = F2(
 				_user$project$Animals_Animal_Edit$revise,
 				animal,
 				_user$project$Animals_Animal_Model$Editable(
-					A2(_user$project$Animals_Lenses$form_name.set, value, changes)));
+					A2(_user$project$Animals_Animal_Model$form_name.set, value, changes)));
 		};
 		return _user$project$Pile_Bulma$soleTextInputInRow(
 			_elm_lang$core$Native_List.fromArray(
@@ -21087,7 +20828,7 @@ var _user$project$Animals_Animal_Edit$deleteTagControl = F2(
 				animal,
 				_user$project$Animals_Animal_Model$Editable(
 					A2(
-						_user$project$Animals_Lenses$form_tags.update,
+						_user$project$Animals_Animal_Model$form_tags.update,
 						_elm_community$list_extra$List_Extra$remove(name),
 						changes)));
 		};
@@ -21100,10 +20841,10 @@ var _user$project$Animals_Animal_Edit$deleteTagControl = F2(
 var _user$project$Animals_Animal_Edit$newTagControl = F2(
 	function (animal, changes) {
 		var submitChanges = A2(
-			_user$project$Animals_Lenses$form_tentativeTag.set,
+			_user$project$Animals_Animal_Model$form_tentativeTag.set,
 			'',
 			A2(
-				_user$project$Animals_Lenses$form_tags.set,
+				_user$project$Animals_Animal_Model$form_tags.set,
 				A2(
 					_elm_lang$core$List$append,
 					changes.tags,
@@ -21119,7 +20860,7 @@ var _user$project$Animals_Animal_Edit$newTagControl = F2(
 				_user$project$Animals_Animal_Edit$revise,
 				animal,
 				_user$project$Animals_Animal_Model$Editable(
-					A2(_user$project$Animals_Lenses$form_tentativeTag.set, value, changes)));
+					A2(_user$project$Animals_Animal_Model$form_tentativeTag.set, value, changes)));
 		};
 		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', changes.tentativeTag, onInput, onSubmit);
 	});

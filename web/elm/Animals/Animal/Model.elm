@@ -5,6 +5,8 @@ module Animals.Animal.Model exposing
 
 import Dict exposing (Dict)
 import Date exposing (Date)
+import Pile.UpdatingLens exposing (lens)
+
 
 
 
@@ -52,3 +54,8 @@ asDict animals =
   in
     animals |> List.map tuple |> Dict.fromList
 
+-- Lenses
+
+form_name = lens .name (\ p w -> { w | name = p })
+form_tags = lens .tags (\ p w -> { w | tags = p })
+form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })

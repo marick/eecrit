@@ -14,7 +14,6 @@ import Pile.Calendar as Calendar
 import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Model exposing (..)
-import Animals.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.View as AnimalView
 

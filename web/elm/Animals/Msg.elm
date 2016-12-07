@@ -1,9 +1,7 @@
-module Animals.Msg exposing (Id, Msg(..))
+module Animals.Msg exposing (Msg(..))
 
 import Animals.Animal.Model as Animal exposing (Animal)
 import Date exposing (Date)
-
-type alias Id = String
 
 type Msg
   = NavigateToAllPage
@@ -22,7 +20,7 @@ type Msg
 
   | ReviseDisplayedAnimal Animal.DisplayedAnimal
 
-  | MoreLikeThisAnimal Id
+  | MoreLikeThisAnimal Animal.Id
 
   | NoOp
 

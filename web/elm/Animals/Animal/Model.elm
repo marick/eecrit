@@ -7,6 +7,8 @@ import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.UpdatingLens exposing (lens)
 
+type alias Id = String
+
 type DictValue
   = AsInt Int
   | AsFloat Float
@@ -15,7 +17,7 @@ type DictValue
   | AsBool Bool (Maybe String)
 
 type alias Animal =
-  { id : String
+  { id : Id
   , name : String
   , species : String
   , tags : List String

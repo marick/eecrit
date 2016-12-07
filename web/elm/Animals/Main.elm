@@ -22,7 +22,7 @@ type alias Flags =
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
-  , animals : Dict Id Animal.DisplayedAnimal
+  , animals : Dict Animal.Id Animal.DisplayedAnimal
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String

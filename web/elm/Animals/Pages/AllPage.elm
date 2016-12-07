@@ -1,4 +1,4 @@
-module Animals.View.AllPageView exposing (view)
+module Animals.Pages.AllPage exposing (view)
 
 import Dict
 import Html exposing (..)

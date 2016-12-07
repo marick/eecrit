@@ -1,4 +1,4 @@
-module Animals.View.HelpPageView exposing (..)
+module Animals.Pages.HelpPage exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

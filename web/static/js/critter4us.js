@@ -21372,13 +21372,13 @@ var _user$project$Animals_View_AnimalView$view = function (_p5) {
 	}
 };
 
-var _user$project$Animals_View_AllPageView$filterHelp = function (iconType) {
+var _user$project$Animals_Pages_AllPage$filterHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Msg$NoOp);
 };
-var _user$project$Animals_View_AllPageView$calendarHelp = function (iconType) {
+var _user$project$Animals_Pages_AllPage$calendarHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Msg$NoOp);
 };
-var _user$project$Animals_View_AllPageView$speciesFilter = function (model) {
+var _user$project$Animals_Pages_AllPage$speciesFilter = function (model) {
 	var textOption = F2(
 		function (val, display) {
 			return A2(
@@ -21407,7 +21407,7 @@ var _user$project$Animals_View_AllPageView$speciesFilter = function (model) {
 					]))
 			]));
 };
-var _user$project$Animals_View_AllPageView$tagsFilter = function (model) {
+var _user$project$Animals_Pages_AllPage$tagsFilter = function (model) {
 	return _user$project$Pile_Bulma$centeredLevelItem(
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -21415,7 +21415,7 @@ var _user$project$Animals_View_AllPageView$tagsFilter = function (model) {
 				A2(_user$project$Pile_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Msg$SetTagFilter)
 			]));
 };
-var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
+var _user$project$Animals_Pages_AllPage$nameFilter = function (model) {
 	return _user$project$Pile_Bulma$centeredLevelItem(
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -21423,7 +21423,7 @@ var _user$project$Animals_View_AllPageView$nameFilter = function (model) {
 				A2(_user$project$Pile_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Msg$SetNameFilter)
 			]));
 };
-var _user$project$Animals_View_AllPageView$dateControl = F3(
+var _user$project$Animals_Pages_AllPage$dateControl = F3(
 	function (hasOpenPicker, displayString, calendarToggleMsg) {
 		var iconF = function () {
 			var _p0 = hasOpenPicker;
@@ -21445,7 +21445,7 @@ var _user$project$Animals_View_AllPageView$dateControl = F3(
 					iconF(calendarToggleMsg)
 				]));
 	});
-var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
+var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 	var hasWanted = F2(
 		function (modelFilter, animalValue) {
 			var has = _elm_lang$core$String$toLower(animalValue);
@@ -21500,7 +21500,7 @@ var _user$project$Animals_View_AllPageView$filteredAnimals = function (model) {
 					hasDesiredSpecies,
 					_elm_lang$core$Dict$values(model.animals)))));
 };
-var _user$project$Animals_View_AllPageView$view = function (model) {
+var _user$project$Animals_Pages_AllPage$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -21520,11 +21520,11 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('Animals as of...'),
-										_user$project$Animals_View_AllPageView$calendarHelp(_user$project$Pile_Bulma$rightIcon)
+										_user$project$Animals_Pages_AllPage$calendarHelp(_user$project$Pile_Bulma$rightIcon)
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										A4(_user$project$Pile_Calendar$view, _user$project$Animals_View_AllPageView$dateControl, _user$project$Animals_Msg$ToggleDatePicker, _user$project$Animals_Msg$SelectDate, model)
+										A4(_user$project$Pile_Calendar$view, _user$project$Animals_Pages_AllPage$dateControl, _user$project$Animals_Msg$ToggleDatePicker, _user$project$Animals_Msg$SelectDate, model)
 									]))
 							])),
 						A2(
@@ -21537,16 +21537,16 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('Filter by...'),
-										_user$project$Animals_View_AllPageView$filterHelp(_user$project$Pile_Bulma$rightIcon)
+										_user$project$Animals_Pages_AllPage$filterHelp(_user$project$Pile_Bulma$rightIcon)
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_user$project$Pile_Bulma$distributeHorizontally(
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_user$project$Animals_View_AllPageView$nameFilter(model),
-												_user$project$Animals_View_AllPageView$speciesFilter(model),
-												_user$project$Animals_View_AllPageView$tagsFilter(model)
+												_user$project$Animals_Pages_AllPage$nameFilter(model),
+												_user$project$Animals_Pages_AllPage$speciesFilter(model),
+												_user$project$Animals_Pages_AllPage$tagsFilter(model)
 											]))
 									]))
 							]))
@@ -21555,15 +21555,15 @@ var _user$project$Animals_View_AllPageView$view = function (model) {
 				A2(
 					_elm_lang$core$List$map,
 					_user$project$Animals_View_AnimalView$view,
-					_user$project$Animals_View_AllPageView$filteredAnimals(model)))
+					_user$project$Animals_Pages_AllPage$filteredAnimals(model)))
 			]));
 };
 
-var _user$project$Animals_View_AddPageView$view = function (model) {
+var _user$project$Animals_Pages_AddPage$view = function (model) {
 	return A2(_user$project$Pile_Bulma$infoMessage, 'Can\'t Add Animals Yet', 'The page hasn\'t been written yet.');
 };
 
-var _user$project$Animals_View_HelpPageView$view = function (model) {
+var _user$project$Animals_Pages_HelpPage$view = function (model) {
 	return A2(_user$project$Pile_Bulma$infoMessage, 'Unfinished', 'The help page hasn\'t been written yet.');
 };
 
@@ -21587,11 +21587,11 @@ var _user$project$Animals_View$view = function (model) {
 				var _p0 = model.page;
 				switch (_p0.ctor) {
 					case 'AllPage':
-						return _user$project$Animals_View_AllPageView$view(model);
+						return _user$project$Animals_Pages_AllPage$view(model);
 					case 'AddPage':
-						return _user$project$Animals_View_AddPageView$view(model);
+						return _user$project$Animals_Pages_AddPage$view(model);
 					default:
-						return _user$project$Animals_View_HelpPageView$view(model);
+						return _user$project$Animals_Pages_HelpPage$view(model);
 				}
 			}()
 			]));

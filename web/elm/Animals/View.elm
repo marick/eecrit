@@ -10,9 +10,9 @@ import Animals.Msg exposing (Msg(..))
 import Animals.Main exposing (Model)
 import Animals.Navigation as MyNav
 
-import Animals.View.AllPageView as AllPage
-import Animals.View.AddPageView as AddPage
-import Animals.View.HelpPageView as HelpPage
+import Animals.Pages.AllPage as AllPage
+import Animals.Pages.AddPage as AddPage
+import Animals.Pages.HelpPage as HelpPage
 
 view : Model -> Html Msg
 view model =

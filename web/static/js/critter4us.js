@@ -19562,7 +19562,7 @@ var _user$project$Pile_UpdatingLens$lensUpdate = F4(
 				getPart(whole)),
 			whole);
 	});
-var _user$project$Pile_UpdatingLens$extractLens = function (u) {
+var _user$project$Pile_UpdatingLens$toMonocle = function (u) {
 	return {get: u.get, set: u.set};
 };
 var _user$project$Pile_UpdatingLens$lens = F2(
@@ -19573,11 +19573,19 @@ var _user$project$Pile_UpdatingLens$lens = F2(
 			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
 		};
 	});
+var _user$project$Pile_UpdatingLens$compose = F2(
+	function (left, right) {
+		var right_ = _user$project$Pile_UpdatingLens$toMonocle(right);
+		var left_ = _user$project$Pile_UpdatingLens$toMonocle(left);
+		var composed = A2(_arturopala$elm_monocle$Monocle_Lens$compose, left_, right_);
+		return A2(_user$project$Pile_UpdatingLens$lens, composed.get, composed.set);
+	});
 var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
 	function (a, b, c) {
 		return {get: a, set: b, update: c};
 	});
 
+var _user$project$Animals_Animal_Model$emptyAggregate = _elm_lang$core$Dict$empty;
 var _user$project$Animals_Animal_Model$form_tentativeTag = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -19611,6 +19619,43 @@ var _user$project$Animals_Animal_Model$form_name = A2(
 				w,
 				{name: p});
 		}));
+var _user$project$Animals_Animal_Model$displayedAnimal_animal = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animal;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animal: p});
+		}));
+var _user$project$Animals_Animal_Model$animal_id = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.id;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{id: p});
+		}));
+var _user$project$Animals_Animal_Model$displayedAnimal_id = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Model$displayedAnimal_animal, _user$project$Animals_Animal_Model$animal_id);
+var _user$project$Animals_Animal_Model$upsert = F2(
+	function (displayed, aggregate) {
+		var key = _user$project$Animals_Animal_Model$displayedAnimal_id.get(displayed);
+		return A3(_elm_lang$core$Dict$insert, key, displayed, aggregate);
+	});
+var _user$project$Animals_Animal_Model$applyEdits = F2(
+	function (animal, form) {
+		return _elm_lang$core$Native_Utils.update(
+			animal,
+			{name: form.name, tags: form.tags, properties: form.properties});
+	});
+var _user$project$Animals_Animal_Model$extractForm = function (animal) {
+	return {name: animal.name, tags: animal.tags, tentativeTag: '', properties: animal.properties};
+};
 var _user$project$Animals_Animal_Model$Animal = F5(
 	function (a, b, c, d, e) {
 		return {id: a, name: b, species: c, tags: d, properties: e};
@@ -19644,7 +19689,7 @@ var _user$project$Animals_Animal_Model$Editable = function (a) {
 };
 var _user$project$Animals_Animal_Model$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Animal_Model$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Animal_Model$asDict = function (animals) {
+var _user$project$Animals_Animal_Model$asAggregate = function (animals) {
 	var tuple = function (animal) {
 		return {
 			ctor: '_Tuple2',
@@ -19957,7 +20002,7 @@ var _user$project$Animals_Main$subscriptions = function (model) {
 };
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
-		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _elm_lang$core$Dict$empty, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
+		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Model$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			model,
@@ -20062,7 +20107,7 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
 						_user$project$Animals_Main$model_animals.set,
-						_user$project$Animals_Animal_Model$asDict(_p0._0),
+						_user$project$Animals_Animal_Model$asAggregate(_p0._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
@@ -20102,12 +20147,11 @@ var _user$project$Animals_Main$update = F2(
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'ReviseDisplayedAnimal':
-				var _p1 = _p0._0;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
 						_user$project$Animals_Main$model_animals.update,
-						A2(_elm_lang$core$Dict$insert, _p1.animal.id, _p1),
+						_user$project$Animals_Animal_Model$upsert(_p0._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
@@ -20790,79 +20834,77 @@ var _user$project$Pile_Bulma$tabs = F2(
 				]));
 	});
 
-var _user$project$Animals_Animal_Edit$applyEdits = F2(
-	function (source, changes) {
-		return _elm_lang$core$Native_Utils.update(
-			source,
-			{name: changes.name, tags: changes.tags, properties: changes.properties});
-	});
-var _user$project$Animals_Animal_Edit$changingAnimalValues = function (source) {
-	return {name: source.name, tags: source.tags, tentativeTag: '', properties: source.properties};
-};
-var _user$project$Animals_Animal_Edit$revise = F2(
+var _user$project$Animals_Animal_Edit$displayDifferently = F2(
 	function (animal, newDisplay) {
 		return _user$project$Animals_Msg$ReviseDisplayedAnimal(
 			A2(_user$project$Animals_Animal_Model$DisplayedAnimal, animal, newDisplay));
 	});
+var _user$project$Animals_Animal_Edit$updateForm = F2(
+	function (animal, form) {
+		return A2(
+			_user$project$Animals_Animal_Edit$displayDifferently,
+			animal,
+			_user$project$Animals_Animal_Model$Editable(form));
+	});
+var _user$project$Animals_Animal_Edit$beginEditing = function (animal) {
+	return A2(
+		_user$project$Animals_Animal_Edit$updateForm,
+		animal,
+		_user$project$Animals_Animal_Model$extractForm(animal));
+};
 var _user$project$Animals_Animal_Edit$nameEditControl = F2(
-	function (animal, changes) {
+	function (animal, form) {
 		var onInput = function (value) {
 			return A2(
-				_user$project$Animals_Animal_Edit$revise,
+				_user$project$Animals_Animal_Edit$updateForm,
 				animal,
-				_user$project$Animals_Animal_Model$Editable(
-					A2(_user$project$Animals_Animal_Model$form_name.set, value, changes)));
+				A2(_user$project$Animals_Animal_Model$form_name.set, value, form));
 		};
 		return _user$project$Pile_Bulma$soleTextInputInRow(
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html_Attributes$value(changes.name),
+					_elm_lang$html$Html_Attributes$value(form.name),
 					_elm_lang$html$Html_Events$onInput(onInput)
 				]));
 	});
 var _user$project$Animals_Animal_Edit$deleteTagControl = F2(
-	function (animal, changes) {
+	function (animal, form) {
 		var onDelete = function (name) {
 			return A2(
-				_user$project$Animals_Animal_Edit$revise,
+				_user$project$Animals_Animal_Edit$updateForm,
 				animal,
-				_user$project$Animals_Animal_Model$Editable(
-					A2(
-						_user$project$Animals_Animal_Model$form_tags.update,
-						_elm_community$list_extra$List_Extra$remove(name),
-						changes)));
+				A2(
+					_user$project$Animals_Animal_Model$form_tags.update,
+					_elm_community$list_extra$List_Extra$remove(name),
+					form));
 		};
 		return _user$project$Pile_Bulma$horizontalControls(
 			A2(
 				_elm_lang$core$List$map,
 				_user$project$Pile_Bulma$deletableTag(onDelete),
-				changes.tags));
+				form.tags));
 	});
 var _user$project$Animals_Animal_Edit$newTagControl = F2(
-	function (animal, changes) {
-		var submitChanges = A2(
+	function (animal, form) {
+		var submitForm = A2(
 			_user$project$Animals_Animal_Model$form_tentativeTag.set,
 			'',
 			A2(
 				_user$project$Animals_Animal_Model$form_tags.set,
 				A2(
 					_elm_lang$core$List$append,
-					changes.tags,
+					form.tags,
 					_elm_lang$core$Native_List.fromArray(
-						[changes.tentativeTag])),
-				changes));
-		var onSubmit = A2(
-			_user$project$Animals_Animal_Edit$revise,
-			animal,
-			_user$project$Animals_Animal_Model$Editable(submitChanges));
+						[form.tentativeTag])),
+				form));
+		var onSubmit = A2(_user$project$Animals_Animal_Edit$updateForm, animal, submitForm);
 		var onInput = function (value) {
 			return A2(
-				_user$project$Animals_Animal_Edit$revise,
+				_user$project$Animals_Animal_Edit$updateForm,
 				animal,
-				_user$project$Animals_Animal_Model$Editable(
-					A2(_user$project$Animals_Animal_Model$form_tentativeTag.set, value, changes)));
+				A2(_user$project$Animals_Animal_Model$form_tentativeTag.set, value, form));
 		};
-		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', changes.tentativeTag, onInput, onSubmit);
+		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', form.tentativeTag, onInput, onSubmit);
 	});
 
 var _user$project$Animals_Animal_View$editHelp = function (iconType) {
@@ -20882,11 +20924,7 @@ var _user$project$Animals_Animal_View$edit = F2(
 			iconType,
 			'fa-pencil',
 			'Edit: make changes to this animal',
-			A2(
-				_user$project$Animals_Animal_Edit$revise,
-				animal,
-				_user$project$Animals_Animal_Model$Editable(
-					_user$project$Animals_Animal_Edit$changingAnimalValues(animal))));
+			_user$project$Animals_Animal_Edit$beginEditing(animal));
 	});
 var _user$project$Animals_Animal_View$contract = F2(
 	function (animal, iconType) {
@@ -20894,7 +20932,7 @@ var _user$project$Animals_Animal_View$contract = F2(
 			iconType,
 			'fa-caret-up',
 			'Expand: show less about this animal',
-			A2(_user$project$Animals_Animal_Edit$revise, animal, _user$project$Animals_Animal_Model$Compact));
+			A2(_user$project$Animals_Animal_Edit$displayDifferently, animal, _user$project$Animals_Animal_Model$Compact));
 	});
 var _user$project$Animals_Animal_View$expand = F2(
 	function (animal, iconType) {
@@ -20902,7 +20940,7 @@ var _user$project$Animals_Animal_View$expand = F2(
 			iconType,
 			'fa-caret-down',
 			'Expand: show more about this animal',
-			A2(_user$project$Animals_Animal_Edit$revise, animal, _user$project$Animals_Animal_Model$Expanded));
+			A2(_user$project$Animals_Animal_Edit$displayDifferently, animal, _user$project$Animals_Animal_Model$Expanded));
 	});
 var _user$project$Animals_Animal_View$parentheticalSpecies = function (animal) {
 	return A2(
@@ -21024,11 +21062,11 @@ var _user$project$Animals_Animal_View$editableView = F2(
 							A2(_user$project$Animals_Animal_Edit$newTagControl, animal, changes)),
 							_user$project$Pile_Bulma$leftwardSuccess(
 							A2(
-								_user$project$Animals_Animal_Edit$revise,
-								A2(_user$project$Animals_Animal_Edit$applyEdits, animal, changes),
+								_user$project$Animals_Animal_Edit$displayDifferently,
+								A2(_user$project$Animals_Animal_Model$applyEdits, animal, changes),
 								_user$project$Animals_Animal_Model$Expanded)),
 							_user$project$Pile_Bulma$rightwardCancel(
-							A2(_user$project$Animals_Animal_Edit$revise, animal, _user$project$Animals_Animal_Model$Expanded))
+							A2(_user$project$Animals_Animal_Edit$displayDifferently, animal, _user$project$Animals_Animal_Model$Expanded))
 						])),
 					A2(
 					_elm_lang$html$Html$td,

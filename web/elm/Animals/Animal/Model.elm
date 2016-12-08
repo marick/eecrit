@@ -5,7 +5,7 @@ module Animals.Animal.Model exposing
 
 import Dict exposing (Dict)
 import Date exposing (Date)
-import Pile.UpdatingLens exposing (lens)
+import Pile.UpdatingLens as Lens exposing (lens)
 
 type alias Id = String
 
@@ -59,13 +59,30 @@ applyEdits animal form =
 
 -- Lenses
 
+animal_id = lens .id (\ p w -> { w | id = p })
+
+displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })
+displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
+
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 
 -- Working with many animals
 
-asDict animals =
+type alias VisibleAggregate = Dict Id DisplayedAnimal
+
+emptyAggregate : VisibleAggregate
+emptyAggregate = Dict.empty
+
+upsert : DisplayedAnimal -> VisibleAggregate -> VisibleAggregate
+upsert displayed aggregate =
+  let
+    key = (displayedAnimal_id.get displayed)
+  in
+    Dict.insert key displayed aggregate
+
+asAggregate animals =
   let
     tuple animal = (animal.id, DisplayedAnimal animal Compact)
   in

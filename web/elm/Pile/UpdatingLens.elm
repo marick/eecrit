@@ -1,7 +1,8 @@
 module Pile.UpdatingLens exposing
   ( UpdatingLens
   , lens
-  , extractLens
+  , compose
+  , toMonocle
   )
 
 import Monocle.Lens as Lens exposing (Lens)
@@ -19,8 +20,19 @@ lens getPart setPart =
   , update = lensUpdate getPart setPart
   }
 
-extractLens : UpdatingLens whole part -> Lens whole part
-extractLens u =
+compose left right = 
+  let
+    left_ = toMonocle left
+    right_ = toMonocle right
+    composed = Lens.compose left_ right_
+  in
+    lens composed.get composed.set
+
+-- For internal use (by this and Optional)
+
+  
+toMonocle : UpdatingLens whole part -> Lens whole part
+toMonocle u =
   { get = u.get
   , set = u.set
   }

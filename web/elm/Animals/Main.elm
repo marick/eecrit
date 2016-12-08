@@ -8,7 +8,6 @@ import Animals.Animal.Model as Animal
 import String
 import List
 import Date exposing (Date)
-import Dict exposing (Dict)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (lens)
 import Return
@@ -22,7 +21,7 @@ type alias Flags =
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
-  , animals : Dict Animal.Id Animal.DisplayedAnimal
+  , animals : Animal.VisibleAggregate
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -48,7 +47,7 @@ init flags startingPage =
     model =
       { page = startingPage
       , csrfToken = flags.csrfToken
-      , animals = Dict.empty
+      , animals = Animal.emptyAggregate
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
@@ -74,7 +73,7 @@ update msg model =
     SetToday value ->
       model_today.set value model ! []
     SetAnimals animals ->
-      model_animals.set (Animal.asDict animals) model ! []
+      model_animals.set (Animal.asAggregate animals) model ! []
 
     ToggleDatePicker ->
       model_datePickerOpen.update not model ! []
@@ -94,7 +93,7 @@ update msg model =
       )
 
     ReviseDisplayedAnimal displayed ->
-      model_animals.update (Dict.insert displayed.animal.id displayed) model ! []
+      model_animals.update (Animal.upsert displayed) model ! []
       
     NoOp ->
       model ! []

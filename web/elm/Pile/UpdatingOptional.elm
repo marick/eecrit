@@ -23,8 +23,8 @@ opt getPartMaybe setPart =
   , maybeUpdate = optionalUpdate getPartMaybe setPart
   }
     
-extractOptional : UpdatingOptional whole part -> Optional whole part
-extractOptional u =
+toMonocle : UpdatingOptional whole part -> Optional whole part
+toMonocle u =
   { getOption = u.getOption
   , set = u.set
   }
@@ -32,7 +32,7 @@ extractOptional u =
 composeLens : UpdatingOptional whole part -> UpdatingLens part subpart -> UpdatingOptional whole subpart
 composeLens left right = 
   let
-    left_ = extractOptional left
+    left_ = toMonocle left
     right_ = UpdatingLens.extractLens right
     composed = Optional.composeLens left_ right_
   in

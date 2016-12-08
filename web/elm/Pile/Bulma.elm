@@ -183,13 +183,27 @@ oneTextInputInRow extraAttributes =
         []
     ]
 
-soleTextInputInRow extraAttributes =
-  oneReasonablySizedControl
-    (input ([ class "input"
-            , type' "text"
-            ]  ++ extraAttributes)
-       [])
-  
+soleTextInputInRow fieldValue extraAttributes =
+  let
+    field s =
+      input ([ class "input"
+             , type' "text"
+             , value s
+             ]  ++ extraAttributes)
+        []
+  in
+    case fieldValue of
+      Ok s -> 
+        oneReasonablySizedControl
+          (p [ class "control"]
+             [ (field s) ])
+      Err (s, errMsg) ->
+        oneReasonablySizedControl
+          (p [ class "control has-icon has-icon-right"]
+             [ field s
+             , i [class "fa fa-warning"] []
+             , span [ class "help is-danger" ] [ text errMsg ] 
+             ])
     
 textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
   horizontalControls

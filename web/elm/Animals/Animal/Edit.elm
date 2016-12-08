@@ -27,12 +27,24 @@ beginEditing : Animal -> Msg
 beginEditing animal =
   updateForm animal (extractForm animal)
 
+validate : String -> value -> (value -> Bool) -> Result (value, String) value 
+validate requirement value pred =
+  if pred value then
+    Ok value
+  else
+    Err (value, requirement)
+
+validatedName form =
+  validate "The animal has to have a name!"
+    (form_name.get form)
+    (not << String.isEmpty)
+
 nameEditControl animal form = 
   let
     onInput value = updateForm animal (form_name.set value form)
   in
-    Bulma.soleTextInputInRow [ value form.name
-                             , Events.onInput onInput
+    Bulma.soleTextInputInRow (validatedName form) [ 
+                             Events.onInput onInput
                              ]
 
 deleteTagControl animal form =

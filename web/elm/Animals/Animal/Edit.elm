@@ -43,9 +43,9 @@ nameEditControl animal form =
   let
     onInput value = updateForm animal (form_name.set value form)
   in
-    Bulma.soleTextInputInRow (validatedName form) [ 
-                             Events.onInput onInput
-                             ]
+    Bulma.soleTextInputInRow (validatedName form)
+      [ Events.onInput onInput
+      ]
 
 deleteTagControl animal form =
   let

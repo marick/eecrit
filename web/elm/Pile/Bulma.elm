@@ -185,8 +185,8 @@ oneTextInputInRow extraAttributes =
 
 soleTextInputInRow fieldValue extraAttributes =
   let
-    field s =
-      input ([ class "input"
+    field classes s =
+      input ([ classList ([("input", True)] ++ classes)
              , type' "text"
              , value s
              ]  ++ extraAttributes)
@@ -196,11 +196,11 @@ soleTextInputInRow fieldValue extraAttributes =
       Ok s -> 
         oneReasonablySizedControl
           (p [ class "control"]
-             [ (field s) ])
+             [ (field [] s) ])
       Err (s, errMsg) ->
         oneReasonablySizedControl
           (p [ class "control has-icon has-icon-right"]
-             [ field s
+             [ field [("is-danger", True)] s
              , i [class "fa fa-warning"] []
              , span [ class "help is-danger" ] [ text errMsg ] 
              ])

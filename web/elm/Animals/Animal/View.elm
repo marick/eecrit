@@ -16,33 +16,37 @@ import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
-view {animal, display} =
+view {animal, display, warning} =
   case display of
-    Compact -> compactView animal
-    Expanded -> expandedView animal
-    Editable changing -> editableView animal changing
+    Compact -> compactView animal warning
+    Expanded -> expandedView animal warning
+    Editable changing -> editableView animal changing warning
 
-compactView animal =
+compactView animal warning =
   tr []
-    [ (td [] [ p [] ( animalSalutation animal  :: animalTags animal)])
+    [ (td []
+         [ p [] ( animalSalutation animal  :: animalTags animal)
+         , showWarning warning
+         ])
     , expand animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
 
-expandedView animal =
+expandedView animal warning =
   Bulma.highlightedRow []
     [ td []
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
+        , showWarning warning 
         ]
     , contract animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
 
-editableView animal changes =
+editableView animal changes warning =
   Bulma.highlightedRow []
     [ td []
         [ Bulma.controlRow "Name" <| nameEditControl animal changes
@@ -55,15 +59,25 @@ editableView animal changes =
 
         , Bulma.leftwardSuccess (displayDifferently (applyEdits animal changes) Expanded)
         , Bulma.rightwardCancel (displayDifferently animal Expanded)
+        , showWarning warning
         ]
     , td [] []
     , td [] []
     , editHelp Bulma.tdIcon
     ]
 
-
-
-
+showWarning : Warning -> Html msg
+showWarning warning =
+  case warning of 
+    AllGood -> 
+      span [] []
+    AutoSavedTagWarning tagName -> 
+      Bulma.warningNotification NoOp
+        [ text "You saved without adding the unfinished "
+        , Bulma.readOnlyTag tagName
+        , text " tag, so I added it for you. Sorry if that wasn't what you wanted. "
+        , text " You can delete it if I goofed."
+        ]
 
         
 

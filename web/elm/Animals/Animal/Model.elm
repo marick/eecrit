@@ -39,8 +39,13 @@ type Display
 type alias DisplayedAnimal = 
   { animal : Animal
   , display : Display
+  , warning : Warning
   }
 
+type Warning 
+  = AllGood
+  | AutoSavedTagWarning String
+  
 extractForm : Animal -> Form
 extractForm animal =
   { name = animal.name
@@ -84,7 +89,7 @@ upsert displayed aggregate =
 
 asAggregate animals =
   let
-    tuple animal = (animal.id, DisplayedAnimal animal Compact)
+    tuple animal = (animal.id, DisplayedAnimal animal Compact (AutoSavedTagWarning "foo"))
   in
     animals |> List.map tuple |> Dict.fromList
 

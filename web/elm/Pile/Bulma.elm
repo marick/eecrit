@@ -237,4 +237,9 @@ rightwardCancel msg =
         , text "Cancel"
         ]
     ]
+
+deleteButton = button [class "delete"][]
     
+warningNotification msg contentList = 
+  div [class "notification is-warning"]
+    (deleteButton :: contentList)

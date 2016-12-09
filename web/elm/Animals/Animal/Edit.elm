@@ -15,13 +15,21 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-displayDifferently : Animal -> Display -> Msg
-displayDifferently animal newDisplay =
-  ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay
+reviseDisplay : Animal -> Display -> Msg
+reviseDisplay animal newDisplay =
+  displayWithFlash animal newDisplay AllGood
+
+cancelFlash = reviseDisplay -- use for emphasis
+    
+displayWithFlash : Animal -> Display -> Warning -> Msg
+displayWithFlash animal newDisplay flash =
+  ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay flash 
+
+--   
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
-  displayDifferently animal (Editable form)
+  reviseDisplay animal (Editable form)
 
 beginEditing : Animal -> Msg
 beginEditing animal =

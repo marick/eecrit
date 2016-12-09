@@ -26,7 +26,7 @@ compactView animal warning =
   tr []
     [ (td []
          [ p [] ( animalSalutation animal  :: animalTags animal)
-         , showWarning warning
+         , showWarning warning (cancelFlash animal Compact)
          ])
     , expand animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
@@ -39,7 +39,7 @@ expandedView animal warning =
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
-        , showWarning warning 
+        , showWarning warning (cancelFlash animal Expanded)
         ]
     , contract animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
@@ -57,29 +57,33 @@ editableView animal changes warning =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties changes |> Bulma.propertyTable)
 
-        , Bulma.leftwardSuccess (displayDifferently (applyEdits animal changes) Expanded)
-        , Bulma.rightwardCancel (displayDifferently animal Expanded)
-        , showWarning warning
+        , Bulma.leftwardSuccess (applyEdits animal changes)
+        , Bulma.rightwardCancel (reviseDisplay animal Expanded)
+        , showWarning warning (cancelFlash animal (Editable changes))
         ]
     , td [] []
     , td [] []
     , editHelp Bulma.tdIcon
     ]
 
-showWarning : Warning -> Html msg
-showWarning warning =
+applyEdits animal form =
+  let
+    (newAnimal, warning) = updateAnimal animal form
+  in
+    displayWithFlash newAnimal Expanded warning
+    
+showWarning : Warning -> Msg -> Html Msg
+showWarning warning msg =
   case warning of 
     AllGood -> 
       span [] []
     AutoSavedTagWarning tagName -> 
-      Bulma.warningNotification NoOp
+      Bulma.warningNotification msg
         [ text "You saved without adding the unfinished "
         , Bulma.readOnlyTag tagName
         , text " tag, so I added it for you. Sorry if that wasn't what you wanted. "
         , text " You can delete it if I goofed."
         ]
-
-        
 
 -- Helpers
 
@@ -133,12 +137,12 @@ parentheticalSpecies animal =
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (displayDifferently animal Expanded)
+    (reviseDisplay animal Expanded)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Expand: show less about this animal"
-    (displayDifferently animal Compact)
+    (reviseDisplay animal Compact)
       
 edit animal iconType =
   iconType "fa-pencil"

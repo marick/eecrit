@@ -54,13 +54,16 @@ extractForm animal =
   , properties = animal.properties
   }
 
-applyEdits animal form =
-  { animal
-      | name = form.name
-      , tags = form.tags
-      , properties = form.properties
-  }
-
+updateAnimal animal form =   
+  let
+    newAnimal =
+      { animal
+        | name = form.name
+        , tags = form.tags
+        , properties = form.properties
+      }
+  in
+    (newAnimal, AllGood)
 
 -- Lenses
 

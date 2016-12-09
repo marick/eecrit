@@ -238,8 +238,14 @@ rightwardCancel msg =
         ]
     ]
 
-deleteButton = button [class "delete"][]
+deleteButton msg =
+  button
+    [ class "delete"
+    , Events.onClick msg
+    ]
+    []
     
 warningNotification msg contentList = 
   div [class "notification is-warning"]
-    (deleteButton :: contentList)
+    <| deleteButton msg :: contentList
+

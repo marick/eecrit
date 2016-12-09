@@ -16,37 +16,37 @@ import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
-view {animal, display, warning} =
+view {animal, display, flash} =
   case display of
-    Compact -> compactView animal warning
-    Expanded -> expandedView animal warning
-    Editable changing -> editableView animal changing warning
+    Compact -> compactView animal flash
+    Expanded -> expandedView animal flash
+    Editable changing -> editableView animal changing flash
 
-compactView animal warning =
+compactView animal flash =
   tr []
     [ (td []
          [ p [] ( animalSalutation animal  :: animalTags animal)
-         , showWarning warning (cancelFlash animal Compact)
+         , showFlash flash (cancelFlash animal Compact)
          ])
     , expand animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
 
-expandedView animal warning =
+expandedView animal flash =
   Bulma.highlightedRow []
     [ td []
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
-        , showWarning warning (cancelFlash animal Expanded)
+        , showFlash flash (cancelFlash animal Expanded)
         ]
     , contract animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
     , moreLikeThis animal Bulma.tdIcon
     ]
 
-editableView animal changes warning =
+editableView animal changes flash =
   Bulma.highlightedRow []
     [ td []
         [ Bulma.controlRow "Name" <| nameEditControl animal changes
@@ -59,7 +59,7 @@ editableView animal changes warning =
 
         , Bulma.leftwardSuccess (applyEdits animal changes)
         , Bulma.rightwardCancel (reviseDisplay animal Expanded)
-        , showWarning warning (cancelFlash animal (Editable changes))
+        , showFlash flash (cancelFlash animal (Editable changes))
         ]
     , td [] []
     , td [] []
@@ -67,21 +67,26 @@ editableView animal changes warning =
     ]
 
 applyEdits animal form =
-  let
-    (newAnimal, warning) = updateAnimal animal form
-  in
-    displayWithFlash newAnimal Expanded warning
+  case updateAnimal animal form of
+    Ok newAnimal ->
+      reviseDisplay newAnimal Expanded
+    Err (newAnimal, flash) -> 
+      displayWithFlash newAnimal Expanded flash
     
-showWarning : Warning -> Msg -> Html Msg
-showWarning warning msg =
-  case warning of 
-    AllGood -> 
+showFlash : Flash -> Msg -> Html Msg
+showFlash flash msg =
+  case flash of 
+    NoFlash -> 
       span [] []
-    AutoSavedTagWarning tagName -> 
-      Bulma.warningNotification msg
-        [ text "You saved without adding the unfinished "
+    SavedIncompleteTag tagName -> 
+      Bulma.flashNotification msg
+        [ text "Excuse my presumption, but I notice you clicked "
+        , Bulma.exampleSuccess
+        , text " while there was text in the "
+        , b [] [text "New Tag"]
+        , text " field. So I've added the tag "
         , Bulma.readOnlyTag tagName
-        , text " tag, so I added it for you. Sorry if that wasn't what you wanted. "
+        , text " for you."
         , text " You can delete it if I goofed."
         ]
 

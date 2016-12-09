@@ -6,6 +6,7 @@ module Animals.Animal.Model exposing
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.UpdatingLens as Lens exposing (lens)
+import String
 
 type alias Id = String
 
@@ -39,12 +40,12 @@ type Display
 type alias DisplayedAnimal = 
   { animal : Animal
   , display : Display
-  , warning : Warning
+  , flash : Flash
   }
 
-type Warning 
-  = AllGood
-  | AutoSavedTagWarning String
+type Flash
+  = NoFlash
+  | SavedIncompleteTag String
   
 extractForm : Animal -> Form
 extractForm animal =
@@ -54,20 +55,30 @@ extractForm animal =
   , properties = animal.properties
   }
 
-updateAnimal animal form =   
+updateAnimal animal form =
   let
-    newAnimal =
-      { animal
-        | name = form.name
-        , tags = form.tags
-        , properties = form.properties
-      }
+    update tags =
+      animal 
+        |> animal_name.set form.name
+        |> animal_properties.set form.properties -- Currently not edited
+        |> animal_tags.set tags
   in
-    (newAnimal, AllGood)
+    case String.isEmpty form.tentativeTag of
+      True ->
+        Ok <| update form.tags 
+      False ->
+        -- Note that this isn't really an Err. Would maybe be better to make
+        -- own type?
+        Err ( update <| List.append form.tags [form.tentativeTag]
+            , SavedIncompleteTag form.tentativeTag
+            )
 
 -- Lenses
 
 animal_id = lens .id (\ p w -> { w | id = p })
+animal_name = lens .name (\ p w -> { w | name = p })
+animal_tags = lens .tags (\ p w -> { w | tags = p })
+animal_properties = lens .properties (\ p w -> { w | properties = p })
 
 displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })
 displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
@@ -92,7 +103,7 @@ upsert displayed aggregate =
 
 asAggregate animals =
   let
-    tuple animal = (animal.id, DisplayedAnimal animal Compact (AutoSavedTagWarning "foo"))
+    tuple animal = (animal.id, DisplayedAnimal animal Compact NoFlash)
   in
     animals |> List.map tuple |> Dict.fromList
 

@@ -218,6 +218,14 @@ textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
         [ text buttonLabel ]
     ]
 
+
+exampleSuccess =
+  a
+    [ class "button is-success is-small" ]
+    [ span [class "icon"] [i [class "fa fa-check"] []]
+    , text "Save"
+    ]
+  
 leftwardSuccess msg =
   p []
     [ a [ class "button is-success pull-left"
@@ -227,6 +235,7 @@ leftwardSuccess msg =
         , text "Save"
         ]
     ]
+
 
 rightwardCancel msg = 
   p []
@@ -245,7 +254,7 @@ deleteButton msg =
     ]
     []
     
-warningNotification msg contentList = 
+flashNotification msg contentList = 
   div [class "notification is-warning"]
     <| deleteButton msg :: contentList
 

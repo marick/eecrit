@@ -47,6 +47,12 @@ validatedName form =
     (form_name.get form)
     (not << String.isEmpty)
 
+-- This is way too fragile
+isSafeToSave form =
+  case validatedName form of
+    Ok x -> True
+    Err x -> False
+
 nameEditControl animal form = 
   let
     onInput value = updateForm animal (form_name.set value form)

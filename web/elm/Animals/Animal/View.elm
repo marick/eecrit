@@ -46,20 +46,20 @@ expandedView animal flash =
     , moreLikeThis animal Bulma.tdIcon
     ]
 
-editableView animal changes flash =
+editableView animal form flash =
   Bulma.highlightedRow []
     [ td []
-        [ Bulma.controlRow "Name" <| nameEditControl animal changes
-        , Bulma.controlRow "Tags" <| deleteTagControl animal changes
-        , Bulma.controlRow "New Tag" <| newTagControl animal changes
+        [ Bulma.controlRow "Name" <| nameEditControl animal form
+        , Bulma.controlRow "Tags" <| deleteTagControl animal form
+        , Bulma.controlRow "New Tag" <| newTagControl animal form
             
         -- , Bulma.controlRow "Properties"
         --     <| Bulma.oneReasonablySizedControl
-        --          (editableAnimalProperties changes |> Bulma.propertyTable)
+        --          (editableAnimalProperties form |> Bulma.propertyTable)
 
-        , Bulma.leftwardSuccess (applyEdits animal changes)
+        , Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
         , Bulma.rightwardCancel (reviseDisplay animal Expanded)
-        , showFlash flash (cancelFlash animal (Editable changes))
+        , showFlash flash (cancelFlash animal (Editable form))
         ]
     , td [] []
     , td [] []

@@ -226,15 +226,24 @@ exampleSuccess =
     , text "Save"
     ]
   
-leftwardSuccess msg =
-  p []
-    [ a [ class "button is-success pull-left"
-        , onClickWithoutPropagation msg
-        ]
-        [ span [class "icon"] [i [class "fa fa-check"] []]
-        , text "Save"
-        ]
-    ]
+leftwardSuccess enabled msg =
+  let
+    attributes =
+      case enabled of
+        True ->
+          [ class "button is-success pull-left"
+          , onClickWithoutPropagation msg
+          ]
+        False ->
+          [ class "button is-success pull-left is-disabled"
+          ]
+  in
+    p []
+      [ a attributes
+          [ span [class "icon"] [i [class "fa fa-check"] []]
+          , text "Save"
+          ]
+      ]
 
 
 rightwardCancel msg = 

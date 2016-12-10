@@ -19,6 +19,8 @@ type Msg
   | SetSpeciesFilter String
 
   | ReviseDisplayedAnimal Animal.DisplayedAnimal
+  | UpsertCompactAnimal Animal.Animal Animal.Flash
+  | UpsertExpandedAnimal Animal.Animal Animal.Flash
 
   | MoreLikeThisAnimal Animal.Id
 

@@ -26,7 +26,7 @@ compactView animal flash =
   tr []
     [ (td []
          [ p [] ( animalSalutation animal  :: animalTags animal)
-         , showFlash flash (cancelFlash animal Compact)
+         , showFlash flash (UpsertCompactAnimal animal NoFlash)
          ])
     , expand animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
@@ -142,12 +142,12 @@ parentheticalSpecies animal =
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (reviseDisplay animal Expanded)
+    (UpsertExpandedAnimal animal NoFlash)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Expand: show less about this animal"
-    (reviseDisplay animal Compact)
+    (UpsertCompactAnimal animal NoFlash)
       
 edit animal iconType =
   iconType "fa-pencil"

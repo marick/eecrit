@@ -1,5 +1,4 @@
-module Animals.Animal.View exposing (view)
-
+module Animals.Animal.Crud exposing (..)
 import Dict
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -16,55 +15,6 @@ import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
-view {animal, display, flash} =
-  case display of
-    Compact -> compactView animal flash
-    Expanded -> expandedView animal flash
-    Editable changing -> editableView animal changing flash
-
-compactView animal flash =
-  tr []
-    [ (td []
-         [ p [] ( animalSalutation animal  :: animalTags animal)
-         , showFlash flash (UpsertCompactAnimal animal)
-         ])
-    , expand animal Bulma.tdIcon
-    , edit animal Bulma.tdIcon
-    , moreLikeThis animal Bulma.tdIcon
-    ]
-
-expandedView animal flash =
-  Bulma.highlightedRow []
-    [ td []
-        [ p [] [ animalSalutation animal ]
-        , p [] (animalTags animal)
-        , animalProperties animal |> Bulma.propertyTable
-        , showFlash flash (UpsertExpandedAnimal animal)
-        ]
-    , contract animal Bulma.tdIcon
-    , edit animal Bulma.tdIcon
-    , moreLikeThis animal Bulma.tdIcon
-    ]
-
-editableView animal form flash =
-  Bulma.highlightedRow []
-    [ td []
-        [ Bulma.controlRow "Name" <| nameEditControl animal form
-        , Bulma.controlRow "Tags" <| deleteTagControl animal form
-        , Bulma.controlRow "New Tag" <| newTagControl animal form
-            
-        -- , Bulma.controlRow "Properties"
-        --     <| Bulma.oneReasonablySizedControl
-        --          (editableAnimalProperties form |> Bulma.propertyTable)
-
-        , Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
-        , Bulma.rightwardCancel (UpsertExpandedAnimal animal NoFlash)
-        , showFlash flash (UpsertEditableAnimal animal form)
-        ]
-    , td [] []
-    , td [] []
-    , editHelp Bulma.tdIcon
-    ]
 
 applyEdits animal form =
   case updateAnimal animal form of

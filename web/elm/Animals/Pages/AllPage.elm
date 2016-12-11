@@ -4,8 +4,6 @@ import Dict
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import List
-import Maybe.Extra as Maybe exposing ((?))
 import String
 import String.Extra as String
 
@@ -15,7 +13,9 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.View as AnimalView
+import Animals.Animal.CompactView as CompactView
+import Animals.Animal.ExpandedView as ExpandedView
+import Animals.Animal.EditableView as EditableView
 
 view model =
   div []
@@ -41,7 +41,7 @@ view model =
                 ]
             ]
         ]
-    , filteredAnimals model |> List.map AnimalView.view |> Bulma.headerlessTable 
+    , filteredAnimals model |> List.map individualAnimalView |> Bulma.headerlessTable 
     ]
 
 
@@ -67,6 +67,12 @@ filteredAnimals model =
       |> List.filter hasDesiredName
       |> List.filter hasDesiredTag
       |> List.sortBy (.animal >> .name >> String.toLower)
+
+individualAnimalView {animal, display, flash} =
+  case display of
+    Compact -> CompactView.view animal flash
+    Expanded -> ExpandedView.view animal flash
+    Editable changing -> EditableView.view animal changing flash
 
 
 -- The calendar

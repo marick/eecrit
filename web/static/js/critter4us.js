@@ -8987,181 +8987,6 @@ var _elm_community$list_extra$List_Extra$init = function () {
 var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
 	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
 
-var _elm_community$maybe_extra$Maybe_Extra$filter = F2(
-	function (f, m) {
-		var _p0 = A2(_elm_lang$core$Maybe$map, f, m);
-		if ((_p0.ctor === 'Just') && (_p0._0 === true)) {
-			return m;
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$traverseArray = function (f) {
-	var step = F2(
-		function (e, acc) {
-			var _p1 = f(e);
-			if (_p1.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return A2(
-					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Array$push(_p1._0),
-					acc);
-			}
-		});
-	return A2(
-		_elm_lang$core$Array$foldl,
-		step,
-		_elm_lang$core$Maybe$Just(_elm_lang$core$Array$empty));
-};
-var _elm_community$maybe_extra$Maybe_Extra$combineArray = _elm_community$maybe_extra$Maybe_Extra$traverseArray(_elm_lang$core$Basics$identity);
-var _elm_community$maybe_extra$Maybe_Extra$traverse = function (f) {
-	var step = F2(
-		function (e, acc) {
-			var _p2 = f(e);
-			if (_p2.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return A2(
-					_elm_lang$core$Maybe$map,
-					F2(
-						function (x, y) {
-							return A2(_elm_lang$core$List_ops['::'], x, y);
-						})(_p2._0),
-					acc);
-			}
-		});
-	return A2(
-		_elm_lang$core$List$foldr,
-		step,
-		_elm_lang$core$Maybe$Just(
-			_elm_lang$core$Native_List.fromArray(
-				[])));
-};
-var _elm_community$maybe_extra$Maybe_Extra$combine = _elm_community$maybe_extra$Maybe_Extra$traverse(_elm_lang$core$Basics$identity);
-var _elm_community$maybe_extra$Maybe_Extra$maybeToArray = function (m) {
-	var _p3 = m;
-	if (_p3.ctor === 'Nothing') {
-		return _elm_lang$core$Array$empty;
-	} else {
-		return A2(_elm_lang$core$Array$repeat, 1, _p3._0);
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$maybeToList = function (m) {
-	var _p4 = m;
-	if (_p4.ctor === 'Nothing') {
-		return _elm_lang$core$Native_List.fromArray(
-			[]);
-	} else {
-		return _elm_lang$core$Native_List.fromArray(
-			[_p4._0]);
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$orElse = F2(
-	function (ma, mb) {
-		var _p5 = mb;
-		if (_p5.ctor === 'Nothing') {
-			return ma;
-		} else {
-			return mb;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$orElseLazy = F2(
-	function (fma, mb) {
-		var _p6 = mb;
-		if (_p6.ctor === 'Nothing') {
-			return fma(
-				{ctor: '_Tuple0'});
-		} else {
-			return mb;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$orLazy = F2(
-	function (ma, fmb) {
-		var _p7 = ma;
-		if (_p7.ctor === 'Nothing') {
-			return fmb(
-				{ctor: '_Tuple0'});
-		} else {
-			return ma;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$or = F2(
-	function (ma, mb) {
-		var _p8 = ma;
-		if (_p8.ctor === 'Nothing') {
-			return mb;
-		} else {
-			return ma;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$prev = _elm_lang$core$Maybe$map2(_elm_lang$core$Basics$always);
-var _elm_community$maybe_extra$Maybe_Extra$next = _elm_lang$core$Maybe$map2(
-	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
-var _elm_community$maybe_extra$Maybe_Extra$andMap = F2(
-	function (f, x) {
-		return A2(
-			_elm_lang$core$Maybe$andThen,
-			x,
-			function (x$) {
-				return A2(
-					_elm_lang$core$Maybe$andThen,
-					f,
-					function (f$) {
-						return _elm_lang$core$Maybe$Just(
-							f$(x$));
-					});
-			});
-	});
-var _elm_community$maybe_extra$Maybe_Extra$unpack = F3(
-	function (d, f, m) {
-		var _p9 = m;
-		if (_p9.ctor === 'Nothing') {
-			return d(
-				{ctor: '_Tuple0'});
-		} else {
-			return f(_p9._0);
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$unwrap = F3(
-	function (d, f, m) {
-		var _p10 = m;
-		if (_p10.ctor === 'Nothing') {
-			return d;
-		} else {
-			return f(_p10._0);
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$isJust = function (m) {
-	var _p11 = m;
-	if (_p11.ctor === 'Nothing') {
-		return false;
-	} else {
-		return true;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$isNothing = function (m) {
-	var _p12 = m;
-	if (_p12.ctor === 'Nothing') {
-		return true;
-	} else {
-		return false;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$join = function (mx) {
-	var _p13 = mx;
-	if (_p13.ctor === 'Just') {
-		return _p13._0;
-	} else {
-		return _elm_lang$core$Maybe$Nothing;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra_ops = _elm_community$maybe_extra$Maybe_Extra_ops || {};
-_elm_community$maybe_extra$Maybe_Extra_ops['?'] = F2(
-	function (mx, x) {
-		return A2(_elm_lang$core$Maybe$withDefault, x, mx);
-	});
-
 //import Maybe, Native.List //
 
 var _elm_lang$core$Native_Regex = function() {
@@ -19765,6 +19590,18 @@ var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
 	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
+var _user$project$Animals_Msg$UpsertEditableAnimal = F3(
+	function (a, b, c) {
+		return {ctor: 'UpsertEditableAnimal', _0: a, _1: b, _2: c};
+	});
+var _user$project$Animals_Msg$UpsertExpandedAnimal = F2(
+	function (a, b) {
+		return {ctor: 'UpsertExpandedAnimal', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$UpsertCompactAnimal = F2(
+	function (a, b) {
+		return {ctor: 'UpsertCompactAnimal', _0: a, _1: b};
+	});
 var _user$project$Animals_Msg$ReviseDisplayedAnimal = function (a) {
 	return {ctor: 'ReviseDisplayedAnimal', _0: a};
 };
@@ -20060,6 +19897,14 @@ var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _user$project$Animals_Main$withCheckedChanges = F4(
+	function (animal, form, flash, model) {
+		return A3(
+			_user$project$Animals_Animal_Model$DisplayedAnimal,
+			animal,
+			_user$project$Animals_Animal_Model$Editable(form),
+			flash);
+	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
 		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Model$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
@@ -20135,6 +19980,13 @@ var _user$project$Animals_Main$model_animals = A2(
 				w,
 				{animals: p});
 		}));
+var _user$project$Animals_Main$upsert = F2(
+	function (model, displayed) {
+		return A2(
+			_user$project$Animals_Main$model_animals.update,
+			_user$project$Animals_Animal_Model$upsert(displayed),
+			model);
+	});
 var _user$project$Animals_Main$model_today = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20206,13 +20058,37 @@ var _user$project$Animals_Main$update = F2(
 						[]));
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'ReviseDisplayedAnimal':
+			case 'UpsertCompactAnimal':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Main$model_animals.update,
-						_user$project$Animals_Animal_Model$upsert(_p0._0),
-						model),
+						_user$project$Animals_Main$upsert,
+						model,
+						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Compact, _p0._1)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'UpsertExpandedAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsert,
+						model,
+						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Expanded, _p0._1)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'UpsertEditableAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsert,
+						model,
+						A4(_user$project$Animals_Main$withCheckedChanges, _p0._0, _p0._1, _p0._2, model)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ReviseDisplayedAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$upsert, model, _p0._0),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			default:
@@ -20320,43 +20196,55 @@ var _user$project$Pile_Bulma$rightwardCancel = function (msg) {
 					]))
 			]));
 };
-var _user$project$Pile_Bulma$leftwardSuccess = function (msg) {
-	return A2(
-		_elm_lang$html$Html$p,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$a,
-				_elm_lang$core$Native_List.fromArray(
+var _user$project$Pile_Bulma$leftwardSuccess = F2(
+	function (enabled, msg) {
+		var attributes = function () {
+			var _p0 = enabled;
+			if (_p0 === true) {
+				return _elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Attributes$class('button is-success pull-left'),
 						_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(msg)
-					]),
-				_elm_lang$core$Native_List.fromArray(
+					]);
+			} else {
+				return _elm_lang$core$Native_List.fromArray(
 					[
-						A2(
-						_elm_lang$html$Html$span,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('icon')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$i,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('fa fa-check')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[]))
-							])),
-						_elm_lang$html$Html$text('Save')
-					]))
-			]));
-};
+						_elm_lang$html$Html_Attributes$class('button is-success pull-left is-disabled')
+					]);
+			}
+		}();
+		return A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$a,
+					attributes,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$span,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$class('icon')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(
+									_elm_lang$html$Html$i,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('fa fa-check')
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[]))
+								])),
+							_elm_lang$html$Html$text('Save')
+						]))
+				]));
+	});
 var _user$project$Pile_Bulma$exampleSuccess = A2(
 	_elm_lang$html$Html$a,
 	_elm_lang$core$Native_List.fromArray(
@@ -20485,8 +20373,8 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F2(
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			});
-		var _p0 = fieldValue;
-		if (_p0.ctor === 'Ok') {
+		var _p1 = fieldValue;
+		if (_p1.ctor === 'Ok') {
 			return _user$project$Pile_Bulma$oneReasonablySizedControl(
 				A2(
 					_elm_lang$html$Html$p,
@@ -20500,7 +20388,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F2(
 							field,
 							_elm_lang$core$Native_List.fromArray(
 								[]),
-							_p0._0)
+							_p1._0)
 						])));
 		} else {
 			return _user$project$Pile_Bulma$oneReasonablySizedControl(
@@ -20518,7 +20406,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F2(
 								[
 									{ctor: '_Tuple2', _0: 'is-danger', _1: true}
 								]),
-							_p0._0._0),
+							_p1._0._0),
 							A2(
 							_elm_lang$html$Html$i,
 							_elm_lang$core$Native_List.fromArray(
@@ -20535,7 +20423,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F2(
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html$text(_p0._0._1)
+									_elm_lang$html$Html$text(_p1._0._1)
 								]))
 						])));
 		}
@@ -20931,9 +20819,9 @@ var _user$project$Pile_Bulma$message = F3(
 	});
 var _user$project$Pile_Bulma$infoMessage = _user$project$Pile_Bulma$message('is-info');
 var _user$project$Pile_Bulma$tab = F2(
-	function (selectedPage, _p1) {
-		var _p2 = _p1;
-		var _p3 = _elm_lang$core$Native_Utils.eq(selectedPage, _p2._0) ? {
+	function (selectedPage, _p2) {
+		var _p3 = _p2;
+		var _p4 = _elm_lang$core$Native_Utils.eq(selectedPage, _p3._0) ? {
 			ctor: '_Tuple4',
 			_0: 'is-active',
 			_1: 'is-disabled',
@@ -20953,10 +20841,10 @@ var _user$project$Pile_Bulma$tab = F2(
 				[]),
 			_3: ''
 		};
-		var liClass = _p3._0;
-		var linkClass = _p3._1;
-		var linkStyle = _p3._2;
-		var spanClass = _p3._3;
+		var liClass = _p4._0;
+		var linkClass = _p4._1;
+		var linkStyle = _p4._2;
+		var spanClass = _p4._3;
 		return A2(
 			_elm_lang$html$Html$li,
 			_elm_lang$core$Native_List.fromArray(
@@ -20972,7 +20860,7 @@ var _user$project$Pile_Bulma$tab = F2(
 							_elm_lang$html$Html_Attributes$class(linkClass),
 							_elm_lang$html$Html_Attributes$style(linkStyle),
 							_elm_lang$html$Html_Attributes$href('#'),
-							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_p2._2)
+							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_p3._2)
 						]),
 					_elm_lang$core$Native_List.fromArray(
 						[
@@ -20984,7 +20872,7 @@ var _user$project$Pile_Bulma$tab = F2(
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html$text(_p2._1)
+									_elm_lang$html$Html$text(_p3._1)
 								]))
 						]))
 				]));
@@ -21025,22 +20913,17 @@ var _user$project$Animals_Animal_Edit$validatedName = function (form) {
 				_elm_lang$core$String$isEmpty(_p0));
 		});
 };
-var _user$project$Animals_Animal_Edit$displayWithFlash = F3(
-	function (animal, newDisplay, flash) {
-		return _user$project$Animals_Msg$ReviseDisplayedAnimal(
-			A3(_user$project$Animals_Animal_Model$DisplayedAnimal, animal, newDisplay, flash));
-	});
-var _user$project$Animals_Animal_Edit$reviseDisplay = F2(
-	function (animal, newDisplay) {
-		return A3(_user$project$Animals_Animal_Edit$displayWithFlash, animal, newDisplay, _user$project$Animals_Animal_Model$NoFlash);
-	});
-var _user$project$Animals_Animal_Edit$cancelFlash = _user$project$Animals_Animal_Edit$reviseDisplay;
+var _user$project$Animals_Animal_Edit$isSafeToSave = function (form) {
+	var _p1 = _user$project$Animals_Animal_Edit$validatedName(form);
+	if (_p1.ctor === 'Ok') {
+		return true;
+	} else {
+		return false;
+	}
+};
 var _user$project$Animals_Animal_Edit$updateForm = F2(
 	function (animal, form) {
-		return A2(
-			_user$project$Animals_Animal_Edit$reviseDisplay,
-			animal,
-			_user$project$Animals_Animal_Model$Editable(form));
+		return A3(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form, _user$project$Animals_Animal_Model$NoFlash);
 	});
 var _user$project$Animals_Animal_Edit$beginEditing = function (animal) {
 	return A2(
@@ -21104,10 +20987,10 @@ var _user$project$Animals_Animal_Edit$newTagControl = F2(
 		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', form.tentativeTag, onInput, onSubmit);
 	});
 
-var _user$project$Animals_Animal_View$editHelp = function (iconType) {
+var _user$project$Animals_Animal_Crud$editHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Msg$NoOp);
 };
-var _user$project$Animals_Animal_View$moreLikeThis = F2(
+var _user$project$Animals_Animal_Crud$moreLikeThis = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -21115,7 +20998,7 @@ var _user$project$Animals_Animal_View$moreLikeThis = F2(
 			'Copy: make more animals like this one',
 			_user$project$Animals_Msg$MoreLikeThisAnimal(animal.id));
 	});
-var _user$project$Animals_Animal_View$edit = F2(
+var _user$project$Animals_Animal_Crud$edit = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -21123,39 +21006,39 @@ var _user$project$Animals_Animal_View$edit = F2(
 			'Edit: make changes to this animal',
 			_user$project$Animals_Animal_Edit$beginEditing(animal));
 	});
-var _user$project$Animals_Animal_View$contract = F2(
+var _user$project$Animals_Animal_Crud$contract = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
 			'fa-caret-up',
 			'Expand: show less about this animal',
-			A2(_user$project$Animals_Animal_Edit$reviseDisplay, animal, _user$project$Animals_Animal_Model$Compact));
+			A2(_user$project$Animals_Msg$UpsertCompactAnimal, animal, _user$project$Animals_Animal_Model$NoFlash));
 	});
-var _user$project$Animals_Animal_View$expand = F2(
+var _user$project$Animals_Animal_Crud$expand = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
 			'fa-caret-down',
 			'Expand: show more about this animal',
-			A2(_user$project$Animals_Animal_Edit$reviseDisplay, animal, _user$project$Animals_Animal_Model$Expanded));
+			A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Model$NoFlash));
 	});
-var _user$project$Animals_Animal_View$parentheticalSpecies = function (animal) {
+var _user$project$Animals_Animal_Crud$parentheticalSpecies = function (animal) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		' (',
 		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
 };
-var _user$project$Animals_Animal_View$animalTags = function (animal) {
+var _user$project$Animals_Animal_Crud$animalTags = function (animal) {
 	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
 };
-var _user$project$Animals_Animal_View$animalSalutation = function (animal) {
+var _user$project$Animals_Animal_Crud$animalSalutation = function (animal) {
 	return _elm_lang$html$Html$text(
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
-			_user$project$Animals_Animal_View$parentheticalSpecies(animal)));
+			_user$project$Animals_Animal_Crud$parentheticalSpecies(animal)));
 };
-var _user$project$Animals_Animal_View$boolExplanation = F2(
+var _user$project$Animals_Animal_Crud$boolExplanation = F2(
 	function (b, explanation) {
 		var suffix = function () {
 			var _p0 = explanation;
@@ -21182,11 +21065,11 @@ var _user$project$Animals_Animal_View$boolExplanation = F2(
 				_elm_lang$html$Html$text(suffix)
 			]);
 	});
-var _user$project$Animals_Animal_View$propertyDisplayValue = function (value) {
+var _user$project$Animals_Animal_Crud$propertyDisplayValue = function (value) {
 	var _p2 = value;
 	switch (_p2.ctor) {
 		case 'AsBool':
-			return A2(_user$project$Animals_Animal_View$boolExplanation, _p2._0, _p2._1);
+			return A2(_user$project$Animals_Animal_Crud$boolExplanation, _p2._0, _p2._1);
 		case 'AsString':
 			return _elm_lang$core$Native_List.fromArray(
 				[
@@ -21199,10 +21082,10 @@ var _user$project$Animals_Animal_View$propertyDisplayValue = function (value) {
 				]);
 	}
 };
-var _user$project$Animals_Animal_View$propertyPairs = function (animal) {
+var _user$project$Animals_Animal_Crud$propertyPairs = function (animal) {
 	return _elm_lang$core$Dict$toList(animal.properties);
 };
-var _user$project$Animals_Animal_View$animalProperties = function (animal) {
+var _user$project$Animals_Animal_Crud$animalProperties = function (animal) {
 	var row = function (_p3) {
 		var _p4 = _p3;
 		return A2(
@@ -21223,16 +21106,16 @@ var _user$project$Animals_Animal_View$animalProperties = function (animal) {
 					_elm_lang$html$Html$td,
 					_elm_lang$core$Native_List.fromArray(
 						[]),
-					_user$project$Animals_Animal_View$propertyDisplayValue(_p4._1))
+					_user$project$Animals_Animal_Crud$propertyDisplayValue(_p4._1))
 				]));
 	};
 	return A2(
 		_elm_lang$core$List$map,
 		row,
-		_user$project$Animals_Animal_View$propertyPairs(animal));
+		_user$project$Animals_Animal_Crud$propertyPairs(animal));
 };
-var _user$project$Animals_Animal_View$showFlash = F2(
-	function (flash, msg) {
+var _user$project$Animals_Animal_Crud$showFlash = F2(
+	function (flash, partialMsg) {
 		var _p5 = flash;
 		if (_p5.ctor === 'NoFlash') {
 			return A2(
@@ -21244,7 +21127,7 @@ var _user$project$Animals_Animal_View$showFlash = F2(
 		} else {
 			return A2(
 				_user$project$Pile_Bulma$flashNotification,
-				msg,
+				partialMsg(_user$project$Animals_Animal_Model$NoFlash),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text('Excuse my presumption, but I notice you clicked '),
@@ -21265,108 +21148,17 @@ var _user$project$Animals_Animal_View$showFlash = F2(
 					]));
 		}
 	});
-var _user$project$Animals_Animal_View$applyEdits = F2(
+var _user$project$Animals_Animal_Crud$applyEdits = F2(
 	function (animal, form) {
 		var _p6 = A2(_user$project$Animals_Animal_Model$updateAnimal, animal, form);
 		if (_p6.ctor === 'Ok') {
-			return A2(_user$project$Animals_Animal_Edit$reviseDisplay, _p6._0, _user$project$Animals_Animal_Model$Expanded);
+			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p6._0, _user$project$Animals_Animal_Model$NoFlash);
 		} else {
-			return A3(_user$project$Animals_Animal_Edit$displayWithFlash, _p6._0._0, _user$project$Animals_Animal_Model$Expanded, _p6._0._1);
+			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p6._0._0, _p6._0._1);
 		}
 	});
-var _user$project$Animals_Animal_View$editableView = F3(
-	function (animal, changes, flash) {
-		return A2(
-			_user$project$Pile_Bulma$highlightedRow,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_user$project$Pile_Bulma$controlRow,
-							'Name',
-							A2(_user$project$Animals_Animal_Edit$nameEditControl, animal, changes)),
-							A2(
-							_user$project$Pile_Bulma$controlRow,
-							'Tags',
-							A2(_user$project$Animals_Animal_Edit$deleteTagControl, animal, changes)),
-							A2(
-							_user$project$Pile_Bulma$controlRow,
-							'New Tag',
-							A2(_user$project$Animals_Animal_Edit$newTagControl, animal, changes)),
-							_user$project$Pile_Bulma$leftwardSuccess(
-							A2(_user$project$Animals_Animal_View$applyEdits, animal, changes)),
-							_user$project$Pile_Bulma$rightwardCancel(
-							A2(_user$project$Animals_Animal_Edit$reviseDisplay, animal, _user$project$Animals_Animal_Model$Expanded)),
-							A2(
-							_user$project$Animals_Animal_View$showFlash,
-							flash,
-							A2(
-								_user$project$Animals_Animal_Edit$cancelFlash,
-								animal,
-								_user$project$Animals_Animal_Model$Editable(changes)))
-						])),
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[])),
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[])),
-					_user$project$Animals_Animal_View$editHelp(_user$project$Pile_Bulma$tdIcon)
-				]));
-	});
-var _user$project$Animals_Animal_View$expandedView = F2(
-	function (animal, flash) {
-		return A2(
-			_user$project$Pile_Bulma$highlightedRow,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							A2(
-							_elm_lang$html$Html$p,
-							_elm_lang$core$Native_List.fromArray(
-								[]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_user$project$Animals_Animal_View$animalSalutation(animal)
-								])),
-							A2(
-							_elm_lang$html$Html$p,
-							_elm_lang$core$Native_List.fromArray(
-								[]),
-							_user$project$Animals_Animal_View$animalTags(animal)),
-							_user$project$Pile_Bulma$propertyTable(
-							_user$project$Animals_Animal_View$animalProperties(animal)),
-							A2(
-							_user$project$Animals_Animal_View$showFlash,
-							flash,
-							A2(_user$project$Animals_Animal_Edit$cancelFlash, animal, _user$project$Animals_Animal_Model$Expanded))
-						])),
-					A2(_user$project$Animals_Animal_View$contract, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_View$edit, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_View$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
-				]));
-	});
-var _user$project$Animals_Animal_View$compactView = F2(
+
+var _user$project$Animals_Animal_CompactView$view = F2(
 	function (animal, flash) {
 		return A2(
 			_elm_lang$html$Html$tr,
@@ -21386,32 +21178,111 @@ var _user$project$Animals_Animal_View$compactView = F2(
 								[]),
 							A2(
 								_elm_lang$core$List_ops['::'],
-								_user$project$Animals_Animal_View$animalSalutation(animal),
-								_user$project$Animals_Animal_View$animalTags(animal))),
+								_user$project$Animals_Animal_Crud$animalSalutation(animal),
+								_user$project$Animals_Animal_Crud$animalTags(animal))),
 							A2(
-							_user$project$Animals_Animal_View$showFlash,
+							_user$project$Animals_Animal_Crud$showFlash,
 							flash,
-							A2(_user$project$Animals_Animal_Edit$cancelFlash, animal, _user$project$Animals_Animal_Model$Compact))
+							_user$project$Animals_Msg$UpsertCompactAnimal(animal))
 						])),
-					A2(_user$project$Animals_Animal_View$expand, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_View$edit, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_View$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
+					A2(_user$project$Animals_Animal_Crud$expand, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Crud$edit, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Crud$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
 				]));
 	});
-var _user$project$Animals_Animal_View$view = function (_p7) {
-	var _p8 = _p7;
-	var _p11 = _p8.flash;
-	var _p10 = _p8.animal;
-	var _p9 = _p8.display;
-	switch (_p9.ctor) {
-		case 'Compact':
-			return A2(_user$project$Animals_Animal_View$compactView, _p10, _p11);
-		case 'Expanded':
-			return A2(_user$project$Animals_Animal_View$expandedView, _p10, _p11);
-		default:
-			return A3(_user$project$Animals_Animal_View$editableView, _p10, _p9._0, _p11);
-	}
-};
+
+var _user$project$Animals_Animal_ExpandedView$view = F2(
+	function (animal, flash) {
+		return A2(
+			_user$project$Pile_Bulma$highlightedRow,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$html$Html$p,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animals_Animal_Crud$animalSalutation(animal)
+								])),
+							A2(
+							_elm_lang$html$Html$p,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							_user$project$Animals_Animal_Crud$animalTags(animal)),
+							_user$project$Pile_Bulma$propertyTable(
+							_user$project$Animals_Animal_Crud$animalProperties(animal)),
+							A2(
+							_user$project$Animals_Animal_Crud$showFlash,
+							flash,
+							_user$project$Animals_Msg$UpsertExpandedAnimal(animal))
+						])),
+					A2(_user$project$Animals_Animal_Crud$contract, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Crud$edit, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Crud$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
+				]));
+	});
+
+var _user$project$Animals_Animal_EditableView$view = F3(
+	function (animal, form, flash) {
+		return A2(
+			_user$project$Pile_Bulma$highlightedRow,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_user$project$Pile_Bulma$controlRow,
+							'Name',
+							A2(_user$project$Animals_Animal_Edit$nameEditControl, animal, form)),
+							A2(
+							_user$project$Pile_Bulma$controlRow,
+							'Tags',
+							A2(_user$project$Animals_Animal_Edit$deleteTagControl, animal, form)),
+							A2(
+							_user$project$Pile_Bulma$controlRow,
+							'New Tag',
+							A2(_user$project$Animals_Animal_Edit$newTagControl, animal, form)),
+							A2(
+							_user$project$Pile_Bulma$leftwardSuccess,
+							_user$project$Animals_Animal_Edit$isSafeToSave(form),
+							A2(_user$project$Animals_Animal_Crud$applyEdits, animal, form)),
+							_user$project$Pile_Bulma$rightwardCancel(
+							A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Model$NoFlash)),
+							A2(
+							_user$project$Animals_Animal_Crud$showFlash,
+							flash,
+							A2(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form))
+						])),
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[])),
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[])),
+					_user$project$Animals_Animal_Crud$editHelp(_user$project$Pile_Bulma$tdIcon)
+				]));
+	});
 
 var _user$project$Animals_Pages_AllPage$filterHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Msg$NoOp);
@@ -21486,6 +21357,20 @@ var _user$project$Animals_Pages_AllPage$dateControl = F3(
 					iconF(calendarToggleMsg)
 				]));
 	});
+var _user$project$Animals_Pages_AllPage$individualAnimalView = function (_p1) {
+	var _p2 = _p1;
+	var _p5 = _p2.flash;
+	var _p4 = _p2.animal;
+	var _p3 = _p2.display;
+	switch (_p3.ctor) {
+		case 'Compact':
+			return A2(_user$project$Animals_Animal_CompactView$view, _p4, _p5);
+		case 'Expanded':
+			return A2(_user$project$Animals_Animal_ExpandedView$view, _p4, _p5);
+		default:
+			return A3(_user$project$Animals_Animal_EditableView$view, _p4, _p3._0, _p5);
+	}
+};
 var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 	var hasWanted = F2(
 		function (modelFilter, animalValue) {
@@ -21521,14 +21406,14 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 	};
 	return A2(
 		_elm_lang$core$List$sortBy,
-		function (_p1) {
+		function (_p6) {
 			return _elm_lang$core$String$toLower(
 				function (_) {
 					return _.name;
 				}(
 					function (_) {
 						return _.animal;
-					}(_p1)));
+					}(_p6)));
 		},
 		A2(
 			_elm_lang$core$List$filter,
@@ -21595,7 +21480,7 @@ var _user$project$Animals_Pages_AllPage$view = function (model) {
 				_user$project$Pile_Bulma$headerlessTable(
 				A2(
 					_elm_lang$core$List$map,
-					_user$project$Animals_Animal_View$view,
+					_user$project$Animals_Pages_AllPage$individualAnimalView,
 					_user$project$Animals_Pages_AllPage$filteredAnimals(model)))
 			]));
 };

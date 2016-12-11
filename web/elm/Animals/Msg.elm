@@ -21,6 +21,7 @@ type Msg
   | ReviseDisplayedAnimal Animal.DisplayedAnimal
   | UpsertCompactAnimal Animal.Animal Animal.Flash
   | UpsertExpandedAnimal Animal.Animal Animal.Flash
+  | UpsertEditableAnimal Animal.Animal Animal.Form Animal.Flash
 
   | MoreLikeThisAnimal Animal.Id
 

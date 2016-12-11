@@ -19,8 +19,6 @@ reviseDisplay : Animal -> Display -> Msg
 reviseDisplay animal newDisplay =
   displayWithFlash animal newDisplay NoFlash
 
-cancelFlash = reviseDisplay -- use for emphasis
-    
 displayWithFlash : Animal -> Display -> Flash -> Msg
 displayWithFlash animal newDisplay flash =
   ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay flash 

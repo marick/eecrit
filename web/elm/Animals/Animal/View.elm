@@ -26,7 +26,7 @@ compactView animal flash =
   tr []
     [ (td []
          [ p [] ( animalSalutation animal  :: animalTags animal)
-         , showFlash flash (UpsertCompactAnimal animal NoFlash)
+         , showFlash flash (UpsertCompactAnimal animal)
          ])
     , expand animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
@@ -39,7 +39,7 @@ expandedView animal flash =
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
-        , showFlash flash (cancelFlash animal Expanded)
+        , showFlash flash (UpsertExpandedAnimal animal)
         ]
     , contract animal Bulma.tdIcon
     , edit animal Bulma.tdIcon
@@ -59,7 +59,7 @@ editableView animal form flash =
 
         , Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
         , Bulma.rightwardCancel (reviseDisplay animal Expanded)
-        , showFlash flash (cancelFlash animal (Editable form))
+        , showFlash flash (UpsertEditableAnimal animal form)
         ]
     , td [] []
     , td [] []
@@ -72,14 +72,15 @@ applyEdits animal form =
       reviseDisplay newAnimal Expanded
     Err (newAnimal, flash) -> 
       displayWithFlash newAnimal Expanded flash
-    
-showFlash : Flash -> Msg -> Html Msg
-showFlash flash msg =
+
+-- Note that this cancels the flash        
+showFlash : Flash -> (Flash -> Msg) -> Html Msg
+showFlash flash partialMsg =
   case flash of 
     NoFlash -> 
       span [] []
     SavedIncompleteTag tagName -> 
-      Bulma.flashNotification msg
+      Bulma.flashNotification (partialMsg NoFlash)
         [ text "Excuse my presumption, but I notice you clicked "
         , Bulma.exampleSuccess
         , text " while there was text in the "

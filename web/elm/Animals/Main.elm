@@ -93,25 +93,25 @@ update msg model =
       )
 
     UpsertCompactAnimal animal flash ->
-      upsertReadOnly Animal.Compact animal flash model
+      (Animal.DisplayedAnimal animal Animal.Compact flash |> upsert model) ! []
           
     UpsertExpandedAnimal animal flash ->
-      upsertReadOnly Animal.Expanded animal flash model
-          
+      (Animal.DisplayedAnimal animal Animal.Expanded flash |> upsert model) ! []
+
+--    UpsertEditableAnimal animal form flash -> 
+        
     ReviseDisplayedAnimal displayed ->
-      model_animals.update (Animal.upsert displayed) model ! []
+      (withCheckedChanges displayed |> upsert model) ! []
       
     NoOp ->
       model ! []
 
-upsertReadOnly tag animal flash model =
-  let
-    displayed = Animal.DisplayedAnimal animal tag flash
-  in
-    ( model_animals.update (Animal.upsert displayed) model
-    , Cmd.none
-    )
+withCheckedChanges displayed =
+  displayed
 
+upsert model displayed =
+  model_animals.update (Animal.upsert displayed) model
+  
 
 -- Subscriptions
 

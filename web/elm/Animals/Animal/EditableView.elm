@@ -1,17 +1,16 @@
 module Animals.Animal.EditableView exposing (view)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 
 import Pile.Bulma as Bulma 
-import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
-import Animals.Animal.Crud exposing (..)
+import Animals.Animal.CommonView exposing (..)
 import Animals.Animal.Icons as Icon
+import Animals.Animal.Flash as Flash
 
 view animal form flash =
   Bulma.highlightedRow []
@@ -24,12 +23,24 @@ view animal form flash =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties form |> Bulma.propertyTable)
 
-        , Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
-        , Bulma.rightwardCancel (UpsertExpandedAnimal animal NoFlash)
-        , showFlash flash (UpsertEditableAnimal animal form)
+        , saveButton animal form
+        , cancelButton animal
+        , Flash.showAndCancel flash (UpsertEditableAnimal animal form)
         ]
     , td [] []
     , td [] []
     , Icon.editHelp Bulma.tdIcon
     ]
 
+saveButton animal form = 
+  Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
+
+cancelButton animal =
+  Bulma.rightwardCancel (UpsertExpandedAnimal animal NoFlash)
+
+applyEdits animal form =
+  case updateAnimal animal form of
+    Ok newAnimal ->
+      UpsertExpandedAnimal newAnimal NoFlash
+    Err (newAnimal, flash) ->
+      UpsertExpandedAnimal newAnimal flash

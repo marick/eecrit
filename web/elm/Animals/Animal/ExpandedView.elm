@@ -9,8 +9,9 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-import Animals.Animal.Crud exposing (..)
+import Animals.Animal.CommonView exposing (..)
 import Animals.Animal.Icons as Icon
+import Animals.Animal.Flash as Flash
 
 
 view animal flash =
@@ -19,7 +20,7 @@ view animal flash =
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
-        , showFlash flash (UpsertExpandedAnimal animal)
+        , Flash.showAndCancel flash (UpsertExpandedAnimal animal)
         ]
     , Icon.contract animal Bulma.tdIcon
     , Icon.edit animal Bulma.tdIcon

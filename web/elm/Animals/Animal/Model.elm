@@ -86,24 +86,3 @@ displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
-
--- Working with many animals
-
-type alias VisibleAggregate = Dict Id DisplayedAnimal
-
-emptyAggregate : VisibleAggregate
-emptyAggregate = Dict.empty
-
-upsert : DisplayedAnimal -> VisibleAggregate -> VisibleAggregate
-upsert displayed aggregate =
-  let
-    key = (displayedAnimal_id.get displayed)
-  in
-    Dict.insert key displayed aggregate
-
-asAggregate animals =
-  let
-    tuple animal = (animal.id, DisplayedAnimal animal Compact NoFlash)
-  in
-    animals |> List.map tuple |> Dict.fromList
-

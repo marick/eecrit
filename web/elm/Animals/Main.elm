@@ -4,6 +4,7 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
 import Animals.Animal.Model as Animal
+import Animals.Animal.Aggregates as Aggregate
 
 import String
 import List
@@ -21,7 +22,7 @@ type alias Flags =
 type alias Model = 
   { page : MyNav.PageChoice
   , csrfToken : String
-  , animals : Animal.VisibleAggregate
+  , animals : Aggregate.VisibleAggregate
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -47,7 +48,7 @@ init flags startingPage =
     model =
       { page = startingPage
       , csrfToken = flags.csrfToken
-      , animals = Animal.emptyAggregate
+      , animals = Aggregate.emptyAggregate
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
@@ -73,7 +74,7 @@ update msg model =
     SetToday value ->
       model_today.set value model ! []
     SetAnimals animals ->
-      model_animals.set (Animal.asAggregate animals) model ! []
+      model_animals.set (Aggregate.asAggregate animals) model ! []
 
     ToggleDatePicker ->
       model_datePickerOpen.update not model ! []
@@ -111,7 +112,7 @@ withCheckedChanges animal form flash model =
   Animal.DisplayedAnimal animal (Animal.Editable form) flash
 
 upsert model displayed =
-  model_animals.update (Animal.upsert displayed) model
+  model_animals.update (Aggregate.upsert displayed) model
   
 
 -- Subscriptions

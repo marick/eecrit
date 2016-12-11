@@ -9,16 +9,17 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
+import Animals.Animal.Flash as Flash
 
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (UpsertExpandedAnimal animal NoFlash)
+    (UpsertExpandedAnimal animal Flash.NoFlash)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Expand: show less about this animal"
-    (UpsertCompactAnimal animal NoFlash)
+    (UpsertCompactAnimal animal Flash.NoFlash)
       
 edit animal iconType =
   iconType "fa-pencil"

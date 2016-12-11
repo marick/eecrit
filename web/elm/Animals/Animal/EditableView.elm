@@ -36,11 +36,11 @@ saveButton animal form =
   Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
 
 cancelButton animal =
-  Bulma.rightwardCancel (UpsertExpandedAnimal animal NoFlash)
+  Bulma.rightwardCancel (UpsertExpandedAnimal animal Flash.NoFlash)
 
 applyEdits animal form =
   case updateAnimal animal form of
     Ok newAnimal ->
-      UpsertExpandedAnimal newAnimal NoFlash
+      UpsertExpandedAnimal newAnimal Flash.NoFlash
     Err (newAnimal, flash) ->
       UpsertExpandedAnimal newAnimal flash

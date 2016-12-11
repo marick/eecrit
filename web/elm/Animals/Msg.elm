@@ -1,6 +1,7 @@
 module Animals.Msg exposing (Msg(..))
 
 import Animals.Animal.Model as Animal exposing (Animal)
+import Animals.Animal.Flash as Flash exposing (Flash)
 import Date exposing (Date)
 
 type Msg
@@ -19,9 +20,9 @@ type Msg
   | SetSpeciesFilter String
 
   | ReviseDisplayedAnimal Animal.DisplayedAnimal
-  | UpsertCompactAnimal Animal.Animal Animal.Flash
-  | UpsertExpandedAnimal Animal.Animal Animal.Flash
-  | UpsertEditableAnimal Animal.Animal Animal.Form Animal.Flash
+  | UpsertCompactAnimal Animal.Animal Flash
+  | UpsertExpandedAnimal Animal.Animal Flash
+  | UpsertEditableAnimal Animal.Animal Animal.Form Flash
 
   | MoreLikeThisAnimal Animal.Id
 

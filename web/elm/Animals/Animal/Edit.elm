@@ -12,14 +12,15 @@ import String.Extra as String
 import Pile.Bulma as Bulma 
 import Pile.HtmlShorthand exposing (..)
 
-import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
+import Animals.Animal.Model exposing (..)
+import Animals.Animal.Flash as Flash
 
 --   
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
-  UpsertEditableAnimal animal form NoFlash
+  UpsertEditableAnimal animal form Flash.NoFlash
 
 beginEditing : Animal -> Msg
 beginEditing animal =

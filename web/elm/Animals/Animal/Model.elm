@@ -3,6 +3,8 @@ module Animals.Animal.Model exposing
   ..
   )
 
+import Animals.Animal.Flash as Flash exposing (Flash)
+
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.UpdatingLens as Lens exposing (lens)
@@ -43,10 +45,6 @@ type alias DisplayedAnimal =
   , flash : Flash
   }
 
-type Flash
-  = NoFlash
-  | SavedIncompleteTag String
-  
 extractForm : Animal -> Form
 extractForm animal =
   { name = animal.name
@@ -70,7 +68,7 @@ updateAnimal animal form =
         -- Note that this isn't really an Err. Would maybe be better to make
         -- own type?
         Err ( update <| List.append form.tags [form.tentativeTag]
-            , SavedIncompleteTag form.tentativeTag
+            , Flash.SavedIncompleteTag form.tentativeTag
             )
 
 -- Lenses

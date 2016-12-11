@@ -98,16 +98,17 @@ update msg model =
     UpsertExpandedAnimal animal flash ->
       (Animal.DisplayedAnimal animal Animal.Expanded flash |> upsert model) ! []
 
---    UpsertEditableAnimal animal form flash -> 
+    UpsertEditableAnimal animal form flash -> 
+      (withCheckedChanges animal form flash model |> upsert model) ! []
         
     ReviseDisplayedAnimal displayed ->
-      (withCheckedChanges displayed |> upsert model) ! []
+      (displayed |> upsert model) ! []
       
     NoOp ->
       model ! []
 
-withCheckedChanges displayed =
-  displayed
+withCheckedChanges animal form flash model =
+  Animal.DisplayedAnimal animal (Animal.Editable form) flash
 
 upsert model displayed =
   model_animals.update (Animal.upsert displayed) model

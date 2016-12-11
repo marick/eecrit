@@ -15,19 +15,11 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-reviseDisplay : Animal -> Display -> Msg
-reviseDisplay animal newDisplay =
-  displayWithFlash animal newDisplay NoFlash
-
-displayWithFlash : Animal -> Display -> Flash -> Msg
-displayWithFlash animal newDisplay flash =
-  ReviseDisplayedAnimal <| DisplayedAnimal animal newDisplay flash 
-
 --   
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
-  reviseDisplay animal (Editable form)
+  UpsertEditableAnimal animal form NoFlash
 
 beginEditing : Animal -> Msg
 beginEditing animal =

@@ -58,7 +58,7 @@ editableView animal form flash =
         --          (editableAnimalProperties form |> Bulma.propertyTable)
 
         , Bulma.leftwardSuccess (isSafeToSave form) (applyEdits animal form)
-        , Bulma.rightwardCancel (reviseDisplay animal Expanded)
+        , Bulma.rightwardCancel (UpsertExpandedAnimal animal NoFlash)
         , showFlash flash (UpsertEditableAnimal animal form)
         ]
     , td [] []
@@ -69,9 +69,9 @@ editableView animal form flash =
 applyEdits animal form =
   case updateAnimal animal form of
     Ok newAnimal ->
-      reviseDisplay newAnimal Expanded
-    Err (newAnimal, flash) -> 
-      displayWithFlash newAnimal Expanded flash
+      UpsertExpandedAnimal newAnimal NoFlash
+    Err (newAnimal, flash) ->
+      UpsertExpandedAnimal newAnimal flash
 
 -- Note that this cancels the flash        
 showFlash : Flash -> (Flash -> Msg) -> Html Msg

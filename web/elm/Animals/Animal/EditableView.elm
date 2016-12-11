@@ -11,7 +11,7 @@ import Animals.Msg exposing (..)
 import Animals.Animal.Edit exposing (..)
 
 import Animals.Animal.Crud exposing (..)
-
+import Animals.Animal.Icons as Icon
 
 view animal form flash =
   Bulma.highlightedRow []
@@ -30,6 +30,6 @@ view animal form flash =
         ]
     , td [] []
     , td [] []
-    , editHelp Bulma.tdIcon
+    , Icon.editHelp Bulma.tdIcon
     ]
 

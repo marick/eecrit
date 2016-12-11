@@ -10,6 +10,7 @@ import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Animal.Crud exposing (..)
+import Animals.Animal.Icons as Icon
 
 
 view animal flash =
@@ -20,7 +21,7 @@ view animal flash =
         , animalProperties animal |> Bulma.propertyTable
         , showFlash flash (UpsertExpandedAnimal animal)
         ]
-    , contract animal Bulma.tdIcon
-    , edit animal Bulma.tdIcon
-    , moreLikeThis animal Bulma.tdIcon
+    , Icon.contract animal Bulma.tdIcon
+    , Icon.edit animal Bulma.tdIcon
+    , Icon.moreLikeThis animal Bulma.tdIcon
     ]

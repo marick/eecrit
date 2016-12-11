@@ -1,4 +1,5 @@
 module Animals.Animal.Crud exposing (..)
+
 import Dict
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -88,28 +89,3 @@ parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
 
 
--- Various icons
-
-expand animal iconType =
-  iconType "fa-caret-down"
-    "Expand: show more about this animal"
-    (UpsertExpandedAnimal animal NoFlash)
-      
-contract animal iconType =
-  iconType "fa-caret-up"
-    "Expand: show less about this animal"
-    (UpsertCompactAnimal animal NoFlash)
-      
-edit animal iconType =
-  iconType "fa-pencil"
-    "Edit: make changes to this animal"
-    (beginEditing animal)
-      
-moreLikeThis animal iconType =
-  iconType "fa-plus"
-    "Copy: make more animals like this one"
-    (MoreLikeThisAnimal animal.id)
-
-editHelp iconType = 
-  iconType "fa-question-circle" "Help on editing" NoOp    
-      

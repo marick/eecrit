@@ -9,7 +9,7 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
 
-import Animals.Animal.CommonView exposing (..)
+import Animals.Animal.ViewUtil exposing (..)
 import Animals.Animal.Icons as Icon
 import Animals.Animal.Flash as Flash
 

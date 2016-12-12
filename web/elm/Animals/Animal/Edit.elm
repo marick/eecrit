@@ -15,8 +15,9 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Model exposing (..)
 import Animals.Animal.Flash as Flash
+import Animals.Animal.Validation as Validation
 
---   
+-- Constructing Messages and other Important Actions
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
@@ -26,29 +27,28 @@ beginEditing : Animal -> Msg
 beginEditing animal =
   updateForm animal (extractForm animal)
 
-validate : String -> value -> (value -> Bool) -> Result (value, String) value 
-validate requirement value pred =
-  if pred value then
-    Ok value
-  else
-    Err (value, requirement)
+applyEdits animal form =
+  case updateAnimal animal form of
+    Ok newAnimal ->
+      UpsertExpandedAnimal newAnimal Flash.NoFlash
+    Err (newAnimal, flash) ->
+      UpsertExpandedAnimal newAnimal flash
 
-validatedName form =
-  validate "The animal has to have a name!"
-    (form_name.get form)
-    (not << String.isEmpty)
 
--- This is way too fragile
-isSafeToSave form =
-  case validatedName form of
-    Ok x -> True
-    Err x -> False
+-- Controls
+
+saveButton animal form = 
+  Bulma.leftwardSuccess (Validation.isSafeToSave form) (applyEdits animal form)
+
+cancelButton animal =
+  Bulma.rightwardCancel (UpsertExpandedAnimal animal Flash.NoFlash)
+
 
 nameEditControl animal form = 
   let
     onInput value = updateForm animal (form_name.set value form)
   in
-    Bulma.soleTextInputInRow (validatedName form)
+    Bulma.soleTextInputInRow (Validation.validatedName form)
       [ Events.onInput onInput
       ]
 
@@ -104,4 +104,6 @@ newTagControl animal form =
 --       [Bulma.soleTextInputInRow [value s]]
 --     _ ->
 --       [text "unimplemented"]
+
+
 

@@ -19379,745 +19379,6 @@ var _mdgriffith$elm_style_animation$Animation_Messenger$update = F2(
 		return A2(_mdgriffith$elm_style_animation$Animation_Model$updateAnimation, tick, animation);
 	});
 
-var _user$project$Pile_UpdatingLens$lensUpdate = F4(
-	function (getPart, setPart, partTransformer, whole) {
-		return A2(
-			setPart,
-			partTransformer(
-				getPart(whole)),
-			whole);
-	});
-var _user$project$Pile_UpdatingLens$toMonocle = function (u) {
-	return {get: u.get, set: u.set};
-};
-var _user$project$Pile_UpdatingLens$lens = F2(
-	function (getPart, setPart) {
-		return {
-			get: getPart,
-			set: setPart,
-			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
-		};
-	});
-var _user$project$Pile_UpdatingLens$compose = F2(
-	function (left, right) {
-		var right_ = _user$project$Pile_UpdatingLens$toMonocle(right);
-		var left_ = _user$project$Pile_UpdatingLens$toMonocle(left);
-		var composed = A2(_arturopala$elm_monocle$Monocle_Lens$compose, left_, right_);
-		return A2(_user$project$Pile_UpdatingLens$lens, composed.get, composed.set);
-	});
-var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
-	function (a, b, c) {
-		return {get: a, set: b, update: c};
-	});
-
-var _user$project$Animals_Animal_Model$emptyAggregate = _elm_lang$core$Dict$empty;
-var _user$project$Animals_Animal_Model$form_tentativeTag = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tentativeTag;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tentativeTag: p});
-		}));
-var _user$project$Animals_Animal_Model$form_tags = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tags;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tags: p});
-		}));
-var _user$project$Animals_Animal_Model$form_name = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.name;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{name: p});
-		}));
-var _user$project$Animals_Animal_Model$displayedAnimal_animal = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.animal;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{animal: p});
-		}));
-var _user$project$Animals_Animal_Model$animal_properties = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.properties;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{properties: p});
-		}));
-var _user$project$Animals_Animal_Model$animal_tags = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tags;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tags: p});
-		}));
-var _user$project$Animals_Animal_Model$animal_name = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.name;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{name: p});
-		}));
-var _user$project$Animals_Animal_Model$animal_id = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.id;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{id: p});
-		}));
-var _user$project$Animals_Animal_Model$displayedAnimal_id = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Model$displayedAnimal_animal, _user$project$Animals_Animal_Model$animal_id);
-var _user$project$Animals_Animal_Model$upsert = F2(
-	function (displayed, aggregate) {
-		var key = _user$project$Animals_Animal_Model$displayedAnimal_id.get(displayed);
-		return A3(_elm_lang$core$Dict$insert, key, displayed, aggregate);
-	});
-var _user$project$Animals_Animal_Model$extractForm = function (animal) {
-	return {name: animal.name, tags: animal.tags, tentativeTag: '', properties: animal.properties};
-};
-var _user$project$Animals_Animal_Model$Animal = F5(
-	function (a, b, c, d, e) {
-		return {id: a, name: b, species: c, tags: d, properties: e};
-	});
-var _user$project$Animals_Animal_Model$Form = F4(
-	function (a, b, c, d) {
-		return {name: a, tags: b, tentativeTag: c, properties: d};
-	});
-var _user$project$Animals_Animal_Model$DisplayedAnimal = F3(
-	function (a, b, c) {
-		return {animal: a, display: b, flash: c};
-	});
-var _user$project$Animals_Animal_Model$AsBool = F2(
-	function (a, b) {
-		return {ctor: 'AsBool', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Model$AsDate = function (a) {
-	return {ctor: 'AsDate', _0: a};
-};
-var _user$project$Animals_Animal_Model$AsString = function (a) {
-	return {ctor: 'AsString', _0: a};
-};
-var _user$project$Animals_Animal_Model$AsFloat = function (a) {
-	return {ctor: 'AsFloat', _0: a};
-};
-var _user$project$Animals_Animal_Model$AsInt = function (a) {
-	return {ctor: 'AsInt', _0: a};
-};
-var _user$project$Animals_Animal_Model$Editable = function (a) {
-	return {ctor: 'Editable', _0: a};
-};
-var _user$project$Animals_Animal_Model$Expanded = {ctor: 'Expanded'};
-var _user$project$Animals_Animal_Model$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Animal_Model$SavedIncompleteTag = function (a) {
-	return {ctor: 'SavedIncompleteTag', _0: a};
-};
-var _user$project$Animals_Animal_Model$updateAnimal = F2(
-	function (animal, form) {
-		var update = function (tags) {
-			return A2(
-				_user$project$Animals_Animal_Model$animal_tags.set,
-				tags,
-				A2(
-					_user$project$Animals_Animal_Model$animal_properties.set,
-					form.properties,
-					A2(_user$project$Animals_Animal_Model$animal_name.set, form.name, animal)));
-		};
-		var _p0 = _elm_lang$core$String$isEmpty(form.tentativeTag);
-		if (_p0 === true) {
-			return _elm_lang$core$Result$Ok(
-				update(form.tags));
-		} else {
-			return _elm_lang$core$Result$Err(
-				{
-					ctor: '_Tuple2',
-					_0: update(
-						A2(
-							_elm_lang$core$List$append,
-							form.tags,
-							_elm_lang$core$Native_List.fromArray(
-								[form.tentativeTag]))),
-					_1: _user$project$Animals_Animal_Model$SavedIncompleteTag(form.tentativeTag)
-				});
-		}
-	});
-var _user$project$Animals_Animal_Model$NoFlash = {ctor: 'NoFlash'};
-var _user$project$Animals_Animal_Model$asAggregate = function (animals) {
-	var tuple = function (animal) {
-		return {
-			ctor: '_Tuple2',
-			_0: animal.id,
-			_1: A3(_user$project$Animals_Animal_Model$DisplayedAnimal, animal, _user$project$Animals_Animal_Model$Compact, _user$project$Animals_Animal_Model$NoFlash)
-		};
-	};
-	return _elm_lang$core$Dict$fromList(
-		A2(_elm_lang$core$List$map, tuple, animals));
-};
-
-var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
-var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
-	return {ctor: 'MoreLikeThisAnimal', _0: a};
-};
-var _user$project$Animals_Msg$UpsertEditableAnimal = F3(
-	function (a, b, c) {
-		return {ctor: 'UpsertEditableAnimal', _0: a, _1: b, _2: c};
-	});
-var _user$project$Animals_Msg$UpsertExpandedAnimal = F2(
-	function (a, b) {
-		return {ctor: 'UpsertExpandedAnimal', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$UpsertCompactAnimal = F2(
-	function (a, b) {
-		return {ctor: 'UpsertCompactAnimal', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$ReviseDisplayedAnimal = function (a) {
-	return {ctor: 'ReviseDisplayedAnimal', _0: a};
-};
-var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
-	return {ctor: 'SetSpeciesFilter', _0: a};
-};
-var _user$project$Animals_Msg$SetTagFilter = function (a) {
-	return {ctor: 'SetTagFilter', _0: a};
-};
-var _user$project$Animals_Msg$SetNameFilter = function (a) {
-	return {ctor: 'SetNameFilter', _0: a};
-};
-var _user$project$Animals_Msg$SelectDate = function (a) {
-	return {ctor: 'SelectDate', _0: a};
-};
-var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
-var _user$project$Animals_Msg$SetAnimals = function (a) {
-	return {ctor: 'SetAnimals', _0: a};
-};
-var _user$project$Animals_Msg$SetToday = function (a) {
-	return {ctor: 'SetToday', _0: a};
-};
-var _user$project$Animals_Msg$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
-var _user$project$Animals_Msg$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
-var _user$project$Animals_Msg$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
-
-var _user$project$Animals_OutsideWorld$xena = {
-	id: '4',
-	name: 'Xena',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['mare', 'skittish']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(
-					_user$project$Animals_Animal_Model$AsBool,
-					false,
-					_elm_lang$core$Maybe$Just('off for the summer'))
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Animal_Model$AsString('Forman')
-			}
-			]))
-};
-var _user$project$Animals_OutsideWorld$ross = {
-	id: '3',
-	name: 'ross',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['stallion', 'aggressive']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Animal_Model$AsString('Forman')
-			}
-			]))
-};
-var _user$project$Animals_OutsideWorld$jake = {
-	id: '2',
-	name: 'Jake',
-	species: 'equine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['gelding']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			}
-			]))
-};
-var _user$project$Animals_OutsideWorld$athena = {
-	id: '1',
-	name: 'Athena',
-	species: 'bovine',
-	tags: _elm_lang$core$Native_List.fromArray(
-		['cow']),
-	properties: _elm_lang$core$Dict$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{
-				ctor: '_Tuple2',
-				_0: 'Available',
-				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
-			},
-				{
-				ctor: '_Tuple2',
-				_0: 'Primary billing',
-				_1: _user$project$Animals_Animal_Model$AsString('Marick')
-			}
-			]))
-};
-var _user$project$Animals_OutsideWorld$fetchAnimals = A3(
-	_elm_lang$core$Task$perform,
-	_elm_lang$core$Basics$always(
-		_user$project$Animals_Msg$SetAnimals(
-			_elm_lang$core$Native_List.fromArray(
-				[]))),
-	_user$project$Animals_Msg$SetAnimals,
-	_elm_lang$core$Task$succeed(
-		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake])));
-var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
-	_elm_lang$core$Task$perform,
-	_elm_lang$core$Basics$always(
-		_user$project$Animals_Msg$SetToday(_elm_lang$core$Maybe$Nothing)),
-	function (_p0) {
-		return _user$project$Animals_Msg$SetToday(
-			_elm_lang$core$Maybe$Just(_p0));
-	},
-	_elm_lang$core$Date$now);
-
-var _user$project$Animals_Navigation$urlUpdate = F2(
-	function (newPage, model) {
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{page: newPage}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
-	});
-var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
-var _user$project$Animals_Navigation$goto = F2(
-	function (path, model) {
-		return {
-			ctor: '_Tuple2',
-			_0: model,
-			_1: _elm_lang$navigation$Navigation$newUrl(path)
-		};
-	});
-var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
-var _user$project$Animals_Navigation$toHelpPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$helpPagePath);
-var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
-var _user$project$Animals_Navigation$toAddPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$addPagePath);
-var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
-var _user$project$Animals_Navigation$toAllPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$allPagePath);
-var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
-var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
-var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
-var _user$project$Animals_Navigation$stringParser = function (path) {
-	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage);
-};
-var _user$project$Animals_Navigation$locationParser = function (location) {
-	return _user$project$Animals_Navigation$stringParser(location.pathname);
-};
-var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
-
-var _user$project$Pile_Calendar$visibilityController = F3(
-	function (calendarToggleMsg, control, maybeContent) {
-		var controlContainer = A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
-				]),
-			_elm_lang$core$Native_List.fromArray(
-				[control]));
-		var _p0 = maybeContent;
-		if (_p0.ctor === 'Nothing') {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('dropdown')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[controlContainer]));
-		} else {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('dropdown-open')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
-								_elm_lang$html$Html_Events$onClick(calendarToggleMsg)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
-						controlContainer,
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[_p0._0]))
-					]));
-		}
-	});
-var _user$project$Pile_Calendar$defaultDate = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1);
-var _user$project$Pile_Calendar$dateToShow = function (edate) {
-	var _p1 = edate.effectiveDate;
-	if (_p1.ctor === 'Today') {
-		return edate.today;
-	} else {
-		return _elm_lang$core$Maybe$Just(_p1._0);
-	}
-};
-var _user$project$Pile_Calendar$bound = F2(
-	function (shiftFunction, edate) {
-		var shiftByYears = function (date) {
-			return A3(
-				_justinmimbs$elm_date_extra$Date_Extra$add,
-				_justinmimbs$elm_date_extra$Date_Extra$Year,
-				A2(shiftFunction, 0, 5),
-				date);
-		};
-		var _p2 = _user$project$Pile_Calendar$dateToShow(edate);
-		if (_p2.ctor === 'Nothing') {
-			return shiftByYears(_user$project$Pile_Calendar$defaultDate);
-		} else {
-			return shiftByYears(_p2._0);
-		}
-	});
-var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
-	var todayIfKnown = function () {
-		var _p3 = edate.today;
-		if (_p3.ctor === 'Nothing') {
-			return '';
-		} else {
-			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p3._0);
-		}
-	}();
-	var _p4 = edate.effectiveDate;
-	if (_p4.ctor === 'Today') {
-		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
-	} else {
-		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p4._0);
-	}
-};
-var _user$project$Pile_Calendar$view = F4(
-	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
-		var selected = _user$project$Pile_Calendar$dateToShow(edate);
-		var max = A2(
-			_user$project$Pile_Calendar$bound,
-			F2(
-				function (x, y) {
-					return x + y;
-				}),
-			edate);
-		var min = A2(
-			_user$project$Pile_Calendar$bound,
-			F2(
-				function (x, y) {
-					return x - y;
-				}),
-			edate);
-		var calendarBodyView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
-			A2(
-				_elm_lang$virtual_dom$VirtualDom$map,
-				dateSelectedMsg,
-				A3(_justinmimbs$elm_date_selector$DateSelector$view, min, max, selected))) : _elm_lang$core$Maybe$Nothing;
-		return A3(
-			_user$project$Pile_Calendar$visibilityController,
-			calendarToggleMsg,
-			A3(
-				launcher,
-				edate.datePickerOpen,
-				_user$project$Pile_Calendar$enhancedDateString(edate),
-				calendarToggleMsg),
-			calendarBodyView);
-	});
-var _user$project$Pile_Calendar$At = function (a) {
-	return {ctor: 'At', _0: a};
-};
-var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
-
-var _user$project$Animals_Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _user$project$Animals_Main$withCheckedChanges = F4(
-	function (animal, form, flash, model) {
-		return A3(
-			_user$project$Animals_Animal_Model$DisplayedAnimal,
-			animal,
-			_user$project$Animals_Animal_Model$Editable(form),
-			flash);
-	});
-var _user$project$Animals_Main$init = F2(
-	function (flags, startingPage) {
-		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Model$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
-		return A2(
-			_elm_lang$core$Platform_Cmd_ops['!'],
-			model,
-			_elm_lang$core$Native_List.fromArray(
-				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
-	});
-var _user$project$Animals_Main$model_datePickerOpen = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.datePickerOpen;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{datePickerOpen: p});
-		}));
-var _user$project$Animals_Main$model_effectiveDate = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.effectiveDate;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{effectiveDate: p});
-		}));
-var _user$project$Animals_Main$model_nameFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.nameFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{nameFilter: p});
-		}));
-var _user$project$Animals_Main$model_speciesFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.speciesFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{speciesFilter: p});
-		}));
-var _user$project$Animals_Main$model_tagFilter = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tagFilter;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tagFilter: p});
-		}));
-var _user$project$Animals_Main$model_animals = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.animals;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{animals: p});
-		}));
-var _user$project$Animals_Main$upsert = F2(
-	function (model, displayed) {
-		return A2(
-			_user$project$Animals_Main$model_animals.update,
-			_user$project$Animals_Animal_Model$upsert(displayed),
-			model);
-	});
-var _user$project$Animals_Main$model_today = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.today;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{today: p});
-		}));
-var _user$project$Animals_Main$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'NavigateToAllPage':
-				return _user$project$Animals_Navigation$toAllPagePath(model);
-			case 'NavigateToAddPage':
-				return _user$project$Animals_Navigation$toAddPagePath(model);
-			case 'NavigateToHelpPage':
-				return _user$project$Animals_Navigation$toHelpPagePath(model);
-			case 'SetToday':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_today.set, _p0._0, model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'SetAnimals':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(
-						_user$project$Animals_Main$model_animals.set,
-						_user$project$Animals_Animal_Model$asAggregate(_p0._0),
-						model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'ToggleDatePicker':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'SelectDate':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(
-						_user$project$Animals_Main$model_effectiveDate.set,
-						_user$project$Pile_Calendar$At(_p0._0),
-						model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'SetNameFilter':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_nameFilter.set, _p0._0, model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'SetTagFilter':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_tagFilter.set, _p0._0, model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'SetSpeciesFilter':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_speciesFilter.set, _p0._0, model),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'MoreLikeThisAnimal':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'UpsertCompactAnimal':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(
-						_user$project$Animals_Main$upsert,
-						model,
-						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Compact, _p0._1)),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'UpsertExpandedAnimal':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(
-						_user$project$Animals_Main$upsert,
-						model,
-						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Expanded, _p0._1)),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'UpsertEditableAnimal':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(
-						_user$project$Animals_Main$upsert,
-						model,
-						A4(_user$project$Animals_Main$withCheckedChanges, _p0._0, _p0._1, _p0._2, model)),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			case 'ReviseDisplayedAnimal':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$upsert, model, _p0._0),
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-			default:
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					_elm_lang$core$Native_List.fromArray(
-						[]));
-		}
-	});
-var _user$project$Animals_Main$model_page = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.page;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{page: p});
-		}));
-var _user$project$Animals_Main$Flags = function (a) {
-	return {csrfToken: a};
-};
-var _user$project$Animals_Main$Model = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
-	});
-
 var _user$project$Pile_HtmlShorthand$onEnter = function (msg) {
 	var isEnter = function (code) {
 		return _elm_lang$core$Native_Utils.eq(code, 13) ? _elm_lang$core$Json_Decode$succeed(msg) : _elm_lang$core$Json_Decode$fail('not ENTER');
@@ -20898,14 +20159,877 @@ var _user$project$Pile_Bulma$tabs = F2(
 				]));
 	});
 
-var _user$project$Animals_Animal_Edit$validate = F3(
+var _user$project$Animals_Animal_Flash$SavedIncompleteTag = function (a) {
+	return {ctor: 'SavedIncompleteTag', _0: a};
+};
+var _user$project$Animals_Animal_Flash$NoFlash = {ctor: 'NoFlash'};
+var _user$project$Animals_Animal_Flash$showAndCancel = F2(
+	function (flash, partialMsg) {
+		var _p0 = flash;
+		if (_p0.ctor === 'NoFlash') {
+			return A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[]));
+		} else {
+			return A2(
+				_user$project$Pile_Bulma$flashNotification,
+				partialMsg(_user$project$Animals_Animal_Flash$NoFlash),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Excuse my presumption, but I notice you clicked '),
+						_user$project$Pile_Bulma$exampleSuccess,
+						_elm_lang$html$Html$text(' while there was text in the '),
+						A2(
+						_elm_lang$html$Html$b,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('New Tag')
+							])),
+						_elm_lang$html$Html$text(' field. So I\'ve added the tag '),
+						_user$project$Pile_Bulma$readOnlyTag(_p0._0),
+						_elm_lang$html$Html$text(' for you.'),
+						_elm_lang$html$Html$text(' You can delete it if I goofed.')
+					]));
+		}
+	});
+
+var _user$project$Pile_UpdatingLens$lensUpdate = F4(
+	function (getPart, setPart, partTransformer, whole) {
+		return A2(
+			setPart,
+			partTransformer(
+				getPart(whole)),
+			whole);
+	});
+var _user$project$Pile_UpdatingLens$toMonocle = function (u) {
+	return {get: u.get, set: u.set};
+};
+var _user$project$Pile_UpdatingLens$lens = F2(
+	function (getPart, setPart) {
+		return {
+			get: getPart,
+			set: setPart,
+			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
+		};
+	});
+var _user$project$Pile_UpdatingLens$compose = F2(
+	function (left, right) {
+		var right_ = _user$project$Pile_UpdatingLens$toMonocle(right);
+		var left_ = _user$project$Pile_UpdatingLens$toMonocle(left);
+		var composed = A2(_arturopala$elm_monocle$Monocle_Lens$compose, left_, right_);
+		return A2(_user$project$Pile_UpdatingLens$lens, composed.get, composed.set);
+	});
+var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
+	function (a, b, c) {
+		return {get: a, set: b, update: c};
+	});
+
+var _user$project$Animals_Animal_Model$form_tentativeTag = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tentativeTag;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tentativeTag: p});
+		}));
+var _user$project$Animals_Animal_Model$form_tags = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Animal_Model$form_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Animal_Model$displayedAnimal_animal = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animal;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animal: p});
+		}));
+var _user$project$Animals_Animal_Model$animal_properties = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.properties;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{properties: p});
+		}));
+var _user$project$Animals_Animal_Model$animal_tags = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Animal_Model$animal_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Animal_Model$animal_id = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.id;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{id: p});
+		}));
+var _user$project$Animals_Animal_Model$displayedAnimal_id = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Model$displayedAnimal_animal, _user$project$Animals_Animal_Model$animal_id);
+var _user$project$Animals_Animal_Model$updateAnimal = F2(
+	function (animal, form) {
+		var update = function (tags) {
+			return A2(
+				_user$project$Animals_Animal_Model$animal_tags.set,
+				tags,
+				A2(
+					_user$project$Animals_Animal_Model$animal_properties.set,
+					form.properties,
+					A2(_user$project$Animals_Animal_Model$animal_name.set, form.name, animal)));
+		};
+		var _p0 = _elm_lang$core$String$isEmpty(form.tentativeTag);
+		if (_p0 === true) {
+			return _elm_lang$core$Result$Ok(
+				update(form.tags));
+		} else {
+			return _elm_lang$core$Result$Err(
+				{
+					ctor: '_Tuple2',
+					_0: update(
+						A2(
+							_elm_lang$core$List$append,
+							form.tags,
+							_elm_lang$core$Native_List.fromArray(
+								[form.tentativeTag]))),
+					_1: _user$project$Animals_Animal_Flash$SavedIncompleteTag(form.tentativeTag)
+				});
+		}
+	});
+var _user$project$Animals_Animal_Model$extractForm = function (animal) {
+	return {name: animal.name, tags: animal.tags, tentativeTag: '', properties: animal.properties};
+};
+var _user$project$Animals_Animal_Model$Animal = F5(
+	function (a, b, c, d, e) {
+		return {id: a, name: b, species: c, tags: d, properties: e};
+	});
+var _user$project$Animals_Animal_Model$Form = F4(
+	function (a, b, c, d) {
+		return {name: a, tags: b, tentativeTag: c, properties: d};
+	});
+var _user$project$Animals_Animal_Model$DisplayedAnimal = F3(
+	function (a, b, c) {
+		return {animal: a, display: b, flash: c};
+	});
+var _user$project$Animals_Animal_Model$AsBool = F2(
+	function (a, b) {
+		return {ctor: 'AsBool', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Model$AsDate = function (a) {
+	return {ctor: 'AsDate', _0: a};
+};
+var _user$project$Animals_Animal_Model$AsString = function (a) {
+	return {ctor: 'AsString', _0: a};
+};
+var _user$project$Animals_Animal_Model$AsFloat = function (a) {
+	return {ctor: 'AsFloat', _0: a};
+};
+var _user$project$Animals_Animal_Model$AsInt = function (a) {
+	return {ctor: 'AsInt', _0: a};
+};
+var _user$project$Animals_Animal_Model$Editable = function (a) {
+	return {ctor: 'Editable', _0: a};
+};
+var _user$project$Animals_Animal_Model$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Animal_Model$Compact = {ctor: 'Compact'};
+
+var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
+var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
+	return {ctor: 'MoreLikeThisAnimal', _0: a};
+};
+var _user$project$Animals_Msg$UpsertEditableAnimal = F3(
+	function (a, b, c) {
+		return {ctor: 'UpsertEditableAnimal', _0: a, _1: b, _2: c};
+	});
+var _user$project$Animals_Msg$UpsertExpandedAnimal = F2(
+	function (a, b) {
+		return {ctor: 'UpsertExpandedAnimal', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$UpsertCompactAnimal = F2(
+	function (a, b) {
+		return {ctor: 'UpsertCompactAnimal', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$ReviseDisplayedAnimal = function (a) {
+	return {ctor: 'ReviseDisplayedAnimal', _0: a};
+};
+var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
+	return {ctor: 'SetSpeciesFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetTagFilter = function (a) {
+	return {ctor: 'SetTagFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetNameFilter = function (a) {
+	return {ctor: 'SetNameFilter', _0: a};
+};
+var _user$project$Animals_Msg$SelectDate = function (a) {
+	return {ctor: 'SelectDate', _0: a};
+};
+var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
+var _user$project$Animals_Msg$SetAnimals = function (a) {
+	return {ctor: 'SetAnimals', _0: a};
+};
+var _user$project$Animals_Msg$SetToday = function (a) {
+	return {ctor: 'SetToday', _0: a};
+};
+var _user$project$Animals_Msg$NavigateToHelpPage = {ctor: 'NavigateToHelpPage'};
+var _user$project$Animals_Msg$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
+var _user$project$Animals_Msg$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
+
+var _user$project$Animals_OutsideWorld$xena = {
+	id: '4',
+	name: 'Xena',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['mare', 'skittish']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(
+					_user$project$Animals_Animal_Model$AsBool,
+					false,
+					_elm_lang$core$Maybe$Just('off for the summer'))
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Animal_Model$AsString('Forman')
+			}
+			]))
+};
+var _user$project$Animals_OutsideWorld$ross = {
+	id: '3',
+	name: 'ross',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['stallion', 'aggressive']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Animal_Model$AsString('Forman')
+			}
+			]))
+};
+var _user$project$Animals_OutsideWorld$jake = {
+	id: '2',
+	name: 'Jake',
+	species: 'equine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['gelding']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			}
+			]))
+};
+var _user$project$Animals_OutsideWorld$athena = {
+	id: '1',
+	name: 'Athena',
+	species: 'bovine',
+	tags: _elm_lang$core$Native_List.fromArray(
+		['cow']),
+	properties: _elm_lang$core$Dict$fromList(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				{
+				ctor: '_Tuple2',
+				_0: 'Available',
+				_1: A2(_user$project$Animals_Animal_Model$AsBool, true, _elm_lang$core$Maybe$Nothing)
+			},
+				{
+				ctor: '_Tuple2',
+				_0: 'Primary billing',
+				_1: _user$project$Animals_Animal_Model$AsString('Marick')
+			}
+			]))
+};
+var _user$project$Animals_OutsideWorld$fetchAnimals = A3(
+	_elm_lang$core$Task$perform,
+	_elm_lang$core$Basics$always(
+		_user$project$Animals_Msg$SetAnimals(
+			_elm_lang$core$Native_List.fromArray(
+				[]))),
+	_user$project$Animals_Msg$SetAnimals,
+	_elm_lang$core$Task$succeed(
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Animals_OutsideWorld$athena, _user$project$Animals_OutsideWorld$ross, _user$project$Animals_OutsideWorld$xena, _user$project$Animals_OutsideWorld$jake])));
+var _user$project$Animals_OutsideWorld$askTodaysDate = A3(
+	_elm_lang$core$Task$perform,
+	_elm_lang$core$Basics$always(
+		_user$project$Animals_Msg$SetToday(_elm_lang$core$Maybe$Nothing)),
+	function (_p0) {
+		return _user$project$Animals_Msg$SetToday(
+			_elm_lang$core$Maybe$Just(_p0));
+	},
+	_elm_lang$core$Date$now);
+
+var _user$project$Animals_Navigation$urlUpdate = F2(
+	function (newPage, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{page: newPage}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _user$project$Animals_Navigation$programWithFlags = _elm_lang$navigation$Navigation$programWithFlags;
+var _user$project$Animals_Navigation$goto = F2(
+	function (path, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: model,
+			_1: _elm_lang$navigation$Navigation$newUrl(path)
+		};
+	});
+var _user$project$Animals_Navigation$helpPagePath = '/v2/animals/help';
+var _user$project$Animals_Navigation$toHelpPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$helpPagePath);
+var _user$project$Animals_Navigation$addPagePath = '/v2/animals/new';
+var _user$project$Animals_Navigation$toAddPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$addPagePath);
+var _user$project$Animals_Navigation$allPagePath = '/v2/animals';
+var _user$project$Animals_Navigation$toAllPagePath = _user$project$Animals_Navigation$goto(_user$project$Animals_Navigation$allPagePath);
+var _user$project$Animals_Navigation$HelpPage = {ctor: 'HelpPage'};
+var _user$project$Animals_Navigation$AddPage = {ctor: 'AddPage'};
+var _user$project$Animals_Navigation$AllPage = {ctor: 'AllPage'};
+var _user$project$Animals_Navigation$stringParser = function (path) {
+	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$addPagePath, path) ? _user$project$Animals_Navigation$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Navigation$helpPagePath, path) ? _user$project$Animals_Navigation$HelpPage : _user$project$Animals_Navigation$AllPage);
+};
+var _user$project$Animals_Navigation$locationParser = function (location) {
+	return _user$project$Animals_Navigation$stringParser(location.pathname);
+};
+var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
+
+var _user$project$Animals_Animal_Aggregates$asAggregate = function (animals) {
+	var tuple = function (animal) {
+		return {
+			ctor: '_Tuple2',
+			_0: animal.id,
+			_1: A3(_user$project$Animals_Animal_Model$DisplayedAnimal, animal, _user$project$Animals_Animal_Model$Compact, _user$project$Animals_Animal_Flash$NoFlash)
+		};
+	};
+	return _elm_lang$core$Dict$fromList(
+		A2(_elm_lang$core$List$map, tuple, animals));
+};
+var _user$project$Animals_Animal_Aggregates$upsert = F2(
+	function (displayed, aggregate) {
+		var key = _user$project$Animals_Animal_Model$displayedAnimal_id.get(displayed);
+		return A3(_elm_lang$core$Dict$insert, key, displayed, aggregate);
+	});
+var _user$project$Animals_Animal_Aggregates$emptyAggregate = _elm_lang$core$Dict$empty;
+
+var _user$project$Pile_Calendar$visibilityController = F3(
+	function (calendarToggleMsg, control, maybeContent) {
+		var controlContainer = A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('dropdown--button-container')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[control]));
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[controlContainer]));
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('dropdown-open')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+								_elm_lang$html$Html_Events$onClick(calendarToggleMsg)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						controlContainer,
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('dropdown--content-container')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[_p0._0]))
+					]));
+		}
+	});
+var _user$project$Pile_Calendar$defaultDate = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1);
+var _user$project$Pile_Calendar$dateToShow = function (edate) {
+	var _p1 = edate.effectiveDate;
+	if (_p1.ctor === 'Today') {
+		return edate.today;
+	} else {
+		return _elm_lang$core$Maybe$Just(_p1._0);
+	}
+};
+var _user$project$Pile_Calendar$bound = F2(
+	function (shiftFunction, edate) {
+		var shiftByYears = function (date) {
+			return A3(
+				_justinmimbs$elm_date_extra$Date_Extra$add,
+				_justinmimbs$elm_date_extra$Date_Extra$Year,
+				A2(shiftFunction, 0, 5),
+				date);
+		};
+		var _p2 = _user$project$Pile_Calendar$dateToShow(edate);
+		if (_p2.ctor === 'Nothing') {
+			return shiftByYears(_user$project$Pile_Calendar$defaultDate);
+		} else {
+			return shiftByYears(_p2._0);
+		}
+	});
+var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
+	var todayIfKnown = function () {
+		var _p3 = edate.today;
+		if (_p3.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p3._0);
+		}
+	}();
+	var _p4 = edate.effectiveDate;
+	if (_p4.ctor === 'Today') {
+		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p4._0);
+	}
+};
+var _user$project$Pile_Calendar$view = F4(
+	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
+		var selected = _user$project$Pile_Calendar$dateToShow(edate);
+		var max = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			edate);
+		var min = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x - y;
+				}),
+			edate);
+		var calendarBodyView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$virtual_dom$VirtualDom$map,
+				dateSelectedMsg,
+				A3(_justinmimbs$elm_date_selector$DateSelector$view, min, max, selected))) : _elm_lang$core$Maybe$Nothing;
+		return A3(
+			_user$project$Pile_Calendar$visibilityController,
+			calendarToggleMsg,
+			A3(
+				launcher,
+				edate.datePickerOpen,
+				_user$project$Pile_Calendar$enhancedDateString(edate),
+				calendarToggleMsg),
+			calendarBodyView);
+	});
+var _user$project$Pile_Calendar$At = function (a) {
+	return {ctor: 'At', _0: a};
+};
+var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
+
+var _user$project$Animals_Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Animals_Main$withCheckedChanges = F4(
+	function (animal, form, flash, model) {
+		return A3(
+			_user$project$Animals_Animal_Model$DisplayedAnimal,
+			animal,
+			_user$project$Animals_Animal_Model$Editable(form),
+			flash);
+	});
+var _user$project$Animals_Main$init = F2(
+	function (flags, startingPage) {
+		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Aggregates$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			_elm_lang$core$Native_List.fromArray(
+				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
+	});
+var _user$project$Animals_Main$model_datePickerOpen = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.datePickerOpen;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{datePickerOpen: p});
+		}));
+var _user$project$Animals_Main$model_effectiveDate = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.effectiveDate;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{effectiveDate: p});
+		}));
+var _user$project$Animals_Main$model_nameFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.nameFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{nameFilter: p});
+		}));
+var _user$project$Animals_Main$model_speciesFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.speciesFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{speciesFilter: p});
+		}));
+var _user$project$Animals_Main$model_tagFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tagFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tagFilter: p});
+		}));
+var _user$project$Animals_Main$model_animals = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animals: p});
+		}));
+var _user$project$Animals_Main$upsert = F2(
+	function (model, displayed) {
+		return A2(
+			_user$project$Animals_Main$model_animals.update,
+			_user$project$Animals_Animal_Aggregates$upsert(displayed),
+			model);
+	});
+var _user$project$Animals_Main$model_today = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.today;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{today: p});
+		}));
+var _user$project$Animals_Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NavigateToAllPage':
+				return _user$project$Animals_Navigation$toAllPagePath(model);
+			case 'NavigateToAddPage':
+				return _user$project$Animals_Navigation$toAddPagePath(model);
+			case 'NavigateToHelpPage':
+				return _user$project$Animals_Navigation$toHelpPagePath(model);
+			case 'SetToday':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$model_today.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'SetAnimals':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$model_animals.set,
+						_user$project$Animals_Animal_Aggregates$asAggregate(_p0._0),
+						model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ToggleDatePicker':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'SelectDate':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$model_effectiveDate.set,
+						_user$project$Pile_Calendar$At(_p0._0),
+						model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'SetNameFilter':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$model_nameFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'SetTagFilter':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$model_tagFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'SetSpeciesFilter':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$model_speciesFilter.set, _p0._0, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'MoreLikeThisAnimal':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'UpsertCompactAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsert,
+						model,
+						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Compact, _p0._1)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'UpsertExpandedAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsert,
+						model,
+						A3(_user$project$Animals_Animal_Model$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Model$Expanded, _p0._1)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'UpsertEditableAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsert,
+						model,
+						A4(_user$project$Animals_Main$withCheckedChanges, _p0._0, _p0._1, _p0._2, model)),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'ReviseDisplayedAnimal':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(_user$project$Animals_Main$upsert, model, _p0._0),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+		}
+	});
+var _user$project$Animals_Main$model_page = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.page;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{page: p});
+		}));
+var _user$project$Animals_Main$Flags = function (a) {
+	return {csrfToken: a};
+};
+var _user$project$Animals_Main$Model = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
+	});
+
+var _user$project$Animals_Animal_ViewUtil$parentheticalSpecies = function (animal) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		' (',
+		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
+};
+var _user$project$Animals_Animal_ViewUtil$animalTags = function (animal) {
+	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
+};
+var _user$project$Animals_Animal_ViewUtil$animalSalutation = function (animal) {
+	return _elm_lang$html$Html$text(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
+			_user$project$Animals_Animal_ViewUtil$parentheticalSpecies(animal)));
+};
+var _user$project$Animals_Animal_ViewUtil$boolExplanation = F2(
+	function (b, explanation) {
+		var suffix = function () {
+			var _p0 = explanation;
+			if (_p0.ctor === 'Nothing') {
+				return '';
+			} else {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					' (',
+					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
+			}
+		}();
+		var icon = function () {
+			var _p1 = b;
+			if (_p1 === true) {
+				return _user$project$Pile_Bulma$trueIcon;
+			} else {
+				return _user$project$Pile_Bulma$falseIcon;
+			}
+		}();
+		return _elm_lang$core$Native_List.fromArray(
+			[
+				icon,
+				_elm_lang$html$Html$text(suffix)
+			]);
+	});
+var _user$project$Animals_Animal_ViewUtil$propertyDisplayValue = function (value) {
+	var _p2 = value;
+	switch (_p2.ctor) {
+		case 'AsBool':
+			return A2(_user$project$Animals_Animal_ViewUtil$boolExplanation, _p2._0, _p2._1);
+		case 'AsString':
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(_p2._0)
+				]);
+		default:
+			return _elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('unimplemented')
+				]);
+	}
+};
+var _user$project$Animals_Animal_ViewUtil$animalProperties = function (animal) {
+	var propertyPairs = _elm_lang$core$Dict$toList(animal.properties);
+	var row = function (_p3) {
+		var _p4 = _p3;
+		return A2(
+			_elm_lang$html$Html$tr,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(_p4._0)
+						])),
+					A2(
+					_elm_lang$html$Html$td,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_user$project$Animals_Animal_ViewUtil$propertyDisplayValue(_p4._1))
+				]));
+	};
+	return A2(_elm_lang$core$List$map, row, propertyPairs);
+};
+
+var _user$project$Animals_Animal_Validation$validate = F3(
 	function (requirement, value, pred) {
 		return pred(value) ? _elm_lang$core$Result$Ok(value) : _elm_lang$core$Result$Err(
 			{ctor: '_Tuple2', _0: value, _1: requirement});
 	});
-var _user$project$Animals_Animal_Edit$validatedName = function (form) {
+var _user$project$Animals_Animal_Validation$validatedName = function (form) {
 	return A3(
-		_user$project$Animals_Animal_Edit$validate,
+		_user$project$Animals_Animal_Validation$validate,
 		'The animal has to have a name!',
 		_user$project$Animals_Animal_Model$form_name.get(form),
 		function (_p0) {
@@ -20913,17 +21037,38 @@ var _user$project$Animals_Animal_Edit$validatedName = function (form) {
 				_elm_lang$core$String$isEmpty(_p0));
 		});
 };
-var _user$project$Animals_Animal_Edit$isSafeToSave = function (form) {
-	var _p1 = _user$project$Animals_Animal_Edit$validatedName(form);
+var _user$project$Animals_Animal_Validation$isSafeToSave = function (form) {
+	var _p1 = _user$project$Animals_Animal_Validation$validatedName(form);
 	if (_p1.ctor === 'Ok') {
 		return true;
 	} else {
 		return false;
 	}
 };
+
+var _user$project$Animals_Animal_Edit$cancelButton = function (animal) {
+	return _user$project$Pile_Bulma$rightwardCancel(
+		A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Flash$NoFlash));
+};
+var _user$project$Animals_Animal_Edit$applyEdits = F2(
+	function (animal, form) {
+		var _p0 = A2(_user$project$Animals_Animal_Model$updateAnimal, animal, form);
+		if (_p0.ctor === 'Ok') {
+			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p0._0, _user$project$Animals_Animal_Flash$NoFlash);
+		} else {
+			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p0._0._0, _p0._0._1);
+		}
+	});
+var _user$project$Animals_Animal_Edit$saveButton = F2(
+	function (animal, form) {
+		return A2(
+			_user$project$Pile_Bulma$leftwardSuccess,
+			_user$project$Animals_Animal_Validation$isSafeToSave(form),
+			A2(_user$project$Animals_Animal_Edit$applyEdits, animal, form));
+	});
 var _user$project$Animals_Animal_Edit$updateForm = F2(
 	function (animal, form) {
-		return A3(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form, _user$project$Animals_Animal_Model$NoFlash);
+		return A3(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form, _user$project$Animals_Animal_Flash$NoFlash);
 	});
 var _user$project$Animals_Animal_Edit$beginEditing = function (animal) {
 	return A2(
@@ -20941,7 +21086,7 @@ var _user$project$Animals_Animal_Edit$nameEditControl = F2(
 		};
 		return A2(
 			_user$project$Pile_Bulma$soleTextInputInRow,
-			_user$project$Animals_Animal_Edit$validatedName(form),
+			_user$project$Animals_Animal_Validation$validatedName(form),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html_Events$onInput(onInput)
@@ -20987,10 +21132,10 @@ var _user$project$Animals_Animal_Edit$newTagControl = F2(
 		return A4(_user$project$Pile_Bulma$textInputWithSubmit, 'Add', form.tentativeTag, onInput, onSubmit);
 	});
 
-var _user$project$Animals_Animal_Crud$editHelp = function (iconType) {
+var _user$project$Animals_Animal_Icons$editHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Msg$NoOp);
 };
-var _user$project$Animals_Animal_Crud$moreLikeThis = F2(
+var _user$project$Animals_Animal_Icons$moreLikeThis = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -20998,7 +21143,7 @@ var _user$project$Animals_Animal_Crud$moreLikeThis = F2(
 			'Copy: make more animals like this one',
 			_user$project$Animals_Msg$MoreLikeThisAnimal(animal.id));
 	});
-var _user$project$Animals_Animal_Crud$edit = F2(
+var _user$project$Animals_Animal_Icons$edit = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -21006,156 +21151,21 @@ var _user$project$Animals_Animal_Crud$edit = F2(
 			'Edit: make changes to this animal',
 			_user$project$Animals_Animal_Edit$beginEditing(animal));
 	});
-var _user$project$Animals_Animal_Crud$contract = F2(
+var _user$project$Animals_Animal_Icons$contract = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
 			'fa-caret-up',
 			'Expand: show less about this animal',
-			A2(_user$project$Animals_Msg$UpsertCompactAnimal, animal, _user$project$Animals_Animal_Model$NoFlash));
+			A2(_user$project$Animals_Msg$UpsertCompactAnimal, animal, _user$project$Animals_Animal_Flash$NoFlash));
 	});
-var _user$project$Animals_Animal_Crud$expand = F2(
+var _user$project$Animals_Animal_Icons$expand = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
 			'fa-caret-down',
 			'Expand: show more about this animal',
-			A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Model$NoFlash));
-	});
-var _user$project$Animals_Animal_Crud$parentheticalSpecies = function (animal) {
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		' (',
-		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
-};
-var _user$project$Animals_Animal_Crud$animalTags = function (animal) {
-	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
-};
-var _user$project$Animals_Animal_Crud$animalSalutation = function (animal) {
-	return _elm_lang$html$Html$text(
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_community$string_extra$String_Extra$toSentenceCase(animal.name),
-			_user$project$Animals_Animal_Crud$parentheticalSpecies(animal)));
-};
-var _user$project$Animals_Animal_Crud$boolExplanation = F2(
-	function (b, explanation) {
-		var suffix = function () {
-			var _p0 = explanation;
-			if (_p0.ctor === 'Nothing') {
-				return '';
-			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					' (',
-					A2(_elm_lang$core$Basics_ops['++'], _p0._0, ')'));
-			}
-		}();
-		var icon = function () {
-			var _p1 = b;
-			if (_p1 === true) {
-				return _user$project$Pile_Bulma$trueIcon;
-			} else {
-				return _user$project$Pile_Bulma$falseIcon;
-			}
-		}();
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				icon,
-				_elm_lang$html$Html$text(suffix)
-			]);
-	});
-var _user$project$Animals_Animal_Crud$propertyDisplayValue = function (value) {
-	var _p2 = value;
-	switch (_p2.ctor) {
-		case 'AsBool':
-			return A2(_user$project$Animals_Animal_Crud$boolExplanation, _p2._0, _p2._1);
-		case 'AsString':
-			return _elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text(_p2._0)
-				]);
-		default:
-			return _elm_lang$core$Native_List.fromArray(
-				[
-					_elm_lang$html$Html$text('unimplemented')
-				]);
-	}
-};
-var _user$project$Animals_Animal_Crud$propertyPairs = function (animal) {
-	return _elm_lang$core$Dict$toList(animal.properties);
-};
-var _user$project$Animals_Animal_Crud$animalProperties = function (animal) {
-	var row = function (_p3) {
-		var _p4 = _p3;
-		return A2(
-			_elm_lang$html$Html$tr,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(_p4._0)
-						])),
-					A2(
-					_elm_lang$html$Html$td,
-					_elm_lang$core$Native_List.fromArray(
-						[]),
-					_user$project$Animals_Animal_Crud$propertyDisplayValue(_p4._1))
-				]));
-	};
-	return A2(
-		_elm_lang$core$List$map,
-		row,
-		_user$project$Animals_Animal_Crud$propertyPairs(animal));
-};
-var _user$project$Animals_Animal_Crud$showFlash = F2(
-	function (flash, partialMsg) {
-		var _p5 = flash;
-		if (_p5.ctor === 'NoFlash') {
-			return A2(
-				_elm_lang$html$Html$span,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[]));
-		} else {
-			return A2(
-				_user$project$Pile_Bulma$flashNotification,
-				partialMsg(_user$project$Animals_Animal_Model$NoFlash),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Excuse my presumption, but I notice you clicked '),
-						_user$project$Pile_Bulma$exampleSuccess,
-						_elm_lang$html$Html$text(' while there was text in the '),
-						A2(
-						_elm_lang$html$Html$b,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('New Tag')
-							])),
-						_elm_lang$html$Html$text(' field. So I\'ve added the tag '),
-						_user$project$Pile_Bulma$readOnlyTag(_p5._0),
-						_elm_lang$html$Html$text(' for you.'),
-						_elm_lang$html$Html$text(' You can delete it if I goofed.')
-					]));
-		}
-	});
-var _user$project$Animals_Animal_Crud$applyEdits = F2(
-	function (animal, form) {
-		var _p6 = A2(_user$project$Animals_Animal_Model$updateAnimal, animal, form);
-		if (_p6.ctor === 'Ok') {
-			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p6._0, _user$project$Animals_Animal_Model$NoFlash);
-		} else {
-			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p6._0._0, _p6._0._1);
-		}
+			A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Flash$NoFlash));
 	});
 
 var _user$project$Animals_Animal_CompactView$view = F2(
@@ -21178,16 +21188,16 @@ var _user$project$Animals_Animal_CompactView$view = F2(
 								[]),
 							A2(
 								_elm_lang$core$List_ops['::'],
-								_user$project$Animals_Animal_Crud$animalSalutation(animal),
-								_user$project$Animals_Animal_Crud$animalTags(animal))),
+								_user$project$Animals_Animal_ViewUtil$animalSalutation(animal),
+								_user$project$Animals_Animal_ViewUtil$animalTags(animal))),
 							A2(
-							_user$project$Animals_Animal_Crud$showFlash,
+							_user$project$Animals_Animal_Flash$showAndCancel,
 							flash,
 							_user$project$Animals_Msg$UpsertCompactAnimal(animal))
 						])),
-					A2(_user$project$Animals_Animal_Crud$expand, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_Crud$edit, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_Crud$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
+					A2(_user$project$Animals_Animal_Icons$expand, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Icons$edit, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
 				]));
 	});
 
@@ -21211,23 +21221,23 @@ var _user$project$Animals_Animal_ExpandedView$view = F2(
 								[]),
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_user$project$Animals_Animal_Crud$animalSalutation(animal)
+									_user$project$Animals_Animal_ViewUtil$animalSalutation(animal)
 								])),
 							A2(
 							_elm_lang$html$Html$p,
 							_elm_lang$core$Native_List.fromArray(
 								[]),
-							_user$project$Animals_Animal_Crud$animalTags(animal)),
+							_user$project$Animals_Animal_ViewUtil$animalTags(animal)),
 							_user$project$Pile_Bulma$propertyTable(
-							_user$project$Animals_Animal_Crud$animalProperties(animal)),
+							_user$project$Animals_Animal_ViewUtil$animalProperties(animal)),
 							A2(
-							_user$project$Animals_Animal_Crud$showFlash,
+							_user$project$Animals_Animal_Flash$showAndCancel,
 							flash,
 							_user$project$Animals_Msg$UpsertExpandedAnimal(animal))
 						])),
-					A2(_user$project$Animals_Animal_Crud$contract, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_Crud$edit, animal, _user$project$Pile_Bulma$tdIcon),
-					A2(_user$project$Animals_Animal_Crud$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
+					A2(_user$project$Animals_Animal_Icons$contract, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Icons$edit, animal, _user$project$Pile_Bulma$tdIcon),
+					A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon)
 				]));
 	});
 
@@ -21257,14 +21267,10 @@ var _user$project$Animals_Animal_EditableView$view = F3(
 							_user$project$Pile_Bulma$controlRow,
 							'New Tag',
 							A2(_user$project$Animals_Animal_Edit$newTagControl, animal, form)),
+							A2(_user$project$Animals_Animal_Edit$saveButton, animal, form),
+							_user$project$Animals_Animal_Edit$cancelButton(animal),
 							A2(
-							_user$project$Pile_Bulma$leftwardSuccess,
-							_user$project$Animals_Animal_Edit$isSafeToSave(form),
-							A2(_user$project$Animals_Animal_Crud$applyEdits, animal, form)),
-							_user$project$Pile_Bulma$rightwardCancel(
-							A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Model$NoFlash)),
-							A2(
-							_user$project$Animals_Animal_Crud$showFlash,
+							_user$project$Animals_Animal_Flash$showAndCancel,
 							flash,
 							A2(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form))
 						])),
@@ -21280,7 +21286,7 @@ var _user$project$Animals_Animal_EditableView$view = F3(
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[])),
-					_user$project$Animals_Animal_Crud$editHelp(_user$project$Pile_Bulma$tdIcon)
+					_user$project$Animals_Animal_Icons$editHelp(_user$project$Pile_Bulma$tdIcon)
 				]));
 	});
 

@@ -1,4 +1,4 @@
-module Animals.Animal.CommonView exposing (..)
+module Animals.Animal.ViewUtil exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -12,7 +12,6 @@ import String.Extra as String
 
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.Edit exposing (..)
 
 animalProperties animal =
   let

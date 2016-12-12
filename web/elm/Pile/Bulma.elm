@@ -206,13 +206,13 @@ soleTextInputInRow fieldValue extraAttributes =
              ])
     
 textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
-  horizontalControls
+  div [class "control has-addons"]
     [ oneTextInputInRow
         [ value fieldValue
         , Events.onInput inputMsg
         , onEnter submitMsg
         ]
-    , a [ class "button is-success is-small"
+    , a [ class "button is-success"
         , onClickWithoutPropagation submitMsg
         ]
         [ text buttonLabel ]

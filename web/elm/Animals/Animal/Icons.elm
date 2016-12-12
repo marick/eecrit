@@ -8,7 +8,7 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Model exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.Edit exposing (..)
+import Animals.Animal.Form as Form
 import Animals.Animal.Flash as Flash
 
 expand animal iconType =
@@ -24,7 +24,7 @@ contract animal iconType =
 edit animal iconType =
   iconType "fa-pencil"
     "Edit: make changes to this animal"
-    (beginEditing animal)
+    (Form.beginEditing animal)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"

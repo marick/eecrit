@@ -13,9 +13,8 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.CompactView as CompactView
-import Animals.Animal.ExpandedView as ExpandedView
-import Animals.Animal.EditableView as EditableView
+import Animals.Animal.ReadOnlyViews as RO
+import Animals.Animal.EditableView as RW
 
 view model =
   div []
@@ -70,9 +69,9 @@ filteredAnimals model =
 
 individualAnimalView {animal, display, flash} =
   case display of
-    Compact -> CompactView.view animal flash
-    Expanded -> ExpandedView.view animal flash
-    Editable changing -> EditableView.view animal changing flash
+    Compact -> RO.compactView animal flash
+    Expanded -> RO.expandedView animal flash
+    Editable changing -> RW.view animal changing flash
 
 
 -- The calendar

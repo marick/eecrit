@@ -10,7 +10,6 @@ import Pile.Bulma as Bulma
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
-import Animals.Animal.ViewUtil exposing (..)
 import Animals.Animal.Icons as Icon
 import Animals.Animal.Flash as Flash
 import Animals.Animal.Form as Form

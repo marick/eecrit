@@ -5,20 +5,50 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 
 
-validate : String -> value -> (value -> Bool) -> Result (value, String) value 
-validate requirement value pred =
+type alias ValidationContext =
+  { allAnimalNames : List String
+  }
+
+type alias ValidationResult value =
+  Result (value, String) value
+
+type alias ValidatedForm =
+  { name : ValidationResult String
+  , maySave : Bool
+  }
+
+assumeAllValid : Form -> ValidatedForm
+assumeAllValid form =
+  { name = Ok form.name
+  , maySave = True
+  }
+
+validateForm : ValidationContext -> Form -> ValidatedForm
+validateForm context form =
+  form
+    |> assumeAllValid
+    |> check (mustHaveName context form) validationForm_name
+
+mustHaveName context form =
+  calculateResult "The animal has to have a name!"
+    (form_name.get form)
+    (not << String.isEmpty)
+
+
+-- Util
+      
+check validatedResult lens buildingForm =
+  case validatedResult of
+    Ok _ ->
+      buildingForm
+    Err _ ->
+      buildingForm |> lens.set validatedResult |> validationForm_maySave.set False
+       
+calculateResult : String -> value -> (value -> Bool) -> ValidationResult value 
+calculateResult requirement value pred =
   if pred value then
     Ok value
   else
     Err (value, requirement)
 
-validatedName form =
-  validate "The animal has to have a name!"
-    (form_name.get form)
-    (not << String.isEmpty)
-
--- This is way too fragile
-isSafeToSave form =
-  case validatedName form of
-    Ok x -> True
-    Err x -> False
+      

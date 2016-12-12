@@ -13,3 +13,7 @@ displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
+
+
+validationForm_name = lens .name (\ p w -> { w | name = p })
+validationForm_maySave = lens .maySave (\ p w -> { w | maySave = p })

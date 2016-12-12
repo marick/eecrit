@@ -16,41 +16,44 @@ import Animals.Animal.Form as Form
 import Animals.Animal.Validation as Validation
 import Animals.Animal.Lenses exposing (..)
 
-view animal form flash =
-  Bulma.highlightedRow []
-    [ td []
-        [ Bulma.controlRow "Name" <| nameEditControl animal form
-        , Bulma.controlRow "Tags" <| deleteTagControl animal form
-        , Bulma.controlRow "New Tag" <| newTagControl animal form
+view validationContext animal form flash =
+  let
+    validatedForm = Validation.validateForm validationContext form
+  in
+    Bulma.highlightedRow []
+      [ td []
+          [ Bulma.controlRow "Name" <| nameEditControl animal form validatedForm.name
+          , Bulma.controlRow "Tags" <| deleteTagControl animal form
+          , Bulma.controlRow "New Tag" <| newTagControl animal form
             
-        -- , Bulma.controlRow "Properties"
-        --     <| Bulma.oneReasonablySizedControl
-        --          (editableAnimalProperties form |> Bulma.propertyTable)
-
-        , saveButton animal form
-        , cancelButton animal
-        , Flash.showAndCancel flash (UpsertEditableAnimal animal form)
-        ]
-    , td [] []
-    , td [] []
-    , Icon.editHelp Bulma.tdIcon
-    ]
-
+          -- , Bulma.controlRow "Properties"
+          --     <| Bulma.oneReasonablySizedControl
+          --          (editableAnimalProperties form |> Bulma.propertyTable)
+            
+          , saveButton animal form validatedForm.maySave
+          , cancelButton animal
+          , Flash.showAndCancel flash (UpsertEditableAnimal animal form)
+          ]
+      , td [] []
+      , td [] []
+      , Icon.editHelp Bulma.tdIcon
+      ]
+      
 
 -- Controls
 
-saveButton animal form = 
-  Bulma.leftwardSuccess (Validation.isSafeToSave form) (Form.applyEdits animal form)
+saveButton animal form isSafeToSave = 
+  Bulma.leftwardSuccess isSafeToSave (Form.applyEdits animal form)
 
 cancelButton animal =
   Bulma.rightwardCancel (UpsertExpandedAnimal animal Flash.NoFlash)
 
 
-nameEditControl animal form = 
+nameEditControl animal form validatedName =
   let
-    onInput value = Form.updateForm animal (form_name.set value form)
+    onInput newValue = Form.updateForm animal (form_name.set newValue form)
   in
-    Bulma.soleTextInputInRow (Validation.validatedName form)
+    Bulma.soleTextInputInRow validatedName
       [ Events.onInput onInput
       ]
 

@@ -15,19 +15,27 @@ import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.ReadOnlyViews as RO
 import Animals.Animal.EditableView as RW
+import Animals.Animal.Validation exposing (ValidationContext)
 
 view model =
-  div []
-    [ Bulma.centeredColumns
-        [ Bulma.column 3
-            [ Bulma.messageView
-                [ text "Animals as of..."
-                , calendarHelp Bulma.rightIcon
-                ]
-                [ Calendar.view dateControl ToggleDatePicker SelectDate model
-                ] 
-            ]                  
-        , Bulma.column 8
+  let
+    validationContext = ValidationContext []
+    table = model
+        |> filteredAnimals
+        |> List.map (individualAnimalView validationContext)
+        |> Bulma.headerlessTable 
+  in
+    div []
+      [ Bulma.centeredColumns
+          [ Bulma.column 3
+              [ Bulma.messageView
+                  [ text "Animals as of..."
+                  , calendarHelp Bulma.rightIcon
+                  ]
+                  [ Calendar.view dateControl ToggleDatePicker SelectDate model
+                  ] 
+              ]                  
+          , Bulma.column 8
             [ Bulma.messageView 
                 [ text "Filter by..."
                 , filterHelp Bulma.rightIcon
@@ -39,10 +47,10 @@ view model =
                     ]
                 ]
             ]
-        ]
-    , filteredAnimals model |> List.map individualAnimalView |> Bulma.headerlessTable 
-    ]
-
+          ]
+      , table
+      ]
+    
 
 filteredAnimals model = 
   let
@@ -67,11 +75,11 @@ filteredAnimals model =
       |> List.filter hasDesiredTag
       |> List.sortBy (.animal >> .name >> String.toLower)
 
-individualAnimalView {animal, display, flash} =
+individualAnimalView validationContext {animal, display, flash} =
   case display of
     Compact -> RO.compactView animal flash
     Expanded -> RO.expandedView animal flash
-    Editable changing -> RW.view animal changing flash
+    Editable changing -> RW.view validationContext animal changing flash
 
 
 -- The calendar

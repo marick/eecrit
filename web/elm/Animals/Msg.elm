@@ -1,6 +1,6 @@
 module Animals.Msg exposing (Msg(..))
 
-import Animals.Animal.Model as Animal exposing (Animal)
+import Animals.Animal.Types as Animal exposing (Animal)
 import Animals.Animal.Flash as Flash exposing (Flash)
 import Date exposing (Date)
 

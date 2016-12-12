@@ -3,7 +3,7 @@ module Animals.OutsideWorld exposing
   , askTodaysDate
   )
 
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Date
 import Dict

@@ -1,7 +1,8 @@
 module Animals.Animal.Validation exposing (..)
 
 import String
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
+import Animals.Animal.Lenses exposing (..)
 
 
 validate : String -> value -> (value -> Bool) -> Result (value, String) value 

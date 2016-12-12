@@ -5,8 +5,9 @@ module Animals.Animal.Aggregates exposing
 
 import Dict exposing (Dict)
 import String
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Animal.Flash exposing (..)
+import Animals.Animal.Lenses exposing (..)
 
 type alias VisibleAggregate = Dict Id DisplayedAnimal
 

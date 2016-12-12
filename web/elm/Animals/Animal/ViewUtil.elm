@@ -10,7 +10,7 @@ import List
 import String
 import String.Extra as String
 
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
 animalProperties animal =

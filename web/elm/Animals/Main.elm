@@ -3,7 +3,7 @@ module Animals.Main exposing (..)
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
-import Animals.Animal.Model as Animal
+import Animals.Animal.Types as Animal
 import Animals.Animal.Aggregates as Aggregate
 
 import String

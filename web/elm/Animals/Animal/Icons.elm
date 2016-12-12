@@ -6,7 +6,7 @@ import Html.Events as Events
 
 import Pile.HtmlShorthand exposing (..)
 
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Form as Form
 import Animals.Animal.Flash as Flash

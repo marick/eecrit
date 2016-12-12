@@ -11,7 +11,7 @@ import Pile.Bulma as Bulma
 import Pile.Calendar as Calendar
 import Pile.HtmlShorthand exposing (..)
 
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.CompactView as CompactView
 import Animals.Animal.ExpandedView as ExpandedView

@@ -7,7 +7,7 @@ import Html.Events as Events
 import List.Extra as List
 import Pile.Bulma as Bulma 
 
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Animal.ViewUtil exposing (..)
@@ -15,6 +15,7 @@ import Animals.Animal.Icons as Icon
 import Animals.Animal.Flash as Flash
 import Animals.Animal.Form as Form
 import Animals.Animal.Validation as Validation
+import Animals.Animal.Lenses exposing (..)
 
 view animal form flash =
   Bulma.highlightedRow []

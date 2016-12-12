@@ -11,10 +11,36 @@ import Pile.Bulma as Bulma
 import Pile.HtmlShorthand exposing (..)
 
 import Animals.Msg exposing (..)
-import Animals.Animal.Model exposing (..)
+import Animals.Animal.Types exposing (..)
 import Animals.Animal.Flash as Flash
+import Animals.Animal.Lenses exposing (..)
 
 
+extractForm : Animal -> Form
+extractForm animal =
+  { name = animal.name
+  , tags = animal.tags
+  , tentativeTag = ""
+  , properties = animal.properties
+  }
+
+updateAnimal animal form =
+  let
+    update tags =
+      animal 
+        |> animal_name.set form.name
+        |> animal_properties.set form.properties -- Currently not edited
+        |> animal_tags.set tags
+  in
+    case String.isEmpty form.tentativeTag of
+      True ->
+        Ok <| update form.tags 
+      False ->
+        -- Note that this isn't really an Err. Would maybe be better to make
+        -- own type?
+        Err ( update <| List.append form.tags [form.tentativeTag]
+            , Flash.SavedIncompleteTag form.tentativeTag
+            )
 
 
 -- Constructing Messages and other Important Actions

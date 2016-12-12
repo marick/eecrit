@@ -19,8 +19,7 @@ import Animals.Animal.Lenses exposing (..)
 
 view validationContext animal form flash =
   let
-    myContext = Validation.specializeValidationContext animal validationContext
-    validatedForm = Validation.validateForm myContext form
+    validatedForm = Validation.validateFormForAnimal validationContext animal form
   in
     Bulma.highlightedRow []
       [ td []

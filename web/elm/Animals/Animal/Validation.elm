@@ -34,6 +34,10 @@ validateForm context form =
     |> check (mustHaveName context form) validationForm_name
     |> check (uniqueName context form) validationForm_name
 
+validateFormForAnimal context animal form = 
+  validateForm (specializeValidationContext animal context) form 
+
+       
 mustHaveName context form =
   calculateResult "The animal has to have a name!"
     (form_name.get form)

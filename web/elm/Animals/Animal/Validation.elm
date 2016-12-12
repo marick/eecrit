@@ -1,12 +1,13 @@
 module Animals.Animal.Validation exposing (..)
 
+import Set exposing (Set)
 import String
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 
 
 type alias ValidationContext =
-  { allAnimalNames : List String
+  { allAnimalNames : Set String
   }
 
 type alias ValidationResult value =
@@ -17,6 +18,9 @@ type alias ValidatedForm =
   , maySave : Bool
   }
 
+specializeValidationContext animal =
+  validationContext_allAnimalNames.update (Set.remove animal.name)
+  
 assumeAllValid : Form -> ValidatedForm
 assumeAllValid form =
   { name = Ok form.name
@@ -28,12 +32,17 @@ validateForm context form =
   form
     |> assumeAllValid
     |> check (mustHaveName context form) validationForm_name
+    |> check (uniqueName context form) validationForm_name
 
 mustHaveName context form =
   calculateResult "The animal has to have a name!"
     (form_name.get form)
     (not << String.isEmpty)
 
+uniqueName context form =
+  calculateResult "There is already an animal with that name!"
+    (form_name.get form)
+    (not << (flip Set.member) context.allAnimalNames)
 
 -- Util
       

@@ -4,6 +4,7 @@ import Dict
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
+import Set
 import String
 import String.Extra as String
 
@@ -12,6 +13,7 @@ import Pile.Calendar as Calendar
 import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Types exposing (..)
+import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.ReadOnlyViews as RO
 import Animals.Animal.EditableView as RW
@@ -19,7 +21,7 @@ import Animals.Animal.Validation exposing (ValidationContext)
 
 view model =
   let
-    validationContext = ValidationContext []
+    validationContext = calculateValidationContext model
     table = model
         |> filteredAnimals
         |> List.map (individualAnimalView validationContext)
@@ -81,6 +83,10 @@ individualAnimalView validationContext {animal, display, flash} =
     Expanded -> RO.expandedView animal flash
     Editable changing -> RW.view validationContext animal changing flash
 
+calculateValidationContext model =
+  { allAnimalNames =
+      model.animals |> Dict.values |> List.map displayedAnimal_name.get |> Set.fromList
+  }
 
 -- The calendar
 

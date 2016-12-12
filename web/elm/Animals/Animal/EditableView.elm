@@ -5,7 +5,8 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 
 import List.Extra as List
-import Pile.Bulma as Bulma 
+import Pile.Bulma as Bulma
+import Set
 
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
@@ -18,7 +19,8 @@ import Animals.Animal.Lenses exposing (..)
 
 view validationContext animal form flash =
   let
-    validatedForm = Validation.validateForm validationContext form
+    myContext = Validation.specializeValidationContext animal validationContext
+    validatedForm = Validation.validateForm myContext form
   in
     Bulma.highlightedRow []
       [ td []

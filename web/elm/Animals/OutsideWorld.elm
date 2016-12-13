@@ -17,7 +17,7 @@ fetchAnimals =
     (Task.succeed [athena, ross, xena, jake])
 
 athena =
-  { id = "1"
+  { id = "predefined1"
   , name = "Athena"
   , species = "bovine"
   , tags = [ "cow" ]
@@ -27,7 +27,7 @@ athena =
   }
 
 jake =
-  { id = "2"
+  { id = "predefined2"
   , name = "Jake"
   , species = "equine"
   , tags = [ "gelding" ]
@@ -35,7 +35,7 @@ jake =
   }
 
 ross =
-  { id = "3"
+  { id = "predefined3"
   , name = "ross"
   , species = "equine"
   , tags = [ "stallion", "aggressive"]
@@ -45,7 +45,7 @@ ross =
   }
 
 xena =
-  { id = "4"
+  { id = "predefined4"
   , name = "Xena"
   , species = "equine"
   , tags = [ "mare", "skittish" ]

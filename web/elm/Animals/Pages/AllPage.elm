@@ -1,4 +1,4 @@
-module Animals.Pages.AllPage exposing (view)
+module Animals.Pages.AllPage exposing (..)
 
 import Dict
 import Html exposing (..)
@@ -22,11 +22,11 @@ import Animals.Animal.Validation exposing (ValidationContext)
 view model =
   let
     validationContext = calculateValidationContext model
-    whichToShow = filteredAnimals model
+    whichToShow = filteredAnimals model |> contextualize validationContext
   in
     div []
       [ filterView model
-      , Bulma.headerlessTable <| contextualize whichToShow validationContext
+      , Bulma.headerlessTable whichToShow
       ]
 
 filterView model =
@@ -53,7 +53,7 @@ filterView model =
       ]
     ]
 
-contextualize animals context =
+contextualize context animals =
   List.map (individualAnimalView context) animals
 
 filteredAnimals model = 
@@ -77,7 +77,10 @@ filteredAnimals model =
       |> List.filter hasDesiredSpecies
       |> List.filter hasDesiredName
       |> List.filter hasDesiredTag
-      |> List.sortBy (.animal >> .name >> String.toLower)
+      |> humanSorted
+
+humanSorted animals = 
+  List.sortBy (.animal >> .name >> String.toLower) animals
 
 individualAnimalView validationContext {animal, display, flash} =
   case display of

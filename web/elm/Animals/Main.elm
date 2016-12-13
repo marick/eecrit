@@ -102,9 +102,6 @@ update msg model =
     UpsertEditableAnimal animal form flash -> 
       (withCheckedChanges animal form flash model |> upsert model) ! []
         
-    ReviseDisplayedAnimal displayed ->
-      (displayed |> upsert model) ! []
-      
     NoOp ->
       model ! []
 

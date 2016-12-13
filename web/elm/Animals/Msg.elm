@@ -19,7 +19,6 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | ReviseDisplayedAnimal Animal.DisplayedAnimal
   | UpsertCompactAnimal Animal.Animal Flash
   | UpsertExpandedAnimal Animal.Animal Flash
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash

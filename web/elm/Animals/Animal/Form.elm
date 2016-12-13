@@ -27,6 +27,7 @@ extractForm animal =
 freshEditableAnimal id =
   let 
     animal = { id = id
+             , wasEverSaved = False
              , name = ""
              , species = "bovine"
              , tags = []

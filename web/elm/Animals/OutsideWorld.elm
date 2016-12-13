@@ -18,6 +18,7 @@ fetchAnimals =
 
 athena =
   { id = "predefined1"
+  , wasEverSaved = True
   , name = "Athena"
   , species = "bovine"
   , tags = [ "cow" ]
@@ -28,6 +29,7 @@ athena =
 
 jake =
   { id = "predefined2"
+  , wasEverSaved = True
   , name = "Jake"
   , species = "equine"
   , tags = [ "gelding" ]
@@ -36,6 +38,7 @@ jake =
 
 ross =
   { id = "predefined3"
+  , wasEverSaved = True
   , name = "ross"
   , species = "equine"
   , tags = [ "stallion", "aggressive"]
@@ -46,6 +49,7 @@ ross =
 
 xena =
   { id = "predefined4"
+  , wasEverSaved = True
   , name = "Xena"
   , species = "equine"
   , tags = [ "mare", "skittish" ]

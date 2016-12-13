@@ -22,37 +22,39 @@ import Animals.Animal.Validation exposing (ValidationContext)
 view model =
   let
     validationContext = calculateValidationContext model
-    table = model
-        |> filteredAnimals
-        |> List.map (individualAnimalView validationContext)
-        |> Bulma.headerlessTable 
+    whichToShow = filteredAnimals model
   in
     div []
-      [ Bulma.centeredColumns
-          [ Bulma.column 3
-              [ Bulma.messageView
-                  [ text "Animals as of..."
-                  , calendarHelp Bulma.rightIcon
-                  ]
-                  [ Calendar.view dateControl ToggleDatePicker SelectDate model
-                  ] 
-              ]                  
-          , Bulma.column 8
-            [ Bulma.messageView 
-                [ text "Filter by..."
-                , filterHelp Bulma.rightIcon
-                ]
-                [ Bulma.distributeHorizontally
-                    [ nameFilter model
-                    , speciesFilter model
-                    , tagsFilter model 
-                    ]
-                ]
-            ]
-          ]
-      , table
+      [ filterView model
+      , Bulma.headerlessTable <| contextualize whichToShow validationContext
       ]
-    
+
+filterView model =
+  Bulma.centeredColumns
+    [ Bulma.column 3
+        [ Bulma.messageView
+            [ text "Animals as of..."
+            , calendarHelp Bulma.rightIcon
+            ]
+            [ Calendar.view dateControl ToggleDatePicker SelectDate model
+            ] 
+        ]                  
+    , Bulma.column 8
+      [ Bulma.messageView 
+          [ text "Filter by..."
+          , filterHelp Bulma.rightIcon
+          ]
+          [ Bulma.distributeHorizontally
+              [ nameFilter model
+              , speciesFilter model
+              , tagsFilter model 
+              ]
+          ]
+      ]
+    ]
+
+contextualize animals context =
+  List.map (individualAnimalView context) animals
 
 filteredAnimals model = 
   let

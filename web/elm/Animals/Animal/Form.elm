@@ -24,6 +24,18 @@ extractForm animal =
   , properties = animal.properties
   }
 
+freshEditableAnimal id =
+  let 
+    animal = { id = id
+             , name = ""
+             , species = "bovine"
+             , tags = []
+             , properties = Dict.empty
+             }
+    form = extractForm animal
+  in
+    DisplayedAnimal animal (Editable form) Flash.NoFlash
+  
 updateAnimal animal form =
   let
     update tags =
@@ -59,3 +71,4 @@ applyEdits animal form =
       UpsertExpandedAnimal newAnimal Flash.NoFlash
     Err (newAnimal, flash) ->
       UpsertExpandedAnimal newAnimal flash
+

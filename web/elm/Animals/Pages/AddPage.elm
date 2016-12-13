@@ -19,7 +19,7 @@ view model =
   let
     validationContext = Common.calculateValidationContext model
     whichToShow =
-      model.newAnimals
+      model.animals
         |> Dict.values
         |> Common.humanSorted
         |> Common.contextualize validationContext

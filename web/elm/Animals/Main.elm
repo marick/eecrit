@@ -25,8 +25,6 @@ type alias Model =
   { page : MyNav.PageChoice
   , csrfToken : String
   , animals : Aggregate.VisibleAggregate
-  , newAnimals : Aggregate.VisibleAggregate
-  , newAnimalCount : Int
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -38,7 +36,6 @@ type alias Model =
 model_page = lens .page (\ p w -> { w | page = p })
 model_today = lens .today (\ p w -> { w | today = p })
 model_animals = lens .animals (\ p w -> { w | animals = p })
-model_newAnimals = lens .animals (\ p w -> { w | animals = p })
 model_tagFilter = lens .tagFilter (\ p w -> { w | tagFilter = p })
 model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
 model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
@@ -54,8 +51,6 @@ init flags startingPage =
       { page = startingPage
       , csrfToken = flags.csrfToken
       , animals = Aggregate.emptyAggregate
-      , newAnimals = Dict.singleton "one" (Form.freshEditableAnimal "one")
-      , newAnimalCount = 0
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""

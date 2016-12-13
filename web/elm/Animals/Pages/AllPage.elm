@@ -65,18 +65,22 @@ filteredAnimals model =
       in
         String.startsWith wanted has
 
-    hasDesiredSpecies animal = hasWanted .speciesFilter animal.animal.species
-    hasDesiredName animal = hasWanted .nameFilter animal.animal.name
-    hasDesiredTag animal =
+    hasDesiredSpecies displayed = hasWanted .speciesFilter displayed.animal.species
+    hasDesiredName displayed = hasWanted .nameFilter displayed.animal.name
+    hasDesiredTag displayed =
       String.isEmpty model.tagFilter || 
-        List.any (hasWanted .tagFilter) animal.animal.tags
-
+        List.any (hasWanted .tagFilter) displayed.animal.tags
   in
+    animalsToDisplay model
+      [displayedAnimal_wasEverSaved.get, hasDesiredSpecies, hasDesiredName, hasDesiredTag]
+
+
+animalsToDisplay model filters = 
     model.animals
       |> Dict.values
-      |> List.filter (aggregateFilter [hasDesiredSpecies, hasDesiredName, hasDesiredTag])
+      |> List.filter (aggregateFilter filters)
       |> humanSorted
-
+         
 aggregateFilter preds animal =
   case preds of
     [] ->

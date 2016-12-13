@@ -74,11 +74,19 @@ filteredAnimals model =
   in
     model.animals
       |> Dict.values
-      |> List.filter hasDesiredSpecies
-      |> List.filter hasDesiredName
-      |> List.filter hasDesiredTag
+      |> List.filter (aggregateFilter [hasDesiredSpecies, hasDesiredName, hasDesiredTag])
       |> humanSorted
 
+aggregateFilter preds animal =
+  case preds of
+    [] ->
+      True
+    p :: ps ->
+      if (p animal) then
+        aggregateFilter ps animal
+      else
+        False
+         
 humanSorted animals = 
   List.sortBy (.animal >> .name >> String.toLower) animals
 

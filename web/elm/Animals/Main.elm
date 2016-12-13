@@ -5,9 +5,11 @@ import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
 import Animals.Animal.Types as Animal
 import Animals.Animal.Aggregates as Aggregate
+import Animals.Animal.Form as Form
 
 import String
 import List
+import Dict
 import Date exposing (Date)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (lens)
@@ -23,6 +25,8 @@ type alias Model =
   { page : MyNav.PageChoice
   , csrfToken : String
   , animals : Aggregate.VisibleAggregate
+  , newAnimals : Aggregate.VisibleAggregate
+  , newAnimalCount : Int
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -34,6 +38,7 @@ type alias Model =
 model_page = lens .page (\ p w -> { w | page = p })
 model_today = lens .today (\ p w -> { w | today = p })
 model_animals = lens .animals (\ p w -> { w | animals = p })
+model_newAnimals = lens .animals (\ p w -> { w | animals = p })
 model_tagFilter = lens .tagFilter (\ p w -> { w | tagFilter = p })
 model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
 model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
@@ -49,6 +54,8 @@ init flags startingPage =
       { page = startingPage
       , csrfToken = flags.csrfToken
       , animals = Aggregate.emptyAggregate
+      , newAnimals = Dict.singleton "one" (Form.freshEditableAnimal "one")
+      , newAnimalCount = 0
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
@@ -94,23 +101,19 @@ update msg model =
       )
 
     UpsertCompactAnimal animal flash ->
-      (Animal.DisplayedAnimal animal Animal.Compact flash |> upsert model) ! []
+      (Animal.compact animal flash |> upsert model_animals model) ! []
           
     UpsertExpandedAnimal animal flash ->
-      (Animal.DisplayedAnimal animal Animal.Expanded flash |> upsert model) ! []
+      (Animal.expanded animal flash |> upsert model_animals model) ! []
 
     UpsertEditableAnimal animal form flash -> 
-      (withCheckedChanges animal form flash model |> upsert model) ! []
+      (Animal.editable animal form flash |> upsert model_animals model) ! []
         
     NoOp ->
       model ! []
 
-withCheckedChanges animal form flash model =
-  Animal.DisplayedAnimal animal (Animal.Editable form) flash
-
-upsert model displayed =
-  model_animals.update (Aggregate.upsert displayed) model
-  
+upsert which model displayed =
+  which.update (Aggregate.upsert displayed) model
 
 -- Subscriptions
 

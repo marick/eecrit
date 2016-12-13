@@ -45,3 +45,10 @@ type alias DisplayedAnimal =
   , flash : Flash
   }
 
+compact animal flash =
+  DisplayedAnimal animal Compact flash
+expanded animal flash =
+  DisplayedAnimal animal Expanded flash
+editable animal form flash =
+  DisplayedAnimal animal (Editable form) flash
+    

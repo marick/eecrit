@@ -10,6 +10,7 @@ import String
 import Dict
 import Set
 
+import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
@@ -50,6 +51,7 @@ view model =
               ]
 
           ]
+      , PageFlash.show model.pageFlash
       , Bulma.headerlessTable whichToShow
       ]
 

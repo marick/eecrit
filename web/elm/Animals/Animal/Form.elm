@@ -69,7 +69,7 @@ beginEditing animal =
 applyEdits animal form =
   case updateAnimal animal form of
     Ok newAnimal ->
-      UpsertExpandedAnimal newAnimal Flash.NoFlash
+      SaveAnimalChanges newAnimal Flash.NoFlash
     Err (newAnimal, flash) ->
-      UpsertExpandedAnimal newAnimal flash
+      SaveAnimalChanges newAnimal flash
 

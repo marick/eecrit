@@ -4,6 +4,7 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
 import Animals.Navigation as MyNav
 import Animals.Animal.Types as Animal
+import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form
 
@@ -96,22 +97,38 @@ update msg model =
       )
 
     UpsertCompactAnimal animal flash ->
-      (Animal.compact animal flash |> upsert model_animals model) ! []
+      (Animal.compact animal flash |> upsertDisplayedAnimal model) ! []
           
     UpsertExpandedAnimal animal flash ->
-      (Animal.expanded animal flash |> upsert model_animals model) ! []
+      (Animal.expanded animal flash |> upsertDisplayedAnimal model) ! []
 
     UpsertEditableAnimal animal form flash -> 
-      (Animal.editable animal form flash |> upsert model_animals model) ! []
+      (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
+
+    SaveAnimalChanges animal flash ->
+      let
+        newAnimal = animal_wasEverSaved.set True animal
+      in
+        (Animal.expanded newAnimal flash |> upsertDisplayedAnimal model) ! []
+
+    CancelAnimalChanges animal flash ->
+      case animal.wasEverSaved of
+        True -> 
+          (Animal.expanded animal flash |> upsertDisplayedAnimal model) ! []
+        False ->
+          deleteDisplayedAnimalById model animal.id ! [] 
 
     AddNewBovine ->
-      (Form.freshEditableAnimal "gorp" |> upsert model_animals model) ! []
+      (Form.freshEditableAnimal "gorp" |> upsertDisplayedAnimal model) ! []
         
     NoOp ->
       model ! []
 
-upsert which model displayed =
-  which.update (Aggregate.upsert displayed) model
+upsertDisplayedAnimal model displayed =
+  model_animals.update (Aggregate.upsert displayed) model
+
+deleteDisplayedAnimalById model id  =
+  model_animals.update (Aggregate.deleteById id) model
 
 -- Subscriptions
 

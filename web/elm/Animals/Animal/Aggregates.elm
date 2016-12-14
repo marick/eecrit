@@ -21,6 +21,10 @@ upsert displayed aggregate =
   in
     Dict.insert key displayed aggregate
 
+
+deleteById : Id -> VisibleAggregate -> VisibleAggregate
+deleteById = Dict.remove
+
 asAggregate animals =
   let
     tuple animal = (animal.id, DisplayedAnimal animal Compact NoFlash)

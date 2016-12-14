@@ -47,7 +47,7 @@ saveButton animal form isSafeToSave =
   Bulma.leftwardSuccess isSafeToSave (Form.applyEdits animal form)
 
 cancelButton animal =
-  Bulma.rightwardCancel (UpsertExpandedAnimal animal Flash.NoFlash)
+  Bulma.rightwardCancel (CancelAnimalChanges animal Flash.NoFlash)
 
 
 nameEditControl animal form validatedName =

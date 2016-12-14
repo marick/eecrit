@@ -22,6 +22,8 @@ type Msg
   | UpsertCompactAnimal Animal.Animal Flash
   | UpsertExpandedAnimal Animal.Animal Flash
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash
+  | SaveAnimalChanges Animal.Animal Flash
+  | CancelAnimalChanges Animal.Animal Flash
 
   | AddNewBovine
 

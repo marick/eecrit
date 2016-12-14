@@ -103,6 +103,9 @@ update msg model =
 
     UpsertEditableAnimal animal form flash -> 
       (Animal.editable animal form flash |> upsert model_animals model) ! []
+
+    AddNewBovine ->
+      (Form.freshEditableAnimal "gorp" |> upsert model_animals model) ! []
         
     NoOp ->
       model ! []

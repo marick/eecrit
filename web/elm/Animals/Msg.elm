@@ -23,6 +23,8 @@ type Msg
   | UpsertExpandedAnimal Animal.Animal Flash
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash
 
+  | AddNewBovine
+
   | MoreLikeThisAnimal Animal.Id
 
   | NoOp

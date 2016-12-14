@@ -44,7 +44,7 @@ view model =
               , div [class "level-item"]
                 [ a [ class "button is-primary"
                     , href "#"
-                    , onClickWithoutPropagation NoOp
+                    , onClickWithoutPropagation AddNewBovine
                     ]
                     [text "Now"]]
               ]

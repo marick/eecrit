@@ -119,7 +119,7 @@ update msg model =
           deleteDisplayedAnimalById model animal.id ! [] 
 
     AddNewBovine ->
-      (Form.freshEditableAnimal "gorp" |> upsertDisplayedAnimal model) ! []
+      (Form.freshEditableAnimal (Aggregate.freshId model.animals) |> upsertDisplayedAnimal model) ! []
         
     NoOp ->
       model ! []

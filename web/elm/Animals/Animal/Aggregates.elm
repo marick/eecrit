@@ -31,3 +31,18 @@ asAggregate animals =
   in
     animals |> List.map tuple |> Dict.fromList
 
+
+-- Todo: As things stand **TODAY**, it's impossible to get a duplicate
+-- Id. But it's probably prudent to check.
+freshId aggregate =
+  let
+    existing = (Dict.keys aggregate)
+    name i = "newbie" ++ toString i
+    worker i =
+      case List.member (name i) existing of
+        True -> worker (1 + i)
+        False -> name i
+  in
+    worker (Dict.size aggregate)
+  
+  

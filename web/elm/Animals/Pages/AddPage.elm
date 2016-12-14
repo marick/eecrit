@@ -4,6 +4,7 @@ import Animals.Pages.AllPage as Common
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Pile.HtmlShorthand exposing (..)
 import Pile.Bulma as Bulma
 import String
 import Dict
@@ -18,11 +19,7 @@ import Animals.Animal.Validation exposing (ValidationContext)
 view model =
   let
     validationContext = Common.calculateValidationContext model
-    whichToShow =
-      model.animals
-        |> Dict.values
-        |> Common.humanSorted
-        |> Common.contextualize validationContext
+    whichToShow = filteredAnimals model |> Common.contextualize validationContext
   in
     div []
       [ nav [class "level is-mobile"]
@@ -45,9 +42,17 @@ view model =
               , div [class "level-item"]
                 [ text "animal to edit" ]
               , div [class "level-item"]
-                [ a [ class "button is-primary" ] [text "Now"]]
+                [ a [ class "button is-primary"
+                    , href "#"
+                    , onClickWithoutPropagation NoOp
+                    ]
+                    [text "Now"]]
               ]
 
           ]
       , Bulma.headerlessTable whichToShow
       ]
+
+
+filteredAnimals model =
+  Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]

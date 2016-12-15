@@ -7793,6 +7793,612 @@ var _coreytrampe$elm_vendor$Vendor$Webkit = {ctor: 'Webkit'};
 var _coreytrampe$elm_vendor$Vendor$Moz = {ctor: 'Moz'};
 var _coreytrampe$elm_vendor$Vendor$prefix = _elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'webkit') ? _coreytrampe$elm_vendor$Vendor$Webkit : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'moz') ? _coreytrampe$elm_vendor$Vendor$Moz : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'ms') ? _coreytrampe$elm_vendor$Vendor$MS : (_elm_lang$core$Native_Utils.eq(_coreytrampe$elm_vendor$Native_Vendor.prefix, 'o') ? _coreytrampe$elm_vendor$Vendor$O : _coreytrampe$elm_vendor$Vendor$Unknown)));
 
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeft: F2(function sll(a, offset) { return a << offset; }),
+	shiftRightArithmatic: F2(function sra(a, offset) { return a >> offset; }),
+	shiftRightLogical: F2(function srl(a, offset) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightLogical = _elm_lang$core$Native_Bitwise.shiftRightLogical;
+var _elm_lang$core$Bitwise$shiftRight = _elm_lang$core$Native_Bitwise.shiftRightArithmatic;
+var _elm_lang$core$Bitwise$shiftLeft = _elm_lang$core$Native_Bitwise.shiftLeft;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
+var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
+var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
+var _elm_lang$core$Task$spawnCmd = F2(
+	function (router, _p0) {
+		var _p1 = _p0;
+		return _elm_lang$core$Native_Scheduler.spawn(
+			A2(
+				_elm_lang$core$Task$andThen,
+				_p1._0,
+				_elm_lang$core$Platform$sendToApp(router)));
+	});
+var _elm_lang$core$Task$fail = _elm_lang$core$Native_Scheduler.fail;
+var _elm_lang$core$Task$mapError = F2(
+	function (f, task) {
+		return A2(
+			_elm_lang$core$Task$onError,
+			task,
+			function (err) {
+				return _elm_lang$core$Task$fail(
+					f(err));
+			});
+	});
+var _elm_lang$core$Task$succeed = _elm_lang$core$Native_Scheduler.succeed;
+var _elm_lang$core$Task$map = F2(
+	function (func, taskA) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskA,
+			function (a) {
+				return _elm_lang$core$Task$succeed(
+					func(a));
+			});
+	});
+var _elm_lang$core$Task$map2 = F3(
+	function (func, taskA, taskB) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskA,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					taskB,
+					function (b) {
+						return _elm_lang$core$Task$succeed(
+							A2(func, a, b));
+					});
+			});
+	});
+var _elm_lang$core$Task$map3 = F4(
+	function (func, taskA, taskB, taskC) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskA,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					taskB,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							taskC,
+							function (c) {
+								return _elm_lang$core$Task$succeed(
+									A3(func, a, b, c));
+							});
+					});
+			});
+	});
+var _elm_lang$core$Task$map4 = F5(
+	function (func, taskA, taskB, taskC, taskD) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskA,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					taskB,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							taskC,
+							function (c) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									taskD,
+									function (d) {
+										return _elm_lang$core$Task$succeed(
+											A4(func, a, b, c, d));
+									});
+							});
+					});
+			});
+	});
+var _elm_lang$core$Task$map5 = F6(
+	function (func, taskA, taskB, taskC, taskD, taskE) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskA,
+			function (a) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					taskB,
+					function (b) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							taskC,
+							function (c) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									taskD,
+									function (d) {
+										return A2(
+											_elm_lang$core$Task$andThen,
+											taskE,
+											function (e) {
+												return _elm_lang$core$Task$succeed(
+													A5(func, a, b, c, d, e));
+											});
+									});
+							});
+					});
+			});
+	});
+var _elm_lang$core$Task$andMap = F2(
+	function (taskFunc, taskValue) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			taskFunc,
+			function (func) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					taskValue,
+					function (value) {
+						return _elm_lang$core$Task$succeed(
+							func(value));
+					});
+			});
+	});
+var _elm_lang$core$Task$sequence = function (tasks) {
+	var _p2 = tasks;
+	if (_p2.ctor === '[]') {
+		return _elm_lang$core$Task$succeed(
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	} else {
+		return A3(
+			_elm_lang$core$Task$map2,
+			F2(
+				function (x, y) {
+					return A2(_elm_lang$core$List_ops['::'], x, y);
+				}),
+			_p2._0,
+			_elm_lang$core$Task$sequence(_p2._1));
+	}
+};
+var _elm_lang$core$Task$onEffects = F3(
+	function (router, commands, state) {
+		return A2(
+			_elm_lang$core$Task$map,
+			function (_p3) {
+				return {ctor: '_Tuple0'};
+			},
+			_elm_lang$core$Task$sequence(
+				A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$Task$spawnCmd(router),
+					commands)));
+	});
+var _elm_lang$core$Task$toMaybe = function (task) {
+	return A2(
+		_elm_lang$core$Task$onError,
+		A2(_elm_lang$core$Task$map, _elm_lang$core$Maybe$Just, task),
+		function (_p4) {
+			return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+		});
+};
+var _elm_lang$core$Task$fromMaybe = F2(
+	function ($default, maybe) {
+		var _p5 = maybe;
+		if (_p5.ctor === 'Just') {
+			return _elm_lang$core$Task$succeed(_p5._0);
+		} else {
+			return _elm_lang$core$Task$fail($default);
+		}
+	});
+var _elm_lang$core$Task$toResult = function (task) {
+	return A2(
+		_elm_lang$core$Task$onError,
+		A2(_elm_lang$core$Task$map, _elm_lang$core$Result$Ok, task),
+		function (msg) {
+			return _elm_lang$core$Task$succeed(
+				_elm_lang$core$Result$Err(msg));
+		});
+};
+var _elm_lang$core$Task$fromResult = function (result) {
+	var _p6 = result;
+	if (_p6.ctor === 'Ok') {
+		return _elm_lang$core$Task$succeed(_p6._0);
+	} else {
+		return _elm_lang$core$Task$fail(_p6._0);
+	}
+};
+var _elm_lang$core$Task$init = _elm_lang$core$Task$succeed(
+	{ctor: '_Tuple0'});
+var _elm_lang$core$Task$onSelfMsg = F3(
+	function (_p9, _p8, _p7) {
+		return _elm_lang$core$Task$succeed(
+			{ctor: '_Tuple0'});
+	});
+var _elm_lang$core$Task$command = _elm_lang$core$Native_Platform.leaf('Task');
+var _elm_lang$core$Task$T = function (a) {
+	return {ctor: 'T', _0: a};
+};
+var _elm_lang$core$Task$perform = F3(
+	function (onFail, onSuccess, task) {
+		return _elm_lang$core$Task$command(
+			_elm_lang$core$Task$T(
+				A2(
+					_elm_lang$core$Task$onError,
+					A2(_elm_lang$core$Task$map, onSuccess, task),
+					function (x) {
+						return _elm_lang$core$Task$succeed(
+							onFail(x));
+					})));
+	});
+var _elm_lang$core$Task$cmdMap = F2(
+	function (tagger, _p10) {
+		var _p11 = _p10;
+		return _elm_lang$core$Task$T(
+			A2(_elm_lang$core$Task$map, tagger, _p11._0));
+	});
+_elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
+
+//import Native.Scheduler //
+
+var _elm_lang$core$Native_Time = function() {
+
+var now = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+{
+	callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
+});
+
+function setInterval_(interval, task)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		var id = setInterval(function() {
+			_elm_lang$core$Native_Scheduler.rawSpawn(task);
+		}, interval);
+
+		return function() { clearInterval(id); };
+	});
+}
+
+return {
+	now: now,
+	setInterval_: F2(setInterval_)
+};
+
+}();
+var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
+var _elm_lang$core$Time$spawnHelp = F3(
+	function (router, intervals, processes) {
+		var _p0 = intervals;
+		if (_p0.ctor === '[]') {
+			return _elm_lang$core$Task$succeed(processes);
+		} else {
+			var _p1 = _p0._0;
+			return A2(
+				_elm_lang$core$Task$andThen,
+				_elm_lang$core$Native_Scheduler.spawn(
+					A2(
+						_elm_lang$core$Time$setInterval,
+						_p1,
+						A2(_elm_lang$core$Platform$sendToSelf, router, _p1))),
+				function (id) {
+					return A3(
+						_elm_lang$core$Time$spawnHelp,
+						router,
+						_p0._1,
+						A3(_elm_lang$core$Dict$insert, _p1, id, processes));
+				});
+		}
+	});
+var _elm_lang$core$Time$addMySub = F2(
+	function (_p2, state) {
+		var _p3 = _p2;
+		var _p6 = _p3._1;
+		var _p5 = _p3._0;
+		var _p4 = A2(_elm_lang$core$Dict$get, _p5, state);
+		if (_p4.ctor === 'Nothing') {
+			return A3(
+				_elm_lang$core$Dict$insert,
+				_p5,
+				_elm_lang$core$Native_List.fromArray(
+					[_p6]),
+				state);
+		} else {
+			return A3(
+				_elm_lang$core$Dict$insert,
+				_p5,
+				A2(_elm_lang$core$List_ops['::'], _p6, _p4._0),
+				state);
+		}
+	});
+var _elm_lang$core$Time$inMilliseconds = function (t) {
+	return t;
+};
+var _elm_lang$core$Time$millisecond = 1;
+var _elm_lang$core$Time$second = 1000 * _elm_lang$core$Time$millisecond;
+var _elm_lang$core$Time$minute = 60 * _elm_lang$core$Time$second;
+var _elm_lang$core$Time$hour = 60 * _elm_lang$core$Time$minute;
+var _elm_lang$core$Time$inHours = function (t) {
+	return t / _elm_lang$core$Time$hour;
+};
+var _elm_lang$core$Time$inMinutes = function (t) {
+	return t / _elm_lang$core$Time$minute;
+};
+var _elm_lang$core$Time$inSeconds = function (t) {
+	return t / _elm_lang$core$Time$second;
+};
+var _elm_lang$core$Time$now = _elm_lang$core$Native_Time.now;
+var _elm_lang$core$Time$onSelfMsg = F3(
+	function (router, interval, state) {
+		var _p7 = A2(_elm_lang$core$Dict$get, interval, state.taggers);
+		if (_p7.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			return A2(
+				_elm_lang$core$Task$andThen,
+				_elm_lang$core$Time$now,
+				function (time) {
+					return A2(
+						_elm_lang$core$Task$andThen,
+						_elm_lang$core$Task$sequence(
+							A2(
+								_elm_lang$core$List$map,
+								function (tagger) {
+									return A2(
+										_elm_lang$core$Platform$sendToApp,
+										router,
+										tagger(time));
+								},
+								_p7._0)),
+						function (_p8) {
+							return _elm_lang$core$Task$succeed(state);
+						});
+				});
+		}
+	});
+var _elm_lang$core$Time$subscription = _elm_lang$core$Native_Platform.leaf('Time');
+var _elm_lang$core$Time$State = F2(
+	function (a, b) {
+		return {taggers: a, processes: b};
+	});
+var _elm_lang$core$Time$init = _elm_lang$core$Task$succeed(
+	A2(_elm_lang$core$Time$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
+var _elm_lang$core$Time$onEffects = F3(
+	function (router, subs, _p9) {
+		var _p10 = _p9;
+		var rightStep = F3(
+			function (_p12, id, _p11) {
+				var _p13 = _p11;
+				return {
+					ctor: '_Tuple3',
+					_0: _p13._0,
+					_1: _p13._1,
+					_2: A2(
+						_elm_lang$core$Task$andThen,
+						_elm_lang$core$Native_Scheduler.kill(id),
+						function (_p14) {
+							return _p13._2;
+						})
+				};
+			});
+		var bothStep = F4(
+			function (interval, taggers, id, _p15) {
+				var _p16 = _p15;
+				return {
+					ctor: '_Tuple3',
+					_0: _p16._0,
+					_1: A3(_elm_lang$core$Dict$insert, interval, id, _p16._1),
+					_2: _p16._2
+				};
+			});
+		var leftStep = F3(
+			function (interval, taggers, _p17) {
+				var _p18 = _p17;
+				return {
+					ctor: '_Tuple3',
+					_0: A2(_elm_lang$core$List_ops['::'], interval, _p18._0),
+					_1: _p18._1,
+					_2: _p18._2
+				};
+			});
+		var newTaggers = A3(_elm_lang$core$List$foldl, _elm_lang$core$Time$addMySub, _elm_lang$core$Dict$empty, subs);
+		var _p19 = A6(
+			_elm_lang$core$Dict$merge,
+			leftStep,
+			bothStep,
+			rightStep,
+			newTaggers,
+			_p10.processes,
+			{
+				ctor: '_Tuple3',
+				_0: _elm_lang$core$Native_List.fromArray(
+					[]),
+				_1: _elm_lang$core$Dict$empty,
+				_2: _elm_lang$core$Task$succeed(
+					{ctor: '_Tuple0'})
+			});
+		var spawnList = _p19._0;
+		var existingDict = _p19._1;
+		var killTask = _p19._2;
+		return A2(
+			_elm_lang$core$Task$andThen,
+			killTask,
+			function (_p20) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					A3(_elm_lang$core$Time$spawnHelp, router, spawnList, existingDict),
+					function (newProcesses) {
+						return _elm_lang$core$Task$succeed(
+							A2(_elm_lang$core$Time$State, newTaggers, newProcesses));
+					});
+			});
+	});
+var _elm_lang$core$Time$Every = F2(
+	function (a, b) {
+		return {ctor: 'Every', _0: a, _1: b};
+	});
+var _elm_lang$core$Time$every = F2(
+	function (interval, tagger) {
+		return _elm_lang$core$Time$subscription(
+			A2(_elm_lang$core$Time$Every, interval, tagger));
+	});
+var _elm_lang$core$Time$subMap = F2(
+	function (f, _p21) {
+		var _p22 = _p21;
+		return A2(
+			_elm_lang$core$Time$Every,
+			_p22._0,
+			function (_p23) {
+				return f(
+					_p22._1(_p23));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[i - 1],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
 var _elm_lang$core$Set$foldr = F3(
 	function (f, b, _p0) {
 		var _p1 = _p0;
@@ -8987,163 +9593,6 @@ var _elm_community$list_extra$List_Extra$init = function () {
 var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
 	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
 
-//import Maybe, Native.List //
-
-var _elm_lang$core$Native_Regex = function() {
-
-function escape(str)
-{
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-function caseInsensitive(re)
-{
-	return new RegExp(re.source, 'gi');
-}
-function regex(raw)
-{
-	return new RegExp(raw, 'g');
-}
-
-function contains(re, string)
-{
-	return string.match(re) !== null;
-}
-
-function find(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var out = [];
-	var number = 0;
-	var string = str;
-	var lastIndex = re.lastIndex;
-	var prevLastIndex = -1;
-	var result;
-	while (number++ < n && (result = re.exec(string)))
-	{
-		if (prevLastIndex === re.lastIndex) break;
-		var i = result.length - 1;
-		var subs = new Array(i);
-		while (i > 0)
-		{
-			var submatch = result[i];
-			subs[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		out.push({
-			match: result[0],
-			submatches: _elm_lang$core$Native_List.fromArray(subs),
-			index: result.index,
-			number: number
-		});
-		prevLastIndex = re.lastIndex;
-	}
-	re.lastIndex = lastIndex;
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-function replace(n, re, replacer, string)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	var count = 0;
-	function jsReplacer(match)
-	{
-		if (count++ >= n)
-		{
-			return match;
-		}
-		var i = arguments.length - 3;
-		var submatches = new Array(i);
-		while (i > 0)
-		{
-			var submatch = arguments[i];
-			submatches[--i] = submatch === undefined
-				? _elm_lang$core$Maybe$Nothing
-				: _elm_lang$core$Maybe$Just(submatch);
-		}
-		return replacer({
-			match: match,
-			submatches: _elm_lang$core$Native_List.fromArray(submatches),
-			index: arguments[i - 1],
-			number: count
-		});
-	}
-	return string.replace(re, jsReplacer);
-}
-
-function split(n, re, str)
-{
-	n = n.ctor === 'All' ? Infinity : n._0;
-	if (n === Infinity)
-	{
-		return _elm_lang$core$Native_List.fromArray(str.split(re));
-	}
-	var string = str;
-	var result;
-	var out = [];
-	var start = re.lastIndex;
-	while (n--)
-	{
-		if (!(result = re.exec(string))) break;
-		out.push(string.slice(start, result.index));
-		start = re.lastIndex;
-	}
-	out.push(string.slice(start));
-	return _elm_lang$core$Native_List.fromArray(out);
-}
-
-return {
-	regex: regex,
-	caseInsensitive: caseInsensitive,
-	escape: escape,
-
-	contains: F2(contains),
-	find: F3(find),
-	replace: F4(replace),
-	split: F3(split)
-};
-
-}();
-
-var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
-var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
-var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
-var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
-var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
-var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
-var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
-var _elm_lang$core$Regex$Match = F4(
-	function (a, b, c, d) {
-		return {match: a, submatches: b, index: c, number: d};
-	});
-var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
-var _elm_lang$core$Regex$AtMost = function (a) {
-	return {ctor: 'AtMost', _0: a};
-};
-var _elm_lang$core$Regex$All = {ctor: 'All'};
-
-var _elm_lang$core$Native_Bitwise = function() {
-
-return {
-	and: F2(function and(a, b) { return a & b; }),
-	or: F2(function or(a, b) { return a | b; }),
-	xor: F2(function xor(a, b) { return a ^ b; }),
-	complement: function complement(a) { return ~a; },
-	shiftLeft: F2(function sll(a, offset) { return a << offset; }),
-	shiftRightArithmatic: F2(function sra(a, offset) { return a >> offset; }),
-	shiftRightLogical: F2(function srl(a, offset) { return a >>> offset; })
-};
-
-}();
-
-var _elm_lang$core$Bitwise$shiftRightLogical = _elm_lang$core$Native_Bitwise.shiftRightLogical;
-var _elm_lang$core$Bitwise$shiftRight = _elm_lang$core$Native_Bitwise.shiftRightArithmatic;
-var _elm_lang$core$Bitwise$shiftLeft = _elm_lang$core$Native_Bitwise.shiftLeft;
-var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
-var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
-var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
-var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
-
 var _elm_community$string_extra$String_Extra$replacementCodePoint = 65533;
 var _elm_community$string_extra$String_Extra$toCodePoints = function (string) {
 	var allCodeUnits = A2(
@@ -9883,455 +10332,6 @@ return {
 };
 
 }();
-
-var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
-var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
-var _elm_lang$core$Task$spawnCmd = F2(
-	function (router, _p0) {
-		var _p1 = _p0;
-		return _elm_lang$core$Native_Scheduler.spawn(
-			A2(
-				_elm_lang$core$Task$andThen,
-				_p1._0,
-				_elm_lang$core$Platform$sendToApp(router)));
-	});
-var _elm_lang$core$Task$fail = _elm_lang$core$Native_Scheduler.fail;
-var _elm_lang$core$Task$mapError = F2(
-	function (f, task) {
-		return A2(
-			_elm_lang$core$Task$onError,
-			task,
-			function (err) {
-				return _elm_lang$core$Task$fail(
-					f(err));
-			});
-	});
-var _elm_lang$core$Task$succeed = _elm_lang$core$Native_Scheduler.succeed;
-var _elm_lang$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskA,
-			function (a) {
-				return _elm_lang$core$Task$succeed(
-					func(a));
-			});
-	});
-var _elm_lang$core$Task$map2 = F3(
-	function (func, taskA, taskB) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskA,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					taskB,
-					function (b) {
-						return _elm_lang$core$Task$succeed(
-							A2(func, a, b));
-					});
-			});
-	});
-var _elm_lang$core$Task$map3 = F4(
-	function (func, taskA, taskB, taskC) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskA,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					taskB,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							taskC,
-							function (c) {
-								return _elm_lang$core$Task$succeed(
-									A3(func, a, b, c));
-							});
-					});
-			});
-	});
-var _elm_lang$core$Task$map4 = F5(
-	function (func, taskA, taskB, taskC, taskD) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskA,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					taskB,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							taskC,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									taskD,
-									function (d) {
-										return _elm_lang$core$Task$succeed(
-											A4(func, a, b, c, d));
-									});
-							});
-					});
-			});
-	});
-var _elm_lang$core$Task$map5 = F6(
-	function (func, taskA, taskB, taskC, taskD, taskE) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskA,
-			function (a) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					taskB,
-					function (b) {
-						return A2(
-							_elm_lang$core$Task$andThen,
-							taskC,
-							function (c) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									taskD,
-									function (d) {
-										return A2(
-											_elm_lang$core$Task$andThen,
-											taskE,
-											function (e) {
-												return _elm_lang$core$Task$succeed(
-													A5(func, a, b, c, d, e));
-											});
-									});
-							});
-					});
-			});
-	});
-var _elm_lang$core$Task$andMap = F2(
-	function (taskFunc, taskValue) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			taskFunc,
-			function (func) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					taskValue,
-					function (value) {
-						return _elm_lang$core$Task$succeed(
-							func(value));
-					});
-			});
-	});
-var _elm_lang$core$Task$sequence = function (tasks) {
-	var _p2 = tasks;
-	if (_p2.ctor === '[]') {
-		return _elm_lang$core$Task$succeed(
-			_elm_lang$core$Native_List.fromArray(
-				[]));
-	} else {
-		return A3(
-			_elm_lang$core$Task$map2,
-			F2(
-				function (x, y) {
-					return A2(_elm_lang$core$List_ops['::'], x, y);
-				}),
-			_p2._0,
-			_elm_lang$core$Task$sequence(_p2._1));
-	}
-};
-var _elm_lang$core$Task$onEffects = F3(
-	function (router, commands, state) {
-		return A2(
-			_elm_lang$core$Task$map,
-			function (_p3) {
-				return {ctor: '_Tuple0'};
-			},
-			_elm_lang$core$Task$sequence(
-				A2(
-					_elm_lang$core$List$map,
-					_elm_lang$core$Task$spawnCmd(router),
-					commands)));
-	});
-var _elm_lang$core$Task$toMaybe = function (task) {
-	return A2(
-		_elm_lang$core$Task$onError,
-		A2(_elm_lang$core$Task$map, _elm_lang$core$Maybe$Just, task),
-		function (_p4) {
-			return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
-		});
-};
-var _elm_lang$core$Task$fromMaybe = F2(
-	function ($default, maybe) {
-		var _p5 = maybe;
-		if (_p5.ctor === 'Just') {
-			return _elm_lang$core$Task$succeed(_p5._0);
-		} else {
-			return _elm_lang$core$Task$fail($default);
-		}
-	});
-var _elm_lang$core$Task$toResult = function (task) {
-	return A2(
-		_elm_lang$core$Task$onError,
-		A2(_elm_lang$core$Task$map, _elm_lang$core$Result$Ok, task),
-		function (msg) {
-			return _elm_lang$core$Task$succeed(
-				_elm_lang$core$Result$Err(msg));
-		});
-};
-var _elm_lang$core$Task$fromResult = function (result) {
-	var _p6 = result;
-	if (_p6.ctor === 'Ok') {
-		return _elm_lang$core$Task$succeed(_p6._0);
-	} else {
-		return _elm_lang$core$Task$fail(_p6._0);
-	}
-};
-var _elm_lang$core$Task$init = _elm_lang$core$Task$succeed(
-	{ctor: '_Tuple0'});
-var _elm_lang$core$Task$onSelfMsg = F3(
-	function (_p9, _p8, _p7) {
-		return _elm_lang$core$Task$succeed(
-			{ctor: '_Tuple0'});
-	});
-var _elm_lang$core$Task$command = _elm_lang$core$Native_Platform.leaf('Task');
-var _elm_lang$core$Task$T = function (a) {
-	return {ctor: 'T', _0: a};
-};
-var _elm_lang$core$Task$perform = F3(
-	function (onFail, onSuccess, task) {
-		return _elm_lang$core$Task$command(
-			_elm_lang$core$Task$T(
-				A2(
-					_elm_lang$core$Task$onError,
-					A2(_elm_lang$core$Task$map, onSuccess, task),
-					function (x) {
-						return _elm_lang$core$Task$succeed(
-							onFail(x));
-					})));
-	});
-var _elm_lang$core$Task$cmdMap = F2(
-	function (tagger, _p10) {
-		var _p11 = _p10;
-		return _elm_lang$core$Task$T(
-			A2(_elm_lang$core$Task$map, tagger, _p11._0));
-	});
-_elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Task$init, onEffects: _elm_lang$core$Task$onEffects, onSelfMsg: _elm_lang$core$Task$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Task$cmdMap};
-
-//import Native.Scheduler //
-
-var _elm_lang$core$Native_Time = function() {
-
-var now = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-{
-	callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
-});
-
-function setInterval_(interval, task)
-{
-	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
-	{
-		var id = setInterval(function() {
-			_elm_lang$core$Native_Scheduler.rawSpawn(task);
-		}, interval);
-
-		return function() { clearInterval(id); };
-	});
-}
-
-return {
-	now: now,
-	setInterval_: F2(setInterval_)
-};
-
-}();
-var _elm_lang$core$Time$setInterval = _elm_lang$core$Native_Time.setInterval_;
-var _elm_lang$core$Time$spawnHelp = F3(
-	function (router, intervals, processes) {
-		var _p0 = intervals;
-		if (_p0.ctor === '[]') {
-			return _elm_lang$core$Task$succeed(processes);
-		} else {
-			var _p1 = _p0._0;
-			return A2(
-				_elm_lang$core$Task$andThen,
-				_elm_lang$core$Native_Scheduler.spawn(
-					A2(
-						_elm_lang$core$Time$setInterval,
-						_p1,
-						A2(_elm_lang$core$Platform$sendToSelf, router, _p1))),
-				function (id) {
-					return A3(
-						_elm_lang$core$Time$spawnHelp,
-						router,
-						_p0._1,
-						A3(_elm_lang$core$Dict$insert, _p1, id, processes));
-				});
-		}
-	});
-var _elm_lang$core$Time$addMySub = F2(
-	function (_p2, state) {
-		var _p3 = _p2;
-		var _p6 = _p3._1;
-		var _p5 = _p3._0;
-		var _p4 = A2(_elm_lang$core$Dict$get, _p5, state);
-		if (_p4.ctor === 'Nothing') {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				_elm_lang$core$Native_List.fromArray(
-					[_p6]),
-				state);
-		} else {
-			return A3(
-				_elm_lang$core$Dict$insert,
-				_p5,
-				A2(_elm_lang$core$List_ops['::'], _p6, _p4._0),
-				state);
-		}
-	});
-var _elm_lang$core$Time$inMilliseconds = function (t) {
-	return t;
-};
-var _elm_lang$core$Time$millisecond = 1;
-var _elm_lang$core$Time$second = 1000 * _elm_lang$core$Time$millisecond;
-var _elm_lang$core$Time$minute = 60 * _elm_lang$core$Time$second;
-var _elm_lang$core$Time$hour = 60 * _elm_lang$core$Time$minute;
-var _elm_lang$core$Time$inHours = function (t) {
-	return t / _elm_lang$core$Time$hour;
-};
-var _elm_lang$core$Time$inMinutes = function (t) {
-	return t / _elm_lang$core$Time$minute;
-};
-var _elm_lang$core$Time$inSeconds = function (t) {
-	return t / _elm_lang$core$Time$second;
-};
-var _elm_lang$core$Time$now = _elm_lang$core$Native_Time.now;
-var _elm_lang$core$Time$onSelfMsg = F3(
-	function (router, interval, state) {
-		var _p7 = A2(_elm_lang$core$Dict$get, interval, state.taggers);
-		if (_p7.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			return A2(
-				_elm_lang$core$Task$andThen,
-				_elm_lang$core$Time$now,
-				function (time) {
-					return A2(
-						_elm_lang$core$Task$andThen,
-						_elm_lang$core$Task$sequence(
-							A2(
-								_elm_lang$core$List$map,
-								function (tagger) {
-									return A2(
-										_elm_lang$core$Platform$sendToApp,
-										router,
-										tagger(time));
-								},
-								_p7._0)),
-						function (_p8) {
-							return _elm_lang$core$Task$succeed(state);
-						});
-				});
-		}
-	});
-var _elm_lang$core$Time$subscription = _elm_lang$core$Native_Platform.leaf('Time');
-var _elm_lang$core$Time$State = F2(
-	function (a, b) {
-		return {taggers: a, processes: b};
-	});
-var _elm_lang$core$Time$init = _elm_lang$core$Task$succeed(
-	A2(_elm_lang$core$Time$State, _elm_lang$core$Dict$empty, _elm_lang$core$Dict$empty));
-var _elm_lang$core$Time$onEffects = F3(
-	function (router, subs, _p9) {
-		var _p10 = _p9;
-		var rightStep = F3(
-			function (_p12, id, _p11) {
-				var _p13 = _p11;
-				return {
-					ctor: '_Tuple3',
-					_0: _p13._0,
-					_1: _p13._1,
-					_2: A2(
-						_elm_lang$core$Task$andThen,
-						_elm_lang$core$Native_Scheduler.kill(id),
-						function (_p14) {
-							return _p13._2;
-						})
-				};
-			});
-		var bothStep = F4(
-			function (interval, taggers, id, _p15) {
-				var _p16 = _p15;
-				return {
-					ctor: '_Tuple3',
-					_0: _p16._0,
-					_1: A3(_elm_lang$core$Dict$insert, interval, id, _p16._1),
-					_2: _p16._2
-				};
-			});
-		var leftStep = F3(
-			function (interval, taggers, _p17) {
-				var _p18 = _p17;
-				return {
-					ctor: '_Tuple3',
-					_0: A2(_elm_lang$core$List_ops['::'], interval, _p18._0),
-					_1: _p18._1,
-					_2: _p18._2
-				};
-			});
-		var newTaggers = A3(_elm_lang$core$List$foldl, _elm_lang$core$Time$addMySub, _elm_lang$core$Dict$empty, subs);
-		var _p19 = A6(
-			_elm_lang$core$Dict$merge,
-			leftStep,
-			bothStep,
-			rightStep,
-			newTaggers,
-			_p10.processes,
-			{
-				ctor: '_Tuple3',
-				_0: _elm_lang$core$Native_List.fromArray(
-					[]),
-				_1: _elm_lang$core$Dict$empty,
-				_2: _elm_lang$core$Task$succeed(
-					{ctor: '_Tuple0'})
-			});
-		var spawnList = _p19._0;
-		var existingDict = _p19._1;
-		var killTask = _p19._2;
-		return A2(
-			_elm_lang$core$Task$andThen,
-			killTask,
-			function (_p20) {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					A3(_elm_lang$core$Time$spawnHelp, router, spawnList, existingDict),
-					function (newProcesses) {
-						return _elm_lang$core$Task$succeed(
-							A2(_elm_lang$core$Time$State, newTaggers, newProcesses));
-					});
-			});
-	});
-var _elm_lang$core$Time$Every = F2(
-	function (a, b) {
-		return {ctor: 'Every', _0: a, _1: b};
-	});
-var _elm_lang$core$Time$every = F2(
-	function (interval, tagger) {
-		return _elm_lang$core$Time$subscription(
-			A2(_elm_lang$core$Time$Every, interval, tagger));
-	});
-var _elm_lang$core$Time$subMap = F2(
-	function (f, _p21) {
-		var _p22 = _p21;
-		return A2(
-			_elm_lang$core$Time$Every,
-			_p22._0,
-			function (_p23) {
-				return f(
-					_p22._1(_p23));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
 var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
 var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
@@ -19556,18 +19556,14 @@ var _user$project$Pile_Bulma$oneTextInputInRow = function (extraAttributes) {
 					[]))
 			]));
 };
-var _user$project$Pile_Bulma$horizontalControls = function (controls) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('control is-grouped')
-			]),
-		controls);
-};
 var _user$project$Pile_Bulma$textInputWithSubmit = F4(
 	function (buttonLabel, fieldValue, inputMsg, submitMsg) {
-		return _user$project$Pile_Bulma$horizontalControls(
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('control has-addons')
+				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_user$project$Pile_Bulma$oneTextInputInRow(
@@ -19581,7 +19577,7 @@ var _user$project$Pile_Bulma$textInputWithSubmit = F4(
 					_elm_lang$html$Html$a,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html_Attributes$class('button is-success is-small'),
+							_elm_lang$html$Html_Attributes$class('button is-success'),
 							_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(submitMsg)
 						]),
 					_elm_lang$core$Native_List.fromArray(
@@ -19590,6 +19586,15 @@ var _user$project$Pile_Bulma$textInputWithSubmit = F4(
 						]))
 				]));
 	});
+var _user$project$Pile_Bulma$horizontalControls = function (controls) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('control is-grouped')
+			]),
+		controls);
+};
 var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -20229,6 +20234,39 @@ var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
 		return {get: a, set: b, update: c};
 	});
 
+var _user$project$Animals_Animal_Lenses$validationForm_maySave = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.maySave;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{maySave: p});
+		}));
+var _user$project$Animals_Animal_Lenses$validationForm_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Animal_Lenses$validationContext_allAnimalNames = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.allAnimalNames;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{allAnimalNames: p});
+		}));
 var _user$project$Animals_Animal_Lenses$form_tentativeTag = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20295,6 +20333,18 @@ var _user$project$Animals_Animal_Lenses$animal_tags = A2(
 				w,
 				{tags: p});
 		}));
+var _user$project$Animals_Animal_Lenses$animal_wasEverSaved = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.wasEverSaved;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{wasEverSaved: p});
+		}));
+var _user$project$Animals_Animal_Lenses$displayedAnimal_wasEverSaved = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_wasEverSaved);
 var _user$project$Animals_Animal_Lenses$animal_name = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20306,6 +20356,7 @@ var _user$project$Animals_Animal_Lenses$animal_name = A2(
 				w,
 				{name: p});
 		}));
+var _user$project$Animals_Animal_Lenses$displayedAnimal_name = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_name);
 var _user$project$Animals_Animal_Lenses$animal_id = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20319,9 +20370,9 @@ var _user$project$Animals_Animal_Lenses$animal_id = A2(
 		}));
 var _user$project$Animals_Animal_Lenses$displayedAnimal_id = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_id);
 
-var _user$project$Animals_Animal_Types$Animal = F5(
-	function (a, b, c, d, e) {
-		return {id: a, name: b, species: c, tags: d, properties: e};
+var _user$project$Animals_Animal_Types$Animal = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, wasEverSaved: b, name: c, species: d, tags: e, properties: f};
 	});
 var _user$project$Animals_Animal_Types$Form = F4(
 	function (a, b, c, d) {
@@ -20350,13 +20401,38 @@ var _user$project$Animals_Animal_Types$AsInt = function (a) {
 var _user$project$Animals_Animal_Types$Editable = function (a) {
 	return {ctor: 'Editable', _0: a};
 };
+var _user$project$Animals_Animal_Types$editable = F3(
+	function (animal, form, flash) {
+		return A3(
+			_user$project$Animals_Animal_Types$DisplayedAnimal,
+			animal,
+			_user$project$Animals_Animal_Types$Editable(form),
+			flash);
+	});
 var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Animal_Types$expanded = F2(
+	function (animal, flash) {
+		return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Expanded, flash);
+	});
 var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
+var _user$project$Animals_Animal_Types$compact = F2(
+	function (animal, flash) {
+		return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Compact, flash);
+	});
 
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
 var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
 	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
+var _user$project$Animals_Msg$AddNewBovine = {ctor: 'AddNewBovine'};
+var _user$project$Animals_Msg$CancelAnimalChanges = F2(
+	function (a, b) {
+		return {ctor: 'CancelAnimalChanges', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$SaveAnimalChanges = F2(
+	function (a, b) {
+		return {ctor: 'SaveAnimalChanges', _0: a, _1: b};
+	});
 var _user$project$Animals_Msg$UpsertEditableAnimal = F3(
 	function (a, b, c) {
 		return {ctor: 'UpsertEditableAnimal', _0: a, _1: b, _2: c};
@@ -20369,9 +20445,6 @@ var _user$project$Animals_Msg$UpsertCompactAnimal = F2(
 	function (a, b) {
 		return {ctor: 'UpsertCompactAnimal', _0: a, _1: b};
 	});
-var _user$project$Animals_Msg$ReviseDisplayedAnimal = function (a) {
-	return {ctor: 'ReviseDisplayedAnimal', _0: a};
-};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
 };
@@ -20396,7 +20469,8 @@ var _user$project$Animals_Msg$NavigateToAddPage = {ctor: 'NavigateToAddPage'};
 var _user$project$Animals_Msg$NavigateToAllPage = {ctor: 'NavigateToAllPage'};
 
 var _user$project$Animals_OutsideWorld$xena = {
-	id: '4',
+	id: 'predefined4',
+	wasEverSaved: true,
 	name: 'Xena',
 	species: 'equine',
 	tags: _elm_lang$core$Native_List.fromArray(
@@ -20420,7 +20494,8 @@ var _user$project$Animals_OutsideWorld$xena = {
 			]))
 };
 var _user$project$Animals_OutsideWorld$ross = {
-	id: '3',
+	id: 'predefined3',
+	wasEverSaved: true,
 	name: 'ross',
 	species: 'equine',
 	tags: _elm_lang$core$Native_List.fromArray(
@@ -20441,7 +20516,8 @@ var _user$project$Animals_OutsideWorld$ross = {
 			]))
 };
 var _user$project$Animals_OutsideWorld$jake = {
-	id: '2',
+	id: 'predefined2',
+	wasEverSaved: true,
 	name: 'Jake',
 	species: 'equine',
 	tags: _elm_lang$core$Native_List.fromArray(
@@ -20457,7 +20533,8 @@ var _user$project$Animals_OutsideWorld$jake = {
 			]))
 };
 var _user$project$Animals_OutsideWorld$athena = {
-	id: '1',
+	id: 'predefined1',
+	wasEverSaved: true,
 	name: 'Athena',
 	species: 'bovine',
 	tags: _elm_lang$core$Native_List.fromArray(
@@ -20533,6 +20610,33 @@ var _user$project$Animals_Navigation$locationParser = function (location) {
 };
 var _user$project$Animals_Navigation$urlParser = _elm_lang$navigation$Navigation$makeParser(_user$project$Animals_Navigation$locationParser);
 
+var _user$project$Animals_Animal_Aggregates$freshId = function (aggregate) {
+	var name = function (i) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'newbie',
+			_elm_lang$core$Basics$toString(i));
+	};
+	var existing = _elm_lang$core$Dict$keys(aggregate);
+	var worker = function (i) {
+		worker:
+		while (true) {
+			var _p0 = A2(
+				_elm_lang$core$List$member,
+				name(i),
+				existing);
+			if (_p0 === true) {
+				var _v1 = 1 + i;
+				i = _v1;
+				continue worker;
+			} else {
+				return name(i);
+			}
+		}
+	};
+	return worker(
+		_elm_lang$core$Dict$size(aggregate));
+};
 var _user$project$Animals_Animal_Aggregates$asAggregate = function (animals) {
 	var tuple = function (animal) {
 		return {
@@ -20544,12 +20648,104 @@ var _user$project$Animals_Animal_Aggregates$asAggregate = function (animals) {
 	return _elm_lang$core$Dict$fromList(
 		A2(_elm_lang$core$List$map, tuple, animals));
 };
+var _user$project$Animals_Animal_Aggregates$deleteById = _elm_lang$core$Dict$remove;
 var _user$project$Animals_Animal_Aggregates$upsert = F2(
 	function (displayed, aggregate) {
 		var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayed);
 		return A3(_elm_lang$core$Dict$insert, key, displayed, aggregate);
 	});
 var _user$project$Animals_Animal_Aggregates$emptyAggregate = _elm_lang$core$Dict$empty;
+
+var _user$project$Animals_Animal_Form$updateForm = F2(
+	function (animal, form) {
+		return A3(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form, _user$project$Animals_Animal_Flash$NoFlash);
+	});
+var _user$project$Animals_Animal_Form$updateAnimal = F2(
+	function (animal, form) {
+		var update = function (tags) {
+			return A2(
+				_user$project$Animals_Animal_Lenses$animal_tags.set,
+				tags,
+				A2(
+					_user$project$Animals_Animal_Lenses$animal_properties.set,
+					form.properties,
+					A2(_user$project$Animals_Animal_Lenses$animal_name.set, form.name, animal)));
+		};
+		var _p0 = _elm_lang$core$String$isEmpty(form.tentativeTag);
+		if (_p0 === true) {
+			return _elm_lang$core$Result$Ok(
+				update(form.tags));
+		} else {
+			return _elm_lang$core$Result$Err(
+				{
+					ctor: '_Tuple2',
+					_0: update(
+						A2(
+							_elm_lang$core$List$append,
+							form.tags,
+							_elm_lang$core$Native_List.fromArray(
+								[form.tentativeTag]))),
+					_1: _user$project$Animals_Animal_Flash$SavedIncompleteTag(form.tentativeTag)
+				});
+		}
+	});
+var _user$project$Animals_Animal_Form$applyEdits = F2(
+	function (animal, form) {
+		var _p1 = A2(_user$project$Animals_Animal_Form$updateAnimal, animal, form);
+		if (_p1.ctor === 'Ok') {
+			return A2(_user$project$Animals_Msg$SaveAnimalChanges, _p1._0, _user$project$Animals_Animal_Flash$NoFlash);
+		} else {
+			return A2(_user$project$Animals_Msg$SaveAnimalChanges, _p1._0._0, _p1._0._1);
+		}
+	});
+var _user$project$Animals_Animal_Form$extractForm = function (animal) {
+	return {name: animal.name, tags: animal.tags, tentativeTag: '', properties: animal.properties};
+};
+var _user$project$Animals_Animal_Form$freshEditableAnimal = function (id) {
+	var animal = {
+		id: id,
+		wasEverSaved: false,
+		name: '',
+		species: 'bovine',
+		tags: _elm_lang$core$Native_List.fromArray(
+			[]),
+		properties: _elm_lang$core$Dict$empty
+	};
+	var form = _user$project$Animals_Animal_Form$extractForm(animal);
+	return A3(
+		_user$project$Animals_Animal_Types$DisplayedAnimal,
+		animal,
+		_user$project$Animals_Animal_Types$Editable(form),
+		_user$project$Animals_Animal_Flash$NoFlash);
+};
+var _user$project$Animals_Animal_Form$beginEditing = function (animal) {
+	return A2(
+		_user$project$Animals_Animal_Form$updateForm,
+		animal,
+		_user$project$Animals_Animal_Form$extractForm(animal));
+};
+
+var _user$project$Animals_Pages_PageFlash$show = function (flash) {
+	var _p0 = flash;
+	if (_p0.ctor === 'NoFlash') {
+		return A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	} else {
+		return A2(
+			_user$project$Pile_Bulma$flashNotification,
+			_user$project$Animals_Msg$NoOp,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('The new animal can be seen on the All Animals page.')
+				]));
+	}
+};
+var _user$project$Animals_Pages_PageFlash$SavedAnimalFlash = {ctor: 'SavedAnimalFlash'};
+var _user$project$Animals_Pages_PageFlash$NoFlash = {ctor: 'NoFlash'};
 
 var _user$project$Pile_Calendar$visibilityController = F3(
 	function (calendarToggleMsg, control, maybeContent) {
@@ -20682,23 +20878,26 @@ var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Animals_Main$withCheckedChanges = F4(
-	function (animal, form, flash, model) {
-		return A3(
-			_user$project$Animals_Animal_Types$DisplayedAnimal,
-			animal,
-			_user$project$Animals_Animal_Types$Editable(form),
-			flash);
-	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, startingPage) {
-		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Aggregates$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
+		var model = {page: startingPage, csrfToken: flags.csrfToken, animals: _user$project$Animals_Animal_Aggregates$emptyAggregate, nameFilter: '', tagFilter: '', speciesFilter: '', effectiveDate: _user$project$Pile_Calendar$Today, today: _elm_lang$core$Maybe$Nothing, datePickerOpen: false, pageFlash: _user$project$Animals_Pages_PageFlash$NoFlash};
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			model,
 			_elm_lang$core$Native_List.fromArray(
 				[_user$project$Animals_OutsideWorld$askTodaysDate, _user$project$Animals_OutsideWorld$fetchAnimals]));
 	});
+var _user$project$Animals_Main$model_pageFlash = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.pageFlash;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{pageFlash: p});
+		}));
 var _user$project$Animals_Main$model_datePickerOpen = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -20765,11 +20964,39 @@ var _user$project$Animals_Main$model_animals = A2(
 				w,
 				{animals: p});
 		}));
-var _user$project$Animals_Main$upsert = F2(
+var _user$project$Animals_Main$upsertDisplayedAnimal = F2(
 	function (model, displayed) {
 		return A2(
 			_user$project$Animals_Main$model_animals.update,
 			_user$project$Animals_Animal_Aggregates$upsert(displayed),
+			model);
+	});
+var _user$project$Animals_Main$saveAnimalChanges = F3(
+	function (animal, flash, model) {
+		var _p0 = function () {
+			var _p1 = animal.wasEverSaved;
+			if (_p1 === true) {
+				return {ctor: '_Tuple2', _0: animal, _1: model};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: A2(_user$project$Animals_Animal_Lenses$animal_wasEverSaved.set, true, animal),
+					_1: A2(_user$project$Animals_Main$model_pageFlash.set, _user$project$Animals_Pages_PageFlash$SavedAnimalFlash, model)
+				};
+			}
+		}();
+		var animalToSave = _p0._0;
+		var modelToSave = _p0._1;
+		return A2(
+			_user$project$Animals_Main$upsertDisplayedAnimal,
+			modelToSave,
+			A2(_user$project$Animals_Animal_Types$expanded, animalToSave, flash));
+	});
+var _user$project$Animals_Main$deleteDisplayedAnimalById = F2(
+	function (model, id) {
+		return A2(
+			_user$project$Animals_Main$model_animals.update,
+			_user$project$Animals_Animal_Aggregates$deleteById(id),
 			model);
 	});
 var _user$project$Animals_Main$model_today = A2(
@@ -20783,10 +21010,10 @@ var _user$project$Animals_Main$model_today = A2(
 				w,
 				{today: p});
 		}));
-var _user$project$Animals_Main$update = F2(
+var _user$project$Animals_Main$update_ = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
 			case 'NavigateToAllPage':
 				return _user$project$Animals_Navigation$toAllPagePath(model);
 			case 'NavigateToAddPage':
@@ -20796,7 +21023,7 @@ var _user$project$Animals_Main$update = F2(
 			case 'SetToday':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_today.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_today.set, _p2._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetAnimals':
@@ -20804,7 +21031,7 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
 						_user$project$Animals_Main$model_animals.set,
-						_user$project$Animals_Animal_Aggregates$asAggregate(_p0._0),
+						_user$project$Animals_Animal_Aggregates$asAggregate(_p2._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
@@ -20819,26 +21046,26 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
 						_user$project$Animals_Main$model_effectiveDate.set,
-						_user$project$Pile_Calendar$At(_p0._0),
+						_user$project$Pile_Calendar$At(_p2._0),
 						model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetNameFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_nameFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_nameFilter.set, _p2._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetTagFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_tagFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_tagFilter.set, _p2._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'SetSpeciesFilter':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$model_speciesFilter.set, _p0._0, model),
+					A2(_user$project$Animals_Main$model_speciesFilter.set, _p2._0, model),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'MoreLikeThisAnimal':
@@ -20847,33 +21074,62 @@ var _user$project$Animals_Main$update = F2(
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Main$upsert,
+						_user$project$Animals_Main$upsertDisplayedAnimal,
 						model,
-						A3(_user$project$Animals_Animal_Types$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Types$Compact, _p0._1)),
+						A2(_user$project$Animals_Animal_Types$compact, _p2._0, _p2._1)),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'UpsertExpandedAnimal':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Main$upsert,
+						_user$project$Animals_Main$upsertDisplayedAnimal,
 						model,
-						A3(_user$project$Animals_Animal_Types$DisplayedAnimal, _p0._0, _user$project$Animals_Animal_Types$Expanded, _p0._1)),
+						A2(_user$project$Animals_Animal_Types$expanded, _p2._0, _p2._1)),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			case 'UpsertEditableAnimal':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					A2(
-						_user$project$Animals_Main$upsert,
+						_user$project$Animals_Main$upsertDisplayedAnimal,
 						model,
-						A4(_user$project$Animals_Main$withCheckedChanges, _p0._0, _p0._1, _p0._2, model)),
+						A3(_user$project$Animals_Animal_Types$editable, _p2._0, _p2._1, _p2._2)),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
-			case 'ReviseDisplayedAnimal':
+			case 'SaveAnimalChanges':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					A2(_user$project$Animals_Main$upsert, model, _p0._0),
+					A3(_user$project$Animals_Main$saveAnimalChanges, _p2._0, _p2._1, model),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
+			case 'CancelAnimalChanges':
+				var _p4 = _p2._0;
+				var _p3 = _p4.wasEverSaved;
+				if (_p3 === true) {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						A2(
+							_user$project$Animals_Main$upsertDisplayedAnimal,
+							model,
+							A2(_user$project$Animals_Animal_Types$expanded, _p4, _p2._1)),
+						_elm_lang$core$Native_List.fromArray(
+							[]));
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						A2(_user$project$Animals_Main$deleteDisplayedAnimalById, model, _p4.id),
+						_elm_lang$core$Native_List.fromArray(
+							[]));
+				}
+			case 'AddNewBovine':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsertDisplayedAnimal,
+						model,
+						_user$project$Animals_Animal_Form$freshEditableAnimal(
+							_user$project$Animals_Animal_Aggregates$freshId(model.animals))),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 			default:
@@ -20883,6 +21139,13 @@ var _user$project$Animals_Main$update = F2(
 					_elm_lang$core$Native_List.fromArray(
 						[]));
 		}
+	});
+var _user$project$Animals_Main$update = F2(
+	function (msg, model) {
+		return A2(
+			_user$project$Animals_Main$update_,
+			msg,
+			A2(_user$project$Animals_Main$model_pageFlash.set, _user$project$Animals_Pages_PageFlash$NoFlash, model));
 	});
 var _user$project$Animals_Main$model_page = A2(
 	_user$project$Pile_UpdatingLens$lens,
@@ -20898,61 +21161,26 @@ var _user$project$Animals_Main$model_page = A2(
 var _user$project$Animals_Main$Flags = function (a) {
 	return {csrfToken: a};
 };
-var _user$project$Animals_Main$Model = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i};
-	});
-
-var _user$project$Animals_Animal_Form$updateForm = F2(
-	function (animal, form) {
-		return A3(_user$project$Animals_Msg$UpsertEditableAnimal, animal, form, _user$project$Animals_Animal_Flash$NoFlash);
-	});
-var _user$project$Animals_Animal_Form$updateAnimal = F2(
-	function (animal, form) {
-		var update = function (tags) {
-			return A2(
-				_user$project$Animals_Animal_Lenses$animal_tags.set,
-				tags,
-				A2(
-					_user$project$Animals_Animal_Lenses$animal_properties.set,
-					form.properties,
-					A2(_user$project$Animals_Animal_Lenses$animal_name.set, form.name, animal)));
+var _user$project$Animals_Main$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {page: a, csrfToken: b, animals: c, nameFilter: d, tagFilter: e, speciesFilter: f, effectiveDate: g, today: h, datePickerOpen: i, pageFlash: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
 		};
-		var _p0 = _elm_lang$core$String$isEmpty(form.tentativeTag);
-		if (_p0 === true) {
-			return _elm_lang$core$Result$Ok(
-				update(form.tags));
-		} else {
-			return _elm_lang$core$Result$Err(
-				{
-					ctor: '_Tuple2',
-					_0: update(
-						A2(
-							_elm_lang$core$List$append,
-							form.tags,
-							_elm_lang$core$Native_List.fromArray(
-								[form.tentativeTag]))),
-					_1: _user$project$Animals_Animal_Flash$SavedIncompleteTag(form.tentativeTag)
-				});
-		}
-	});
-var _user$project$Animals_Animal_Form$applyEdits = F2(
-	function (animal, form) {
-		var _p1 = A2(_user$project$Animals_Animal_Form$updateAnimal, animal, form);
-		if (_p1.ctor === 'Ok') {
-			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p1._0, _user$project$Animals_Animal_Flash$NoFlash);
-		} else {
-			return A2(_user$project$Animals_Msg$UpsertExpandedAnimal, _p1._0._0, _p1._0._1);
-		}
-	});
-var _user$project$Animals_Animal_Form$extractForm = function (animal) {
-	return {name: animal.name, tags: animal.tags, tentativeTag: '', properties: animal.properties};
-};
-var _user$project$Animals_Animal_Form$beginEditing = function (animal) {
-	return A2(
-		_user$project$Animals_Animal_Form$updateForm,
-		animal,
-		_user$project$Animals_Animal_Form$extractForm(animal));
+	};
 };
 
 var _user$project$Animals_Animal_Icons$editHelp = function (iconType) {
@@ -21150,29 +21378,81 @@ var _user$project$Animals_Animal_ReadOnlyViews$compactView = F2(
 				]));
 	});
 
-var _user$project$Animals_Animal_Validation$validate = F3(
+var _user$project$Animals_Animal_Validation$calculateResult = F3(
 	function (requirement, value, pred) {
 		return pred(value) ? _elm_lang$core$Result$Ok(value) : _elm_lang$core$Result$Err(
 			{ctor: '_Tuple2', _0: value, _1: requirement});
 	});
-var _user$project$Animals_Animal_Validation$validatedName = function (form) {
-	return A3(
-		_user$project$Animals_Animal_Validation$validate,
-		'The animal has to have a name!',
-		_user$project$Animals_Animal_Lenses$form_name.get(form),
-		function (_p0) {
-			return _elm_lang$core$Basics$not(
-				_elm_lang$core$String$isEmpty(_p0));
-		});
+var _user$project$Animals_Animal_Validation$check = F3(
+	function (validatedResult, lens, buildingForm) {
+		var _p0 = validatedResult;
+		if (_p0.ctor === 'Ok') {
+			return buildingForm;
+		} else {
+			return A2(
+				_user$project$Animals_Animal_Lenses$validationForm_maySave.set,
+				false,
+				A2(lens.set, validatedResult, buildingForm));
+		}
+	});
+var _user$project$Animals_Animal_Validation$uniqueName = F2(
+	function (context, form) {
+		return A3(
+			_user$project$Animals_Animal_Validation$calculateResult,
+			'There is already an animal with that name!',
+			_user$project$Animals_Animal_Lenses$form_name.get(form),
+			function (_p1) {
+				return _elm_lang$core$Basics$not(
+					A3(_elm_lang$core$Basics$flip, _elm_lang$core$Set$member, context.allAnimalNames, _p1));
+			});
+	});
+var _user$project$Animals_Animal_Validation$mustHaveName = F2(
+	function (context, form) {
+		return A3(
+			_user$project$Animals_Animal_Validation$calculateResult,
+			'The animal has to have a name!',
+			_user$project$Animals_Animal_Lenses$form_name.get(form),
+			function (_p2) {
+				return _elm_lang$core$Basics$not(
+					_elm_lang$core$String$isEmpty(_p2));
+			});
+	});
+var _user$project$Animals_Animal_Validation$assumeAllValid = function (form) {
+	return {
+		name: _elm_lang$core$Result$Ok(form.name),
+		maySave: true
+	};
 };
-var _user$project$Animals_Animal_Validation$isSafeToSave = function (form) {
-	var _p1 = _user$project$Animals_Animal_Validation$validatedName(form);
-	if (_p1.ctor === 'Ok') {
-		return true;
-	} else {
-		return false;
-	}
+var _user$project$Animals_Animal_Validation$validateForm = F2(
+	function (context, form) {
+		return A3(
+			_user$project$Animals_Animal_Validation$check,
+			A2(_user$project$Animals_Animal_Validation$uniqueName, context, form),
+			_user$project$Animals_Animal_Lenses$validationForm_name,
+			A3(
+				_user$project$Animals_Animal_Validation$check,
+				A2(_user$project$Animals_Animal_Validation$mustHaveName, context, form),
+				_user$project$Animals_Animal_Lenses$validationForm_name,
+				_user$project$Animals_Animal_Validation$assumeAllValid(form)));
+	});
+var _user$project$Animals_Animal_Validation$specializeValidationContext = function (animal) {
+	return _user$project$Animals_Animal_Lenses$validationContext_allAnimalNames.update(
+		_elm_lang$core$Set$remove(animal.name));
 };
+var _user$project$Animals_Animal_Validation$validateFormForAnimal = F3(
+	function (context, animal, form) {
+		return A2(
+			_user$project$Animals_Animal_Validation$validateForm,
+			A2(_user$project$Animals_Animal_Validation$specializeValidationContext, animal, context),
+			form);
+	});
+var _user$project$Animals_Animal_Validation$ValidationContext = function (a) {
+	return {allAnimalNames: a};
+};
+var _user$project$Animals_Animal_Validation$ValidatedForm = F2(
+	function (a, b) {
+		return {name: a, maySave: b};
+	});
 
 var _user$project$Animals_Animal_EditableView$newTagControl = F2(
 	function (animal, form) {
@@ -21213,17 +21493,17 @@ var _user$project$Animals_Animal_EditableView$deleteTagControl = F2(
 				_user$project$Pile_Bulma$deletableTag(onDelete),
 				form.tags));
 	});
-var _user$project$Animals_Animal_EditableView$nameEditControl = F2(
-	function (animal, form) {
-		var onInput = function (value) {
+var _user$project$Animals_Animal_EditableView$nameEditControl = F3(
+	function (animal, form, validatedName) {
+		var onInput = function (newValue) {
 			return A2(
 				_user$project$Animals_Animal_Form$updateForm,
 				animal,
-				A2(_user$project$Animals_Animal_Lenses$form_name.set, value, form));
+				A2(_user$project$Animals_Animal_Lenses$form_name.set, newValue, form));
 		};
 		return A2(
 			_user$project$Pile_Bulma$soleTextInputInRow,
-			_user$project$Animals_Animal_Validation$validatedName(form),
+			validatedName,
 			_elm_lang$core$Native_List.fromArray(
 				[
 					_elm_lang$html$Html_Events$onInput(onInput)
@@ -21231,17 +21511,18 @@ var _user$project$Animals_Animal_EditableView$nameEditControl = F2(
 	});
 var _user$project$Animals_Animal_EditableView$cancelButton = function (animal) {
 	return _user$project$Pile_Bulma$rightwardCancel(
-		A2(_user$project$Animals_Msg$UpsertExpandedAnimal, animal, _user$project$Animals_Animal_Flash$NoFlash));
+		A2(_user$project$Animals_Msg$CancelAnimalChanges, animal, _user$project$Animals_Animal_Flash$NoFlash));
 };
-var _user$project$Animals_Animal_EditableView$saveButton = F2(
-	function (animal, form) {
+var _user$project$Animals_Animal_EditableView$saveButton = F3(
+	function (animal, form, isSafeToSave) {
 		return A2(
 			_user$project$Pile_Bulma$leftwardSuccess,
-			_user$project$Animals_Animal_Validation$isSafeToSave(form),
+			isSafeToSave,
 			A2(_user$project$Animals_Animal_Form$applyEdits, animal, form));
 	});
-var _user$project$Animals_Animal_EditableView$view = F3(
-	function (animal, form, flash) {
+var _user$project$Animals_Animal_EditableView$view = F4(
+	function (validationContext, animal, form, flash) {
+		var validatedForm = A3(_user$project$Animals_Animal_Validation$validateFormForAnimal, validationContext, animal, form);
 		return A2(
 			_user$project$Pile_Bulma$highlightedRow,
 			_elm_lang$core$Native_List.fromArray(
@@ -21257,7 +21538,7 @@ var _user$project$Animals_Animal_EditableView$view = F3(
 							A2(
 							_user$project$Pile_Bulma$controlRow,
 							'Name',
-							A2(_user$project$Animals_Animal_EditableView$nameEditControl, animal, form)),
+							A3(_user$project$Animals_Animal_EditableView$nameEditControl, animal, form, validatedForm.name)),
 							A2(
 							_user$project$Pile_Bulma$controlRow,
 							'Tags',
@@ -21266,7 +21547,7 @@ var _user$project$Animals_Animal_EditableView$view = F3(
 							_user$project$Pile_Bulma$controlRow,
 							'New Tag',
 							A2(_user$project$Animals_Animal_EditableView$newTagControl, animal, form)),
-							A2(_user$project$Animals_Animal_EditableView$saveButton, animal, form),
+							A3(_user$project$Animals_Animal_EditableView$saveButton, animal, form, validatedForm.maySave),
 							_user$project$Animals_Animal_EditableView$cancelButton(animal),
 							A2(
 							_user$project$Animals_Animal_Flash$showAndCancel,
@@ -21362,53 +21643,31 @@ var _user$project$Animals_Pages_AllPage$dateControl = F3(
 					iconF(calendarToggleMsg)
 				]));
 	});
-var _user$project$Animals_Pages_AllPage$individualAnimalView = function (_p1) {
-	var _p2 = _p1;
-	var _p5 = _p2.flash;
-	var _p4 = _p2.animal;
-	var _p3 = _p2.display;
-	switch (_p3.ctor) {
-		case 'Compact':
-			return A2(_user$project$Animals_Animal_ReadOnlyViews$compactView, _p4, _p5);
-		case 'Expanded':
-			return A2(_user$project$Animals_Animal_ReadOnlyViews$expandedView, _p4, _p5);
-		default:
-			return A3(_user$project$Animals_Animal_EditableView$view, _p4, _p3._0, _p5);
-	}
+var _user$project$Animals_Pages_AllPage$calculateValidationContext = function (model) {
+	return {
+		allAnimalNames: _elm_lang$core$Set$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Animals_Animal_Lenses$displayedAnimal_name.get,
+				_elm_lang$core$Dict$values(model.animals)))
+	};
 };
-var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
-	var hasWanted = F2(
-		function (modelFilter, animalValue) {
-			var has = _elm_lang$core$String$toLower(animalValue);
-			var wanted = _elm_lang$core$String$toLower(
-				modelFilter(model));
-			return A2(_elm_lang$core$String$startsWith, wanted, has);
-		});
-	var hasDesiredSpecies = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.speciesFilter;
-			},
-			animal.animal.species);
-	};
-	var hasDesiredName = function (animal) {
-		return A2(
-			hasWanted,
-			function (_) {
-				return _.nameFilter;
-			},
-			animal.animal.name);
-	};
-	var hasDesiredTag = function (animal) {
-		return _elm_lang$core$String$isEmpty(model.tagFilter) || A2(
-			_elm_lang$core$List$any,
-			hasWanted(
-				function (_) {
-					return _.tagFilter;
-				}),
-			animal.animal.tags);
-	};
+var _user$project$Animals_Pages_AllPage$individualAnimalView = F2(
+	function (validationContext, _p1) {
+		var _p2 = _p1;
+		var _p5 = _p2.flash;
+		var _p4 = _p2.animal;
+		var _p3 = _p2.display;
+		switch (_p3.ctor) {
+			case 'Compact':
+				return A2(_user$project$Animals_Animal_ReadOnlyViews$compactView, _p4, _p5);
+			case 'Expanded':
+				return A2(_user$project$Animals_Animal_ReadOnlyViews$expandedView, _p4, _p5);
+			default:
+				return A4(_user$project$Animals_Animal_EditableView$view, validationContext, _p4, _p3._0, _p5);
+		}
+	});
+var _user$project$Animals_Pages_AllPage$humanSorted = function (animals) {
 	return A2(
 		_elm_lang$core$List$sortBy,
 		function (_p6) {
@@ -21420,78 +21679,298 @@ var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
 						return _.animal;
 					}(_p6)));
 		},
-		A2(
-			_elm_lang$core$List$filter,
-			hasDesiredTag,
+		animals);
+};
+var _user$project$Animals_Pages_AllPage$aggregateFilter = F2(
+	function (preds, animal) {
+		aggregateFilter:
+		while (true) {
+			var _p7 = preds;
+			if (_p7.ctor === '[]') {
+				return true;
+			} else {
+				if (_p7._0(animal)) {
+					var _v4 = _p7._1,
+						_v5 = animal;
+					preds = _v4;
+					animal = _v5;
+					continue aggregateFilter;
+				} else {
+					return false;
+				}
+			}
+		}
+	});
+var _user$project$Animals_Pages_AllPage$animalsToDisplay = F2(
+	function (model, filters) {
+		return _user$project$Animals_Pages_AllPage$humanSorted(
 			A2(
 				_elm_lang$core$List$filter,
-				hasDesiredName,
+				_user$project$Animals_Pages_AllPage$aggregateFilter(filters),
+				_elm_lang$core$Dict$values(model.animals)));
+	});
+var _user$project$Animals_Pages_AllPage$filteredAnimals = function (model) {
+	var hasWanted = F2(
+		function (modelFilter, animalValue) {
+			var has = _elm_lang$core$String$toLower(animalValue);
+			var wanted = _elm_lang$core$String$toLower(
+				modelFilter(model));
+			return A2(_elm_lang$core$String$startsWith, wanted, has);
+		});
+	var hasDesiredSpecies = function (displayed) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.speciesFilter;
+			},
+			displayed.animal.species);
+	};
+	var hasDesiredName = function (displayed) {
+		return A2(
+			hasWanted,
+			function (_) {
+				return _.nameFilter;
+			},
+			displayed.animal.name);
+	};
+	var hasDesiredTag = function (displayed) {
+		return _elm_lang$core$String$isEmpty(model.tagFilter) || A2(
+			_elm_lang$core$List$any,
+			hasWanted(
+				function (_) {
+					return _.tagFilter;
+				}),
+			displayed.animal.tags);
+	};
+	return A2(
+		_user$project$Animals_Pages_AllPage$animalsToDisplay,
+		model,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Animals_Animal_Lenses$displayedAnimal_wasEverSaved.get, hasDesiredSpecies, hasDesiredName, hasDesiredTag]));
+};
+var _user$project$Animals_Pages_AllPage$contextualize = F2(
+	function (context, animals) {
+		return A2(
+			_elm_lang$core$List$map,
+			_user$project$Animals_Pages_AllPage$individualAnimalView(context),
+			animals);
+	});
+var _user$project$Animals_Pages_AllPage$filterView = function (model) {
+	return _user$project$Pile_Bulma$centeredColumns(
+		_elm_lang$core$Native_List.fromArray(
+			[
 				A2(
-					_elm_lang$core$List$filter,
-					hasDesiredSpecies,
-					_elm_lang$core$Dict$values(model.animals)))));
+				_user$project$Pile_Bulma$column,
+				3,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_user$project$Pile_Bulma$messageView,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Animals as of...'),
+								_user$project$Animals_Pages_AllPage$calendarHelp(_user$project$Pile_Bulma$rightIcon)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A4(_user$project$Pile_Calendar$view, _user$project$Animals_Pages_AllPage$dateControl, _user$project$Animals_Msg$ToggleDatePicker, _user$project$Animals_Msg$SelectDate, model)
+							]))
+					])),
+				A2(
+				_user$project$Pile_Bulma$column,
+				8,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_user$project$Pile_Bulma$messageView,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Filter by...'),
+								_user$project$Animals_Pages_AllPage$filterHelp(_user$project$Pile_Bulma$rightIcon)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Pile_Bulma$distributeHorizontally(
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$Animals_Pages_AllPage$nameFilter(model),
+										_user$project$Animals_Pages_AllPage$speciesFilter(model),
+										_user$project$Animals_Pages_AllPage$tagsFilter(model)
+									]))
+							]))
+					]))
+			]));
 };
 var _user$project$Animals_Pages_AllPage$view = function (model) {
+	var validationContext = _user$project$Animals_Pages_AllPage$calculateValidationContext(model);
+	var whichToShow = A2(
+		_user$project$Animals_Pages_AllPage$contextualize,
+		validationContext,
+		_user$project$Animals_Pages_AllPage$filteredAnimals(model));
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_user$project$Pile_Bulma$centeredColumns(
+				_user$project$Animals_Pages_AllPage$filterView(model),
+				_user$project$Pile_Bulma$headerlessTable(whichToShow)
+			]));
+};
+
+var _user$project$Animals_Pages_AddPage$filteredAnimals = function (model) {
+	return A2(
+		_user$project$Animals_Pages_AllPage$animalsToDisplay,
+		model,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				function (_p0) {
+				return _elm_lang$core$Basics$not(
+					_user$project$Animals_Animal_Lenses$displayedAnimal_wasEverSaved.get(_p0));
+			}
+			]));
+};
+var _user$project$Animals_Pages_AddPage$view = function (model) {
+	var validationContext = _user$project$Animals_Pages_AllPage$calculateValidationContext(model);
+	var whichToShow = A2(
+		_user$project$Animals_Pages_AllPage$contextualize,
+		validationContext,
+		_user$project$Animals_Pages_AddPage$filteredAnimals(model));
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$nav,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('level is-mobile')
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
-						_user$project$Pile_Bulma$column,
-						3,
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('level-left')
+							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_user$project$Pile_Bulma$messageView,
+								_elm_lang$html$Html$p,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('Animals as of...'),
-										_user$project$Animals_Pages_AllPage$calendarHelp(_user$project$Pile_Bulma$rightIcon)
+										_elm_lang$html$Html_Attributes$class('level-item')
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										A4(_user$project$Pile_Calendar$view, _user$project$Animals_Pages_AllPage$dateControl, _user$project$Animals_Msg$ToggleDatePicker, _user$project$Animals_Msg$SelectDate, model)
-									]))
-							])),
-						A2(
-						_user$project$Pile_Bulma$column,
-						8,
-						_elm_lang$core$Native_List.fromArray(
-							[
+										_elm_lang$html$Html$text('Create')
+									])),
 								A2(
-								_user$project$Pile_Bulma$messageView,
+								_elm_lang$html$Html$p,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('Filter by...'),
-										_user$project$Animals_Pages_AllPage$filterHelp(_user$project$Pile_Bulma$rightIcon)
+										_elm_lang$html$Html_Attributes$class('level-item')
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_user$project$Pile_Bulma$distributeHorizontally(
+										A2(
+										_elm_lang$html$Html$input,
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_user$project$Animals_Pages_AllPage$nameFilter(model),
-												_user$project$Animals_Pages_AllPage$speciesFilter(model),
-												_user$project$Animals_Pages_AllPage$tagsFilter(model)
+												_elm_lang$html$Html_Attributes$class('input'),
+												_elm_lang$html$Html_Attributes$type$('text'),
+												_elm_lang$html$Html_Attributes$value('1'),
+												_elm_lang$html$Html_Attributes$style(
+												_elm_lang$core$Native_List.fromArray(
+													[
+														{ctor: '_Tuple2', _0: 'width', _1: '3em'}
+													]))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[]))
+									])),
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('level-item')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('new')
+									])),
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('level-item')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$Pile_Bulma$simpleSelect(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(
+												_elm_lang$html$Html$option,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$value('bovine')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text('bovine')
+													])),
+												A2(
+												_elm_lang$html$Html$option,
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html_Attributes$value('equine')
+													]),
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_elm_lang$html$Html$text('equine')
+													]))
+											]))
+									])),
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('level-item')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('animal to edit')
+									])),
+								A2(
+								_elm_lang$html$Html$p,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('level-item')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$a,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('button is-primary'),
+												_elm_lang$html$Html_Attributes$href('#'),
+												_user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_user$project$Animals_Msg$AddNewBovine)
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Now')
 											]))
 									]))
 							]))
 					])),
-				_user$project$Pile_Bulma$headerlessTable(
-				A2(
-					_elm_lang$core$List$map,
-					_user$project$Animals_Pages_AllPage$individualAnimalView,
-					_user$project$Animals_Pages_AllPage$filteredAnimals(model)))
+				_user$project$Animals_Pages_PageFlash$show(model.pageFlash),
+				_user$project$Pile_Bulma$headerlessTable(whichToShow)
 			]));
-};
-
-var _user$project$Animals_Pages_AddPage$view = function (model) {
-	return A2(_user$project$Pile_Bulma$infoMessage, 'Can\'t Add Animals Yet', 'The page hasn\'t been written yet.');
 };
 
 var _user$project$Animals_Pages_HelpPage$view = function (model) {

@@ -25,31 +25,30 @@ view model =
     div []
       [ nav [class "level is-mobile"]
           [ div [class "level-left" ]
-              [ div [class "level-item"]
+              [ p [class "level-item"]
                   [ text "Create" ]
-              , div [class "level-item"]
-                [ input [ class "input", type' "text", value "1"
-                        , style [("width", "3em")]
-                        ] []
-                ]
-              , div [class "level-item"]
-                [ text "new" ]
-              , div [class "level-item"]
-                [ Bulma.simpleSelect
-                    [ option [value "bovine"] [ text "bovine" ]
-                    , option [value "equine"] [ text "equine" ]
-                    ]
-                ]
-              , div [class "level-item"]
-                [ text "animal to edit" ]
-              , div [class "level-item"]
-                [ a [ class "button is-primary"
-                    , href "#"
-                    , onClickWithoutPropagation AddNewBovine
-                    ]
-                    [text "Now"]]
+              , p [class "level-item"]
+                  [ input [ class "input", type' "text", value "1"
+                          , style [("width", "3em")]
+                          ] []
+                  ]
+              , p [class "level-item"]
+                  [ text "new" ]
+              , p [class "level-item"]
+                  [ Bulma.simpleSelect
+                      [ option [value "bovine"] [ text "bovine" ]
+                      , option [value "equine"] [ text "equine" ]
+                      ]
+                  ]
+              , p [class "level-item"]
+                  [ text "animal to edit" ]
+              , p [class "level-item"]
+                  [ a [ class "button is-primary"
+                      , href "#"
+                      , onClickWithoutPropagation AddNewBovine
+                      ]
+                      [text "Now"]]
               ]
-
           ]
       , PageFlash.show model.pageFlash
       , Bulma.headerlessTable whichToShow

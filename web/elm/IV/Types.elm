@@ -19,3 +19,7 @@ asDuration (DropsPerSecond perSecond) =
     (1 / perSecond) * second
 
 
+type PageChoice 
+  = MainPage
+  | AboutPage
+

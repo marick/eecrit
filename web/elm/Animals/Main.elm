@@ -2,21 +2,21 @@ module Animals.Main exposing (..)
 
 import Animals.Msg exposing (..)
 import Animals.OutsideWorld as OutsideWorld
-import Animals.Navigation as MyNav
 import Animals.Animal.Types as Animal
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form
+import Animals.Pages.Declare as Page
+import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
 
+import Navigation
 import String
 import List
 import Dict
 import Date exposing (Date)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (lens)
-import Return
-
 
 -- Model and Init
 type alias Flags =
@@ -24,7 +24,7 @@ type alias Flags =
   }
 
 type alias Model = 
-  { page : MyNav.PageChoice
+  { page : Page.PageChoice
   , csrfToken : String
   , animals : Aggregate.VisibleAggregate
 
@@ -52,11 +52,11 @@ model_pageFlash = lens .pageFlash (\ p w -> { w | pageFlash = p })
 
 
 
-init : Flags -> MyNav.PageChoice -> ( Model, Cmd Msg )
-init flags startingPage =
+init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
+init flags location =
   let
     model =
-      { page = startingPage
+      { page = Page.fromLocation(location)
       , csrfToken = flags.csrfToken
       , animals = Aggregate.emptyAggregate
       , nameFilter = ""
@@ -78,18 +78,18 @@ update msg model =
 
 update_ : Msg -> Model -> ( Model, Cmd Msg )
 update_ msg model =
-  case msg of
-    NavigateToAllPage ->
-      MyNav.toAllPagePath model
-    NavigateToAddPage ->
-      MyNav.toAddPagePath model
-    NavigateToHelpPage ->
-      MyNav.toHelpPagePath model
-
+  case Debug.log "update" msg of
+    NoticePageChange location -> 
+      model_page.set (Page.fromLocation location) model ! []
+    StartPageChange page ->
+      ( model, Page.toPageChangeCmd page )
+      
     SetToday value ->
       model_today.set value model ! []
-    SetAnimals animals ->
+    SetAnimals (Ok animals) ->
       model_animals.set (Aggregate.asAggregate animals) model ! []
+    SetAnimals (Err e) ->
+      model_pageFlash.set (PageFlash.FailureToRetrieveAnimalsFlash e) model ! []
 
     ToggleDatePicker ->
       model_datePickerOpen.update not model ! []
@@ -129,7 +129,7 @@ update_ msg model =
 
     AddNewBovine ->
       (Form.freshEditableAnimal (Aggregate.freshId model.animals) |> upsertDisplayedAnimal model) ! []
-        
+
     NoOp ->
       model ! []
 

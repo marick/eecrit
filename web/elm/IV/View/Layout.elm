@@ -7,7 +7,7 @@ import IV.Pile.HtmlShorthand exposing (..)
 import IV.Main exposing (Model)
 import IV.Msg exposing (Msg(..))
 import IV.Version as Version
-
+import IV.Types exposing (PageChoice(..))
 
 headerWith navs =
   div [class "header clearfix"]
@@ -30,7 +30,7 @@ footerWith prefix navs =
 defaultFooterNav =
   [ navElement
       [ a [ href "/iv/about"
-          , onClickWithoutPropagation NavigateToAboutPage
+          , onClickWithoutPropagation (StartPageChange AboutPage)
           ]
           [text "About and Disclaimer"]
       ]

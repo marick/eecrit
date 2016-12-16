@@ -5,7 +5,7 @@ import IV.Scenario.Msg as ScenarioMsg
 import IV.Scenario.Model as ScenarioModel
 import IV.Types exposing (..)
 import IV.Scenario.DataExport exposing (SimulationData)
-
+import Navigation
 
 type Msg
     = StartSimulation SimulationData
@@ -23,5 +23,6 @@ type Msg
     | OpenCaseBackgroundEditor
     | CloseCaseBackgroundEditor
 
-    | NavigateToAboutPage
-    | NavigateToMainPage
+    | NoticePageChange Navigation.Location
+    | StartPageChange PageChoice
+      

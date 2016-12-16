@@ -1,15 +1,15 @@
 module Animals exposing (main)
 
+import Navigation
 import Animals.Main as Main
-import Animals.Navigation as Navigation
 import Animals.View as View
+import Animals.Msg exposing (Msg(..))
 
 main =
-    Navigation.programWithFlags Navigation.urlParser 
+    Navigation.programWithFlags NoticePageChange
         { init = Main.init
         , view = View.view
         , update = Main.update
-        , urlUpdate = Navigation.urlUpdate
         , subscriptions = Main.subscriptions
         }
 

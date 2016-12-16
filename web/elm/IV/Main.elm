@@ -7,7 +7,6 @@ import Navigation
 
 import IV.Lenses exposing (..)
 import IV.Msg exposing (..)
-import IV.Navigation as MyNav
 import IV.Types exposing (..)
 
 import IV.Apparatus.Main as Apparatus
@@ -19,7 +18,7 @@ import IV.Scenario.DataExport as DataExport
 -- Model
 
 type alias Model =
-    { page : MyNav.PageChoice
+    { page : PageChoice
     , scenario : ScenarioModel.EditableModel -- this holds all the user-chosen data
 
     -- The following hold the animation states of component pieces
@@ -31,7 +30,7 @@ type alias Model =
 
 initWithScenario : ScenarioModel.EditableModel -> (Model, Cmd Msg)
 initWithScenario scenario =
-  ( { page = MyNav.MainPage
+  ( { page = MainPage
     , scenario = scenario
     , apparatus = Apparatus.unstarted <| DataExport.startingLevel scenario
     , clock = Clock.startingState
@@ -42,11 +41,11 @@ initWithScenario scenario =
 -- TODO: There needs to be a way to do per-page initialization instead
 -- of ininitializing everything no matter what page you enter on.
   
-init : MyNav.PageChoice -> ( Model, Cmd Msg )
-init page =
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
   ScenarioModel.preparedScenario ScenarioModel.cowBackground
     |> initWithScenario
-    |> setPage page
+    |> setPage (pageFromLocation location)
 
 
 changeDripRate dripRate = updateApparatus (Apparatus.changeDripRate dripRate)
@@ -66,14 +65,14 @@ animateApparatus tick = updateApparatus (Apparatus.animationClockTick tick)
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    NavigateToAboutPage ->
-      ( model
-      , Navigation.newUrl "/iv/about"
+    NoticePageChange location -> 
+      ( model_page.set (pageFromLocation location) model
+      , Cmd.none
       )
-    
-    NavigateToMainPage ->
+      
+    StartPageChange page ->
       ( model
-      , Navigation.newUrl "/iv"
+      , commandFromPage page
       )
     
     ToScenario msg_ ->
@@ -123,7 +122,26 @@ update msg model =
       flow model
         |> animateClock tick
         |> animateApparatus tick
-        
+
+
+commandFromPage : PageChoice -> Cmd Msg
+commandFromPage page =
+  let
+    url =
+      case page of
+        MainPage -> "/iv"
+        AboutPage -> "/iv/about"
+  in
+    Navigation.newUrl url
+
+pageFromLocation : Navigation.Location -> PageChoice
+pageFromLocation location =
+  if String.contains "about" location.pathname then
+    AboutPage
+  else
+    MainPage
+
+
 -- Subscriptions
     
 subscriptions : Model -> Sub Msg

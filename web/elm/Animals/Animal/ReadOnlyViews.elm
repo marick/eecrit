@@ -59,7 +59,7 @@ animalProperties animal =
 propertyDisplayValue value =     
   case value of
     AsBool b m -> boolExplanation b m
-    AsString s -> [text s]
+    AsString s _ -> [text s]
     _ -> [text "unimplemented"]
 
 boolExplanation b explanation = 
@@ -68,8 +68,8 @@ boolExplanation b explanation =
              True -> Bulma.trueIcon
              False -> Bulma.falseIcon
     suffix = case explanation of
-               Nothing -> ""
-               Just s -> " (" ++ s ++ ")"
+               "" -> ""
+               s -> " (" ++ s ++ ")"
   in
     [icon, text suffix]
 

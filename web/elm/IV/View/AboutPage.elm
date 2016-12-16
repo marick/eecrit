@@ -6,6 +6,7 @@ import Html.Attributes exposing (..)
 import IV.Msg exposing (Msg(..))
 import IV.Pile.HtmlShorthand exposing (..)
 import IV.View.Layout as Layout
+import IV.Types exposing (PageChoice(..))
 
 view : Html Msg
 view =
@@ -14,7 +15,7 @@ view =
     [ Layout.headerWith
         [ navElement
             [a [ href "/iv"
-                 , onClickWithoutPropagation NavigateToMainPage
+               , onClickWithoutPropagation (StartPageChange MainPage)
                ]
                [ text "Back to the App" ]
             ]

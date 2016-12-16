@@ -54,4 +54,4 @@ marking n =
       , stroke "black" ]
     []
 
-markings = Svg.g [] <| List.map marking [1 .. 9]
+markings = Svg.g [] <| List.map marking (List.range 1 9)

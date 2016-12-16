@@ -21,10 +21,7 @@ fetchAnimals =
     url = "/api/v2animals"
     request = Http.get url decodeAnimals
   in
-    Cmd.batch 
-      [ --- Task.perform SetAnimals (Task.succeed [athena, ross, xena, jake])
-       Http.send SetAnimals (Debug.log "req" request)
-      ]
+    Http.send SetAnimals request
 
 type alias IncomingAnimal =
     { id : Int
@@ -33,19 +30,20 @@ type alias IncomingAnimal =
     , tags : List String
     , int_properties : Dict String ( Int, String )
     , bool_properties : Dict String ( Bool, String )
+    , string_properties : Dict String ( String, String )
     }
 
 decodeAnimals : Decode.Decoder (List Animal)
 decodeAnimals =
-  Decode.at ["data"] (Decode.list animalDecoder)
+  Decode.at ["data"] (Decode.list decodeOneAnimal)
   
-animalDecoder : Decode.Decoder Animal 
-animalDecoder =
-  Decode.map translateToAnimal toIncomingAnimal
+decodeOneAnimal : Decode.Decoder Animal 
+decodeOneAnimal =
+  toIncomingAnimal |> Decode.map translateToAnimal 
   
 toIncomingAnimal : Decode.Decoder IncomingAnimal
 toIncomingAnimal =
-    Decode.map6 IncomingAnimal
+    Decode.map7 IncomingAnimal
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "species" Decode.string)
@@ -59,19 +57,26 @@ toIncomingAnimal =
            (Decode.dict (Decode.map2 (,)
                            (Decode.index 0 Decode.bool)
                            (Decode.index 1 Decode.string))))
+        (Decode.field "string_properties"
+           (Decode.dict (Decode.map2 (,)
+                           (Decode.index 0 Decode.string)
+                           (Decode.index 1 Decode.string))))
 
 
 translateToAnimal : IncomingAnimal -> Animal
 translateToAnimal incoming =
     let
-        ints =
-            Dict.map (\_ tuple -> (uncurry AsInt) tuple) incoming.int_properties
+        properties = combine [ints, bools, strings] 
+                     
+        combine dicts =
+          List.foldl (\one many -> Dict.union many one) Dict.empty dicts
 
-        bools =
-            Dict.map (\_ tuple -> (uncurry AsBool) tuple) incoming.bool_properties
+        ints = dictify AsInt incoming.int_properties
+        bools = dictify AsBool incoming.bool_properties
+        strings = dictify AsString incoming.string_properties
 
-        properties =
-            ints |> Dict.union bools
+        dictify unionF data = 
+          Dict.map (\_ tuple -> (uncurry unionF) tuple) data
     in
         { id = toString incoming.id
         , wasEverSaved = True
@@ -81,50 +86,3 @@ translateToAnimal incoming =
         , properties = properties
         }
 
-
-
-
-      
-      
-athena =
-  { id = "predefined1"
-  , wasEverSaved = True
-  , name = "Athena"
-  , species = "bovine"
-  , tags = [ "cow" ]
-  , properties = Dict.fromList [ ("Available", AsBool True "")
-                               , ("Primary billing", AsString "Marick" "")
-                               ]
-  }
-
-jake =
-  { id = "predefined2"
-  , wasEverSaved = True
-  , name = "Jake"
-  , species = "equine"
-  , tags = [ "gelding" ]
-  , properties = Dict.fromList [ ("Available", AsBool True "") ] 
-  }
-
-ross =
-  { id = "predefined3"
-  , wasEverSaved = True
-  , name = "ross"
-  , species = "equine"
-  , tags = [ "stallion", "aggressive"]
-  , properties = Dict.fromList [ ("Available", AsBool True "")
-                               , ("Primary billing", AsString "Marick" "")
-                               ] 
-  }
-
-xena =
-  { id = "predefined4"
-  , wasEverSaved = True
-  , name = "Xena"
-  , species = "equine"
-  , tags = [ "mare", "skittish" ]
-  , properties = Dict.fromList [ ("Available", AsBool False "off for the summer")
-                               , ("Primary billing", AsString "Marick" "")
-                               ]
-                                    
-  }

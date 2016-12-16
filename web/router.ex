@@ -91,5 +91,6 @@ defmodule Eecrit.Router do
     pipe_through :api
     
     resources "/animals", OldAnimalApiController, only: [:index]
+    resources "/v2animals", AnimalApiController, only: [:index]
   end
 end

@@ -18,6 +18,7 @@ import Animals.Msg exposing (..)
 import Animals.Animal.ReadOnlyViews as RO
 import Animals.Animal.EditableView as RW
 import Animals.Animal.Validation exposing (ValidationContext)
+import Animals.Pages.PageFlash as PageFlash
 
 view model =
   let
@@ -26,6 +27,7 @@ view model =
   in
     div []
       [ filterView model
+      , PageFlash.show model.pageFlash
       , Bulma.headerlessTable whichToShow
       ]
 

@@ -13,11 +13,11 @@ import String
 type alias Id = String
 
 type DictValue
-  = AsInt Int
-  | AsFloat Float
-  | AsString String
-  | AsDate Date
-  | AsBool Bool (Maybe String)
+  = AsInt Int String
+  | AsFloat Float String
+  | AsString String String
+  | AsDate Date String
+  | AsBool Bool String
 
 type alias Animal =
   { id : Id

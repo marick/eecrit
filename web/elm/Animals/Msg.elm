@@ -1,16 +1,18 @@
 module Animals.Msg exposing (Msg(..))
 
+import Animals.Pages.Declare exposing (PageChoice)
 import Animals.Animal.Types as Animal exposing (Animal)
 import Animals.Animal.Flash as Flash exposing (Flash)
 import Date exposing (Date)
+import Navigation
+import Http
 
 type Msg
-  = NavigateToAllPage
-  | NavigateToAddPage
-  | NavigateToHelpPage
+  = NoticePageChange Navigation.Location
+  | StartPageChange PageChoice
 
   | SetToday (Maybe Date)
-  | SetAnimals (List Animal)
+  | SetAnimals (Result Http.Error (List Animal))
 
   | ToggleDatePicker
   | SelectDate Date
@@ -28,6 +30,7 @@ type Msg
   | AddNewBovine
 
   | MoreLikeThisAnimal Animal.Id
+
 
   | NoOp
 

@@ -10,10 +10,10 @@ import Dict
 import Task
 
 askTodaysDate =
-  Task.perform (always (SetToday Nothing)) (SetToday << Just) Date.now
+  Task.perform (SetToday << Just) Date.now
 
 fetchAnimals =
-  Task.perform (always (SetAnimals [])) SetAnimals
+  Task.perform SetAnimals
     (Task.succeed [athena, ross, xena, jake])
 
 athena =

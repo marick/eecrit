@@ -11,19 +11,19 @@ useInt stringFn i =
   i |> (print int) |> stringFn
 
 
-markerWidth' = useInt markerWidth
-markerHeight' = useInt markerHeight
-x' = useInt x
-x1' = useInt x1
-x2' = useInt x2
-y' = useInt y
-y1' = useInt y1
-y2' = useInt y2
-cx' = useInt cx
-cy' = useInt cy
-r' = useInt r
-height' = useInt height
-width' = useInt width
+markerWidth_ = useInt markerWidth
+markerHeight_ = useInt markerHeight
+x_ = useInt x
+x1_ = useInt x1
+x2_ = useInt x2
+y_ = useInt y
+y1_ = useInt y1
+y2_ = useInt y2
+cx_ = useInt cx
+cy_ = useInt cy
+r_ = useInt r
+height_ = useInt height
+width_ = useInt width
 
 
 -- Support for Transforms and the like

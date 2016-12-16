@@ -23,4 +23,4 @@ onEnter msg =
             else
                 Json.fail "not ENTER"
     in
-        Events.on "keydown" (Events.keyCode `Json.andThen` isEnter)
+        Events.on "keydown" (Events.keyCode |> Json.andThen isEnter)

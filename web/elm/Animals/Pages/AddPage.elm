@@ -28,7 +28,7 @@ view model =
               [ p [class "level-item"]
                   [ text "Create" ]
               , p [class "level-item"]
-                  [ input [ class "input", type' "text", value "1"
+                  [ input [ class "input", type_ "text", value "1"
                           , style [("width", "3em")]
                           ] []
                   ]

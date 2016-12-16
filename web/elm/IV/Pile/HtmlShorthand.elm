@@ -22,7 +22,7 @@ onClickWithoutPropagation msg =
        
 textInput extraAttributes value onInput =
   input
-  ([ type' "text"
+  ([ type_ "text"
    , Attr.value value
    , size 6
    , Events.onInput onInput
@@ -56,7 +56,7 @@ mailTo =
 launchWhenDoneButton onClick needsWork label = 
   button
   [ Events.onClick onClick
-  , type' "button"
+  , type_ "button"
   , classList [ ("btn", True)
               , ("btn-primary", not needsWork)
               , ("btn-xs", True)

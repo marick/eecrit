@@ -69,10 +69,10 @@ container configuration =
   rect
     [ fill "none"
     , stroke "black"
-    , x' 0
-    , y' 0
-    , width' configuration.containerWidth
-    , height' configuration.containerHeight
+    , x_ 0
+    , y_ 0
+    , width_ configuration.containerWidth
+    , height_ configuration.containerHeight
     ]
     []
 
@@ -81,8 +81,8 @@ fluid chamberFluid configuration =
       
 fixedAttributes configuration = 
                [ fill configuration.fillColor
-               , x' 0
-               , width' configuration.containerWidth
+               , x_ 0
+               , width_ configuration.containerWidth
                ]
       
 animatableAttributes configuration (Level level) =

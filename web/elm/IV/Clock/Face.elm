@@ -9,9 +9,9 @@ import IV.Pile.SvgAttributes exposing (..)
 view =
   g []
     ([ circle
-       [ cx' Clock.centerX
-       , cy' Clock.centerY
-       , r' Clock.radius
+       [ cx_ Clock.centerX
+       , cy_ Clock.centerY
+       , r_ Clock.radius
        , fill "#0B79CE" 
        ]
        []
@@ -26,21 +26,21 @@ view =
 
 spacedInt = s " " <> int <> s " "
 
-rotate' degrees xCenter yCenter =
+rotate_ degrees xCenter yCenter =
   let
     fmt = s "rotate(" <> spacedInt <> spacedInt <> spacedInt <> s ")"
   in
     print fmt degrees xCenter yCenter
       
 transformForHour hour =
-  transform <| rotate' (hour * 30) Clock.centerX Clock.centerY
+  transform <| rotate_ (hour * 30) Clock.centerX Clock.centerY
       
 hourMarkers hour = 
   line
-    [ x1' Clock.centerX
-    , y1' Clock.centerY
-    , x2' Clock.centerX
-    , y2' (Clock.centerY - Clock.hourMarkersLineLength)
+    [ x1_ Clock.centerX
+    , y1_ Clock.centerY
+    , x2_ Clock.centerX
+    , y2_ (Clock.centerY - Clock.hourMarkersLineLength)
     , stroke "#000"
     , strokeWidth "1"
     , transformForHour hour
@@ -56,25 +56,25 @@ clockNumeral value =
     xy =
       case value of
         12 ->
-          [ x' Clock.centerX
-          , y' (Clock.centerY - Clock.radius + Clock.numeralOffset)
+          [ x_ Clock.centerX
+          , y_ (Clock.centerY - Clock.radius + Clock.numeralOffset)
           ]
         3 ->
-          [ x' (Clock.centerX + Clock.radius - Clock.numeralOffset )
-          , y' Clock.centerY
+          [ x_ (Clock.centerX + Clock.radius - Clock.numeralOffset )
+          , y_ Clock.centerY
           ]
         6 ->
-          [ x' Clock.centerX
-          , y' (Clock.centerY + Clock.radius - Clock.numeralOffset)
+          [ x_ Clock.centerX
+          , y_ (Clock.centerY + Clock.radius - Clock.numeralOffset)
           ]
         9 -> 
-          [ x' (Clock.centerX - Clock.radius + Clock.numeralOffset )
-          , y' Clock.centerY
+          [ x_ (Clock.centerX - Clock.radius + Clock.numeralOffset )
+          , y_ Clock.centerY
           ]
         _ ->
           []
           
   in
-    Svg.text' (common ++ xy) [Svg.text <| toString value]
+    Svg.text_ (common ++ xy) [Svg.text <| toString value]
       
 

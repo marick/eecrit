@@ -49,7 +49,7 @@ view model =
 
 aboutThisBrowser =
   let
-    letMeKnow = a [ type' "button"
+    letMeKnow = a [ type_ "button"
                   , class "btn btn-default btn-xs"
                   , href "mailto:marick@roundingpegs.com?subject=Browser%20report"
                   ]

@@ -76,9 +76,9 @@ update msg model =
       , Navigation.newUrl "/iv"
       )
     
-    ToScenario msg' ->
+    ToScenario msg_ ->
       flow model
-        |> updateScenario (Scenario.update msg')
+        |> updateScenario (Scenario.update msg_)
 
     PickedScenario scenario ->
       initWithScenario scenario

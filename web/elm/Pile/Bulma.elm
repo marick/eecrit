@@ -121,7 +121,7 @@ simpleTextInput val msg =
   p [class "control"]
     [input
        [ class "input"
-       , type' "text"
+       , type_ "text"
        , value val
        , Events.onInput msg]
        []
@@ -178,7 +178,7 @@ horizontalControls controls =
 oneTextInputInRow extraAttributes =
   p [class "control"]
     [ input ([ class "input"
-            , type' "text"
+            , type_ "text"
             ] ++ extraAttributes)
         []
     ]
@@ -187,7 +187,7 @@ soleTextInputInRow fieldValue extraAttributes =
   let
     field classes s =
       input ([ classList ([("input", True)] ++ classes)
-             , type' "text"
+             , type_ "text"
              , value s
              ]  ++ extraAttributes)
         []

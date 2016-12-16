@@ -30,8 +30,8 @@ defineArrowhead =
     []
     [ marker
         [ id "arrow"
-        , markerWidth' 10
-        , markerHeight' 10
+        , markerWidth_ 10
+        , markerHeight_ 10
         , refX "0"
         , refY "3"
         , orient "auto"
@@ -46,21 +46,21 @@ defineArrowhead =
 
 
 handProperties =
-  [ x1' Clock.centerX
-  , y1' Clock.centerY
-  , x2' Clock.centerX
+  [ x1_ Clock.centerX
+  , y1_ Clock.centerY
+  , x2_ Clock.centerX
   -- y2 will depend on length of hand
   , stroke "black"
   , markerEnd "url(#arrow)"
-  , transformOrigin' Clock.centerX Clock.centerY
+  , transformOrigin_ Clock.centerX Clock.centerY
   ]
 hourHandBaseProperties =
-  [ y2' (Clock.centerY - Clock.hourHandLength)
+  [ y2_ (Clock.centerY - Clock.hourHandLength)
   , strokeWidth "5"
   ] ++ handProperties
       
 minuteHandBaseProperties =
-  [ y2' (Clock.centerY - Clock.minuteHandLength)
+  [ y2_ (Clock.centerY - Clock.minuteHandLength)
   , strokeWidth "3"
   ] ++ handProperties
 

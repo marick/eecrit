@@ -99,7 +99,7 @@ newTagControl animal form =
 --   case pval of
 --     AsBool b m ->
 --       [ Bulma.horizontalControls 
---           [ input [type' "checkbox", class "control", checked b]  []
+--           [ input [type_ "checkbox", class "control", checked b]  []
 --           , Bulma.oneTextInputInRow
 --               [ value (Maybe.withDefault "" m)
 --               , placeholder "notes if desired"

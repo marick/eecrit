@@ -47,10 +47,10 @@ marking n =
     ypos = 20 * n
   in
     line
-      [ x1' 0
-      , x2' 30
-      , y1' ypos
-      , y2' ypos
+      [ x1_ 0
+      , x2_ 30
+      , y1_ ypos
+      , y2_ ypos
       , stroke "black" ]
     []
 

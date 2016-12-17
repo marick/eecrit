@@ -1,8 +1,8 @@
-module Animals.OutsideWorld exposing
+module Animals.OutsideWorld.Define exposing
   ( fetchAnimals
   , askTodaysDate
   )
-
+import Animals.OutsideWorld.Declare exposing (..)
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Date
@@ -14,6 +14,11 @@ import Http
 askTodaysDate =
   Task.perform (SetToday << Just) Date.now
 
+-- Animal creation
+
+persistNewAnimal animal =
+  Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
+
 ---
     
 fetchAnimals =
@@ -22,16 +27,6 @@ fetchAnimals =
     request = Http.get url decodeAnimals
   in
     Http.send SetAnimals request
-
-type alias IncomingAnimal =
-    { id : Int
-    , name : String
-    , species : String
-    , tags : List String
-    , int_properties : Dict String ( Int, String )
-    , bool_properties : Dict String ( Bool, String )
-    , string_properties : Dict String ( String, String )
-    }
 
 decodeAnimals : Decode.Decoder (List Animal)
 decodeAnimals =

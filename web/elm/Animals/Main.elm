@@ -1,7 +1,8 @@
 module Animals.Main exposing (..)
 
 import Animals.Msg exposing (..)
-import Animals.OutsideWorld as OutsideWorld
+import Animals.OutsideWorld.Declare as OutsideWorld
+import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Aggregates as Aggregate

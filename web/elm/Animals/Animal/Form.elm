@@ -69,6 +69,9 @@ updateAnimal animal form =
 applyEdits animal form =
   let
     (newAnimal, flash) = updateAnimal animal form
+    msg = case newAnimal.wasEverSaved of
+              True -> StartSavingAnimalChanges
+              False -> StartCreatingNewAnimal
   in
-    SaveAnimalChanges (expanded newAnimal flash)
+    msg (expanded newAnimal flash)
 

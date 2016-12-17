@@ -118,8 +118,11 @@ update_ msg model =
     UpsertEditableAnimal animal form flash -> 
       (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
 
-    SaveAnimalChanges displayedAnimal ->
-      saveAnimalChanges displayedAnimal model ! []
+    StartSavingAnimalChanges displayedAnimal ->
+      tmp_start_saving displayedAnimal model ! []
+
+    StartCreatingNewAnimal displayedAnimal ->
+      tmp_start_creating displayedAnimal model ! []
 
     CancelAnimalChanges animal flash ->
       case animal.wasEverSaved of
@@ -140,16 +143,13 @@ upsertDisplayedAnimal model displayed =
 deleteDisplayedAnimalById model id  =
   model_animals.update (Aggregate.deleteById id) model
 
-saveAnimalChanges {animal, display, flash} model =
+tmp_start_saving {animal, display, flash} model =
+  Animal.expanded animal flash |> upsertDisplayedAnimal model
+    
+tmp_start_creating {animal, display, flash} model =
   let
-    (animalToSave, modelToSave) = 
-      case animal.wasEverSaved of
-        True ->
-          (animal, model)
-        False ->
-          ( animal_wasEverSaved.set True animal
-          , model_pageFlash.set PageFlash.SavedAnimalFlash model
-          )
+    animalToSave = animal_wasEverSaved.set True animal
+    modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
   in
     Animal.expanded animalToSave flash |> upsertDisplayedAnimal modelToSave
     

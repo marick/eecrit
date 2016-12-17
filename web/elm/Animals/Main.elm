@@ -119,7 +119,13 @@ update_ msg model =
       (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
 
     StartSavingAnimalChanges displayedAnimal ->
-      tmp_start_saving displayedAnimal model ! []
+      ( upsertDisplayedAnimal model displayedAnimal
+      , OutsideWorld.saveAnimal displayedAnimal.animal
+      )
+    AnimalSaveResults (Ok newVersion) ->
+      model ! []
+    AnimalSaveResults (Err e) ->
+      httpError "I could not save the animal." e model ! []
 
     StartCreatingNewAnimal displayedAnimal ->
       tmp_start_creating displayedAnimal model ! []

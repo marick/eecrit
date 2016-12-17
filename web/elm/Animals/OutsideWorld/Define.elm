@@ -1,6 +1,7 @@
 module Animals.OutsideWorld.Define exposing
   ( fetchAnimals
   , askTodaysDate
+  , saveAnimal
   )
 import Animals.OutsideWorld.Declare exposing (..)
 import Animals.Animal.Types exposing (..)
@@ -16,8 +17,11 @@ askTodaysDate =
 
 -- Animal creation
 
-persistNewAnimal animal =
-  Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
+-- persistNewAnimal animal =
+--   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
+
+saveAnimal animal = 
+  Task.perform AnimalSaveResults (Task.succeed (Ok 83))
 
 ---
     

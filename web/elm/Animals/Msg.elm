@@ -24,7 +24,10 @@ type Msg
   | UpsertCompactAnimal Animal.Animal Flash
   | UpsertExpandedAnimal Animal.Animal Flash
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash
+    
   | StartSavingAnimalChanges Animal.DisplayedAnimal
+  | AnimalSaveResults (Result Http.Error Int)
+
   | StartCreatingNewAnimal Animal.DisplayedAnimal
   | CancelAnimalChanges Animal.Animal Flash
 

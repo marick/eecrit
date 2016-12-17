@@ -21,7 +21,7 @@ askTodaysDate =
 --   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
 
 saveAnimal animal = 
-  Task.perform AnimalSaveResults (Task.succeed (Ok 83))
+  Task.perform NoticeAnimalSaveResults (Task.succeed (Ok 83))
 
 ---
     

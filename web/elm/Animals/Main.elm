@@ -122,9 +122,9 @@ update_ msg model =
       ( upsertDisplayedAnimal model displayedAnimal
       , OutsideWorld.saveAnimal displayedAnimal.animal
       )
-    AnimalSaveResults (Ok newVersion) ->
+    NoticeAnimalSaveResults (Ok newVersion) ->
       model ! []
-    AnimalSaveResults (Err e) ->
+    NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
 
     StartCreatingNewAnimal displayedAnimal ->

@@ -26,7 +26,7 @@ type Msg
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash
     
   | StartSavingAnimalChanges Animal.DisplayedAnimal
-  | AnimalSaveResults (Result Http.Error Int)
+  | NoticeAnimalSaveResults (Result Http.Error Int)
 
   | StartCreatingNewAnimal Animal.DisplayedAnimal
   | CancelAnimalChanges Animal.Animal Flash

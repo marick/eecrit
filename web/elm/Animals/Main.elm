@@ -90,7 +90,7 @@ update_ msg model =
     SetAnimals (Ok animals) ->
       model_animals.set (Aggregate.asAggregate animals) model ! []
     SetAnimals (Err e) ->
-      model_pageFlash.set (PageFlash.FailureToRetrieveAnimalsFlash e) model ! []
+      httpError "I could not retrieve animals." e model ! []
 
     ToggleDatePicker ->
       model_datePickerOpen.update not model ! []
@@ -152,7 +152,10 @@ tmp_start_creating {animal, display, flash} model =
     modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
   in
     Animal.expanded animalToSave flash |> upsertDisplayedAnimal modelToSave
-    
+
+httpError contextString err model = 
+  model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model
+  
 -- Subscriptions
 
 subscriptions : Model -> Sub Msg

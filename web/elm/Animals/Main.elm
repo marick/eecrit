@@ -118,8 +118,8 @@ update_ msg model =
     UpsertEditableAnimal animal form flash -> 
       (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
 
-    SaveAnimalChanges animal flash ->
-      saveAnimalChanges animal flash model ! []
+    SaveAnimalChanges displayedAnimal ->
+      saveAnimalChanges displayedAnimal model ! []
 
     CancelAnimalChanges animal flash ->
       case animal.wasEverSaved of
@@ -140,7 +140,7 @@ upsertDisplayedAnimal model displayed =
 deleteDisplayedAnimalById model id  =
   model_animals.update (Aggregate.deleteById id) model
 
-saveAnimalChanges animal flash model =
+saveAnimalChanges {animal, display, flash} model =
   let
     (animalToSave, modelToSave) = 
       case animal.wasEverSaved of

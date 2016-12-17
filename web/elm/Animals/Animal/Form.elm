@@ -70,5 +70,5 @@ applyEdits animal form =
   let
     (newAnimal, flash) = updateAnimal animal form
   in
-    SaveAnimalChanges newAnimal flash
+    SaveAnimalChanges (expanded newAnimal flash)
 

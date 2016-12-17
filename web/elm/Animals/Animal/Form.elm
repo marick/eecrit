@@ -37,25 +37,6 @@ freshEditableAnimal id =
   in
     DisplayedAnimal animal (Editable form) Flash.NoFlash
   
-updateAnimal animal form =
-  let
-    update tags =
-      animal 
-        |> animal_name.set form.name
-        |> animal_properties.set form.properties -- Currently not edited
-        |> animal_tags.set tags
-  in
-    case String.isEmpty form.tentativeTag of
-      True ->
-        Ok <| update form.tags 
-      False ->
-        -- Note that this isn't really an Err. Would maybe be better to make
-        -- own type?
-        Err ( update <| List.append form.tags [form.tentativeTag]
-            , Flash.SavedIncompleteTag form.tentativeTag
-            )
-
-
 -- Constructing Messages and other Important Actions
 
 updateForm : Animal -> Form -> Msg
@@ -66,10 +47,28 @@ beginEditing : Animal -> Msg
 beginEditing animal =
   updateForm animal (extractForm animal)
 
+
+updateAnimal animal form =
+  let
+    update tags =
+      animal 
+        |> animal_name.set form.name
+        |> animal_properties.set form.properties -- Currently not edited
+        |> animal_tags.set tags
+  in
+    case String.isEmpty form.tentativeTag of
+      True ->
+        ( update form.tags
+        , Flash.NoFlash
+        )
+      False ->
+        ( update <| List.append form.tags [form.tentativeTag]
+        , Flash.SavedIncompleteTag form.tentativeTag
+        )
+    
 applyEdits animal form =
-  case updateAnimal animal form of
-    Ok newAnimal ->
-      SaveAnimalChanges newAnimal Flash.NoFlash
-    Err (newAnimal, flash) ->
-      SaveAnimalChanges newAnimal flash
+  let
+    (newAnimal, flash) = updateAnimal animal form
+  in
+    SaveAnimalChanges newAnimal flash
 

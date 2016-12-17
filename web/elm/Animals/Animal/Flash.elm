@@ -15,7 +15,7 @@ showAndCancel flash partialMsg =
       span [] []
     SavedIncompleteTag tagName -> 
       Bulma.flashNotification (partialMsg NoFlash)
-        [ text "Excuse my presumption, but I notice you clicked "
+        [ text "Excuse me for butting in, but I notice you clicked "
         , Bulma.exampleSuccess
         , text " while there was text in the "
         , b [] [text "New Tag"]

@@ -54,3 +54,29 @@ expanded animal flash =
 editable animal form flash =
   DisplayedAnimal animal (Editable form) flash
     
+type alias ValidationContext =
+  { allAnimalNames : Set String
+  }
+
+type alias ValidationResult value =
+  Result (value, String) value
+
+type alias ValidatedForm =
+  { name : ValidationResult String
+  , maySave : Bool
+  }
+
+type Urgency
+  = Info 
+  | Error
+
+type Validity
+  = Valid
+  | Invalid
+
+type alias FormValue t =
+  { validity : Validity
+  , value : t
+  , commentary : List (Urgency, String)
+  }
+

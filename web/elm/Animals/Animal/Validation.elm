@@ -6,18 +6,6 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 
 
-type alias ValidationContext =
-  { allAnimalNames : Set String
-  }
-
-type alias ValidationResult value =
-  Result (value, String) value
-
-type alias ValidatedForm =
-  { name : ValidationResult String
-  , maySave : Bool
-  }
-
 specializeValidationContext animal =
   validationContext_allAnimalNames.update (Set.remove animal.name)
   

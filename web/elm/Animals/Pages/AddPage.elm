@@ -15,7 +15,6 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.EditableView as RW
-import Animals.Animal.Validation exposing (ValidationContext)
 
 view model =
   let

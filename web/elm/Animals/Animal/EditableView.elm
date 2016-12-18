@@ -33,7 +33,7 @@ view validationContext animal form flash =
             
           , saveButton animal form validatedForm.maySave
           , cancelButton animal
-          , Flash.showAndCancel flash (UpsertEditableAnimal animal form)
+          , Flash.showAndCancel flash (CheckFormChange animal form)
           ]
       , td [] []
       , td [] []

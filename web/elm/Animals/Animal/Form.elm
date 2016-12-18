@@ -46,7 +46,7 @@ freshEditableAnimal id =
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
-  UpsertEditableAnimal animal form Flash.NoFlash
+  CheckFormChange animal form Flash.NoFlash
 
 beginEditing : Animal -> Msg
 beginEditing animal =

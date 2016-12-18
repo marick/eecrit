@@ -22,9 +22,9 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | UpsertCompactAnimal Animal.Animal Flash
-  | UpsertExpandedAnimal Animal.Animal Flash
-  | UpsertEditableAnimal Animal.Animal Animal.Form Flash
+  | EnsureCompactAnimalView Animal.Animal Flash
+  | EnsureExpandedAnimalView Animal.Animal Flash
+  | CheckFormChange Animal.Animal Animal.Form Flash
     
   | StartSavingAnimalChanges Animal.DisplayedAnimal
   | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)

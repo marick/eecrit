@@ -109,13 +109,13 @@ update_ msg model =
       , Cmd.none
       )
 
-    UpsertCompactAnimal animal flash ->
+    EnsureCompactAnimalView animal flash ->
       (Animal.compact animal flash |> upsertDisplayedAnimal model) ! []
           
-    UpsertExpandedAnimal animal flash ->
+    EnsureExpandedAnimalView animal flash ->
       (Animal.expanded animal flash |> upsertDisplayedAnimal model) ! []
 
-    UpsertEditableAnimal animal form flash -> 
+    CheckFormChange animal form flash -> 
       (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
 
     StartSavingAnimalChanges displayedAnimal ->

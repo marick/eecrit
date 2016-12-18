@@ -23,7 +23,7 @@ compactView animal flash =
   tr []
     [ (td []
          [ p [] ( animalSalutation animal  :: animalTags animal)
-         , Flash.showAndCancel flash (UpsertCompactAnimal animal)
+         , Flash.showAndCancel flash (EnsureCompactAnimalView animal)
          ])
     , Icon.expand animal Bulma.tdIcon
     , Icon.edit animal Bulma.tdIcon
@@ -36,7 +36,7 @@ expandedView animal flash =
         [ p [] [ animalSalutation animal ]
         , p [] (animalTags animal)
         , animalProperties animal |> Bulma.propertyTable
-        , Flash.showAndCancel flash (UpsertExpandedAnimal animal)
+        , Flash.showAndCancel flash (EnsureExpandedAnimalView animal)
         ]
     , Icon.contract animal Bulma.tdIcon
     , Icon.edit animal Bulma.tdIcon

@@ -21,6 +21,7 @@ type DictValue
 
 type alias Animal =
   { id : Id
+  , version : Int
   , wasEverSaved : Bool 
   , name : String
   , species : String

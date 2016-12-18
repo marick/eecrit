@@ -122,8 +122,21 @@ update_ msg model =
       ( upsertDisplayedAnimal model displayedAnimal
       , OutsideWorld.saveAnimal displayedAnimal.animal
       )
-    NoticeAnimalSaveResults (Ok newVersion) ->
-      model ! []
+    NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
+      let
+        savedAnimalMaybe = Dict.get id model.animals
+      in
+        case savedAnimalMaybe of
+            Nothing ->
+              model ! []
+            Just displayedAnimal ->
+              let
+                newAnimal =
+                  Animal.expanded (animal_version.set version displayedAnimal.animal)
+                    displayedAnimal.flash
+              in
+                (upsertDisplayedAnimal model newAnimal) ! []
+
     NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
 
@@ -149,9 +162,6 @@ upsertDisplayedAnimal model displayed =
 deleteDisplayedAnimalById model id  =
   model_animals.update (Aggregate.deleteById id) model
 
-tmp_start_saving {animal, display, flash} model =
-  Animal.expanded animal flash |> upsertDisplayedAnimal model
-    
 tmp_start_creating {animal, display, flash} model =
   let
     animalToSave = animal_wasEverSaved.set True animal

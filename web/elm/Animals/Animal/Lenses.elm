@@ -3,6 +3,7 @@ module Animals.Animal.Lenses exposing (..)
 import Pile.UpdatingLens as Lens exposing (lens)
 
 animal_id = lens .id (\ p w -> { w | id = p })
+animal_version = lens .version (\ p w -> { w | version = p })
 animal_name = lens .name (\ p w -> { w | name = p })
 animal_wasEverSaved = lens .wasEverSaved (\ p w -> { w | wasEverSaved = p })
 animal_tags = lens .tags (\ p w -> { w | tags = p })

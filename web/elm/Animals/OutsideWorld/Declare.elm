@@ -4,6 +4,9 @@ import Animals.Animal.Types exposing (..)
 
 import Dict exposing (Dict)
 
+type AnimalSaveResults
+  = AnimalUpdated Id Int
+
 type alias SuccessfulAnimalCreation = 
   { temporaryId : Id
   , permanentId : Id
@@ -11,6 +14,7 @@ type alias SuccessfulAnimalCreation =
 
 type alias IncomingAnimal =
     { id : Int
+    , version : Int
     , name : String
     , species : String
     , tags : List String

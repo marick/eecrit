@@ -21,7 +21,7 @@ askTodaysDate =
 --   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
 
 saveAnimal animal = 
-  Task.perform NoticeAnimalSaveResults (Task.succeed (Ok 83))
+  Task.perform NoticeAnimalSaveResults (Task.succeed (Ok (AnimalUpdated animal.id 83)))
 
 ---
     
@@ -42,8 +42,9 @@ decodeOneAnimal =
   
 toIncomingAnimal : Decode.Decoder IncomingAnimal
 toIncomingAnimal =
-    Decode.map7 IncomingAnimal
+    Decode.map8 IncomingAnimal
         (Decode.field "id" Decode.int)
+        (Decode.field "version" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "species" Decode.string)
         (Decode.field "tags" (Decode.list Decode.string))
@@ -78,6 +79,7 @@ translateToAnimal incoming =
           Dict.map (\_ tuple -> (uncurry unionF) tuple) data
     in
         { id = toString incoming.id
+        , version = incoming.version
         , wasEverSaved = True
         , name = incoming.name
         , species = incoming.species

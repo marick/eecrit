@@ -1,6 +1,7 @@
 module Animals.Msg exposing (Msg(..))
 
 import Animals.Pages.Declare exposing (PageChoice)
+import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.Animal.Types as Animal exposing (Animal)
 import Animals.Animal.Flash as Flash exposing (Flash)
 import Date exposing (Date)
@@ -26,7 +27,7 @@ type Msg
   | UpsertEditableAnimal Animal.Animal Animal.Form Flash
     
   | StartSavingAnimalChanges Animal.DisplayedAnimal
-  | NoticeAnimalSaveResults (Result Http.Error Int)
+  | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
 
   | StartCreatingNewAnimal Animal.DisplayedAnimal
   | CancelAnimalChanges Animal.Animal Flash

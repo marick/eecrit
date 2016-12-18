@@ -2,7 +2,8 @@ defmodule Eecrit.AnimalApiController do
   use Eecrit.Web, :controller
 
   def index(conn, _params) do
-    athena = %{ id: 1, 
+    athena = %{ id: 1,
+                version: 1,
                 name: "Athena", 
                 species: "bovine", 
                 tags: [ "cow" ],
@@ -12,6 +13,7 @@ defmodule Eecrit.AnimalApiController do
               }
     
     jake = %{ id: 2, 
+              version: 1,
               name: "Jake", 
               species: "equine", 
               tags: [ "gelding" ],
@@ -21,6 +23,7 @@ defmodule Eecrit.AnimalApiController do
             }
     
     ross = %{ id: 3, 
+              version: 1,
               name: "ross", 
               species: "equine", 
               tags: [ "stallion", "aggressive" ],
@@ -30,6 +33,7 @@ defmodule Eecrit.AnimalApiController do
             }
     
     xena = %{ id: 4, 
+              version: 1,
               name: "Xena", 
               species: "equine", 
               tags: [ "mare", "skittish" ],

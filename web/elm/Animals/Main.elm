@@ -10,9 +10,11 @@ import Animals.Animal.Form as Form
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
+import Animals.Animal.Validation as Validation
 
 import Navigation
 import String
+import Set
 import List
 import Dict
 import Date exposing (Date)
@@ -109,14 +111,17 @@ update_ msg model =
       , Cmd.none
       )
 
-    EnsureCompactAnimalView animal flash ->
-      (Animal.compact animal flash |> upsertDisplayedAnimal model) ! []
+    EnsureCompactAnimalView animal animalFlash ->
+      (Animal.compact animal animalFlash |> upsertDisplayedAnimal model) ! []
           
-    EnsureExpandedAnimalView animal flash ->
-      (Animal.expanded animal flash |> upsertDisplayedAnimal model) ! []
+    EnsureExpandedAnimalView animal animalFlash ->
+      (Animal.expanded animal animalFlash |> upsertDisplayedAnimal model) ! []
 
-    CheckFormChange animal form flash -> 
-      (Animal.editable animal form flash |> upsertDisplayedAnimal model) ! []
+    CheckFormChange animal form animalFlash ->
+      ( Animal.editable animal (checkForm animal form model) animalFlash
+         |> upsertDisplayedAnimal model
+      , Cmd.none
+      )
 
     StartSavingAnimalChanges displayedAnimal ->
       ( upsertDisplayedAnimal model displayedAnimal
@@ -156,6 +161,31 @@ update_ msg model =
     NoOp ->
       model ! []
 
+calculateValidationContext_v2 thisAnimal model =
+  let
+    conflictingNames =
+      model.animals
+        |> Dict.values
+        |> List.map displayedAnimal_name.get
+        |> Set.fromList
+        |> Set.remove thisAnimal.name
+  in
+    -- TODO Change allAnimalNames
+    { allAnimalNames = conflictingNames }
+
+checkForm animal form model =
+  let
+    validationContext = calculateValidationContext_v2 animal model
+    value = form.name_v2.value
+    error s = Animal.FormValue Animal.Invalid value [(Animal.Error, s)]
+  in
+    if String.isEmpty value then
+      { form | name_v2 = error "The animal has to have a name!"}
+    else if Set.member value validationContext.allAnimalNames then
+      { form | name_v2 = error "There is already a animal with that name!"}
+    else
+      form
+           
 upsertDisplayedAnimal model displayed =
   model_animals.update (Aggregate.upsert displayed) model
 

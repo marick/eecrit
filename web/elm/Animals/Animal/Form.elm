@@ -15,10 +15,14 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Flash as Flash
 import Animals.Animal.Lenses exposing (..)
 
+extractValue : t -> FormValue t
+extractValue v =
+  FormValue Valid v []
 
 extractForm : Animal -> Form
 extractForm animal =
   { name = animal.name
+  , name_v2 = extractValue animal.name
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties

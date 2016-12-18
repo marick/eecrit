@@ -8,6 +8,7 @@ import Animals.Animal.Lenses exposing (..)
 
 import Dict exposing (Dict)
 import Date exposing (Date)
+import Set exposing (Set)
 import String
 
 type alias Id = String
@@ -31,6 +32,7 @@ type alias Animal =
 
 type alias Form = 
   { name : String
+  , name_v2 : FormValue String
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue

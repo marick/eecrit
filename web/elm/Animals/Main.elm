@@ -124,30 +124,31 @@ update_ msg model =
       in
         (Animal.editable animal form animalFlash |> upsertDisplayedAnimal model) ! []
 
-    CheckFormChange animal form animalFlash ->
-      ( Animal.editable animal (checkForm animal form model) animalFlash
-         |> upsertDisplayedAnimal model
-      , Cmd.none
-      )
+    CheckFormChange animal changedForm animalFlash ->
+      let
+        form = checkForm animal changedForm model
+      in
+        (Animal.editable animal form animalFlash |> upsertDisplayedAnimal model) ! []
 
     StartSavingAnimalChanges displayedAnimal ->
       ( upsertDisplayedAnimal model displayedAnimal
       , OutsideWorld.saveAnimal displayedAnimal.animal
       )
+
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
       let
         savedAnimalMaybe = Dict.get id model.animals
       in
         case savedAnimalMaybe of
             Nothing ->
-              model ! []
+              model ! [] -- impossible
             Just displayedAnimal ->
               let
                 newAnimal =
                   Animal.expanded (animal_version.set version displayedAnimal.animal)
                     displayedAnimal.flash
               in
-                (upsertDisplayedAnimal model newAnimal) ! []
+                upsertDisplayedAnimal model newAnimal ! []
 
     NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
@@ -180,6 +181,10 @@ calculateValidationContext_v2 thisAnimal model =
     -- TODO Change allAnimalNames
     { allAnimalNames = conflictingNames }
 
+
+
+      -- FIX THIS RIGHT HERE - CLEAN UP VALIDTION
+      --   THEN _v2
 checkForm animal form model =
   let
     validationContext = calculateValidationContext_v2 animal model

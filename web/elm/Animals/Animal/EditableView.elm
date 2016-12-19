@@ -20,7 +20,7 @@ import Animals.Animal.Lenses exposing (..)
 view animal form flash =
   Bulma.highlightedRow []
     [ td []
-        [ Bulma.controlRow "Name" <| nameEditControl animal (Debug.log "showing" form)
+        [ Bulma.controlRow "Name" <| nameEditControl animal form
         , Bulma.controlRow "Tags" <| deleteTagControl animal form
         , Bulma.controlRow "New Tag" <| newTagControl animal form
           
@@ -29,13 +29,13 @@ view animal form flash =
         --          (editableAnimalProperties form |> Bulma.propertyTable)
 
         -- TODO: NO SAVE
-        , saveButton animal form False
+        , saveButton animal form form.isValid
         , cancelButton animal
         , Flash.showAndCancel flash (CheckFormChange animal form)
         ]
     , td [] []
     , td [] []
-    , Icon.editHelp (Debug.log "icon" Bulma.tdIcon)
+    , Icon.editHelp Bulma.tdIcon
     ]
     
 
@@ -54,7 +54,7 @@ nameEditControl animal form =
       form_name_v2.set (Form.freshValue string) form
     onInput string = Form.updateForm animal (newStringToValidate string)
   in
-    Bulma.soleTextInputInRow (Debug.log "showing" form.name_v2)
+    Bulma.soleTextInputInRow form.name_v2
       [ Events.onInput onInput
       ]
 

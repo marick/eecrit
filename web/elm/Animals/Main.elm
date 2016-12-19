@@ -181,9 +181,15 @@ checkForm animal form model =
     error s = FormValue Invalid value [(Error, s)]
   in
     if String.isEmpty value then
-      { form | name_v2 = error "The animal has to have a name!"}
+      { form
+        | name_v2 = error "The animal has to have a name!"
+        , isValid = False
+      }
     else if Set.member value validationContext.allAnimalNames then
-      { form | name_v2 = error "There is already a animal with that name!"}
+      { form
+        | name_v2 = error "There is already a animal with that name!"
+        , isValid = False
+      }
     else
       form
            

@@ -22,7 +22,8 @@ freshValue v =
 
 extractForm : Animal -> Form
 extractForm animal =
-  { name_v2 = freshValue animal.name
+  { isValid = True
+  , name_v2 = freshValue animal.name
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
@@ -46,7 +47,7 @@ freshEditableAnimal id =
 
 updateForm : Animal -> Form -> Msg
 updateForm animal form =
-  CheckFormChange animal (Debug.log "updating form " form) Flash.NoFlash
+  CheckFormChange animal form Flash.NoFlash
 
 beginEditing : Animal -> Msg
 beginEditing animal =

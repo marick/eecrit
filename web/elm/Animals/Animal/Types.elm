@@ -35,6 +35,7 @@ type alias Form =
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue
+  , isValid : Bool
   }
 
 type Display

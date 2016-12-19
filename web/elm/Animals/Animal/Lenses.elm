@@ -14,7 +14,7 @@ displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
 displayedAnimal_wasEverSaved = Lens.compose displayedAnimal_animal animal_wasEverSaved
 
-form_name = lens .name (\ p w -> { w | name = p })
+form_name_v2 = lens .name_v2 (\ p w -> { w | name_v2 = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 

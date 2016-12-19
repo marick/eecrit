@@ -18,8 +18,7 @@ import Animals.Animal.EditableView as RW
 
 view model =
   let
-    validationContext = Common.calculateValidationContext model
-    whichToShow = filteredAnimals model |> Common.contextualize validationContext
+    whichToShow = creationInProgress model |> List.map Common.individualAnimalView
   in
     div []
       [ nav [class "level is-mobile"]
@@ -54,5 +53,5 @@ view model =
       ]
 
 
-filteredAnimals model =
+creationInProgress model =
   Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]

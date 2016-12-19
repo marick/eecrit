@@ -5,7 +5,7 @@ module Animals.Animal.Types exposing
 
 import Animals.Animal.Flash as Flash exposing (Flash)
 import Animals.Animal.Lenses exposing (..)
-
+import Pile.Bulma exposing (FormValue)
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Set exposing (Set)
@@ -31,8 +31,7 @@ type alias Animal =
   }
 
 type alias Form = 
-  { name : String
-  , name_v2 : FormValue String
+  { name_v2 : FormValue String
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue
@@ -66,19 +65,5 @@ type alias ValidationResult value =
 type alias ValidatedForm =
   { name : ValidationResult String
   , maySave : Bool
-  }
-
-type Urgency
-  = Info 
-  | Error
-
-type Validity
-  = Valid
-  | Invalid
-
-type alias FormValue t =
-  { validity : Validity
-  , value : t
-  , commentary : List (Urgency, String)
   }
 

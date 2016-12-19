@@ -12,6 +12,7 @@ import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Validation as Validation
 
+import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
 import Navigation
 import String
 import Set
@@ -177,7 +178,7 @@ checkForm animal form model =
   let
     validationContext = calculateValidationContext_v2 animal model
     value = form.name_v2.value
-    error s = Animal.FormValue Animal.Invalid value [(Animal.Error, s)]
+    error s = FormValue Invalid value [(Error, s)]
   in
     if String.isEmpty value then
       { form | name_v2 = error "The animal has to have a name!"}

@@ -5,7 +5,7 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 
 import List.Extra as List
-import Pile.Bulma as Bulma
+import Pile.Bulma as Bulma exposing (FormValue, Urgency(..), Validity(..))
 import Set
 
 import Animals.Animal.Types exposing (..)
@@ -17,29 +17,27 @@ import Animals.Animal.Form as Form
 import Animals.Animal.Validation as Validation
 import Animals.Animal.Lenses exposing (..)
 
-view validationContext animal form flash =
-  let
-    validatedForm = Validation.validateFormForAnimal validationContext animal form
-  in
-    Bulma.highlightedRow []
-      [ td []
-          [ Bulma.controlRow "Name" <| nameEditControl animal form validatedForm.name
-          , Bulma.controlRow "Tags" <| deleteTagControl animal form
-          , Bulma.controlRow "New Tag" <| newTagControl animal form
-            
-          -- , Bulma.controlRow "Properties"
-          --     <| Bulma.oneReasonablySizedControl
-          --          (editableAnimalProperties form |> Bulma.propertyTable)
-            
-          , saveButton animal form validatedForm.maySave
-          , cancelButton animal
-          , Flash.showAndCancel flash (CheckFormChange animal form)
-          ]
-      , td [] []
-      , td [] []
-      , Icon.editHelp Bulma.tdIcon
-      ]
-      
+view animal form flash =
+  Bulma.highlightedRow []
+    [ td []
+        [ Bulma.controlRow "Name" <| nameEditControl animal (Debug.log "showing" form)
+        , Bulma.controlRow "Tags" <| deleteTagControl animal form
+        , Bulma.controlRow "New Tag" <| newTagControl animal form
+          
+        -- , Bulma.controlRow "Properties"
+        --     <| Bulma.oneReasonablySizedControl
+        --          (editableAnimalProperties form |> Bulma.propertyTable)
+
+        -- TODO: NO SAVE
+        , saveButton animal form False
+        , cancelButton animal
+        , Flash.showAndCancel flash (CheckFormChange animal form)
+        ]
+    , td [] []
+    , td [] []
+    , Icon.editHelp (Debug.log "icon" Bulma.tdIcon)
+    ]
+    
 
 -- Controls
 
@@ -49,12 +47,14 @@ saveButton animal form isSafeToSave =
 cancelButton animal =
   Bulma.rightwardCancel (CancelAnimalChanges animal Flash.NoFlash)
 
-
-nameEditControl animal form validatedName =
+nameEditControl : Animal -> Form -> Html Msg    
+nameEditControl animal form =
   let
-    onInput newValue = Form.updateForm animal (form_name.set newValue form)
+    newStringToValidate string =
+      form_name_v2.set (Form.freshValue string) form
+    onInput string = Form.updateForm animal (newStringToValidate string)
   in
-    Bulma.soleTextInputInRow validatedName
+    Bulma.soleTextInputInRow (Debug.log "showing" form.name_v2)
       [ Events.onInput onInput
       ]
 

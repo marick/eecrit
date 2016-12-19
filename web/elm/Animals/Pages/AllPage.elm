@@ -21,15 +21,14 @@ import Animals.Pages.PageFlash as PageFlash
 
 view model =
   let
-    validationContext = calculateValidationContext model
-    whichToShow = filteredAnimals model |> contextualize validationContext
+    whichToShow = filteredAnimals model |> List.map individualAnimalView
   in
     div []
       [ filterView model
       , PageFlash.show model.pageFlash
       , Bulma.headerlessTable whichToShow
       ]
-
+    
 filterView model =
   Bulma.centeredColumns
     [ Bulma.column 3
@@ -53,9 +52,6 @@ filterView model =
           ]
       ]
     ]
-
-contextualize context animals =
-  List.map (individualAnimalView context) animals
 
 filteredAnimals model = 
   let
@@ -95,16 +91,12 @@ aggregateFilter preds animal =
 humanSorted animals = 
   List.sortBy (.animal >> .name >> String.toLower) animals
 
-individualAnimalView validationContext {animal, display, flash} =
+individualAnimalView {animal, display, flash} =
   case display of
     Compact -> RO.compactView animal flash
     Expanded -> RO.expandedView animal flash
-    Editable changing -> RW.view validationContext animal changing flash
+    Editable form -> RW.view animal form flash
 
-calculateValidationContext model =
-  { allAnimalNames =
-      model.animals |> Dict.values |> List.map displayedAnimal_name.get |> Set.fromList
-  }
 
 -- The calendar
 

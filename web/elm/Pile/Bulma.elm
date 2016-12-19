@@ -5,6 +5,23 @@ import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Html.Events as Events
 
+type Urgency
+  = Info 
+  | Error
+
+type Validity
+  = Valid
+  | Invalid
+
+type alias FormValue t =
+  { validity : Validity
+  , value : t
+  , commentary : List (Urgency, String)
+  }
+
+
+
+
 tab selectedPage (page, linkText, msg) =
   let
     (liClass, linkClass, linkStyle, spanClass) =
@@ -185,25 +202,33 @@ oneTextInputInRow extraAttributes =
 
 soleTextInputInRow fieldValue extraAttributes =
   let
-    field classes s =
-      input ([ classList ([("input", True)] ++ classes)
-             , type_ "text"
-             , value s
-             ]  ++ extraAttributes)
+    field =
+      input
+        ([ class fieldClasses
+        , type_ "text"
+        , value fieldValue.value
+        ] ++ extraAttributes)
         []
+      
+    oneCommentary (urgency, string) =
+      span [ class "help is-danger" ] [ text string ]
+
+    (paragraphClasses, fieldClasses, fieldIcons) = 
+      case fieldValue.validity of
+        Valid -> ( "control"
+                 , "input"
+                 , []
+                 )
+        Invalid -> ( "control has-icon has-icon-right"
+                   , "input is-danger"
+                   , [i [class "fa fa-warning"] []]
+                   )
+
+    contents =
+      [ field ] ++ fieldIcons ++ List.map oneCommentary fieldValue.commentary
   in
-    case fieldValue of
-      Ok s -> 
-        oneReasonablySizedControl
-          (p [ class "control"]
-             [ (field [] s) ])
-      Err (s, errMsg) ->
-        oneReasonablySizedControl
-          (p [ class "control has-icon has-icon-right"]
-             [ field [("is-danger", True)] s
-             , i [class "fa fa-warning"] []
-             , span [ class "help is-danger" ] [ text errMsg ] 
-             ])
+    oneReasonablySizedControl
+      (p [ class paragraphClasses ] contents)
     
 textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
   div [class "control has-addons"]

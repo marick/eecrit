@@ -28,7 +28,6 @@ view animal form flash =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties form |> Bulma.propertyTable)
 
-        -- TODO: NO SAVE
         , saveButton animal form
         , cancelButton animal
         , Flash.showAndCancel flash (CheckFormChange animal form)

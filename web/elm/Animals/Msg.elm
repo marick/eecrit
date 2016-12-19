@@ -24,6 +24,7 @@ type Msg
 
   | EnsureCompactAnimalView Animal.Animal Flash
   | EnsureExpandedAnimalView Animal.Animal Flash
+  | BeginEditing Animal.Animal Flash
   | CheckFormChange Animal.Animal Animal.Form Flash
     
   | StartSavingAnimalChanges Animal.DisplayedAnimal

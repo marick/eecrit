@@ -24,7 +24,7 @@ contract animal iconType =
 edit animal iconType =
   iconType "fa-pencil"
     "Edit: make changes to this animal"
-    (Form.beginEditing animal)
+    (BeginEditing animal Flash.NoFlash)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"

@@ -118,6 +118,12 @@ update_ msg model =
     EnsureExpandedAnimalView animal animalFlash ->
       (Animal.expanded animal animalFlash |> upsertDisplayedAnimal model) ! []
 
+    BeginEditing animal animalFlash ->
+      let
+        form = (Form.extractForm animal)
+      in
+        (Animal.editable animal form animalFlash |> upsertDisplayedAnimal model) ! []
+
     CheckFormChange animal form animalFlash ->
       ( Animal.editable animal (checkForm animal form model) animalFlash
          |> upsertDisplayedAnimal model
@@ -187,7 +193,7 @@ checkForm animal form model =
       }
     else if Set.member value validationContext.allAnimalNames then
       { form
-        | name_v2 = error "There is already a animal with that name!"
+        | name_v2 = error "There is already an animal with that name!"
         , isValid = False
       }
     else

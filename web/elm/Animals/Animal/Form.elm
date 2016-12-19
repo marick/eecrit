@@ -48,11 +48,6 @@ updateForm : Animal -> Form -> Msg
 updateForm animal form =
   CheckFormChange animal form Flash.NoFlash
 
-beginEditing : Animal -> Msg
-beginEditing animal =
-  updateForm animal (extractForm animal)
-
-
 updateAnimal animal form =
   let
     update tags =

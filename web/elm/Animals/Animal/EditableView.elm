@@ -29,7 +29,7 @@ view animal form flash =
         --          (editableAnimalProperties form |> Bulma.propertyTable)
 
         -- TODO: NO SAVE
-        , saveButton animal form form.isValid
+        , saveButton animal form
         , cancelButton animal
         , Flash.showAndCancel flash (CheckFormChange animal form)
         ]
@@ -41,22 +41,17 @@ view animal form flash =
 
 -- Controls
 
-saveButton animal form isSafeToSave = 
-  Bulma.leftwardSuccess isSafeToSave (Form.applyEdits animal form)
+saveButton animal form = 
+  Bulma.leftwardSuccess form.isValid (Form.applyEditsMsg animal form)
 
 cancelButton animal =
-  Bulma.rightwardCancel (CancelAnimalChanges animal Flash.NoFlash)
+  Bulma.rightwardCancel (Form.cancelEditsMsg animal)
 
 nameEditControl : Animal -> Form -> Html Msg    
 nameEditControl animal form =
-  let
-    newStringToValidate string =
-      form_name_v2.set (Form.freshValue string) form
-    onInput string = Form.updateForm animal (newStringToValidate string)
-  in
-    Bulma.soleTextInputInRow form.name_v2
-      [ Events.onInput onInput
-      ]
+  Bulma.soleTextInputInRow
+    form.name_v2
+    [ Events.onInput (Form.textFieldEditHandler animal form form_name_v2) ]
 
 deleteTagControl animal form =
   let

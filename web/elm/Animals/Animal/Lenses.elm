@@ -1,6 +1,9 @@
 module Animals.Animal.Lenses exposing (..)
 
-import Pile.UpdatingLens as Lens exposing (lens)
+import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
+import Pile.Bulma as Bulma exposing (FormValue)
+
+type alias StringLens record = UpdatingLens record (FormValue String)
 
 animal_id = lens .id (\ p w -> { w | id = p })
 animal_version = lens .version (\ p w -> { w | version = p })

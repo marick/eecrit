@@ -6,7 +6,6 @@ import List
 import List.Extra as List
 import String
 import String.Extra as String
-import Pile.Bulma exposing (FormValue)
 
 import Pile.Bulma as Bulma exposing (FormValue, Urgency(..), Validity(..))
 import Pile.HtmlShorthand exposing (..)
@@ -72,8 +71,8 @@ updateAnimal animal form =
         , Flash.SavedIncompleteTag form.tentativeTag
         )
 
-applyEdits : Animal -> Form -> Msg        
-applyEdits animal form =
+applyEditsMsg : Animal -> Form -> Msg        
+applyEditsMsg animal form =
   let
     (newAnimal, flash) = updateAnimal animal form
     msg = case newAnimal.wasEverSaved of
@@ -82,3 +81,13 @@ applyEdits animal form =
   in
     msg (expanded newAnimal flash)
 
+cancelEditsMsg : Animal -> Msg
+cancelEditsMsg animal = 
+  (CancelAnimalChanges animal Flash.NoFlash)
+
+textFieldEditHandler : Animal -> Form -> StringLens Form -> (String -> Msg)
+textFieldEditHandler animal form lens =
+  let
+    newStringToValidate string = lens.set (freshValue string) form
+  in
+    updateForm animal << newStringToValidate

@@ -55,7 +55,7 @@ nameEditControl animal form =
 deleteTagControl animal form =
   let
     onDelete name =
-      Form.updateForm animal (form_tags.update (List.remove name) form)
+      Form.checkEditMsg animal (form_tags.update (List.remove name) form)
   in
     Bulma.horizontalControls 
       (List.map (Bulma.deletableTag onDelete) form.tags)
@@ -63,13 +63,13 @@ deleteTagControl animal form =
 
 newTagControl animal form =
   let
-    onInput value = Form.updateForm animal (form_tentativeTag.set value form)
-    submitForm =
+    onInput value =
+      Form.checkEditMsg animal (form_tentativeTag.set value form)
+    onSubmit =
       form
       |> form_tags.set (List.append form.tags [form.tentativeTag])
       |> form_tentativeTag.set ""
-    onSubmit =
-      Form.updateForm animal submitForm
+      |> Form.checkEditMsg animal
   in
     Bulma.textInputWithSubmit
       "Add"

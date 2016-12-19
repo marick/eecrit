@@ -44,10 +44,6 @@ freshEditableAnimal id =
   
 -- Constructing Messages and other Important Actions
 
-updateForm : Animal -> Form -> Msg
-updateForm animal form =
-  CheckFormChange animal form Flash.NoFlash
-
 updateAnimal animal form =
   let
     update tags =
@@ -65,6 +61,10 @@ updateAnimal animal form =
         ( update <| List.append form.tags [form.tentativeTag]
         , Flash.SavedIncompleteTag form.tentativeTag
         )
+
+checkEditMsg : Animal -> Form -> Msg
+checkEditMsg animal form =
+  CheckFormChange animal form Flash.NoFlash
 
 applyEditsMsg : Animal -> Form -> Msg        
 applyEditsMsg animal form =
@@ -85,4 +85,4 @@ textFieldEditHandler animal form lens =
   let
     newStringToValidate string = lens.set (freshValue string) form
   in
-    updateForm animal << newStringToValidate
+    checkEditMsg animal << newStringToValidate

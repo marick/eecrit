@@ -2,8 +2,11 @@ module Animals.Animal.Lenses exposing (..)
 
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.Bulma as Bulma exposing (FormValue)
+import Animals.Animal.Types exposing (Form)
 
-type alias StringLens record = UpdatingLens record (FormValue String)
+--- type alias StringLens record = UpdatingLens record (FormValue String)
+
+type alias FormLens field = UpdatingLens Form (FormValue field)
 
 animal_id = lens .id (\ p w -> { w | id = p })
 animal_version = lens .version (\ p w -> { w | version = p })
@@ -20,6 +23,7 @@ displayedAnimal_wasEverSaved = Lens.compose displayedAnimal_animal animal_wasEve
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
+form_isValid = lens .isValid (\ p w -> { w | isValid = p })
 
 validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disallowedNames = p })     
 

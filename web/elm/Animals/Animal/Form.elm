@@ -28,6 +28,17 @@ extractForm animal =
   , properties = animal.properties
   }
 
+assumeValid : Form -> Form 
+assumeValid form =
+  { isValid = True
+  , name = freshValue form.name.value
+  , tags = form.tags
+  , tentativeTag = form.tentativeTag
+  , properties = form.properties
+  }
+      
+
+  
 freshEditableAnimal id =
   let 
     animal = { id = id
@@ -80,9 +91,15 @@ cancelEditsMsg : Animal -> Msg
 cancelEditsMsg animal = 
   (CancelAnimalChanges animal Flash.NoFlash)
 
-textFieldEditHandler : Animal -> Form -> StringLens Form -> (String -> Msg)
+textFieldEditHandler : Animal -> Form -> FormLens String -> (String -> Msg)
 textFieldEditHandler animal form lens =
   let
+    -- TODO: this wiping out of the state of the value is redundant
+    -- with what's done as the whole form is checked. That's because
+    -- each display validates all the fields. Should probably just validate
+    -- the changed field. However, that could be a problem if fields
+    -- are ever interdependent. Now that the support is accidentally in
+    -- place, leave it?
     newStringToValidate string = lens.set (freshValue string) form
   in
     checkEditMsg animal << newStringToValidate

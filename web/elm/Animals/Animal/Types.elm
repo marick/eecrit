@@ -4,7 +4,6 @@ module Animals.Animal.Types exposing
   )
 
 import Animals.Animal.Flash as Flash exposing (Flash)
-import Animals.Animal.Lenses exposing (..)
 import Pile.Bulma exposing (FormValue)
 import Dict exposing (Dict)
 import Date exposing (Date)

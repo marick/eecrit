@@ -1,46 +1,50 @@
-module Animals.Animal.Validation exposing (validateForm)
+module Animals.Animal.Validation exposing (..)
 
+import Dict exposing (Dict)
 import Set exposing (Set)
 import String
+import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
+
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
+import Animals.Animal.Aggregates as Aggregate
+import Animals.Animal.Form as Form
 
+context : Aggregate.VisibleAggregate -> Animal -> ValidationContext 
+context animals changingAnimal  =
+  { disallowedNames = Aggregate.animalNames animals |> Set.remove changingAnimal.name
+  }
 
-validateForm : ValidationContext -> Form -> Form
-validateForm context form =
-  form
-    -- |> assumeAllValid
-    -- |> check (mustHaveName context form) validationForm_name
-    -- |> check (uniqueName context form) validationForm_name
+validate : Form -> ValidationContext -> Form
+validate form context =
+  Form.assumeValid form 
+    |> validateName context
 
--- validateFormForAnimal context animal form = 
---   validateForm (specializeValidationContext animal context) form 
+--  Validators
+  
+validateName : ValidationContext -> Form -> Form
+validateName context form =
+  form 
+    |> validator "The animal has to have a name!" form_name 
+       (not << String.isEmpty)
+    |> validator "There is already an animal with that name!" form_name 
+       (not << (flip Set.member) context.disallowedNames)
+          
+-- Helpers
+         
+validator : String -> FormLens field -> (field -> Bool) -> Form -> Form
+validator errorMessage lens pred form =
+  let
+    formValue = lens.get form
+  in
+    case pred formValue.value of
+      True -> 
+        form
+      False ->
+        lens.set (invalidate formValue errorMessage) form
+          |> form_isValid.set False
 
-       
--- mustHaveName context form =
---   calculateResult "The animal has to have a name!"
---     (form_name.get form)
---     (not << String.isEmpty)
+invalidate : FormValue t -> String -> FormValue t
+invalidate formValue msg =
+  FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
 
--- uniqueName context form =
---   calculateResult "There is already an animal with that name!"
---     (form_name.get form)
---     (not << (flip Set.member) context.disallowedNames)
-
--- -- Util
-      
--- check validatedResult lens buildingForm =
---   case validatedResult of
---     Ok _ ->
---       buildingForm
---     Err _ ->
---       buildingForm |> lens.set validatedResult |> validationForm_maySave.set False
-       
--- calculateResult : String -> value -> (value -> Bool) -> ValidationResult value 
--- calculateResult requirement value pred =
---   if pred value then
---     Ok value
---   else
---     Err (value, requirement)
-
-      

@@ -4,6 +4,7 @@ module Animals.Animal.Aggregates exposing
   )
 
 import Dict exposing (Dict)
+import Set exposing (Set)
 import String
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Flash exposing (..)
@@ -46,3 +47,9 @@ freshId aggregate =
     worker (Dict.size aggregate)
   
   
+animalNames : VisibleAggregate -> Set String
+animalNames animals =
+  animals
+    |> Dict.values
+    |> List.map displayedAnimal_name.get
+    |> Set.fromList

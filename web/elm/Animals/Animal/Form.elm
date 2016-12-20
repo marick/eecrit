@@ -22,7 +22,7 @@ freshValue v =
 extractForm : Animal -> Form
 extractForm animal =
   { isValid = True
-  , name_v2 = freshValue animal.name
+  , name = freshValue animal.name
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
@@ -48,7 +48,7 @@ updateAnimal animal form =
   let
     update tags =
       animal 
-        |> animal_name.set form.name_v2.value
+        |> animal_name.set form.name.value
         |> animal_properties.set form.properties -- Currently not edited
         |> animal_tags.set tags
   in

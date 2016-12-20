@@ -21029,16 +21029,16 @@ var _user$project$Animals_Animal_Lenses$validationForm_name = A2(
 				w,
 				{name: p});
 		}));
-var _user$project$Animals_Animal_Lenses$validationContext_allAnimalNames = A2(
+var _user$project$Animals_Animal_Lenses$validationContext_disallowedNames = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
-		return _.allAnimalNames;
+		return _.disallowedNames;
 	},
 	F2(
 		function (p, w) {
 			return _elm_lang$core$Native_Utils.update(
 				w,
-				{allAnimalNames: p});
+				{disallowedNames: p});
 		}));
 var _user$project$Animals_Animal_Lenses$form_tentativeTag = A2(
 	_user$project$Pile_UpdatingLens$lens,
@@ -21062,16 +21062,16 @@ var _user$project$Animals_Animal_Lenses$form_tags = A2(
 				w,
 				{tags: p});
 		}));
-var _user$project$Animals_Animal_Lenses$form_name_v2 = A2(
+var _user$project$Animals_Animal_Lenses$form_name = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
-		return _.name_v2;
+		return _.name;
 	},
 	F2(
 		function (p, w) {
 			return _elm_lang$core$Native_Utils.update(
 				w,
-				{name_v2: p});
+				{name: p});
 		}));
 var _user$project$Animals_Animal_Lenses$displayedAnimal_animal = A2(
 	_user$project$Pile_UpdatingLens$lens,
@@ -21160,19 +21160,15 @@ var _user$project$Animals_Animal_Types$Animal = F7(
 	});
 var _user$project$Animals_Animal_Types$Form = F5(
 	function (a, b, c, d, e) {
-		return {name_v2: a, tags: b, tentativeTag: c, properties: d, isValid: e};
+		return {name: a, tags: b, tentativeTag: c, properties: d, isValid: e};
 	});
 var _user$project$Animals_Animal_Types$DisplayedAnimal = F3(
 	function (a, b, c) {
 		return {animal: a, display: b, flash: c};
 	});
 var _user$project$Animals_Animal_Types$ValidationContext = function (a) {
-	return {allAnimalNames: a};
+	return {disallowedNames: a};
 };
-var _user$project$Animals_Animal_Types$ValidatedForm = F2(
-	function (a, b) {
-		return {name: a, maySave: b};
-	});
 var _user$project$Animals_Animal_Types$AsBool = F2(
 	function (a, b) {
 		return {ctor: 'AsBool', _0: a, _1: b};
@@ -21475,7 +21471,7 @@ var _user$project$Animals_Animal_Form$updateAnimal = F2(
 				A2(
 					_user$project$Animals_Animal_Lenses$animal_properties.set,
 					form.properties,
-					A2(_user$project$Animals_Animal_Lenses$animal_name.set, form.name_v2.value, animal)));
+					A2(_user$project$Animals_Animal_Lenses$animal_name.set, form.name.value, animal)));
 		};
 		var _p0 = _elm_lang$core$String$isEmpty(form.tentativeTag);
 		if (_p0 === true) {
@@ -21526,7 +21522,7 @@ var _user$project$Animals_Animal_Form$freshValue = function (v) {
 var _user$project$Animals_Animal_Form$extractForm = function (animal) {
 	return {
 		isValid: true,
-		name_v2: _user$project$Animals_Animal_Form$freshValue(animal.name),
+		name: _user$project$Animals_Animal_Form$freshValue(animal.name),
 		tags: animal.tags,
 		tentativeTag: '',
 		properties: animal.properties
@@ -21863,7 +21859,7 @@ var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
 var _user$project$Animals_Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Animals_Main$calculateValidationContext_v2 = F2(
+var _user$project$Animals_Main$calculateValidationContext = F2(
 	function (thisAnimal, model) {
 		var conflictingNames = A2(
 			_elm_lang$core$Set$remove,
@@ -21873,11 +21869,11 @@ var _user$project$Animals_Main$calculateValidationContext_v2 = F2(
 					_elm_lang$core$List$map,
 					_user$project$Animals_Animal_Lenses$displayedAnimal_name.get,
 					_elm_lang$core$Dict$values(model.animals))));
-		return {allAnimalNames: conflictingNames};
+		return {disallowedNames: conflictingNames};
 	});
 var _user$project$Animals_Main$checkForm = F3(
 	function (animal, form, model) {
-		var value = form.name_v2.value;
+		var value = form.name.value;
 		var error = function (s) {
 			return A3(
 				_user$project$Pile_Bulma$FormValue,
@@ -21889,16 +21885,16 @@ var _user$project$Animals_Main$checkForm = F3(
 					_1: {ctor: '[]'}
 				});
 		};
-		var validationContext = A2(_user$project$Animals_Main$calculateValidationContext_v2, animal, model);
+		var validationContext = A2(_user$project$Animals_Main$calculateValidationContext, animal, model);
 		return _elm_lang$core$String$isEmpty(value) ? _elm_lang$core$Native_Utils.update(
 			form,
 			{
-				name_v2: error('The animal has to have a name!'),
+				name: error('The animal has to have a name!'),
 				isValid: false
-			}) : (A2(_elm_lang$core$Set$member, value, validationContext.allAnimalNames) ? _elm_lang$core$Native_Utils.update(
+			}) : (A2(_elm_lang$core$Set$member, value, validationContext.disallowedNames) ? _elm_lang$core$Native_Utils.update(
 			form,
 			{
-				name_v2: error('There is already an animal with that name!'),
+				name: error('There is already an animal with that name!'),
 				isValid: false
 			}) : form);
 	});
@@ -22546,11 +22542,11 @@ var _user$project$Animals_Animal_EditableView$nameEditControl = F2(
 	function (animal, form) {
 		return A2(
 			_user$project$Pile_Bulma$soleTextInputInRow,
-			form.name_v2,
+			form.name,
 			{
 				ctor: '::',
 				_0: _elm_lang$html$Html_Events$onInput(
-					A3(_user$project$Animals_Animal_Form$textFieldEditHandler, animal, form, _user$project$Animals_Animal_Lenses$form_name_v2)),
+					A3(_user$project$Animals_Animal_Form$textFieldEditHandler, animal, form, _user$project$Animals_Animal_Lenses$form_name)),
 				_1: {ctor: '[]'}
 			});
 	});

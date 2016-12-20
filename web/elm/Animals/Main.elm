@@ -169,7 +169,7 @@ update_ msg model =
     NoOp ->
       model ! []
 
-calculateValidationContext_v2 thisAnimal model =
+calculateValidationContext thisAnimal model =
   let
     conflictingNames =
       model.animals
@@ -178,27 +178,26 @@ calculateValidationContext_v2 thisAnimal model =
         |> Set.fromList
         |> Set.remove thisAnimal.name
   in
-    -- TODO Change allAnimalNames
-    { allAnimalNames = conflictingNames }
+    { disallowedNames = conflictingNames }
 
 
 
       -- FIX THIS RIGHT HERE - CLEAN UP VALIDTION
-      --   THEN _v2
 checkForm animal form model =
   let
-    validationContext = calculateValidationContext_v2 animal model
-    value = form.name_v2.value
+    validationContext = calculateValidationContext animal model
+    value = form.name.value
     error s = FormValue Invalid value [(Error, s)]
   in
     if String.isEmpty value then
       { form
-        | name_v2 = error "The animal has to have a name!"
+        | name
+          = error "The animal has to have a name!"
         , isValid = False
       }
-    else if Set.member value validationContext.allAnimalNames then
+    else if Set.member value validationContext.disallowedNames then
       { form
-        | name_v2 = error "There is already an animal with that name!"
+        | name = error "There is already an animal with that name!"
         , isValid = False
       }
     else

@@ -17,11 +17,11 @@ displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
 displayedAnimal_wasEverSaved = Lens.compose displayedAnimal_animal animal_wasEverSaved
 
-form_name_v2 = lens .name_v2 (\ p w -> { w | name_v2 = p })
+form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 
-validationContext_allAnimalNames = lens .allAnimalNames (\ p w -> { w | allAnimalNames = p })     
+validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disallowedNames = p })     
 
 validationForm_name = lens .name (\ p w -> { w | name = p })
 validationForm_maySave = lens .maySave (\ p w -> { w | maySave = p })

@@ -6,15 +6,6 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 
 
--- specializeValidationContext animal =
---   validationContext_allAnimalNames.update (Set.remove animal.name)
-  
--- assumeAllValid : Form -> ValidatedForm
--- assumeAllValid form =
---   { name = Ok form.name
---   , maySave = True
---   }
-
 validateForm : ValidationContext -> Form -> Form
 validateForm context form =
   form
@@ -34,7 +25,7 @@ validateForm context form =
 -- uniqueName context form =
 --   calculateResult "There is already an animal with that name!"
 --     (form_name.get form)
---     (not << (flip Set.member) context.allAnimalNames)
+--     (not << (flip Set.member) context.disallowedNames)
 
 -- -- Util
       

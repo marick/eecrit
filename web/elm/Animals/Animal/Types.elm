@@ -31,7 +31,7 @@ type alias Animal =
   }
 
 type alias Form = 
-  { name_v2 : FormValue String
+  { name : FormValue String
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue
@@ -57,14 +57,6 @@ editable animal form flash =
   DisplayedAnimal animal (Editable form) flash
     
 type alias ValidationContext =
-  { allAnimalNames : Set String
-  }
-
-type alias ValidationResult value =
-  Result (value, String) value
-
-type alias ValidatedForm =
-  { name : ValidationResult String
-  , maySave : Bool
+  { disallowedNames : Set String
   }
 

@@ -49,8 +49,8 @@ cancelButton animal =
 nameEditControl : Animal -> Form -> Html Msg    
 nameEditControl animal form =
   Bulma.soleTextInputInRow
-    form.name_v2
-    [ Events.onInput (Form.textFieldEditHandler animal form form_name_v2) ]
+    form.name
+    [ Events.onInput (Form.textFieldEditHandler animal form form_name) ]
 
 deleteTagControl animal form =
   let

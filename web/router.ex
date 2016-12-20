@@ -91,6 +91,9 @@ defmodule Eecrit.Router do
     pipe_through :api
     
     resources "/animals", OldAnimalApiController, only: [:index]
-    resources "/v2animals", AnimalApiController, only: [:index]
+
+    # Todo: how to do all the rest fakery from elm - if it's worth it
+    get "/v2animals", AnimalApiController, :index
+    post "/v2animals", AnimalApiController, :update
   end
 end

@@ -148,7 +148,7 @@ update_ msg model =
                   Animal.expanded (animal_version.set version displayedAnimal.animal)
                     displayedAnimal.flash
               in
-                upsertDisplayedAnimal model newAnimal ! []
+                upsertDisplayedAnimal model (Debug.log "new version" newAnimal) ! []
 
     NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
@@ -169,39 +169,8 @@ update_ msg model =
     NoOp ->
       model ! []
 
-calculateValidationContext thisAnimal model =
-  let
-    conflictingNames =
-      model.animals
-        |> Dict.values
-        |> List.map displayedAnimal_name.get
-        |> Set.fromList
-        |> Set.remove thisAnimal.name
-  in
-    { disallowedNames = conflictingNames }
-
-
-
-      -- FIX THIS RIGHT HERE - CLEAN UP VALIDTION
 checkForm animal form model =
-  let
-    validationContext = calculateValidationContext animal model
-    value = form.name.value
-    error s = FormValue Invalid value [(Error, s)]
-  in
-    if String.isEmpty value then
-      { form
-        | name
-          = error "The animal has to have a name!"
-        , isValid = False
-      }
-    else if Set.member value validationContext.disallowedNames then
-      { form
-        | name = error "There is already an animal with that name!"
-        , isValid = False
-      }
-    else
-      form
+  Validation.validate form (Validation.context model.animals animal)
            
 upsertDisplayedAnimal model displayed =
   model_animals.update (Aggregate.upsert displayed) model

@@ -94,12 +94,12 @@ cancelEditsMsg animal =
 textFieldEditHandler : Animal -> Form -> FormLens String -> (String -> Msg)
 textFieldEditHandler animal form lens =
   let
-    -- TODO: this wiping out of the state of the value is redundant
-    -- with what's done as the whole form is checked. That's because
-    -- each display validates all the fields. Should probably just validate
-    -- the changed field. However, that could be a problem if fields
-    -- are ever interdependent. Now that the support is accidentally in
-    -- place, leave it?
+    -- Note: this wiping out of the state of the value is redundant
+    -- with what's done as the form is checked. However, there isn't
+    -- really anything better to do. We don't check the form here
+    -- because checking often requires context (like what all the animal
+    -- names are) and it seems wrong to push groveling over the model
+    -- all the way down to (what amounts to) view code. 
     newStringToValidate string = lens.set (freshValue string) form
   in
     checkEditMsg animal << newStringToValidate

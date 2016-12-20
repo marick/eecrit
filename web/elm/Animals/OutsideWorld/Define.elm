@@ -10,6 +10,7 @@ import Date
 import Dict exposing (Dict)
 import Task
 import Json.Decode as Decode
+import Json.Encode as Encode
 import Http
 
 askTodaysDate =
@@ -20,8 +21,27 @@ askTodaysDate =
 -- persistNewAnimal animal =
 --   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
 
-saveAnimal animal = 
-  Task.perform NoticeAnimalSaveResults (Task.succeed (Ok (AnimalUpdated animal.id 83)))
+-- saveAnimal animal = 
+--   Task.perform NoticeAnimalSaveResults (Task.succeed (Ok (AnimalUpdated animal.id 83))
+
+---
+
+saveAnimal animal =
+  let
+    url = "/api/v2animals"
+    body = Http.jsonBody <| encodeAnimal animal
+    request = Http.post url body decodeSaveResult
+  in
+    Http.send NoticeAnimalSaveResults request
+
+encodeAnimal animal =
+  Encode.object [("id", Encode.string animal.id)]
+
+decodeSaveResult =
+  Decode.at ["data"]
+    (Decode.map2 AnimalUpdated
+      (Decode.field "id" Decode.string)
+      (Decode.field "version" Decode.int))
 
 ---
     

@@ -7,45 +7,42 @@ import Dict exposing (Dict)
 import Json.Decode as Decode
 import Json.Encode as Encode
 
-encodeAnimal animal =
-  let
-    inTransferFormat = putAnimalInTransferFormat animal
+withinData : Decode.Decoder a -> Decode.Decoder a
+withinData =
+  Decode.at ["data"]
 
-    encoded =
-      Encode.object [ ("id", Encode.int inTransferFormat.id)
-                    , ("version", Encode.int inTransferFormat.version)
-                    , ("name", Encode.string inTransferFormat.name)
-                    , ("species", Encode.string inTransferFormat.species)
-                    , ("tags", Encode.list (List.map Encode.string inTransferFormat.tags))
-                    , ("bool_properties", encodeProperties Encode.bool inTransferFormat.bool_properties)
-                    , ("int_properties", encodeProperties Encode.int inTransferFormat.int_properties)
-                    , ("string_properties", encodeProperties Encode.string inTransferFormat.string_properties)
-                    ]
-  in
-    Encode.object [("data", encoded)]
+asData : Encode.Value -> Encode.Value
+asData v = 
+  Encode.object [("data", v)]    
 
-decodeAnimal : Decode.Decoder Animal 
-decodeAnimal =
-  decodeToAnimalTransferFormat |> Decode.map translateToAnimal 
-  
 decodeAnimals : Decode.Decoder (List Animal)
 decodeAnimals =
-  Decode.at ["data"] (Decode.list decodeAnimal)
+  Decode.list decodeAnimal
   
+decodeAnimal : Decode.Decoder Animal 
+decodeAnimal =
+  json_to_AnimalTransferFormat |> Decode.map animalTransferFormat_to_Animal 
+  
+encodeAnimal =
+  animal_to_animalTransferFormat >> animalTransferFormat_to_json
+
 decodeSaveResult =
   let 
-    intoTransferFormat =
+    to_transferFormat =
       (Decode.map2 (,)
          (Decode.field "id" Decode.int)
          (Decode.field "version" Decode.int))
 
-    fromTransferFormat (intId, version) =
+    from_transferFormat (intId, version) =
       AnimalUpdated (toString intId) version
   in
-    Decode.at ["data"] 
-      (intoTransferFormat |> Decode.map fromTransferFormat)
+    (to_transferFormat |> Decode.map from_transferFormat)
 
---- Representation translation
+
+
+
+--- Animal support
+
 
 type alias AnimalTransferFormat =
     { id : Int
@@ -58,8 +55,8 @@ type alias AnimalTransferFormat =
     , string_properties : Dict String ( String, String )
     }
 
-decodeToAnimalTransferFormat : Decode.Decoder AnimalTransferFormat
-decodeToAnimalTransferFormat =
+json_to_AnimalTransferFormat : Decode.Decoder AnimalTransferFormat
+json_to_AnimalTransferFormat =
     Decode.map8 AnimalTransferFormat
         (Decode.field "id" Decode.int)
         (Decode.field "version" Decode.int)
@@ -72,8 +69,20 @@ decodeToAnimalTransferFormat =
         (Decode.field "bool_properties" (decodeProperties Decode.bool))
         (Decode.field "string_properties" (decodeProperties Decode.string))
 
-putAnimalInTransferFormat : Animal -> AnimalTransferFormat
-putAnimalInTransferFormat animal =
+animalTransferFormat_to_json : AnimalTransferFormat -> Encode.Value
+animalTransferFormat_to_json xfer = 
+  Encode.object [ ("id", Encode.int xfer.id)
+                    , ("version", Encode.int xfer.version)
+                    , ("name", Encode.string xfer.name)
+                    , ("species", Encode.string xfer.species)
+                    , ("tags", Encode.list (List.map Encode.string xfer.tags))
+                    , ("bool_properties", encodeProperties Encode.bool xfer.bool_properties)
+                    , ("int_properties", encodeProperties Encode.int xfer.int_properties)
+                    , ("string_properties", encodeProperties Encode.string xfer.string_properties)
+                    ]
+
+animal_to_animalTransferFormat : Animal -> AnimalTransferFormat
+animal_to_animalTransferFormat animal =
   let
     intId = Result.withDefault -1 (String.toInt animal.id)
   in
@@ -86,9 +95,9 @@ putAnimalInTransferFormat animal =
     , int_properties = Dict.empty
     , string_properties = Dict.empty
     }
-
-translateToAnimal : AnimalTransferFormat -> Animal
-translateToAnimal incoming =
+          
+animalTransferFormat_to_Animal : AnimalTransferFormat -> Animal
+animalTransferFormat_to_Animal incoming =
     let
         properties = combine [ints, bools, strings] 
                      
@@ -111,6 +120,19 @@ translateToAnimal incoming =
         , properties = properties
         }
 
+-- 
+      
+
+
+
+
+
+
+
+--- Representation translation
+
+
+          
 
 --- Util      
       
@@ -128,3 +150,7 @@ encodeProperties valueEncoder =
       (k, Encode.list [ valueEncoder v, Encode.string comment ])
   in
     Dict.toList >> List.map encodeKV >> Encode.object 
+
+
+
+      

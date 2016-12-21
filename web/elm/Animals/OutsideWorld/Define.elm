@@ -17,15 +17,15 @@ askTodaysDate =
 fetchAnimals =
   let
     url = "/api/v2animals"
-    request = Http.get url Json.decodeAnimals
+    request = Http.get url (Json.withinData Json.decodeAnimals)
   in
     Http.send SetAnimals request
 
 saveAnimal animal =
   let
     url = "/api/v2animals"
-    body = Http.jsonBody <| Json.encodeAnimal animal
-    request = Http.post url body Json.decodeSaveResult
+    body = animal |> Json.encodeAnimal |> Json.asData |> Http.jsonBody
+    request = Http.post url body (Json.withinData Json.decodeSaveResult)
   in
     Http.send NoticeAnimalSaveResults request
 

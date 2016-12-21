@@ -12,14 +12,3 @@ type alias SuccessfulAnimalCreation =
   , permanentId : Id
   }
 
-type alias IncomingAnimal =
-    { id : Int
-    , version : Int
-    , name : String
-    , species : String
-    , tags : List String
-    , int_properties : Dict String ( Int, String )
-    , bool_properties : Dict String ( Bool, String )
-    , string_properties : Dict String ( String, String )
-    }
-

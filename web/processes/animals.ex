@@ -47,6 +47,10 @@ defmodule Eecrit.Animals do
     GenServer.call(__MODULE__, :all)
   end
 
+  def update(animal) do 
+    GenServer.call(__MODULE__, [:update, animal])
+  end
+
   # Behind the scenes
 
   def init(_) do
@@ -67,4 +71,12 @@ defmodule Eecrit.Animals do
   def handle_call(:all, _from, state) do 
     {:reply, Map.values(state), state}
   end
+
+  def handle_call([:update, animal = %{"version" => version, "id" => id}],
+                  _from, state) do
+    new_state = Map.put(state, id, animal)
+    retval = %{id: id, version: version+1}
+    {:reply, {:ok, retval}, new_state}
+  end
+
 end

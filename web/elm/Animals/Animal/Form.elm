@@ -51,7 +51,7 @@ freshEditableAnimal id =
              }
     form = extractForm animal
   in
-    DisplayedAnimal animal (Editable form) Flash.NoFlash
+    new animal form Flash.NoFlash
   
 -- Constructing Messages and other Important Actions
 

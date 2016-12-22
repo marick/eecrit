@@ -92,7 +92,7 @@ humanSorted animals =
   List.sortBy (.animal >> .name >> String.toLower) animals
 
 individualAnimalView {animal, display, flash} =
-  case display of
+  case display.how of
     Compact -> RO.compactView animal flash
     Expanded -> RO.expandedView animal flash
     Editable form -> RW.view animal form flash

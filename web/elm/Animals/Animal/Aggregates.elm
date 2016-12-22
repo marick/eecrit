@@ -26,9 +26,10 @@ upsert displayed aggregate =
 deleteById : Id -> VisibleAggregate -> VisibleAggregate
 deleteById = Dict.remove
 
+asAggregate : List Animal -> Dict Id DisplayedAnimal             
 asAggregate animals =
   let
-    tuple animal = (animal.id, DisplayedAnimal animal Compact NoFlash)
+    tuple animal = (animal.id, compact animal NoFlash)
   in
     animals |> List.map tuple |> Dict.fromList
 

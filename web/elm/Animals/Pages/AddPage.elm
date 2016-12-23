@@ -27,13 +27,14 @@ view model =
                   [ text "Create" ]
               , p [class "level-item"]
                   [ input [ class "input", type_ "text", value "1"
+                          , disabled True
                           , style [("width", "3em")]
                           ] []
                   ]
               , p [class "level-item"]
                   [ text "new" ]
               , p [class "level-item"]
-                  [ Bulma.simpleSelect
+                  [ Bulma.disabledSelect
                       [ option [value "bovine"] [ text "bovine" ]
                       , option [value "equine"] [ text "equine" ]
                       ]
@@ -43,7 +44,7 @@ view model =
               , p [class "level-item"]
                   [ a [ class "button is-primary"
                       , href "#"
-                      , onClickWithoutPropagation AddNewBovine
+                      , onClickWithoutPropagation <| AddNewAnimals 1 "bovine"
                       ]
                       [text "Now"]]
               ]

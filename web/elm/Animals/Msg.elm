@@ -32,7 +32,7 @@ type Msg
   | StartCreatingNewAnimal Animal.DisplayedAnimal
   | CancelAnimalChanges Animal.Animal 
 
-  | AddNewBovine
+  | AddNewAnimals Int String
 
   | MoreLikeThisAnimal Animal.Id
 

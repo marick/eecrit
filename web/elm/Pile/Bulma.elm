@@ -131,6 +131,10 @@ simpleSelect content =
   span [ class "select" ]
     [ select [] content ]
 
+disabledSelect content = 
+  span [ class "select" ]
+    [ select [disabled True] content ]
+
 headingP heading = 
   p [class "heading"] [text heading]
 

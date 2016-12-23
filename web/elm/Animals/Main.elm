@@ -166,8 +166,8 @@ update_ msg model =
         False ->
           deleteDisplayedAnimalById model animal.id ! [] 
 
-    AddNewBovine ->
-      (Form.freshEditableAnimal (Aggregate.freshId model.animals) |> upsertDisplayedAnimal model) ! []
+    AddNewAnimals count species ->
+      addNewAnimals count species model ! []
 
     RemoveFlash displayedAnimal ->
       (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> upsertDisplayedAnimal model) ! []
@@ -175,8 +175,29 @@ update_ msg model =
     NoOp ->
       model ! []
 
+addNewAnimals count species model =
+  let
+    -- This is an enormous kludge due to need to generate unique ids, given
+    -- that I don't trust only 32 bits of non-collision.
+    -- It's also grossly inefficient.
+    addNext remainder modelSoFar =
+      if remainder == 0 then
+        modelSoFar
+      else
+        let
+          safeId = Aggregate.freshId modelSoFar.animals
+          animal = Animal.fresh species safeId
+          context = Validation.context modelSoFar.animals animal
+          form = Form.extractForm animal |> Validation.validate context
+        in
+          Animal.empty animal (Debug.log "form" form)
+            |> upsertDisplayedAnimal modelSoFar
+            |> addNext (remainder - 1)
+  in
+    addNext count model
+        
 checkForm animal form model =
-  Validation.validate form (Validation.context model.animals animal)
+  Validation.validate (Validation.context model.animals animal) form 
            
 upsertDisplayedAnimal model displayed =
   model_animals.update (Aggregate.upsert displayed) model

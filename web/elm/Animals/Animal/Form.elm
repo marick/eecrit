@@ -40,19 +40,6 @@ assumeValid form =
       
 
   
-freshEditableAnimal id =
-  let 
-    animal = { id = id
-             , version = 0
-             , wasEverSaved = False
-             , name = ""
-             , species = "bovine"
-             , tags = []
-             , properties = Dict.empty
-             }
-    form = extractForm animal
-  in
-    empty animal form 
   
 -- Constructing Messages and other Important Actions
 

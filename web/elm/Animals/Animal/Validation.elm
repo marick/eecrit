@@ -15,8 +15,8 @@ context animals changingAnimal  =
   { disallowedNames = Aggregate.animalNames animals |> Set.remove changingAnimal.name
   }
 
-validate : Form -> ValidationContext -> Form
-validate form context =
+validate : ValidationContext -> Form -> Form
+validate context form =
   Form.assumeValid form 
     |> validateName context
 

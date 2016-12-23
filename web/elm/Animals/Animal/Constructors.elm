@@ -1,5 +1,7 @@
 module Animals.Animal.Constructors exposing (..)
 
+import Dict exposing (Dict)
+
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Flash exposing (AnimalFlash(..))
@@ -17,4 +19,14 @@ empty animal form =
 andFlash : AnimalFlash -> DisplayedAnimal -> DisplayedAnimal    
 andFlash flash animal =
   displayedAnimal_flash.set flash animal
-    
+
+fresh : String -> Id -> Animal    
+fresh species id =
+  { id = id
+  , version = 0
+  , wasEverSaved = False
+  , name = ""
+  , species = species
+  , tags = []
+  , properties = Dict.empty
+  }

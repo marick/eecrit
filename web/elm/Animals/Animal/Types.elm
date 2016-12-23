@@ -3,7 +3,7 @@ module Animals.Animal.Types exposing
   ..
   )
 
-import Animals.Animal.Flash as Flash exposing (Flash)
+import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
 import Animals.Pages.Declare exposing (PageChoice(..))
 import Pile.Bulma exposing (FormValue)
 import Dict exposing (Dict)
@@ -46,23 +46,14 @@ type DisplayHow
 type alias Display =
   { wherein : PageChoice
   , how : DisplayHow
+  , animalFlash : AnimalFlash
   }
   
 type alias DisplayedAnimal = 
   { animal : Animal
   , display : Display
-  , flash : Flash
   }
 
-compact animal flash =
-  DisplayedAnimal animal (Display AllPage Compact) flash
-expanded animal flash =
-  DisplayedAnimal animal (Display AllPage Expanded) flash
-editable animal form flash =
-  DisplayedAnimal animal (Display AllPage <| Editable form) flash
-new animal form flash = 
-  DisplayedAnimal animal (Display AddPage <| Editable form) flash
-    
 type alias ValidationContext =
   { disallowedNames : Set String
   }

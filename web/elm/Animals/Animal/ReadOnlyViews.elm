@@ -9,7 +9,7 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Animal.Icons as Icon
-import Animals.Animal.Flash as Flash
+import Animals.Animal.Flash as AnimalFlash
 
 import Dict
 import List
@@ -19,30 +19,41 @@ import String.Extra as String
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
-compactView animal flash =
-  tr []
-    [ (td []
-         [ p [] ( animalSalutation animal  :: animalTags animal)
-         , Flash.showAndCancel flash (EnsureCompactAnimalView animal)
-         ])
-    , Icon.expand animal Bulma.tdIcon
-    , Icon.edit animal Bulma.tdIcon
-    , Icon.moreLikeThis animal Bulma.tdIcon
-    ]
 
-expandedView animal flash =
-  Bulma.highlightedRow []
-    [ td []
-        [ p [] [ animalSalutation animal ]
-        , p [] (animalTags animal)
-        , animalProperties animal |> Bulma.propertyTable
-        , Flash.showAndCancel flash (EnsureExpandedAnimalView animal)
-        ]
-    , Icon.contract animal Bulma.tdIcon
-    , Icon.edit animal Bulma.tdIcon
-    , Icon.moreLikeThis animal Bulma.tdIcon
-    ]
+compactView : DisplayedAnimal -> Html Msg
+compactView displayedAnimal =
+  let
+    animal = displayedAnimal.animal
+    flash = displayedAnimal.display.animalFlash
+  in
+    tr []
+      [ (td []
+           [ p [] ( animalSalutation animal  :: animalTags animal)
+           , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
+           ])
+      , Icon.expand animal Bulma.tdIcon
+      , Icon.edit animal Bulma.tdIcon
+      , Icon.moreLikeThis animal Bulma.tdIcon
+      ]
 
+expandedView : DisplayedAnimal -> Html Msg      
+expandedView displayedAnimal =
+  let
+    animal = displayedAnimal.animal
+    flash = displayedAnimal.display.animalFlash
+  in
+    Bulma.highlightedRow []
+      [ td []
+          [ p [] [ animalSalutation animal ]
+          , p [] (animalTags animal)
+          , animalProperties animal |> Bulma.propertyTable
+          , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
+          ]
+      , Icon.contract animal Bulma.tdIcon
+      , Icon.edit animal Bulma.tdIcon
+      , Icon.moreLikeThis animal Bulma.tdIcon
+      ]
+      
 -- Util
 
 animalProperties animal =

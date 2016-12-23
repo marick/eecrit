@@ -1,9 +1,11 @@
 module Animals.Pages.PageFlash exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Pile.Bulma as Bulma 
 import Animals.Msg exposing (Msg(..))
 import Http exposing (..)
+import Animals.Pages.Declare as Pages
 
 type Flash
   = NoFlash
@@ -17,7 +19,10 @@ show flash =
       span [] []
     SavedAnimalFlash -> 
       Bulma.flashNotification NoOp
-        [ text "The new animal can be seen on the All Animals page." ]
+        [ text "The new animal can be seen on the "
+        , a [href Pages.allPagePath] [text "View Animals"]
+        , text " page."
+        ]
 
     HttpErrorFlash contextString err ->
       httpError contextString err

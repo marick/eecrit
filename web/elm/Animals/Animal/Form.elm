@@ -12,6 +12,7 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Msg exposing (..)
 import Animals.Animal.Types exposing (..)
+import Animals.Animal.Constructors exposing (..)
 import Animals.Animal.Flash as Flash
 import Animals.Animal.Lenses exposing (..)
 
@@ -51,7 +52,7 @@ freshEditableAnimal id =
              }
     form = extractForm animal
   in
-    new animal form Flash.NoFlash
+    empty animal form 
   
 -- Constructing Messages and other Important Actions
 
@@ -75,7 +76,7 @@ updateAnimal animal form =
 
 checkEditMsg : Animal -> Form -> Msg
 checkEditMsg animal form =
-  CheckFormChange animal form Flash.NoFlash
+  CheckFormChange animal form
 
 applyEditsMsg : Animal -> Form -> Msg        
 applyEditsMsg animal form =
@@ -85,11 +86,11 @@ applyEditsMsg animal form =
               True -> StartSavingAnimalChanges
               False -> StartCreatingNewAnimal
   in
-    msg (expanded newAnimal flash)
+    msg (expanded newAnimal |> andFlash flash)
 
 cancelEditsMsg : Animal -> Msg
 cancelEditsMsg animal = 
-  (CancelAnimalChanges animal Flash.NoFlash)
+  (CancelAnimalChanges animal)
 
 textFieldEditHandler : Animal -> Form -> FormLens String -> (String -> Msg)
 textFieldEditHandler animal form lens =

@@ -7,6 +7,7 @@ import Dict exposing (Dict)
 import Set exposing (Set)
 import String
 import Animals.Animal.Types exposing (..)
+import Animals.Animal.Constructors exposing (..)
 import Animals.Animal.Flash exposing (..)
 import Animals.Animal.Lenses exposing (..)
 
@@ -29,7 +30,7 @@ deleteById = Dict.remove
 asAggregate : List Animal -> Dict Id DisplayedAnimal             
 asAggregate animals =
   let
-    tuple animal = (animal.id, compact animal NoFlash)
+    tuple animal = (animal.id, compact animal)
   in
     animals |> List.map tuple |> Dict.fromList
 

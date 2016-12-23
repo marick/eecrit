@@ -4,12 +4,14 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
+import Animals.Animal.Constructors as Animal
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
+import Animals.Animal.Flash as AnimalFlash
 import Animals.Animal.Validation as Validation
 
 import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
@@ -112,23 +114,23 @@ update_ msg model =
       , Cmd.none
       )
 
-    EnsureCompactAnimalView animal animalFlash ->
-      (Animal.compact animal animalFlash |> upsertDisplayedAnimal model) ! []
+    EnsureCompactAnimalView animal ->
+      (Animal.compact animal |> upsertDisplayedAnimal model) ! []
           
-    EnsureExpandedAnimalView animal animalFlash ->
-      (Animal.expanded animal animalFlash |> upsertDisplayedAnimal model) ! []
+    EnsureExpandedAnimalView animal ->
+      (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
 
-    BeginEditing animal animalFlash ->
+    BeginEditing animal ->
       let
         form = (Form.extractForm animal)
       in
-        (Animal.editable animal form animalFlash |> upsertDisplayedAnimal model) ! []
+        (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
 
-    CheckFormChange animal changedForm animalFlash ->
+    CheckFormChange animal changedForm ->
       let
         form = checkForm animal changedForm model
       in
-        (Animal.editable animal form animalFlash |> upsertDisplayedAnimal model) ! []
+        (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
 
     StartSavingAnimalChanges displayedAnimal ->
       ( upsertDisplayedAnimal model displayedAnimal
@@ -143,12 +145,13 @@ update_ msg model =
             Nothing ->
               model ! [] -- impossible
             Just displayedAnimal ->
-              let
-                newAnimal =
-                  Animal.expanded (animal_version.set version displayedAnimal.animal)
-                    displayedAnimal.flash
-              in
-                upsertDisplayedAnimal model (Debug.log "new version" newAnimal) ! []
+              ( displayedAnimal.animal
+                  |> animal_version.set version
+                  |> Animal.expanded
+                  |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
+                  |> upsertDisplayedAnimal model
+              , Cmd.none
+              )
 
     NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
@@ -156,16 +159,19 @@ update_ msg model =
     StartCreatingNewAnimal displayedAnimal ->
       tmp_start_creating displayedAnimal model ! []
 
-    CancelAnimalChanges animal flash ->
+    CancelAnimalChanges animal ->
       case animal.wasEverSaved of
         True -> 
-          (Animal.expanded animal flash |> upsertDisplayedAnimal model) ! []
+          (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
         False ->
           deleteDisplayedAnimalById model animal.id ! [] 
 
     AddNewBovine ->
       (Form.freshEditableAnimal (Aggregate.freshId model.animals) |> upsertDisplayedAnimal model) ! []
 
+    RemoveFlash displayedAnimal ->
+      (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> upsertDisplayedAnimal model) ! []
+        
     NoOp ->
       model ! []
 
@@ -178,12 +184,12 @@ upsertDisplayedAnimal model displayed =
 deleteDisplayedAnimalById model id  =
   model_animals.update (Aggregate.deleteById id) model
 
-tmp_start_creating {animal, display, flash} model =
+tmp_start_creating {animal, display} model =
   let
     animalToSave = animal_wasEverSaved.set True animal
     modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
   in
-    Animal.expanded animalToSave flash |> upsertDisplayedAnimal modelToSave
+    Animal.expanded animalToSave |> upsertDisplayedAnimal modelToSave
 
 httpError contextString err model = 
   model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model

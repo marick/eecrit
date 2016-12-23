@@ -91,12 +91,11 @@ aggregateFilter preds animal =
 humanSorted animals = 
   List.sortBy (.animal >> .name >> String.toLower) animals
 
-individualAnimalView {animal, display, flash} =
-  case display.how of
-    Compact -> RO.compactView animal flash
-    Expanded -> RO.expandedView animal flash
-    Editable form -> RW.view animal form flash
-
+individualAnimalView displayedAnimal =
+  case displayedAnimal.display.how of
+    Compact -> RO.compactView displayedAnimal
+    Expanded -> RO.expandedView displayedAnimal
+    Editable form -> RW.view displayedAnimal form
 
 -- The calendar
 

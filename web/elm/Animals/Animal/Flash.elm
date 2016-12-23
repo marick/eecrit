@@ -4,17 +4,17 @@ import Html exposing (..)
 import Pile.Bulma as Bulma 
 
 
-type Flash
+type AnimalFlash
   = NoFlash
   | SavedIncompleteTag String
 
-showAndCancel : Flash -> (Flash -> msg) -> Html msg
-showAndCancel flash partialMsg =
+showWithButton : AnimalFlash -> msg -> Html msg
+showWithButton flash msg =
   case flash of 
     NoFlash -> 
       span [] []
     SavedIncompleteTag tagName -> 
-      Bulma.flashNotification (partialMsg NoFlash)
+      Bulma.flashNotification msg
         [ text "Excuse me for butting in, but I notice you clicked "
         , Bulma.exampleSuccess
         , text " while there was text in the "

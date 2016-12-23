@@ -17,25 +17,33 @@ import Animals.Animal.Form as Form
 import Animals.Animal.Validation as Validation
 import Animals.Animal.Lenses exposing (..)
 
-view animal form flash =
-  Bulma.highlightedRow []
-    [ td []
-        [ Bulma.controlRow "Name" <| nameEditControl animal form
-        , Bulma.controlRow "Tags" <| deleteTagControl animal form
-        , Bulma.controlRow "New Tag" <| newTagControl animal form
-          
-        -- , Bulma.controlRow "Properties"
-        --     <| Bulma.oneReasonablySizedControl
-        --          (editableAnimalProperties form |> Bulma.propertyTable)
+-- Form just exists so that we don't have to do *another* case to extract it.
+-- Someday find a better way
 
-        , saveButton animal form
-        , cancelButton animal
-        , Flash.showAndCancel flash (CheckFormChange animal form)
-        ]
-    , td [] []
-    , td [] []
-    , Icon.editHelp Bulma.tdIcon
-    ]
+view : DisplayedAnimal -> Form -> Html Msg
+view displayedAnimal form =
+  let
+    animal = displayedAnimal.animal
+    flash = displayedAnimal.display.animalFlash
+  in 
+    Bulma.highlightedRow []
+      [ td []
+          [ Bulma.controlRow "Name" <| nameEditControl animal form
+          , Bulma.controlRow "Tags" <| deleteTagControl animal form
+          , Bulma.controlRow "New Tag" <| newTagControl animal form
+            
+          -- , Bulma.controlRow "Properties"
+          --     <| Bulma.oneReasonablySizedControl
+          --          (editableAnimalProperties form |> Bulma.propertyTable)
+            
+          , saveButton animal form
+          , cancelButton animal
+          , Flash.showWithButton flash (RemoveFlash displayedAnimal)
+          ]
+      , td [] []
+      , td [] []
+      , Icon.editHelp Bulma.tdIcon
+      ]
     
 
 -- Controls

@@ -84,7 +84,7 @@ update msg model =
 
 update_ : Msg -> Model -> ( Model, Cmd Msg )
 update_ msg model =
-  case Debug.log "update" msg of
+  case msg of
     NoticePageChange location -> 
       model_page.set (Page.fromLocation location) model ! []
     StartPageChange page ->
@@ -114,10 +114,10 @@ update_ msg model =
       , Cmd.none
       )
 
-    EnsureCompactAnimalView animal ->
+    BeginCompactAnimalView animal ->
       (Animal.compact animal |> upsertDisplayedAnimal model) ! []
           
-    EnsureExpandedAnimalView animal ->
+    BeginExpandedAnimalView animal ->
       (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
 
     BeginEditing animal ->

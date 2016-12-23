@@ -21,8 +21,8 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | EnsureCompactAnimalView Animal.Animal 
-  | EnsureExpandedAnimalView Animal.Animal 
+  | BeginCompactAnimalView Animal.Animal 
+  | BeginExpandedAnimalView Animal.Animal 
   | BeginEditing Animal.Animal 
   | CheckFormChange Animal.Animal Animal.Form 
     

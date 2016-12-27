@@ -93,6 +93,7 @@ defmodule Eecrit.Router do
     resources "/animals", OldAnimalApiController, only: [:index]
 
     # Todo: how to do all the rest fakery from elm - if it's worth it
+    post "/v2animals/create/:original_id", AnimalApiController, :create
     get "/v2animals", AnimalApiController, :index
     post "/v2animals", AnimalApiController, :update
   end

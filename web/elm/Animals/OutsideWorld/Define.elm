@@ -2,6 +2,7 @@ module Animals.OutsideWorld.Define exposing
   ( fetchAnimals
   , askTodaysDate
   , saveAnimal
+  , createAnimal
   )
 import Animals.OutsideWorld.Json as Json
 import Animals.Animal.Types exposing (..)
@@ -23,16 +24,19 @@ fetchAnimals =
 
 saveAnimal animal =
   let
-    url = "/api/v2animals"
+    url = "/api/v2animals/"
     body = animal |> Json.encodeAnimal |> Json.asData |> Http.jsonBody
     request = Http.post url body (Json.withinData Json.decodeSaveResult)
   in
     Http.send NoticeAnimalSaveResults request
 
-
-
-
--- Animal creation
+createAnimal animal =
+  let
+    url = "/api/v2animals/create/" ++ animal.id
+    body = animal |> Json.encodeAnimal |> Json.asData |> Http.jsonBody
+    request = Http.post url body (Json.withinData Json.decodeCreationResult)
+  in
+    Http.send NoticeAnimalCreationResults request
 
 -- persistNewAnimal animal =
 --   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })

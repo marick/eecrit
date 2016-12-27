@@ -157,7 +157,28 @@ update_ msg model =
       httpError "I could not save the animal." e model ! []
 
     StartCreatingNewAnimal displayedAnimal ->
-      tmp_start_creating displayedAnimal model ! []
+      ( upsertDisplayedAnimal model displayedAnimal
+      , OutsideWorld.createAnimal displayedAnimal.animal
+      )
+
+    NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
+      let
+        maybe = Dict.get (Debug.log "responsre" tempId) model.animals
+      in
+        case (Debug.log "fetched" maybe) of
+            Nothing ->
+              model ! [] -- impossible
+            Just displayedAnimal ->
+              ( displayedAnimal.animal
+                  |> Animal.expanded
+                  |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
+                  |> upsertDisplayedAnimal model
+              , Cmd.none
+              )
+
+    NoticeAnimalCreationResults (Err e) ->
+      httpError "I could not create the animal." e model ! []
+
 
     CancelAnimalChanges animal ->
       case animal.wasEverSaved of
@@ -205,12 +226,12 @@ upsertDisplayedAnimal model displayed =
 deleteDisplayedAnimalById model id  =
   model_animals.update (Aggregate.deleteById id) model
 
-tmp_start_creating {animal, display} model =
-  let
-    animalToSave = animal_wasEverSaved.set True animal
-    modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
-  in
-    Animal.expanded animalToSave |> upsertDisplayedAnimal modelToSave
+-- tmp_start_creating {animal, display} model =
+--   let
+--     animalToSave = animal_wasEverSaved.set True animal
+--     modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
+--   in
+--     Animal.expanded animalToSave |> upsertDisplayedAnimal modelToSave
 
 httpError contextString err model = 
   model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model

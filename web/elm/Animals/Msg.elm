@@ -30,6 +30,7 @@ type Msg
   | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
 
   | StartCreatingNewAnimal Animal.DisplayedAnimal
+  | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
   | CancelAnimalChanges Animal.Animal 
 
   | AddNewAnimals Int String

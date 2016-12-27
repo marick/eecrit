@@ -39,6 +39,19 @@ decodeSaveResult =
     (to_transferFormat |> Decode.map from_transferFormat)
 
 
+decodeCreationResult =
+  let 
+    to_transferFormat =
+      (Decode.map2 (,)
+         (Decode.field "originalId" Decode.string)
+         (Decode.field "serverId" Decode.int))
+
+    from_transferFormat (originalId, serverId) =
+      AnimalCreated originalId (toString serverId)
+  in
+    (to_transferFormat |> Decode.map from_transferFormat)
+
+
 
 
 --- Animal support

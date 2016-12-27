@@ -47,6 +47,10 @@ defmodule Eecrit.Animals do
     GenServer.call(__MODULE__, :all)
   end
 
+  def create(original_id, animal) do 
+    GenServer.call(__MODULE__, [:create, original_id, animal])
+  end
+
   def update(animal) do 
     GenServer.call(__MODULE__, [:update, animal])
   end
@@ -76,6 +80,13 @@ defmodule Eecrit.Animals do
                   _from, state) do
     new_state = Map.put(state, id, animal)
     retval = %{id: id, version: version+1}
+    {:reply, {:ok, retval}, new_state}
+  end
+
+  def handle_call([:create, original_id, animal], _from, state) do
+    new_id = Map.size(state) + 100  # temp
+    new_state = Map.put(state, new_id, animal)
+    retval = %{originalId: original_id, serverId: new_id}
     {:reply, {:ok, retval}, new_state}
   end
 

@@ -31,7 +31,7 @@ compactView displayedAnimal =
            [ p [] ( animalSalutation animal  :: animalTags animal)
            , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
            ])
-      -- , Icon.expand animal Bulma.tdIcon
+      , Icon.expand displayedAnimal Bulma.tdIcon
       -- , Icon.edit animal Bulma.tdIcon
       , Icon.moreLikeThis animal Bulma.tdIcon
       ]

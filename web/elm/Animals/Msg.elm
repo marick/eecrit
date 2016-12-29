@@ -22,7 +22,7 @@ type Msg
   | SetSpeciesFilter String
 
   -- | BeginCompactAnimalView Animal.Animal 
-  -- | BeginExpandedAnimalView Animal.Animal 
+  | SwitchToExpandedAnimalView Animal.DisplayedAnimal
   -- | BeginEditing Animal.Animal 
   -- | CheckFormChange Animal.Animal Animal.Form 
     

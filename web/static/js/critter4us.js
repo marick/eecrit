@@ -21062,6 +21062,9 @@ var _user$project$Animals_Msg$NoticeAnimalCreationResults = function (a) {
 var _user$project$Animals_Msg$NoticeAnimalSaveResults = function (a) {
 	return {ctor: 'NoticeAnimalSaveResults', _0: a};
 };
+var _user$project$Animals_Msg$SwitchToExpandedAnimalView = function (a) {
+	return {ctor: 'SwitchToExpandedAnimalView', _0: a};
+};
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
 };
@@ -22090,6 +22093,12 @@ var _user$project$Animals_Main$model_animals = A2(
 				w,
 				{animals: p});
 		}));
+var _user$project$Animals_Main$upsertDisplayedAnimal = F2(
+	function (model, displayed) {
+		var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayed);
+		var newAnimals = A3(_elm_lang$core$Dict$insert, key, displayed, model.animals);
+		return A2(_user$project$Animals_Main$model_animals.set, newAnimals, model);
+	});
 var _user$project$Animals_Main$model_today = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -22177,6 +22186,14 @@ var _user$project$Animals_Main$update_ = F2(
 					{ctor: '[]'});
 			case 'MoreLikeThisAnimal':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'SwitchToExpandedAnimalView':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A2(
+						_user$project$Animals_Main$upsertDisplayedAnimal,
+						model,
+						A2(_user$project$Animals_Animal_Lenses$displayedAnimal_format.set, _user$project$Animals_Animal_Types$Expanded, _p0._0)),
+					{ctor: '[]'});
 			case 'NoticeAnimalSaveResults':
 				if (_p0._0.ctor === 'Ok') {
 					return A2(
@@ -22266,6 +22283,14 @@ var _user$project$Animals_Animal_Icons$moreLikeThis = F2(
 			'fa-plus',
 			'Copy: make more animals like this one',
 			_user$project$Animals_Msg$MoreLikeThisAnimal(animal.id));
+	});
+var _user$project$Animals_Animal_Icons$expand = F2(
+	function (animal, iconType) {
+		return A3(
+			iconType,
+			'fa-caret-down',
+			'Expand: show more about this animal',
+			_user$project$Animals_Msg$SwitchToExpandedAnimalView(animal));
 	});
 
 var _user$project$Animals_Animal_ReadOnlyViews$parentheticalSpecies = function (animal) {
@@ -22440,8 +22465,12 @@ var _user$project$Animals_Animal_ReadOnlyViews$compactView = function (displayed
 				}),
 			_1: {
 				ctor: '::',
-				_0: A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon),
-				_1: {ctor: '[]'}
+				_0: A2(_user$project$Animals_Animal_Icons$expand, displayedAnimal, _user$project$Pile_Bulma$tdIcon),
+				_1: {
+					ctor: '::',
+					_0: A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };

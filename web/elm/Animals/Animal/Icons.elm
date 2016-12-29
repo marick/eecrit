@@ -11,14 +11,14 @@ import Animals.Msg exposing (..)
 -- import Animals.Animal.Form as Form
 import Animals.Animal.Flash as Flash
 
--- expand animal iconType =
---   iconType "fa-caret-down"
---     "Expand: show more about this animal"
---     (BeginExpandedAnimalView animal)
+expand animal iconType =
+  iconType "fa-caret-down"
+    "Expand: show more about this animal"
+    (SwitchToExpandedAnimalView animal)
       
 -- contract animal iconType =
 --   iconType "fa-caret-up"
---     "Expand: show less about this animal"
+--     "Contract: show less about this animal"
 --     (BeginCompactAnimalView animal)
       
 -- edit animal iconType =

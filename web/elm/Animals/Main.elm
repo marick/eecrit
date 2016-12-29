@@ -130,8 +130,10 @@ update_ msg model =
     -- BeginCompactAnimalView animal ->
     --   (Animal.compact animal |> upsertDisplayedAnimal model) ! []
           
-    -- BeginExpandedAnimalView animal ->
-    --   (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
+    SwitchToExpandedAnimalView displayedAnimal ->
+      (displayedAnimal 
+        |> displayedAnimal_format.set Animal.Expanded 
+        |> upsertDisplayedAnimal model) ! []
 
     -- BeginEditing animal ->
     --   let
@@ -237,8 +239,12 @@ update_ msg model =
 -- checkForm animal form model =
 --   Validation.validate (Validation.context model.animals animal) form 
            
--- upsertDisplayedAnimal model displayed =
---   model_animals.update (Aggregate.upsert displayed) model
+upsertDisplayedAnimal model displayed =
+  let
+    key = displayedAnimal_id.get displayed
+    newAnimals = Dict.insert key displayed model.animals
+  in
+    model_animals.set newAnimals model
 
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model

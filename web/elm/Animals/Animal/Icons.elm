@@ -8,23 +8,23 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.Form as Form
+-- import Animals.Animal.Form as Form
 import Animals.Animal.Flash as Flash
 
-expand animal iconType =
-  iconType "fa-caret-down"
-    "Expand: show more about this animal"
-    (BeginExpandedAnimalView animal)
+-- expand animal iconType =
+--   iconType "fa-caret-down"
+--     "Expand: show more about this animal"
+--     (BeginExpandedAnimalView animal)
       
-contract animal iconType =
-  iconType "fa-caret-up"
-    "Expand: show less about this animal"
-    (BeginCompactAnimalView animal)
+-- contract animal iconType =
+--   iconType "fa-caret-up"
+--     "Expand: show less about this animal"
+--     (BeginCompactAnimalView animal)
       
-edit animal iconType =
-  iconType "fa-pencil"
-    "Edit: make changes to this animal"
-    (BeginEditing animal)
+-- edit animal iconType =
+--   iconType "fa-pencil"
+--     "Edit: make changes to this animal"
+--     (BeginEditing animal)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"

@@ -14,12 +14,11 @@ import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Animal.EditableView as RW
 
 view model =
-  let
-    whichToShow = creationInProgress model |> List.map Common.individualAnimalView
-  in
+  -- let
+  --   whichToShow = creationInProgress model |> List.map Common.individualAnimalView
+  -- in
     div []
       [ nav [class "level is-mobile"]
           [ div [class "level-left" ]
@@ -50,9 +49,9 @@ view model =
               ]
           ]
       , PageFlash.show model.pageFlash
-      , Bulma.headerlessTable whichToShow
+      -- , Bulma.headerlessTable whichToShow
       ]
 
 
-creationInProgress model =
-  Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]
+-- creationInProgress model =
+--   Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]

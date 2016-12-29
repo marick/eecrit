@@ -21,17 +21,17 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | BeginCompactAnimalView Animal.Animal 
-  | BeginExpandedAnimalView Animal.Animal 
-  | BeginEditing Animal.Animal 
-  | CheckFormChange Animal.Animal Animal.Form 
+  -- | BeginCompactAnimalView Animal.Animal 
+  -- | BeginExpandedAnimalView Animal.Animal 
+  -- | BeginEditing Animal.Animal 
+  -- | CheckFormChange Animal.Animal Animal.Form 
     
-  | StartSavingAnimalChanges Animal.DisplayedAnimal
+  -- | StartSavingAnimalChanges Animal.DisplayedAnimal
   | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
 
-  | StartCreatingNewAnimal Animal.DisplayedAnimal
+  -- | StartCreatingNewAnimal Animal.DisplayedAnimal
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
-  | CancelAnimalChanges Animal.Animal 
+  -- | CancelAnimalChanges Animal.Animal 
 
   | AddNewAnimals Int String
 

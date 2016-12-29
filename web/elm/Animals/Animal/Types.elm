@@ -4,12 +4,10 @@ module Animals.Animal.Types exposing
   )
 
 import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
-import Animals.Pages.Declare exposing (PageChoice(..))
 import Pile.Bulma exposing (FormValue)
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Set exposing (Set)
-import String
 
 type alias Id = String
 
@@ -23,7 +21,6 @@ type DictValue
 type alias Animal =
   { id : Id
   , version : Int
-  , wasEverSaved : Bool 
   , name : String
   , species : String
   , tags : List String
@@ -38,20 +35,15 @@ type alias Form =
   , isValid : Bool
   }
 
-type DisplayHow
+type Format
   = Compact
   | Expanded
-  | Editable Form
+  | Editable
 
-type alias Display =
-  { wherein : PageChoice
-  , how : DisplayHow
-  , animalFlash : AnimalFlash
-  }
-  
 type alias DisplayedAnimal = 
   { animal : Animal
-  , display : Display
+  , format : Format
+  , animalFlash : AnimalFlash
   }
 
 type alias ValidationContext =

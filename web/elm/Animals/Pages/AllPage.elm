@@ -16,12 +16,14 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.ReadOnlyViews as RO
-import Animals.Animal.EditableView as RW
+-- import Animals.Animal.EditableView as RW
 import Animals.Pages.PageFlash as PageFlash
+
 
 view model =
   let
-    whichToShow = filteredAnimals model |> List.map individualAnimalView
+    whichToShow =
+      allPageAnimals model |> applyFilters model |> List.map individualAnimalView
   in
     div []
       [ filterView model
@@ -53,7 +55,13 @@ filterView model =
       ]
     ]
 
-filteredAnimals model = 
+allPageAnimals model =
+  model.allPageAnimals
+    |> Set.toList 
+    |> List.map (\ animal -> Dict.get animal model.animals)
+    |> List.filterMap identity
+
+applyFilters model animals = 
   let
     hasWanted modelFilter animalValue =
       let 
@@ -62,22 +70,21 @@ filteredAnimals model =
       in
         String.startsWith wanted has
 
-    hasDesiredSpecies displayed = hasWanted .speciesFilter displayed.animal.species
-    hasDesiredName displayed = hasWanted .nameFilter displayed.animal.name
-    hasDesiredTag displayed =
+    rightSpecies displayed =
+      hasWanted .speciesFilter displayed.animal.species
+
+    rightName displayed =
+      hasWanted .nameFilter displayed.animal.name
+
+    rightTag displayed =
       String.isEmpty model.tagFilter || 
         List.any (hasWanted .tagFilter) displayed.animal.tags
   in
-    animalsToDisplay model
-      [displayedAnimal_wasEverSaved.get, hasDesiredSpecies, hasDesiredName, hasDesiredTag]
-
-
-animalsToDisplay model filters = 
-    model.animals
-      |> Dict.values
-      |> List.filter (aggregateFilter filters)
+    animals
+      |> List.filter (aggregateFilter [rightSpecies, rightName, rightTag])
       |> humanSorted
-         
+
+
 aggregateFilter preds animal =
   case preds of
     [] ->
@@ -92,10 +99,11 @@ humanSorted animals =
   List.sortBy (.animal >> .name >> String.toLower) animals
 
 individualAnimalView displayedAnimal =
-  case displayedAnimal.display.how of
+  case displayedAnimal.format of
     Compact -> RO.compactView displayedAnimal
     Expanded -> RO.expandedView displayedAnimal
-    Editable form -> RW.view displayedAnimal form
+    Editable -> div [] []
+                     -- RW.view displayedAnimal form
 
 -- The calendar
 

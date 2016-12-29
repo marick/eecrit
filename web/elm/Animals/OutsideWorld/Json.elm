@@ -126,7 +126,6 @@ animalTransferFormat_to_Animal incoming =
     in
         { id = toString incoming.id
         , version = incoming.version
-        , wasEverSaved = True
         , name = incoming.name
         , species = incoming.species
         , tags = incoming.tags

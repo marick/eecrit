@@ -6,20 +6,20 @@ import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
 import Animals.Animal.Constructors as Animal
 import Animals.Animal.Lenses exposing (..)
-import Animals.Animal.Aggregates as Aggregate
-import Animals.Animal.Form as Form
+-- import Animals.Animal.Aggregates as Aggregate
+-- import Animals.Animal.Form as Form
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Flash as AnimalFlash
-import Animals.Animal.Validation as Validation
+-- import Animals.Animal.Validation as Validation
 
 import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
 import Navigation
 import String
-import Set
+import Set exposing (Set)
 import List
-import Dict
+import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (lens)
@@ -31,10 +31,13 @@ type alias Flags =
 
 type alias Model = 
   { page : Page.PageChoice
+  , pageFlash : PageFlash.Flash
   , csrfToken : String
-  , animals : Aggregate.VisibleAggregate
+  , animals : Dict Animal.Id Animal.DisplayedAnimal
+  , forms : Dict Animal.Id Animal.Form
 
   -- AllPage
+  , allPageAnimals : Set Animal.Id
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -43,12 +46,15 @@ type alias Model =
   , datePickerOpen : Bool
 
   -- AddPage
-  , pageFlash : PageFlash.Flash
+  , addPageAnimals : Set Animal.Id
   }
 
 model_page = lens .page (\ p w -> { w | page = p })
 model_today = lens .today (\ p w -> { w | today = p })
 model_animals = lens .animals (\ p w -> { w | animals = p })
+model_allPageAnimals = lens .allPageAnimals (\ p w -> { w | allPageAnimals = p })
+model_addPageAnimals = lens .addPageAnimals (\ p w -> { w | addPageAnimals = p })
+model_forms = lens .forms (\ p w -> { w | forms = p })
 model_tagFilter = lens .tagFilter (\ p w -> { w | tagFilter = p })
 model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
 model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
@@ -63,15 +69,22 @@ init flags location =
   let
     model =
       { page = Page.fromLocation(location)
+      , pageFlash = PageFlash.NoFlash
       , csrfToken = flags.csrfToken
-      , animals = Aggregate.emptyAggregate
+      , animals = Dict.empty
+      , forms = Dict.empty
+
+      -- All Animals Page
+      , allPageAnimals = Set.empty
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
       , effectiveDate = Today
       , today = Nothing
       , datePickerOpen = False
-      , pageFlash = PageFlash.NoFlash
+
+      -- Add Animals Page
+      , addPageAnimals = Set.empty
       }
   in
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
@@ -93,7 +106,7 @@ update_ msg model =
     SetToday value ->
       model_today.set value model ! []
     SetAnimals (Ok animals) ->
-      model_animals.set (Aggregate.asAggregate animals) model ! []
+      populateAllAnimalsPage animals model ! []
     SetAnimals (Err e) ->
       httpError "I could not retrieve animals." e model ! []
 
@@ -114,124 +127,134 @@ update_ msg model =
       , Cmd.none
       )
 
-    BeginCompactAnimalView animal ->
-      (Animal.compact animal |> upsertDisplayedAnimal model) ! []
+    -- BeginCompactAnimalView animal ->
+    --   (Animal.compact animal |> upsertDisplayedAnimal model) ! []
           
-    BeginExpandedAnimalView animal ->
-      (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
+    -- BeginExpandedAnimalView animal ->
+    --   (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
 
-    BeginEditing animal ->
-      let
-        form = (Form.extractForm animal)
-      in
-        (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
+    -- BeginEditing animal ->
+    --   let
+    --     form = (Form.extractForm animal)
+    --   in
+    --     (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
 
-    CheckFormChange animal changedForm ->
-      let
-        form = checkForm animal changedForm model
-      in
-        (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
+    -- CheckFormChange animal changedForm ->
+    --   let
+    --     form = checkForm animal changedForm model
+    --   in
+    --     (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
 
-    StartSavingAnimalChanges displayedAnimal ->
-      ( upsertDisplayedAnimal model displayedAnimal
-      , OutsideWorld.saveAnimal displayedAnimal.animal
-      )
+    -- StartSavingAnimalChanges displayedAnimal ->
+    --   ( upsertDisplayedAnimal model displayedAnimal
+    --   , OutsideWorld.saveAnimal displayedAnimal.animal
+    --   )
 
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
-      let
-        savedAnimalMaybe = Dict.get id model.animals
-      in
-        case savedAnimalMaybe of
-            Nothing ->
-              model ! [] -- impossible
-            Just displayedAnimal ->
-              ( displayedAnimal.animal
-                  |> animal_version.set version
-                  |> Animal.expanded
-                  |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
-                  |> upsertDisplayedAnimal model
-              , Cmd.none
-              )
+      model ! []
+      -- let
+      --   savedAnimalMaybe = Dict.get id model.animals
+      -- in
+      --   case savedAnimalMaybe of
+      --       Nothing ->
+      --         model ! [] -- impossible
+      --       Just displayedAnimal ->
+      --         ( displayedAnimal.animal
+      --             |> animal_version.set version
+      --             |> Animal.expanded
+      --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
+      --             |> upsertDisplayedAnimal model
+      --         , Cmd.none
+      --         )
 
     NoticeAnimalSaveResults (Err e) ->
       httpError "I could not save the animal." e model ! []
 
-    StartCreatingNewAnimal displayedAnimal ->
-      ( upsertDisplayedAnimal model displayedAnimal
-      , OutsideWorld.createAnimal displayedAnimal.animal
-      )
+    -- StartCreatingNewAnimal displayedAnimal ->
+    --   ( upsertDisplayedAnimal model displayedAnimal
+    --   , OutsideWorld.createAnimal displayedAnimal.animal
+    --   )
 
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
-      let
-        maybe = Dict.get (Debug.log "responsre" tempId) model.animals
-      in
-        case (Debug.log "fetched" maybe) of
-            Nothing ->
-              model ! [] -- impossible
-            Just displayedAnimal ->
-              ( displayedAnimal.animal
-                  |> Animal.expanded
-                  |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
-                  |> upsertDisplayedAnimal model
-              , Cmd.none
-              )
+      model ! []
+      -- let
+      --   maybe = Dict.get (Debug.log "responsre" tempId) model.animals
+      -- in
+      --   case (Debug.log "fetched" maybe) of
+      --       Nothing ->
+      --         model ! [] -- impossible
+      --       Just displayedAnimal ->
+      --         ( displayedAnimal.animal
+      --             |> Animal.expanded
+      --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
+      --             |> upsertDisplayedAnimal model
+      --         , Cmd.none
+      --         )
 
     NoticeAnimalCreationResults (Err e) ->
       httpError "I could not create the animal." e model ! []
 
 
-    CancelAnimalChanges animal ->
-      case animal.wasEverSaved of
-        True -> 
-          (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
-        False ->
-          deleteDisplayedAnimalById model animal.id ! [] 
+    -- CancelAnimalChanges animal ->
+    --   case animal.wasEverSaved of
+    --     True -> 
+    --       (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
+    --     False ->
+    --       deleteDisplayedAnimalById model animal.id ! [] 
 
     AddNewAnimals count species ->
-      addNewAnimals count species model ! []
+      model ! []
+      -- addNewAnimals count species model ! []
 
     RemoveFlash displayedAnimal ->
-      (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> upsertDisplayedAnimal model) ! []
+      model ! []
+    --   (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> upsertDisplayedAnimal model) ! []
         
     NoOp ->
       model ! []
 
-addNewAnimals count species model =
-  let
-    -- This is an enormous kludge due to need to generate unique ids, given
-    -- that I don't trust only 32 bits of non-collision.
-    -- It's also grossly inefficient.
-    addNext remainder modelSoFar =
-      if remainder == 0 then
-        modelSoFar
-      else
-        let
-          safeId = Aggregate.freshId modelSoFar.animals
-          animal = Animal.fresh species safeId
-          context = Validation.context modelSoFar.animals animal
-          form = Form.extractForm animal |> Validation.validate context
-        in
-          Animal.empty animal (Debug.log "form" form)
-            |> upsertDisplayedAnimal modelSoFar
-            |> addNext (remainder - 1)
-  in
-    addNext count model
-        
-checkForm animal form model =
-  Validation.validate (Validation.context model.animals animal) form 
-           
-upsertDisplayedAnimal model displayed =
-  model_animals.update (Aggregate.upsert displayed) model
-
-deleteDisplayedAnimalById model id  =
-  model_animals.update (Aggregate.deleteById id) model
-
--- tmp_start_creating {animal, display} model =
+-- addNewAnimals count species model =
 --   let
---     animalToSave = animal_wasEverSaved.set True animal
---     modelToSave = model_pageFlash.set PageFlash.SavedAnimalFlash model
+--     -- This is an enormous kludge due to need to generate unique ids, given
+--     -- that I don't trust only 32 bits of non-collision.
+--     -- It's also grossly inefficient.
+--     addNext remainder modelSoFar =
+--       if remainder == 0 then
+--         modelSoFar
+--       else
+--         let
+--           safeId = Aggregate.freshId modelSoFar.animals
+--           animal = Animal.fresh species safeId
+--           context = Validation.context modelSoFar.animals animal
+--           form = Form.extractForm animal |> Validation.validate context
+--         in
+--           Animal.empty animal (Debug.log "form" form)
+--             |> upsertDisplayedAnimal modelSoFar
+--             |> addNext (remainder - 1)
 --   in
---     Animal.expanded animalToSave |> upsertDisplayedAnimal modelToSave
+--     addNext count model
+        
+-- checkForm animal form model =
+--   Validation.validate (Validation.context model.animals animal) form 
+           
+-- upsertDisplayedAnimal model displayed =
+--   model_animals.update (Aggregate.upsert displayed) model
+
+-- deleteDisplayedAnimalById model id  =
+--   model_animals.update (Aggregate.deleteById id) model
+
+populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
+populateAllAnimalsPage animals model =
+  let
+    ids =
+      List.map .id animals
+    displayedAnimals =
+      List.map Animal.compact animals
+  in
+    { model
+      | animals = List.map2 (,) ids displayedAnimals |> Dict.fromList
+      ,  allPageAnimals = Set.fromList ids
+    }
 
 httpError contextString err model = 
   model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model

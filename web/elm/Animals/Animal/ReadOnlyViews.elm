@@ -24,15 +24,15 @@ compactView : DisplayedAnimal -> Html Msg
 compactView displayedAnimal =
   let
     animal = displayedAnimal.animal
-    flash = displayedAnimal.display.animalFlash
+    flash = displayedAnimal.animalFlash
   in
     tr []
       [ (td []
            [ p [] ( animalSalutation animal  :: animalTags animal)
            , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
            ])
-      , Icon.expand animal Bulma.tdIcon
-      , Icon.edit animal Bulma.tdIcon
+      -- , Icon.expand animal Bulma.tdIcon
+      -- , Icon.edit animal Bulma.tdIcon
       , Icon.moreLikeThis animal Bulma.tdIcon
       ]
 
@@ -40,7 +40,7 @@ expandedView : DisplayedAnimal -> Html Msg
 expandedView displayedAnimal =
   let
     animal = displayedAnimal.animal
-    flash = displayedAnimal.display.animalFlash
+    flash = displayedAnimal.animalFlash
   in
     Bulma.highlightedRow []
       [ td []
@@ -49,9 +49,9 @@ expandedView displayedAnimal =
           , animalProperties animal |> Bulma.propertyTable
           , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
           ]
-      , Icon.contract animal Bulma.tdIcon
-      , Icon.edit animal Bulma.tdIcon
-      , Icon.moreLikeThis animal Bulma.tdIcon
+      -- , Icon.contract animal Bulma.tdIcon
+      -- , Icon.edit animal Bulma.tdIcon
+      -- , Icon.moreLikeThis animal Bulma.tdIcon
       ]
       
 -- Util

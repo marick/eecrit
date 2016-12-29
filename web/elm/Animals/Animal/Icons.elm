@@ -21,10 +21,10 @@ contract animal iconType =
     "Contract: show less about this animal"
     (SwitchToCompactAnimalView animal)
       
--- edit animal iconType =
---   iconType "fa-pencil"
---     "Edit: make changes to this animal"
---     (BeginEditing animal)
+edit animal iconType =
+  iconType "fa-pencil"
+    "Edit: make changes to this animal"
+    (SwitchToEditView animal)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"

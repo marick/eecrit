@@ -32,7 +32,7 @@ compactView displayedAnimal =
            , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
            ])
       , Icon.expand displayedAnimal Bulma.tdIcon
-      -- , Icon.edit animal Bulma.tdIcon
+      , Icon.edit displayedAnimal Bulma.tdIcon
       , Icon.moreLikeThis displayedAnimal Bulma.tdIcon
       ]
 
@@ -50,7 +50,7 @@ expandedView displayedAnimal =
           , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
           ]
       , Icon.contract displayedAnimal Bulma.tdIcon
-      -- , Icon.edit animal Bulma.tdIcon
+      , Icon.edit displayedAnimal Bulma.tdIcon
       , Icon.moreLikeThis displayedAnimal Bulma.tdIcon
       ]
       

@@ -7,7 +7,7 @@ import Animals.Animal.Types as Animal
 import Animals.Animal.Constructors as Animal
 import Animals.Animal.Lenses exposing (..)
 -- import Animals.Animal.Aggregates as Aggregate
--- import Animals.Animal.Form as Form
+import Animals.Animal.Form as Form 
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
@@ -128,24 +128,25 @@ update_ msg model =
       )
 
     SwitchToCompactAnimalView displayedAnimal ->
-      (setFormat Animal.Compact displayedAnimal |> upsertDisplayedAnimal model) ! []
+      (setFormat Animal.Compact displayedAnimal |> recordAnimalManipulation model) ! []
     SwitchToExpandedAnimalView displayedAnimal ->
-      (setFormat Animal.Expanded displayedAnimal |> upsertDisplayedAnimal model) ! []
+      (setFormat Animal.Expanded displayedAnimal |> recordAnimalManipulation model) ! []
 
-    -- BeginEditing animal ->
-    --   let
-    --     form = (Form.extractForm animal)
-    --   in
-    --     (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
+    SwitchToEditView displayedAnimal ->
+      let
+        newAnimal = setFormat Animal.Editable displayedAnimal
+        form = Form.extractForm displayedAnimal.animal
+      in
+        recordManipulationAndForm model newAnimal form ! []
 
     -- CheckFormChange animal changedForm ->
     --   let
     --     form = checkForm animal changedForm model
     --   in
-    --     (Animal.editable animal form |> upsertDisplayedAnimal model) ! []
+    --     (Animal.editable animal form |> recordAnimalManipulation model) ! []
 
     -- StartSavingAnimalChanges displayedAnimal ->
-    --   ( upsertDisplayedAnimal model displayedAnimal
+    --   ( recordAnimalManipulation model displayedAnimal
     --   , OutsideWorld.saveAnimal displayedAnimal.animal
     --   )
 
@@ -162,7 +163,7 @@ update_ msg model =
       --             |> animal_version.set version
       --             |> Animal.expanded
       --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
-      --             |> upsertDisplayedAnimal model
+      --             |> recordAnimalManipulation model
       --         , Cmd.none
       --         )
 
@@ -170,7 +171,7 @@ update_ msg model =
       httpError "I could not save the animal." e model ! []
 
     -- StartCreatingNewAnimal displayedAnimal ->
-    --   ( upsertDisplayedAnimal model displayedAnimal
+    --   ( recordAnimalManipulation model displayedAnimal
     --   , OutsideWorld.createAnimal displayedAnimal.animal
     --   )
 
@@ -186,7 +187,7 @@ update_ msg model =
       --         ( displayedAnimal.animal
       --             |> Animal.expanded
       --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
-      --             |> upsertDisplayedAnimal model
+      --             |> recordAnimalManipulation model
       --         , Cmd.none
       --         )
 
@@ -197,7 +198,7 @@ update_ msg model =
     -- CancelAnimalChanges animal ->
     --   case animal.wasEverSaved of
     --     True -> 
-    --       (Animal.expanded animal |> upsertDisplayedAnimal model) ! []
+    --       (Animal.expanded animal |> recordAnimalManipulation model) ! []
     --     False ->
     --       deleteDisplayedAnimalById model animal.id ! [] 
 
@@ -207,7 +208,7 @@ update_ msg model =
 
     RemoveFlash displayedAnimal ->
       model ! []
-    --   (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> upsertDisplayedAnimal model) ! []
+    --   (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> recordAnimalManipulation model) ! []
         
     NoOp ->
       model ! []
@@ -228,25 +229,41 @@ update_ msg model =
 --           form = Form.extractForm animal |> Validation.validate context
 --         in
 --           Animal.empty animal (Debug.log "form" form)
---             |> upsertDisplayedAnimal modelSoFar
+--             |> recordAnimalManipulation modelSoFar
 --             |> addNext (remainder - 1)
 --   in
 --     addNext count model
         
 -- checkForm animal form model =
 --   Validation.validate (Validation.context model.animals animal) form 
-           
-upsertDisplayedAnimal model displayed =
+
+-- Note that any manipulation erases the flash
+recordAnimalManipulation : Model -> Animal.DisplayedAnimal -> Model
+recordAnimalManipulation model displayed =
   let
-    key = displayedAnimal_id.get displayed
-    newAnimals = Dict.insert key displayed model.animals
+    withoutFlash = Animal.noFlash displayed
+    key = displayedAnimal_id.get withoutFlash
+    newAnimals = Dict.insert key withoutFlash model.animals
   in
     model_animals.set newAnimals model
+
+recordForm : Model -> Animal.Form -> Model
+recordForm model form =
+  let
+    key = form_id.get form
+    newForms = Dict.insert key form model.forms
+  in
+    model_forms.set newForms model
+
+recordManipulationAndForm : Model -> Animal.DisplayedAnimal -> Animal.Form -> Model
+recordManipulationAndForm model animal form =
+  (recordForm (recordAnimalManipulation model animal) form)
 
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model
 
 setFormat = displayedAnimal_format.set
+
 
 populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
 populateAllAnimalsPage animals model =

@@ -22,6 +22,7 @@ displayedAnimal_flash = lens .animalFlash (\ p w -> { w | animalFlash = p })
 displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
 
+form_id = lens .id (\ p w -> { w | id = p })
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })

@@ -14,6 +14,9 @@ andFlash : AnimalFlash -> DisplayedAnimal -> DisplayedAnimal
 andFlash flash animal =
   displayedAnimal_flash.set flash animal
 
+noFlash : DisplayedAnimal -> DisplayedAnimal
+noFlash = andFlash NoFlash
+    
 fresh : String -> Id -> Animal    
 fresh species id =
   { id = id

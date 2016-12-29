@@ -28,7 +28,8 @@ type alias Animal =
   }
 
 type alias Form = 
-  { name : FormValue String
+  { id : Id
+  , name : FormValue String
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue

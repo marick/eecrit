@@ -23,7 +23,7 @@ type Msg
 
   | SwitchToCompactAnimalView Animal.DisplayedAnimal
   | SwitchToExpandedAnimalView Animal.DisplayedAnimal
-  -- | BeginEditing Animal.Animal 
+  | SwitchToEditView Animal.DisplayedAnimal
   -- | CheckFormChange Animal.Animal Animal.Form 
     
   -- | StartSavingAnimalChanges Animal.DisplayedAnimal

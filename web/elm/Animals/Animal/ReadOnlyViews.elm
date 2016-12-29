@@ -33,7 +33,7 @@ compactView displayedAnimal =
            ])
       , Icon.expand displayedAnimal Bulma.tdIcon
       -- , Icon.edit animal Bulma.tdIcon
-      , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.moreLikeThis displayedAnimal Bulma.tdIcon
       ]
 
 expandedView : DisplayedAnimal -> Html Msg      
@@ -49,9 +49,9 @@ expandedView displayedAnimal =
           , animalProperties animal |> Bulma.propertyTable
           , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
           ]
-      -- , Icon.contract animal Bulma.tdIcon
+      , Icon.contract displayedAnimal Bulma.tdIcon
       -- , Icon.edit animal Bulma.tdIcon
-      -- , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.moreLikeThis displayedAnimal Bulma.tdIcon
       ]
       
 -- Util

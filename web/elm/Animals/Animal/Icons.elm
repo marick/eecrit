@@ -16,10 +16,10 @@ expand animal iconType =
     "Expand: show more about this animal"
     (SwitchToExpandedAnimalView animal)
       
--- contract animal iconType =
---   iconType "fa-caret-up"
---     "Contract: show less about this animal"
---     (BeginCompactAnimalView animal)
+contract animal iconType =
+  iconType "fa-caret-up"
+    "Contract: show less about this animal"
+    (SwitchToCompactAnimalView animal)
       
 -- edit animal iconType =
 --   iconType "fa-pencil"
@@ -29,7 +29,7 @@ expand animal iconType =
 moreLikeThis animal iconType =
   iconType "fa-plus"
     "Copy: make more animals like this one"
-    (MoreLikeThisAnimal animal.id)
+    (MoreLikeThisAnimal animal)
 
 editHelp iconType = 
   iconType "fa-question-circle" "Help on editing" NoOp    

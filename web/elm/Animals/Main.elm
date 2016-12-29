@@ -127,13 +127,10 @@ update_ msg model =
       , Cmd.none
       )
 
-    -- BeginCompactAnimalView animal ->
-    --   (Animal.compact animal |> upsertDisplayedAnimal model) ! []
-          
+    SwitchToCompactAnimalView displayedAnimal ->
+      (setFormat Animal.Compact displayedAnimal |> upsertDisplayedAnimal model) ! []
     SwitchToExpandedAnimalView displayedAnimal ->
-      (displayedAnimal 
-        |> displayedAnimal_format.set Animal.Expanded 
-        |> upsertDisplayedAnimal model) ! []
+      (setFormat Animal.Expanded displayedAnimal |> upsertDisplayedAnimal model) ! []
 
     -- BeginEditing animal ->
     --   let
@@ -248,6 +245,8 @@ upsertDisplayedAnimal model displayed =
 
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model
+
+setFormat = displayedAnimal_format.set
 
 populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
 populateAllAnimalsPage animals model =

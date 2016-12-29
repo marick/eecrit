@@ -21,7 +21,7 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  -- | BeginCompactAnimalView Animal.Animal 
+  | SwitchToCompactAnimalView Animal.DisplayedAnimal
   | SwitchToExpandedAnimalView Animal.DisplayedAnimal
   -- | BeginEditing Animal.Animal 
   -- | CheckFormChange Animal.Animal Animal.Form 
@@ -35,7 +35,7 @@ type Msg
 
   | AddNewAnimals Int String
 
-  | MoreLikeThisAnimal Animal.Id
+  | MoreLikeThisAnimal Animal.DisplayedAnimal
 
   | RemoveFlash Animal.DisplayedAnimal
 

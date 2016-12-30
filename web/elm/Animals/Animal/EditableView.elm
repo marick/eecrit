@@ -31,7 +31,7 @@ editableView displayed form makeSaveMsg makeCancelMsg =
         --          (editableAnimalProperties form |> Bulma.propertyTable)
           
         , Bulma.leftwardSave form.isValid (makeSaveMsg displayed form)
-        , Bulma.leftwardSave form.isValid (makeCancelMsg displayed form)
+        , Bulma.leftwardSave form.isValid (makeSaveMsg displayed form)
         -- , Bulma.rightwardCancel (makeCancelMsg displayed form)
         , Flash.showWithButton displayed.animalFlash (RemoveFlash displayed)
         ]

@@ -4,7 +4,7 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
-import Animals.Animal.Constructors as Animal exposing (noFlash)
+import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
 -- import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form 
@@ -155,33 +155,22 @@ update_ msg model =
       -- in
       --   model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
           
-    StartSavingAnimalEdits displayedAnimal form ->
+    StartSavingAnimalEdits displayed form ->
+      let
+        newForm = form_status.set Animal.BeingSaved form
+        valuesToSave = Form.updateAnimal form displayed.animal
+      in
+      ( model |> upsertForm newForm
+      , OutsideWorld.saveAnimal valuesToSave
+      )
+    StartCreatingNewAnimal displayed form ->
       model |> noCmd
-    --   ( recordAnimalManipulation model displayedAnimal
-    --   , OutsideWorld.saveAnimal displayedAnimal.animal
-    --   )
-    StartCreatingNewAnimal displayedAnimal form ->
-      model |> noCmd
-    --   ( recordAnimalManipulation model displayedAnimal
-    --   , OutsideWorld.createAnimal displayedAnimal.animal
+    --   ( recordAnimalManipulation model displayed
+    --   , OutsideWorld.createAnimal displayed.animal
     --   )
 
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
-      model ! []
-      -- let
-      --   savedAnimalMaybe = Dict.get id model.animals
-      -- in
-      --   case savedAnimalMaybe of
-      --       Nothing ->
-      --         model ! [] -- impossible
-      --       Just displayedAnimal ->
-      --         ( displayedAnimal.animal
-      --             |> animal_version.set version
-      --             |> Animal.expanded
-      --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
-      --             |> recordAnimalManipulation model
-      --         , Cmd.none
-      --         )
+      model |> lookupAndDo id (recordSuccessfulSave version) |> noCmd 
 
     NoticeAnimalSaveResults (Err e) ->
       model |> httpError "I could not save the animal." e |> noCmd
@@ -194,10 +183,10 @@ update_ msg model =
       --   case (Debug.log "fetched" maybe) of
       --       Nothing ->
       --         model ! [] -- impossible
-      --       Just displayedAnimal ->
-      --         ( displayedAnimal.animal
+      --       Just displayed ->
+      --         ( displayed.animal
       --             |> Animal.expanded
-      --             |> Animal.andFlash (displayedAnimal_flash.get displayedAnimal)
+      --             |> Animal.andFlash (displayed_flash.get displayed)
       --             |> recordAnimalManipulation model
       --         , Cmd.none
       --         )
@@ -213,12 +202,32 @@ update_ msg model =
     MoreLikeThisAnimal id ->
       model |> noCmd
 
-    RemoveFlash displayedAnimal ->
-      model ! []
-    --   (displayedAnimal_flash.set AnimalFlash.NoFlash displayedAnimal |> recordAnimalManipulation model) ! []
+    RemoveFlash displayed ->
+      model |> upsertAnimal (displayed |> noFlash) |> noCmd
         
     NoOp ->
       model ! []
+
+
+lookupAndDo id f model =
+  let
+    get field = model |> field |> Dict.get id
+  in
+    Maybe.map2 (f model) (get .animals) (get .forms)
+      |> Maybe.withDefault model 
+        
+recordSuccessfulSave version model displayed form =
+  let
+    animal =
+      displayed.animal |> Form.updateAnimal form |> animal_version.set version
+    newDisplayed =
+      { animal = animal
+      , format = Animal.Expanded
+      , animalFlash = Form.saveFlash form
+      }
+  in
+    model |> upsertAnimal (Debug.log "newDisplayed" newDisplayed) |> deleteForm form
+  
 
 -- addNewAnimals count species model =
 --   let

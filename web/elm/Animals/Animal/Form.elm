@@ -54,23 +54,26 @@ nullForm =
   
 -- -- Constructing Messages and other Important Actions
 
-applyEditsToAnimal animal form =
+updateAnimal : Form -> Animal -> Animal
+updateAnimal form animal =
   let
-    update tags =
-      animal 
-        |> animal_name.set form.name.value
-        |> animal_properties.set form.properties -- Currently not edited
-        |> animal_tags.set tags
+    tags =
+      case String.isEmpty form.tentativeTag of
+        True -> form.tags
+        False -> List.append form.tags [form.tentativeTag]
   in
-    case String.isEmpty form.tentativeTag of
-      True ->
-        ( update form.tags
-        , Flash.NoFlash
-        )
-      False ->
-        ( update <| List.append form.tags [form.tentativeTag]
-        , Flash.SavedIncompleteTag form.tentativeTag
-        )
+    animal 
+      |> animal_name.set form.name.value
+      |> animal_properties.set form.properties -- Currently not edited
+      |> animal_tags.set tags
+
+
+saveFlash : Form -> AnimalFlash
+saveFlash form =             
+  case String.isEmpty form.tentativeTag of
+    True -> AnimalFlash.NoFlash
+    False -> AnimalFlash.SavedIncompleteTag form.tentativeTag
+
 
 -- checkEditMsg : Animal -> Form -> Msg
 -- checkEditMsg animal form =

@@ -26,7 +26,7 @@ form_id = lens .id (\ p w -> { w | id = p })
 form_name = lens .name (\ p w -> { w | name = p })
 form_tags = lens .tags (\ p w -> { w | tags = p })
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
-form_isValid = lens .isValid (\ p w -> { w | isValid = p })
+form_status = lens .status (\ p w -> { w | status = p })
 
 validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disallowedNames = p })     
 

@@ -27,13 +27,18 @@ type alias Animal =
   , properties : Dict String DictValue
   }
 
+type FormStatus
+  = AllGood
+  | SomeBad
+  | BeingSaved
+
 type alias Form = 
   { id : Id
   , name : FormValue String
   , tags : List String
   , tentativeTag : String
   , properties : Dict String DictValue
-  , isValid : Bool
+  , status : FormStatus
   }
 
 type Format

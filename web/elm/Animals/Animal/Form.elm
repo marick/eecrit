@@ -13,7 +13,7 @@ import Pile.HtmlShorthand exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Constructors exposing (..)
-import Animals.Animal.Flash as Flash
+import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
 import Animals.Animal.Lenses exposing (..)
 
 freshValue : t -> FormValue t
@@ -22,7 +22,7 @@ freshValue v =
 
 extractForm : Animal -> Form
 extractForm animal =
-  { isValid = True
+  { status = AllGood
   , id = animal.id
   , name = freshValue animal.name
   , tags = animal.tags
@@ -32,7 +32,7 @@ extractForm animal =
 
 -- This is used as the default value in "impossible" cases.  
 nullForm =
-  { isValid = False
+  { status = SomeBad
   , id = "impossible"
   , name = freshValue "you should never see this"
   , tags = []

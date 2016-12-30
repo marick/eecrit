@@ -44,7 +44,7 @@ editableView displayed form makeSaveMsg makeCancelMsg =
 
 saveButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
 saveButton displayed form msgMaker =
-  Bulma.leftwardSave form.isValid (msgMaker displayed form)
+  Bulma.leftwardSave (form.status == AllGood) (msgMaker displayed form)
 
 cancelButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
 cancelButton displayed form msgMaker =

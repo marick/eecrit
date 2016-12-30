@@ -14,12 +14,12 @@ import Animals.Animal.Flash as Flash
 expand animal iconType =
   iconType "fa-caret-down"
     "Expand: show more about this animal"
-    (SwitchToExpandedAnimalView animal)
+    (SwitchToReadOnlyAnimalView animal Expanded)
       
 contract animal iconType =
   iconType "fa-caret-up"
     "Contract: show less about this animal"
-    (SwitchToCompactAnimalView animal)
+    (SwitchToReadOnlyAnimalView animal Compact)
       
 edit animal iconType =
   iconType "fa-pencil"

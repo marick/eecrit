@@ -21,8 +21,7 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | SwitchToCompactAnimalView Animal.DisplayedAnimal
-  | SwitchToExpandedAnimalView Animal.DisplayedAnimal
+  | SwitchToReadOnlyAnimalView Animal.DisplayedAnimal Animal.Format
   | SwitchToEditView Animal.DisplayedAnimal
   -- | CheckFormChange Animal.Animal Animal.Form 
     
@@ -31,7 +30,7 @@ type Msg
 
   -- | StartCreatingNewAnimal Animal.DisplayedAnimal
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
-  -- | CancelAnimalChanges Animal.Animal 
+  | CancelAnimalChanges Animal.DisplayedAnimal
 
   | AddNewAnimals Int String
 

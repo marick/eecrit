@@ -30,6 +30,16 @@ extractForm animal =
   , properties = animal.properties
   }
 
+-- This is used as the default value in "impossible" cases.  
+nullForm =
+  { isValid = False
+  , id = "impossible"
+  , name = freshValue "you should never see this"
+  , tags = []
+  , tentativeTag = ""
+  , properties = Dict.empty
+  }
+
 -- assumeValid : Form -> Form 
 -- assumeValid form =
 --   { isValid = True
@@ -76,9 +86,9 @@ extractForm animal =
 --   in
 --     msg (expanded newAnimal |> andFlash flash)
 
--- cancelEditsMsg : Animal -> Msg
--- cancelEditsMsg animal = 
---   (CancelAnimalChanges animal)
+cancelEditsMsg : DisplayedAnimal -> Msg
+cancelEditsMsg animal = 
+  CancelAnimalChanges animal
 
 -- textFieldEditHandler : Animal -> Form -> FormLens String -> (String -> Msg)
 -- textFieldEditHandler animal form lens =

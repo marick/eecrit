@@ -14,7 +14,6 @@ import Animals.Msg exposing (..)
 import Animals.Animal.Icons as Icon
 import Animals.Animal.Flash as Flash
 import Animals.Animal.Form as Form
-import Animals.Animal.Validation as Validation
 import Animals.Animal.Lenses exposing (..)
 
 -- Form just exists so that we don't have to do *another* case to extract it.
@@ -22,68 +21,66 @@ import Animals.Animal.Lenses exposing (..)
 
 view : DisplayedAnimal -> Form -> Html Msg
 view displayedAnimal form =
-  let
-    animal = displayedAnimal.animal
-    flash = displayedAnimal.display.animalFlash
-  in 
-    Bulma.highlightedRow []
-      [ td []
-          [ Bulma.controlRow "Name" <| nameEditControl animal form
-          , Bulma.controlRow "Tags" <| deleteTagControl animal form
-          , Bulma.controlRow "New Tag" <| newTagControl animal form
-            
-          -- , Bulma.controlRow "Properties"
-          --     <| Bulma.oneReasonablySizedControl
-          --          (editableAnimalProperties form |> Bulma.propertyTable)
-            
-          , saveButton animal form
-          , cancelButton animal
-          , Flash.showWithButton flash (RemoveFlash displayedAnimal)
-          ]
-      , td [] []
-      , td [] []
-      , Icon.editHelp Bulma.tdIcon
-      ]
+  Bulma.highlightedRow []
+    [ td []
+        [
+         text (displayedAnimal_name.get displayedAnimal)
+        --  Bulma.controlRow "Name" <| nameEditControl animal form
+        -- , Bulma.controlRow "Tags" <| deleteTagControl animal form
+        -- , Bulma.controlRow "New Tag" <| newTagControl animal form
+          
+        -- , Bulma.controlRow "Properties"
+        --     <| Bulma.oneReasonablySizedControl
+        --          (editableAnimalProperties form |> Bulma.propertyTable)
+          
+        -- , saveButton animal form
+        , cancelButton displayedAnimal
+        , Flash.showWithButton displayedAnimal.animalFlash (RemoveFlash displayedAnimal)
+        ]
+    , td [] []
+    , td [] []
+    , Icon.editHelp Bulma.tdIcon
+    ]
     
 
 -- Controls
 
-saveButton animal form = 
-  Bulma.leftwardSuccess form.isValid (Form.applyEditsMsg animal form)
+-- saveButton animal form = 
+--   Bulma.leftwardSuccess form.isValid (Form.applyEditsMsg animal form)
 
 cancelButton animal =
   Bulma.rightwardCancel (Form.cancelEditsMsg animal)
 
-nameEditControl : Animal -> Form -> Html Msg    
-nameEditControl animal form =
-  Bulma.soleTextInputInRow
-    form.name
-    [ Events.onInput (Form.textFieldEditHandler animal form form_name) ]
+-- nameEditControl : Animal -> Form -> Html Msg    
+-- nameEditControl animal form =
+--   Bulma.soleTextInputInRow
+--     form.name
+--     [ Events.onInput (Form.textFieldEditHandler animal form form_name) ]
 
-deleteTagControl animal form =
-  let
-    onDelete name =
-      Form.checkEditMsg animal (form_tags.update (List.remove name) form)
-  in
-    Bulma.horizontalControls 
-      (List.map (Bulma.deletableTag onDelete) form.tags)
+-- deleteTagControl animal form =
+--   let
+--     onDelete name =
+--       Form.checkEditMsg animal (form_tags.update (List.remove name) form)
+--   in
+--     Bulma.horizontalControls 
+--       (List.map (Bulma.deletableTag onDelete) form.tags)
 
 
-newTagControl animal form =
-  let
-    onInput value =
-      Form.checkEditMsg animal (form_tentativeTag.set value form)
-    onSubmit =
-      form
-      |> form_tags.set (List.append form.tags [form.tentativeTag])
-      |> form_tentativeTag.set ""
-      |> Form.checkEditMsg animal
-  in
-    Bulma.textInputWithSubmit
-      "Add"
-      form.tentativeTag
-      onInput
-      onSubmit
+-- newTagControl animal form =
+--   let
+--     onInput value =
+--       Form.checkEditMsg animal (form_tentativeTag.set value form)
+--     onSubmit =
+--       form
+--       |> form_tags.set (List.append form.tags [form.tentativeTag])
+--       |> form_tentativeTag.set ""
+--       |> Form.checkEditMsg animal
+--   in
+--     Bulma.textInputWithSubmit
+--       "Add"
+--       form.tentativeTag
+--       onInput
+--       onSubmit
       
 
 

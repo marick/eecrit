@@ -4,14 +4,14 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
-import Animals.Animal.Constructors as Animal
+import Animals.Animal.Constructors as Animal exposing (noFlash)
 import Animals.Animal.Lenses exposing (..)
 -- import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form 
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
-import Animals.Animal.Flash as AnimalFlash
+import Animals.Animal.Flash as AnimalFlash 
 -- import Animals.Animal.Validation as Validation
 
 import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
@@ -98,46 +98,46 @@ update msg model =
 update_ : Msg -> Model -> ( Model, Cmd Msg )
 update_ msg model =
   case msg of
-    NoticePageChange location -> 
-      model_page.set (Page.fromLocation location) model ! []
+    NoticePageChange location ->
+      model |> model_page.set (Page.fromLocation location) |> noCmd
+      
     StartPageChange page ->
       ( model, Page.toPageChangeCmd page )
       
     SetToday value ->
-      model_today.set value model ! []
+      model |> model_today.set value |> noCmd
     SetAnimals (Ok animals) ->
-      populateAllAnimalsPage animals model ! []
+      model |> populateAllAnimalsPage animals |> noCmd
     SetAnimals (Err e) ->
-      httpError "I could not retrieve animals." e model ! []
+      model |> httpError "I could not retrieve animals." e |> noCmd
 
     ToggleDatePicker ->
-      model_datePickerOpen.update not model ! []
+      model |> model_datePickerOpen.update not |> noCmd
     SelectDate date ->
-      model_effectiveDate.set (At date) model ! []
+      model |> model_effectiveDate.set (At date) |> noCmd
       
     SetNameFilter s ->
-      model_nameFilter.set s model ! []
+      model |> model_nameFilter.set s |> noCmd
     SetTagFilter s ->
-      model_tagFilter.set s model ! []
+      model |> model_tagFilter.set s |> noCmd
     SetSpeciesFilter s ->
-      model_speciesFilter.set s model ! []
+      model |> model_speciesFilter.set s |> noCmd
 
     MoreLikeThisAnimal id ->
-      ( model 
-      , Cmd.none
-      )
+      model |> noCmd
 
-    SwitchToCompactAnimalView displayedAnimal ->
-      (setFormat Animal.Compact displayedAnimal |> recordAnimalManipulation model) ! []
-    SwitchToExpandedAnimalView displayedAnimal ->
-      (setFormat Animal.Expanded displayedAnimal |> recordAnimalManipulation model) ! []
-
-    SwitchToEditView displayedAnimal ->
+    SwitchToReadOnlyAnimalView displayed format ->
       let
-        newAnimal = setFormat Animal.Editable displayedAnimal
-        form = Form.extractForm displayedAnimal.animal
+        new = displayed |> noFlash |> displayedAnimal_format.set format
       in
-        recordManipulationAndForm model newAnimal form ! []
+        model |> upsertAnimal new |> noCmd
+
+    SwitchToEditView displayed ->
+      let
+        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Editable
+        form = Form.extractForm displayed.animal
+      in
+        model |> upsertAnimal new |> noCmd
 
     -- CheckFormChange animal changedForm ->
     --   let
@@ -168,7 +168,7 @@ update_ msg model =
       --         )
 
     NoticeAnimalSaveResults (Err e) ->
-      httpError "I could not save the animal." e model ! []
+      model |> httpError "I could not save the animal." e |> noCmd
 
     -- StartCreatingNewAnimal displayedAnimal ->
     --   ( recordAnimalManipulation model displayedAnimal
@@ -192,15 +192,14 @@ update_ msg model =
       --         )
 
     NoticeAnimalCreationResults (Err e) ->
-      httpError "I could not create the animal." e model ! []
+      model |> httpError "I could not create the animal." e |> noCmd
 
 
-    -- CancelAnimalChanges animal ->
-    --   case animal.wasEverSaved of
-    --     True -> 
-    --       (Animal.expanded animal |> recordAnimalManipulation model) ! []
-    --     False ->
-    --       deleteDisplayedAnimalById model animal.id ! [] 
+    CancelAnimalChanges displayed ->
+      let
+        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
+      in
+        model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
 
     AddNewAnimals count species ->
       model ! []
@@ -237,28 +236,6 @@ update_ msg model =
 -- checkForm animal form model =
 --   Validation.validate (Validation.context model.animals animal) form 
 
--- Note that any manipulation erases the flash
-recordAnimalManipulation : Model -> Animal.DisplayedAnimal -> Model
-recordAnimalManipulation model displayed =
-  let
-    withoutFlash = Animal.noFlash displayed
-    key = displayedAnimal_id.get withoutFlash
-    newAnimals = Dict.insert key withoutFlash model.animals
-  in
-    model_animals.set newAnimals model
-
-recordForm : Model -> Animal.Form -> Model
-recordForm model form =
-  let
-    key = form_id.get form
-    newForms = Dict.insert key form model.forms
-  in
-    model_forms.set newForms model
-
-recordManipulationAndForm : Model -> Animal.DisplayedAnimal -> Animal.Form -> Model
-recordManipulationAndForm model animal form =
-  (recordForm (recordAnimalManipulation model animal) form)
-
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model
 
@@ -280,7 +257,25 @@ populateAllAnimalsPage animals model =
 
 httpError contextString err model = 
   model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model
+
+noCmd model = model ! []
+
+upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
+upsertAnimal displayedAnimal model =
+  let
+    key = displayedAnimal_id.get displayedAnimal
+    newAnimals = Dict.insert key displayedAnimal model.animals
+  in
+    model_animals.set newAnimals model
+
+deleteFormFor : Animal.DisplayedAnimal -> Model -> Model
+deleteFormFor displayed model =
+  let
+    key = displayedAnimal_id.get displayed
+  in
+    model_forms.update (Dict.remove key) model
   
+
 -- Subscriptions
 
 subscriptions : Model -> Sub Msg

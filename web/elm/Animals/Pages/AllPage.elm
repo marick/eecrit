@@ -14,22 +14,25 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
+import Animals.Animal.Form as Form
 import Animals.Msg exposing (..)
 import Animals.Animal.ReadOnlyViews as RO
--- import Animals.Animal.EditableView as RW
+import Animals.Animal.EditableView as RW
 import Animals.Pages.PageFlash as PageFlash
 
 
 view model =
-  let
-    whichToShow =
-      allPageAnimals model |> applyFilters model |> List.map individualAnimalView
-  in
-    div []
-      [ filterView model
-      , PageFlash.show model.pageFlash
-      , Bulma.headerlessTable whichToShow
-      ]
+  div []
+    [ filterView model
+    , PageFlash.show model.pageFlash
+    , Bulma.headerlessTable <| animalViews model
+    ]
+    
+animalViews model =
+  model
+    |> allPageAnimals
+    |> applyFilters model
+    |> List.map (individualAnimalView model)
     
 filterView model =
   Bulma.centeredColumns
@@ -98,12 +101,16 @@ aggregateFilter preds animal =
 humanSorted animals = 
   List.sortBy (.animal >> .name >> String.toLower) animals
 
-individualAnimalView displayedAnimal =
+individualAnimalView model displayedAnimal =
   case displayedAnimal.format of
     Compact -> RO.compactView displayedAnimal
     Expanded -> RO.expandedView displayedAnimal
-    Editable -> div [] []
-                     -- RW.view displayedAnimal form
+    Editable -> RW.view displayedAnimal <| animalForm model displayedAnimal.animal
+
+animalForm model animal =
+  Dict.get animal.id model.forms
+    |> Maybe.withDefault Form.nullForm -- impossible case
+
 
 -- The calendar
 

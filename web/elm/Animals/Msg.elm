@@ -23,14 +23,17 @@ type Msg
 
   | SwitchToReadOnlyAnimalView Animal.DisplayedAnimal Animal.Format
   | SwitchToEditView Animal.DisplayedAnimal
-  -- | CheckFormChange Animal.Animal Animal.Form 
-    
-  -- | StartSavingAnimalChanges Animal.DisplayedAnimal
-  | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
 
-  -- | StartCreatingNewAnimal Animal.DisplayedAnimal
+  | CheckFormChange Animal.DisplayedAnimal Animal.Form 
+    
+  | CancelAnimalEdits Animal.DisplayedAnimal Animal.Form
+  | CancelAnimalCreation Animal.DisplayedAnimal Animal.Form
+    
+  | StartSavingAnimalEdits Animal.DisplayedAnimal Animal.Form
+  | StartCreatingNewAnimal Animal.DisplayedAnimal Animal.Form
+
+  | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
-  | CancelAnimalChanges Animal.DisplayedAnimal
 
   | AddNewAnimals Int String
 

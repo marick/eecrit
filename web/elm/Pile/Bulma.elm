@@ -254,8 +254,9 @@ exampleSuccess =
     [ span [class "icon"] [i [class "fa fa-check"] []]
     , text "Save"
     ]
-  
-leftwardSuccess enabled msg =
+
+leftwardSave : Bool -> msg -> Html msg
+leftwardSave enabled msg =
   let
     attributes =
       case enabled of
@@ -274,7 +275,7 @@ leftwardSuccess enabled msg =
           ]
       ]
 
-
+rightwardCancel : msg -> Html msg
 rightwardCancel msg = 
   p []
     [ a [ class "button is-danger pull-right"

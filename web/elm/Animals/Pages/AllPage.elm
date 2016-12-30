@@ -103,9 +103,16 @@ humanSorted animals =
 
 individualAnimalView model displayedAnimal =
   case displayedAnimal.format of
-    Compact -> RO.compactView displayedAnimal
-    Expanded -> RO.expandedView displayedAnimal
-    Editable -> RW.view displayedAnimal <| animalForm model displayedAnimal.animal
+    Compact ->
+      RO.compactView displayedAnimal
+    Expanded ->
+      RO.expandedView displayedAnimal
+    Editable ->
+      RW.editableView displayedAnimal
+        (animalForm model displayedAnimal.animal)
+        StartSavingAnimalEdits
+        StartSavingAnimalEdits
+        -- CancelAnimalEdits
 
 animalForm model animal =
   Dict.get animal.id model.forms

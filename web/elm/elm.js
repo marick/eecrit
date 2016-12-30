@@ -5301,6 +5301,2221 @@ var _arturopala$elm_monocle$Monocle_Lens$tuple3 = F3(
 		return A2(_arturopala$elm_monocle$Monocle_Lens$Lens, get, set);
 	});
 
+var _elm_lang$core$Set$foldr = F3(
+	function (f, b, _p0) {
+		var _p1 = _p0;
+		return A3(
+			_elm_lang$core$Dict$foldr,
+			F3(
+				function (k, _p2, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p1._0);
+	});
+var _elm_lang$core$Set$foldl = F3(
+	function (f, b, _p3) {
+		var _p4 = _p3;
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, _p5, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p4._0);
+	});
+var _elm_lang$core$Set$toList = function (_p6) {
+	var _p7 = _p6;
+	return _elm_lang$core$Dict$keys(_p7._0);
+};
+var _elm_lang$core$Set$size = function (_p8) {
+	var _p9 = _p8;
+	return _elm_lang$core$Dict$size(_p9._0);
+};
+var _elm_lang$core$Set$member = F2(
+	function (k, _p10) {
+		var _p11 = _p10;
+		return A2(_elm_lang$core$Dict$member, k, _p11._0);
+	});
+var _elm_lang$core$Set$isEmpty = function (_p12) {
+	var _p13 = _p12;
+	return _elm_lang$core$Dict$isEmpty(_p13._0);
+};
+var _elm_lang$core$Set$Set_elm_builtin = function (a) {
+	return {ctor: 'Set_elm_builtin', _0: a};
+};
+var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
+var _elm_lang$core$Set$singleton = function (k) {
+	return _elm_lang$core$Set$Set_elm_builtin(
+		A2(
+			_elm_lang$core$Dict$singleton,
+			k,
+			{ctor: '_Tuple0'}));
+};
+var _elm_lang$core$Set$insert = F2(
+	function (k, _p14) {
+		var _p15 = _p14;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A3(
+				_elm_lang$core$Dict$insert,
+				k,
+				{ctor: '_Tuple0'},
+				_p15._0));
+	});
+var _elm_lang$core$Set$fromList = function (xs) {
+	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
+};
+var _elm_lang$core$Set$map = F2(
+	function (f, s) {
+		return _elm_lang$core$Set$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				f,
+				_elm_lang$core$Set$toList(s)));
+	});
+var _elm_lang$core$Set$remove = F2(
+	function (k, _p16) {
+		var _p17 = _p16;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$remove, k, _p17._0));
+	});
+var _elm_lang$core$Set$union = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
+	});
+var _elm_lang$core$Set$intersect = F2(
+	function (_p23, _p22) {
+		var _p24 = _p23;
+		var _p25 = _p22;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
+	});
+var _elm_lang$core$Set$diff = F2(
+	function (_p27, _p26) {
+		var _p28 = _p27;
+		var _p29 = _p26;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
+	});
+var _elm_lang$core$Set$filter = F2(
+	function (p, _p30) {
+		var _p31 = _p30;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(
+				_elm_lang$core$Dict$filter,
+				F2(
+					function (k, _p32) {
+						return p(k);
+					}),
+				_p31._0));
+	});
+var _elm_lang$core$Set$partition = F2(
+	function (p, _p33) {
+		var _p34 = _p33;
+		var _p35 = A2(
+			_elm_lang$core$Dict$partition,
+			F2(
+				function (k, _p36) {
+					return p(k);
+				}),
+			_p34._0);
+		var p1 = _p35._0;
+		var p2 = _p35._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
+			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
+		};
+	});
+
+var _elm_community$list_extra$List_Extra$greedyGroupsOfWithStep = F3(
+	function (size, step, xs) {
+		var okayXs = _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$List$length(xs),
+			0) > 0;
+		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
+		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
+		var group = A2(_elm_lang$core$List$take, size, xs);
+		return (okayArgs && okayXs) ? {
+			ctor: '::',
+			_0: group,
+			_1: A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, step, xs_)
+		} : {ctor: '[]'};
+	});
+var _elm_community$list_extra$List_Extra$greedyGroupsOf = F2(
+	function (size, xs) {
+		return A3(_elm_community$list_extra$List_Extra$greedyGroupsOfWithStep, size, size, xs);
+	});
+var _elm_community$list_extra$List_Extra$groupsOfWithStep = F3(
+	function (size, step, xs) {
+		var okayArgs = (_elm_lang$core$Native_Utils.cmp(size, 0) > 0) && (_elm_lang$core$Native_Utils.cmp(step, 0) > 0);
+		var xs_ = A2(_elm_lang$core$List$drop, step, xs);
+		var group = A2(_elm_lang$core$List$take, size, xs);
+		var okayLength = _elm_lang$core$Native_Utils.eq(
+			size,
+			_elm_lang$core$List$length(group));
+		return (okayArgs && okayLength) ? {
+			ctor: '::',
+			_0: group,
+			_1: A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, step, xs_)
+		} : {ctor: '[]'};
+	});
+var _elm_community$list_extra$List_Extra$groupsOf = F2(
+	function (size, xs) {
+		return A3(_elm_community$list_extra$List_Extra$groupsOfWithStep, size, size, xs);
+	});
+var _elm_community$list_extra$List_Extra$zip5 = _elm_lang$core$List$map5(
+	F5(
+		function (v0, v1, v2, v3, v4) {
+			return {ctor: '_Tuple5', _0: v0, _1: v1, _2: v2, _3: v3, _4: v4};
+		}));
+var _elm_community$list_extra$List_Extra$zip4 = _elm_lang$core$List$map4(
+	F4(
+		function (v0, v1, v2, v3) {
+			return {ctor: '_Tuple4', _0: v0, _1: v1, _2: v2, _3: v3};
+		}));
+var _elm_community$list_extra$List_Extra$zip3 = _elm_lang$core$List$map3(
+	F3(
+		function (v0, v1, v2) {
+			return {ctor: '_Tuple3', _0: v0, _1: v1, _2: v2};
+		}));
+var _elm_community$list_extra$List_Extra$zip = _elm_lang$core$List$map2(
+	F2(
+		function (v0, v1) {
+			return {ctor: '_Tuple2', _0: v0, _1: v1};
+		}));
+var _elm_community$list_extra$List_Extra$isPrefixOf = function (prefix) {
+	return function (_p0) {
+		return A2(
+			_elm_lang$core$List$all,
+			_elm_lang$core$Basics$identity,
+			A3(
+				_elm_lang$core$List$map2,
+				F2(
+					function (x, y) {
+						return _elm_lang$core$Native_Utils.eq(x, y);
+					}),
+				prefix,
+				_p0));
+	};
+};
+var _elm_community$list_extra$List_Extra$isSuffixOf = F2(
+	function (suffix, xs) {
+		return A2(
+			_elm_community$list_extra$List_Extra$isPrefixOf,
+			_elm_lang$core$List$reverse(suffix),
+			_elm_lang$core$List$reverse(xs));
+	});
+var _elm_community$list_extra$List_Extra$selectSplit = function (xs) {
+	var _p1 = xs;
+	if (_p1.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p5 = _p1._1;
+		var _p4 = _p1._0;
+		return {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple3',
+				_0: {ctor: '[]'},
+				_1: _p4,
+				_2: _p5
+			},
+			_1: A2(
+				_elm_lang$core$List$map,
+				function (_p2) {
+					var _p3 = _p2;
+					return {
+						ctor: '_Tuple3',
+						_0: {ctor: '::', _0: _p4, _1: _p3._0},
+						_1: _p3._1,
+						_2: _p3._2
+					};
+				},
+				_elm_community$list_extra$List_Extra$selectSplit(_p5))
+		};
+	}
+};
+var _elm_community$list_extra$List_Extra$select = function (xs) {
+	var _p6 = xs;
+	if (_p6.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p10 = _p6._1;
+		var _p9 = _p6._0;
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _p9, _1: _p10},
+			_1: A2(
+				_elm_lang$core$List$map,
+				function (_p7) {
+					var _p8 = _p7;
+					return {
+						ctor: '_Tuple2',
+						_0: _p8._0,
+						_1: {ctor: '::', _0: _p9, _1: _p8._1}
+					};
+				},
+				_elm_community$list_extra$List_Extra$select(_p10))
+		};
+	}
+};
+var _elm_community$list_extra$List_Extra$tailsHelp = F2(
+	function (e, list) {
+		var _p11 = list;
+		if (_p11.ctor === '::') {
+			var _p12 = _p11._0;
+			return {
+				ctor: '::',
+				_0: {ctor: '::', _0: e, _1: _p12},
+				_1: {ctor: '::', _0: _p12, _1: _p11._1}
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	});
+var _elm_community$list_extra$List_Extra$tails = A2(
+	_elm_lang$core$List$foldr,
+	_elm_community$list_extra$List_Extra$tailsHelp,
+	{
+		ctor: '::',
+		_0: {ctor: '[]'},
+		_1: {ctor: '[]'}
+	});
+var _elm_community$list_extra$List_Extra$isInfixOf = F2(
+	function (infix, xs) {
+		return A2(
+			_elm_lang$core$List$any,
+			_elm_community$list_extra$List_Extra$isPrefixOf(infix),
+			_elm_community$list_extra$List_Extra$tails(xs));
+	});
+var _elm_community$list_extra$List_Extra$inits = A2(
+	_elm_lang$core$List$foldr,
+	F2(
+		function (e, acc) {
+			return {
+				ctor: '::',
+				_0: {ctor: '[]'},
+				_1: A2(
+					_elm_lang$core$List$map,
+					F2(
+						function (x, y) {
+							return {ctor: '::', _0: x, _1: y};
+						})(e),
+					acc)
+			};
+		}),
+	{
+		ctor: '::',
+		_0: {ctor: '[]'},
+		_1: {ctor: '[]'}
+	});
+var _elm_community$list_extra$List_Extra$groupWhileTransitively = F2(
+	function (cmp, xs_) {
+		var _p13 = xs_;
+		if (_p13.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p13._1.ctor === '[]') {
+				return {
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: _p13._0,
+						_1: {ctor: '[]'}
+					},
+					_1: {ctor: '[]'}
+				};
+			} else {
+				var _p15 = _p13._0;
+				var _p14 = A2(_elm_community$list_extra$List_Extra$groupWhileTransitively, cmp, _p13._1);
+				if (_p14.ctor === '::') {
+					return A2(cmp, _p15, _p13._1._0) ? {
+						ctor: '::',
+						_0: {ctor: '::', _0: _p15, _1: _p14._0},
+						_1: _p14._1
+					} : {
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: _p15,
+							_1: {ctor: '[]'}
+						},
+						_1: _p14
+					};
+				} else {
+					return {ctor: '[]'};
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$stripPrefix = F2(
+	function (prefix, xs) {
+		var step = F2(
+			function (e, m) {
+				var _p16 = m;
+				if (_p16.ctor === 'Nothing') {
+					return _elm_lang$core$Maybe$Nothing;
+				} else {
+					if (_p16._0.ctor === '[]') {
+						return _elm_lang$core$Maybe$Nothing;
+					} else {
+						return _elm_lang$core$Native_Utils.eq(e, _p16._0._0) ? _elm_lang$core$Maybe$Just(_p16._0._1) : _elm_lang$core$Maybe$Nothing;
+					}
+				}
+			});
+		return A3(
+			_elm_lang$core$List$foldl,
+			step,
+			_elm_lang$core$Maybe$Just(xs),
+			prefix);
+	});
+var _elm_community$list_extra$List_Extra$dropWhileRight = function (p) {
+	return A2(
+		_elm_lang$core$List$foldr,
+		F2(
+			function (x, xs) {
+				return (p(x) && _elm_lang$core$List$isEmpty(xs)) ? {ctor: '[]'} : {ctor: '::', _0: x, _1: xs};
+			}),
+		{ctor: '[]'});
+};
+var _elm_community$list_extra$List_Extra$takeWhileRight = function (p) {
+	var step = F2(
+		function (x, _p17) {
+			var _p18 = _p17;
+			var _p19 = _p18._0;
+			return (p(x) && _p18._1) ? {
+				ctor: '_Tuple2',
+				_0: {ctor: '::', _0: x, _1: _p19},
+				_1: true
+			} : {ctor: '_Tuple2', _0: _p19, _1: false};
+		});
+	return function (_p20) {
+		return _elm_lang$core$Tuple$first(
+			A3(
+				_elm_lang$core$List$foldr,
+				step,
+				{
+					ctor: '_Tuple2',
+					_0: {ctor: '[]'},
+					_1: true
+				},
+				_p20));
+	};
+};
+var _elm_community$list_extra$List_Extra$splitAt = F2(
+	function (n, xs) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_elm_lang$core$List$take, n, xs),
+			_1: A2(_elm_lang$core$List$drop, n, xs)
+		};
+	});
+var _elm_community$list_extra$List_Extra$groupsOfVarying_ = F3(
+	function (listOflengths, list, accu) {
+		groupsOfVarying_:
+		while (true) {
+			var _p21 = {ctor: '_Tuple2', _0: listOflengths, _1: list};
+			if (((_p21.ctor === '_Tuple2') && (_p21._0.ctor === '::')) && (_p21._1.ctor === '::')) {
+				var _p22 = A2(_elm_community$list_extra$List_Extra$splitAt, _p21._0._0, list);
+				var head = _p22._0;
+				var tail = _p22._1;
+				var _v10 = _p21._0._1,
+					_v11 = tail,
+					_v12 = {ctor: '::', _0: head, _1: accu};
+				listOflengths = _v10;
+				list = _v11;
+				accu = _v12;
+				continue groupsOfVarying_;
+			} else {
+				return _elm_lang$core$List$reverse(accu);
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$groupsOfVarying = F2(
+	function (listOflengths, list) {
+		return A3(
+			_elm_community$list_extra$List_Extra$groupsOfVarying_,
+			listOflengths,
+			list,
+			{ctor: '[]'});
+	});
+var _elm_community$list_extra$List_Extra$unfoldr = F2(
+	function (f, seed) {
+		var _p23 = f(seed);
+		if (_p23.ctor === 'Nothing') {
+			return {ctor: '[]'};
+		} else {
+			return {
+				ctor: '::',
+				_0: _p23._0._0,
+				_1: A2(_elm_community$list_extra$List_Extra$unfoldr, f, _p23._0._1)
+			};
+		}
+	});
+var _elm_community$list_extra$List_Extra$scanr1 = F2(
+	function (f, xs_) {
+		var _p24 = xs_;
+		if (_p24.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p24._1.ctor === '[]') {
+				return {
+					ctor: '::',
+					_0: _p24._0,
+					_1: {ctor: '[]'}
+				};
+			} else {
+				var _p25 = A2(_elm_community$list_extra$List_Extra$scanr1, f, _p24._1);
+				if (_p25.ctor === '::') {
+					return {
+						ctor: '::',
+						_0: A2(f, _p24._0, _p25._0),
+						_1: _p25
+					};
+				} else {
+					return {ctor: '[]'};
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$scanr = F3(
+	function (f, acc, xs_) {
+		var _p26 = xs_;
+		if (_p26.ctor === '[]') {
+			return {
+				ctor: '::',
+				_0: acc,
+				_1: {ctor: '[]'}
+			};
+		} else {
+			var _p27 = A3(_elm_community$list_extra$List_Extra$scanr, f, acc, _p26._1);
+			if (_p27.ctor === '::') {
+				return {
+					ctor: '::',
+					_0: A2(f, _p26._0, _p27._0),
+					_1: _p27
+				};
+			} else {
+				return {ctor: '[]'};
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$scanl1 = F2(
+	function (f, xs_) {
+		var _p28 = xs_;
+		if (_p28.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			return A3(_elm_lang$core$List$scanl, f, _p28._0, _p28._1);
+		}
+	});
+var _elm_community$list_extra$List_Extra$indexedFoldr = F3(
+	function (func, acc, list) {
+		var step = F2(
+			function (x, _p29) {
+				var _p30 = _p29;
+				var _p31 = _p30._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _p31 - 1,
+					_1: A3(func, _p31, x, _p30._1)
+				};
+			});
+		return _elm_lang$core$Tuple$second(
+			A3(
+				_elm_lang$core$List$foldr,
+				step,
+				{
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$List$length(list) - 1,
+					_1: acc
+				},
+				list));
+	});
+var _elm_community$list_extra$List_Extra$indexedFoldl = F3(
+	function (func, acc, list) {
+		var step = F2(
+			function (x, _p32) {
+				var _p33 = _p32;
+				var _p34 = _p33._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _p34 + 1,
+					_1: A3(func, _p34, x, _p33._1)
+				};
+			});
+		return _elm_lang$core$Tuple$second(
+			A3(
+				_elm_lang$core$List$foldl,
+				step,
+				{ctor: '_Tuple2', _0: 0, _1: acc},
+				list));
+	});
+var _elm_community$list_extra$List_Extra$foldr1 = F2(
+	function (f, xs) {
+		var mf = F2(
+			function (x, m) {
+				return _elm_lang$core$Maybe$Just(
+					function () {
+						var _p35 = m;
+						if (_p35.ctor === 'Nothing') {
+							return x;
+						} else {
+							return A2(f, x, _p35._0);
+						}
+					}());
+			});
+		return A3(_elm_lang$core$List$foldr, mf, _elm_lang$core$Maybe$Nothing, xs);
+	});
+var _elm_community$list_extra$List_Extra$foldl1 = F2(
+	function (f, xs) {
+		var mf = F2(
+			function (x, m) {
+				return _elm_lang$core$Maybe$Just(
+					function () {
+						var _p36 = m;
+						if (_p36.ctor === 'Nothing') {
+							return x;
+						} else {
+							return A2(f, _p36._0, x);
+						}
+					}());
+			});
+		return A3(_elm_lang$core$List$foldl, mf, _elm_lang$core$Maybe$Nothing, xs);
+	});
+var _elm_community$list_extra$List_Extra$interweaveHelp = F3(
+	function (l1, l2, acc) {
+		interweaveHelp:
+		while (true) {
+			var _p37 = {ctor: '_Tuple2', _0: l1, _1: l2};
+			_v23_1:
+			do {
+				if (_p37._0.ctor === '::') {
+					if (_p37._1.ctor === '::') {
+						var _v24 = _p37._0._1,
+							_v25 = _p37._1._1,
+							_v26 = A2(
+							_elm_lang$core$Basics_ops['++'],
+							acc,
+							{
+								ctor: '::',
+								_0: _p37._0._0,
+								_1: {
+									ctor: '::',
+									_0: _p37._1._0,
+									_1: {ctor: '[]'}
+								}
+							});
+						l1 = _v24;
+						l2 = _v25;
+						acc = _v26;
+						continue interweaveHelp;
+					} else {
+						break _v23_1;
+					}
+				} else {
+					if (_p37._1.ctor === '[]') {
+						break _v23_1;
+					} else {
+						return A2(_elm_lang$core$Basics_ops['++'], acc, _p37._1);
+					}
+				}
+			} while(false);
+			return A2(_elm_lang$core$Basics_ops['++'], acc, _p37._0);
+		}
+	});
+var _elm_community$list_extra$List_Extra$interweave = F2(
+	function (l1, l2) {
+		return A3(
+			_elm_community$list_extra$List_Extra$interweaveHelp,
+			l1,
+			l2,
+			{ctor: '[]'});
+	});
+var _elm_community$list_extra$List_Extra$permutations = function (xs_) {
+	var _p38 = xs_;
+	if (_p38.ctor === '[]') {
+		return {
+			ctor: '::',
+			_0: {ctor: '[]'},
+			_1: {ctor: '[]'}
+		};
+	} else {
+		var f = function (_p39) {
+			var _p40 = _p39;
+			return A2(
+				_elm_lang$core$List$map,
+				F2(
+					function (x, y) {
+						return {ctor: '::', _0: x, _1: y};
+					})(_p40._0),
+				_elm_community$list_extra$List_Extra$permutations(_p40._1));
+		};
+		return A2(
+			_elm_lang$core$List$concatMap,
+			f,
+			_elm_community$list_extra$List_Extra$select(_p38));
+	}
+};
+var _elm_community$list_extra$List_Extra$isPermutationOf = F2(
+	function (permut, xs) {
+		return A2(
+			_elm_lang$core$List$member,
+			permut,
+			_elm_community$list_extra$List_Extra$permutations(xs));
+	});
+var _elm_community$list_extra$List_Extra$subsequencesNonEmpty = function (xs) {
+	var _p41 = xs;
+	if (_p41.ctor === '[]') {
+		return {ctor: '[]'};
+	} else {
+		var _p42 = _p41._0;
+		var f = F2(
+			function (ys, r) {
+				return {
+					ctor: '::',
+					_0: ys,
+					_1: {
+						ctor: '::',
+						_0: {ctor: '::', _0: _p42, _1: ys},
+						_1: r
+					}
+				};
+			});
+		return {
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: _p42,
+				_1: {ctor: '[]'}
+			},
+			_1: A3(
+				_elm_lang$core$List$foldr,
+				f,
+				{ctor: '[]'},
+				_elm_community$list_extra$List_Extra$subsequencesNonEmpty(_p41._1))
+		};
+	}
+};
+var _elm_community$list_extra$List_Extra$subsequences = function (xs) {
+	return {
+		ctor: '::',
+		_0: {ctor: '[]'},
+		_1: _elm_community$list_extra$List_Extra$subsequencesNonEmpty(xs)
+	};
+};
+var _elm_community$list_extra$List_Extra$isSubsequenceOf = F2(
+	function (subseq, xs) {
+		return A2(
+			_elm_lang$core$List$member,
+			subseq,
+			_elm_community$list_extra$List_Extra$subsequences(xs));
+	});
+var _elm_community$list_extra$List_Extra$transpose = function (ll) {
+	transpose:
+	while (true) {
+		var _p43 = ll;
+		if (_p43.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p43._0.ctor === '[]') {
+				var _v31 = _p43._1;
+				ll = _v31;
+				continue transpose;
+			} else {
+				var _p44 = _p43._1;
+				var tails = A2(_elm_lang$core$List$filterMap, _elm_lang$core$List$tail, _p44);
+				var heads = A2(_elm_lang$core$List$filterMap, _elm_lang$core$List$head, _p44);
+				return {
+					ctor: '::',
+					_0: {ctor: '::', _0: _p43._0._0, _1: heads},
+					_1: _elm_community$list_extra$List_Extra$transpose(
+						{ctor: '::', _0: _p43._0._1, _1: tails})
+				};
+			}
+		}
+	}
+};
+var _elm_community$list_extra$List_Extra$intercalate = function (xs) {
+	return function (_p45) {
+		return _elm_lang$core$List$concat(
+			A2(_elm_lang$core$List$intersperse, xs, _p45));
+	};
+};
+var _elm_community$list_extra$List_Extra$filterNot = F2(
+	function (pred, list) {
+		return A2(
+			_elm_lang$core$List$filter,
+			function (_p46) {
+				return !pred(_p46);
+			},
+			list);
+	});
+var _elm_community$list_extra$List_Extra$removeAt = F2(
+	function (index, l) {
+		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
+			return l;
+		} else {
+			var tail = _elm_lang$core$List$tail(
+				A2(_elm_lang$core$List$drop, index, l));
+			var head = A2(_elm_lang$core$List$take, index, l);
+			var _p47 = tail;
+			if (_p47.ctor === 'Nothing') {
+				return l;
+			} else {
+				return A2(_elm_lang$core$List$append, head, _p47._0);
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$singleton = function (x) {
+	return {
+		ctor: '::',
+		_0: x,
+		_1: {ctor: '[]'}
+	};
+};
+var _elm_community$list_extra$List_Extra$stableSortWith = F2(
+	function (pred, list) {
+		var predWithIndex = F2(
+			function (_p49, _p48) {
+				var _p50 = _p49;
+				var _p51 = _p48;
+				var result = A2(pred, _p50._0, _p51._0);
+				var _p52 = result;
+				if (_p52.ctor === 'EQ') {
+					return A2(_elm_lang$core$Basics$compare, _p50._1, _p51._1);
+				} else {
+					return result;
+				}
+			});
+		var listWithIndex = A2(
+			_elm_lang$core$List$indexedMap,
+			F2(
+				function (i, a) {
+					return {ctor: '_Tuple2', _0: a, _1: i};
+				}),
+			list);
+		return A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$first,
+			A2(_elm_lang$core$List$sortWith, predWithIndex, listWithIndex));
+	});
+var _elm_community$list_extra$List_Extra$setAt = F3(
+	function (index, value, l) {
+		if (_elm_lang$core$Native_Utils.cmp(index, 0) < 0) {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			var tail = _elm_lang$core$List$tail(
+				A2(_elm_lang$core$List$drop, index, l));
+			var head = A2(_elm_lang$core$List$take, index, l);
+			var _p53 = tail;
+			if (_p53.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$Maybe$Just(
+					A2(
+						_elm_lang$core$List$append,
+						head,
+						{ctor: '::', _0: value, _1: _p53._0}));
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$remove = F2(
+	function (x, xs) {
+		var _p54 = xs;
+		if (_p54.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			var _p56 = _p54._1;
+			var _p55 = _p54._0;
+			return _elm_lang$core$Native_Utils.eq(x, _p55) ? _p56 : {
+				ctor: '::',
+				_0: _p55,
+				_1: A2(_elm_community$list_extra$List_Extra$remove, x, _p56)
+			};
+		}
+	});
+var _elm_community$list_extra$List_Extra$updateIfIndex = F3(
+	function (predicate, update, list) {
+		return A2(
+			_elm_lang$core$List$indexedMap,
+			F2(
+				function (i, x) {
+					return predicate(i) ? update(x) : x;
+				}),
+			list);
+	});
+var _elm_community$list_extra$List_Extra$updateAt = F3(
+	function (index, update, list) {
+		return ((_elm_lang$core$Native_Utils.cmp(index, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(
+			index,
+			_elm_lang$core$List$length(list)) > -1)) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+			A3(
+				_elm_community$list_extra$List_Extra$updateIfIndex,
+				F2(
+					function (x, y) {
+						return _elm_lang$core$Native_Utils.eq(x, y);
+					})(index),
+				update,
+				list));
+	});
+var _elm_community$list_extra$List_Extra$updateIf = F3(
+	function (predicate, update, list) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (item) {
+				return predicate(item) ? update(item) : item;
+			},
+			list);
+	});
+var _elm_community$list_extra$List_Extra$replaceIf = F3(
+	function (predicate, replacement, list) {
+		return A3(
+			_elm_community$list_extra$List_Extra$updateIf,
+			predicate,
+			_elm_lang$core$Basics$always(replacement),
+			list);
+	});
+var _elm_community$list_extra$List_Extra$findIndices = function (p) {
+	return function (_p57) {
+		return A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$first,
+			A2(
+				_elm_lang$core$List$filter,
+				function (_p58) {
+					var _p59 = _p58;
+					return p(_p59._1);
+				},
+				A2(
+					_elm_lang$core$List$indexedMap,
+					F2(
+						function (v0, v1) {
+							return {ctor: '_Tuple2', _0: v0, _1: v1};
+						}),
+					_p57)));
+	};
+};
+var _elm_community$list_extra$List_Extra$findIndex = function (p) {
+	return function (_p60) {
+		return _elm_lang$core$List$head(
+			A2(_elm_community$list_extra$List_Extra$findIndices, p, _p60));
+	};
+};
+var _elm_community$list_extra$List_Extra$elemIndices = function (x) {
+	return _elm_community$list_extra$List_Extra$findIndices(
+		F2(
+			function (x, y) {
+				return _elm_lang$core$Native_Utils.eq(x, y);
+			})(x));
+};
+var _elm_community$list_extra$List_Extra$elemIndex = function (x) {
+	return _elm_community$list_extra$List_Extra$findIndex(
+		F2(
+			function (x, y) {
+				return _elm_lang$core$Native_Utils.eq(x, y);
+			})(x));
+};
+var _elm_community$list_extra$List_Extra$find = F2(
+	function (predicate, list) {
+		find:
+		while (true) {
+			var _p61 = list;
+			if (_p61.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var _p62 = _p61._0;
+				if (predicate(_p62)) {
+					return _elm_lang$core$Maybe$Just(_p62);
+				} else {
+					var _v40 = predicate,
+						_v41 = _p61._1;
+					predicate = _v40;
+					list = _v41;
+					continue find;
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$notMember = function (x) {
+	return function (_p63) {
+		return !A2(_elm_lang$core$List$member, x, _p63);
+	};
+};
+var _elm_community$list_extra$List_Extra$andThen = _elm_lang$core$List$concatMap;
+var _elm_community$list_extra$List_Extra$lift2 = F3(
+	function (f, la, lb) {
+		return A2(
+			_elm_community$list_extra$List_Extra$andThen,
+			function (a) {
+				return A2(
+					_elm_community$list_extra$List_Extra$andThen,
+					function (b) {
+						return {
+							ctor: '::',
+							_0: A2(f, a, b),
+							_1: {ctor: '[]'}
+						};
+					},
+					lb);
+			},
+			la);
+	});
+var _elm_community$list_extra$List_Extra$lift3 = F4(
+	function (f, la, lb, lc) {
+		return A2(
+			_elm_community$list_extra$List_Extra$andThen,
+			function (a) {
+				return A2(
+					_elm_community$list_extra$List_Extra$andThen,
+					function (b) {
+						return A2(
+							_elm_community$list_extra$List_Extra$andThen,
+							function (c) {
+								return {
+									ctor: '::',
+									_0: A3(f, a, b, c),
+									_1: {ctor: '[]'}
+								};
+							},
+							lc);
+					},
+					lb);
+			},
+			la);
+	});
+var _elm_community$list_extra$List_Extra$lift4 = F5(
+	function (f, la, lb, lc, ld) {
+		return A2(
+			_elm_community$list_extra$List_Extra$andThen,
+			function (a) {
+				return A2(
+					_elm_community$list_extra$List_Extra$andThen,
+					function (b) {
+						return A2(
+							_elm_community$list_extra$List_Extra$andThen,
+							function (c) {
+								return A2(
+									_elm_community$list_extra$List_Extra$andThen,
+									function (d) {
+										return {
+											ctor: '::',
+											_0: A4(f, a, b, c, d),
+											_1: {ctor: '[]'}
+										};
+									},
+									ld);
+							},
+							lc);
+					},
+					lb);
+			},
+			la);
+	});
+var _elm_community$list_extra$List_Extra$andMap = F2(
+	function (fl, l) {
+		return A3(
+			_elm_lang$core$List$map2,
+			F2(
+				function (x, y) {
+					return x(y);
+				}),
+			fl,
+			l);
+	});
+var _elm_community$list_extra$List_Extra$uniqueHelp = F3(
+	function (f, existing, remaining) {
+		uniqueHelp:
+		while (true) {
+			var _p64 = remaining;
+			if (_p64.ctor === '[]') {
+				return {ctor: '[]'};
+			} else {
+				var _p66 = _p64._1;
+				var _p65 = _p64._0;
+				var computedFirst = f(_p65);
+				if (A2(_elm_lang$core$Set$member, computedFirst, existing)) {
+					var _v43 = f,
+						_v44 = existing,
+						_v45 = _p66;
+					f = _v43;
+					existing = _v44;
+					remaining = _v45;
+					continue uniqueHelp;
+				} else {
+					return {
+						ctor: '::',
+						_0: _p65,
+						_1: A3(
+							_elm_community$list_extra$List_Extra$uniqueHelp,
+							f,
+							A2(_elm_lang$core$Set$insert, computedFirst, existing),
+							_p66)
+					};
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$uniqueBy = F2(
+	function (f, list) {
+		return A3(_elm_community$list_extra$List_Extra$uniqueHelp, f, _elm_lang$core$Set$empty, list);
+	});
+var _elm_community$list_extra$List_Extra$allDifferentBy = F2(
+	function (f, list) {
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$List$length(list),
+			_elm_lang$core$List$length(
+				A2(_elm_community$list_extra$List_Extra$uniqueBy, f, list)));
+	});
+var _elm_community$list_extra$List_Extra$unique = function (list) {
+	return A3(_elm_community$list_extra$List_Extra$uniqueHelp, _elm_lang$core$Basics$identity, _elm_lang$core$Set$empty, list);
+};
+var _elm_community$list_extra$List_Extra$allDifferent = function (list) {
+	return _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$List$length(list),
+		_elm_lang$core$List$length(
+			_elm_community$list_extra$List_Extra$unique(list)));
+};
+var _elm_community$list_extra$List_Extra$dropWhile = F2(
+	function (predicate, list) {
+		dropWhile:
+		while (true) {
+			var _p67 = list;
+			if (_p67.ctor === '[]') {
+				return {ctor: '[]'};
+			} else {
+				if (predicate(_p67._0)) {
+					var _v47 = predicate,
+						_v48 = _p67._1;
+					predicate = _v47;
+					list = _v48;
+					continue dropWhile;
+				} else {
+					return list;
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$takeWhile = F2(
+	function (predicate, list) {
+		var _p68 = list;
+		if (_p68.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			var _p69 = _p68._0;
+			return predicate(_p69) ? {
+				ctor: '::',
+				_0: _p69,
+				_1: A2(_elm_community$list_extra$List_Extra$takeWhile, predicate, _p68._1)
+			} : {ctor: '[]'};
+		}
+	});
+var _elm_community$list_extra$List_Extra$span = F2(
+	function (p, xs) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_elm_community$list_extra$List_Extra$takeWhile, p, xs),
+			_1: A2(_elm_community$list_extra$List_Extra$dropWhile, p, xs)
+		};
+	});
+var _elm_community$list_extra$List_Extra$break = function (p) {
+	return _elm_community$list_extra$List_Extra$span(
+		function (_p70) {
+			return !p(_p70);
+		});
+};
+var _elm_community$list_extra$List_Extra$groupWhile = F2(
+	function (eq, xs_) {
+		var _p71 = xs_;
+		if (_p71.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			var _p73 = _p71._0;
+			var _p72 = A2(
+				_elm_community$list_extra$List_Extra$span,
+				eq(_p73),
+				_p71._1);
+			var ys = _p72._0;
+			var zs = _p72._1;
+			return {
+				ctor: '::',
+				_0: {ctor: '::', _0: _p73, _1: ys},
+				_1: A2(_elm_community$list_extra$List_Extra$groupWhile, eq, zs)
+			};
+		}
+	});
+var _elm_community$list_extra$List_Extra$group = _elm_community$list_extra$List_Extra$groupWhile(
+	F2(
+		function (x, y) {
+			return _elm_lang$core$Native_Utils.eq(x, y);
+		}));
+var _elm_community$list_extra$List_Extra$minimumBy = F2(
+	function (f, ls) {
+		var minBy = F2(
+			function (x, _p74) {
+				var _p75 = _p74;
+				var _p76 = _p75._1;
+				var fx = f(x);
+				return (_elm_lang$core$Native_Utils.cmp(fx, _p76) < 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p75._0, _1: _p76};
+			});
+		var _p77 = ls;
+		if (_p77.ctor === '::') {
+			if (_p77._1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(_p77._0);
+			} else {
+				var _p78 = _p77._0;
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$core$Tuple$first(
+						A3(
+							_elm_lang$core$List$foldl,
+							minBy,
+							{
+								ctor: '_Tuple2',
+								_0: _p78,
+								_1: f(_p78)
+							},
+							_p77._1)));
+			}
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _elm_community$list_extra$List_Extra$maximumBy = F2(
+	function (f, ls) {
+		var maxBy = F2(
+			function (x, _p79) {
+				var _p80 = _p79;
+				var _p81 = _p80._1;
+				var fx = f(x);
+				return (_elm_lang$core$Native_Utils.cmp(fx, _p81) > 0) ? {ctor: '_Tuple2', _0: x, _1: fx} : {ctor: '_Tuple2', _0: _p80._0, _1: _p81};
+			});
+		var _p82 = ls;
+		if (_p82.ctor === '::') {
+			if (_p82._1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(_p82._0);
+			} else {
+				var _p83 = _p82._0;
+				return _elm_lang$core$Maybe$Just(
+					_elm_lang$core$Tuple$first(
+						A3(
+							_elm_lang$core$List$foldl,
+							maxBy,
+							{
+								ctor: '_Tuple2',
+								_0: _p83,
+								_1: f(_p83)
+							},
+							_p82._1)));
+			}
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _elm_community$list_extra$List_Extra$uncons = function (xs) {
+	var _p84 = xs;
+	if (_p84.ctor === '[]') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: _p84._0, _1: _p84._1});
+	}
+};
+var _elm_community$list_extra$List_Extra$swapAt = F3(
+	function (index1, index2, l) {
+		swapAt:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.eq(index1, index2)) {
+				return _elm_lang$core$Maybe$Just(l);
+			} else {
+				if (_elm_lang$core$Native_Utils.cmp(index1, index2) > 0) {
+					var _v56 = index2,
+						_v57 = index1,
+						_v58 = l;
+					index1 = _v56;
+					index2 = _v57;
+					l = _v58;
+					continue swapAt;
+				} else {
+					if (_elm_lang$core$Native_Utils.cmp(index1, 0) < 0) {
+						return _elm_lang$core$Maybe$Nothing;
+					} else {
+						var _p85 = A2(_elm_community$list_extra$List_Extra$splitAt, index1, l);
+						var part1 = _p85._0;
+						var tail1 = _p85._1;
+						var _p86 = A2(_elm_community$list_extra$List_Extra$splitAt, index2 - index1, tail1);
+						var head2 = _p86._0;
+						var tail2 = _p86._1;
+						return A3(
+							_elm_lang$core$Maybe$map2,
+							F2(
+								function (_p88, _p87) {
+									var _p89 = _p88;
+									var _p90 = _p87;
+									return _elm_lang$core$List$concat(
+										{
+											ctor: '::',
+											_0: part1,
+											_1: {
+												ctor: '::',
+												_0: {ctor: '::', _0: _p90._0, _1: _p89._1},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '::', _0: _p89._0, _1: _p90._1},
+													_1: {ctor: '[]'}
+												}
+											}
+										});
+								}),
+							_elm_community$list_extra$List_Extra$uncons(head2),
+							_elm_community$list_extra$List_Extra$uncons(tail2));
+					}
+				}
+			}
+		}
+	});
+var _elm_community$list_extra$List_Extra$iterate = F2(
+	function (f, x) {
+		var _p91 = f(x);
+		if (_p91.ctor === 'Just') {
+			return {
+				ctor: '::',
+				_0: x,
+				_1: A2(_elm_community$list_extra$List_Extra$iterate, f, _p91._0)
+			};
+		} else {
+			return {
+				ctor: '::',
+				_0: x,
+				_1: {ctor: '[]'}
+			};
+		}
+	});
+var _elm_community$list_extra$List_Extra$getAt = F2(
+	function (idx, xs) {
+		return (_elm_lang$core$Native_Utils.cmp(idx, 0) < 0) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$List$head(
+			A2(_elm_lang$core$List$drop, idx, xs));
+	});
+var _elm_community$list_extra$List_Extra_ops = _elm_community$list_extra$List_Extra_ops || {};
+_elm_community$list_extra$List_Extra_ops['!!'] = _elm_lang$core$Basics$flip(_elm_community$list_extra$List_Extra$getAt);
+var _elm_community$list_extra$List_Extra$init = function () {
+	var maybe = F2(
+		function (d, f) {
+			return function (_p92) {
+				return A2(
+					_elm_lang$core$Maybe$withDefault,
+					d,
+					A2(_elm_lang$core$Maybe$map, f, _p92));
+			};
+		});
+	return A2(
+		_elm_lang$core$List$foldr,
+		function (x) {
+			return function (_p93) {
+				return _elm_lang$core$Maybe$Just(
+					A3(
+						maybe,
+						{ctor: '[]'},
+						F2(
+							function (x, y) {
+								return {ctor: '::', _0: x, _1: y};
+							})(x),
+						_p93));
+			};
+		},
+		_elm_lang$core$Maybe$Nothing);
+}();
+var _elm_community$list_extra$List_Extra$last = _elm_community$list_extra$List_Extra$foldl1(
+	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$core$Native_Bitwise = function() {
+
+return {
+	and: F2(function and(a, b) { return a & b; }),
+	or: F2(function or(a, b) { return a | b; }),
+	xor: F2(function xor(a, b) { return a ^ b; }),
+	complement: function complement(a) { return ~a; },
+	shiftLeftBy: F2(function(offset, a) { return a << offset; }),
+	shiftRightBy: F2(function(offset, a) { return a >> offset; }),
+	shiftRightZfBy: F2(function(offset, a) { return a >>> offset; })
+};
+
+}();
+
+var _elm_lang$core$Bitwise$shiftRightZfBy = _elm_lang$core$Native_Bitwise.shiftRightZfBy;
+var _elm_lang$core$Bitwise$shiftRightBy = _elm_lang$core$Native_Bitwise.shiftRightBy;
+var _elm_lang$core$Bitwise$shiftLeftBy = _elm_lang$core$Native_Bitwise.shiftLeftBy;
+var _elm_lang$core$Bitwise$complement = _elm_lang$core$Native_Bitwise.complement;
+var _elm_lang$core$Bitwise$xor = _elm_lang$core$Native_Bitwise.xor;
+var _elm_lang$core$Bitwise$or = _elm_lang$core$Native_Bitwise.or;
+var _elm_lang$core$Bitwise$and = _elm_lang$core$Native_Bitwise.and;
+
+var _elm_community$string_extra$String_Extra$replacementCodePoint = 65533;
+var _elm_community$string_extra$String_Extra$toCodePoints = function (string) {
+	var allCodeUnits = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$Char$toCode,
+		_elm_lang$core$String$toList(string));
+	var combineAndReverse = F2(
+		function (codeUnits, accumulated) {
+			combineAndReverse:
+			while (true) {
+				var _p0 = codeUnits;
+				if (_p0.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p4 = _p0._0;
+					var _p3 = _p0._1;
+					if ((_elm_lang$core$Native_Utils.cmp(_p4, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 55295) < 1)) {
+						var _v1 = _p3,
+							_v2 = {ctor: '::', _0: _p4, _1: accumulated};
+						codeUnits = _v1;
+						accumulated = _v2;
+						continue combineAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p4, 55296) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 56319) < 1)) {
+							var _p1 = _p3;
+							if (_p1.ctor === '[]') {
+								return {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+							} else {
+								var _p2 = _p1._0;
+								if ((_elm_lang$core$Native_Utils.cmp(_p2, 56320) > -1) && (_elm_lang$core$Native_Utils.cmp(_p2, 57343) < 1)) {
+									var codePoint = (65536 + ((_p4 - 55296) * 1024)) + (_p2 - 56320);
+									var _v4 = _p1._1,
+										_v5 = {ctor: '::', _0: codePoint, _1: accumulated};
+									codeUnits = _v4;
+									accumulated = _v5;
+									continue combineAndReverse;
+								} else {
+									var _v6 = _p3,
+										_v7 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+									codeUnits = _v6;
+									accumulated = _v7;
+									continue combineAndReverse;
+								}
+							}
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p4, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p4, 65535) < 1)) {
+								var _v8 = _p3,
+									_v9 = {ctor: '::', _0: _p4, _1: accumulated};
+								codeUnits = _v8;
+								accumulated = _v9;
+								continue combineAndReverse;
+							} else {
+								var _v10 = _p3,
+									_v11 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+								codeUnits = _v10;
+								accumulated = _v11;
+								continue combineAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	return _elm_lang$core$List$reverse(
+		A2(
+			combineAndReverse,
+			allCodeUnits,
+			{ctor: '[]'}));
+};
+var _elm_community$string_extra$String_Extra$fromCodePoints = function (allCodePoints) {
+	var splitAndReverse = F2(
+		function (codePoints, accumulated) {
+			splitAndReverse:
+			while (true) {
+				var _p5 = codePoints;
+				if (_p5.ctor === '[]') {
+					return accumulated;
+				} else {
+					var _p7 = _p5._1;
+					var _p6 = _p5._0;
+					if ((_elm_lang$core$Native_Utils.cmp(_p6, 0) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 55295) < 1)) {
+						var _v13 = _p7,
+							_v14 = {ctor: '::', _0: _p6, _1: accumulated};
+						codePoints = _v13;
+						accumulated = _v14;
+						continue splitAndReverse;
+					} else {
+						if ((_elm_lang$core$Native_Utils.cmp(_p6, 65536) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 1114111) < 1)) {
+							var subtracted = _p6 - 65536;
+							var leading = (subtracted >> 10) + 55296;
+							var trailing = (subtracted & 1023) + 56320;
+							var _v15 = _p7,
+								_v16 = {
+								ctor: '::',
+								_0: trailing,
+								_1: {ctor: '::', _0: leading, _1: accumulated}
+							};
+							codePoints = _v15;
+							accumulated = _v16;
+							continue splitAndReverse;
+						} else {
+							if ((_elm_lang$core$Native_Utils.cmp(_p6, 57344) > -1) && (_elm_lang$core$Native_Utils.cmp(_p6, 65535) < 1)) {
+								var _v17 = _p7,
+									_v18 = {ctor: '::', _0: _p6, _1: accumulated};
+								codePoints = _v17;
+								accumulated = _v18;
+								continue splitAndReverse;
+							} else {
+								var _v19 = _p7,
+									_v20 = {ctor: '::', _0: _elm_community$string_extra$String_Extra$replacementCodePoint, _1: accumulated};
+								codePoints = _v19;
+								accumulated = _v20;
+								continue splitAndReverse;
+							}
+						}
+					}
+				}
+			}
+		});
+	var allCodeUnits = _elm_lang$core$List$reverse(
+		A2(
+			splitAndReverse,
+			allCodePoints,
+			{ctor: '[]'}));
+	return _elm_lang$core$String$fromList(
+		A2(_elm_lang$core$List$map, _elm_lang$core$Char$fromCode, allCodeUnits));
+};
+var _elm_community$string_extra$String_Extra$fromFloat = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$fromInt = _elm_lang$core$Basics$toString;
+var _elm_community$string_extra$String_Extra$leftOfBack = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				A2(_elm_lang$core$Basics$flip, _elm_lang$core$String$left, string),
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$rightOfBack = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p8) {
+					return A3(
+						_elm_lang$core$Basics$flip,
+						_elm_lang$core$String$dropLeft,
+						string,
+						A2(
+							F2(
+								function (x, y) {
+									return x + y;
+								}),
+							_elm_lang$core$String$length(pattern),
+							_p8));
+				},
+				_elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(
+						A2(_elm_lang$core$String$indexes, pattern, string)))));
+	});
+var _elm_community$string_extra$String_Extra$firstResultHelp = F2(
+	function ($default, list) {
+		firstResultHelp:
+		while (true) {
+			var _p9 = list;
+			if (_p9.ctor === '[]') {
+				return $default;
+			} else {
+				if (_p9._0.ctor === 'Just') {
+					return _p9._0._0;
+				} else {
+					var _v22 = $default,
+						_v23 = _p9._1;
+					$default = _v22;
+					list = _v23;
+					continue firstResultHelp;
+				}
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$firstResult = function (list) {
+	return A2(_elm_community$string_extra$String_Extra$firstResultHelp, '', list);
+};
+var _elm_community$string_extra$String_Extra$leftOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p10) {
+					return _elm_community$string_extra$String_Extra$firstResult(
+						function (_) {
+							return _.submatches;
+						}(_p10));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'^(.*?)',
+							_elm_lang$core$Regex$escape(pattern))),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$rightOf = F2(
+	function (pattern, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$map,
+				function (_p11) {
+					return _elm_community$string_extra$String_Extra$firstResult(
+						function (_) {
+							return _.submatches;
+						}(_p11));
+				},
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_elm_lang$core$Regex$regex(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Regex$escape(pattern),
+							'(.*)$')),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$stripTags = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('<\\/?[^>]+>'),
+		_elm_lang$core$Basics$always(''),
+		string);
+};
+var _elm_community$string_extra$String_Extra$toSentenceHelper = F3(
+	function (lastPart, sentence, list) {
+		toSentenceHelper:
+		while (true) {
+			var _p12 = list;
+			if (_p12.ctor === '[]') {
+				return sentence;
+			} else {
+				if (_p12._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], lastPart, _p12._0));
+				} else {
+					var _v25 = lastPart,
+						_v26 = A2(
+						_elm_lang$core$Basics_ops['++'],
+						sentence,
+						A2(_elm_lang$core$Basics_ops['++'], ', ', _p12._0)),
+						_v27 = _p12._1;
+					lastPart = _v25;
+					sentence = _v26;
+					list = _v27;
+					continue toSentenceHelper;
+				}
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$toSentenceBaseCase = function (list) {
+	var _p13 = list;
+	_v28_2:
+	do {
+		if (_p13.ctor === '::') {
+			if (_p13._1.ctor === '[]') {
+				return _p13._0;
+			} else {
+				if (_p13._1._1.ctor === '[]') {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p13._0,
+						A2(_elm_lang$core$Basics_ops['++'], ' and ', _p13._1._0));
+				} else {
+					break _v28_2;
+				}
+			}
+		} else {
+			break _v28_2;
+		}
+	} while(false);
+	return '';
+};
+var _elm_community$string_extra$String_Extra$toSentenceOxford = function (list) {
+	var _p14 = list;
+	if (((_p14.ctor === '::') && (_p14._1.ctor === '::')) && (_p14._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			', and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p14._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p14._1._0)),
+			{ctor: '::', _0: _p14._1._1._0, _1: _p14._1._1._1});
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$toSentence = function (list) {
+	var _p15 = list;
+	if (((_p15.ctor === '::') && (_p15._1.ctor === '::')) && (_p15._1._1.ctor === '::')) {
+		return A3(
+			_elm_community$string_extra$String_Extra$toSentenceHelper,
+			' and ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p15._0,
+				A2(_elm_lang$core$Basics_ops['++'], ', ', _p15._1._0)),
+			{ctor: '::', _0: _p15._1._1._0, _1: _p15._1._1._1});
+	} else {
+		return _elm_community$string_extra$String_Extra$toSentenceBaseCase(list);
+	}
+};
+var _elm_community$string_extra$String_Extra$ellipsisWith = F3(
+	function (howLong, append, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$String$left,
+				howLong - _elm_lang$core$String$length(append),
+				string),
+			append);
+	});
+var _elm_community$string_extra$String_Extra$ellipsis = F2(
+	function (howLong, string) {
+		return A3(_elm_community$string_extra$String_Extra$ellipsisWith, howLong, '...', string);
+	});
+var _elm_community$string_extra$String_Extra$countOccurrences = F2(
+	function (needle, haystack) {
+		return (_elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(needle),
+			0) || _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$String$length(haystack),
+			0)) ? 0 : _elm_lang$core$List$length(
+			A2(_elm_lang$core$String$indexes, needle, haystack));
+	});
+var _elm_community$string_extra$String_Extra$unindent = function (multilineSting) {
+	var isNotWhitespace = function ($char) {
+		return (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr(' '))) && (!_elm_lang$core$Native_Utils.eq(
+			$char,
+			_elm_lang$core$Native_Utils.chr('\t')));
+	};
+	var countLeadingWhitespace = F2(
+		function (count, line) {
+			countLeadingWhitespace:
+			while (true) {
+				var _p16 = _elm_lang$core$String$uncons(line);
+				if (_p16.ctor === 'Nothing') {
+					return count;
+				} else {
+					var _p18 = _p16._0._1;
+					var _p17 = _p16._0._0;
+					switch (_p17.valueOf()) {
+						case ' ':
+							var _v33 = count + 1,
+								_v34 = _p18;
+							count = _v33;
+							line = _v34;
+							continue countLeadingWhitespace;
+						case '\t':
+							var _v35 = count + 1,
+								_v36 = _p18;
+							count = _v35;
+							line = _v36;
+							continue countLeadingWhitespace;
+						default:
+							return count;
+					}
+				}
+			}
+		});
+	var lines = _elm_lang$core$String$lines(multilineSting);
+	var minLead = A2(
+		_elm_lang$core$Maybe$withDefault,
+		0,
+		_elm_lang$core$List$minimum(
+			A2(
+				_elm_lang$core$List$map,
+				countLeadingWhitespace(0),
+				A2(
+					_elm_lang$core$List$filter,
+					_elm_lang$core$String$any(isNotWhitespace),
+					lines))));
+	return A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$String$dropLeft(minLead),
+			lines));
+};
+var _elm_community$string_extra$String_Extra$dasherize = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('-'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([A-Z])'),
+				function (_p19) {
+					return A2(
+						_elm_lang$core$String$append,
+						'-',
+						function (_) {
+							return _.match;
+						}(_p19));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$underscored = function (string) {
+	return _elm_lang$core$String$toLower(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[_-\\s]+'),
+			_elm_lang$core$Basics$always('_'),
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([a-z\\d])([A-Z]+)'),
+				function (_p20) {
+					return A2(
+						_elm_lang$core$String$join,
+						'_',
+						A2(
+							_elm_lang$core$List$filterMap,
+							_elm_lang$core$Basics$identity,
+							function (_) {
+								return _.submatches;
+							}(_p20)));
+				},
+				_elm_lang$core$String$trim(string))));
+};
+var _elm_community$string_extra$String_Extra$unsurround = F2(
+	function (wrap, string) {
+		if (A2(_elm_lang$core$String$startsWith, wrap, string) && A2(_elm_lang$core$String$endsWith, wrap, string)) {
+			var length = _elm_lang$core$String$length(wrap);
+			return A2(
+				_elm_lang$core$String$dropRight,
+				length,
+				A2(_elm_lang$core$String$dropLeft, length, string));
+		} else {
+			return string;
+		}
+	});
+var _elm_community$string_extra$String_Extra$unquote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$unsurround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$surround = F2(
+	function (wrap, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			wrap,
+			A2(_elm_lang$core$Basics_ops['++'], string, wrap));
+	});
+var _elm_community$string_extra$String_Extra$quote = function (string) {
+	return A2(_elm_community$string_extra$String_Extra$surround, '\"', string);
+};
+var _elm_community$string_extra$String_Extra$camelize = function (string) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('[-_\\s]+(.)?'),
+		function (_p21) {
+			var _p22 = _p21;
+			var _p23 = _p22.submatches;
+			if ((_p23.ctor === '::') && (_p23._0.ctor === 'Just')) {
+				return _elm_lang$core$String$toUpper(_p23._0._0);
+			} else {
+				return '';
+			}
+		},
+		_elm_lang$core$String$trim(string));
+};
+var _elm_community$string_extra$String_Extra$isBlank = function (string) {
+	return A2(
+		_elm_lang$core$Regex$contains,
+		_elm_lang$core$Regex$regex('^\\s*$'),
+		string);
+};
+var _elm_community$string_extra$String_Extra$clean = function (string) {
+	return _elm_lang$core$String$trim(
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('\\s\\s+'),
+			_elm_lang$core$Basics$always(' '),
+			string));
+};
+var _elm_community$string_extra$String_Extra$softBreakRegexp = function (width) {
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'.{1,',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(width),
+				'}(\\s+|$)|\\S+?(\\s+|$)')));
+};
+var _elm_community$string_extra$String_Extra$softEllipsis = F2(
+	function (howLong, string) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$String$length(string),
+			howLong) < 1) ? string : A3(
+			_elm_lang$core$Basics$flip,
+			_elm_lang$core$String$append,
+			'...',
+			A4(
+				_elm_lang$core$Regex$replace,
+				_elm_lang$core$Regex$All,
+				_elm_lang$core$Regex$regex('([\\.,;:\\s])+$'),
+				_elm_lang$core$Basics$always(''),
+				A2(
+					_elm_lang$core$String$join,
+					'',
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.match;
+						},
+						A3(
+							_elm_lang$core$Regex$find,
+							_elm_lang$core$Regex$AtMost(1),
+							_elm_community$string_extra$String_Extra$softBreakRegexp(howLong),
+							string)))));
+	});
+var _elm_community$string_extra$String_Extra$softBreak = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.cmp(width, 0) < 1) ? {ctor: '[]'} : A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$All,
+				_elm_community$string_extra$String_Extra$softBreakRegexp(width),
+				string));
+	});
+var _elm_community$string_extra$String_Extra$softWrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$softBreak, width, string));
+	});
+var _elm_community$string_extra$String_Extra$softWrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$softWrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$breaker = F3(
+	function (width, string, acc) {
+		breaker:
+		while (true) {
+			var _p24 = string;
+			if (_p24 === '') {
+				return _elm_lang$core$List$reverse(acc);
+			} else {
+				var _v40 = width,
+					_v41 = A2(_elm_lang$core$String$dropLeft, width, string),
+					_v42 = {
+					ctor: '::',
+					_0: A3(_elm_lang$core$String$slice, 0, width, string),
+					_1: acc
+				};
+				width = _v40;
+				string = _v41;
+				acc = _v42;
+				continue breaker;
+			}
+		}
+	});
+var _elm_community$string_extra$String_Extra$break = F2(
+	function (width, string) {
+		return (_elm_lang$core$Native_Utils.eq(width, 0) || _elm_lang$core$Native_Utils.eq(string, '')) ? {
+			ctor: '::',
+			_0: string,
+			_1: {ctor: '[]'}
+		} : A3(
+			_elm_community$string_extra$String_Extra$breaker,
+			width,
+			string,
+			{ctor: '[]'});
+	});
+var _elm_community$string_extra$String_Extra$wrapWith = F3(
+	function (width, separator, string) {
+		return A2(
+			_elm_lang$core$String$join,
+			separator,
+			A2(_elm_community$string_extra$String_Extra$break, width, string));
+	});
+var _elm_community$string_extra$String_Extra$wrap = F2(
+	function (width, string) {
+		return A3(_elm_community$string_extra$String_Extra$wrapWith, width, '\n', string);
+	});
+var _elm_community$string_extra$String_Extra$replaceSlice = F4(
+	function (substitution, start, end, string) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			A3(_elm_lang$core$String$slice, 0, start, string),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				substitution,
+				A3(
+					_elm_lang$core$String$slice,
+					end,
+					_elm_lang$core$String$length(string),
+					string)));
+	});
+var _elm_community$string_extra$String_Extra$insertAt = F3(
+	function (insert, pos, string) {
+		return A4(_elm_community$string_extra$String_Extra$replaceSlice, insert, pos, pos, string);
+	});
+var _elm_community$string_extra$String_Extra$replace = F3(
+	function (search, substitution, string) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(
+				_elm_lang$core$Regex$escape(search)),
+			function (_p25) {
+				return substitution;
+			},
+			string);
+	});
+var _elm_community$string_extra$String_Extra$changeCase = F2(
+	function (mutator, word) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_p26) {
+					var _p27 = _p26;
+					return A2(
+						_elm_lang$core$String$cons,
+						mutator(_p27._0),
+						_p27._1);
+				},
+				_elm_lang$core$String$uncons(word)));
+	});
+var _elm_community$string_extra$String_Extra$toSentenceCase = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toUpper, word);
+};
+var _elm_community$string_extra$String_Extra$toTitleCase = function (ws) {
+	var uppercaseMatch = A3(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('\\w+'),
+		function (_p28) {
+			return _elm_community$string_extra$String_Extra$toSentenceCase(
+				function (_) {
+					return _.match;
+				}(_p28));
+		});
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('^([a-z])|\\s+([a-z])'),
+		function (_p29) {
+			return uppercaseMatch(
+				function (_) {
+					return _.match;
+				}(_p29));
+		},
+		ws);
+};
+var _elm_community$string_extra$String_Extra$classify = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		A3(
+			_elm_community$string_extra$String_Extra$replace,
+			' ',
+			'',
+			_elm_community$string_extra$String_Extra$camelize(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('[\\W_]'),
+					_elm_lang$core$Basics$always(' '),
+					string))));
+};
+var _elm_community$string_extra$String_Extra$humanize = function (string) {
+	return _elm_community$string_extra$String_Extra$toSentenceCase(
+		_elm_lang$core$String$toLower(
+			_elm_lang$core$String$trim(
+				A4(
+					_elm_lang$core$Regex$replace,
+					_elm_lang$core$Regex$All,
+					_elm_lang$core$Regex$regex('_id$|[-_\\s]+'),
+					_elm_lang$core$Basics$always(' '),
+					A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('[A-Z]'),
+						function (_p30) {
+							return A2(
+								_elm_lang$core$String$append,
+								'-',
+								function (_) {
+									return _.match;
+								}(_p30));
+						},
+						string)))));
+};
+var _elm_community$string_extra$String_Extra$decapitalize = function (word) {
+	return A2(_elm_community$string_extra$String_Extra$changeCase, _elm_lang$core$Char$toLower, word);
+};
+
 var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
 var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
 var _elm_lang$core$Task$spawnCmd = F2(
@@ -9127,6 +11342,367 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _elm_lang$http$Native_Http = function() {
+
+
+// ENCODING AND DECODING
+
+function encodeUri(string)
+{
+	return encodeURIComponent(string);
+}
+
+function decodeUri(string)
+{
+	try
+	{
+		return _elm_lang$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch(e)
+	{
+		return _elm_lang$core$Maybe$Nothing;
+	}
+}
+
+
+// SEND REQUEST
+
+function toTask(request, maybeProgress)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		var xhr = new XMLHttpRequest();
+
+		configureProgress(xhr, maybeProgress);
+
+		xhr.addEventListener('error', function() {
+			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NetworkError' }));
+		});
+		xhr.addEventListener('timeout', function() {
+			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Timeout' }));
+		});
+		xhr.addEventListener('load', function() {
+			callback(handleResponse(xhr, request.expect.responseToResult));
+		});
+
+		try
+		{
+			xhr.open(request.method, request.url, true);
+		}
+		catch (e)
+		{
+			return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'BadUrl', _0: request.url }));
+		}
+
+		configureRequest(xhr, request);
+		send(xhr, request.body);
+
+		return function() { xhr.abort(); };
+	});
+}
+
+function configureProgress(xhr, maybeProgress)
+{
+	if (maybeProgress.ctor === 'Nothing')
+	{
+		return;
+	}
+
+	xhr.addEventListener('progress', function(event) {
+		if (!event.lengthComputable)
+		{
+			return;
+		}
+		_elm_lang$core$Native_Scheduler.rawSpawn(maybeProgress._0({
+			bytes: event.loaded,
+			bytesExpected: event.total
+		}));
+	});
+}
+
+function configureRequest(xhr, request)
+{
+	function setHeader(pair)
+	{
+		xhr.setRequestHeader(pair._0, pair._1);
+	}
+
+	A2(_elm_lang$core$List$map, setHeader, request.headers);
+	xhr.responseType = request.expect.responseType;
+	xhr.withCredentials = request.withCredentials;
+
+	if (request.timeout.ctor === 'Just')
+	{
+		xhr.timeout = request.timeout._0;
+	}
+}
+
+function send(xhr, body)
+{
+	switch (body.ctor)
+	{
+		case 'EmptyBody':
+			xhr.send();
+			return;
+
+		case 'StringBody':
+			xhr.setRequestHeader('Content-Type', body._0);
+			xhr.send(body._1);
+			return;
+
+		case 'FormDataBody':
+			xhr.send(body._0);
+			return;
+	}
+}
+
+
+// RESPONSES
+
+function handleResponse(xhr, responseToResult)
+{
+	var response = toResponse(xhr);
+
+	if (xhr.status < 200 || 300 <= xhr.status)
+	{
+		response.body = xhr.responseText;
+		return _elm_lang$core$Native_Scheduler.fail({
+			ctor: 'BadStatus',
+			_0: response
+		});
+	}
+
+	var result = responseToResult(response);
+
+	if (result.ctor === 'Ok')
+	{
+		return _elm_lang$core$Native_Scheduler.succeed(result._0);
+	}
+	else
+	{
+		response.body = xhr.responseText;
+		return _elm_lang$core$Native_Scheduler.fail({
+			ctor: 'BadPayload',
+			_0: result._0,
+			_1: response
+		});
+	}
+}
+
+function toResponse(xhr)
+{
+	return {
+		status: { code: xhr.status, message: xhr.statusText },
+		headers: parseHeaders(xhr.getAllResponseHeaders()),
+		url: xhr.responseURL,
+		body: xhr.response
+	};
+}
+
+function parseHeaders(rawHeaders)
+{
+	var headers = _elm_lang$core$Dict$empty;
+
+	if (!rawHeaders)
+	{
+		return headers;
+	}
+
+	var headerPairs = rawHeaders.split('\u000d\u000a');
+	for (var i = headerPairs.length; i--; )
+	{
+		var headerPair = headerPairs[i];
+		var index = headerPair.indexOf('\u003a\u0020');
+		if (index > 0)
+		{
+			var key = headerPair.substring(0, index);
+			var value = headerPair.substring(index + 2);
+
+			headers = A3(_elm_lang$core$Dict$update, key, function(oldValue) {
+				if (oldValue.ctor === 'Just')
+				{
+					return _elm_lang$core$Maybe$Just(value + ', ' + oldValue._0);
+				}
+				return _elm_lang$core$Maybe$Just(value);
+			}, headers);
+		}
+	}
+
+	return headers;
+}
+
+
+// EXPECTORS
+
+function expectStringResponse(responseToResult)
+{
+	return {
+		responseType: 'text',
+		responseToResult: responseToResult
+	};
+}
+
+function mapExpect(func, expect)
+{
+	return {
+		responseType: expect.responseType,
+		responseToResult: function(response) {
+			var convertedResponse = expect.responseToResult(response);
+			return A2(_elm_lang$core$Result$map, func, convertedResponse);
+		}
+	};
+}
+
+
+// BODY
+
+function multipart(parts)
+{
+	var formData = new FormData();
+
+	while (parts.ctor !== '[]')
+	{
+		var part = parts._0;
+		formData.append(part._0, part._1);
+		parts = parts._1;
+	}
+
+	return { ctor: 'FormDataBody', _0: formData };
+}
+
+return {
+	toTask: F2(toTask),
+	expectStringResponse: expectStringResponse,
+	mapExpect: F2(mapExpect),
+	multipart: multipart,
+	encodeUri: encodeUri,
+	decodeUri: decodeUri
+};
+
+}();
+
+var _elm_lang$http$Http_Internal$map = F2(
+	function (func, request) {
+		return _elm_lang$core$Native_Utils.update(
+			request,
+			{
+				expect: A2(_elm_lang$http$Native_Http.mapExpect, func, request.expect)
+			});
+	});
+var _elm_lang$http$Http_Internal$RawRequest = F7(
+	function (a, b, c, d, e, f, g) {
+		return {method: a, headers: b, url: c, body: d, expect: e, timeout: f, withCredentials: g};
+	});
+var _elm_lang$http$Http_Internal$Request = function (a) {
+	return {ctor: 'Request', _0: a};
+};
+var _elm_lang$http$Http_Internal$Expect = {ctor: 'Expect'};
+var _elm_lang$http$Http_Internal$FormDataBody = {ctor: 'FormDataBody'};
+var _elm_lang$http$Http_Internal$StringBody = F2(
+	function (a, b) {
+		return {ctor: 'StringBody', _0: a, _1: b};
+	});
+var _elm_lang$http$Http_Internal$EmptyBody = {ctor: 'EmptyBody'};
+var _elm_lang$http$Http_Internal$Header = F2(
+	function (a, b) {
+		return {ctor: 'Header', _0: a, _1: b};
+	});
+
+var _elm_lang$http$Http$decodeUri = _elm_lang$http$Native_Http.decodeUri;
+var _elm_lang$http$Http$encodeUri = _elm_lang$http$Native_Http.encodeUri;
+var _elm_lang$http$Http$expectStringResponse = _elm_lang$http$Native_Http.expectStringResponse;
+var _elm_lang$http$Http$expectJson = function (decoder) {
+	return _elm_lang$http$Http$expectStringResponse(
+		function (response) {
+			return A2(_elm_lang$core$Json_Decode$decodeString, decoder, response.body);
+		});
+};
+var _elm_lang$http$Http$expectString = _elm_lang$http$Http$expectStringResponse(
+	function (response) {
+		return _elm_lang$core$Result$Ok(response.body);
+	});
+var _elm_lang$http$Http$multipartBody = _elm_lang$http$Native_Http.multipart;
+var _elm_lang$http$Http$stringBody = _elm_lang$http$Http_Internal$StringBody;
+var _elm_lang$http$Http$jsonBody = function (value) {
+	return A2(
+		_elm_lang$http$Http_Internal$StringBody,
+		'application/json',
+		A2(_elm_lang$core$Json_Encode$encode, 0, value));
+};
+var _elm_lang$http$Http$emptyBody = _elm_lang$http$Http_Internal$EmptyBody;
+var _elm_lang$http$Http$header = _elm_lang$http$Http_Internal$Header;
+var _elm_lang$http$Http$request = _elm_lang$http$Http_Internal$Request;
+var _elm_lang$http$Http$post = F3(
+	function (url, body, decoder) {
+		return _elm_lang$http$Http$request(
+			{
+				method: 'POST',
+				headers: {ctor: '[]'},
+				url: url,
+				body: body,
+				expect: _elm_lang$http$Http$expectJson(decoder),
+				timeout: _elm_lang$core$Maybe$Nothing,
+				withCredentials: false
+			});
+	});
+var _elm_lang$http$Http$get = F2(
+	function (url, decoder) {
+		return _elm_lang$http$Http$request(
+			{
+				method: 'GET',
+				headers: {ctor: '[]'},
+				url: url,
+				body: _elm_lang$http$Http$emptyBody,
+				expect: _elm_lang$http$Http$expectJson(decoder),
+				timeout: _elm_lang$core$Maybe$Nothing,
+				withCredentials: false
+			});
+	});
+var _elm_lang$http$Http$getString = function (url) {
+	return _elm_lang$http$Http$request(
+		{
+			method: 'GET',
+			headers: {ctor: '[]'},
+			url: url,
+			body: _elm_lang$http$Http$emptyBody,
+			expect: _elm_lang$http$Http$expectString,
+			timeout: _elm_lang$core$Maybe$Nothing,
+			withCredentials: false
+		});
+};
+var _elm_lang$http$Http$toTask = function (_p0) {
+	var _p1 = _p0;
+	return A2(_elm_lang$http$Native_Http.toTask, _p1._0, _elm_lang$core$Maybe$Nothing);
+};
+var _elm_lang$http$Http$send = F2(
+	function (resultToMessage, request) {
+		return A2(
+			_elm_lang$core$Task$attempt,
+			resultToMessage,
+			_elm_lang$http$Http$toTask(request));
+	});
+var _elm_lang$http$Http$Response = F4(
+	function (a, b, c, d) {
+		return {url: a, status: b, headers: c, body: d};
+	});
+var _elm_lang$http$Http$BadPayload = F2(
+	function (a, b) {
+		return {ctor: 'BadPayload', _0: a, _1: b};
+	});
+var _elm_lang$http$Http$BadStatus = function (a) {
+	return {ctor: 'BadStatus', _0: a};
+};
+var _elm_lang$http$Http$NetworkError = {ctor: 'NetworkError'};
+var _elm_lang$http$Http$Timeout = {ctor: 'Timeout'};
+var _elm_lang$http$Http$BadUrl = function (a) {
+	return {ctor: 'BadUrl', _0: a};
+};
+var _elm_lang$http$Http$StringPart = F2(
+	function (a, b) {
+		return {ctor: 'StringPart', _0: a, _1: b};
+	});
+var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
+
 var _elm_lang$navigation$Native_Navigation = function() {
 
 function go(n)
@@ -9433,6 +12009,2260 @@ var _elm_lang$navigation$Navigation$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
 
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond = 1000;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour = 60 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay = 24 * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour;
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$dayOfWeekFromWeekdayNumber = function (n) {
+	var _p0 = n;
+	switch (_p0) {
+		case 1:
+			return _elm_lang$core$Date$Mon;
+		case 2:
+			return _elm_lang$core$Date$Tue;
+		case 3:
+			return _elm_lang$core$Date$Wed;
+		case 4:
+			return _elm_lang$core$Date$Thu;
+		case 5:
+			return _elm_lang$core$Date$Fri;
+		case 6:
+			return _elm_lang$core$Date$Sat;
+		default:
+			return _elm_lang$core$Date$Sun;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek = function (d) {
+	var _p1 = d;
+	switch (_p1.ctor) {
+		case 'Mon':
+			return 1;
+		case 'Tue':
+			return 2;
+		case 'Wed':
+			return 3;
+		case 'Thu':
+			return 4;
+		case 'Fri':
+			return 5;
+		case 'Sat':
+			return 6;
+		default:
+			return 7;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber = function (n) {
+	var _p2 = n;
+	switch (_p2) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Feb;
+		case 3:
+			return _elm_lang$core$Date$Mar;
+		case 4:
+			return _elm_lang$core$Date$Apr;
+		case 5:
+			return _elm_lang$core$Date$May;
+		case 6:
+			return _elm_lang$core$Date$Jun;
+		case 7:
+			return _elm_lang$core$Date$Jul;
+		case 8:
+			return _elm_lang$core$Date$Aug;
+		case 9:
+			return _elm_lang$core$Date$Sep;
+		case 10:
+			return _elm_lang$core$Date$Oct;
+		case 11:
+			return _elm_lang$core$Date$Nov;
+		default:
+			return _elm_lang$core$Date$Dec;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth = function (m) {
+	var _p3 = m;
+	switch (_p3.ctor) {
+		case 'Jan':
+			return 1;
+		case 'Feb':
+			return 2;
+		case 'Mar':
+			return 3;
+		case 'Apr':
+			return 4;
+		case 'May':
+			return 5;
+		case 'Jun':
+			return 6;
+		case 'Jul':
+			return 7;
+		case 'Aug':
+			return 8;
+		case 'Sep':
+			return 9;
+		case 'Oct':
+			return 10;
+		case 'Nov':
+			return 11;
+		default:
+			return 12;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$months = {
+	ctor: '::',
+	_0: _elm_lang$core$Date$Jan,
+	_1: {
+		ctor: '::',
+		_0: _elm_lang$core$Date$Feb,
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$core$Date$Mar,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Date$Apr,
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Date$May,
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Date$Jun,
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Date$Jul,
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Date$Aug,
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Date$Sep,
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Date$Oct,
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$core$Date$Nov,
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Date$Dec,
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear = function (y) {
+	return (_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0) && (!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0))) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0);
+};
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth = F2(
+	function (y, m) {
+		var _p4 = m;
+		switch (_p4.ctor) {
+			case 'Jan':
+				return 31;
+			case 'Feb':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 29 : 28;
+			case 'Mar':
+				return 31;
+			case 'Apr':
+				return 30;
+			case 'May':
+				return 31;
+			case 'Jun':
+				return 30;
+			case 'Jul':
+				return 31;
+			case 'Aug':
+				return 31;
+			case 'Sep':
+				return 30;
+			case 'Oct':
+				return 31;
+			case 'Nov':
+				return 30;
+			default:
+				return 31;
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth = F2(
+	function (y, m) {
+		var _p5 = m;
+		switch (_p5.ctor) {
+			case 'Jan':
+				return 0;
+			case 'Feb':
+				return 31;
+			case 'Mar':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 60 : 59;
+			case 'Apr':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 91 : 90;
+			case 'May':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 121 : 120;
+			case 'Jun':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 152 : 151;
+			case 'Jul':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 182 : 181;
+			case 'Aug':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 213 : 212;
+			case 'Sep':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 244 : 243;
+			case 'Oct':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 274 : 273;
+			case 'Nov':
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 305 : 304;
+			default:
+				return _justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y) ? 335 : 334;
+		}
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime = function (rd) {
+	return (rd - 719163) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber = function (rd) {
+	var _p0 = A2(_elm_lang$core$Basics_ops['%'], rd, 7);
+	if (_p0 === 0) {
+		return 7;
+	} else {
+		return _p0;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra = function (y) {
+	return (((y / 4) | 0) - ((y / 100) | 0)) + ((y / 400) | 0);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear = function (y) {
+	return (365 * (y - 1)) + _justinmimbs$elm_date_extra$Date_Internal_RataDie$leapYearsInCommonEra(y - 1);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear = function (y) {
+	var jan4RD = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, 4);
+	return (jan4RD - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(jan4RD)) + 1;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate = F3(
+	function (y, w, d) {
+		var week1Day0RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(y) - 1;
+		return (week1Day0RD + ((w - 1) * 7)) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate = F3(
+	function (y, m, d) {
+		var md = A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+		var yd = _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(y);
+		return (yd + md) + d;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt = F2(
+	function (a, b) {
+		return {
+			ctor: '_Tuple2',
+			_0: (a / b) | 0,
+			_1: A2(_elm_lang$core$Basics$rem, a, b)
+		};
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$year = function (rd) {
+	var _p1 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, rd, 146097);
+	var q400 = _p1._0;
+	var r400 = _p1._1;
+	var _p2 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r400, 36524);
+	var q100 = _p2._0;
+	var r100 = _p2._1;
+	var _p3 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r100, 1461);
+	var q4 = _p3._0;
+	var r4 = _p3._1;
+	var _p4 = A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$divideInt, r4, 365);
+	var q1 = _p4._0;
+	var r1 = _p4._1;
+	var n = _elm_lang$core$Native_Utils.eq(r1, 0) ? 0 : 1;
+	return ((((q400 * 400) + (q100 * 100)) + (q4 * 4)) + q1) + n;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay = function (rd) {
+	return rd - _justinmimbs$elm_date_extra$Date_Internal_RataDie$rataDieBeforeStartOfYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear = function (rd) {
+	var daysToThursday = 4 - _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekdayNumber(rd);
+	return _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd + daysToThursday);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber = function (rd) {
+	var week1Day1RD = _justinmimbs$elm_date_extra$Date_Internal_RataDie$week1Day1OfWeekYear(
+		_justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(rd));
+	return (((rd - week1Day1RD) / 7) | 0) + 1;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$find = F2(
+	function (pred, list) {
+		find:
+		while (true) {
+			var _p5 = list;
+			if (_p5.ctor === '[]') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				var _p6 = _p5._0;
+				if (pred(_p6)) {
+					return _elm_lang$core$Maybe$Just(_p6);
+				} else {
+					var _v2 = pred,
+						_v3 = _p5._1;
+					pred = _v2;
+					list = _v3;
+					continue find;
+				}
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$month = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		_elm_lang$core$Date$Jan,
+		A2(
+			_justinmimbs$elm_date_extra$Date_Internal_RataDie$find,
+			function (m) {
+				return _elm_lang$core$Native_Utils.cmp(
+					A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m),
+					od) < 0;
+			},
+			_elm_lang$core$List$reverse(_justinmimbs$elm_date_extra$Date_Extra_Facts$months)));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_RataDie$day = function (rd) {
+	var od = _justinmimbs$elm_date_extra$Date_Internal_RataDie$ordinalDay(rd);
+	var m = _justinmimbs$elm_date_extra$Date_Internal_RataDie$month(rd);
+	var y = _justinmimbs$elm_date_extra$Date_Internal_RataDie$year(rd);
+	return od - A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth, y, m);
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekNumber(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$weekYear(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts = F4(
+	function (hh, mm, ss, ms) {
+		return ((ms + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond * ss)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * mm)) + (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour * hh);
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Internal_RataDie$toUnixTime(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_RataDie$fromCalendarDate, y, m, d)) + A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc = function (date) {
+	var utcTime = _elm_lang$core$Date$toTime(date);
+	var localTime = _elm_lang$core$Basics$toFloat(
+		A7(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date),
+			_elm_lang$core$Date$day(date),
+			_elm_lang$core$Date$hour(date),
+			_elm_lang$core$Date$minute(date),
+			_elm_lang$core$Date$second(date),
+			_elm_lang$core$Date$millisecond(date)));
+	return _elm_lang$core$Basics$floor(localTime - utcTime);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc = function (date) {
+	return (_justinmimbs$elm_date_extra$Date_Internal_Extract$msOffsetFromUtc(date) / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekYearFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber = function (date) {
+	return A3(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$weekNumberFromCalendarDate,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date),
+		_elm_lang$core$Date$day(date));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber = function (_p0) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(
+		_elm_lang$core$Date$dayOfWeek(_p0));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay = function (date) {
+	var timeOfDayMS = A4(
+		_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts,
+		_elm_lang$core$Date$hour(date),
+		_elm_lang$core$Date$minute(date),
+		_elm_lang$core$Date$second(date),
+		_elm_lang$core$Date$millisecond(date));
+	return _elm_lang$core$Basics$toFloat(timeOfDayMS) / _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay = function (date) {
+	return A2(
+		_justinmimbs$elm_date_extra$Date_Extra_Facts$daysBeforeStartOfMonth,
+		_elm_lang$core$Date$year(date),
+		_elm_lang$core$Date$month(date)) + _elm_lang$core$Date$day(date);
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber = function (_p1) {
+	return _justinmimbs$elm_date_extra$Date_Extra_Facts$monthNumberFromMonth(
+		_elm_lang$core$Date$month(_p1));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter = function (date) {
+	return _elm_lang$core$Basics$ceiling(
+		function (n) {
+			return n / 3;
+		}(
+			_elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date))));
+};
+
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc = function (date) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Date$toTime(date) - _elm_lang$core$Basics$toFloat(
+			_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date) * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm = function (length) {
+	var _p0 = length;
+	switch (_p0) {
+		case 1:
+			return 'abbreviated';
+		case 2:
+			return 'abbreviated';
+		case 3:
+			return 'abbreviated';
+		case 4:
+			return 'full';
+		case 5:
+			return 'narrow';
+		case 6:
+			return 'short';
+		default:
+			return 'invalid';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches = _elm_lang$core$Regex$regex('([yYQMwdDEeabhHmsSXx])\\1*|\'(?:[^\']|\'\')*?\'(?!\')');
+var _justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset = F3(
+	function (separator, minutesOptional, offset) {
+		var mm = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				A2(
+					_elm_lang$core$Basics_ops['%'],
+					_elm_lang$core$Basics$abs(offset),
+					60)));
+		var hh = A3(
+			_elm_lang$core$String$padLeft,
+			2,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				(_elm_lang$core$Basics$abs(offset) / 60) | 0));
+		var sign = (_elm_lang$core$Native_Utils.cmp(offset, 0) > -1) ? '+' : '-';
+		return (minutesOptional && _elm_lang$core$Native_Utils.eq(mm, '00')) ? A2(_elm_lang$core$Basics_ops['++'], sign, hh) : A2(
+			_elm_lang$core$Basics_ops['++'],
+			sign,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				hh,
+				A2(_elm_lang$core$Basics_ops['++'], separator, mm)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix = function (n) {
+	var nn = A2(_elm_lang$core$Basics_ops['%'], n, 100);
+	var _p1 = A2(
+		_elm_lang$core$Basics$min,
+		(_elm_lang$core$Native_Utils.cmp(nn, 20) < 0) ? nn : A2(_elm_lang$core$Basics_ops['%'], nn, 10),
+		4);
+	switch (_p1) {
+		case 0:
+			return 'th';
+		case 1:
+			return 'st';
+		case 2:
+			return 'nd';
+		case 3:
+			return 'rd';
+		case 4:
+			return 'th';
+		default:
+			return '';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix = function (n) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(n),
+		_justinmimbs$elm_date_extra$Date_Internal_Format$ordinalSuffix(n));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$hour12 = function (date) {
+	var _p2 = A2(
+		_elm_lang$core$Basics_ops['%'],
+		_elm_lang$core$Date$hour(date),
+		12);
+	if (_p2 === 0) {
+		return 12;
+	} else {
+		return _p2;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName = function (d) {
+	var _p3 = d;
+	switch (_p3.ctor) {
+		case 'Mon':
+			return 'Monday';
+		case 'Tue':
+			return 'Tuesday';
+		case 'Wed':
+			return 'Wednesday';
+		case 'Thu':
+			return 'Thursday';
+		case 'Fri':
+			return 'Friday';
+		case 'Sat':
+			return 'Saturday';
+		default:
+			return 'Sunday';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$monthName = function (m) {
+	var _p4 = m;
+	switch (_p4.ctor) {
+		case 'Jan':
+			return 'January';
+		case 'Feb':
+			return 'February';
+		case 'Mar':
+			return 'March';
+		case 'Apr':
+			return 'April';
+		case 'May':
+			return 'May';
+		case 'Jun':
+			return 'June';
+		case 'Jul':
+			return 'July';
+		case 'Aug':
+			return 'August';
+		case 'Sep':
+			return 'September';
+		case 'Oct':
+			return 'October';
+		case 'Nov':
+			return 'November';
+		default:
+			return 'December';
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$PM = {ctor: 'PM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Noon = {ctor: 'Noon'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$AM = {ctor: 'AM'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight = {ctor: 'Midnight'};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod = function (date) {
+	var onTheHour = _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$minute(date),
+		0) && (_elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$second(date),
+		0) && _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$Date$millisecond(date),
+		0));
+	var hh = _elm_lang$core$Date$hour(date);
+	return (_elm_lang$core$Native_Utils.eq(hh, 0) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight : ((_elm_lang$core$Native_Utils.cmp(hh, 12) < 0) ? _justinmimbs$elm_date_extra$Date_Internal_Format$AM : ((_elm_lang$core$Native_Utils.eq(hh, 12) && onTheHour) ? _justinmimbs$elm_date_extra$Date_Internal_Format$Noon : _justinmimbs$elm_date_extra$Date_Internal_Format$PM));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Format$format = F3(
+	function (asUtc, date, match) {
+		format:
+		while (true) {
+			var length = _elm_lang$core$String$length(match);
+			var $char = A2(_elm_lang$core$String$left, 1, match);
+			var _p5 = $char;
+			switch (_p5) {
+				case 'y':
+					var _p6 = length;
+					if (_p6 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$year(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$year(date)));
+					}
+				case 'Y':
+					var _p7 = length;
+					if (_p7 === 2) {
+						return A2(
+							_elm_lang$core$String$right,
+							2,
+							A3(
+								_elm_lang$core$String$padLeft,
+								length,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date))));
+					} else {
+						return A3(
+							_elm_lang$core$String$padLeft,
+							length,
+							_elm_lang$core$Native_Utils.chr('0'),
+							_elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear(date)));
+					}
+				case 'Q':
+					var _p8 = length;
+					switch (_p8) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 3:
+							return A2(
+								F2(
+									function (x, y) {
+										return A2(_elm_lang$core$Basics_ops['++'], x, y);
+									}),
+								'Q',
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						case 5:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$quarter(date));
+						default:
+							return '';
+					}
+				case 'M':
+					var _p9 = length;
+					switch (_p9) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber(date)));
+						case 3:
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						case 4:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+								_elm_lang$core$Date$month(date));
+						case 5:
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$monthName(
+									_elm_lang$core$Date$month(date)));
+						default:
+							return '';
+					}
+				case 'w':
+					var _p10 = length;
+					switch (_p10) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber(date)));
+						default:
+							return '';
+					}
+				case 'd':
+					var _p11 = length;
+					switch (_p11) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$day(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$day(date)));
+						case 3:
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$withOrdinalSuffix(
+								_elm_lang$core$Date$day(date));
+						default:
+							return '';
+					}
+				case 'D':
+					var _p12 = length;
+					switch (_p12) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						case 3:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay(date)));
+						default:
+							return '';
+					}
+				case 'E':
+					var _p13 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p13) {
+						case 'abbreviated':
+							return A2(
+								_elm_lang$core$String$left,
+								3,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'full':
+							return _justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+								_elm_lang$core$Date$dayOfWeek(date));
+						case 'narrow':
+							return A2(
+								_elm_lang$core$String$left,
+								1,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						case 'short':
+							return A2(
+								_elm_lang$core$String$left,
+								2,
+								_justinmimbs$elm_date_extra$Date_Internal_Format$dayOfWeekName(
+									_elm_lang$core$Date$dayOfWeek(date)));
+						default:
+							return '';
+					}
+				case 'e':
+					var _p14 = length;
+					switch (_p14) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						case 2:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber(date));
+						default:
+							var _v15 = asUtc,
+								_v16 = date,
+								_v17 = _elm_lang$core$String$toUpper(match);
+							asUtc = _v15;
+							date = _v16;
+							match = _v17;
+							continue format;
+					}
+				case 'a':
+					var p = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+					var m = (_elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$Midnight) || _elm_lang$core$Native_Utils.eq(p, _justinmimbs$elm_date_extra$Date_Internal_Format$AM)) ? 'A' : 'P';
+					var _p15 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p15) {
+						case 'abbreviated':
+							return A2(_elm_lang$core$Basics_ops['++'], m, 'M');
+						case 'full':
+							return A2(_elm_lang$core$Basics_ops['++'], m, '.M.');
+						case 'narrow':
+							return m;
+						default:
+							return '';
+					}
+				case 'b':
+					var _p16 = _justinmimbs$elm_date_extra$Date_Internal_Format$nameForm(length);
+					switch (_p16) {
+						case 'abbreviated':
+							var _p17 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p17.ctor) {
+								case 'Midnight':
+									return 'mid.';
+								case 'AM':
+									return 'am';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'pm';
+							}
+						case 'full':
+							var _p18 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p18.ctor) {
+								case 'Midnight':
+									return 'midnight';
+								case 'AM':
+									return 'a.m.';
+								case 'Noon':
+									return 'noon';
+								default:
+									return 'p.m.';
+							}
+						case 'narrow':
+							var _p19 = _justinmimbs$elm_date_extra$Date_Internal_Format$dayPeriod(date);
+							switch (_p19.ctor) {
+								case 'Midnight':
+									return 'md';
+								case 'AM':
+									return 'a';
+								case 'Noon':
+									return 'nn';
+								default:
+									return 'p';
+							}
+						default:
+							return '';
+					}
+				case 'h':
+					var _p20 = length;
+					switch (_p20) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_justinmimbs$elm_date_extra$Date_Internal_Format$hour12(date)));
+						default:
+							return '';
+					}
+				case 'H':
+					var _p21 = length;
+					switch (_p21) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$hour(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$hour(date)));
+						default:
+							return '';
+					}
+				case 'm':
+					var _p22 = length;
+					switch (_p22) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$minute(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$minute(date)));
+						default:
+							return '';
+					}
+				case 's':
+					var _p23 = length;
+					switch (_p23) {
+						case 1:
+							return _elm_lang$core$Basics$toString(
+								_elm_lang$core$Date$second(date));
+						case 2:
+							return A3(
+								_elm_lang$core$String$padLeft,
+								2,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$second(date)));
+						default:
+							return '';
+					}
+				case 'S':
+					return A3(
+						_elm_lang$core$String$padRight,
+						length,
+						_elm_lang$core$Native_Utils.chr('0'),
+						A2(
+							_elm_lang$core$String$left,
+							length,
+							A3(
+								_elm_lang$core$String$padLeft,
+								3,
+								_elm_lang$core$Native_Utils.chr('0'),
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$millisecond(date)))));
+				case 'X':
+					if ((_elm_lang$core$Native_Utils.cmp(length, 4) < 0) && (asUtc || _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date),
+						0))) {
+						return 'Z';
+					} else {
+						var _v27 = asUtc,
+							_v28 = date,
+							_v29 = _elm_lang$core$String$toLower(match);
+						asUtc = _v27;
+						date = _v28;
+						match = _v29;
+						continue format;
+					}
+				case 'x':
+					var offset = asUtc ? 0 : _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc(date);
+					var _p24 = length;
+					switch (_p24) {
+						case 1:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', true, offset);
+						case 2:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, '', false, offset);
+						case 3:
+							return A3(_justinmimbs$elm_date_extra$Date_Internal_Format$formatTimeOffset, ':', false, offset);
+						default:
+							return '';
+					}
+				case '\'':
+					return _elm_lang$core$Native_Utils.eq(match, '\'\'') ? '\'' : A4(
+						_elm_lang$core$Regex$replace,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('\'\''),
+						function (_p25) {
+							return '\'';
+						},
+						A3(_elm_lang$core$String$slice, 1, -1, match));
+				default:
+					return '';
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString = F3(
+	function (asUtc, pattern, date) {
+		var date_ = asUtc ? _justinmimbs$elm_date_extra$Date_Internal_Format$toUtc(date) : date;
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_justinmimbs$elm_date_extra$Date_Internal_Format$patternMatches,
+			function (_p26) {
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Internal_Format$format,
+					asUtc,
+					date_,
+					function (_) {
+						return _.match;
+					}(_p26));
+			},
+			pattern);
+	});
+
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex = function () {
+	var time = 'T(\\d{2})(?:(\\:)?(\\d{2})(?:\\10(\\d{2}))?)?(\\.\\d+)?(?:(Z)|(?:([+\\-])(\\d{2})(?:\\:?(\\d{2}))?))?';
+	var ord = '\\-?(\\d{3})';
+	var week = '(\\-)?W(\\d{2})(?:\\5(\\d))?';
+	var cal = '(\\-)?(\\d{2})(?:\\2(\\d{2}))?';
+	var year = '(\\d{4})';
+	return _elm_lang$core$Regex$regex(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'^',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				year,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'(?:',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						cal,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'|',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								week,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'|',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										ord,
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											')?',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												'(?:',
+												A2(_elm_lang$core$Basics_ops['++'], time, ')?$'))))))))))));
+}();
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat = function (_p0) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toFloat(_p0));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches = F4(
+	function (timeHH, timeMM, timeSS, timeF) {
+		var fractional = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0.0,
+			A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat, timeF));
+		var _p1 = function () {
+			var _p2 = A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Maybe$andThen(_justinmimbs$elm_date_extra$Date_Internal_Parse$stringToFloat),
+				{
+					ctor: '::',
+					_0: timeHH,
+					_1: {
+						ctor: '::',
+						_0: timeMM,
+						_1: {
+							ctor: '::',
+							_0: timeSS,
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+			_v0_3:
+			do {
+				if (((_p2.ctor === '::') && (_p2._0.ctor === 'Just')) && (_p2._1.ctor === '::')) {
+					if (_p2._1._0.ctor === 'Just') {
+						if (_p2._1._1.ctor === '::') {
+							if (_p2._1._1._0.ctor === 'Just') {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0, _2: _p2._1._1._0._0 + fractional};
+								} else {
+									break _v0_3;
+								}
+							} else {
+								if (_p2._1._1._1.ctor === '[]') {
+									return {ctor: '_Tuple3', _0: _p2._0._0, _1: _p2._1._0._0 + fractional, _2: 0.0};
+								} else {
+									break _v0_3;
+								}
+							}
+						} else {
+							break _v0_3;
+						}
+					} else {
+						if (((_p2._1._1.ctor === '::') && (_p2._1._1._0.ctor === 'Nothing')) && (_p2._1._1._1.ctor === '[]')) {
+							return {ctor: '_Tuple3', _0: _p2._0._0 + fractional, _1: 0.0, _2: 0.0};
+						} else {
+							break _v0_3;
+						}
+					}
+				} else {
+					break _v0_3;
+				}
+			} while(false);
+			return {ctor: '_Tuple3', _0: 0.0, _1: 0.0, _2: 0.0};
+		}();
+		var hh = _p1._0;
+		var mm = _p1._1;
+		var ss = _p1._2;
+		return _elm_lang$core$Basics$round(
+			((hh * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour)) + (mm * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute))) + (ss * _elm_lang$core$Basics$toFloat(_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt = function (_p3) {
+	return _elm_lang$core$Result$toMaybe(
+		_elm_lang$core$String$toInt(_p3));
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches = F6(
+	function (yyyy, calMM, calDD, weekWW, weekD, ordDDD) {
+		var y = A2(
+			_elm_lang$core$Maybe$withDefault,
+			1,
+			_justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt(yyyy));
+		var _p4 = {ctor: '_Tuple2', _0: calMM, _1: weekWW};
+		_v1_2:
+		do {
+			if (_p4.ctor === '_Tuple2') {
+				if (_p4._0.ctor === 'Just') {
+					if (_p4._1.ctor === 'Nothing') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate,
+							y,
+							_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+								A2(
+									_elm_lang$core$Maybe$withDefault,
+									1,
+									A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, calMM))),
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								1,
+								A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, calDD)));
+					} else {
+						break _v1_2;
+					}
+				} else {
+					if (_p4._1.ctor === 'Just') {
+						return A3(
+							_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate,
+							y,
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								1,
+								A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, weekWW)),
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								1,
+								A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, weekD)));
+					} else {
+						break _v1_2;
+					}
+				}
+			} else {
+				break _v1_2;
+			}
+		} while(false);
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate,
+			y,
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				1,
+				A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, ordDDD)));
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches = F4(
+	function (tzZ, tzSign, tzHH, tzMM) {
+		var _p5 = {ctor: '_Tuple2', _0: tzZ, _1: tzSign};
+		_v2_2:
+		do {
+			if (_p5.ctor === '_Tuple2') {
+				if (_p5._0.ctor === 'Just') {
+					if ((_p5._0._0 === 'Z') && (_p5._1.ctor === 'Nothing')) {
+						return _elm_lang$core$Maybe$Just(0);
+					} else {
+						break _v2_2;
+					}
+				} else {
+					if (_p5._1.ctor === 'Just') {
+						var mm = A2(
+							_elm_lang$core$Maybe$withDefault,
+							0,
+							A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, tzMM));
+						var hh = A2(
+							_elm_lang$core$Maybe$withDefault,
+							0,
+							A2(_elm_lang$core$Maybe$andThen, _justinmimbs$elm_date_extra$Date_Internal_Parse$stringToInt, tzHH));
+						return _elm_lang$core$Maybe$Just(
+							(_elm_lang$core$Native_Utils.eq(_p5._1._0, '+') ? 1 : -1) * ((hh * 60) + mm));
+					} else {
+						break _v2_2;
+					}
+				}
+			} else {
+				break _v2_2;
+			}
+		} while(false);
+		return _elm_lang$core$Maybe$Nothing;
+	});
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches = function (matches) {
+	var _p6 = matches;
+	if (((((((((((((((((((_p6.ctor === '::') && (_p6._0.ctor === 'Just')) && (_p6._1.ctor === '::')) && (_p6._1._1.ctor === '::')) && (_p6._1._1._1.ctor === '::')) && (_p6._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '::')) && (_p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1.ctor === '[]')) {
+		var offset = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetFromMatches, _p6._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var timeMS = A4(_justinmimbs$elm_date_extra$Date_Internal_Parse$msFromMatches, _p6._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._1._1._1._1._1._0);
+		var dateMS = A6(_justinmimbs$elm_date_extra$Date_Internal_Parse$unixTimeFromMatches, _p6._0._0, _p6._1._1._0, _p6._1._1._1._0, _p6._1._1._1._1._1._0, _p6._1._1._1._1._1._1._0, _p6._1._1._1._1._1._1._1._0);
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple2', _0: offset, _1: dateMS + timeMS});
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString = function (s) {
+	return A2(
+		_elm_lang$core$Maybe$andThen,
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromMatches,
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (_) {
+				return _.submatches;
+			},
+			_elm_lang$core$List$head(
+				A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_justinmimbs$elm_date_extra$Date_Internal_Parse$isoDateRegex,
+					s))));
+};
+
+var _justinmimbs$elm_date_extra$Date_Extra$unfold = F2(
+	function (f, seed) {
+		var _p0 = f(seed);
+		if (_p0.ctor === 'Nothing') {
+			return {ctor: '[]'};
+		} else {
+			return {
+				ctor: '::',
+				_0: _p0._0._0,
+				_1: A2(_justinmimbs$elm_date_extra$Date_Extra$unfold, f, _p0._0._1)
+			};
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$toParts = function (date) {
+	return {
+		ctor: '_Tuple7',
+		_0: _elm_lang$core$Date$year(date),
+		_1: _elm_lang$core$Date$month(date),
+		_2: _elm_lang$core$Date$day(date),
+		_3: _elm_lang$core$Date$hour(date),
+		_4: _elm_lang$core$Date$minute(date),
+		_5: _elm_lang$core$Date$second(date),
+		_6: _elm_lang$core$Date$millisecond(date)
+	};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter = function (q) {
+	var _p1 = q;
+	switch (_p1) {
+		case 1:
+			return _elm_lang$core$Date$Jan;
+		case 2:
+			return _elm_lang$core$Date$Apr;
+		case 3:
+			return _elm_lang$core$Date$Jul;
+		default:
+			return _elm_lang$core$Date$Oct;
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra$clamp = F3(
+	function (min, max, date) {
+		return (_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(min)) < 0) ? min : ((_elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(max)) > 0) ? max : date);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$isBetween = F3(
+	function (date1, date2, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$comparableIsBetween,
+			_elm_lang$core$Date$toTime(date1),
+			_elm_lang$core$Date$toTime(date2),
+			_elm_lang$core$Date$toTime(date));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$compare = F2(
+	function (a, b) {
+		return A2(
+			_elm_lang$core$Basics$compare,
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$equal = F2(
+	function (a, b) {
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(a),
+			_elm_lang$core$Date$toTime(b));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc = _justinmimbs$elm_date_extra$Date_Internal_Extract$offsetFromUtc;
+var _justinmimbs$elm_date_extra$Date_Extra$weekYear = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekYear;
+var _justinmimbs$elm_date_extra$Date_Extra$weekNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$weekdayNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$weekdayNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek = F2(
+	function (d, date) {
+		return _elm_lang$core$Basics$negate(
+			A2(
+				_elm_lang$core$Basics_ops['%'],
+				(_justinmimbs$elm_date_extra$Date_Extra$weekdayNumber(date) - _justinmimbs$elm_date_extra$Date_Extra_Facts$weekdayNumberFromDayOfWeek(d)) + 7,
+				7));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fractionalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$fractionalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDay = _justinmimbs$elm_date_extra$Date_Internal_Extract$ordinalDay;
+var _justinmimbs$elm_date_extra$Date_Extra$quarter = _justinmimbs$elm_date_extra$Date_Internal_Extract$quarter;
+var _justinmimbs$elm_date_extra$Date_Extra$monthNumber = _justinmimbs$elm_date_extra$Date_Internal_Extract$monthNumber;
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalMonth = function (date) {
+	return (_elm_lang$core$Date$year(date) * 12) + _justinmimbs$elm_date_extra$Date_Extra$monthNumber(date);
+};
+var _justinmimbs$elm_date_extra$Date_Extra$diffMonth = F2(
+	function (date1, date2) {
+		var fractionalMonth = function (date) {
+			return (_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Date$day(date) - 1) + _justinmimbs$elm_date_extra$Date_Extra$fractionalDay(date)) / 31;
+		};
+		var ordinalMonthFloat = function (date) {
+			return _elm_lang$core$Basics$toFloat(
+				_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date)) + fractionalMonth(date);
+		};
+		return _elm_lang$core$Basics$truncate(
+			ordinalMonthFloat(date2) - ordinalMonthFloat(date1));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(true);
+var _justinmimbs$elm_date_extra$Date_Extra$toUtcIsoString = _justinmimbs$elm_date_extra$Date_Extra$toUtcFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX');
+var _justinmimbs$elm_date_extra$Date_Extra$toFormattedString = _justinmimbs$elm_date_extra$Date_Internal_Format$toFormattedString(false);
+var _justinmimbs$elm_date_extra$Date_Extra$toIsoString = _justinmimbs$elm_date_extra$Date_Extra$toFormattedString('yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx');
+var _justinmimbs$elm_date_extra$Date_Extra$fromTime = function (_p2) {
+	return _elm_lang$core$Date$fromTime(
+		_elm_lang$core$Basics$toFloat(_p2));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime = function (_p3) {
+	var _p4 = _p3;
+	var _p6 = _p4._1;
+	var _p5 = _p4._0;
+	if (_p5.ctor === 'Just') {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * _p5._0));
+	} else {
+		var offset0 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(
+			_justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6));
+		var date1 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset0));
+		var offset1 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date1);
+		if (_elm_lang$core$Native_Utils.eq(offset0, offset1)) {
+			return date1;
+		} else {
+			var date2 = _justinmimbs$elm_date_extra$Date_Extra$fromTime(_p6 - (_justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute * offset1));
+			var offset2 = _justinmimbs$elm_date_extra$Date_Extra$offsetFromUtc(date2);
+			return _elm_lang$core$Native_Utils.eq(offset1, offset2) ? date2 : date1;
+		}
+	}
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromParts = F7(
+	function (y, m, d, hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A7(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromParts, y, m, d, hh, mm, ss, ms)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$addMonths = F2(
+	function (n, date) {
+		var om = (_justinmimbs$elm_date_extra$Date_Extra$ordinalMonth(date) + n) + -1;
+		var y_ = (om / 12) | 0;
+		var m_ = _justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(
+			A2(_elm_lang$core$Basics_ops['%'], om, 12) + 1);
+		var _p7 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p7._0;
+		var m = _p7._1;
+		var d = _p7._2;
+		var hh = _p7._3;
+		var mm = _p7._4;
+		var ss = _p7._5;
+		var ms = _p7._6;
+		var d_ = A2(
+			_elm_lang$core$Basics$min,
+			d,
+			A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y_, m_));
+		return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y_, m_, d_, hh, mm, ss, ms);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$add = F3(
+	function (interval, n, date) {
+		var _p8 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p8._0;
+		var m = _p8._1;
+		var d = _p8._2;
+		var hh = _p8._3;
+		var mm = _p8._4;
+		var ss = _p8._5;
+		var ms = _p8._6;
+		var _p9 = interval;
+		switch (_p9.ctor) {
+			case 'Millisecond':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n));
+			case 'Second':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond));
+			case 'Minute':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute));
+			case 'Hour':
+				return _elm_lang$core$Date$fromTime(
+					_elm_lang$core$Date$toTime(date) + _elm_lang$core$Basics$toFloat(n * _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour));
+			case 'Day':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + n, hh, mm, ss, ms);
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n, date);
+			case 'Year':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 12, date);
+			case 'Quarter':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$addMonths, n * 3, date);
+			case 'Week':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+			default:
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d + (n * 7), hh, mm, ss, ms);
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Maybe$Nothing,
+				_1: A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d)
+			});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$floor = F2(
+	function (interval, date) {
+		var _p10 = _justinmimbs$elm_date_extra$Date_Extra$toParts(date);
+		var y = _p10._0;
+		var m = _p10._1;
+		var d = _p10._2;
+		var hh = _p10._3;
+		var mm = _p10._4;
+		var ss = _p10._5;
+		var _p11 = interval;
+		switch (_p11.ctor) {
+			case 'Millisecond':
+				return date;
+			case 'Second':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, ss, 0);
+			case 'Minute':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, mm, 0, 0);
+			case 'Hour':
+				return A7(_justinmimbs$elm_date_extra$Date_Extra$fromParts, y, m, d, hh, 0, 0, 0);
+			case 'Day':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+			case 'Month':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1);
+			case 'Year':
+				return A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Jan, 1);
+			case 'Quarter':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					_justinmimbs$elm_date_extra$Date_Extra$monthFromQuarter(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date)),
+					1);
+			case 'Week':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Monday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Mon, date));
+			case 'Tuesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Tue, date));
+			case 'Wednesday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Wed, date));
+			case 'Thursday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Thu, date));
+			case 'Friday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Fri, date));
+			case 'Saturday':
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sat, date));
+			default:
+				return A3(
+					_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+					y,
+					m,
+					d + A2(_justinmimbs$elm_date_extra$Date_Extra$daysToPreviousDayOfWeek, _elm_lang$core$Date$Sun, date));
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ceiling = F2(
+	function (interval, date) {
+		var floored = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, interval, date);
+		return _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$toTime(date),
+			_elm_lang$core$Date$toTime(floored)) ? date : A3(_justinmimbs$elm_date_extra$Date_Extra$add, interval, 1, floored);
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$range = F4(
+	function (interval, step, start, end) {
+		var next = function (date) {
+			return (_elm_lang$core$Native_Utils.cmp(
+				_elm_lang$core$Date$toTime(date),
+				_elm_lang$core$Date$toTime(end)) > -1) ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+				{
+					ctor: '_Tuple2',
+					_0: date,
+					_1: A3(
+						_justinmimbs$elm_date_extra$Date_Extra$add,
+						interval,
+						A2(_elm_lang$core$Basics$max, 1, step),
+						date)
+				});
+		};
+		return A2(
+			_justinmimbs$elm_date_extra$Date_Extra$unfold,
+			next,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$ceiling, interval, start));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$fromIsoString = function (_p12) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		_justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime,
+		_justinmimbs$elm_date_extra$Date_Internal_Parse$offsetTimeFromIsoString(_p12));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$fromSpec = F3(
+	function (_p15, _p14, _p13) {
+		var _p16 = _p15;
+		var _p17 = _p14;
+		var _p18 = _p13;
+		return _justinmimbs$elm_date_extra$Date_Extra$fromOffsetTime(
+			{ctor: '_Tuple2', _0: _p16._0, _1: _p18._0 + _p17._0});
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Offset = function (a) {
+	return {ctor: 'Offset', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$utc = _justinmimbs$elm_date_extra$Date_Extra$Offset(
+	_elm_lang$core$Maybe$Just(0));
+var _justinmimbs$elm_date_extra$Date_Extra$offset = function (minutes) {
+	return _justinmimbs$elm_date_extra$Date_Extra$Offset(
+		_elm_lang$core$Maybe$Just(minutes));
+};
+var _justinmimbs$elm_date_extra$Date_Extra$local = _justinmimbs$elm_date_extra$Date_Extra$Offset(_elm_lang$core$Maybe$Nothing);
+var _justinmimbs$elm_date_extra$Date_Extra$TimeMS = function (a) {
+	return {ctor: 'TimeMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$noTime = _justinmimbs$elm_date_extra$Date_Extra$TimeMS(0);
+var _justinmimbs$elm_date_extra$Date_Extra$atTime = F4(
+	function (hh, mm, ss, ms) {
+		return _justinmimbs$elm_date_extra$Date_Extra$TimeMS(
+			A4(_justinmimbs$elm_date_extra$Date_Internal_Core$msFromTimeParts, hh, mm, ss, ms));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$DateMS = function (a) {
+	return {ctor: 'DateMS', _0: a};
+};
+var _justinmimbs$elm_date_extra$Date_Extra$calendarDate = F3(
+	function (y, m, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromCalendarDate, y, m, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$ordinalDate = F2(
+	function (y, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A2(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromOrdinalDate, y, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$weekDate = F3(
+	function (y, w, d) {
+		return _justinmimbs$elm_date_extra$Date_Extra$DateMS(
+			A3(_justinmimbs$elm_date_extra$Date_Internal_Core$unixTimeFromWeekDate, y, w, d));
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Sunday = {ctor: 'Sunday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Saturday = {ctor: 'Saturday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Friday = {ctor: 'Friday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Thursday = {ctor: 'Thursday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Wednesday = {ctor: 'Wednesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Tuesday = {ctor: 'Tuesday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Monday = {ctor: 'Monday'};
+var _justinmimbs$elm_date_extra$Date_Extra$Week = {ctor: 'Week'};
+var _justinmimbs$elm_date_extra$Date_Extra$Quarter = {ctor: 'Quarter'};
+var _justinmimbs$elm_date_extra$Date_Extra$Year = {ctor: 'Year'};
+var _justinmimbs$elm_date_extra$Date_Extra$Month = {ctor: 'Month'};
+var _justinmimbs$elm_date_extra$Date_Extra$Day = {ctor: 'Day'};
+var _justinmimbs$elm_date_extra$Date_Extra$diff = F3(
+	function (interval, date1, date2) {
+		var diffMS = _elm_lang$core$Basics$floor(
+			_elm_lang$core$Date$toTime(date2) - _elm_lang$core$Date$toTime(date1));
+		var _p19 = interval;
+		switch (_p19.ctor) {
+			case 'Millisecond':
+				return diffMS;
+			case 'Second':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerSecond) | 0;
+			case 'Minute':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerMinute) | 0;
+			case 'Hour':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerHour) | 0;
+			case 'Day':
+				return (diffMS / _justinmimbs$elm_date_extra$Date_Extra_Facts$msPerDay) | 0;
+			case 'Month':
+				return A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2);
+			case 'Year':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 12) | 0;
+			case 'Quarter':
+				return (A2(_justinmimbs$elm_date_extra$Date_Extra$diffMonth, date1, date2) / 3) | 0;
+			case 'Week':
+				return (A3(_justinmimbs$elm_date_extra$Date_Extra$diff, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2) / 7) | 0;
+			default:
+				var _p20 = _p19;
+				return (A3(
+					_justinmimbs$elm_date_extra$Date_Extra$diff,
+					_justinmimbs$elm_date_extra$Date_Extra$Day,
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p20, date1),
+					A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p20, date2)) / 7) | 0;
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Hour = {ctor: 'Hour'};
+var _justinmimbs$elm_date_extra$Date_Extra$Minute = {ctor: 'Minute'};
+var _justinmimbs$elm_date_extra$Date_Extra$equalBy = F3(
+	function (interval, date1, date2) {
+		equalBy:
+		while (true) {
+			var _p21 = interval;
+			switch (_p21.ctor) {
+				case 'Millisecond':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$toTime(date1),
+						_elm_lang$core$Date$toTime(date2));
+				case 'Second':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$second(date1),
+						_elm_lang$core$Date$second(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Minute, date1, date2);
+				case 'Minute':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$minute(date1),
+						_elm_lang$core$Date$minute(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Hour, date1, date2);
+				case 'Hour':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$hour(date1),
+						_elm_lang$core$Date$hour(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date1, date2);
+				case 'Day':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$day(date1),
+						_elm_lang$core$Date$day(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Month, date1, date2);
+				case 'Month':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$month(date1),
+						_elm_lang$core$Date$month(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Year':
+					return _elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$Date$year(date1),
+						_elm_lang$core$Date$year(date2));
+				case 'Quarter':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$quarter(date2)) && A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Year, date1, date2);
+				case 'Week':
+					return _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekNumber(date2)) && _elm_lang$core$Native_Utils.eq(
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date1),
+						_justinmimbs$elm_date_extra$Date_Extra$weekYear(date2));
+				default:
+					var _p22 = _p21;
+					var _v11 = _justinmimbs$elm_date_extra$Date_Extra$Day,
+						_v12 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p22, date1),
+						_v13 = A2(_justinmimbs$elm_date_extra$Date_Extra$floor, _p22, date2);
+					interval = _v11;
+					date1 = _v12;
+					date2 = _v13;
+					continue equalBy;
+			}
+		}
+	});
+var _justinmimbs$elm_date_extra$Date_Extra$Second = {ctor: 'Second'};
+var _justinmimbs$elm_date_extra$Date_Extra$Millisecond = {ctor: 'Millisecond'};
+
+var _justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames = {
+	ctor: '::',
+	_0: 'Mo',
+	_1: {
+		ctor: '::',
+		_0: 'Tu',
+		_1: {
+			ctor: '::',
+			_0: 'We',
+			_1: {
+				ctor: '::',
+				_0: 'Th',
+				_1: {
+					ctor: '::',
+					_0: 'Fr',
+					_1: {
+						ctor: '::',
+						_0: 'Sa',
+						_1: {
+							ctor: '::',
+							_0: 'Su',
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader = A2(
+	_elm_lang$html$Html$thead,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$tr,
+			{ctor: '[]'},
+			A2(
+				_elm_lang$core$List$map,
+				function (name) {
+					return A2(
+						_elm_lang$html$Html$th,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(name),
+							_1: {ctor: '[]'}
+						});
+				},
+				_justinmimbs$elm_date_selector$DateSelector$dayOfWeekNames)),
+		_1: {ctor: '[]'}
+	});
+var _justinmimbs$elm_date_selector$DateSelector$monthNames = {
+	ctor: '::',
+	_0: 'Jan',
+	_1: {
+		ctor: '::',
+		_0: 'Feb',
+		_1: {
+			ctor: '::',
+			_0: 'Mar',
+			_1: {
+				ctor: '::',
+				_0: 'Apr',
+				_1: {
+					ctor: '::',
+					_0: 'May',
+					_1: {
+						ctor: '::',
+						_0: 'Jun',
+						_1: {
+							ctor: '::',
+							_0: 'Jul',
+							_1: {
+								ctor: '::',
+								_0: 'Aug',
+								_1: {
+									ctor: '::',
+									_0: 'Sep',
+									_1: {
+										ctor: '::',
+										_0: 'Oct',
+										_1: {
+											ctor: '::',
+											_0: 'Nov',
+											_1: {
+												ctor: '::',
+												_0: 'Dec',
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
+var _justinmimbs$elm_date_selector$DateSelector$classNameFromState = function (state) {
+	var _p0 = state;
+	switch (_p0.ctor) {
+		case 'Normal':
+			return '';
+		case 'Dimmed':
+			return 'date-selector--dimmed';
+		case 'Disabled':
+			return 'date-selector--disabled';
+		default:
+			return 'date-selector--selected';
+	}
+};
+var _justinmimbs$elm_date_selector$DateSelector$dateWithMonth = F2(
+	function (date, m) {
+		var d = _elm_lang$core$Date$day(date);
+		var y = _elm_lang$core$Date$year(date);
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+			y,
+			m,
+			A2(
+				_elm_lang$core$Basics$min,
+				d,
+				A2(_justinmimbs$elm_date_extra$Date_Extra_Facts$daysInMonth, y, m)));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$dateWithYear = F2(
+	function (date, y) {
+		var d = _elm_lang$core$Date$day(date);
+		var m = _elm_lang$core$Date$month(date);
+		return (_elm_lang$core$Native_Utils.eq(m, _elm_lang$core$Date$Feb) && (_elm_lang$core$Native_Utils.eq(d, 29) && (!_justinmimbs$elm_date_extra$Date_Extra_Facts$isLeapYear(y)))) ? A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, _elm_lang$core$Date$Feb, 28) : A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, d);
+	});
+var _justinmimbs$elm_date_selector$DateSelector$monthDates = F2(
+	function (y, m) {
+		var start = A2(
+			_justinmimbs$elm_date_extra$Date_Extra$floor,
+			_justinmimbs$elm_date_extra$Date_Extra$Monday,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, y, m, 1));
+		return A4(
+			_justinmimbs$elm_date_extra$Date_Extra$range,
+			_justinmimbs$elm_date_extra$Date_Extra$Day,
+			1,
+			start,
+			A3(_justinmimbs$elm_date_extra$Date_Extra$add, _justinmimbs$elm_date_extra$Date_Extra$Day, 42, start));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$isBetween = F3(
+	function (a, b, x) {
+		return ((_elm_lang$core$Native_Utils.cmp(a, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, b) < 1)) || ((_elm_lang$core$Native_Utils.cmp(b, x) < 1) && (_elm_lang$core$Native_Utils.cmp(x, a) < 1));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$groupsOf = F2(
+	function (n, list) {
+		return _elm_lang$core$List$isEmpty(list) ? {ctor: '[]'} : {
+			ctor: '::',
+			_0: A2(_elm_lang$core$List$take, n, list),
+			_1: A2(
+				_justinmimbs$elm_date_selector$DateSelector$groupsOf,
+				n,
+				A2(_elm_lang$core$List$drop, n, list))
+		};
+	});
+var _justinmimbs$elm_date_selector$DateSelector$Selected = {ctor: 'Selected'};
+var _justinmimbs$elm_date_selector$DateSelector$Disabled = {ctor: 'Disabled'};
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled = A2(
+	_elm_lang$html$Html$ol,
+	{ctor: '[]'},
+	A2(
+		_elm_lang$core$List$map,
+		function (name) {
+			return A2(
+				_elm_lang$html$Html$li,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class(
+						_justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled)),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(name),
+					_1: {ctor: '[]'}
+				});
+		},
+		_justinmimbs$elm_date_selector$DateSelector$monthNames));
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled = function (date) {
+	var disabled = _justinmimbs$elm_date_selector$DateSelector$classNameFromState(_justinmimbs$elm_date_selector$DateSelector$Disabled);
+	var weeks = A2(
+		_justinmimbs$elm_date_selector$DateSelector$groupsOf,
+		7,
+		A2(
+			_justinmimbs$elm_date_selector$DateSelector$monthDates,
+			_elm_lang$core$Date$year(date),
+			_elm_lang$core$Date$month(date)));
+	return A2(
+		_elm_lang$html$Html$table,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$tbody,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$List$map,
+						function (week) {
+							return A2(
+								_elm_lang$html$Html$tr,
+								{ctor: '[]'},
+								A2(
+									_elm_lang$core$List$map,
+									function (date) {
+										return A2(
+											_elm_lang$html$Html$td,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class(disabled),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													_elm_lang$core$Basics$toString(
+														_elm_lang$core$Date$day(date))),
+												_1: {ctor: '[]'}
+											});
+									},
+									week));
+						},
+						weeks)),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _justinmimbs$elm_date_selector$DateSelector$Dimmed = {ctor: 'Dimmed'};
+var _justinmimbs$elm_date_selector$DateSelector$Normal = {ctor: 'Normal'};
+var _justinmimbs$elm_date_selector$DateSelector$isSelectable = function (state) {
+	return _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Normal) || _elm_lang$core$Native_Utils.eq(state, _justinmimbs$elm_date_selector$DateSelector$Dimmed);
+};
+var _justinmimbs$elm_date_selector$DateSelector$viewYearList = F3(
+	function (minimum, maximum, maybeSelected) {
+		var isSelectedYear = A2(
+			_elm_lang$core$Maybe$withDefault,
+			function (_p1) {
+				return false;
+			},
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (selected) {
+					return F2(
+						function (x, y) {
+							return _elm_lang$core$Native_Utils.eq(x, y);
+						})(
+						_elm_lang$core$Date$year(selected));
+				},
+				maybeSelected));
+		var isInvertedMinMax = _elm_lang$core$Native_Utils.eq(
+			A2(_justinmimbs$elm_date_extra$Date_Extra$compare, minimum, maximum),
+			_elm_lang$core$Basics$GT);
+		var years = isInvertedMinMax ? {
+			ctor: '::',
+			_0: _elm_lang$core$Date$year(
+				A2(_elm_lang$core$Maybe$withDefault, minimum, maybeSelected)),
+			_1: {ctor: '[]'}
+		} : A2(
+			_elm_lang$core$List$range,
+			_elm_lang$core$Date$year(minimum),
+			_elm_lang$core$Date$year(maximum));
+		return A2(
+			_elm_lang$html$Html$ol,
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						_justinmimbs$elm_date_selector$DateSelector$dateWithYear(
+							A2(
+								_elm_lang$core$Maybe$withDefault,
+								A3(
+									_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate,
+									_elm_lang$core$Date$year(minimum),
+									_elm_lang$core$Date$Jan,
+									1),
+								maybeSelected)),
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							{
+								ctor: '::',
+								_0: 'target',
+								_1: {
+									ctor: '::',
+									_0: 'year',
+									_1: {ctor: '[]'}
+								}
+							},
+							_elm_lang$core$Json_Decode$int))),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (y) {
+					var state = isSelectedYear(y) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (isInvertedMinMax ? _justinmimbs$elm_date_selector$DateSelector$Disabled : _justinmimbs$elm_date_selector$DateSelector$Normal);
+					return A2(
+						_elm_lang$html$Html$li,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class(
+								_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state)),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html_Attributes$property,
+									'year',
+									_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Json_Encode$int(y) : _elm_lang$core$Json_Encode$null),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(y)),
+							_1: {ctor: '[]'}
+						});
+				},
+				years));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewMonthList = F3(
+	function (minimum, maximum, selected) {
+		var last = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(maximum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(maximum) : 12;
+		var first = _elm_lang$core$Native_Utils.eq(
+			_elm_lang$core$Date$year(selected),
+			_elm_lang$core$Date$year(minimum)) ? _justinmimbs$elm_date_extra$Date_Extra$monthNumber(minimum) : 1;
+		var isInvertedMinMax = _elm_lang$core$Native_Utils.eq(
+			A2(_justinmimbs$elm_date_extra$Date_Extra$compare, minimum, maximum),
+			_elm_lang$core$Basics$GT);
+		return A2(
+			_elm_lang$html$Html$ol,
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html_Events$on,
+					'click',
+					A2(
+						_elm_lang$core$Json_Decode$map,
+						function (_p2) {
+							return A2(
+								_justinmimbs$elm_date_selector$DateSelector$dateWithMonth,
+								selected,
+								_justinmimbs$elm_date_extra$Date_Extra_Facts$monthFromMonthNumber(_p2));
+						},
+						A2(
+							_elm_lang$core$Json_Decode$at,
+							{
+								ctor: '::',
+								_0: 'target',
+								_1: {
+									ctor: '::',
+									_0: 'monthNumber',
+									_1: {ctor: '[]'}
+								}
+							},
+							_elm_lang$core$Json_Decode$int))),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$indexedMap,
+				F2(
+					function (i, name) {
+						var n = i + 1;
+						var state = _elm_lang$core$Native_Utils.eq(
+							n,
+							_justinmimbs$elm_date_extra$Date_Extra$monthNumber(selected)) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (((!A3(_justinmimbs$elm_date_selector$DateSelector$isBetween, first, last, n)) || isInvertedMinMax) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : _justinmimbs$elm_date_selector$DateSelector$Normal);
+						return A2(
+							_elm_lang$html$Html$li,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class(
+									_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state)),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html_Attributes$property,
+										'monthNumber',
+										_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Json_Encode$int(n) : _elm_lang$core$Json_Encode$null),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(name),
+								_1: {ctor: '[]'}
+							});
+					}),
+				_justinmimbs$elm_date_selector$DateSelector$monthNames));
+	});
+var _justinmimbs$elm_date_selector$DateSelector$viewDateTable = F3(
+	function (minimum, maximum, selected) {
+		var weeks = A2(
+			_justinmimbs$elm_date_selector$DateSelector$groupsOf,
+			7,
+			A2(
+				_justinmimbs$elm_date_selector$DateSelector$monthDates,
+				_elm_lang$core$Date$year(selected),
+				_elm_lang$core$Date$month(selected)));
+		var isInvertedMinMax = _elm_lang$core$Native_Utils.eq(
+			A2(_justinmimbs$elm_date_extra$Date_Extra$compare, minimum, maximum),
+			_elm_lang$core$Basics$GT);
+		return A2(
+			_elm_lang$html$Html$table,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _justinmimbs$elm_date_selector$DateSelector$viewDayOfWeekHeader,
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$tbody,
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html_Events$on,
+								'click',
+								A2(
+									_elm_lang$core$Json_Decode$map,
+									_elm_lang$core$Date$fromTime,
+									A2(
+										_elm_lang$core$Json_Decode$at,
+										{
+											ctor: '::',
+											_0: 'target',
+											_1: {
+												ctor: '::',
+												_0: 'time',
+												_1: {ctor: '[]'}
+											}
+										},
+										_elm_lang$core$Json_Decode$float))),
+							_1: {ctor: '[]'}
+						},
+						A2(
+							_elm_lang$core$List$map,
+							function (week) {
+								return A2(
+									_elm_lang$html$Html$tr,
+									{ctor: '[]'},
+									A2(
+										_elm_lang$core$List$map,
+										function (date) {
+											var state = A3(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date, selected) ? _justinmimbs$elm_date_selector$DateSelector$Selected : (((!A3(_justinmimbs$elm_date_extra$Date_Extra$isBetween, minimum, maximum, date)) || isInvertedMinMax) ? _justinmimbs$elm_date_selector$DateSelector$Disabled : ((!_elm_lang$core$Native_Utils.eq(
+												_elm_lang$core$Date$month(date),
+												_elm_lang$core$Date$month(selected))) ? _justinmimbs$elm_date_selector$DateSelector$Dimmed : _justinmimbs$elm_date_selector$DateSelector$Normal));
+											return A2(
+												_elm_lang$html$Html$td,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class(
+														_justinmimbs$elm_date_selector$DateSelector$classNameFromState(state)),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html_Attributes$property,
+															'time',
+															_justinmimbs$elm_date_selector$DateSelector$isSelectable(state) ? _elm_lang$core$Json_Encode$float(
+																_elm_lang$core$Date$toTime(date)) : _elm_lang$core$Json_Encode$null),
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(
+														_elm_lang$core$Basics$toString(
+															_elm_lang$core$Date$day(date))),
+													_1: {ctor: '[]'}
+												});
+										},
+										week));
+							},
+							weeks)),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _justinmimbs$elm_date_selector$DateSelector$view = F3(
+	function (minimum, maximum, maybeSelected) {
+		return A2(
+			_elm_lang$html$Html$map,
+			A2(_justinmimbs$elm_date_extra$Date_Extra$clamp, minimum, maximum),
+			A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$classList(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'date-selector', _1: true},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'date-selector--scrollable-year',
+									_1: _elm_lang$core$Native_Utils.cmp(
+										_elm_lang$core$Date$year(maximum) - _elm_lang$core$Date$year(minimum),
+										12) > -1
+								},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A3(_justinmimbs$elm_date_selector$DateSelector$viewYearList, minimum, maximum, maybeSelected),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Maybe$withDefault,
+									_justinmimbs$elm_date_selector$DateSelector$viewMonthListDisabled,
+									A2(
+										_elm_lang$core$Maybe$map,
+										A2(_justinmimbs$elm_date_selector$DateSelector$viewMonthList, minimum, maximum),
+										maybeSelected)),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: function () {
+										var _p3 = maybeSelected;
+										if (_p3.ctor === 'Just') {
+											return A3(_justinmimbs$elm_date_selector$DateSelector$viewDateTable, minimum, maximum, _p3._0);
+										} else {
+											return _justinmimbs$elm_date_selector$DateSelector$viewDateTableDisabled(minimum);
+										}
+									}(),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}));
+	});
+
 var _user$project$Pile_HtmlShorthand$onEnter = function (msg) {
 	var isEnter = function (code) {
 		return _elm_lang$core$Native_Utils.eq(code, 13) ? _elm_lang$core$Json_Decode$succeed(msg) : _elm_lang$core$Json_Decode$fail('not ENTER');
@@ -9732,102 +14562,92 @@ var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
 };
 var _user$project$Pile_Bulma$soleTextInputInRow = F2(
 	function (fieldValue, extraAttributes) {
-		var field = F2(
-			function (classes, s) {
-				return A2(
-					_elm_lang$html$Html$input,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$classList(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									{
-										ctor: '::',
-										_0: {ctor: '_Tuple2', _0: 'input', _1: true},
-										_1: {ctor: '[]'}
-									},
-									classes)),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$type_('text'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$value(s),
-									_1: {ctor: '[]'}
-								}
-							}
-						},
-						extraAttributes),
-					{ctor: '[]'});
-			});
-		var _p1 = fieldValue;
-		if (_p1.ctor === 'Ok') {
-			return _user$project$Pile_Bulma$oneReasonablySizedControl(
-				A2(
-					_elm_lang$html$Html$p,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('control'),
-						_1: {ctor: '[]'}
-					},
-					{
+		var _p1 = function () {
+			var _p2 = fieldValue.validity;
+			if (_p2.ctor === 'Valid') {
+				return {
+					ctor: '_Tuple3',
+					_0: 'control',
+					_1: 'input',
+					_2: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '_Tuple3',
+					_0: 'control has-icon has-icon-right',
+					_1: 'input is-danger',
+					_2: {
 						ctor: '::',
 						_0: A2(
-							field,
-							{ctor: '[]'},
-							_p1._0),
-						_1: {ctor: '[]'}
-					}));
-		} else {
-			return _user$project$Pile_Bulma$oneReasonablySizedControl(
-				A2(
-					_elm_lang$html$Html$p,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('control has-icon has-icon-right'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							field,
+							_elm_lang$html$Html$i,
 							{
 								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'is-danger', _1: true},
+								_0: _elm_lang$html$Html_Attributes$class('fa fa-warning'),
 								_1: {ctor: '[]'}
 							},
-							_p1._0._0),
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
+					}
+				};
+			}
+		}();
+		var paragraphClasses = _p1._0;
+		var fieldClasses = _p1._1;
+		var fieldIcons = _p1._2;
+		var oneCommentary = function (_p3) {
+			var _p4 = _p3;
+			return A2(
+				_elm_lang$html$Html$span,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('help is-danger'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p4._1),
+					_1: {ctor: '[]'}
+				});
+		};
+		var field = A2(
+			_elm_lang$html$Html$input,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class(fieldClasses),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$type_('text'),
 						_1: {
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$i,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('fa fa-warning'),
-									_1: {ctor: '[]'}
-								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$span,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('help is-danger'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text(_p1._0._1),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
+							_0: _elm_lang$html$Html_Attributes$value(fieldValue.value),
+							_1: {ctor: '[]'}
 						}
-					}));
-		}
+					}
+				},
+				extraAttributes),
+			{ctor: '[]'});
+		var contents = A2(
+			_elm_lang$core$Basics_ops['++'],
+			{
+				ctor: '::',
+				_0: field,
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				fieldIcons,
+				A2(_elm_lang$core$List$map, oneCommentary, fieldValue.commentary)));
+		return _user$project$Pile_Bulma$oneReasonablySizedControl(
+			A2(
+				_elm_lang$html$Html$p,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class(paragraphClasses),
+					_1: {ctor: '[]'}
+				},
+				contents));
 	});
 var _user$project$Pile_Bulma$controlRow = F2(
 	function (labelText, controlPart) {
@@ -10010,6 +14830,27 @@ var _user$project$Pile_Bulma$headingP = function (heading) {
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html$text(heading),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Pile_Bulma$disabledSelect = function (content) {
+	return A2(
+		_elm_lang$html$Html$span,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('select'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$select,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$disabled(true),
+					_1: {ctor: '[]'}
+				},
+				content),
 			_1: {ctor: '[]'}
 		});
 };
@@ -10323,9 +15164,9 @@ var _user$project$Pile_Bulma$message = F3(
 	});
 var _user$project$Pile_Bulma$infoMessage = _user$project$Pile_Bulma$message('is-info');
 var _user$project$Pile_Bulma$tab = F2(
-	function (selectedPage, _p2) {
-		var _p3 = _p2;
-		var _p4 = _elm_lang$core$Native_Utils.eq(selectedPage, _p3._0) ? {
+	function (selectedPage, _p5) {
+		var _p6 = _p5;
+		var _p7 = _elm_lang$core$Native_Utils.eq(selectedPage, _p6._0) ? {
 			ctor: '_Tuple4',
 			_0: 'is-active',
 			_1: 'is-disabled',
@@ -10354,10 +15195,10 @@ var _user$project$Pile_Bulma$tab = F2(
 			_2: {ctor: '[]'},
 			_3: ''
 		};
-		var liClass = _p4._0;
-		var linkClass = _p4._1;
-		var linkStyle = _p4._2;
-		var spanClass = _p4._3;
+		var liClass = _p7._0;
+		var linkClass = _p7._1;
+		var linkStyle = _p7._2;
+		var spanClass = _p7._3;
 		return A2(
 			_elm_lang$html$Html$li,
 			{
@@ -10380,7 +15221,7 @@ var _user$project$Pile_Bulma$tab = F2(
 								_0: _elm_lang$html$Html_Attributes$href('#'),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_p3._2),
+									_0: _user$project$Pile_HtmlShorthand$onClickWithoutPropagation(_p6._2),
 									_1: {ctor: '[]'}
 								}
 							}
@@ -10397,7 +15238,7 @@ var _user$project$Pile_Bulma$tab = F2(
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(_p3._1),
+								_0: _elm_lang$html$Html$text(_p6._1),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -10426,13 +15267,17 @@ var _user$project$Pile_Bulma$tabs = F2(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Pile_Bulma$FormValue = F3(
+	function (a, b, c) {
+		return {validity: a, value: b, commentary: c};
+	});
+var _user$project$Pile_Bulma$Error = {ctor: 'Error'};
+var _user$project$Pile_Bulma$Info = {ctor: 'Info'};
+var _user$project$Pile_Bulma$Invalid = {ctor: 'Invalid'};
+var _user$project$Pile_Bulma$Valid = {ctor: 'Valid'};
 
-var _user$project$Animals_Animal_Flash$SavedIncompleteTag = function (a) {
-	return {ctor: 'SavedIncompleteTag', _0: a};
-};
-var _user$project$Animals_Animal_Flash$NoFlash = {ctor: 'NoFlash'};
-var _user$project$Animals_Animal_Flash$showAndCancel = F2(
-	function (flash, partialMsg) {
+var _user$project$Animals_Animal_Flash$showWithButton = F2(
+	function (flash, msg) {
 		var _p0 = flash;
 		if (_p0.ctor === 'NoFlash') {
 			return A2(
@@ -10442,10 +15287,10 @@ var _user$project$Animals_Animal_Flash$showAndCancel = F2(
 		} else {
 			return A2(
 				_user$project$Pile_Bulma$flashNotification,
-				partialMsg(_user$project$Animals_Animal_Flash$NoFlash),
+				msg,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Excuse my presumption, but I notice you clicked '),
+					_0: _elm_lang$html$Html$text('Excuse me for butting in, but I notice you clicked '),
 					_1: {
 						ctor: '::',
 						_0: _user$project$Pile_Bulma$exampleSuccess,
@@ -10485,6 +15330,49 @@ var _user$project$Animals_Animal_Flash$showAndCancel = F2(
 				});
 		}
 	});
+var _user$project$Animals_Animal_Flash$SavedIncompleteTag = function (a) {
+	return {ctor: 'SavedIncompleteTag', _0: a};
+};
+var _user$project$Animals_Animal_Flash$NoFlash = {ctor: 'NoFlash'};
+
+var _user$project$Animals_Animal_Types$Animal = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, version: b, name: c, species: d, tags: e, properties: f};
+	});
+var _user$project$Animals_Animal_Types$Form = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, name: b, tags: c, tentativeTag: d, properties: e, isValid: f};
+	});
+var _user$project$Animals_Animal_Types$DisplayedAnimal = F3(
+	function (a, b, c) {
+		return {animal: a, format: b, animalFlash: c};
+	});
+var _user$project$Animals_Animal_Types$ValidationContext = function (a) {
+	return {disallowedNames: a};
+};
+var _user$project$Animals_Animal_Types$AsBool = F2(
+	function (a, b) {
+		return {ctor: 'AsBool', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Types$AsDate = F2(
+	function (a, b) {
+		return {ctor: 'AsDate', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Types$AsString = F2(
+	function (a, b) {
+		return {ctor: 'AsString', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Types$AsFloat = F2(
+	function (a, b) {
+		return {ctor: 'AsFloat', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Types$AsInt = F2(
+	function (a, b) {
+		return {ctor: 'AsInt', _0: a, _1: b};
+	});
+var _user$project$Animals_Animal_Types$Editable = {ctor: 'Editable'};
+var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
 
 var _user$project$Pile_UpdatingLens$lensUpdate = F4(
 	function (getPart, setPart, partTransformer, whole) {
@@ -10539,16 +15427,27 @@ var _user$project$Animals_Animal_Lenses$validationForm_name = A2(
 				w,
 				{name: p});
 		}));
-var _user$project$Animals_Animal_Lenses$validationContext_allAnimalNames = A2(
+var _user$project$Animals_Animal_Lenses$validationContext_disallowedNames = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
-		return _.allAnimalNames;
+		return _.disallowedNames;
 	},
 	F2(
 		function (p, w) {
 			return _elm_lang$core$Native_Utils.update(
 				w,
-				{allAnimalNames: p});
+				{disallowedNames: p});
+		}));
+var _user$project$Animals_Animal_Lenses$form_isValid = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.isValid;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{isValid: p});
 		}));
 var _user$project$Animals_Animal_Lenses$form_tentativeTag = A2(
 	_user$project$Pile_UpdatingLens$lens,
@@ -10583,6 +15482,39 @@ var _user$project$Animals_Animal_Lenses$form_name = A2(
 				w,
 				{name: p});
 		}));
+var _user$project$Animals_Animal_Lenses$form_id = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.id;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{id: p});
+		}));
+var _user$project$Animals_Animal_Lenses$displayedAnimal_flash = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animalFlash;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animalFlash: p});
+		}));
+var _user$project$Animals_Animal_Lenses$displayedAnimal_format = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.format;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{format: p});
+		}));
 var _user$project$Animals_Animal_Lenses$displayedAnimal_animal = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -10593,6 +15525,17 @@ var _user$project$Animals_Animal_Lenses$displayedAnimal_animal = A2(
 			return _elm_lang$core$Native_Utils.update(
 				w,
 				{animal: p});
+		}));
+var _user$project$Animals_Animal_Lenses$display_flash = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animalFlash;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animalFlash: p});
 		}));
 var _user$project$Animals_Animal_Lenses$animal_properties = A2(
 	_user$project$Pile_UpdatingLens$lens,
@@ -10616,18 +15559,6 @@ var _user$project$Animals_Animal_Lenses$animal_tags = A2(
 				w,
 				{tags: p});
 		}));
-var _user$project$Animals_Animal_Lenses$animal_wasEverSaved = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.wasEverSaved;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{wasEverSaved: p});
-		}));
-var _user$project$Animals_Animal_Lenses$displayedAnimal_wasEverSaved = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_wasEverSaved);
 var _user$project$Animals_Animal_Lenses$animal_name = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -10640,6 +15571,17 @@ var _user$project$Animals_Animal_Lenses$animal_name = A2(
 				{name: p});
 		}));
 var _user$project$Animals_Animal_Lenses$displayedAnimal_name = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_name);
+var _user$project$Animals_Animal_Lenses$animal_version = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.version;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{version: p});
+		}));
 var _user$project$Animals_Animal_Lenses$animal_id = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -10653,55 +15595,31 @@ var _user$project$Animals_Animal_Lenses$animal_id = A2(
 		}));
 var _user$project$Animals_Animal_Lenses$displayedAnimal_id = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$displayedAnimal_animal, _user$project$Animals_Animal_Lenses$animal_id);
 
-var _user$project$Animals_Animal_Types$Animal = F6(
-	function (a, b, c, d, e, f) {
-		return {id: a, wasEverSaved: b, name: c, species: d, tags: e, properties: f};
+var _user$project$Animals_Animal_Constructors$fresh = F2(
+	function (species, id) {
+		return {
+			id: id,
+			version: 0,
+			name: '',
+			species: species,
+			tags: {ctor: '[]'},
+			properties: _elm_lang$core$Dict$empty
+		};
 	});
-var _user$project$Animals_Animal_Types$Form = F4(
-	function (a, b, c, d) {
-		return {name: a, tags: b, tentativeTag: c, properties: d};
+var _user$project$Animals_Animal_Constructors$andFlash = F2(
+	function (flash, animal) {
+		return A2(_user$project$Animals_Animal_Lenses$displayedAnimal_flash.set, flash, animal);
 	});
-var _user$project$Animals_Animal_Types$DisplayedAnimal = F3(
-	function (a, b, c) {
-		return {animal: a, display: b, flash: c};
-	});
-var _user$project$Animals_Animal_Types$AsBool = F2(
-	function (a, b) {
-		return {ctor: 'AsBool', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$AsDate = function (a) {
-	return {ctor: 'AsDate', _0: a};
+var _user$project$Animals_Animal_Constructors$noFlash = _user$project$Animals_Animal_Constructors$andFlash(_user$project$Animals_Animal_Flash$NoFlash);
+var _user$project$Animals_Animal_Constructors$editable = function (animal) {
+	return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Editable, _user$project$Animals_Animal_Flash$NoFlash);
 };
-var _user$project$Animals_Animal_Types$AsString = function (a) {
-	return {ctor: 'AsString', _0: a};
+var _user$project$Animals_Animal_Constructors$expanded = function (animal) {
+	return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Expanded, _user$project$Animals_Animal_Flash$NoFlash);
 };
-var _user$project$Animals_Animal_Types$AsFloat = function (a) {
-	return {ctor: 'AsFloat', _0: a};
+var _user$project$Animals_Animal_Constructors$compact = function (animal) {
+	return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Compact, _user$project$Animals_Animal_Flash$NoFlash);
 };
-var _user$project$Animals_Animal_Types$AsInt = function (a) {
-	return {ctor: 'AsInt', _0: a};
-};
-var _user$project$Animals_Animal_Types$Editable = function (a) {
-	return {ctor: 'Editable', _0: a};
-};
-var _user$project$Animals_Animal_Types$editable = F3(
-	function (animal, form, flash) {
-		return A3(
-			_user$project$Animals_Animal_Types$DisplayedAnimal,
-			animal,
-			_user$project$Animals_Animal_Types$Editable(form),
-			flash);
-	});
-var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
-var _user$project$Animals_Animal_Types$expanded = F2(
-	function (animal, flash) {
-		return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Expanded, flash);
-	});
-var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Animal_Types$compact = F2(
-	function (animal, flash) {
-		return A3(_user$project$Animals_Animal_Types$DisplayedAnimal, animal, _user$project$Animals_Animal_Types$Compact, flash);
-	});
 
 var _user$project$Animals_Pages_Declare$helpPagePath = '/v2/animals/help';
 var _user$project$Animals_Pages_Declare$addPagePath = '/v2/animals/new';
@@ -10710,33 +15628,41 @@ var _user$project$Animals_Pages_Declare$HelpPage = {ctor: 'HelpPage'};
 var _user$project$Animals_Pages_Declare$AddPage = {ctor: 'AddPage'};
 var _user$project$Animals_Pages_Declare$AllPage = {ctor: 'AllPage'};
 
+var _user$project$Animals_OutsideWorld_Declare$AnimalUpdated = F2(
+	function (a, b) {
+		return {ctor: 'AnimalUpdated', _0: a, _1: b};
+	});
+var _user$project$Animals_OutsideWorld_Declare$AnimalCreated = F2(
+	function (a, b) {
+		return {ctor: 'AnimalCreated', _0: a, _1: b};
+	});
+
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
-var _user$project$Animals_Msg$Log = function (a) {
-	return {ctor: 'Log', _0: a};
+var _user$project$Animals_Msg$RemoveFlash = function (a) {
+	return {ctor: 'RemoveFlash', _0: a};
 };
 var _user$project$Animals_Msg$MoreLikeThisAnimal = function (a) {
 	return {ctor: 'MoreLikeThisAnimal', _0: a};
 };
-var _user$project$Animals_Msg$AddNewBovine = {ctor: 'AddNewBovine'};
-var _user$project$Animals_Msg$CancelAnimalChanges = F2(
+var _user$project$Animals_Msg$AddNewAnimals = F2(
 	function (a, b) {
-		return {ctor: 'CancelAnimalChanges', _0: a, _1: b};
+		return {ctor: 'AddNewAnimals', _0: a, _1: b};
 	});
-var _user$project$Animals_Msg$SaveAnimalChanges = F2(
+var _user$project$Animals_Msg$CancelAnimalChanges = function (a) {
+	return {ctor: 'CancelAnimalChanges', _0: a};
+};
+var _user$project$Animals_Msg$NoticeAnimalCreationResults = function (a) {
+	return {ctor: 'NoticeAnimalCreationResults', _0: a};
+};
+var _user$project$Animals_Msg$NoticeAnimalSaveResults = function (a) {
+	return {ctor: 'NoticeAnimalSaveResults', _0: a};
+};
+var _user$project$Animals_Msg$SwitchToEditView = function (a) {
+	return {ctor: 'SwitchToEditView', _0: a};
+};
+var _user$project$Animals_Msg$SwitchToReadOnlyAnimalView = F2(
 	function (a, b) {
-		return {ctor: 'SaveAnimalChanges', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$UpsertEditableAnimal = F3(
-	function (a, b, c) {
-		return {ctor: 'UpsertEditableAnimal', _0: a, _1: b, _2: c};
-	});
-var _user$project$Animals_Msg$UpsertExpandedAnimal = F2(
-	function (a, b) {
-		return {ctor: 'UpsertExpandedAnimal', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$UpsertCompactAnimal = F2(
-	function (a, b) {
-		return {ctor: 'UpsertCompactAnimal', _0: a, _1: b};
+		return {ctor: 'SwitchToReadOnlyAnimalView', _0: a, _1: b};
 	});
 var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
 	return {ctor: 'SetSpeciesFilter', _0: a};
@@ -10764,11 +15690,1018 @@ var _user$project$Animals_Msg$NoticePageChange = function (a) {
 	return {ctor: 'NoticePageChange', _0: a};
 };
 
+var _user$project$Animals_Animal_Form$cancelEditsMsg = function (animal) {
+	return _user$project$Animals_Msg$CancelAnimalChanges(animal);
+};
+var _user$project$Animals_Animal_Form$freshValue = function (v) {
+	return A3(
+		_user$project$Pile_Bulma$FormValue,
+		_user$project$Pile_Bulma$Valid,
+		v,
+		{ctor: '[]'});
+};
+var _user$project$Animals_Animal_Form$extractForm = function (animal) {
+	return {
+		isValid: true,
+		id: animal.id,
+		name: _user$project$Animals_Animal_Form$freshValue(animal.name),
+		tags: animal.tags,
+		tentativeTag: '',
+		properties: animal.properties
+	};
+};
+var _user$project$Animals_Animal_Form$nullForm = {
+	isValid: false,
+	id: 'impossible',
+	name: _user$project$Animals_Animal_Form$freshValue('you should never see this'),
+	tags: {ctor: '[]'},
+	tentativeTag: '',
+	properties: _elm_lang$core$Dict$empty
+};
+
+var _user$project$Animals_OutsideWorld_Json$encodeProperties = function (valueEncoder) {
+	var encodeKV = function (_p0) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: _p1._0,
+			_1: _elm_lang$core$Json_Encode$list(
+				{
+					ctor: '::',
+					_0: valueEncoder(_p1._1._0),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Json_Encode$string(_p1._1._1),
+						_1: {ctor: '[]'}
+					}
+				})
+		};
+	};
+	return function (_p2) {
+		return _elm_lang$core$Json_Encode$object(
+			A2(
+				_elm_lang$core$List$map,
+				encodeKV,
+				_elm_lang$core$Dict$toList(_p2)));
+	};
+};
+var _user$project$Animals_OutsideWorld_Json$decodeProperties = function (valueDecoder) {
+	return _elm_lang$core$Json_Decode$dict(
+		A3(
+			_elm_lang$core$Json_Decode$map2,
+			F2(
+				function (v0, v1) {
+					return {ctor: '_Tuple2', _0: v0, _1: v1};
+				}),
+			A2(_elm_lang$core$Json_Decode$index, 0, valueDecoder),
+			A2(_elm_lang$core$Json_Decode$index, 1, _elm_lang$core$Json_Decode$string)));
+};
+var _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_Animal = function (incoming) {
+	var dictify = F2(
+		function (unionF, data) {
+			return A2(
+				_elm_lang$core$Dict$map,
+				F2(
+					function (_p3, tuple) {
+						return A2(_elm_lang$core$Basics$uncurry, unionF, tuple);
+					}),
+				data);
+		});
+	var strings = A2(dictify, _user$project$Animals_Animal_Types$AsString, incoming.string_properties);
+	var bools = A2(dictify, _user$project$Animals_Animal_Types$AsBool, incoming.bool_properties);
+	var ints = A2(dictify, _user$project$Animals_Animal_Types$AsInt, incoming.int_properties);
+	var combine = function (dicts) {
+		return A3(
+			_elm_lang$core$List$foldl,
+			F2(
+				function (one, many) {
+					return A2(_elm_lang$core$Dict$union, many, one);
+				}),
+			_elm_lang$core$Dict$empty,
+			dicts);
+	};
+	var properties = combine(
+		{
+			ctor: '::',
+			_0: ints,
+			_1: {
+				ctor: '::',
+				_0: bools,
+				_1: {
+					ctor: '::',
+					_0: strings,
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+	return {
+		id: _elm_lang$core$Basics$toString(incoming.id),
+		version: incoming.version,
+		name: incoming.name,
+		species: incoming.species,
+		tags: incoming.tags,
+		properties: properties
+	};
+};
+var _user$project$Animals_OutsideWorld_Json$animal_to_animalTransferFormat = function (animal) {
+	var intId = A2(
+		_elm_lang$core$Result$withDefault,
+		-1,
+		_elm_lang$core$String$toInt(animal.id));
+	return {id: intId, version: animal.version, name: animal.name, species: animal.species, tags: animal.tags, bool_properties: _elm_lang$core$Dict$empty, int_properties: _elm_lang$core$Dict$empty, string_properties: _elm_lang$core$Dict$empty};
+};
+var _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_json = function (xfer) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'id',
+				_1: _elm_lang$core$Json_Encode$int(xfer.id)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'version',
+					_1: _elm_lang$core$Json_Encode$int(xfer.version)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'name',
+						_1: _elm_lang$core$Json_Encode$string(xfer.name)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'species',
+							_1: _elm_lang$core$Json_Encode$string(xfer.species)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'tags',
+								_1: _elm_lang$core$Json_Encode$list(
+									A2(_elm_lang$core$List$map, _elm_lang$core$Json_Encode$string, xfer.tags))
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'bool_properties',
+									_1: A2(_user$project$Animals_OutsideWorld_Json$encodeProperties, _elm_lang$core$Json_Encode$bool, xfer.bool_properties)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'int_properties',
+										_1: A2(_user$project$Animals_OutsideWorld_Json$encodeProperties, _elm_lang$core$Json_Encode$int, xfer.int_properties)
+									},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'string_properties',
+											_1: A2(_user$project$Animals_OutsideWorld_Json$encodeProperties, _elm_lang$core$Json_Encode$string, xfer.string_properties)
+										},
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Animals_OutsideWorld_Json$decodeCreationResult = function () {
+	var from_transferFormat = function (_p4) {
+		var _p5 = _p4;
+		return A2(
+			_user$project$Animals_OutsideWorld_Declare$AnimalCreated,
+			_p5._0,
+			_elm_lang$core$Basics$toString(_p5._1));
+	};
+	var to_transferFormat = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, 'originalId', _elm_lang$core$Json_Decode$string),
+		A2(_elm_lang$core$Json_Decode$field, 'serverId', _elm_lang$core$Json_Decode$int));
+	return A2(_elm_lang$core$Json_Decode$map, from_transferFormat, to_transferFormat);
+}();
+var _user$project$Animals_OutsideWorld_Json$decodeSaveResult = function () {
+	var from_transferFormat = function (_p6) {
+		var _p7 = _p6;
+		return A2(
+			_user$project$Animals_OutsideWorld_Declare$AnimalUpdated,
+			_elm_lang$core$Basics$toString(_p7._0),
+			_p7._1);
+	};
+	var to_transferFormat = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
+		A2(_elm_lang$core$Json_Decode$field, 'version', _elm_lang$core$Json_Decode$int));
+	return A2(_elm_lang$core$Json_Decode$map, from_transferFormat, to_transferFormat);
+}();
+var _user$project$Animals_OutsideWorld_Json$encodeAnimal = function (_p8) {
+	return _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_json(
+		_user$project$Animals_OutsideWorld_Json$animal_to_animalTransferFormat(_p8));
+};
+var _user$project$Animals_OutsideWorld_Json$asData = function (v) {
+	return _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'data', _1: v},
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Animals_OutsideWorld_Json$withinData = _elm_lang$core$Json_Decode$at(
+	{
+		ctor: '::',
+		_0: 'data',
+		_1: {ctor: '[]'}
+	});
+var _user$project$Animals_OutsideWorld_Json$AnimalTransferFormat = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, version: b, name: c, species: d, tags: e, int_properties: f, bool_properties: g, string_properties: h};
+	});
+var _user$project$Animals_OutsideWorld_Json$json_to_AnimalTransferFormat = A9(
+	_elm_lang$core$Json_Decode$map8,
+	_user$project$Animals_OutsideWorld_Json$AnimalTransferFormat,
+	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'version', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'species', _elm_lang$core$Json_Decode$string),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'tags',
+		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'int_properties',
+		_user$project$Animals_OutsideWorld_Json$decodeProperties(_elm_lang$core$Json_Decode$int)),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'bool_properties',
+		_user$project$Animals_OutsideWorld_Json$decodeProperties(_elm_lang$core$Json_Decode$bool)),
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'string_properties',
+		_user$project$Animals_OutsideWorld_Json$decodeProperties(_elm_lang$core$Json_Decode$string)));
+var _user$project$Animals_OutsideWorld_Json$decodeAnimal = A2(_elm_lang$core$Json_Decode$map, _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_Animal, _user$project$Animals_OutsideWorld_Json$json_to_AnimalTransferFormat);
+var _user$project$Animals_OutsideWorld_Json$decodeAnimals = _elm_lang$core$Json_Decode$list(_user$project$Animals_OutsideWorld_Json$decodeAnimal);
+
+var _user$project$Animals_OutsideWorld_Define$createAnimal = function (animal) {
+	var body = _elm_lang$http$Http$jsonBody(
+		_user$project$Animals_OutsideWorld_Json$asData(
+			_user$project$Animals_OutsideWorld_Json$encodeAnimal(animal)));
+	var url = A2(_elm_lang$core$Basics_ops['++'], '/api/v2animals/create/', animal.id);
+	var request = A3(
+		_elm_lang$http$Http$post,
+		url,
+		body,
+		_user$project$Animals_OutsideWorld_Json$withinData(_user$project$Animals_OutsideWorld_Json$decodeCreationResult));
+	return A2(_elm_lang$http$Http$send, _user$project$Animals_Msg$NoticeAnimalCreationResults, request);
+};
+var _user$project$Animals_OutsideWorld_Define$saveAnimal = function (animal) {
+	var body = _elm_lang$http$Http$jsonBody(
+		_user$project$Animals_OutsideWorld_Json$asData(
+			_user$project$Animals_OutsideWorld_Json$encodeAnimal(animal)));
+	var url = '/api/v2animals/';
+	var request = A3(
+		_elm_lang$http$Http$post,
+		url,
+		body,
+		_user$project$Animals_OutsideWorld_Json$withinData(_user$project$Animals_OutsideWorld_Json$decodeSaveResult));
+	return A2(_elm_lang$http$Http$send, _user$project$Animals_Msg$NoticeAnimalSaveResults, request);
+};
+var _user$project$Animals_OutsideWorld_Define$fetchAnimals = function () {
+	var url = '/api/v2animals';
+	var request = A2(
+		_elm_lang$http$Http$get,
+		url,
+		_user$project$Animals_OutsideWorld_Json$withinData(_user$project$Animals_OutsideWorld_Json$decodeAnimals));
+	return A2(_elm_lang$http$Http$send, _user$project$Animals_Msg$SetAnimals, request);
+}();
+var _user$project$Animals_OutsideWorld_Define$askTodaysDate = A2(
+	_elm_lang$core$Task$perform,
+	function (_p0) {
+		return _user$project$Animals_Msg$SetToday(
+			_elm_lang$core$Maybe$Just(_p0));
+	},
+	_elm_lang$core$Date$now);
+
+var _user$project$Animals_Pages_Define$fromLocation = function (location) {
+	var path = location.pathname;
+	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_Declare$addPagePath, path) ? _user$project$Animals_Pages_Declare$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_Declare$helpPagePath, path) ? _user$project$Animals_Pages_Declare$HelpPage : _user$project$Animals_Pages_Declare$AllPage);
+};
+var _user$project$Animals_Pages_Define$toPageChangeCmd = function (page) {
+	var url = function () {
+		var _p0 = page;
+		switch (_p0.ctor) {
+			case 'AllPage':
+				return _user$project$Animals_Pages_Declare$allPagePath;
+			case 'AddPage':
+				return _user$project$Animals_Pages_Declare$addPagePath;
+			default:
+				return _user$project$Animals_Pages_Declare$helpPagePath;
+		}
+	}();
+	return _elm_lang$navigation$Navigation$newUrl(url);
+};
+
+var _user$project$Animals_Pages_PageFlash$httpError = F2(
+	function (contextString, err) {
+		var paddedContext = A2(_elm_lang$core$Basics_ops['++'], contextString, ' ');
+		var errText = function () {
+			var _p0 = err;
+			switch (_p0.ctor) {
+				case 'BadUrl':
+					return {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Something is wrong with this app. It created a bad web address'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Details: '),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(_p0._0),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					};
+				case 'Timeout':
+					return {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('The server did not respond. Try again later?'),
+						_1: {ctor: '[]'}
+					};
+				case 'NetworkError':
+					return {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('The network seems unavailable.'),
+						_1: {ctor: '[]'}
+					};
+				case 'BadStatus':
+					return {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('The server declared that it could not respond.'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Details: '),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(_p0._0.status.message),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					};
+				default:
+					return {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('The server returned nonsensical results.'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Details: '),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(_p0._0),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					};
+			}
+		}();
+		return A2(
+			_user$project$Pile_Bulma$flashNotification,
+			_user$project$Animals_Msg$NoOp,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(paddedContext),
+				_1: errText
+			});
+	});
+var _user$project$Animals_Pages_PageFlash$show = function (flash) {
+	var _p1 = flash;
+	switch (_p1.ctor) {
+		case 'NoFlash':
+			return A2(
+				_elm_lang$html$Html$span,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		case 'SavedAnimalFlash':
+			return A2(
+				_user$project$Pile_Bulma$flashNotification,
+				_user$project$Animals_Msg$NoOp,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('The new animal can be seen on the '),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href(_user$project$Animals_Pages_Declare$allPagePath),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('View Animals'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(' page.'),
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+		default:
+			return A2(_user$project$Animals_Pages_PageFlash$httpError, _p1._0, _p1._1);
+	}
+};
+var _user$project$Animals_Pages_PageFlash$HttpErrorFlash = F2(
+	function (a, b) {
+		return {ctor: 'HttpErrorFlash', _0: a, _1: b};
+	});
+var _user$project$Animals_Pages_PageFlash$SavedAnimalFlash = {ctor: 'SavedAnimalFlash'};
+var _user$project$Animals_Pages_PageFlash$NoFlash = {ctor: 'NoFlash'};
+
+var _user$project$Pile_Calendar$visibilityController = F3(
+	function (calendarToggleMsg, control, maybeContent) {
+		var controlContainer = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('dropdown--button-container'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: control,
+				_1: {ctor: '[]'}
+			});
+		var _p0 = maybeContent;
+		if (_p0.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('dropdown'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: controlContainer,
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('dropdown-open'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(calendarToggleMsg),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: controlContainer,
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('dropdown--content-container'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _p0._0,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+		}
+	});
+var _user$project$Pile_Calendar$defaultDate = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1);
+var _user$project$Pile_Calendar$dateToShow = function (edate) {
+	var _p1 = edate.effectiveDate;
+	if (_p1.ctor === 'Today') {
+		return edate.today;
+	} else {
+		return _elm_lang$core$Maybe$Just(_p1._0);
+	}
+};
+var _user$project$Pile_Calendar$bound = F2(
+	function (shiftFunction, edate) {
+		var shiftByYears = function (date) {
+			return A3(
+				_justinmimbs$elm_date_extra$Date_Extra$add,
+				_justinmimbs$elm_date_extra$Date_Extra$Year,
+				A2(shiftFunction, 0, 5),
+				date);
+		};
+		var _p2 = _user$project$Pile_Calendar$dateToShow(edate);
+		if (_p2.ctor === 'Nothing') {
+			return shiftByYears(_user$project$Pile_Calendar$defaultDate);
+		} else {
+			return shiftByYears(_p2._0);
+		}
+	});
+var _user$project$Pile_Calendar$enhancedDateString = function (edate) {
+	var todayIfKnown = function () {
+		var _p3 = edate.today;
+		if (_p3.ctor === 'Nothing') {
+			return '';
+		} else {
+			return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, ' (MMM d)', _p3._0);
+		}
+	}();
+	var _p4 = edate.effectiveDate;
+	if (_p4.ctor === 'Today') {
+		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
+	} else {
+		return A2(_justinmimbs$elm_date_extra$Date_Extra$toFormattedString, 'MMM d, y', _p4._0);
+	}
+};
+var _user$project$Pile_Calendar$view = F4(
+	function (launcher, calendarToggleMsg, dateSelectedMsg, edate) {
+		var selected = _user$project$Pile_Calendar$dateToShow(edate);
+		var max = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			edate);
+		var min = A2(
+			_user$project$Pile_Calendar$bound,
+			F2(
+				function (x, y) {
+					return x - y;
+				}),
+			edate);
+		var calendarBodyView = edate.datePickerOpen ? _elm_lang$core$Maybe$Just(
+			A2(
+				_elm_lang$virtual_dom$VirtualDom$map,
+				dateSelectedMsg,
+				A3(_justinmimbs$elm_date_selector$DateSelector$view, min, max, selected))) : _elm_lang$core$Maybe$Nothing;
+		return A3(
+			_user$project$Pile_Calendar$visibilityController,
+			calendarToggleMsg,
+			A3(
+				launcher,
+				edate.datePickerOpen,
+				_user$project$Pile_Calendar$enhancedDateString(edate),
+				calendarToggleMsg),
+			calendarBodyView);
+	});
+var _user$project$Pile_Calendar$At = function (a) {
+	return {ctor: 'At', _0: a};
+};
+var _user$project$Pile_Calendar$Today = {ctor: 'Today'};
+
+var _user$project$Animals_Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Animals_Main$noCmd = function (model) {
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		model,
+		{ctor: '[]'});
+};
+var _user$project$Animals_Main$populateAllAnimalsPage = F2(
+	function (animals, model) {
+		var displayedAnimals = A2(_elm_lang$core$List$map, _user$project$Animals_Animal_Constructors$compact, animals);
+		var ids = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.id;
+			},
+			animals);
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				animals: _elm_lang$core$Dict$fromList(
+					A3(
+						_elm_lang$core$List$map2,
+						F2(
+							function (v0, v1) {
+								return {ctor: '_Tuple2', _0: v0, _1: v1};
+							}),
+						ids,
+						displayedAnimals)),
+				allPageAnimals: _elm_lang$core$Set$fromList(ids)
+			});
+	});
+var _user$project$Animals_Main$setFormat = _user$project$Animals_Animal_Lenses$displayedAnimal_format.set;
+var _user$project$Animals_Main$init = F2(
+	function (flags, location) {
+		var model = {
+			page: _user$project$Animals_Pages_Define$fromLocation(location),
+			pageFlash: _user$project$Animals_Pages_PageFlash$NoFlash,
+			csrfToken: flags.csrfToken,
+			animals: _elm_lang$core$Dict$empty,
+			forms: _elm_lang$core$Dict$empty,
+			allPageAnimals: _elm_lang$core$Set$empty,
+			nameFilter: '',
+			tagFilter: '',
+			speciesFilter: '',
+			effectiveDate: _user$project$Pile_Calendar$Today,
+			today: _elm_lang$core$Maybe$Nothing,
+			datePickerOpen: false,
+			addPageAnimals: _elm_lang$core$Set$empty
+		};
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			model,
+			{
+				ctor: '::',
+				_0: _user$project$Animals_OutsideWorld_Define$askTodaysDate,
+				_1: {
+					ctor: '::',
+					_0: _user$project$Animals_OutsideWorld_Define$fetchAnimals,
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Animals_Main$model_pageFlash = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.pageFlash;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{pageFlash: p});
+		}));
+var _user$project$Animals_Main$httpError = F3(
+	function (contextString, err, model) {
+		return A2(
+			_user$project$Animals_Main$model_pageFlash.set,
+			A2(_user$project$Animals_Pages_PageFlash$HttpErrorFlash, contextString, err),
+			model);
+	});
+var _user$project$Animals_Main$model_datePickerOpen = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.datePickerOpen;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{datePickerOpen: p});
+		}));
+var _user$project$Animals_Main$model_effectiveDate = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.effectiveDate;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{effectiveDate: p});
+		}));
+var _user$project$Animals_Main$model_nameFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.nameFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{nameFilter: p});
+		}));
+var _user$project$Animals_Main$model_speciesFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.speciesFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{speciesFilter: p});
+		}));
+var _user$project$Animals_Main$model_tagFilter = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tagFilter;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tagFilter: p});
+		}));
+var _user$project$Animals_Main$model_forms = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.forms;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{forms: p});
+		}));
+var _user$project$Animals_Main$recordForm = F2(
+	function (model, form) {
+		var key = _user$project$Animals_Animal_Lenses$form_id.get(form);
+		var newForms = A3(_elm_lang$core$Dict$insert, key, form, model.forms);
+		return A2(_user$project$Animals_Main$model_forms.set, newForms, model);
+	});
+var _user$project$Animals_Main$model_addPageAnimals = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.addPageAnimals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{addPageAnimals: p});
+		}));
+var _user$project$Animals_Main$model_allPageAnimals = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.allPageAnimals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{allPageAnimals: p});
+		}));
+var _user$project$Animals_Main$model_animals = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.animals;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{animals: p});
+		}));
+var _user$project$Animals_Main$recordAnimalManipulation = F2(
+	function (model, displayed) {
+		var withoutFlash = _user$project$Animals_Animal_Constructors$noFlash(displayed);
+		var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(withoutFlash);
+		var newAnimals = A3(_elm_lang$core$Dict$insert, key, withoutFlash, model.animals);
+		return A2(_user$project$Animals_Main$model_animals.set, newAnimals, model);
+	});
+var _user$project$Animals_Main$recordManipulationAndForm = F3(
+	function (model, animal, form) {
+		return A2(
+			_user$project$Animals_Main$recordForm,
+			A2(_user$project$Animals_Main$recordAnimalManipulation, model, animal),
+			form);
+	});
+var _user$project$Animals_Main$upsert = F2(
+	function (displayedAnimal, model) {
+		var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayedAnimal);
+		var newAnimals = A3(_elm_lang$core$Dict$insert, key, displayedAnimal, model.animals);
+		return A2(_user$project$Animals_Main$model_animals.set, newAnimals, model);
+	});
+var _user$project$Animals_Main$model_today = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.today;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{today: p});
+		}));
+var _user$project$Animals_Main$model_page = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.page;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{page: p});
+		}));
+var _user$project$Animals_Main$update_ = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'NoticePageChange':
+				return _user$project$Animals_Main$noCmd(
+					A2(
+						_user$project$Animals_Main$model_page.set,
+						_user$project$Animals_Pages_Define$fromLocation(_p0._0),
+						model));
+			case 'StartPageChange':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Animals_Pages_Define$toPageChangeCmd(_p0._0)
+				};
+			case 'SetToday':
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$model_today.set, _p0._0, model));
+			case 'SetAnimals':
+				if (_p0._0.ctor === 'Ok') {
+					return _user$project$Animals_Main$noCmd(
+						A2(_user$project$Animals_Main$populateAllAnimalsPage, _p0._0._0, model));
+				} else {
+					return _user$project$Animals_Main$noCmd(
+						A3(_user$project$Animals_Main$httpError, 'I could not retrieve animals.', _p0._0._0, model));
+				}
+			case 'ToggleDatePicker':
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model));
+			case 'SelectDate':
+				return _user$project$Animals_Main$noCmd(
+					A2(
+						_user$project$Animals_Main$model_effectiveDate.set,
+						_user$project$Pile_Calendar$At(_p0._0),
+						model));
+			case 'SetNameFilter':
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$model_nameFilter.set, _p0._0, model));
+			case 'SetTagFilter':
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$model_tagFilter.set, _p0._0, model));
+			case 'SetSpeciesFilter':
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$model_speciesFilter.set, _p0._0, model));
+			case 'MoreLikeThisAnimal':
+				return _user$project$Animals_Main$noCmd(model);
+			case 'SwitchToReadOnlyAnimalView':
+				var $new = A2(
+					_user$project$Animals_Animal_Lenses$displayedAnimal_format.set,
+					_p0._1,
+					_user$project$Animals_Animal_Constructors$noFlash(_p0._0));
+				return _user$project$Animals_Main$noCmd(
+					A2(_user$project$Animals_Main$upsert, $new, model));
+			case 'SwitchToEditView':
+				var _p1 = _p0._0;
+				var form = _user$project$Animals_Animal_Form$extractForm(_p1.animal);
+				var newAnimal = A2(_user$project$Animals_Main$setFormat, _user$project$Animals_Animal_Types$Editable, _p1);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					A3(_user$project$Animals_Main$recordManipulationAndForm, model, newAnimal, form),
+					{ctor: '[]'});
+			case 'NoticeAnimalSaveResults':
+				if (_p0._0.ctor === 'Ok') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						A3(_user$project$Animals_Main$httpError, 'I could not save the animal.', _p0._0._0, model),
+						{ctor: '[]'});
+				}
+			case 'NoticeAnimalCreationResults':
+				if (_p0._0.ctor === 'Ok') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						A3(_user$project$Animals_Main$httpError, 'I could not create the animal.', _p0._0._0, model),
+						{ctor: '[]'});
+				}
+			case 'CancelAnimalChanges':
+				var _p2 = _p0._0;
+				var model2 = A2(
+					_user$project$Animals_Main$recordAnimalManipulation,
+					model,
+					A2(_user$project$Animals_Main$setFormat, _user$project$Animals_Animal_Types$Expanded, _p2));
+				var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(_p2);
+				var model1 = A2(
+					_user$project$Animals_Main$model_forms.update,
+					_elm_lang$core$Dict$remove(key),
+					model);
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model2,
+					{ctor: '[]'});
+			case 'AddNewAnimals':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
+			case 'RemoveFlash':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{ctor: '[]'});
+		}
+	});
+var _user$project$Animals_Main$update = F2(
+	function (msg, model) {
+		return A2(
+			_user$project$Animals_Main$update_,
+			msg,
+			A2(_user$project$Animals_Main$model_pageFlash.set, _user$project$Animals_Pages_PageFlash$NoFlash, model));
+	});
+var _user$project$Animals_Main$Flags = function (a) {
+	return {csrfToken: a};
+};
+var _user$project$Animals_Main$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return {page: a, pageFlash: b, csrfToken: c, animals: d, forms: e, allPageAnimals: f, nameFilter: g, tagFilter: h, speciesFilter: i, effectiveDate: j, today: k, datePickerOpen: l, addPageAnimals: m};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
 var Elm = {};
 Elm['Animals'] = Elm['Animals'] || {};
-Elm['Animals']['Msg'] = Elm['Animals']['Msg'] || {};
-if (typeof _user$project$Animals_Msg$main !== 'undefined') {
-    _user$project$Animals_Msg$main(Elm['Animals']['Msg'], 'Animals.Msg', undefined);
+Elm['Animals']['Main'] = Elm['Animals']['Main'] || {};
+if (typeof _user$project$Animals_Main$main !== 'undefined') {
+    _user$project$Animals_Main$main(Elm['Animals']['Main'], 'Animals.Main', undefined);
 }
 
 if (typeof define === "function" && define['amd'])

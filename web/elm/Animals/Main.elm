@@ -123,31 +123,47 @@ update_ msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    MoreLikeThisAnimal id ->
-      model |> noCmd
-
     SwitchToReadOnlyAnimalView displayed format ->
       let
-        new = displayed |> noFlash |> displayedAnimal_format.set format
+        newAnimal = displayed |> noFlash |> displayedAnimal_format.set format
       in
-        model |> upsertAnimal new |> noCmd
+        model |> upsertAnimal newAnimal |> noCmd
 
     SwitchToEditView displayed ->
       let
-        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Editable
+        newAnimal = displayed |> noFlash |> displayedAnimal_format.set Animal.Editable
         form = Form.extractForm displayed.animal
       in
-        model |> upsertAnimal new |> noCmd
+        model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
 
-    -- CheckFormChange animal changedForm ->
-    --   let
-    --     form = checkForm animal changedForm model
-    --   in
-    --     (Animal.editable animal form |> recordAnimalManipulation model) ! []
+    CheckFormChange displayed changedForm ->
+      let
+        newAnimal = displayed |> noFlash
+        newForm = checkForm newAnimal changedForm model
+      in
+        model |> upsertAnimal newAnimal |> upsertForm newForm |> noCmd
 
-    -- StartSavingAnimalChanges displayedAnimal ->
+    CancelAnimalEdits displayed form ->
+      let
+        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
+      in
+        model |> upsertAnimal new |> deleteForm form |> noCmd
+    CancelAnimalCreation displayed form ->
+      model |> noCmd
+      -- let
+      --   new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
+      -- in
+      --   model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
+          
+    StartSavingAnimalEdits displayedAnimal form ->
+      model |> noCmd
     --   ( recordAnimalManipulation model displayedAnimal
     --   , OutsideWorld.saveAnimal displayedAnimal.animal
+    --   )
+    StartCreatingNewAnimal displayedAnimal form ->
+      model |> noCmd
+    --   ( recordAnimalManipulation model displayedAnimal
+    --   , OutsideWorld.createAnimal displayedAnimal.animal
     --   )
 
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
@@ -170,11 +186,6 @@ update_ msg model =
     NoticeAnimalSaveResults (Err e) ->
       model |> httpError "I could not save the animal." e |> noCmd
 
-    -- StartCreatingNewAnimal displayedAnimal ->
-    --   ( recordAnimalManipulation model displayedAnimal
-    --   , OutsideWorld.createAnimal displayedAnimal.animal
-    --   )
-
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
       model ! []
       -- let
@@ -195,15 +206,12 @@ update_ msg model =
       model |> httpError "I could not create the animal." e |> noCmd
 
 
-    CancelAnimalChanges displayed ->
-      let
-        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
-      in
-        model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
-
     AddNewAnimals count species ->
       model ! []
       -- addNewAnimals count species model ! []
+
+    MoreLikeThisAnimal id ->
+      model |> noCmd
 
     RemoveFlash displayedAnimal ->
       model ! []
@@ -233,8 +241,9 @@ update_ msg model =
 --   in
 --     addNext count model
         
--- checkForm animal form model =
---   Validation.validate (Validation.context model.animals animal) form 
+checkForm animal form model =
+  form
+--  Validation.validate (Validation.context model.animals animal) form 
 
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model
@@ -268,10 +277,18 @@ upsertAnimal displayedAnimal model =
   in
     model_animals.set newAnimals model
 
-deleteFormFor : Animal.DisplayedAnimal -> Model -> Model
-deleteFormFor displayed model =
+upsertForm : Animal.Form -> Model -> Model 
+upsertForm form model =
   let
-    key = displayedAnimal_id.get displayed
+    key = form_id.get form
+    newForms = Dict.insert key form model.forms
+  in
+    model_forms.set newForms model
+
+deleteForm : Animal.Form -> Model -> Model
+deleteForm form model =
+  let
+    key = form_id.get form
   in
     model_forms.update (Dict.remove key) model
   

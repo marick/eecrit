@@ -111,8 +111,7 @@ individualAnimalView model displayedAnimal =
       RW.editableView displayedAnimal
         (animalForm model displayedAnimal.animal)
         StartSavingAnimalEdits
-        StartSavingAnimalEdits
-        -- CancelAnimalEdits
+        CancelAnimalEdits
 
 animalForm model animal =
   Dict.get animal.id model.forms

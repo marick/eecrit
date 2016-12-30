@@ -16,7 +16,7 @@ import Animals.Animal.Flash as Flash
 import Animals.Animal.Form as Form
 import Animals.Animal.Lenses exposing (..)
 
-type alias MsgMaker = DisplayedAnimal -> Form -> Html Msg
+type alias MsgMaker = DisplayedAnimal -> Form -> Msg
 
 editableView : DisplayedAnimal -> Form -> MsgMaker -> MsgMaker -> Html Msg
 editableView displayed form makeSaveMsg makeCancelMsg =
@@ -30,9 +30,8 @@ editableView displayed form makeSaveMsg makeCancelMsg =
         --     <| Bulma.oneReasonablySizedControl
         --          (editableAnimalProperties form |> Bulma.propertyTable)
           
-        , Bulma.leftwardSave form.isValid (makeSaveMsg displayed form)
-        , Bulma.leftwardSave form.isValid (makeSaveMsg displayed form)
-        -- , Bulma.rightwardCancel (makeCancelMsg displayed form)
+        , saveButton displayed form makeSaveMsg
+        , cancelButton displayed form makeCancelMsg
         , Flash.showWithButton displayed.animalFlash (RemoveFlash displayed)
         ]
     , td [] []
@@ -42,6 +41,14 @@ editableView displayed form makeSaveMsg makeCancelMsg =
     
 
 -- Controls
+
+saveButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
+saveButton displayed form msgMaker =
+  Bulma.leftwardSave form.isValid (msgMaker displayed form)
+
+cancelButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
+cancelButton displayed form msgMaker =
+  Bulma.rightwardCancel (msgMaker displayed form)
 
 nameEditControl : DisplayedAnimal -> Form -> Html Msg    
 nameEditControl displayed form =

@@ -173,6 +173,9 @@ update_ msg model =
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
       model |> lookupAndDo id (recordSuccessfulSave version) |> noCmd 
 
+    -- TODO: Make this an animal flash instead of a page flash?
+    -- More noticeable, but only works if there's just one animal being
+    -- saved at a time. 
     NoticeAnimalSaveResults (Err e) ->
       model |> httpError "I could not save the animal." e |> noCmd
 

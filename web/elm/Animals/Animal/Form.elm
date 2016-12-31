@@ -17,15 +17,11 @@ import Animals.Animal.Constructors exposing (..)
 import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
 import Animals.Animal.Lenses exposing (..)
 
-freshValue : t -> FormValue t
-freshValue v =
-  FormValue Valid v []
-
 extractForm : Animal -> Form
 extractForm animal =
   { status = AllGood
   , id = animal.id
-  , name = freshValue animal.name
+  , name = Bulma.freshValue animal.name
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
@@ -35,7 +31,7 @@ extractForm animal =
 nullForm =
   { status = SomeBad
   , id = "impossible"
-  , name = freshValue "you should never see this"
+  , name = Bulma.freshValue "you should never see this"
   , tags = []
   , tentativeTag = ""
   , properties = Dict.empty
@@ -45,7 +41,7 @@ assumeValid : Form -> Form
 assumeValid form =
   { status = AllGood
   , id = form.id
-  , name = freshValue form.name.value
+  , name = Bulma.freshValue form.name.value
   , tags = form.tags
   , tentativeTag = form.tentativeTag
   , properties = form.properties
@@ -92,9 +88,3 @@ saveFlash form =
 --     msg (expanded newAnimal |> andFlash flash)
 
 
-textFieldEditHandler : DisplayedAnimal -> Form -> FormLens String -> (String -> Msg)
-textFieldEditHandler displayed form lens =
-  let
-    newStringToValidate string = lens.set (freshValue string) form
-  in
-    newStringToValidate >> CheckFormChange displayed

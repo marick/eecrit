@@ -25,6 +25,17 @@ type alias FormValue t =
   , commentary : List (Urgency, String)
   }
 
+freshValue : t -> FormValue t
+freshValue v =
+  FormValue Valid v []
+
+adjustClassForStatus : FormStatus -> String -> String
+adjustClassForStatus status classes =
+  if status == BeingSaved then
+    classes ++ " is-disabled"
+  else
+    classes
+      
 
 
 
@@ -114,14 +125,17 @@ falseIcon = coloredIcon "fa-times" "red"
 readOnlyTag tagText =
   span [ class "tag" ] [ text tagText ]
     
-deletableTag msg tagText =
-  p [ class "tag is-primary control" ]
-    [ text tagText
-    , button
-        [ class "delete"
-        , Events.onClick (msg tagText)
-        ] []
-    ]
+deletableTag status msg tagText =
+  if status == BeingSaved then
+    readOnlyTag tagText
+  else
+    p [ class "tag is-primary control" ]
+      [ text tagText
+      , button
+          [ class "delete"
+          , Events.onClick (msg tagText)
+          ] []
+      ]
     
 messageView headerList contentList  =
   article [class "message"]
@@ -210,11 +224,11 @@ oneTextInputInRow extraAttributes =
         []
     ]
 
-soleTextInputInRow fieldValue extraAttributes =
+soleTextInputInRow status fieldValue extraAttributes =
   let
     field =
       input
-        ([ class fieldClasses
+        ([ class <| adjustClassForStatus status fieldClasses
         , type_ "text"
         , value fieldValue.value
         ] ++ extraAttributes)
@@ -240,14 +254,17 @@ soleTextInputInRow fieldValue extraAttributes =
     oneReasonablySizedControl
       (p [ class paragraphClasses ] contents)
     
-textInputWithSubmit buttonLabel fieldValue inputMsg submitMsg =
+textInputWithSubmit status buttonLabel fieldValue inputMsg submitMsg =
   div [class "control has-addons"]
-    [ oneTextInputInRow
-        [ value fieldValue
-        , Events.onInput inputMsg
-        , onEnter submitMsg
+    [ p [class "control"]
+        [ input [ class <| adjustClassForStatus status "input"
+                , type_ "text"
+                , value fieldValue
+                , Events.onInput inputMsg
+                , onEnter submitMsg
+                ] []
         ]
-    , a [ class "button is-success"
+    , a [ class <| adjustClassForStatus status "button is-success"
         , onClickWithoutPropagation submitMsg
         ]
         [ text buttonLabel ]
@@ -285,10 +302,10 @@ leftwardSave status msg =
           ]
       ]
 
-rightwardCancel : msg -> Html msg
-rightwardCancel msg = 
+rightwardCancel : FormStatus -> msg -> Html msg
+rightwardCancel status msg =
   p []
-    [ a [ class "button is-danger pull-right"
+    [ a [ class <| adjustClassForStatus status "button is-danger pull-right"
         , onClickWithoutPropagation msg
         ]
         [ span [class "icon"] [i [class "fa fa-times"] []]

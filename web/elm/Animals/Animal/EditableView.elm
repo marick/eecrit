@@ -49,13 +49,18 @@ saveButton displayed form msgMaker =
 
 cancelButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
 cancelButton displayed form msgMaker =
-  Bulma.rightwardCancel (msgMaker displayed form)
+  Bulma.rightwardCancel form.status (msgMaker displayed form)
 
 nameEditControl : DisplayedAnimal -> Form -> Html Msg    
 nameEditControl displayed form =
-  Bulma.soleTextInputInRow
-    form.name
-    [ Events.onInput (Form.textFieldEditHandler displayed form form_name) ]
+  let
+    handleNewText string =
+      CheckFormChange displayed <| form_name.set (Bulma.freshValue string) form
+  in
+    Bulma.soleTextInputInRow
+      form.status
+      form.name
+      [ Events.onInput handleNewText ]
 
 deleteTagControl displayed form =
   let
@@ -63,7 +68,7 @@ deleteTagControl displayed form =
       CheckFormChange displayed (form_tags.update (List.remove name) form)
   in
     Bulma.horizontalControls 
-      (List.map (Bulma.deletableTag onDelete) form.tags)
+      (List.map (Bulma.deletableTag form.status onDelete) form.tags)
 
 
 newTagControl displayed form =
@@ -77,6 +82,7 @@ newTagControl displayed form =
       |> CheckFormChange displayed
   in
     Bulma.textInputWithSubmit
+      form.status
       "Add"
       form.tentativeTag
       onInput

@@ -4,7 +4,7 @@ module Animals.Animal.Types exposing
   )
 
 import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
-import Pile.Bulma exposing (FormValue)
+import Pile.Bulma exposing (FormValue, FormStatus)
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Set exposing (Set)
@@ -26,11 +26,6 @@ type alias Animal =
   , tags : List String
   , properties : Dict String DictValue
   }
-
-type FormStatus
-  = AllGood
-  | SomeBad
-  | BeingSaved
 
 type alias Form = 
   { id : Id

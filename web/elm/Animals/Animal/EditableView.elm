@@ -5,7 +5,8 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 
 import List.Extra as List
-import Pile.Bulma as Bulma exposing (FormValue, Urgency(..), Validity(..))
+import Pile.Bulma as Bulma exposing
+  (FormStatus(..), FormValue, Urgency(..), Validity(..))
 import Set
 
 import Animals.Animal.Types exposing (..)
@@ -44,7 +45,7 @@ editableView displayed form makeSaveMsg makeCancelMsg =
 
 saveButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
 saveButton displayed form msgMaker =
-  Bulma.leftwardSave (form.status == AllGood) (msgMaker displayed form)
+  Bulma.leftwardSave form.status (msgMaker displayed form)
 
 cancelButton : DisplayedAnimal -> Form -> MsgMaker -> Html Msg
 cancelButton displayed form msgMaker =

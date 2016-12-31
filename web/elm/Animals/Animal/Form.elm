@@ -7,7 +7,8 @@ import List.Extra as List
 import String
 import String.Extra as String
 
-import Pile.Bulma as Bulma exposing (FormValue, Urgency(..), Validity(..))
+import Pile.Bulma as Bulma exposing
+  (FormStatus(..), FormValue, Urgency(..), Validity(..))
 import Pile.HtmlShorthand exposing (..)
 
 import Animals.Msg exposing (..)

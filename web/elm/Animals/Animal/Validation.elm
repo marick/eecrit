@@ -3,7 +3,8 @@ module Animals.Animal.Validation exposing (..)
 import Dict exposing (Dict)
 import Set exposing (Set)
 import String
-import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
+import Pile.Bulma as Bulma exposing
+  (FormStatus(..), FormValue, Urgency(..), Validity(..))
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)

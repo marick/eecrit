@@ -11,6 +11,7 @@ defmodule Eecrit.AnimalApiController do
 
   def update(conn, %{"data" => animal}) do
     IO.puts (inspect animal)
+    # Process.sleep(10000)
     case Animals.update(animal) do
       {:ok, result} ->
         json conn, wrapper(result)

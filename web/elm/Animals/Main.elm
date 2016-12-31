@@ -14,7 +14,8 @@ import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Flash as AnimalFlash 
 import Animals.Animal.Validation as Validation
 
-import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
+import Pile.Bulma as Bulma exposing
+  (FormStatus(..), FormValue, Urgency(..), Validity(..))
 import Navigation
 import String
 import Set exposing (Set)
@@ -157,7 +158,7 @@ update_ msg model =
           
     StartSavingAnimalEdits displayed form ->
       let
-        newForm = form_status.set Animal.BeingSaved form
+        newForm = form_status.set BeingSaved form
         valuesToSave = Form.updateAnimal form displayed.animal
       in
       ( model |> upsertForm newForm

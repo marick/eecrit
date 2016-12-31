@@ -5,6 +5,12 @@ import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Html.Events as Events
 
+
+type FormStatus
+  = AllGood
+  | SomeBad
+  | BeingSaved
+
 type Urgency
   = Info 
   | Error
@@ -255,17 +261,21 @@ exampleSuccess =
     , text "Save"
     ]
 
-leftwardSave : Bool -> msg -> Html msg
-leftwardSave enabled msg =
+leftwardSave : FormStatus -> msg -> Html msg
+leftwardSave status msg =
   let
+    universalClasses = "button is-success pull-left"
     attributes =
-      case enabled of
-        True ->
-          [ class "button is-success pull-left"
+      case status of
+        AllGood ->
+          [ class universalClasses
           , onClickWithoutPropagation msg
           ]
-        False ->
-          [ class "button is-success pull-left is-disabled"
+        SomeBad ->
+          [ class <| universalClasses ++ " is-disabled"
+          ]
+        BeingSaved ->
+          [ class <| universalClasses ++ " is-loading"
           ]
   in
     p []

@@ -40,14 +40,15 @@ nullForm =
   , properties = Dict.empty
   }
 
--- assumeValid : Form -> Form 
--- assumeValid form =
---   { isValid = True
---   , name = freshValue form.name.value
---   , tags = form.tags
---   , tentativeTag = form.tentativeTag
---   , properties = form.properties
---   }
+assumeValid : Form -> Form 
+assumeValid form =
+  { status = AllGood
+  , id = form.id
+  , name = freshValue form.name.value
+  , tags = form.tags
+  , tentativeTag = form.tentativeTag
+  , properties = form.properties
+  }
       
 
   

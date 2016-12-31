@@ -12,7 +12,7 @@ import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page
 import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Flash as AnimalFlash 
--- import Animals.Animal.Validation as Validation
+import Animals.Animal.Validation as Validation
 
 import Pile.Bulma exposing (FormValue, Urgency(..), Validity(..))
 import Navigation
@@ -139,7 +139,7 @@ update_ msg model =
     CheckFormChange displayed changedForm ->
       let
         newAnimal = displayed |> noFlash
-        newForm = checkForm newAnimal changedForm model
+        newForm = checkForm newAnimal.animal changedForm model
       in
         model |> upsertAnimal newAnimal |> upsertForm newForm |> noCmd
 
@@ -251,8 +251,7 @@ recordSuccessfulSave version model displayed form =
 --     addNext count model
         
 checkForm animal form model =
-  form
---  Validation.validate (Validation.context model.animals animal) form 
+  Validation.validate (Validation.context model.animals animal) form 
 
 -- deleteDisplayedAnimalById model id  =
 --   model_animals.update (Aggregate.deleteById id) model

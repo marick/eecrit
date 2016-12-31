@@ -40,7 +40,7 @@ httpError contextString err =
             [ text "The server did not respond. Try again later?" ]
                 
           Http.NetworkError ->
-            [ text "The network seems unavailable." ]
+            [ text "The problem was that I could not reach critter4us.com. My best guess is there's a problem with your connection to the internet." ]
                     
           Http.BadStatus {status} ->
             [ text "The server declared that it could not respond."

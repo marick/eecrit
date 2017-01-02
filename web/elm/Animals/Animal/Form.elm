@@ -71,20 +71,3 @@ saveFlash form =
   case String.isEmpty form.tentativeTag of
     True -> AnimalFlash.NoFlash
     False -> AnimalFlash.SavedIncompleteTag form.tentativeTag
-
-
--- checkEditMsg : Animal -> Form -> Msg
--- checkEditMsg animal form =
---   CheckFormChange animal form
-
--- applyEditsMsg : Animal -> Form -> Msg        
--- applyEditsMsg animal form =
---   let
---     (newAnimal, flash) = applyEditsToAnimal animal form
---     msg = case newAnimal.wasEverSaved of
---               True -> StartSavingAnimalChanges
---               False -> StartCreatingNewAnimal
---   in
---     msg (expanded newAnimal |> andFlash flash)
-
-

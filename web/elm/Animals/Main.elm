@@ -124,12 +124,6 @@ update_ msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    SwitchToReadOnlyAnimalView displayed format ->
-      let
-        newAnimal = displayed |> noFlash |> displayedAnimal_format.set format
-      in
-        model |> upsertAnimal newAnimal |> noCmd
-
     SwitchToEditView displayed ->
       let
         newAnimal = displayed |> noFlash |> displayedAnimal_format.set Animal.Editable
@@ -209,7 +203,7 @@ update_ msg model =
     NoOp ->
       model ! []
 
-    AnimalOp displayedAnimal op ->
+    WithAnimal displayedAnimal op ->
       animalOp op displayedAnimal model
 
 animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)
@@ -221,6 +215,13 @@ animalOp_ op displayed model =
     RemoveFlash ->
       model |> upsertAnimal displayed |> noCmd  -- flash removal happens automatically
 
+    SwitchToReadOnly format ->
+      let
+        newAnimal = displayedAnimal_format.set format displayed
+      in
+        model |> upsertAnimal newAnimal |> noCmd
+
+               
 lookupAndDo id f model =
   let
     get field = model |> field |> Dict.get id

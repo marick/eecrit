@@ -7,9 +7,10 @@ import Date exposing (Date)
 import Navigation
 import Http
 
--- A subtype of Msg. Always used as `AnimalOp <displayedAnimal> <submsg>`
+-- A subtype of Msg. Always used as `WithAnimal <displayedAnimal> <submsg>`
 type AnimalOperation
   = RemoveFlash
+  | SwitchToReadOnly Animal.Format
 
 type Msg
   = NoticePageChange Navigation.Location
@@ -25,7 +26,6 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | SwitchToReadOnlyAnimalView Animal.DisplayedAnimal Animal.Format
   | SwitchToEditView Animal.DisplayedAnimal
 
   | CheckFormChange Animal.DisplayedAnimal Animal.Form 
@@ -43,6 +43,6 @@ type Msg
 
   | MoreLikeThisAnimal Animal.DisplayedAnimal
 
-  | AnimalOp Animal.DisplayedAnimal AnimalOperation
+  | WithAnimal Animal.DisplayedAnimal AnimalOperation
   | NoOp
 

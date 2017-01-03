@@ -1,4 +1,4 @@
-module Animals.Msg exposing (Msg(..))
+module Animals.Msg exposing (..)
 
 import Animals.Pages.Declare exposing (PageChoice)
 import Animals.OutsideWorld.Declare as OutsideWorld
@@ -6,6 +6,10 @@ import Animals.Animal.Types as Animal exposing (Animal)
 import Date exposing (Date)
 import Navigation
 import Http
+
+-- A subtype of Msg. Always used as `AnimalOp <displayedAnimal> <submsg>`
+type AnimalOperation
+  = RemoveFlash
 
 type Msg
   = NoticePageChange Navigation.Location
@@ -39,7 +43,6 @@ type Msg
 
   | MoreLikeThisAnimal Animal.DisplayedAnimal
 
-  | RemoveFlash Animal.DisplayedAnimal
-
+  | AnimalOp Animal.DisplayedAnimal AnimalOperation
   | NoOp
 

@@ -33,7 +33,7 @@ editableView displayed form makeSaveMsg makeCancelMsg =
           
         , saveButton displayed form makeSaveMsg
         , cancelButton displayed form makeCancelMsg
-        , Flash.showWithButton displayed.animalFlash (RemoveFlash displayed)
+        , Flash.showWithButton displayed.animalFlash (AnimalOp displayed RemoveFlash)
         ]
     , td [] []
     , td [] []

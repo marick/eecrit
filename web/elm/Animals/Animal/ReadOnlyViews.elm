@@ -29,7 +29,7 @@ compactView displayedAnimal =
     tr []
       [ (td []
            [ p [] ( animalSalutation animal  :: animalTags animal)
-           , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
+           , AnimalFlash.showWithButton flash (AnimalOp displayedAnimal RemoveFlash)
            ])
       , Icon.expand displayedAnimal Bulma.tdIcon
       , Icon.edit displayedAnimal Bulma.tdIcon
@@ -47,7 +47,7 @@ expandedView displayedAnimal =
           [ p [] [ animalSalutation animal ]
           , p [] (animalTags animal)
           , animalProperties animal |> Bulma.propertyTable
-          , AnimalFlash.showWithButton flash (RemoveFlash displayedAnimal)
+          , AnimalFlash.showWithButton flash (AnimalOp displayedAnimal RemoveFlash)
           ]
       , Icon.contract displayedAnimal Bulma.tdIcon
       , Icon.edit displayedAnimal Bulma.tdIcon

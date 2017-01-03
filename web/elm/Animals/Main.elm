@@ -206,12 +206,20 @@ update_ msg model =
     MoreLikeThisAnimal id ->
       model |> noCmd
 
-    RemoveFlash displayed ->
-      model |> upsertAnimal (displayed |> noFlash) |> noCmd
-        
     NoOp ->
       model ! []
 
+    AnimalOp displayedAnimal op ->
+      animalOp op displayedAnimal model
+
+animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)
+animalOp op displayed model =
+  animalOp_ op (noFlash displayed) model
+
+animalOp_ op displayed model = 
+  case op of
+    RemoveFlash ->
+      model |> upsertAnimal displayed |> noCmd  -- flash removal happens automatically
 
 lookupAndDo id f model =
   let

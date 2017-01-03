@@ -11,6 +11,10 @@ import Http
 type AnimalOperation
   = RemoveFlash
   | SwitchToReadOnly Animal.Format
+  | StartEditing
+  | MoreLikeThis
+
+
 
 type Msg
   = NoticePageChange Navigation.Location
@@ -26,8 +30,6 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | SwitchToEditView Animal.DisplayedAnimal
-
   | CheckFormChange Animal.DisplayedAnimal Animal.Form 
     
   | CancelAnimalEdits Animal.DisplayedAnimal Animal.Form
@@ -40,8 +42,6 @@ type Msg
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
 
   | AddNewAnimals Int String
-
-  | MoreLikeThisAnimal Animal.DisplayedAnimal
 
   | WithAnimal Animal.DisplayedAnimal AnimalOperation
   | NoOp

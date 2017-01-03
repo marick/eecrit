@@ -124,13 +124,6 @@ update_ msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    SwitchToEditView displayed ->
-      let
-        newAnimal = displayed |> noFlash |> displayedAnimal_format.set Animal.Editable
-        form = Form.extractForm displayed.animal
-      in
-        model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
-
     CheckFormChange displayed changedForm ->
       let
         newAnimal = displayed |> noFlash
@@ -197,9 +190,6 @@ update_ msg model =
       model ! []
       -- addNewAnimals count species model ! []
 
-    MoreLikeThisAnimal id ->
-      model |> noCmd
-
     NoOp ->
       model ! []
 
@@ -220,6 +210,16 @@ animalOp_ op displayed model =
         newAnimal = displayedAnimal_format.set format displayed
       in
         model |> upsertAnimal newAnimal |> noCmd
+
+    StartEditing  ->
+      let
+        newAnimal = displayed |> displayedAnimal_format.set Animal.Editable
+        form = Form.extractForm displayed.animal
+      in
+        model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
+
+    MoreLikeThis ->
+      model |> noCmd
 
                
 lookupAndDo id f model =

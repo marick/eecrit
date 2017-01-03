@@ -21,15 +21,15 @@ contract displayed iconType =
     "Contract: show less about this animal"
     (WithAnimal displayed <| SwitchToReadOnly Compact)
       
-edit animal iconType =
+edit displayed iconType =
   iconType "fa-pencil"
     "Edit: make changes to this animal"
-    (SwitchToEditView animal)
+    (WithAnimal displayed StartEditing)
       
 moreLikeThis animal iconType =
   iconType "fa-plus"
     "Copy: make more animals like this one"
-    (MoreLikeThisAnimal animal)
+    (WithAnimal animal MoreLikeThis)
 
 editHelp iconType = 
   iconType "fa-question-circle" "Help on editing" NoOp    

@@ -131,11 +131,6 @@ update_ msg model =
       in
         model |> upsertAnimal newAnimal |> upsertForm newForm |> noCmd
 
-    CancelAnimalEdits displayed form ->
-      let
-        new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
-      in
-        model |> upsertAnimal new |> deleteForm form |> noCmd
     CancelAnimalCreation displayed form ->
       model |> noCmd
       -- let
@@ -143,14 +138,6 @@ update_ msg model =
       -- in
       --   model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
           
-    StartSavingAnimalEdits displayed form ->
-      let
-        newForm = form_status.set BeingSaved form
-        valuesToSave = Form.updateAnimal form displayed.animal
-      in
-      ( model |> upsertForm newForm
-      , OutsideWorld.saveAnimal valuesToSave
-      )
     StartCreatingNewAnimal displayed form ->
       model |> noCmd
     --   ( recordAnimalManipulation model displayed
@@ -190,20 +177,24 @@ update_ msg model =
       model ! []
       -- addNewAnimals count species model ! []
 
+    WithAnimal displayed op ->
+      animalOp op model (noFlash displayed)
+
+    WithForm form op ->
+      case Dict.get form.id model.animals of
+        Nothing ->
+          model |> noCmd -- Todo: a command to log the error
+        Just displayed -> 
+          formOp op model form (noFlash displayed)
+
     NoOp ->
       model ! []
 
-    WithAnimal displayedAnimal op ->
-      animalOp op displayedAnimal model
-
-animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)
-animalOp op displayed model =
-  animalOp_ op (noFlash displayed) model
-
-animalOp_ op displayed model = 
+animalOp : AnimalOperation -> Model -> Animal.DisplayedAnimal -> (Model, Cmd Msg)
+animalOp op model displayed = 
   case op of
     RemoveFlash ->
-      model |> upsertAnimal displayed |> noCmd  -- flash removal happens automatically
+      model |> upsertAnimal displayed |> noCmd
 
     SwitchToReadOnly format ->
       let
@@ -219,9 +210,31 @@ animalOp_ op displayed model =
         model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
 
     MoreLikeThis ->
-      model |> noCmd
+      model |> noCmd -- TODO
 
-               
+formOp : FormOperation -> Model -> Animal.Form -> Animal.DisplayedAnimal
+       -> (Model, Cmd Msg)
+formOp op model form displayed =
+  case op of 
+    CancelEdits ->
+      let
+        new = displayed |> displayedAnimal_format.set Animal.Expanded
+      in
+        model |> upsertAnimal new |> deleteForm form |> noCmd
+    StartSavingEdits ->
+      let
+        newForm = form_status.set BeingSaved form
+        valuesToSave = Form.updateAnimal form displayed.animal
+      in
+      ( model |> upsertForm newForm
+      , OutsideWorld.saveAnimal valuesToSave
+      )
+
+
+-----------------------          
+
+
+          
 lookupAndDo id f model =
   let
     get field = model |> field |> Dict.get id

@@ -108,10 +108,13 @@ individualAnimalView model displayedAnimal =
     Expanded ->
       RO.expandedView displayedAnimal
     Editable ->
-      RW.editableView displayedAnimal
-        (animalForm model displayedAnimal.animal)
-        StartSavingAnimalEdits
-        CancelAnimalEdits
+      let
+        -- Todo: animalForm currently produces an empty form for the
+        -- "impossible" case of no form corresponding to the being-edited
+        -- animal. Replace that with an an error message.
+        form = animalForm model displayedAnimal.animal
+      in
+        RW.editableView displayedAnimal form (StartSavingEdits, CancelEdits)
 
 animalForm model animal =
   Dict.get animal.id model.forms

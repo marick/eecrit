@@ -14,6 +14,9 @@ type AnimalOperation
   | StartEditing
   | MoreLikeThis
 
+type FormOperation
+  = CancelEdits
+  | StartSavingEdits
 
 
 type Msg
@@ -32,10 +35,8 @@ type Msg
 
   | CheckFormChange Animal.DisplayedAnimal Animal.Form 
     
-  | CancelAnimalEdits Animal.DisplayedAnimal Animal.Form
   | CancelAnimalCreation Animal.DisplayedAnimal Animal.Form
     
-  | StartSavingAnimalEdits Animal.DisplayedAnimal Animal.Form
   | StartCreatingNewAnimal Animal.DisplayedAnimal Animal.Form
 
   | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
@@ -44,5 +45,6 @@ type Msg
   | AddNewAnimals Int String
 
   | WithAnimal Animal.DisplayedAnimal AnimalOperation
+  | WithForm Animal.Form FormOperation
   | NoOp
 

@@ -8,7 +8,8 @@ import Set
 import String
 import String.Extra as String
 
-import Pile.Bulma as Bulma 
+import Pile.Bulma as Bulma
+import Pile.Namelike as Namelike
 import Pile.Calendar as Calendar
 import Pile.HtmlShorthand exposing (..)
 
@@ -66,26 +67,19 @@ allPageAnimals model =
 
 applyFilters model animals = 
   let
-    hasWanted modelFilter animalValue =
-      let 
-        wanted = model |> modelFilter |> String.toLower
-        has = animalValue |> String.toLower
-      in
-        String.startsWith wanted has
-
     rightSpecies displayed =
-      hasWanted .speciesFilter displayed.animal.species
+      Namelike.isPrefix model.speciesFilter displayed.animal.species
 
     rightName displayed =
-      hasWanted .nameFilter displayed.animal.name
+      Namelike.isPrefix model.nameFilter displayed.animal.name
 
     rightTag displayed =
-      String.isEmpty model.tagFilter || 
-        List.any (hasWanted .tagFilter) displayed.animal.tags
+      Namelike.isBlank model.tagFilter || 
+        List.any (Namelike.isPrefix model.tagFilter) displayed.animal.tags
   in
     animals
       |> List.filter (aggregateFilter [rightSpecies, rightName, rightTag])
-      |> humanSorted
+      |> Namelike.sortByName displayedAnimal_name.get
 
 
 aggregateFilter preds animal =
@@ -98,9 +92,6 @@ aggregateFilter preds animal =
       else
         False
          
-humanSorted animals = 
-  List.sortBy (.animal >> .name >> String.toLower) animals
-
 individualAnimalView model displayedAnimal =
   case displayedAnimal.format of
     Compact ->

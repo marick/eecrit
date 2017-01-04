@@ -87,7 +87,7 @@ boolExplanation b explanation =
 
 
 animalSalutation animal =
-  text <| (String.toSentenceCase animal.name) ++ (parentheticalSpecies animal)
+  text <| animal.name ++ (parentheticalSpecies animal)
 
 animalTags animal =
   List.map Bulma.readOnlyTag animal.tags

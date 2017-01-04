@@ -5,7 +5,7 @@ import Html exposing (..)
 import List
 import List.Extra as List
 import String
-import String.Extra as String
+import Pile.Namelike as Namelike
 
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
@@ -52,22 +52,15 @@ assumeValid form =
   
 -- -- Constructing Messages and other Important Actions
 
-updateAnimal : Form -> Animal -> Animal
-updateAnimal form animal =
-  let
-    tags =
-      case String.isEmpty form.tentativeTag of
-        True -> form.tags
-        False -> List.append form.tags [form.tentativeTag]
-  in
-    animal 
-      |> animal_name.set form.name.value
-      |> animal_properties.set form.properties -- Currently not edited
-      |> animal_tags.set tags
-
+appliedForm : Form -> Animal -> Animal
+appliedForm form animal =
+  animal 
+    |> animal_name.set form.name.value
+    |> animal_properties.set form.properties -- Currently not edited
+    |> animal_tags.set (Namelike.perhapsAdd form.tentativeTag form.tags)
 
 saveFlash : Form -> AnimalFlash
-saveFlash form =             
-  case String.isEmpty form.tentativeTag of
-    True -> AnimalFlash.NoFlash
-    False -> AnimalFlash.SavedIncompleteTag form.tentativeTag
+saveFlash form =
+  case Namelike.isValidAddition form.tentativeTag form.tags of
+    True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
+    False -> AnimalFlash.NoFlash

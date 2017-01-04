@@ -48,6 +48,6 @@ type alias DisplayedAnimal =
   }
 
 type alias ValidationContext =
-  { disallowedNames : Set String
+  { disallowedNames : List String
   }
 

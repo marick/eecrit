@@ -236,7 +236,7 @@ formOp op form displayed model =
     StartSavingEdits ->
       let
         newForm = form_status.set BeingSaved form
-        valuesToSave = Form.updateAnimal form displayed.animal
+        valuesToSave = Form.appliedForm form displayed.animal
       in
       ( model |> upsertForm newForm
       , OutsideWorld.saveAnimal valuesToSave
@@ -252,16 +252,9 @@ formOp op form displayed model =
 
     CreateNewTag ->
       let
-        candidate = String.clean form.tentativeTag
-        addTagIfWorthy form = 
-          if String.isEmpty candidate then
-            form
-          else
-            form_tags.set (List.append form.tags [candidate]) form
-              
         newForm =
           form 
-            |> addTagIfWorthy
+            |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
             |> form_tentativeTag.set ""
       in
         model |> upsertForm newForm |> noCmd
@@ -281,14 +274,14 @@ lookupAndDo id f model =
 recordSuccessfulSave version model displayed form =
   let
     animal =
-      displayed.animal |> Form.updateAnimal form |> animal_version.set version
+      displayed.animal |> Form.appliedForm form |> animal_version.set version
     newDisplayed =
       { animal = animal
       , format = Animal.Expanded
       , animalFlash = Form.saveFlash form
       }
   in
-    model |> upsertAnimal (Debug.log "newDisplayed" newDisplayed) |> deleteForm form
+    model |> upsertAnimal newDisplayed |> deleteForm form
   
 
 -- addNewAnimals count species model =

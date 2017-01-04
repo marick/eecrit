@@ -6,7 +6,6 @@ import Animals.OutsideWorld.Define as OutsideWorld
 import Animals.Animal.Types as Animal
 import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
--- import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form 
 import Animals.Pages.Declare as Page
 import Animals.Pages.Define as Page

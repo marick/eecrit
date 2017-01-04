@@ -8,12 +8,20 @@ import Pile.Bulma as Bulma exposing
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
-import Animals.Animal.Aggregates as Aggregate
 import Animals.Animal.Form as Form
 
-context : Aggregate.VisibleAggregate -> Animal -> ValidationContext 
+
+animalNames : Dict Id DisplayedAnimal -> Set String
+animalNames animals =
+  animals
+    |> Dict.values
+    |> List.map displayedAnimal_name.get
+    |> Set.fromList
+
+
+context : Dict Id DisplayedAnimal -> Animal -> ValidationContext 
 context animals changingAnimal  =
-  { disallowedNames = Aggregate.animalNames animals |> Set.remove changingAnimal.name
+  { disallowedNames = animalNames animals |> Set.remove changingAnimal.name
   }
 
 validate : ValidationContext -> Form -> Form

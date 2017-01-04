@@ -61,11 +61,7 @@ newTagControl displayed form =
   let
     onInput value =
       CheckFormChange displayed (form_tentativeTag.set value form)
-    onSubmit =
-      form
-      |> form_tags.set (List.append form.tags [form.tentativeTag])
-      |> form_tentativeTag.set ""
-      |> CheckFormChange displayed
+    onSubmit = WithForm form CreateNewTag 
   in
     Bulma.textInputWithSubmit
       form.status

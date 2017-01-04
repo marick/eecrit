@@ -18,6 +18,7 @@ type FormOperation
   = CancelEdits
   | StartSavingEdits
   | NameFieldUpdate String
+  | CreateNewTag
 
 
 type Msg

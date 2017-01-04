@@ -17,6 +17,7 @@ import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
 import Navigation
 import String
+import String.Extra as String
 import Set exposing (Set)
 import List
 import Dict exposing (Dict)
@@ -248,6 +249,23 @@ formOp op form displayed model =
             |> Validation.validate (Validation.context model.animals displayed.animal)
       in
         model |> upsertForm newForm |> noCmd
+
+    CreateNewTag ->
+      let
+        candidate = String.clean form.tentativeTag
+        addTagIfWorthy form = 
+          if String.isEmpty candidate then
+            form
+          else
+            form_tags.set (List.append form.tags [candidate]) form
+              
+        newForm =
+          form 
+            |> addTagIfWorthy
+            |> form_tentativeTag.set ""
+      in
+        model |> upsertForm newForm |> noCmd
+
 
 -----------------------          
 

@@ -47,10 +47,10 @@ validator errorMessage lens pred form =
   in
     case pred formValue.value of
       True -> 
-        form
-      False ->
         lens.set (invalidate formValue errorMessage) form
           |> form_status.set SomeBad
+      False ->
+        form
 
 invalidate : FormValue t -> String -> FormValue t
 invalidate formValue msg =

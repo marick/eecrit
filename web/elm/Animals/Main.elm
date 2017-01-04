@@ -23,6 +23,7 @@ import List
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.Calendar exposing (EffectiveDate(..))
+import Pile.Namelike as Namelike
 import Pile.UpdatingLens exposing (lens)
 
 -- Model and Init
@@ -199,7 +200,7 @@ applyAfterRemovingFlash f displayed model =
     newAnimal = noFlash displayed
     newModel = upsertAnimal newAnimal model
   in
-    f displayed model
+    f newAnimal newModel
   
         
 animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)

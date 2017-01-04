@@ -18,7 +18,9 @@ type FormOperation
   = CancelEdits
   | StartSavingEdits
   | NameFieldUpdate String
+  | TentativeTagUpdate String
   | CreateNewTag
+  | DeleteTag String 
 
 
 type Msg
@@ -35,8 +37,6 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | CheckFormChange Animal.DisplayedAnimal Animal.Form 
-    
   | CancelAnimalCreation Animal.DisplayedAnimal Animal.Form
     
   | StartCreatingNewAnimal Animal.DisplayedAnimal Animal.Form

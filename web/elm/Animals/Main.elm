@@ -20,6 +20,7 @@ import String
 import String.Extra as String
 import Set exposing (Set)
 import List
+import List.Extra as List
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.Calendar exposing (EffectiveDate(..))
@@ -124,13 +125,6 @@ update_ msg model =
       model |> model_tagFilter.set s |> noCmd
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
-
-    CheckFormChange displayed changedForm ->
-      let
-        newAnimal = displayed |> noFlash
-        newForm = checkForm newAnimal.animal changedForm model
-      in
-        model |> upsertAnimal newAnimal |> upsertForm newForm |> noCmd
 
     CancelAnimalCreation displayed form ->
       model |> noCmd
@@ -251,6 +245,12 @@ formOp op form displayed model =
       in
         model |> upsertForm newForm |> noCmd
 
+    TentativeTagUpdate s ->
+      let
+        newForm = form_tentativeTag.set s form
+      in
+        model |> upsertForm newForm |> noCmd
+
     CreateNewTag ->
       let
         newForm =
@@ -260,6 +260,11 @@ formOp op form displayed model =
       in
         model |> upsertForm newForm |> noCmd
 
+    DeleteTag name ->
+      let
+        newForm = form_tags.update (List.remove name) form
+      in
+        model |> upsertForm newForm |> noCmd
 
 -----------------------          
 

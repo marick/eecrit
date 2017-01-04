@@ -4,7 +4,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
 
-import List.Extra as List
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
 import Set
@@ -50,8 +49,7 @@ nameEditControl displayed form =
 
 deleteTagControl displayed form =
   let
-    onDelete name =
-      CheckFormChange displayed (form_tags.update (List.remove name) form)
+    onDelete name = WithForm form (DeleteTag name)
   in
     Bulma.horizontalControls 
       (List.map (Bulma.deletableTag form.status onDelete) form.tags)
@@ -59,8 +57,7 @@ deleteTagControl displayed form =
 
 newTagControl displayed form =
   let
-    onInput value =
-      CheckFormChange displayed (form_tentativeTag.set value form)
+    onInput = WithForm form << TentativeTagUpdate
     onSubmit = WithForm form CreateNewTag 
   in
     Bulma.textInputWithSubmit

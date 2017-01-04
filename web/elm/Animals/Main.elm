@@ -178,20 +178,32 @@ update_ msg model =
       -- addNewAnimals count species model ! []
 
     WithAnimal displayed op ->
-      animalOp op model (noFlash displayed)
+        applyAfterRemovingFlash (animalOp op) displayed model
 
     WithForm form op ->
       case Dict.get form.id model.animals of
         Nothing ->
           model |> noCmd -- Todo: a command to log the error
-        Just displayed -> 
-          formOp op model form (noFlash displayed)
+        Just displayed ->
+          applyAfterRemovingFlash (formOp op form) displayed model 
 
     NoOp ->
       model ! []
 
-animalOp : AnimalOperation -> Model -> Animal.DisplayedAnimal -> (Model, Cmd Msg)
-animalOp op model displayed = 
+
+-- Add some inefficiency to make sure that flashes are always removed.
+-- (Inefficiency: many ops will change the displayed animal, so the `upsert`
+-- is duplicative.)
+applyAfterRemovingFlash f displayed model =
+  let
+    newAnimal = noFlash displayed
+    newModel = upsertAnimal newAnimal model
+  in
+    f displayed model
+  
+        
+animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)
+animalOp op displayed model = 
   case op of
     RemoveFlash ->
       model |> upsertAnimal displayed |> noCmd
@@ -212,9 +224,9 @@ animalOp op model displayed =
     MoreLikeThis ->
       model |> noCmd -- TODO
 
-formOp : FormOperation -> Model -> Animal.Form -> Animal.DisplayedAnimal
+formOp : FormOperation -> Animal.Form -> Animal.DisplayedAnimal -> Model
        -> (Model, Cmd Msg)
-formOp op model form displayed =
+formOp op form displayed model =
   case op of 
     CancelEdits ->
       let

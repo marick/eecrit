@@ -1,27 +1,26 @@
 module Animals.Animal.Validation exposing (..)
 
 import Dict exposing (Dict)
-import Set exposing (Set)
 import String
+import List.Extra as List
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
-
+import Pile.Namelike as Namelike 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form
 
 
-animalNames : Dict Id DisplayedAnimal -> Set String
+animalNames : Dict Id DisplayedAnimal -> List String
 animalNames animals =
   animals
     |> Dict.values
     |> List.map displayedAnimal_name.get
-    |> Set.fromList
 
 
 context : Dict Id DisplayedAnimal -> Animal -> ValidationContext 
 context animals changingAnimal  =
-  { disallowedNames = animalNames animals |> Set.remove changingAnimal.name
+  { disallowedNames = animalNames animals |> List.remove changingAnimal.name
   }
 
 validate : ValidationContext -> Form -> Form
@@ -35,9 +34,9 @@ validateName : ValidationContext -> Form -> Form
 validateName context form =
   form 
     |> validator "The animal has to have a name!" form_name 
-       (not << String.isEmpty)
-    |> validator "There is already an animal with that name!" form_name 
-       (not << (flip Set.member) context.disallowedNames)
+       Namelike.isBlank
+    |> validator "There is already an animal with that name!" form_name
+       (flip Namelike.isMember <| context.disallowedNames)
           
 -- Helpers
          

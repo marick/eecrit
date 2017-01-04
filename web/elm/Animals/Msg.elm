@@ -17,6 +17,7 @@ type AnimalOperation
 type FormOperation
   = CancelEdits
   | StartSavingEdits
+  | NameFieldUpdate String
 
 
 type Msg

@@ -230,9 +230,9 @@ formOp op form displayed model =
   case op of 
     CancelEdits ->
       let
-        new = displayed |> displayedAnimal_format.set Animal.Expanded
+        newDisplayed = displayed |> displayedAnimal_format.set Animal.Expanded
       in
-        model |> upsertAnimal new |> deleteForm form |> noCmd
+        model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
     StartSavingEdits ->
       let
         newForm = form_status.set BeingSaved form
@@ -241,7 +241,14 @@ formOp op form displayed model =
       ( model |> upsertForm newForm
       , OutsideWorld.saveAnimal valuesToSave
       )
-
+    NameFieldUpdate s ->
+      let
+        newForm =
+          form
+            |> form_name.set (Bulma.freshValue s)
+            |> Validation.validate (Validation.context model.animals displayed.animal)
+      in
+        model |> upsertForm newForm |> noCmd
 
 -----------------------          
 

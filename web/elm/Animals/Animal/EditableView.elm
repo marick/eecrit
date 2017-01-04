@@ -41,16 +41,12 @@ editableView displayed form (saveOp, cancelOp) =
 
 -- Controls
 
-nameEditControl : DisplayedAnimal -> Form -> Html Msg    
+nameEditControl : DisplayedAnimal -> Form -> Html Msg
 nameEditControl displayed form =
-  let
-    handleNewText string =
-      CheckFormChange displayed <| form_name.set (Bulma.freshValue string) form
-  in
-    Bulma.soleTextInputInRow
-      form.status
-      form.name
-      [ Events.onInput handleNewText ]
+  Bulma.soleTextInputInRow
+    form.status
+    form.name
+    [ Events.onInput (WithForm form << NameFieldUpdate) ]
 
 deleteTagControl displayed form =
   let

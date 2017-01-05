@@ -9,6 +9,7 @@ import Animals.Animal.Types exposing (Form)
 type alias FormLens field = UpdatingLens Form (FormValue field)
 
 animal_id = lens .id (\ p w -> { w | id = p })
+animal_species = lens .species (\ p w -> { w | species = p })
 animal_version = lens .version (\ p w -> { w | version = p })
 animal_name = lens .name (\ p w -> { w | name = p })
 animal_tags = lens .tags (\ p w -> { w | tags = p })

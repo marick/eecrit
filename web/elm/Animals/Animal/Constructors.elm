@@ -16,13 +16,3 @@ andFlash flash animal =
 
 noFlash : DisplayedAnimal -> DisplayedAnimal
 noFlash = andFlash NoFlash
-    
-fresh : String -> Id -> Animal    
-fresh species id =
-  { id = id
-  , version = 0
-  , name = ""
-  , species = species
-  , tags = []
-  , properties = Dict.empty
-  }

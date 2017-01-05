@@ -50,6 +50,9 @@ type alias Model =
 
   -- AddPage
   , addPageAnimals : Set Animal.Id
+  , animalsEverAdded : Int -- This is dumb, but probably easiest way to add a
+                           --  a guaranteed-unique id in the absence of reliable
+                           --  UUIDs. (I don't trust only 32 bits, which is paranoid.)
   }
 
 model_page = lens .page (\ p w -> { w | page = p })
@@ -57,6 +60,7 @@ model_today = lens .today (\ p w -> { w | today = p })
 model_animals = lens .animals (\ p w -> { w | animals = p })
 model_allPageAnimals = lens .allPageAnimals (\ p w -> { w | allPageAnimals = p })
 model_addPageAnimals = lens .addPageAnimals (\ p w -> { w | addPageAnimals = p })
+model_animalsEverAdded = lens .animalsEverAdded (\ p w -> { w | animalsEverAdded = p })
 model_forms = lens .forms (\ p w -> { w | forms = p })
 model_tagFilter = lens .tagFilter (\ p w -> { w | tagFilter = p })
 model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
@@ -88,6 +92,7 @@ init flags location =
 
       -- Add Animals Page
       , addPageAnimals = Set.empty
+      , animalsEverAdded = 0
       }
   in
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
@@ -167,11 +172,20 @@ update_ msg model =
     NoticeAnimalCreationResults (Err e) ->
       model |> httpError "I could not create the animal." e |> noCmd
 
-
     AddNewAnimals count species ->
-      model ! []
-      -- addNewAnimals count species model ! []
-
+      let
+        -- TODO: create an AlmostAnimal type instead of "this id MUST..."
+        template =
+          { id = "This id MUST be replaced"
+          , version = 0
+          , name = ""
+          , species = species
+          , tags = []
+          , properties = Dict.empty
+          }
+      in
+        model |> addAnimalsLikeThis count template |> noCmd
+          
     WithAnimal displayed op ->
         applyAfterRemovingFlash (animalOp op) displayed model
 
@@ -288,50 +302,58 @@ recordSuccessfulSave version model displayed form =
       }
   in
     model |> upsertAnimal newDisplayed |> deleteForm form
-  
 
--- addNewAnimals count species model =
---   let
---     -- This is an enormous kludge due to need to generate unique ids, given
---     -- that I don't trust only 32 bits of non-collision.
---     -- It's also grossly inefficient.
---     addNext remainder modelSoFar =
---       if remainder == 0 then
---         modelSoFar
---       else
---         let
---           safeId = Aggregate.freshId modelSoFar.animals
---           animal = Animal.fresh species safeId
---           context = Validation.context modelSoFar.animals animal
---           form = Form.extractForm animal |> Validation.validate context
---         in
---           Animal.empty animal (Debug.log "form" form)
---             |> recordAnimalManipulation modelSoFar
---             |> addNext (remainder - 1)
---   in
---     addNext count model
-        
-checkForm animal form model =
-  Validation.validate (Validation.context model.animals animal) form 
 
--- deleteDisplayedAnimalById model id  =
---   model_animals.update (Aggregate.deleteById id) model
+      
 
 setFormat = displayedAnimal_format.set
 
+addAnimalsLikeThis count templateAnimal model = 
+  let
+    (ids, newModel) =
+      freshIds count model
+    animals =
+      List.map (flip animal_id.set <| templateAnimal) ids
+    addAnimals =
+      Dict.union (displayedAnimalDict animals Animal.editable)
+    addIds =
+      Set.union (Set.fromList ids)
+    validationContext =
+      Validation.context model.animals templateAnimal
+    forms =
+      List.map (Form.extractForm >> Validation.validate validationContext) animals
+    addForms =
+      Dict.union (formDict forms)
+  in
+    newModel
+      |> model_animals.update addAnimals
+      |> model_addPageAnimals.update addIds
+      |> model_forms.update addForms
 
 populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
+  { model
+    | animals = displayedAnimalDict animals Animal.compact
+    , allPageAnimals = List.map .id animals |> Set.fromList 
+  }
+
+displayedAnimalDict : List Animal.Animal -> (Animal.Animal -> Animal.DisplayedAnimal) -> Dict Animal.Id Animal.DisplayedAnimal
+displayedAnimalDict animals displayedMaker =
   let
     ids =
       List.map .id animals
     displayedAnimals =
-      List.map Animal.compact animals
+      List.map displayedMaker animals
   in
-    { model
-      | animals = List.map2 (,) ids displayedAnimals |> Dict.fromList
-      ,  allPageAnimals = Set.fromList ids
-    }
+    List.map2 (,) ids displayedAnimals |> Dict.fromList
+
+formDict : List Animal.Form -> Dict Animal.Id Animal.Form
+formDict forms = 
+  let
+    ids = List.map .id forms
+  in
+    List.map2 (,) ids forms |> Dict.fromList
+             
 
 httpError contextString err model = 
   model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model
@@ -361,6 +383,16 @@ deleteForm form model =
   in
     model_forms.update (Dict.remove key) model
   
+freshIds n model =
+  let 
+    uniquePrefix = "New_animal_"
+    name i = uniquePrefix ++ toString i
+    ids =
+      List.range (model.animalsEverAdded + 1) (model.animalsEverAdded + n)
+        |> List.map name
+    newModel = model_animalsEverAdded.update ((+) n) model
+  in
+    (ids, newModel)
 
 -- Subscriptions
 

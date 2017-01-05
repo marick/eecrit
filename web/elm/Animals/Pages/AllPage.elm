@@ -30,10 +30,13 @@ view model =
     ]
     
 animalViews model =
-  model
-    |> allPageAnimals
-    |> applyFilters model
-    |> List.map (individualAnimalView model)
+  let
+    displayedAnimals = pageAnimals .allPageAnimals model
+    animalViewer = individualAnimalView model (StartSavingEdits, CancelEdits)
+  in
+    displayedAnimals
+      |> applyFilters model
+      |> List.map animalViewer
     
 filterView model =
   Bulma.centeredColumns
@@ -59,8 +62,9 @@ filterView model =
       ]
     ]
 
-allPageAnimals model =
-  model.allPageAnimals
+pageAnimals pageAnimalsGetter model =
+  model
+    |> pageAnimalsGetter
     |> Set.toList 
     |> List.map (\ animal -> Dict.get animal model.animals)
     |> List.filterMap identity
@@ -92,7 +96,7 @@ aggregateFilter preds animal =
       else
         False
          
-individualAnimalView model displayedAnimal =
+individualAnimalView model formActions displayedAnimal  =
   case displayedAnimal.format of
     Compact ->
       RO.compactView displayedAnimal
@@ -105,7 +109,7 @@ individualAnimalView model displayedAnimal =
         -- animal. Replace that with an an error message.
         form = animalForm model displayedAnimal.animal
       in
-        RW.editableView displayedAnimal form (StartSavingEdits, CancelEdits)
+        RW.editableView displayedAnimal form formActions 
 
 animalForm model animal =
   Dict.get animal.id model.forms

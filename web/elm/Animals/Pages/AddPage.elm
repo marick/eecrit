@@ -49,16 +49,13 @@ view model =
     , Bulma.headerlessTable <| animalViews model
     ]
 
-addPageAnimals model =
-  model.addPageAnimals
-    |> Set.toList 
-    |> List.map (\ animal -> Dict.get animal model.animals)
-    |> List.filterMap identity
-
 animalViews model =
-  addPageAnimals model
-    |> List.map (Common.individualAnimalView model)
-
+  let
+    displayedAnimals = Common.pageAnimals .addPageAnimals model
+    animalViewer = Common.individualAnimalView model (StartCreating, CancelCreation)
+  in
+    displayedAnimals
+      |> List.map animalViewer
 
 -- creationInProgress model =
 --   Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]

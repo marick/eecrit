@@ -131,19 +131,6 @@ update_ msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    CancelAnimalCreation displayed form ->
-      model |> noCmd
-      -- let
-      --   new = displayed |> noFlash |> displayedAnimal_format.set Animal.Expanded
-      -- in
-      --   model |> upsertAnimal new |> deleteFormFor displayed |> noCmd
-          
-    StartCreatingNewAnimal displayed form ->
-      model |> noCmd
-    --   ( recordAnimalManipulation model displayed
-    --   , OutsideWorld.createAnimal displayed.animal
-    --   )
-
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
       model |> lookupAndDo id (recordSuccessfulSave version) |> noCmd 
 
@@ -236,7 +223,7 @@ animalOp op displayed model =
 formOp : FormOperation -> Animal.Form -> Animal.DisplayedAnimal -> Model
        -> (Model, Cmd Msg)
 formOp op form displayed model =
-  case op of 
+  case Debug.log "oop" op of 
     CancelEdits ->
       let
         newDisplayed = displayed |> displayedAnimal_format.set Animal.Expanded
@@ -250,6 +237,24 @@ formOp op form displayed model =
       ( model |> upsertForm newForm
       , OutsideWorld.saveAnimal valuesToSave
       )
+
+
+    CancelCreation ->
+      let
+        id = displayedAnimal_id.get displayed
+      in
+        model
+          |> deleteForm form
+          |> deleteAnimal displayed
+          |> model_addPageAnimals.update (Set.remove id)
+          |> noCmd
+          
+    StartCreating ->
+      model |> noCmd
+    --   ( recordAnimalManipulation model displayed
+    --   , OutsideWorld.createAnimal displayed.animal
+    --   )
+
     NameFieldUpdate s ->
       let
         newForm =
@@ -361,13 +366,20 @@ httpError contextString err model =
 noCmd model = model ! []
 
 upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
-upsertAnimal displayedAnimal model =
+upsertAnimal displayed model =
   let
-    key = displayedAnimal_id.get displayedAnimal
-    newAnimals = Dict.insert key displayedAnimal model.animals
+    key = displayedAnimal_id.get displayed
+    newAnimals = Dict.insert key displayed model.animals
   in
     model_animals.set newAnimals model
 
+deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
+deleteAnimal displayed model =
+  let
+    key = displayedAnimal_id.get displayed
+  in
+    model_animals.update (Dict.remove key) model
+  
 upsertForm : Animal.Form -> Model -> Model 
 upsertForm form model =
   let
@@ -382,7 +394,7 @@ deleteForm form model =
     key = form_id.get form
   in
     model_forms.update (Dict.remove key) model
-  
+
 freshIds n model =
   let 
     uniquePrefix = "New_animal_"

@@ -17,6 +17,10 @@ type AnimalOperation
 type FormOperation
   = CancelEdits
   | StartSavingEdits
+
+  | CancelCreation
+  | StartCreating
+    
   | NameFieldUpdate String
   | TentativeTagUpdate String
   | CreateNewTag
@@ -36,10 +40,6 @@ type Msg
   | SetNameFilter String
   | SetTagFilter String
   | SetSpeciesFilter String
-
-  | CancelAnimalCreation Animal.DisplayedAnimal Animal.Form
-    
-  | StartCreatingNewAnimal Animal.DisplayedAnimal Animal.Form
 
   | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)

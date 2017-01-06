@@ -1,10 +1,9 @@
--- Declare and Define are separate because of circular dependencies.
-module Animals.Pages.Define exposing
+module Animals.Pages.Navigation exposing
   ( fromLocation
   , toPageChangeCmd
   )
-import Animals.Pages.Declare exposing (..)
 
+import Animals.Pages.H exposing (..)
 import Animals.Msg exposing (..)
 import Navigation
 import String

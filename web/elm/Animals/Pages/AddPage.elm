@@ -1,4 +1,4 @@
-module Animals.Pages.AddPage exposing (..)
+module Animals.Pages.AddPage exposing (view)
 
 import Animals.Pages.AllPage as Common
 
@@ -56,6 +56,3 @@ animalViews model =
   in
     displayedAnimals
       |> List.map animalViewer
-
--- creationInProgress model =
---   Common.animalsToDisplay model [not << displayedAnimal_wasEverSaved.get]

@@ -7,8 +7,8 @@ import Animals.Animal.Types as Animal
 import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
-import Animals.Pages.Declare as Page
-import Animals.Pages.Define as Page
+import Animals.Pages.H as Page
+import Animals.Pages.Navigation as Page
 import Animals.Pages.PageFlash as PageFlash
 import Animals.Animal.Flash as AnimalFlash 
 import Animals.Animal.Validation as Validation

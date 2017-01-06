@@ -11,7 +11,7 @@ import Animals.Main exposing (Model)
 import Animals.Pages.AllPage as AllPage
 import Animals.Pages.AddPage as AddPage
 import Animals.Pages.HelpPage as HelpPage
-import Animals.Pages.Declare exposing (PageChoice(..))
+import Animals.Pages.H exposing (PageChoice(..))
 
 view : Model -> Html Msg
 view model =

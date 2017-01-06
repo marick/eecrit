@@ -5,7 +5,7 @@ import Html.Attributes exposing (..)
 import Pile.Bulma as Bulma 
 import Animals.Msg exposing (Msg(..))
 import Http exposing (..)
-import Animals.Pages.Declare as Pages
+import Animals.Pages.H as Pages
 
 type Flash
   = NoFlash

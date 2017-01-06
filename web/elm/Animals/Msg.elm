@@ -1,6 +1,6 @@
 module Animals.Msg exposing (..)
 
-import Animals.Pages.Declare exposing (PageChoice)
+import Animals.Pages.H exposing (PageChoice)
 import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.Animal.Types as Animal exposing (Animal)
 import Date exposing (Date)

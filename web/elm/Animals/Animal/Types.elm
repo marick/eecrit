@@ -27,6 +27,18 @@ type alias Animal =
   , properties : Dict String DictValue
   }
 
+-- Todo: must be a way to use extensible types to
+-- make templates nicer.
+empty species =
+  { id = "This id MUST be replaced"
+  , version = 0
+  , name = ""
+  , species = species
+  , tags = []
+  , properties = Dict.empty
+  }
+
+  
 type alias Form = 
   { id : Id
   , intendedVersion : Int

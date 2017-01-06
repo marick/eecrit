@@ -79,15 +79,7 @@ updateWithClearedFlash msg model =
 
     AddNewAnimals count species ->
       let
-        -- TODO: create an AlmostAnimal type instead of "this id MUST..."
-        template =
-          { id = "This id MUST be replaced"
-          , version = 0
-          , name = ""
-          , species = species
-          , tags = []
-          , properties = Dict.empty
-          }
+        template = Animal.empty species
       in
         model |> addAnimalsLikeThis count template |> noCmd
           
@@ -214,8 +206,6 @@ formOp op form displayed model =
           |> model_allPageAnimals.update (Set.insert realId)
           |> model_pageFlash.set Page.SavedAnimalFlash
           |> noCmd
-
------------------------          
 
 withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
 withSavedForm form model =

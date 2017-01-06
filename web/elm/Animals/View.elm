@@ -6,7 +6,7 @@ import Html.Events as Events
 import Pile.Bulma as Bulma
 
 import Animals.Msg exposing (Msg(..))
-import Animals.Main exposing (Model)
+import Animals.Model exposing (Model)
 
 import Animals.Pages.AllPage as AllPage
 import Animals.Pages.AddPage as AddPage

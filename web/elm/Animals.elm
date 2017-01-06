@@ -1,16 +1,17 @@
 module Animals exposing (main)
 
 import Navigation
-import Animals.Main as Main
-import Animals.View as View
-import Animals.Msg exposing (Msg(..))
+import Animals.Model as A
+import Animals.Main as A
+import Animals.View as A
+import Animals.Msg as A
 
 main =
-    Navigation.programWithFlags NoticePageChange
-        { init = Main.init
-        , view = View.view
-        , update = Main.update
-        , subscriptions = Main.subscriptions
+    Navigation.programWithFlags A.NoticePageChange
+        { init = A.init
+        , view = A.view
+        , update = A.update
+        , subscriptions = always Sub.none
         }
 
 

@@ -6,13 +6,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Pile.Bulma as Bulma
-import String
-import Dict
-import Set
 
 import Animals.Pages.PageFlash as PageFlash
-import Animals.Animal.Types exposing (..)
-import Animals.Animal.Lenses exposing (..)
 import Animals.Msg exposing (..)
 
 view model =

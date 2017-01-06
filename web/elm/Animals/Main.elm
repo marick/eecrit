@@ -131,8 +131,12 @@ update_ msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
-      model |> lookupAndDo id (recordSuccessfulSave version) |> noCmd 
+    NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id)) ->
+      case Dict.get id model.forms of
+        Nothing ->
+          model |> noCmd -- Todo: a command to log the error
+        Just form ->
+          update_ (WithForm form NoticeSaveResults) model
 
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
       model ! []
@@ -230,7 +234,7 @@ formOp op form displayed model =
       in
         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
     StartSavingEdits ->
-      model |> withSavedForm form displayed |> saveCmd OutsideWorld.saveAnimal
+      model |> withSavedForm form |> saveCmd OutsideWorld.saveAnimal
 
     CancelCreation ->
       let
@@ -243,7 +247,7 @@ formOp op form displayed model =
           |> noCmd
           
     StartCreating ->
-      model |> withSavedForm form displayed |> saveCmd OutsideWorld.createAnimal
+      model |> withSavedForm form |> saveCmd OutsideWorld.createAnimal
 
     NameFieldUpdate s ->
       let
@@ -275,15 +279,21 @@ formOp op form displayed model =
       in
         model |> upsertForm newForm |> noCmd
 
+    NoticeSaveResults ->
+      let
+        newDisplayed = displayedAnimalFromForm form
+      in
+        model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
+
 -----------------------          
 
-withSavedForm : Animal.Form -> Animal.DisplayedAnimal -> Model
-              -> (Model, Animal.Animal)
-withSavedForm form displayed model =
+withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
+withSavedForm form model =
   ( model |> upsertForm (form_status.set BeingSaved form)
-  , Form.appliedForm form displayed.animal
+  , Form.appliedForm form
   )
 
+saveCmd : (Animal.Animal -> Cmd Msg) -> (Model, Animal.Animal) -> (Model, Cmd Msg)
 saveCmd f (model, dataToSave) =
   ( model, f dataToSave)
 
@@ -294,19 +304,13 @@ lookupAndDo id f model =
   in
     Maybe.map2 (f model) (get .animals) (get .forms)
       |> Maybe.withDefault model 
-        
-recordSuccessfulSave version model displayed form =
-  let
-    animal =
-      displayed.animal |> Form.appliedForm form |> animal_version.set version
-    newDisplayed =
-      { animal = animal
-      , format = Animal.Expanded
-      , animalFlash = Form.saveFlash form
-      }
-  in
-    model |> upsertAnimal newDisplayed |> deleteForm form
 
+
+displayedAnimalFromForm form =
+  { animal = Form.appliedForm form
+  , format = Animal.Expanded
+  , animalFlash = Form.saveFlash form
+  }
 
       
 

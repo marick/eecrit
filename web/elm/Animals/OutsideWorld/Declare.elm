@@ -5,7 +5,7 @@ import Animals.Animal.Types exposing (..)
 type alias Version = Int
 
 type AnimalSaveResults
-  = AnimalUpdated Id Version
+  = AnimalUpdated Id 
 
 type AnimalCreationResults
   = AnimalCreated Id Id

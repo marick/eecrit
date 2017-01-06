@@ -29,12 +29,10 @@ encodeAnimal =
 decodeSaveResult =
   let 
     to_transferFormat =
-      (Decode.map2 (,)
-         (Decode.field "id" Decode.int)
-         (Decode.field "version" Decode.int))
+      (Decode.field "id" Decode.int)
 
-    from_transferFormat (intId, version) =
-      AnimalUpdated (toString intId) version
+    from_transferFormat intId =
+      AnimalUpdated (toString intId)
   in
     (to_transferFormat |> Decode.map from_transferFormat)
 

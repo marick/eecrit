@@ -76,10 +76,10 @@ defmodule Eecrit.Animals do
     {:reply, Map.values(state), state}
   end
 
-  def handle_call([:update, animal = %{"version" => version, "id" => id}],
+  def handle_call([:update, animal = %{"id" => id}],
                   _from, state) do
     new_state = Map.put(state, id, animal)
-    retval = %{id: id, version: version+1}
+    retval = %{id: id}
     {:reply, {:ok, retval}, new_state}
   end
 
@@ -89,5 +89,4 @@ defmodule Eecrit.Animals do
     retval = %{originalId: original_id, serverId: new_id}
     {:reply, {:ok, retval}, new_state}
   end
-
 end

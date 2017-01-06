@@ -29,6 +29,8 @@ type alias Animal =
 
 type alias Form = 
   { id : Id
+  , intendedVersion : Int
+  , species : String
   , name : FormValue String
   , tags : List String
   , tentativeTag : String

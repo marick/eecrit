@@ -30,10 +30,10 @@ import Dict exposing (Dict)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  update_ msg (model_pageFlash.set Page.NoFlash model)
+  updateWithClearedFlash msg (model_pageFlash.set Page.NoFlash model)
 
-update_ : Msg -> Model -> ( Model, Cmd Msg )
-update_ msg model =
+updateWithClearedFlash : Msg -> Model -> ( Model, Cmd Msg )
+updateWithClearedFlash msg model =
   case msg of
     SetToday value ->
       model |> model_today.set value |> noCmd
@@ -59,14 +59,14 @@ update_ msg model =
         Nothing ->
           model |> noCmd -- Todo: a command to log the error
         Just form ->
-          update_ (WithForm form NoticeSaveResults) model
+          updateWithClearedFlash (WithForm form NoticeSaveResults) model
 
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
       case Dict.get tempId model.forms of
         Nothing ->
           model |> noCmd -- Todo: a command to log the error
         Just form ->
-          update_ (WithForm form <| NoticeCreationResults realId) model
+          updateWithClearedFlash (WithForm form <| NoticeCreationResults realId) model
 
     -- TODO: Make this an animal flash instead of a page flash?
     -- More noticeable, but only works if there's just one animal being
@@ -281,37 +281,6 @@ formDict forms =
 httpError contextString err model = 
   model_pageFlash.set (Page.HttpErrorFlash contextString err) model
 
-upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
-upsertAnimal displayed model =
-  let
-    key = displayedAnimal_id.get displayed
-    newAnimals = Dict.insert key displayed model.animals
-  in
-    model_animals.set newAnimals model
-
-deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
-deleteAnimal displayed model =
-  deleteAnimalById (displayedAnimal_id.get displayed) model
-  
-deleteAnimalById : Animal.Id -> Model -> Model
-deleteAnimalById id model =
-  model_animals.update (Dict.remove id) model
-  
-upsertForm : Animal.Form -> Model -> Model 
-upsertForm form model =
-  let
-    key = form_id.get form
-    newForms = Dict.insert key form model.forms
-  in
-    model_forms.set newForms model
-
-deleteForm : Animal.Form -> Model -> Model
-deleteForm form model =
-  deleteFormById (form_id.get form) model
-
-deleteFormById : Animal.Id -> Model -> Model
-deleteFormById id model =
-    model_forms.update (Dict.remove id) model
 
 freshIds n model =
   let 

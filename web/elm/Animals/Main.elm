@@ -139,7 +139,11 @@ update_ msg model =
           update_ (WithForm form NoticeSaveResults) model
 
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
-      model ! []
+      case Dict.get tempId model.forms of
+        Nothing ->
+          model |> noCmd -- Todo: a command to log the error
+        Just form ->
+          update_ (WithForm form <| NoticeCreationResults realId) model
       -- let
       --   maybe = Dict.get (Debug.log "responsre" tempId) model.animals
       -- in
@@ -285,6 +289,19 @@ formOp op form displayed model =
       in
         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
 
+    NoticeCreationResults realId ->
+      let
+        originalId = form.id
+        newDisplayed = displayedAnimalFromForm form |> displayedAnimal_id.set realId
+      in
+        model
+          |> deleteAnimalById originalId |> deleteFormById originalId
+          |> upsertAnimal newDisplayed
+          |> model_addPageAnimals.update (Set.remove originalId)
+          |> model_allPageAnimals.update (Set.insert realId)
+          |> model_pageFlash.set PageFlash.SavedAnimalFlash
+          |> noCmd
+
 -----------------------          
 
 withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
@@ -378,10 +395,11 @@ upsertAnimal displayed model =
 
 deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
 deleteAnimal displayed model =
-  let
-    key = displayedAnimal_id.get displayed
-  in
-    model_animals.update (Dict.remove key) model
+  deleteAnimalById (displayedAnimal_id.get displayed) model
+  
+deleteAnimalById : Animal.Id -> Model -> Model
+deleteAnimalById id model =
+  model_animals.update (Dict.remove id) model
   
 upsertForm : Animal.Form -> Model -> Model 
 upsertForm form model =
@@ -393,10 +411,11 @@ upsertForm form model =
 
 deleteForm : Animal.Form -> Model -> Model
 deleteForm form model =
-  let
-    key = form_id.get form
-  in
-    model_forms.update (Dict.remove key) model
+  deleteFormById (form_id.get form) model
+
+deleteFormById : Animal.Id -> Model -> Model
+deleteFormById id model =
+    model_forms.update (Dict.remove id) model
 
 freshIds n model =
   let 

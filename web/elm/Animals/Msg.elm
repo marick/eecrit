@@ -18,6 +18,7 @@ type FormOperation
   = CancelEdits
   | StartSavingEdits
   | NoticeSaveResults
+  | NoticeCreationResults Animal.Id
 
   | CancelCreation
   | StartCreating

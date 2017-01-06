@@ -21051,9 +21051,9 @@ var _user$project$Animals_Animal_Types$Animal = F6(
 	function (a, b, c, d, e, f) {
 		return {id: a, version: b, name: c, species: d, tags: e, properties: f};
 	});
-var _user$project$Animals_Animal_Types$Form = F6(
-	function (a, b, c, d, e, f) {
-		return {id: a, name: b, tags: c, tentativeTag: d, properties: e, status: f};
+var _user$project$Animals_Animal_Types$Form = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, intendedVersion: b, species: c, name: d, tags: e, tentativeTag: f, properties: g, status: h};
 	});
 var _user$project$Animals_Animal_Types$DisplayedAnimal = F3(
 	function (a, b, c) {
@@ -21086,10 +21086,9 @@ var _user$project$Animals_Animal_Types$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
 
-var _user$project$Animals_OutsideWorld_Declare$AnimalUpdated = F2(
-	function (a, b) {
-		return {ctor: 'AnimalUpdated', _0: a, _1: b};
-	});
+var _user$project$Animals_OutsideWorld_Declare$AnimalUpdated = function (a) {
+	return {ctor: 'AnimalUpdated', _0: a};
+};
 var _user$project$Animals_OutsideWorld_Declare$AnimalCreated = F2(
 	function (a, b) {
 		return {ctor: 'AnimalCreated', _0: a, _1: b};
@@ -21113,6 +21112,10 @@ var _user$project$Animals_Msg$NameFieldUpdate = function (a) {
 };
 var _user$project$Animals_Msg$StartCreating = {ctor: 'StartCreating'};
 var _user$project$Animals_Msg$CancelCreation = {ctor: 'CancelCreation'};
+var _user$project$Animals_Msg$NoticeCreationResults = function (a) {
+	return {ctor: 'NoticeCreationResults', _0: a};
+};
+var _user$project$Animals_Msg$NoticeSaveResults = {ctor: 'NoticeSaveResults'};
 var _user$project$Animals_Msg$StartSavingEdits = {ctor: 'StartSavingEdits'};
 var _user$project$Animals_Msg$CancelEdits = {ctor: 'CancelEdits'};
 var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
@@ -21339,26 +21342,16 @@ var _user$project$Animals_OutsideWorld_Json$decodeCreationResult = function () {
 	return A2(_elm_lang$core$Json_Decode$map, from_transferFormat, to_transferFormat);
 }();
 var _user$project$Animals_OutsideWorld_Json$decodeSaveResult = function () {
-	var from_transferFormat = function (_p6) {
-		var _p7 = _p6;
-		return A2(
-			_user$project$Animals_OutsideWorld_Declare$AnimalUpdated,
-			_elm_lang$core$Basics$toString(_p7._0),
-			_p7._1);
+	var from_transferFormat = function (intId) {
+		return _user$project$Animals_OutsideWorld_Declare$AnimalUpdated(
+			_elm_lang$core$Basics$toString(intId));
 	};
-	var to_transferFormat = A3(
-		_elm_lang$core$Json_Decode$map2,
-		F2(
-			function (v0, v1) {
-				return {ctor: '_Tuple2', _0: v0, _1: v1};
-			}),
-		A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
-		A2(_elm_lang$core$Json_Decode$field, 'version', _elm_lang$core$Json_Decode$int));
+	var to_transferFormat = A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int);
 	return A2(_elm_lang$core$Json_Decode$map, from_transferFormat, to_transferFormat);
 }();
-var _user$project$Animals_OutsideWorld_Json$encodeAnimal = function (_p8) {
+var _user$project$Animals_OutsideWorld_Json$encodeAnimal = function (_p6) {
 	return _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_json(
-		_user$project$Animals_OutsideWorld_Json$animal_to_animalTransferFormat(_p8));
+		_user$project$Animals_OutsideWorld_Json$animal_to_animalTransferFormat(_p6));
 };
 var _user$project$Animals_OutsideWorld_Json$asData = function (v) {
 	return _elm_lang$core$Json_Encode$object(
@@ -21752,29 +21745,29 @@ var _user$project$Animals_Animal_Form$saveFlash = function (form) {
 		return _user$project$Animals_Animal_Flash$NoFlash;
 	}
 };
-var _user$project$Animals_Animal_Form$appliedForm = F2(
-	function (form, animal) {
-		return A2(
-			_user$project$Animals_Animal_Lenses$animal_tags.set,
-			A2(_user$project$Pile_Namelike$perhapsAdd, form.tentativeTag, form.tags),
-			A2(
-				_user$project$Animals_Animal_Lenses$animal_properties.set,
-				form.properties,
-				A2(_user$project$Animals_Animal_Lenses$animal_name.set, form.name.value, animal)));
-	});
-var _user$project$Animals_Animal_Form$assumeValid = function (form) {
+var _user$project$Animals_Animal_Form$appliedForm = function (form) {
 	return {
-		status: _user$project$Pile_Bulma$AllGood,
 		id: form.id,
-		name: _user$project$Pile_Bulma$freshValue(form.name.value),
-		tags: form.tags,
-		tentativeTag: form.tentativeTag,
+		version: form.intendedVersion,
+		name: form.name.value,
+		species: form.species,
+		tags: A2(_user$project$Pile_Namelike$perhapsAdd, form.tentativeTag, form.tags),
 		properties: form.properties
 	};
+};
+var _user$project$Animals_Animal_Form$assumeValid = function (form) {
+	return _elm_lang$core$Native_Utils.update(
+		form,
+		{
+			status: _user$project$Pile_Bulma$AllGood,
+			name: _user$project$Pile_Bulma$freshValue(form.name.value)
+		});
 };
 var _user$project$Animals_Animal_Form$nullForm = {
 	status: _user$project$Pile_Bulma$SomeBad,
 	id: 'impossible',
+	species: 'impossible',
+	intendedVersion: -1,
 	name: _user$project$Pile_Bulma$freshValue('you should never see this'),
 	tags: {ctor: '[]'},
 	tentativeTag: '',
@@ -21784,6 +21777,8 @@ var _user$project$Animals_Animal_Form$extractForm = function (animal) {
 	return {
 		status: _user$project$Pile_Bulma$AllGood,
 		id: animal.id,
+		species: animal.species,
+		intendedVersion: animal.version + 1,
 		name: _user$project$Pile_Bulma$freshValue(animal.name),
 		tags: animal.tags,
 		tentativeTag: '',
@@ -22221,6 +22216,13 @@ var _user$project$Animals_Main$populateAllAnimalsPage = F2(
 			});
 	});
 var _user$project$Animals_Main$setFormat = _user$project$Animals_Animal_Lenses$displayedAnimal_format.set;
+var _user$project$Animals_Main$displayedAnimalFromForm = function (form) {
+	return {
+		animal: _user$project$Animals_Animal_Form$appliedForm(form),
+		format: _user$project$Animals_Animal_Types$Expanded,
+		animalFlash: _user$project$Animals_Animal_Form$saveFlash(form)
+	};
+};
 var _user$project$Animals_Main$lookupAndDo = F3(
 	function (id, f, model) {
 		var get = function (field) {
@@ -22243,6 +22245,15 @@ var _user$project$Animals_Main$lookupAndDo = F3(
 					function (_) {
 						return _.forms;
 					})));
+	});
+var _user$project$Animals_Main$saveCmd = F2(
+	function (f, _p0) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: _p1._0,
+			_1: f(_p1._1)
+		};
 	});
 var _user$project$Animals_Main$init = F2(
 	function (flags, location) {
@@ -22365,12 +22376,29 @@ var _user$project$Animals_Main$upsertForm = F2(
 		var newForms = A3(_elm_lang$core$Dict$insert, key, form, model.forms);
 		return A2(_user$project$Animals_Main$model_forms.set, newForms, model);
 	});
-var _user$project$Animals_Main$deleteForm = F2(
+var _user$project$Animals_Main$withSavedForm = F2(
 	function (form, model) {
-		var key = _user$project$Animals_Animal_Lenses$form_id.get(form);
+		return {
+			ctor: '_Tuple2',
+			_0: A2(
+				_user$project$Animals_Main$upsertForm,
+				A2(_user$project$Animals_Animal_Lenses$form_status.set, _user$project$Pile_Bulma$BeingSaved, form),
+				model),
+			_1: _user$project$Animals_Animal_Form$appliedForm(form)
+		};
+	});
+var _user$project$Animals_Main$deleteFormById = F2(
+	function (id, model) {
 		return A2(
 			_user$project$Animals_Main$model_forms.update,
-			_elm_lang$core$Dict$remove(key),
+			_elm_lang$core$Dict$remove(id),
+			model);
+	});
+var _user$project$Animals_Main$deleteForm = F2(
+	function (form, model) {
+		return A2(
+			_user$project$Animals_Main$deleteFormById,
+			_user$project$Animals_Animal_Lenses$form_id.get(form),
 			model);
 	});
 var _user$project$Animals_Main$model_animalsEverAdded = A2(
@@ -22442,9 +22470,9 @@ var _user$project$Animals_Main$model_animals = A2(
 var _user$project$Animals_Main$addAnimalsLikeThis = F3(
 	function (count, templateAnimal, model) {
 		var validationContext = A2(_user$project$Animals_Animal_Validation$context, model.animals, templateAnimal);
-		var _p0 = A2(_user$project$Animals_Main$freshIds, count, model);
-		var ids = _p0._0;
-		var newModel = _p0._1;
+		var _p2 = A2(_user$project$Animals_Main$freshIds, count, model);
+		var ids = _p2._0;
+		var newModel = _p2._1;
 		var animals = A2(
 			_elm_lang$core$List$map,
 			A2(_elm_lang$core$Basics$flip, _user$project$Animals_Animal_Lenses$animal_id.set, templateAnimal),
@@ -22453,11 +22481,11 @@ var _user$project$Animals_Main$addAnimalsLikeThis = F3(
 			A2(_user$project$Animals_Main$displayedAnimalDict, animals, _user$project$Animals_Animal_Constructors$editable));
 		var forms = A2(
 			_elm_lang$core$List$map,
-			function (_p1) {
+			function (_p3) {
 				return A2(
 					_user$project$Animals_Animal_Validation$validate,
 					validationContext,
-					_user$project$Animals_Animal_Form$extractForm(_p1));
+					_user$project$Animals_Animal_Form$extractForm(_p3));
 			},
 			animals);
 		var addForms = _elm_lang$core$Dict$union(
@@ -22486,13 +22514,13 @@ var _user$project$Animals_Main$applyAfterRemovingFlash = F3(
 	});
 var _user$project$Animals_Main$animalOp = F3(
 	function (op, displayed, model) {
-		var _p2 = op;
-		switch (_p2.ctor) {
+		var _p4 = op;
+		switch (_p4.ctor) {
 			case 'RemoveFlash':
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertAnimal, displayed, model));
 			case 'SwitchToReadOnly':
-				var newAnimal = A2(_user$project$Animals_Animal_Lenses$displayedAnimal_format.set, _p2._0, displayed);
+				var newAnimal = A2(_user$project$Animals_Animal_Lenses$displayedAnimal_format.set, _p4._0, displayed);
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertAnimal, newAnimal, model));
 			case 'StartEditing':
@@ -22507,34 +22535,24 @@ var _user$project$Animals_Main$animalOp = F3(
 				return _user$project$Animals_Main$noCmd(model);
 		}
 	});
-var _user$project$Animals_Main$recordSuccessfulSave = F4(
-	function (version, model, displayed, form) {
-		var animal = A2(
-			_user$project$Animals_Animal_Lenses$animal_version.set,
-			version,
-			A2(_user$project$Animals_Animal_Form$appliedForm, form, displayed.animal));
-		var newDisplayed = {
-			animal: animal,
-			format: _user$project$Animals_Animal_Types$Expanded,
-			animalFlash: _user$project$Animals_Animal_Form$saveFlash(form)
-		};
+var _user$project$Animals_Main$deleteAnimalById = F2(
+	function (id, model) {
 		return A2(
-			_user$project$Animals_Main$deleteForm,
-			form,
-			A2(_user$project$Animals_Main$upsertAnimal, newDisplayed, model));
+			_user$project$Animals_Main$model_animals.update,
+			_elm_lang$core$Dict$remove(id),
+			model);
 	});
 var _user$project$Animals_Main$deleteAnimal = F2(
 	function (displayed, model) {
-		var key = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayed);
 		return A2(
-			_user$project$Animals_Main$model_animals.update,
-			_elm_lang$core$Dict$remove(key),
+			_user$project$Animals_Main$deleteAnimalById,
+			_user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayed),
 			model);
 	});
 var _user$project$Animals_Main$formOp = F4(
 	function (op, form, displayed, model) {
-		var _p3 = A2(_elm_lang$core$Debug$log, 'oop', op);
-		switch (_p3.ctor) {
+		var _p5 = A2(_elm_lang$core$Debug$log, 'oop', op);
+		switch (_p5.ctor) {
 			case 'CancelEdits':
 				var newDisplayed = A2(_user$project$Animals_Animal_Lenses$displayedAnimal_format.set, _user$project$Animals_Animal_Types$Expanded, displayed);
 				return _user$project$Animals_Main$noCmd(
@@ -22543,13 +22561,10 @@ var _user$project$Animals_Main$formOp = F4(
 						form,
 						A2(_user$project$Animals_Main$upsertAnimal, newDisplayed, model)));
 			case 'StartSavingEdits':
-				var valuesToSave = A2(_user$project$Animals_Animal_Form$appliedForm, form, displayed.animal);
-				var newForm = A2(_user$project$Animals_Animal_Lenses$form_status.set, _user$project$Pile_Bulma$BeingSaved, form);
-				return {
-					ctor: '_Tuple2',
-					_0: A2(_user$project$Animals_Main$upsertForm, newForm, model),
-					_1: _user$project$Animals_OutsideWorld_Define$saveAnimal(valuesToSave)
-				};
+				return A2(
+					_user$project$Animals_Main$saveCmd,
+					_user$project$Animals_OutsideWorld_Define$saveAnimal,
+					A2(_user$project$Animals_Main$withSavedForm, form, model));
 			case 'CancelCreation':
 				var id = _user$project$Animals_Animal_Lenses$displayedAnimal_id.get(displayed);
 				return _user$project$Animals_Main$noCmd(
@@ -22561,19 +22576,22 @@ var _user$project$Animals_Main$formOp = F4(
 							displayed,
 							A2(_user$project$Animals_Main$deleteForm, form, model))));
 			case 'StartCreating':
-				return _user$project$Animals_Main$noCmd(model);
+				return A2(
+					_user$project$Animals_Main$saveCmd,
+					_user$project$Animals_OutsideWorld_Define$createAnimal,
+					A2(_user$project$Animals_Main$withSavedForm, form, model));
 			case 'NameFieldUpdate':
 				var newForm = A2(
 					_user$project$Animals_Animal_Validation$validate,
 					A2(_user$project$Animals_Animal_Validation$context, model.animals, displayed.animal),
 					A2(
 						_user$project$Animals_Animal_Lenses$form_name.set,
-						_user$project$Pile_Bulma$freshValue(_p3._0),
+						_user$project$Pile_Bulma$freshValue(_p5._0),
 						form));
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertForm, newForm, model));
 			case 'TentativeTagUpdate':
-				var newForm = A2(_user$project$Animals_Animal_Lenses$form_tentativeTag.set, _p3._0, form);
+				var newForm = A2(_user$project$Animals_Animal_Lenses$form_tentativeTag.set, _p5._0, form);
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertForm, newForm, model));
 			case 'CreateNewTag':
@@ -22586,13 +22604,44 @@ var _user$project$Animals_Main$formOp = F4(
 						form));
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertForm, newForm, model));
-			default:
+			case 'DeleteTag':
 				var newForm = A2(
 					_user$project$Animals_Animal_Lenses$form_tags.update,
-					_elm_community$list_extra$List_Extra$remove(_p3._0),
+					_elm_community$list_extra$List_Extra$remove(_p5._0),
 					form);
 				return _user$project$Animals_Main$noCmd(
 					A2(_user$project$Animals_Main$upsertForm, newForm, model));
+			case 'NoticeSaveResults':
+				var newDisplayed = _user$project$Animals_Main$displayedAnimalFromForm(form);
+				return _user$project$Animals_Main$noCmd(
+					A2(
+						_user$project$Animals_Main$deleteForm,
+						form,
+						A2(_user$project$Animals_Main$upsertAnimal, newDisplayed, model)));
+			default:
+				var _p6 = _p5._0;
+				var newDisplayed = A2(
+					_user$project$Animals_Animal_Lenses$displayedAnimal_id.set,
+					_p6,
+					_user$project$Animals_Main$displayedAnimalFromForm(form));
+				var originalId = form.id;
+				return _user$project$Animals_Main$noCmd(
+					A2(
+						_user$project$Animals_Main$model_pageFlash.set,
+						_user$project$Animals_Pages_PageFlash$SavedAnimalFlash,
+						A2(
+							_user$project$Animals_Main$model_allPageAnimals.update,
+							_elm_lang$core$Set$insert(_p6),
+							A2(
+								_user$project$Animals_Main$model_addPageAnimals.update,
+								_elm_lang$core$Set$remove(originalId),
+								A2(
+									_user$project$Animals_Main$upsertAnimal,
+									newDisplayed,
+									A2(
+										_user$project$Animals_Main$deleteFormById,
+										originalId,
+										A2(_user$project$Animals_Main$deleteAnimalById, originalId, model)))))));
 		}
 	});
 var _user$project$Animals_Main$model_today = A2(
@@ -22619,105 +22668,121 @@ var _user$project$Animals_Main$model_page = A2(
 		}));
 var _user$project$Animals_Main$update_ = F2(
 	function (msg, model) {
-		var _p4 = msg;
-		switch (_p4.ctor) {
-			case 'NoticePageChange':
-				return _user$project$Animals_Main$noCmd(
-					A2(
-						_user$project$Animals_Main$model_page.set,
-						_user$project$Animals_Pages_Define$fromLocation(_p4._0),
-						model));
-			case 'StartPageChange':
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Animals_Pages_Define$toPageChangeCmd(_p4._0)
-				};
-			case 'SetToday':
-				return _user$project$Animals_Main$noCmd(
-					A2(_user$project$Animals_Main$model_today.set, _p4._0, model));
-			case 'SetAnimals':
-				if (_p4._0.ctor === 'Ok') {
+		update_:
+		while (true) {
+			var _p7 = msg;
+			switch (_p7.ctor) {
+				case 'NoticePageChange':
 					return _user$project$Animals_Main$noCmd(
-						A2(_user$project$Animals_Main$populateAllAnimalsPage, _p4._0._0, model));
-				} else {
-					return _user$project$Animals_Main$noCmd(
-						A3(_user$project$Animals_Main$httpError, 'I could not retrieve animals.', _p4._0._0, model));
-				}
-			case 'ToggleDatePicker':
-				return _user$project$Animals_Main$noCmd(
-					A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model));
-			case 'SelectDate':
-				return _user$project$Animals_Main$noCmd(
-					A2(
-						_user$project$Animals_Main$model_effectiveDate.set,
-						_user$project$Pile_Calendar$At(_p4._0),
-						model));
-			case 'SetNameFilter':
-				return _user$project$Animals_Main$noCmd(
-					A2(_user$project$Animals_Main$model_nameFilter.set, _p4._0, model));
-			case 'SetTagFilter':
-				return _user$project$Animals_Main$noCmd(
-					A2(_user$project$Animals_Main$model_tagFilter.set, _p4._0, model));
-			case 'SetSpeciesFilter':
-				return _user$project$Animals_Main$noCmd(
-					A2(_user$project$Animals_Main$model_speciesFilter.set, _p4._0, model));
-			case 'NoticeAnimalSaveResults':
-				if (_p4._0.ctor === 'Ok') {
-					return _user$project$Animals_Main$noCmd(
-						A3(
-							_user$project$Animals_Main$lookupAndDo,
-							_p4._0._0._0,
-							_user$project$Animals_Main$recordSuccessfulSave(_p4._0._0._1),
+						A2(
+							_user$project$Animals_Main$model_page.set,
+							_user$project$Animals_Pages_Define$fromLocation(_p7._0),
 							model));
-				} else {
+				case 'StartPageChange':
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _user$project$Animals_Pages_Define$toPageChangeCmd(_p7._0)
+					};
+				case 'SetToday':
 					return _user$project$Animals_Main$noCmd(
-						A3(_user$project$Animals_Main$httpError, 'I could not save the animal.', _p4._0._0, model));
-				}
-			case 'NoticeAnimalCreationResults':
-				if (_p4._0.ctor === 'Ok') {
+						A2(_user$project$Animals_Main$model_today.set, _p7._0, model));
+				case 'SetAnimals':
+					if (_p7._0.ctor === 'Ok') {
+						return _user$project$Animals_Main$noCmd(
+							A2(_user$project$Animals_Main$populateAllAnimalsPage, _p7._0._0, model));
+					} else {
+						return _user$project$Animals_Main$noCmd(
+							A3(_user$project$Animals_Main$httpError, 'I could not retrieve animals.', _p7._0._0, model));
+					}
+				case 'ToggleDatePicker':
+					return _user$project$Animals_Main$noCmd(
+						A2(_user$project$Animals_Main$model_datePickerOpen.update, _elm_lang$core$Basics$not, model));
+				case 'SelectDate':
+					return _user$project$Animals_Main$noCmd(
+						A2(
+							_user$project$Animals_Main$model_effectiveDate.set,
+							_user$project$Pile_Calendar$At(_p7._0),
+							model));
+				case 'SetNameFilter':
+					return _user$project$Animals_Main$noCmd(
+						A2(_user$project$Animals_Main$model_nameFilter.set, _p7._0, model));
+				case 'SetTagFilter':
+					return _user$project$Animals_Main$noCmd(
+						A2(_user$project$Animals_Main$model_tagFilter.set, _p7._0, model));
+				case 'SetSpeciesFilter':
+					return _user$project$Animals_Main$noCmd(
+						A2(_user$project$Animals_Main$model_speciesFilter.set, _p7._0, model));
+				case 'NoticeAnimalSaveResults':
+					if (_p7._0.ctor === 'Ok') {
+						var _p8 = A2(_elm_lang$core$Dict$get, _p7._0._0._0, model.forms);
+						if (_p8.ctor === 'Nothing') {
+							return _user$project$Animals_Main$noCmd(model);
+						} else {
+							var _v5 = A2(_user$project$Animals_Msg$WithForm, _p8._0, _user$project$Animals_Msg$NoticeSaveResults),
+								_v6 = model;
+							msg = _v5;
+							model = _v6;
+							continue update_;
+						}
+					} else {
+						return _user$project$Animals_Main$noCmd(
+							A3(_user$project$Animals_Main$httpError, 'I could not save the animal.', _p7._0._0, model));
+					}
+				case 'NoticeAnimalCreationResults':
+					if (_p7._0.ctor === 'Ok') {
+						var _p9 = A2(_elm_lang$core$Dict$get, _p7._0._0._0, model.forms);
+						if (_p9.ctor === 'Nothing') {
+							return _user$project$Animals_Main$noCmd(model);
+						} else {
+							var _v8 = A2(
+								_user$project$Animals_Msg$WithForm,
+								_p9._0,
+								_user$project$Animals_Msg$NoticeCreationResults(_p7._0._0._1)),
+								_v9 = model;
+							msg = _v8;
+							model = _v9;
+							continue update_;
+						}
+					} else {
+						return _user$project$Animals_Main$noCmd(
+							A3(_user$project$Animals_Main$httpError, 'I could not create the animal.', _p7._0._0, model));
+					}
+				case 'AddNewAnimals':
+					var template = {
+						id: 'This id MUST be replaced',
+						version: 0,
+						name: '',
+						species: _p7._1,
+						tags: {ctor: '[]'},
+						properties: _elm_lang$core$Dict$empty
+					};
+					return _user$project$Animals_Main$noCmd(
+						A3(_user$project$Animals_Main$addAnimalsLikeThis, _p7._0, template, model));
+				case 'WithAnimal':
+					return A3(
+						_user$project$Animals_Main$applyAfterRemovingFlash,
+						_user$project$Animals_Main$animalOp(_p7._1),
+						_p7._0,
+						model);
+				case 'WithForm':
+					var _p11 = _p7._0;
+					var _p10 = A2(_elm_lang$core$Dict$get, _p11.id, model.animals);
+					if (_p10.ctor === 'Nothing') {
+						return _user$project$Animals_Main$noCmd(model);
+					} else {
+						return A3(
+							_user$project$Animals_Main$applyAfterRemovingFlash,
+							A2(_user$project$Animals_Main$formOp, _p7._1, _p11),
+							_p10._0,
+							model);
+					}
+				default:
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
 						{ctor: '[]'});
-				} else {
-					return _user$project$Animals_Main$noCmd(
-						A3(_user$project$Animals_Main$httpError, 'I could not create the animal.', _p4._0._0, model));
-				}
-			case 'AddNewAnimals':
-				var template = {
-					id: 'This id MUST be replaced',
-					version: 0,
-					name: '',
-					species: _p4._1,
-					tags: {ctor: '[]'},
-					properties: _elm_lang$core$Dict$empty
-				};
-				return _user$project$Animals_Main$noCmd(
-					A3(_user$project$Animals_Main$addAnimalsLikeThis, _p4._0, template, model));
-			case 'WithAnimal':
-				return A3(
-					_user$project$Animals_Main$applyAfterRemovingFlash,
-					_user$project$Animals_Main$animalOp(_p4._1),
-					_p4._0,
-					model);
-			case 'WithForm':
-				var _p6 = _p4._0;
-				var _p5 = A2(_elm_lang$core$Dict$get, _p6.id, model.animals);
-				if (_p5.ctor === 'Nothing') {
-					return _user$project$Animals_Main$noCmd(model);
-				} else {
-					return A3(
-						_user$project$Animals_Main$applyAfterRemovingFlash,
-						A2(_user$project$Animals_Main$formOp, _p4._1, _p6),
-						_p5._0,
-						model);
-				}
-			default:
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{ctor: '[]'});
+			}
 		}
 	});
 var _user$project$Animals_Main$update = F2(

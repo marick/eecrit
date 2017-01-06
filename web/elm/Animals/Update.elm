@@ -1,38 +1,35 @@
-module Animals.Main exposing (..)
+module Animals.Update exposing (..)
 
 import Animals.Model exposing (..)
 import Animals.Msg exposing (..)
 
+import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.OutsideWorld.Define as OutsideWorld
+
+import Animals.Pages.Navigation as Page
+import Animals.Pages.PageFlash as Page
+
 import Animals.Animal.Types as Animal
 import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
-import Animals.Pages.H as Page
-import Animals.Pages.Navigation as Page
-import Animals.Pages.PageFlash as PageFlash
-import Animals.Animal.Flash as AnimalFlash 
 import Animals.Animal.Validation as Validation
 
+import Pile.Calendar exposing (EffectiveDate(..))
+import Pile.Namelike as Namelike
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
-import Navigation
-import String
-import String.Extra as String
+
 import Set exposing (Set)
 import List
 import List.Extra as List
 import Dict exposing (Dict)
-import Date exposing (Date)
-import Pile.Calendar exposing (EffectiveDate(..))
-import Pile.Namelike as Namelike
-import Pile.UpdatingLens exposing (lens)
 
 -- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  update_ msg (model_pageFlash.set PageFlash.NoFlash model)
+  update_ msg (model_pageFlash.set Page.NoFlash model)
 
 update_ : Msg -> Model -> ( Model, Cmd Msg )
 update_ msg model =
@@ -75,19 +72,6 @@ update_ msg model =
           model |> noCmd -- Todo: a command to log the error
         Just form ->
           update_ (WithForm form <| NoticeCreationResults realId) model
-      -- let
-      --   maybe = Dict.get (Debug.log "responsre" tempId) model.animals
-      -- in
-      --   case (Debug.log "fetched" maybe) of
-      --       Nothing ->
-      --         model ! [] -- impossible
-      --       Just displayed ->
-      --         ( displayed.animal
-      --             |> Animal.expanded
-      --             |> Animal.andFlash (displayed_flash.get displayed)
-      --             |> recordAnimalManipulation model
-      --         , Cmd.none
-      --         )
 
     -- TODO: Make this an animal flash instead of a page flash?
     -- More noticeable, but only works if there's just one animal being
@@ -230,7 +214,7 @@ formOp op form displayed model =
           |> upsertAnimal newDisplayed
           |> model_addPageAnimals.update (Set.remove originalId)
           |> model_allPageAnimals.update (Set.insert realId)
-          |> model_pageFlash.set PageFlash.SavedAnimalFlash
+          |> model_pageFlash.set Page.SavedAnimalFlash
           |> noCmd
 
 -----------------------          
@@ -245,14 +229,6 @@ saveCmd : (Animal.Animal -> Cmd Msg) -> (Model, Animal.Animal) -> (Model, Cmd Ms
 saveCmd f (model, dataToSave) =
   ( model, f dataToSave)
 
-          
-lookupAndDo id f model =
-  let
-    get field = model |> field |> Dict.get id
-  in
-    Maybe.map2 (f model) (get .animals) (get .forms)
-      |> Maybe.withDefault model 
-
 
 displayedAnimalFromForm form =
   { animal = Form.appliedForm form
@@ -261,8 +237,6 @@ displayedAnimalFromForm form =
   }
 
       
-
-setFormat = displayedAnimal_format.set
 
 addAnimalsLikeThis count templateAnimal model = 
   let
@@ -312,7 +286,7 @@ formDict forms =
              
 
 httpError contextString err model = 
-  model_pageFlash.set (PageFlash.HttpErrorFlash contextString err) model
+  model_pageFlash.set (Page.HttpErrorFlash contextString err) model
 
 noCmd model = model ! []
 

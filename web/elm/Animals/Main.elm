@@ -134,12 +134,6 @@ update_ msg model =
     NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id version)) ->
       model |> lookupAndDo id (recordSuccessfulSave version) |> noCmd 
 
-    -- TODO: Make this an animal flash instead of a page flash?
-    -- More noticeable, but only works if there's just one animal being
-    -- saved at a time. 
-    NoticeAnimalSaveResults (Err e) ->
-      model |> httpError "I could not save the animal." e |> noCmd
-
     NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
       model ! []
       -- let
@@ -155,6 +149,12 @@ update_ msg model =
       --             |> recordAnimalManipulation model
       --         , Cmd.none
       --         )
+
+    -- TODO: Make this an animal flash instead of a page flash?
+    -- More noticeable, but only works if there's just one animal being
+    -- saved at a time. 
+    NoticeAnimalSaveResults (Err e) ->
+      model |> httpError "I could not save the animal." e |> noCmd
 
     NoticeAnimalCreationResults (Err e) ->
       model |> httpError "I could not create the animal." e |> noCmd
@@ -230,14 +230,7 @@ formOp op form displayed model =
       in
         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
     StartSavingEdits ->
-      let
-        newForm = form_status.set BeingSaved form
-        valuesToSave = Form.appliedForm form displayed.animal
-      in
-      ( model |> upsertForm newForm
-      , OutsideWorld.saveAnimal valuesToSave
-      )
-
+      model |> withSavedForm form displayed |> saveCmd OutsideWorld.saveAnimal
 
     CancelCreation ->
       let
@@ -250,10 +243,7 @@ formOp op form displayed model =
           |> noCmd
           
     StartCreating ->
-      model |> noCmd
-    --   ( recordAnimalManipulation model displayed
-    --   , OutsideWorld.createAnimal displayed.animal
-    --   )
+      model |> withSavedForm form displayed |> saveCmd OutsideWorld.createAnimal
 
     NameFieldUpdate s ->
       let
@@ -287,6 +277,15 @@ formOp op form displayed model =
 
 -----------------------          
 
+withSavedForm : Animal.Form -> Animal.DisplayedAnimal -> Model
+              -> (Model, Animal.Animal)
+withSavedForm form displayed model =
+  ( model |> upsertForm (form_status.set BeingSaved form)
+  , Form.appliedForm form displayed.animal
+  )
+
+saveCmd f (model, dataToSave) =
+  ( model, f dataToSave)
 
           
 lookupAndDo id f model =

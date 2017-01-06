@@ -6,7 +6,7 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld.Declare as OutsideWorld
 import Animals.OutsideWorld.Define as OutsideWorld
 
-import Animals.Pages.Navigation as Page
+import Animals.Pages.Update as Page
 import Animals.Pages.PageFlash as Page
 
 import Animals.Animal.Types as Animal
@@ -15,6 +15,7 @@ import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
 import Animals.Animal.Validation as Validation
 
+import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.Namelike as Namelike
 import Pile.Bulma as Bulma exposing
@@ -34,12 +35,6 @@ update msg model =
 update_ : Msg -> Model -> ( Model, Cmd Msg )
 update_ msg model =
   case msg of
-    NoticePageChange location ->
-      model |> model_page.set (Page.fromLocation location) |> noCmd
-      
-    StartPageChange page ->
-      ( model, Page.toPageChangeCmd page )
-      
     SetToday value ->
       model |> model_today.set value |> noCmd
     SetAnimals (Ok animals) ->
@@ -106,6 +101,9 @@ update_ msg model =
         Just displayed ->
           applyAfterRemovingFlash (formOp op form) displayed model 
 
+    Page msg ->
+      Page.update msg model
+      
     NoOp ->
       model ! []
 
@@ -153,7 +151,7 @@ formOp op form displayed model =
       in
         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
     StartSavingEdits ->
-      model |> withSavedForm form |> saveCmd OutsideWorld.saveAnimal
+      model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
 
     CancelCreation ->
       let
@@ -166,7 +164,7 @@ formOp op form displayed model =
           |> noCmd
           
     StartCreating ->
-      model |> withSavedForm form |> saveCmd OutsideWorld.createAnimal
+      model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
 
     NameFieldUpdate s ->
       let
@@ -225,11 +223,6 @@ withSavedForm form model =
   , Form.appliedForm form
   )
 
-saveCmd : (Animal.Animal -> Cmd Msg) -> (Model, Animal.Animal) -> (Model, Cmd Msg)
-saveCmd f (model, dataToSave) =
-  ( model, f dataToSave)
-
-
 displayedAnimalFromForm form =
   { animal = Form.appliedForm form
   , format = Animal.Expanded
@@ -287,8 +280,6 @@ formDict forms =
 
 httpError contextString err model = 
   model_pageFlash.set (Page.HttpErrorFlash contextString err) model
-
-noCmd model = model ! []
 
 upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
 upsertAnimal displayed model =

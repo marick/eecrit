@@ -7,7 +7,7 @@ import Animals.View as A
 import Animals.Msg as A
 
 main =
-    Navigation.programWithFlags A.NoticePageChange
+    Navigation.programWithFlags (A.Page << A.NoticeChange)
         { init = A.init
         , view = A.view
         , update = A.update

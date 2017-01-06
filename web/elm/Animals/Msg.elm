@@ -7,13 +7,19 @@ import Date exposing (Date)
 import Navigation
 import Http
 
--- A subtype of Msg. Always used as `WithAnimal <displayedAnimal> <submsg>`
+{-| A subtype of Msg. Always used as `Page <submsg>` -}
+type PageOperation
+  = NoticeChange Navigation.Location
+  | StartChange PageChoice
+
+{-| A subtype of Msg. Always used as `WithAnimal <aDisplayedAnimal> <submsg>` -}
 type AnimalOperation
   = RemoveFlash
   | SwitchToReadOnly Animal.Format
   | StartEditing
   | MoreLikeThis
 
+{-| A subtype of Msg. Always used as `WithForm <aForm> <submsg>` -}
 type FormOperation
   = CancelEdits
   | StartSavingEdits
@@ -30,8 +36,11 @@ type FormOperation
 
 
 type Msg
-  = NoticePageChange Navigation.Location
-  | StartPageChange PageChoice
+  = NoOp
+
+  | WithAnimal Animal.DisplayedAnimal AnimalOperation
+  | WithForm Animal.Form FormOperation
+  | Page PageOperation
 
   | SetToday (Maybe Date)
   | SetAnimals (Result Http.Error (List Animal))
@@ -47,8 +56,4 @@ type Msg
   | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
 
   | AddNewAnimals Int String
-
-  | WithAnimal Animal.DisplayedAnimal AnimalOperation
-  | WithForm Animal.Form FormOperation
-  | NoOp
 

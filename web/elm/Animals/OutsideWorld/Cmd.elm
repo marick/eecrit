@@ -20,7 +20,7 @@ fetchAnimals =
     url = "/api/v2animals"
     request = Http.get url (Json.withinData Json.decodeAnimals)
   in
-    Http.send SetAnimals request
+    Http.send (handleResult "I could not retrieve animals." SetAnimals) request
 
 saveAnimal animal =
   let
@@ -37,3 +37,10 @@ createAnimal animal =
     request = Http.post url body (Json.withinData Json.decodeCreationResult)
   in
     Http.send NoticeAnimalCreationResults request
+
+handleResult failureContext successF result =
+  case result of
+    Ok data ->
+      successF data
+    Err e ->
+      Incoming (HttpError failureContext e)

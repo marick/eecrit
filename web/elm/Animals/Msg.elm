@@ -48,7 +48,7 @@ type Msg
   | Incoming OutsideLeakageOperation 
 
   | SetToday (Maybe Date)
-  | SetAnimals (Result Http.Error (List Animal))
+  | SetAnimals (List Animal)
 
   | ToggleDatePicker
   | SelectDate Date

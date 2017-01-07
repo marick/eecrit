@@ -5,6 +5,7 @@ import Animals.Msg exposing (..)
 
 import Animals.OutsideWorld.H as OutsideWorld
 import Animals.OutsideWorld.Cmd as OutsideWorld
+import Animals.OutsideWorld.Update as OutsideWorld
 
 import Animals.Pages.Update as Page
 import Animals.Pages.PageFlash as Page
@@ -37,10 +38,8 @@ updateWithClearedFlash msg model =
   case msg of
     SetToday value ->
       model |> model_today.set value |> noCmd
-    SetAnimals (Ok animals) ->
+    SetAnimals animals ->
       model |> populateAllAnimalsPage animals |> noCmd
-    SetAnimals (Err e) ->
-      model |> httpError "I could not retrieve animals." e |> noCmd
 
     ToggleDatePicker ->
       model |> model_datePickerOpen.update not |> noCmd
@@ -93,11 +92,11 @@ updateWithClearedFlash msg model =
         Just displayed ->
           applyAfterRemovingFlash (formOp op form) displayed model 
 
-    Page msg ->
-      Page.update msg model
+    Page op ->
+      Page.update op model
 
-    Incoming msg ->
-      model ! []
+    Incoming op ->
+      OutsideWorld.update op model
         
     NoOp ->
       model ! []

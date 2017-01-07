@@ -95,7 +95,10 @@ updateWithClearedFlash msg model =
 
     Page msg ->
       Page.update msg model
-      
+
+    Incoming msg ->
+      model ! []
+        
     NoOp ->
       model ! []
 

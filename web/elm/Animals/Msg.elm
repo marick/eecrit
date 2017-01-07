@@ -12,6 +12,10 @@ type PageOperation
   = NoticeChange Navigation.Location
   | StartChange PageChoice
 
+{-| Outside operation leakage -}
+type OutsideLeakageOperation
+  = HttpError String Http.Error
+
 {-| A subtype of Msg. Always used as `WithAnimal <aDisplayedAnimal> <submsg>` -}
 type AnimalOperation
   = RemoveFlash
@@ -41,6 +45,7 @@ type Msg
   | WithAnimal Animal.DisplayedAnimal AnimalOperation
   | WithForm Animal.Form FormOperation
   | Page PageOperation
+  | Incoming OutsideLeakageOperation 
 
   | SetToday (Maybe Date)
   | SetAnimals (Result Http.Error (List Animal))

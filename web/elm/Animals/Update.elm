@@ -53,28 +53,19 @@ updateWithClearedFlash msg model =
     SetSpeciesFilter s ->
       model |> model_speciesFilter.set s |> noCmd
 
-    NoticeAnimalSaveResults (Ok (OutsideWorld.AnimalUpdated id)) ->
+    AnimalGotSaved (OutsideWorld.AnimalUpdated id) ->
       case Dict.get id model.forms of
         Nothing ->
           model |> noCmd -- Todo: a command to log the error
         Just form ->
           updateWithClearedFlash (WithForm form NoticeSaveResults) model
 
-    NoticeAnimalCreationResults (Ok (OutsideWorld.AnimalCreated tempId realId)) ->
+    AnimalGotCreated (OutsideWorld.AnimalCreated tempId realId) ->
       case Dict.get tempId model.forms of
         Nothing ->
           model |> noCmd -- Todo: a command to log the error
         Just form ->
           updateWithClearedFlash (WithForm form <| NoticeCreationResults realId) model
-
-    -- TODO: Make this an animal flash instead of a page flash?
-    -- More noticeable, but only works if there's just one animal being
-    -- saved at a time. 
-    NoticeAnimalSaveResults (Err e) ->
-      model |> httpError "I could not save the animal." e |> noCmd
-
-    NoticeAnimalCreationResults (Err e) ->
-      model |> httpError "I could not create the animal." e |> noCmd
 
     AddNewAnimals count species ->
       let

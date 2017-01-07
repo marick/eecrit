@@ -57,8 +57,8 @@ type Msg
   | SetTagFilter String
   | SetSpeciesFilter String
 
-  | NoticeAnimalSaveResults (Result Http.Error OutsideWorld.AnimalSaveResults)
-  | NoticeAnimalCreationResults (Result Http.Error OutsideWorld.AnimalCreationResults)
+  | AnimalGotSaved OutsideWorld.AnimalSaveResults
+  | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
   | AddNewAnimals Int String
 

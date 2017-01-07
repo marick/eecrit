@@ -1,7 +1,7 @@
 module Animals.OutsideWorld.Json exposing (..)
 
 import Animals.Animal.Types exposing (..)
-import Animals.OutsideWorld.Declare exposing (..)
+import Animals.OutsideWorld.H exposing (..)
 import Date
 import Dict exposing (Dict)
 import Json.Decode as Decode

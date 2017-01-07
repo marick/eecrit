@@ -9,8 +9,8 @@ import Animals.Pages.Navigation as Page
 import Animals.Animal.Types as Animal
 import Animals.Animal.Lenses exposing (..)
 
-import Animals.OutsideWorld.Declare as OutsideWorld
-import Animals.OutsideWorld.Define as OutsideWorld
+import Animals.OutsideWorld.H as OutsideWorld
+import Animals.OutsideWorld.Cmd as OutsideWorld
 
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (lens)

@@ -1,4 +1,4 @@
-module Animals.OutsideWorld.Define exposing
+module Animals.OutsideWorld.Cmd exposing
   ( fetchAnimals
   , askTodaysDate
   , saveAnimal
@@ -37,15 +37,3 @@ createAnimal animal =
     request = Http.post url body (Json.withinData Json.decodeCreationResult)
   in
     Http.send NoticeAnimalCreationResults request
-
--- persistNewAnimal animal =
---   Task.perform Ok (Task.succeed { temporaryId = animal.id, newId = "newid" })
-
--- saveAnimal animal = 
---   Task.perform NoticeAnimalSaveResults (Task.succeed (Ok (AnimalUpdated animal.id 83))
-
----
-
-
----
-    

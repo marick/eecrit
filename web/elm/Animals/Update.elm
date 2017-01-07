@@ -3,8 +3,8 @@ module Animals.Update exposing (..)
 import Animals.Model exposing (..)
 import Animals.Msg exposing (..)
 
-import Animals.OutsideWorld.Declare as OutsideWorld
-import Animals.OutsideWorld.Define as OutsideWorld
+import Animals.OutsideWorld.H as OutsideWorld
+import Animals.OutsideWorld.Cmd as OutsideWorld
 
 import Animals.Pages.Update as Page
 import Animals.Pages.PageFlash as Page

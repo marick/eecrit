@@ -125,6 +125,7 @@ animalTransferFormat_to_Animal incoming =
           Dict.map (\_ tuple -> (uncurry unionF) tuple) data
     in
         { id = toString incoming.id
+        , displayFormat = Compact
         , version = incoming.version
         , name = incoming.name
         , species = incoming.species

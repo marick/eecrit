@@ -48,6 +48,7 @@ assumeValid form =
 appliedForm : Form -> Animal
 appliedForm form =
   { id = form.id
+  , displayFormat = Compact
   , version = form.intendedVersion
   , name = form.name.value
   , species = form.species

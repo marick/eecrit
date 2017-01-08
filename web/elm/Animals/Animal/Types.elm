@@ -19,6 +19,7 @@ type DictValue
 
 type alias Animal =
   { id : Id
+  , displayFormat : Format
   , version : Int
   , name : String
   , species : String
@@ -30,6 +31,7 @@ type alias Animal =
 -- make templates nicer.
 empty species =
   { id = "This id MUST be replaced"
+  , displayFormat = Compact
   , version = 0
   , name = ""
   , species = species

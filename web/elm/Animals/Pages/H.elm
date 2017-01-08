@@ -14,8 +14,13 @@ type PageChoice
   | AddPage
   | HelpPage
 
+allPagePath : String
 allPagePath = "/v2/animals"
+
+addPagePath : String
 addPagePath = "/v2/animals/new"
+
+helpPagePath : String
 helpPagePath = "/v2/animals/help"
 
 

@@ -14,51 +14,69 @@ type EffectiveDate
   = Today
   | At Date.Date
 
-view launcher calendarToggleMsg dateSelectedMsg edate =
+
+type alias DateHolder record =
+  { record
+    | effectiveDate : EffectiveDate
+    , today : Maybe Date
+    , datePickerOpen : Bool
+  }
+
+type alias Launcher msg =
+  Bool -> String -> msg -> Html msg
+
+view : Launcher msg -> msg -> (Date -> msg) -> DateHolder record -> Html msg
+
+view launcher calendarToggleMsg dateSelectedMsg holder =
   let
-    min = (bound (-) edate)
-    max = (bound (+) edate)
-    selected = dateToShow edate
+    min = (bound (-) holder)
+    max = (bound (+) holder)
+    selected = dateToShow holder
     calendarBodyView =
-      if edate.datePickerOpen then
+      if holder.datePickerOpen then
         Just (DateSelector.view min max selected |> VirtualDom.map dateSelectedMsg)
       else
         Nothing
   in
     visibilityController
       calendarToggleMsg
-      (launcher edate.datePickerOpen (enhancedDateString edate) calendarToggleMsg)
+      (launcher holder.datePickerOpen (enhancedDateString holder) calendarToggleMsg)
       calendarBodyView
 
   
-enhancedDateString edate =
+enhancedDateString : DateHolder record -> String
+enhancedDateString holder =
   let
     todayIfKnown =
-      case edate.today of
+      case holder.today of
         Nothing ->
           ""
         Just date ->
           Date.Extra.toFormattedString " (MMM d)" date
   in
-    case edate.effectiveDate of
+    case holder.effectiveDate of
       Today -> 
         "Today" ++ todayIfKnown
       At date ->
         Date.Extra.toFormattedString "MMM d, y" date
 
-dateToShow edate =
-  case edate.effectiveDate of 
-    Today -> edate.today
+          
+dateToShow : DateHolder record -> Maybe Date
+dateToShow holder =
+  case holder.effectiveDate of 
+    Today -> holder.today
     At date -> Just date
 
+defaultDate : Date
 defaultDate = Date.Extra.fromCalendarDate 2018 Jan 1
 
-bound shiftFunction edate =
+bound : (number -> number -> Int) -> DateHolder record -> Date
+bound shiftFunction holder =
   let
     shiftByYears date =
       Date.Extra.add Date.Extra.Year (shiftFunction 0 5) date
   in
-    case dateToShow edate of
+    case dateToShow holder of
       Nothing -> shiftByYears defaultDate
       Just date -> shiftByYears date
 

@@ -24,9 +24,13 @@ import String.Extra as String
 
 type alias Namelike = String
 
+isBlank : String -> Bool
 isBlank = String.isBlank
+
+isPresent : String -> Bool
 isPresent = isBlank >> not
 
+canonicalize : String -> String
 canonicalize string =             
   string |> String.clean |> String.toLower
     

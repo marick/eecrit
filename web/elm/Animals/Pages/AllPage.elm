@@ -4,14 +4,13 @@ import Dict
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import Set
-import String
-import String.Extra as String
+import Set exposing (Set)
 
 import Pile.Bulma as Bulma
 import Pile.Namelike as Namelike
 import Pile.Calendar as Calendar
-import Pile.HtmlShorthand exposing (..)
+
+import Animals.Model exposing (Model)
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
@@ -22,13 +21,15 @@ import Animals.Animal.EditableView as RW
 import Animals.Pages.PageFlash as PageFlash
 
 
+view : Model -> Html Msg
 view model =
   div []
     [ filterView model
     , PageFlash.show model.pageFlash
     , Bulma.headerlessTable <| animalViews model
     ]
-    
+
+animalViews : Model -> List (Html Msg)    
 animalViews model =
   let
     displayedAnimals = pageAnimals .allPageAnimals model
@@ -38,6 +39,7 @@ animalViews model =
       |> applyFilters model
       |> List.map animalViewer
     
+filterView : Model -> Html Msg
 filterView model =
   Bulma.centeredColumns
     [ Bulma.column 3
@@ -62,6 +64,7 @@ filterView model =
       ]
     ]
 
+pageAnimals : (Model -> Set Id) -> Model -> List DisplayedAnimal
 pageAnimals pageAnimalsGetter model =
   model
     |> pageAnimalsGetter
@@ -69,6 +72,7 @@ pageAnimals pageAnimalsGetter model =
     |> List.map (\ animal -> Dict.get animal model.animals)
     |> List.filterMap identity
 
+applyFilters : Model -> List DisplayedAnimal -> List DisplayedAnimal
 applyFilters model animals = 
   let
     rightSpecies displayed =
@@ -86,6 +90,7 @@ applyFilters model animals =
       |> Namelike.sortByName displayedAnimal_name.get
 
 
+aggregateFilter : List (DisplayedAnimal -> Bool) -> DisplayedAnimal -> Bool
 aggregateFilter preds animal =
   case preds of
     [] ->
@@ -95,7 +100,9 @@ aggregateFilter preds animal =
         aggregateFilter ps animal
       else
         False
-         
+
+individualAnimalView : Model -> (FormOperation, FormOperation) -> DisplayedAnimal
+                     -> Html Msg
 individualAnimalView model formActions displayedAnimal  =
   case displayedAnimal.format of
     Compact ->
@@ -111,6 +118,7 @@ individualAnimalView model formActions displayedAnimal  =
       in
         RW.editableView displayedAnimal form formActions 
 
+animalForm : Model -> Animal -> Form
 animalForm model animal =
   Dict.get animal.id model.forms
     |> Maybe.withDefault Form.nullForm -- impossible case
@@ -118,6 +126,7 @@ animalForm model animal =
 
 -- The calendar
 
+dateControl : Bool -> String -> msg -> Html msg
 dateControl hasOpenPicker displayString calendarToggleMsg =
   let
     iconF =
@@ -132,18 +141,21 @@ dateControl hasOpenPicker displayString calendarToggleMsg =
 
 -- Filters
 
+nameFilter : Model -> Html Msg
 nameFilter model =
   Bulma.centeredLevelItem
     [ Bulma.headingP "Name"
     , Bulma.simpleTextInput model.nameFilter SetNameFilter
     ]
 
+tagsFilter : Model -> Html Msg
 tagsFilter model =
   Bulma.centeredLevelItem
     [ Bulma.headingP "Tag"
     , Bulma.simpleTextInput model.tagFilter SetTagFilter
     ]
 
+speciesFilter : Model -> Html Msg
 speciesFilter model =
   let 
     textOption val display = 
@@ -166,10 +178,11 @@ speciesFilter model =
 
 -- Various icons
     
-      
+calendarHelp : Bulma.IconExpander Msg -> Html Msg
 calendarHelp iconType = 
   iconType "fa-question-circle" "Help on animals and dates" NoOp
 
+filterHelp : Bulma.IconExpander Msg -> Html Msg
 filterHelp iconType = 
   iconType "fa-question-circle" "Help on filtering" NoOp    
 

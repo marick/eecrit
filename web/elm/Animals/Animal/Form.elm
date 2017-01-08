@@ -1,21 +1,13 @@
 module Animals.Animal.Form exposing (..)
 
 import Dict
-import Html exposing (..)
-import List
-import List.Extra as List
-import String
 import Pile.Namelike as Namelike
 
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
-import Pile.HtmlShorthand exposing (..)
 
-import Animals.Msg exposing (..)
 import Animals.Animal.Types exposing (..)
-import Animals.Animal.Constructors exposing (..)
 import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
-import Animals.Animal.Lenses exposing (..)
 
 extractForm : Animal -> Form
 extractForm animal =
@@ -29,7 +21,8 @@ extractForm animal =
   , properties = animal.properties
   }
 
--- This is used as the default value in "impossible" cases.  
+-- This is used as the default value in "impossible" cases.
+nullForm : Form
 nullForm =
   { status = SomeBad
   , id = "impossible"

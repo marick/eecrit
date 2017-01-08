@@ -7,9 +7,11 @@ import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Pile.Bulma as Bulma
 
+import Animals.Model exposing (Model)
 import Animals.Pages.PageFlash as PageFlash
 import Animals.Msg exposing (..)
 
+view : Model -> Html Msg
 view model =
   div []
     [ nav [class "level is-mobile"]
@@ -35,7 +37,7 @@ view model =
             , p [class "level-item"]
               [ a [ class "button is-primary"
                   , href "#"
-                  , onClickWithoutPropagation <| AddNewAnimals 1 "bovine"
+                  , onClickPreventingDefault <| AddNewAnimals 1 "bovine"
                   ]
                   [text "Now"]]
             ]
@@ -44,6 +46,7 @@ view model =
     , Bulma.headerlessTable <| animalViews model
     ]
 
+animalViews : Model -> List (Html Msg)    
 animalViews model =
   let
     displayedAnimals = Common.pageAnimals .addPageAnimals model

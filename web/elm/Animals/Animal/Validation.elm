@@ -1,7 +1,6 @@
 module Animals.Animal.Validation exposing (..)
 
 import Dict exposing (Dict)
-import String
 import List.Extra as List
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))

@@ -1,20 +1,16 @@
 module Animals.Animal.EditableView exposing (editableView)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 import Html.Events as Events
 
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
-import Set
 
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Animal.Icons as Icon
 import Animals.Animal.Flash as Flash
-import Animals.Animal.Form as Form
-import Animals.Animal.Lenses exposing (..)
 
 editableView : DisplayedAnimal -> Form -> (FormOperation, FormOperation) -> Html Msg
 editableView displayed form (saveOp, cancelOp) =
@@ -47,6 +43,7 @@ nameEditControl displayed form =
     form.name
     [ Events.onInput (WithForm form << NameFieldUpdate) ]
 
+deleteTagControl : DisplayedAnimal -> Form -> Html Msg
 deleteTagControl displayed form =
   let
     onDelete name = WithForm form (DeleteTag name)
@@ -55,6 +52,7 @@ deleteTagControl displayed form =
       (List.map (Bulma.deletableTag form.status onDelete) form.tags)
 
 
+newTagControl : DisplayedAnimal -> Form -> Html Msg
 newTagControl displayed form =
   let
     onInput = WithForm form << TentativeTagUpdate

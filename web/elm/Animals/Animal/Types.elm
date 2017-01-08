@@ -7,7 +7,6 @@ import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
 import Pile.Bulma exposing (FormValue, FormStatus)
 import Dict exposing (Dict)
 import Date exposing (Date)
-import Set exposing (Set)
 
 type alias Id = String
 
@@ -38,6 +37,7 @@ empty species =
   , properties = Dict.empty
   }
 
+type alias Properties = Dict String DictValue
   
 type alias Form = 
   { id : Id
@@ -46,7 +46,7 @@ type alias Form =
   , name : FormValue String
   , tags : List String
   , tentativeTag : String
-  , properties : Dict String DictValue
+  , properties : Properties
   , status : FormStatus
   }
 

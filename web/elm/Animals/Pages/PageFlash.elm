@@ -27,6 +27,7 @@ show flash =
     HttpErrorFlash contextString err ->
       httpError contextString err
 
+httpError : String -> Error -> Html Msg
 httpError contextString err =
   let
     errText =

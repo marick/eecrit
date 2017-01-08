@@ -1,10 +1,8 @@
 module Animals.Animal.ReadOnlyViews exposing (compactView, expandedView)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 
 import Pile.Bulma as Bulma 
-import Pile.HtmlShorthand exposing (..)
 
 import Animals.Msg exposing (..)
 
@@ -13,8 +11,6 @@ import Animals.Animal.Flash as AnimalFlash
 
 import Dict
 import List
-import String
-import String.Extra as String
 
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
@@ -56,6 +52,7 @@ expandedView displayedAnimal =
       
 -- Util
 
+animalProperties : Animal -> List (Html msg)
 animalProperties animal =
   let
     row (key, value) = 
@@ -67,12 +64,14 @@ animalProperties animal =
   in
       List.map row propertyPairs
 
+propertyDisplayValue : DictValue -> List (Html msg)
 propertyDisplayValue value =     
   case value of
     AsBool b m -> boolExplanation b m
     AsString s _ -> [text s]
     _ -> [text "unimplemented"]
 
+boolExplanation : Bool -> String -> List (Html msg)
 boolExplanation b explanation = 
   let
     icon = case b of
@@ -86,12 +85,15 @@ boolExplanation b explanation =
 
 
 
+animalSalutation : Animal -> Html msg
 animalSalutation animal =
   text <| animal.name ++ (parentheticalSpecies animal)
 
+animalTags : Animal -> List (Html Msg)
 animalTags animal =
   List.map Bulma.readOnlyTag animal.tags
 
+parentheticalSpecies : Animal -> String
 parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
 

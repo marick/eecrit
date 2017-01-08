@@ -6,6 +6,7 @@ import Animals.Update as A
 import Animals.View as A
 import Animals.Msg as A
 
+main : Program A.Flags A.Model A.Msg
 main =
     Navigation.programWithFlags (A.Page << A.NoticeChange)
         { init = A.init

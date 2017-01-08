@@ -96,6 +96,10 @@ updateWithClearedFlash msg model =
 -- Add some inefficiency to make sure that flashes are always removed.
 -- (Inefficiency: many ops will change the displayed animal, so the `upsert`
 -- is duplicative.)
+applyAfterRemovingFlash
+  : (Animal.DisplayedAnimal -> Model -> (Model, Cmd msg))
+  -> Animal.DisplayedAnimal -> Model
+  -> (Model, Cmd msg)
 applyAfterRemovingFlash f displayed model =
   let
     newAnimal = noFlash displayed
@@ -206,6 +210,7 @@ withSavedForm form model =
   , Form.appliedForm form
   )
 
+displayedAnimalFromForm : Animal.Form -> Animal.DisplayedAnimal  
 displayedAnimalFromForm form =
   { animal = Form.appliedForm form
   , format = Animal.Expanded
@@ -214,6 +219,7 @@ displayedAnimalFromForm form =
 
       
 
+addAnimalsLikeThis : Int -> Animal.Animal -> Model -> Model
 addAnimalsLikeThis count templateAnimal model = 
   let
     (ids, newModel) =
@@ -261,10 +267,7 @@ formDict forms =
     List.map2 (,) ids forms |> Dict.fromList
              
 
-httpError contextString err model = 
-  model_pageFlash.set (Page.HttpErrorFlash contextString err) model
-
-
+freshIds : Int -> Model -> (List Animal.Id, Model)    
 freshIds n model =
   let 
     uniquePrefix = "New_animal_"

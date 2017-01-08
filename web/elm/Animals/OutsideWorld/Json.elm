@@ -2,7 +2,6 @@ module Animals.OutsideWorld.Json exposing (..)
 
 import Animals.Animal.Types exposing (..)
 import Animals.OutsideWorld.H exposing (..)
-import Date
 import Dict exposing (Dict)
 import Json.Decode as Decode
 import Json.Encode as Encode
@@ -23,9 +22,11 @@ decodeAnimal : Decode.Decoder Animal
 decodeAnimal =
   json_to_AnimalTransferFormat |> Decode.map animalTransferFormat_to_Animal 
   
+encodeAnimal : Animal -> Encode.Value
 encodeAnimal =
   animal_to_animalTransferFormat >> animalTransferFormat_to_json
 
+decodeSaveResult : Decode.Decoder AnimalSaveResults
 decodeSaveResult =
   let 
     to_transferFormat =
@@ -37,6 +38,7 @@ decodeSaveResult =
     (to_transferFormat |> Decode.map from_transferFormat)
 
 
+decodeCreationResult : Decode.Decoder AnimalCreationResults
 decodeCreationResult =
   let 
     to_transferFormat =

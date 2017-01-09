@@ -15,6 +15,7 @@ import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
 import Animals.Animal.Validation as Validation
+import Animals.Animal.Flash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
@@ -244,10 +245,18 @@ addAnimalsLikeThis count templateAnimal model =
 
 populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
-  { model
-    | animals = displayedAnimalDict animals Animal.compact
-    , allPageAnimals = List.map .id animals |> Set.fromList 
-  }
+  let
+    ids =
+      List.map .id animals
+    compactify animal =
+      Animal.Displayed (Animal.Viewable animal) AnimalFlash.NoFlash
+    displayeds =
+      List.map compactify animals
+  in
+    { model
+      | displayed = List.map2 (,) ids displayeds |> Dict.fromList
+      , allPageAnimals = List.map .id animals |> Set.fromList 
+    }
 
 displayedAnimalDict : List Animal.Animal -> (Animal.Animal -> Animal.DisplayedAnimal) -> Dict Animal.Id Animal.DisplayedAnimal
 displayedAnimalDict animals displayedMaker =

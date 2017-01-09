@@ -21047,19 +21047,9 @@ var _user$project$Animals_Animal_Flash$SavedIncompleteTag = function (a) {
 };
 var _user$project$Animals_Animal_Flash$NoFlash = {ctor: 'NoFlash'};
 
-var _user$project$Animals_Animal_Types$empty = function (species) {
-	return {
-		id: 'This id MUST be replaced',
-		version: 0,
-		name: '',
-		species: species,
-		tags: {ctor: '[]'},
-		properties: _elm_lang$core$Dict$empty
-	};
-};
-var _user$project$Animals_Animal_Types$Animal = F6(
-	function (a, b, c, d, e, f) {
-		return {id: a, version: b, name: c, species: d, tags: e, properties: f};
+var _user$project$Animals_Animal_Types$Animal = F7(
+	function (a, b, c, d, e, f, g) {
+		return {id: a, displayFormat: b, version: c, name: d, species: e, tags: f, properties: g};
 	});
 var _user$project$Animals_Animal_Types$Form = F8(
 	function (a, b, c, d, e, f, g, h) {
@@ -21072,6 +21062,10 @@ var _user$project$Animals_Animal_Types$DisplayedAnimal = F3(
 var _user$project$Animals_Animal_Types$ValidationContext = function (a) {
 	return {disallowedNames: a};
 };
+var _user$project$Animals_Animal_Types$Displayed = F2(
+	function (a, b) {
+		return {view: a, animalFlash: b};
+	});
 var _user$project$Animals_Animal_Types$AsBool = F2(
 	function (a, b) {
 		return {ctor: 'AsBool', _0: a, _1: b};
@@ -21095,6 +21089,23 @@ var _user$project$Animals_Animal_Types$AsInt = F2(
 var _user$project$Animals_Animal_Types$Editable = {ctor: 'Editable'};
 var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
 var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
+var _user$project$Animals_Animal_Types$empty = function (species) {
+	return {
+		id: 'This id MUST be replaced',
+		displayFormat: _user$project$Animals_Animal_Types$Compact,
+		version: 0,
+		name: '',
+		species: species,
+		tags: {ctor: '[]'},
+		properties: _elm_lang$core$Dict$empty
+	};
+};
+var _user$project$Animals_Animal_Types$Viewable = function (a) {
+	return {ctor: 'Viewable', _0: a};
+};
+var _user$project$Animals_Animal_Types$Writable = function (a) {
+	return {ctor: 'Writable', _0: a};
+};
 
 var _user$project$Animals_OutsideWorld_H$AnimalUpdated = function (a) {
 	return {ctor: 'AnimalUpdated', _0: a};
@@ -21617,6 +21628,7 @@ var _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_Animal = fun
 		});
 	return {
 		id: _elm_lang$core$Basics$toString(incoming.id),
+		displayFormat: _user$project$Animals_Animal_Types$Compact,
 		version: incoming.version,
 		name: incoming.name,
 		species: incoming.species,
@@ -22178,6 +22190,7 @@ var _user$project$Animals_Model$init = F2(
 			csrfToken: flags.csrfToken,
 			animals: _elm_lang$core$Dict$empty,
 			forms: _elm_lang$core$Dict$empty,
+			displayed: _elm_lang$core$Dict$empty,
 			allPageAnimals: _elm_lang$core$Set$empty,
 			nameFilter: '',
 			tagFilter: '',
@@ -22215,7 +22228,9 @@ var _user$project$Animals_Model$Model = function (a) {
 											return function (l) {
 												return function (m) {
 													return function (n) {
-														return {page: a, pageFlash: b, csrfToken: c, animals: d, forms: e, allPageAnimals: f, nameFilter: g, tagFilter: h, speciesFilter: i, effectiveDate: j, today: k, datePickerOpen: l, addPageAnimals: m, animalsEverAdded: n};
+														return function (o) {
+															return {page: a, pageFlash: b, csrfToken: c, animals: d, displayed: e, forms: f, allPageAnimals: g, nameFilter: h, tagFilter: i, speciesFilter: j, effectiveDate: k, today: l, datePickerOpen: m, addPageAnimals: n, animalsEverAdded: o};
+														};
 													};
 												};
 											};
@@ -22357,6 +22372,7 @@ var _user$project$Animals_Animal_Form$saveFlash = function (form) {
 var _user$project$Animals_Animal_Form$appliedForm = function (form) {
 	return {
 		id: form.id,
+		displayFormat: _user$project$Animals_Animal_Types$Compact,
 		version: form.intendedVersion,
 		name: form.name.value,
 		species: form.species,
@@ -22515,10 +22531,31 @@ var _user$project$Animals_Update$displayedAnimalDict = F2(
 	});
 var _user$project$Animals_Update$populateAllAnimalsPage = F2(
 	function (animals, model) {
+		var compactify = function (animal) {
+			return A2(
+				_user$project$Animals_Animal_Types$Displayed,
+				_user$project$Animals_Animal_Types$Viewable(animal),
+				_user$project$Animals_Animal_Flash$NoFlash);
+		};
+		var displayeds = A2(_elm_lang$core$List$map, compactify, animals);
+		var ids = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.id;
+			},
+			animals);
 		return _elm_lang$core$Native_Utils.update(
 			model,
 			{
-				animals: A2(_user$project$Animals_Update$displayedAnimalDict, animals, _user$project$Animals_Animal_Constructors$compact),
+				displayed: _elm_lang$core$Dict$fromList(
+					A3(
+						_elm_lang$core$List$map2,
+						F2(
+							function (v0, v1) {
+								return {ctor: '_Tuple2', _0: v0, _1: v1};
+							}),
+						ids,
+						displayeds)),
 				allPageAnimals: _elm_lang$core$Set$fromList(
 					A2(
 						_elm_lang$core$List$map,
@@ -22840,6 +22877,186 @@ var _user$project$Animals_Animal_Icons$expand = F2(
 				_user$project$Animals_Msg$WithAnimal,
 				displayed,
 				_user$project$Animals_Msg$SwitchToReadOnly(_user$project$Animals_Animal_Types$Expanded)));
+	});
+
+var _user$project$Animals_Animal_FormView$view = F3(
+	function (form, flash, _p0) {
+		var _p1 = _p0;
+		return A2(
+			_user$project$Pile_Bulma$highlightedRow,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{ctor: '[]'},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$td,
+							{ctor: '[]'},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Animals_Animal_Icons$editHelp(_user$project$Pile_Bulma$tdIcon),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+	});
+
+var _user$project$Animals_Animal_AnimalView$parentheticalSpecies = function (animal) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		' (',
+		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
+};
+var _user$project$Animals_Animal_AnimalView$animalTags = function (animal) {
+	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
+};
+var _user$project$Animals_Animal_AnimalView$animalSalutation = function (animal) {
+	return _elm_lang$html$Html$text(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			animal.name,
+			_user$project$Animals_Animal_AnimalView$parentheticalSpecies(animal)));
+};
+var _user$project$Animals_Animal_AnimalView$boolExplanation = F2(
+	function (b, explanation) {
+		var suffix = function () {
+			var _p0 = explanation;
+			if (_p0 === '') {
+				return '';
+			} else {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					' (',
+					A2(_elm_lang$core$Basics_ops['++'], _p0, ')'));
+			}
+		}();
+		var icon = function () {
+			var _p1 = b;
+			if (_p1 === true) {
+				return _user$project$Pile_Bulma$trueIcon;
+			} else {
+				return _user$project$Pile_Bulma$falseIcon;
+			}
+		}();
+		return {
+			ctor: '::',
+			_0: icon,
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(suffix),
+				_1: {ctor: '[]'}
+			}
+		};
+	});
+var _user$project$Animals_Animal_AnimalView$propertyDisplayValue = function (value) {
+	var _p2 = value;
+	switch (_p2.ctor) {
+		case 'AsBool':
+			return A2(_user$project$Animals_Animal_AnimalView$boolExplanation, _p2._0, _p2._1);
+		case 'AsString':
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(_p2._0),
+				_1: {ctor: '[]'}
+			};
+		default:
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('unimplemented'),
+				_1: {ctor: '[]'}
+			};
+	}
+};
+var _user$project$Animals_Animal_AnimalView$animalProperties = function (animal) {
+	var propertyPairs = _elm_lang$core$Dict$toList(animal.properties);
+	var row = function (_p3) {
+		var _p4 = _p3;
+		return A2(
+			_elm_lang$html$Html$tr,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p4._0),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{ctor: '[]'},
+						_user$project$Animals_Animal_AnimalView$propertyDisplayValue(_p4._1)),
+					_1: {ctor: '[]'}
+				}
+			});
+	};
+	return A2(_elm_lang$core$List$map, row, propertyPairs);
+};
+var _user$project$Animals_Animal_AnimalView$expandedView = F2(
+	function (animal, flash) {
+		return A2(
+			_user$project$Pile_Bulma$highlightedRow,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Animals_Animal_AnimalView$animalSalutation(animal),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Animals_Animal_AnimalView$compactView = F2(
+	function (animal, flash) {
+		return A2(
+			_elm_lang$html$Html$tr,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Animals_Animal_AnimalView$animalSalutation(animal),
+								_1: _user$project$Animals_Animal_AnimalView$animalTags(animal)
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
 	});
 
 var _user$project$Animals_Animal_ReadOnlyViews$parentheticalSpecies = function (animal) {
@@ -23418,21 +23635,49 @@ var _user$project$Animals_Pages_AllPage$filterView = function (model) {
 			}
 		});
 };
+var _user$project$Animals_Pages_AllPage$individualAnimalView_v2 = F3(
+	function (model, formActions, displayed) {
+		var _p3 = displayed.view;
+		if (_p3.ctor === 'Writable') {
+			return A3(_user$project$Animals_Animal_FormView$view, _p3._0, displayed.animalFlash, formActions);
+		} else {
+			var _p5 = _p3._0;
+			var _p4 = _p5.displayFormat;
+			switch (_p4.ctor) {
+				case 'Compact':
+					return A2(_user$project$Animals_Animal_AnimalView$compactView, _p5, displayed.animalFlash);
+				case 'Expanded':
+					return A2(_user$project$Animals_Animal_AnimalView$expandedView, _p5, displayed.animalFlash);
+				default:
+					return A2(_user$project$Animals_Animal_AnimalView$expandedView, _p5, displayed.animalFlash);
+			}
+		}
+	});
+var _user$project$Animals_Pages_AllPage$pageAnimals_v2 = F2(
+	function (pageAnimalsGetter, model) {
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				function (id) {
+					return A2(_elm_lang$core$Dict$get, id, model.displayed);
+				},
+				_elm_lang$core$Set$toList(
+					pageAnimalsGetter(model))));
+	});
 var _user$project$Animals_Pages_AllPage$animalViews = function (model) {
 	var animalViewer = A2(
-		_user$project$Animals_Pages_AllPage$individualAnimalView,
+		_user$project$Animals_Pages_AllPage$individualAnimalView_v2,
 		model,
 		{ctor: '_Tuple2', _0: _user$project$Animals_Msg$StartSavingEdits, _1: _user$project$Animals_Msg$CancelEdits});
 	var displayedAnimals = A2(
-		_user$project$Animals_Pages_AllPage$pageAnimals,
+		_user$project$Animals_Pages_AllPage$pageAnimals_v2,
 		function (_) {
 			return _.allPageAnimals;
 		},
 		model);
-	return A2(
-		_elm_lang$core$List$map,
-		animalViewer,
-		A2(_user$project$Animals_Pages_AllPage$applyFilters, model, displayedAnimals));
+	return A2(_elm_lang$core$List$map, animalViewer, displayedAnimals);
 };
 var _user$project$Animals_Pages_AllPage$view = function (model) {
 	return A2(

@@ -16,6 +16,11 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form
 import Animals.Msg exposing (..)
+
+import Animals.Animal.FormView as FormView
+import Animals.Animal.AnimalView as AnimalView
+
+-- Delete thest 
 import Animals.Animal.ReadOnlyViews as RO
 import Animals.Animal.EditableView as RW
 import Animals.Pages.PageFlash as PageFlash
@@ -32,13 +37,38 @@ view model =
 animalViews : Model -> List (Html Msg)    
 animalViews model =
   let
-    displayedAnimals = pageAnimals .allPageAnimals model
-    animalViewer = individualAnimalView model (StartSavingEdits, CancelEdits)
+    displayed = pageAnimals_v2 .allPageAnimals model
+    animalViewer = individualAnimalView_v2 model (StartSavingEdits, CancelEdits)
   in
-    displayedAnimals
+    displayed
       |> applyFilters model
       |> List.map animalViewer
-    
+
+
+pageAnimals_v2 : (Model -> Set Id) -> Model -> List Displayed
+pageAnimals_v2 pageAnimalsGetter model =
+  model
+    |> pageAnimalsGetter
+    |> Set.toList 
+    |> List.map (\ id -> Dict.get id model.displayed)
+    |> List.filterMap identity
+
+individualAnimalView_v2 : Model -> (FormOperation, FormOperation) -> Displayed
+                     -> Html Msg
+individualAnimalView_v2 model formActions displayed =
+  case displayed.view of
+    Writable form ->
+      FormView.view form displayed.animalFlash formActions 
+    Viewable animal ->
+      case animal.displayFormat of
+        Compact ->
+          AnimalView.compactView animal displayed.animalFlash
+        Expanded ->
+          AnimalView.expandedView animal displayed.animalFlash
+        Editable -> --- TODO: this will be deleted
+          AnimalView.expandedView animal displayed.animalFlash
+
+         
 filterView : Model -> Html Msg
 filterView model =
   Bulma.centeredColumns

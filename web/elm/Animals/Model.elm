@@ -33,6 +33,7 @@ type alias Model =
   , pageFlash : Page.Flash
   , csrfToken : String
   , animals : DisplayDict
+  , displayed : Dict Animal.Id Animal.Displayed
   , forms : FormDict
 
   -- AllPage
@@ -64,6 +65,7 @@ init flags location =
       , csrfToken = flags.csrfToken
       , animals = Dict.empty
       , forms = Dict.empty
+      , displayed = Dict.empty
 
       -- All Animals Page
       , allPageAnimals = Set.empty

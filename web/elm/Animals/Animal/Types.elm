@@ -67,3 +67,14 @@ type alias ValidationContext =
   { disallowedNames : List String
   }
 
+
+--------
+
+type Affordance
+  = Writable Form
+  | Viewable Animal
+
+type alias Displayed =
+  { view : Affordance
+  , animalFlash : AnimalFlash
+  }

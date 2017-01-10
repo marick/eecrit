@@ -20,9 +20,6 @@ import Animals.Msg exposing (..)
 import Animals.Animal.FormView as FormView
 import Animals.Animal.AnimalView as AnimalView
 
--- Delete thest 
-import Animals.Animal.ReadOnlyViews as RO
-import Animals.Animal.EditableView as RW
 import Animals.Pages.PageFlash as PageFlash
 
 
@@ -37,25 +34,25 @@ view model =
 animalViews : Model -> List (Html Msg)    
 animalViews model =
   let
-    displayed = pageAnimals_v2 .allPageAnimals model
-    animalViewer = individualAnimalView_v2 model (StartSavingEdits, CancelEdits)
+    displayed = pageAnimals .allPageAnimals model
+    animalViewer = individualAnimalView model (StartSavingEdits, CancelEdits)
   in
     displayed
       |> applyFilters model
       |> List.map animalViewer
 
 
-pageAnimals_v2 : (Model -> Set Id) -> Model -> List Displayed
-pageAnimals_v2 pageAnimalsGetter model =
+pageAnimals : (Model -> Set Id) -> Model -> List Displayed
+pageAnimals pageAnimalsGetter model =
   model
     |> pageAnimalsGetter
     |> Set.toList 
     |> List.map (\ id -> Dict.get id model.displayables)
     |> List.filterMap identity
 
-individualAnimalView_v2 : Model -> (FormOperation, FormOperation) -> Displayed
+individualAnimalView : Model -> (FormOperation, FormOperation) -> Displayed
                      -> Html Msg
-individualAnimalView_v2 model formActions displayed =
+individualAnimalView model formActions displayed =
   case displayed.view of
     Writable form ->
       FormView.view form displayed.animalFlash formActions 
@@ -65,9 +62,6 @@ individualAnimalView_v2 model formActions displayed =
           AnimalView.compactView animal displayed.animalFlash
         Expanded ->
           AnimalView.expandedView animal displayed.animalFlash
-        Editable -> --- TODO: this will be deleted
-          AnimalView.expandedView animal displayed.animalFlash
-
          
 filterView : Model -> Html Msg
 filterView model =
@@ -93,15 +87,6 @@ filterView model =
           ]
       ]
     ]
-
-pageAnimals : (Model -> Set Id) -> Model -> List DisplayedAnimal
-pageAnimals pageAnimalsGetter model =
-  model
-    |> pageAnimalsGetter
-    |> Set.toList 
-    |> List.map (\ animal -> Dict.get animal model.animals)
-    |> List.filterMap identity
-
 
 applyFilters : Model -> List Displayed -> List Displayed
 applyFilters model xs = 
@@ -131,30 +116,8 @@ aggregateFilter preds animal =
       else
         False
 
-individualAnimalView : Model -> (FormOperation, FormOperation) -> DisplayedAnimal
-                     -> Html Msg
-individualAnimalView model formActions displayedAnimal  =
-  case displayedAnimal.format of
-    Compact ->
-      RO.compactView displayedAnimal
-    Expanded ->
-      RO.expandedView displayedAnimal
-    Editable ->
-      let
-        -- Todo: animalForm currently produces an empty form for the
-        -- "impossible" case of no form corresponding to the being-edited
-        -- animal. Replace that with an an error message.
-        form = animalForm model displayedAnimal.animal
-      in
-        RW.editableView displayedAnimal form formActions 
 
-animalForm : Model -> Animal -> Form
-animalForm model animal =
-  Dict.get animal.id model.forms
-    |> Maybe.withDefault Form.nullForm -- impossible case
-
-
--- The calendar
+-- -- The calendar
 
 dateControl : Bool -> String -> msg -> Html msg
 dateControl hasOpenPicker displayString calendarToggleMsg =
@@ -169,7 +132,7 @@ dateControl hasOpenPicker displayString calendarToggleMsg =
       , iconF calendarToggleMsg
       ]
 
--- Filters
+-- -- Filters
 
 nameFilter : Model -> Html Msg
 nameFilter model =
@@ -206,7 +169,7 @@ speciesFilter model =
       
 
 
--- Various icons
+-- -- Various icons
     
 calendarHelp : Bulma.IconExpander Msg -> Html Msg
 calendarHelp iconType = 

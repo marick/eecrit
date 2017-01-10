@@ -26,7 +26,7 @@ view form flash (saveOp, cancelOp) =
         ]
     , td [] []
     , td [] []
-    , Icon.editHelp Bulma.tdIcon
+    -- , Icon.editHelp Bulma.tdIcon
     ]
     
 

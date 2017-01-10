@@ -55,20 +55,11 @@ type alias Form =
 type Format
   = Compact
   | Expanded
-  | Editable
 
-type alias DisplayedAnimal = 
-  { animal : Animal
-  , format : Format
-  , animalFlash : AnimalFlash
-  }
 
 type alias ValidationContext =
   { disallowedNames : List String
   }
-
-
---------
 
 type Affordance
   = Writable Form

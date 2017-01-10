@@ -27,20 +27,20 @@ animal_properties : UpdatingLens Animal Properties
 animal_properties = lens .properties (\ p w -> { w | properties = p })
 
                     
-displayedAnimal_animal : UpdatingLens DisplayedAnimal Animal
-displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })
+-- displayedAnimal_animal : UpdatingLens DisplayedAnimal Animal
+-- displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })
 
-displayedAnimal_format : UpdatingLens DisplayedAnimal Format
-displayedAnimal_format = lens .format (\ p w -> { w | format = p })
+-- displayedAnimal_format : UpdatingLens DisplayedAnimal Format
+-- displayedAnimal_format = lens .format (\ p w -> { w | format = p })
 
-displayedAnimal_flash : UpdatingLens DisplayedAnimal AnimalFlash
-displayedAnimal_flash = lens .animalFlash (\ p w -> { w | animalFlash = p })
+-- displayedAnimal_flash : UpdatingLens DisplayedAnimal AnimalFlash
+-- displayedAnimal_flash = lens .animalFlash (\ p w -> { w | animalFlash = p })
 
-displayedAnimal_id : UpdatingLens DisplayedAnimal Id
-displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
+-- displayedAnimal_id : UpdatingLens DisplayedAnimal Id
+-- displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
 
-displayedAnimal_name : UpdatingLens DisplayedAnimal String
-displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
+-- displayedAnimal_name : UpdatingLens DisplayedAnimal String
+-- displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
 
 
 formValue_value : UpdatingLens (FormValue t) t

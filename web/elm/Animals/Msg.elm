@@ -16,7 +16,7 @@ type PageOperation
 type OutsideLeakageOperation
   = HttpError String Http.Error
 
-{-| A subtype of Msg. Always used as `WithAnimal <aDisplayedAnimal> <submsg>` -}
+{-| A subtype of Msg. Always used as `WithAnimal <anAnimal> <submsg>` -}
 type AnimalOperation
   = RemoveFlash
   | SwitchToReadOnly Animal.Format
@@ -42,7 +42,7 @@ type FormOperation
 type Msg
   = NoOp
 
-  | WithAnimal Animal.DisplayedAnimal AnimalOperation
+  | WithAnimal Animal.Animal AnimalOperation
   | WithForm Animal.Form FormOperation
   | Page PageOperation
   | Incoming OutsideLeakageOperation 

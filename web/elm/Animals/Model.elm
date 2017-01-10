@@ -20,7 +20,7 @@ import Set exposing (Set)
 import Date exposing (Date)
 
 type alias DisplayDict =
-  Dict Animal.Id Animal.DisplayedAnimal
+  Dict Animal.Id Animal.Displayed
 
 type alias FormDict =     
   Dict Animal.Id Animal.Form
@@ -32,9 +32,7 @@ type alias Model =
   { page : Page.PageChoice
   , pageFlash : Page.Flash
   , csrfToken : String
-  , animals : DisplayDict
-  , displayables : Dict Animal.Id Animal.Displayed
-  , forms : FormDict
+  , displayables : DisplayDict
 
   -- AllPage
   , allPageAnimals : IdSet
@@ -63,8 +61,6 @@ init flags location =
       { page = Page.fromLocation(location)
       , pageFlash = Page.NoFlash
       , csrfToken = flags.csrfToken
-      , animals = Dict.empty
-      , forms = Dict.empty
       , displayables = Dict.empty
 
       -- All Animals Page
@@ -85,36 +81,36 @@ init flags location =
 
 
       
-upsertForm : Animal.Form -> Model -> Model 
-upsertForm form model =
-  let
-    key = form_id.get form
-    newForms = Dict.insert key form model.forms
-  in
-    model_forms.set newForms model
+-- upsertForm : Animal.Form -> Model -> Model 
+-- upsertForm form model =
+--   let
+--     key = form_id.get form
+--     newForms = Dict.insert key form model.forms
+--   in
+--     model_forms.set newForms model
 
-upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
-upsertAnimal displayed model =
-  let
-    key = displayedAnimal_id.get displayed
-    newAnimals = Dict.insert key displayed model.animals
-  in
-    model_animals.set newAnimals model
-deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
-deleteAnimal displayed model =
-  deleteAnimalById (displayedAnimal_id.get displayed) model
+-- upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
+-- upsertAnimal displayed model =
+--   let
+--     key = displayedAnimal_id.get displayed
+--     newAnimals = Dict.insert key displayed model.animals
+--   in
+--     model_animals.set newAnimals model
+-- deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
+-- deleteAnimal displayed model =
+--   deleteAnimalById (displayedAnimal_id.get displayed) model
   
-deleteAnimalById : Animal.Id -> Model -> Model
-deleteAnimalById id model =
-  model_animals.update (Dict.remove id) model
+-- deleteAnimalById : Animal.Id -> Model -> Model
+-- deleteAnimalById id model =
+--   model_animals.update (Dict.remove id) model
   
-deleteForm : Animal.Form -> Model -> Model
-deleteForm form model =
-  deleteFormById (form_id.get form) model
+-- deleteForm : Animal.Form -> Model -> Model
+-- deleteForm form model =
+--   deleteFormById (form_id.get form) model
 
-deleteFormById : Animal.Id -> Model -> Model
-deleteFormById id model =
-    model_forms.update (Dict.remove id) model
+-- deleteFormById : Animal.Id -> Model -> Model
+-- deleteFormById id model =
+--     model_forms.update (Dict.remove id) model
 
 -- Boilerplate Lenses
       
@@ -124,8 +120,8 @@ model_page = lens .page (\ p w -> { w | page = p })
 model_today : UpdatingLens Model (Maybe Date)
 model_today = lens .today (\ p w -> { w | today = p })
 
-model_animals : UpdatingLens Model DisplayDict
-model_animals = lens .animals (\ p w -> { w | animals = p })
+model_displayables : UpdatingLens Model DisplayDict
+model_displayables = lens .displayables (\ p w -> { w | displayables = p })
 
 model_allPageAnimals : UpdatingLens Model IdSet
 model_allPageAnimals = lens .allPageAnimals (\ p w -> { w | allPageAnimals = p })
@@ -135,9 +131,6 @@ model_addPageAnimals = lens .addPageAnimals (\ p w -> { w | addPageAnimals = p }
 
 model_animalsEverAdded : UpdatingLens Model Int
 model_animalsEverAdded = lens .animalsEverAdded (\ p w -> { w | animalsEverAdded = p })
-
-model_forms : UpdatingLens Model FormDict
-model_forms = lens .forms (\ p w -> { w | forms = p })
 
 model_tagFilter : UpdatingLens Model String
 model_tagFilter = lens .tagFilter (\ p w -> { w | tagFilter = p })

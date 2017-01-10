@@ -250,19 +250,18 @@ updateWithClearedFlash msg model =
 
 populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
-   model
---   let
---     ids =
---       List.map .id animals
---     compactify animal =
---       Animal.Displayed (Animal.Viewable animal) AnimalFlash.NoFlash
---     displayeds =
---       List.map compactify animals
---   in
---     { model
---       | displayables = List.map2 (,) ids displayeds |> Dict.fromList
---       , allPageAnimals = List.map .id animals |> Set.fromList 
---     }
+  let
+    ids =
+      List.map .id animals
+    compactify animal =
+      Animal.Displayed (Animal.Viewable animal) AnimalFlash.NoFlash
+    displayeds =
+      List.map compactify animals
+  in
+    { model
+      | displayables = List.map2 (,) ids displayeds |> Dict.fromList
+      , allPageAnimals = List.map .id animals |> Set.fromList 
+    }
 
 -- displayedAnimalDict : List Animal.Animal -> (Animal.Animal -> Animal.DisplayedAnimal) -> Dict Animal.Id Animal.DisplayedAnimal
 -- displayedAnimalDict animals displayedMaker =

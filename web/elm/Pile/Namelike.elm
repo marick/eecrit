@@ -23,14 +23,15 @@ import String
 import String.Extra as String
 
 type alias Namelike = String
+type alias PartialName = String -- Used when filtering by prefix strings
 
-isBlank : String -> Bool
+isBlank : Namelike -> Bool
 isBlank = String.isBlank
 
-isPresent : String -> Bool
+isPresent : Namelike -> Bool
 isPresent = isBlank >> not
 
-canonicalize : String -> String
+canonicalize : Namelike -> Namelike
 canonicalize string =             
   string |> String.clean |> String.toLower
     
@@ -42,9 +43,15 @@ isValidAddition : Namelike -> List Namelike -> Bool
 isValidAddition candidate existing =
   isPresent candidate && not (isMember candidate existing)
 
-isPrefix : Namelike -> Namelike -> Bool
-isPrefix prefix existingName =
-  String.startsWith (canonicalize prefix) (canonicalize existingName)
+isPrefix : PartialName -> Namelike -> Bool
+isPrefix desiredPrefix existingName =
+  String.startsWith (canonicalize desiredPrefix) (canonicalize existingName)
+
+isTagListAllowed : PartialName -> List Namelike -> Bool
+isTagListAllowed desiredPrefix tags  = 
+  isBlank desiredPrefix || 
+    List.any (isPrefix desiredPrefix) tags
+
 
 sortByName : (t -> Namelike) -> List t -> List t
 sortByName f xs =

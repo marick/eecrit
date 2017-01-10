@@ -102,25 +102,25 @@ pageAnimals pageAnimalsGetter model =
     |> List.map (\ animal -> Dict.get animal model.animals)
     |> List.filterMap identity
 
-applyFilters : Model -> List DisplayedAnimal -> List DisplayedAnimal
-applyFilters model animals = 
+
+applyFilters : Model -> List Displayed -> List Displayed
+applyFilters model xs = 
   let
-    rightSpecies displayed =
-      Namelike.isPrefix model.speciesFilter displayed.animal.species
+    rightSpecies =
+      displayed_species.get >> Namelike.isPrefix model.speciesFilter
 
-    rightName displayed =
-      Namelike.isPrefix model.nameFilter displayed.animal.name
-
-    rightTag displayed =
-      Namelike.isBlank model.tagFilter || 
-        List.any (Namelike.isPrefix model.tagFilter) displayed.animal.tags
+    rightName = 
+      displayed_name.get >> Namelike.isPrefix model.nameFilter
+        
+    rightTag =
+      displayed_tags.get >> Namelike.isTagListAllowed model.tagFilter
   in
-    animals
+    xs
       |> List.filter (aggregateFilter [rightSpecies, rightName, rightTag])
-      |> Namelike.sortByName displayedAnimal_name.get
+      |> Namelike.sortByName displayed_name.get
 
 
-aggregateFilter : List (DisplayedAnimal -> Bool) -> DisplayedAnimal -> Bool
+aggregateFilter : List (Displayed -> Bool) -> Displayed -> Bool
 aggregateFilter preds animal =
   case preds of
     [] ->

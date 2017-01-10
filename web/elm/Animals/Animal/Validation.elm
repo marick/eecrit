@@ -9,50 +9,49 @@ import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form
 
-x = 3
-
--- animalNames : Dict Id DisplayedAnimal -> List String
--- animalNames animals =
---   animals
---     |> Dict.values
---     |> List.map displayedAnimal_name.get
+animalNames : Dict Id Displayed -> List String
+animalNames displayables =
+  displayables
+    |> Dict.values
+    |> List.map displayed_name.get
 
 
--- context : Dict Id DisplayedAnimal -> Animal -> ValidationContext 
--- context animals changingAnimal  =
---   { disallowedNames = animalNames animals |> List.remove changingAnimal.name
---   }
+context : Dict Id Displayed -> Animal -> ValidationContext 
+context displayables originalAnimal =
+  { disallowedNames =
+      animalNames displayables |> List.remove originalAnimal.name
+  }
 
--- validate : ValidationContext -> Form -> Form
--- validate context form =
---   Form.assumeValid form 
---     |> validateName context
+validate : ValidationContext -> Form -> Form
+validate context form =
+  Form.assumeValid form 
+    |> validateName context
 
--- --  Validators
+--  Validators
   
--- validateName : ValidationContext -> Form -> Form
--- validateName context form =
---   form 
---     |> validator "The animal has to have a name!" form_name 
---        Namelike.isBlank
---     |> validator "There is already an animal with that name!" form_name
---        (flip Namelike.isMember <| context.disallowedNames)
+validateName : ValidationContext -> Form -> Form
+validateName context form =
+  form 
+    |> validator "The animal has to have a name!" form_name 
+       Namelike.isBlank
+    |> validator "There is already an animal with that name!" form_name
+       (flip Namelike.isMember <| context.disallowedNames)
           
--- -- Helpers
+-- Helpers
          
--- validator : String -> FormLens field -> (field -> Bool) -> Form -> Form
--- validator errorMessage lens pred form =
---   let
---     formValue = lens.get form
---   in
---     case pred formValue.value of
---       True -> 
---         lens.set (invalidate formValue errorMessage) form
---           |> form_status.set SomeBad
---       False ->
---         form
+validator : String -> FormLens field -> (field -> Bool) -> Form -> Form
+validator errorMessage lens pred form =
+  let
+    formValue = lens.get form
+  in
+    case pred formValue.value of
+      True -> 
+        lens.set (invalidate formValue errorMessage) form
+          |> form_status.set SomeBad
+      False ->
+        form
 
--- invalidate : FormValue t -> String -> FormValue t
--- invalidate formValue msg =
---   FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
+invalidate : FormValue t -> String -> FormValue t
+invalidate formValue msg =
+  FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
 

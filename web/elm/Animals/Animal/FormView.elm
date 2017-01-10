@@ -17,8 +17,8 @@ view form flash (saveOp, cancelOp) =
   Bulma.highlightedRow []
     [ td []
         [ Bulma.controlRow "Name" <| nameEditControl form
-       -- , Bulma.controlRow "Tags" <| deleteTagControl displayed form
-       -- , Bulma.controlRow "New Tag" <| newTagControl displayed form
+       , Bulma.controlRow "Tags" <| deleteTagControl form
+       , Bulma.controlRow "New Tag" <| newTagControl form
           
         , Bulma.leftwardSave form.status (WithForm form saveOp)
         , Bulma.rightwardCancel form.status (WithForm form cancelOp)
@@ -39,27 +39,27 @@ nameEditControl form =
     form.name
     [ Events.onInput (WithForm form << NameFieldUpdate) ]
 
--- deleteTagControl : DisplayedAnimal -> Form -> Html Msg
--- deleteTagControl displayed form =
---   let
---     onDelete name = WithForm form (DeleteTag name)
---   in
---     Bulma.horizontalControls 
---       (List.map (Bulma.deletableTag form.status onDelete) form.tags)
+deleteTagControl : Form -> Html Msg
+deleteTagControl form =
+  let
+    onDelete name = WithForm form (DeleteTag name)
+  in
+    Bulma.horizontalControls 
+      (List.map (Bulma.deletableTag form.status onDelete) form.tags)
 
 
--- newTagControl : DisplayedAnimal -> Form -> Html Msg
--- newTagControl displayed form =
---   let
---     onInput = WithForm form << TentativeTagUpdate
---     onSubmit = WithForm form CreateNewTag 
---   in
---     Bulma.textInputWithSubmit
---       form.status
---       "Add"
---       form.tentativeTag
---       onInput
---       onSubmit
+newTagControl : Form -> Html Msg
+newTagControl form =
+  let
+    onInput = WithForm form << TentativeTagUpdate
+    onSubmit = WithForm form CreateNewTag 
+  in
+    Bulma.textInputWithSubmit
+      form.status
+      "Add"
+      form.tentativeTag
+      onInput
+      onSubmit
       
 
 

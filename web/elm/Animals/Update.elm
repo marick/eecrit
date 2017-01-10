@@ -157,21 +157,19 @@ formOp op form model =
       -- model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
 
     NameFieldUpdate s ->
-      model |> noCmd
-      -- let
-      --   newForm =
-      --     form
-      --       |> form_name.set (Bulma.freshValue s)
-      --       |> Validation.validate (Validation.context model.animals displayed.animal)
-      -- in
-      --   model |> upsertForm newForm |> noCmd
+      let
+        newForm =
+          form
+            |> form_name.set (Debug.log "value" (Bulma.freshValue s))
+--            |> Validation.validate (Validation.context model.displayables form.originalAnimal)
+      in
+        model |> upsertForm newForm |> noCmd
 
     TentativeTagUpdate s ->
-      model |> noCmd
-      -- let
-      --   newForm = form_tentativeTag.set s form
-      -- in
-      --   model |> upsertForm newForm |> noCmd
+      let
+        newForm = form_tentativeTag.set s form
+      in
+        model |> upsertForm newForm |> noCmd
 
     CreateNewTag ->
       model |> noCmd

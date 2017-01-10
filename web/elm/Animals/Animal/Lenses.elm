@@ -26,6 +26,8 @@ animal_tags = lens .tags (\ p w -> { w | tags = p })
 animal_properties : UpdatingLens Animal Properties
 animal_properties = lens .properties (\ p w -> { w | properties = p })
 
+animal_displayFormat : UpdatingLens Animal Format
+animal_displayFormat = lens .displayFormat (\ p w -> { w | displayFormat = p })
                     
 -- displayedAnimal_animal : UpdatingLens DisplayedAnimal Animal
 -- displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })

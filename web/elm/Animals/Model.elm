@@ -80,6 +80,15 @@ init flags location =
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
 
+upsertAnimal : Animal.Animal -> Model -> Model 
+upsertAnimal animal model =
+  let
+    key = animal_id.get animal
+    display = Animal.animalDisplay animal
+    new = Dict.insert key display model.displayables
+  in
+    model_displayables.set new model
+
       
 -- upsertForm : Animal.Form -> Model -> Model 
 -- upsertForm form model =
@@ -89,13 +98,6 @@ init flags location =
 --   in
 --     model_forms.set newForms model
 
--- upsertAnimal : Animal.DisplayedAnimal -> Model -> Model 
--- upsertAnimal displayed model =
---   let
---     key = displayedAnimal_id.get displayed
---     newAnimals = Dict.insert key displayed model.animals
---   in
---     model_animals.set newAnimals model
 -- deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
 -- deleteAnimal displayed model =
 --   deleteAnimalById (displayedAnimal_id.get displayed) model

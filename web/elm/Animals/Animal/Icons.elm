@@ -5,32 +5,30 @@ import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 import Pile.Bulma exposing (IconExpander)
 
-x = 4
+expand : Animal -> IconExpander Msg -> Html Msg
+expand animal iconType =
+  iconType "fa-caret-down"
+    "Expand: show more about this animal"
+    (WithAnimal animal <| SwitchToReadOnly Expanded)
 
--- expand : DisplayedAnimal -> IconExpander Msg -> Html Msg
--- expand displayed iconType =
---   iconType "fa-caret-down"
---     "Expand: show more about this animal"
---     (WithAnimal displayed <| SwitchToReadOnly Expanded)
-
--- contract : DisplayedAnimal -> IconExpander Msg -> Html Msg
--- contract displayed iconType =
---   iconType "fa-caret-up"
---     "Contract: show less about this animal"
---     (WithAnimal displayed <| SwitchToReadOnly Compact)
+contract : Animal -> IconExpander Msg -> Html Msg
+contract animal iconType =
+  iconType "fa-caret-up"
+    "Contract: show less about this animal"
+    (WithAnimal animal <| SwitchToReadOnly Compact)
       
--- edit : DisplayedAnimal -> IconExpander Msg -> Html Msg
--- edit displayed iconType =
---   iconType "fa-pencil"
---     "Edit: make changes to this animal"
---     (WithAnimal displayed StartEditing)
+edit : Animal -> IconExpander Msg -> Html Msg
+edit animal iconType =
+  iconType "fa-pencil"
+    "Edit: make changes to this animal"
+    (WithAnimal animal StartEditing)
       
--- moreLikeThis : DisplayedAnimal -> IconExpander Msg -> Html Msg
--- moreLikeThis displayed iconType =
---   iconType "fa-plus"
---     "Copy: make more animals like this one"
---     (WithAnimal displayed MoreLikeThis)
+moreLikeThis : Animal -> IconExpander Msg -> Html Msg
+moreLikeThis animal iconType =
+  iconType "fa-plus"
+    "Copy: make more animals like this one"
+    (WithAnimal animal MoreLikeThis)
 
--- editHelp : IconExpander Msg -> Html Msg
--- editHelp iconType = 
---   iconType "fa-question-circle" "Help on editing" NoOp    
+editHelp : IconExpander Msg -> Html Msg
+editHelp iconType = 
+  iconType "fa-question-circle" "Help on editing" NoOp    

@@ -69,3 +69,9 @@ type alias Displayed =
   { view : Affordance
   , animalFlash : AnimalFlash
   }
+
+formDisplay form =
+  Displayed (Writable form) NoFlash
+    
+animalDisplay animal =
+  Displayed (Viewable animal) NoFlash

@@ -23,8 +23,8 @@ compactView animal flash =
          [ p [] ( animalSalutation animal  :: animalTags animal)
          , AnimalFlash.showWithButton flash (WithAnimal animal RemoveFlash)
            ])
-      -- , Icon.expand animal Bulma.tdIcon
-      -- , Icon.edit aimal Bulma.tdIcon
+      , Icon.expand animal Bulma.tdIcon
+      -- , Icon.edit animal Bulma.tdIcon
       -- , Icon.moreLikeThis animal Bulma.tdIcon
       ]
 
@@ -33,13 +33,13 @@ expandedView animal flash =
     Bulma.highlightedRow []
       [ td []
           [ p [] [ animalSalutation animal ]
-          -- , p [] (animalTags animal)
-          -- , animalProperties animal |> Bulma.propertyTable
-          -- , AnimalFlash.showWithButton flash (WithAnimal displayedAnimal RemoveFlash)
+          , p [] (animalTags animal)
+          , animalProperties animal |> Bulma.propertyTable
+          , AnimalFlash.showWithButton flash (WithAnimal animal RemoveFlash)
           ]
-      -- , Icon.contract displayedAnimal Bulma.tdIcon
-      -- , Icon.edit displayedAnimal Bulma.tdIcon
-      -- , Icon.moreLikeThis displayedAnimal Bulma.tdIcon
+      , Icon.contract animal Bulma.tdIcon
+      -- , Icon.edit animal Bulma.tdIcon
+      -- , Icon.moreLikeThis animal Bulma.tdIcon
       ]
       
 -- Util

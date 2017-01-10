@@ -77,9 +77,8 @@ updateWithClearedFlash msg model =
       -- in
       --   model |> addAnimalsLikeThis count template |> noCmd
           
-    WithAnimal displayed op ->
-      model |> noCmd
-        -- applyAfterRemovingFlash (animalOp op) displayed model
+    WithAnimal animal op ->
+      animalOp op animal model
 
     WithForm form op ->
       model |> noCmd
@@ -114,27 +113,28 @@ updateWithClearedFlash msg model =
 --     f newAnimal newModel
   
         
--- animalOp : AnimalOperation -> Animal.DisplayedAnimal -> Model -> (Model, Cmd Msg)
--- animalOp op displayed model = 
---   case op of
---     RemoveFlash ->
---       model |> upsertAnimal displayed |> noCmd
+animalOp : AnimalOperation -> Animal.Animal -> Model -> (Model, Cmd Msg)
+animalOp op animal model = 
+  case op of
+    RemoveFlash ->
+      model |> upsertAnimal animal |> noCmd
 
---     SwitchToReadOnly format ->
---       let
---         newAnimal = displayedAnimal_format.set format displayed
---       in
---         model |> upsertAnimal newAnimal |> noCmd
+    SwitchToReadOnly format ->
+      let
+        newAnimal = animal_displayFormat.set format animal
+      in
+        model |> upsertAnimal newAnimal |> noCmd
 
---     StartEditing  ->
---       let
---         newAnimal = displayed |> displayedAnimal_format.set Animal.Editable
---         form = Form.extractForm displayed.animal
---       in
---         model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
+    StartEditing  ->
+      model |> noCmd
+      -- let
+      --   newAnimal = displayed |> displayedAnimal_format.set Animal.Editable
+      --   form = Form.extractForm displayed.animal
+      -- in
+      --   model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
 
---     MoreLikeThis ->
---       model |> noCmd -- TODO
+    MoreLikeThis ->
+      model |> noCmd -- TODO
 
 -- formOp : FormOperation -> Animal.Form -> Animal.DisplayedAnimal -> Model
 --        -> (Model, Cmd Msg)

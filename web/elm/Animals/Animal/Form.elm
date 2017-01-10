@@ -19,19 +19,7 @@ extractForm animal =
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
-  }
-
--- This is used as the default value in "impossible" cases.
-nullForm : Form
-nullForm =
-  { status = SomeBad
-  , id = "impossible"
-  , species = "impossible"
-  , intendedVersion = -1
-  , name = Bulma.freshValue "you should never see this"
-  , tags = []
-  , tentativeTag = ""
-  , properties = Dict.empty
+  , originalAnimal = animal
   }
 
 assumeValid : Form -> Form 
@@ -48,7 +36,7 @@ assumeValid form =
 appliedForm : Form -> Animal
 appliedForm form =
   { id = form.id
-  , displayFormat = Compact
+  , displayFormat = Expanded
   , version = form.intendedVersion
   , name = form.name.value
   , species = form.species
@@ -56,8 +44,8 @@ appliedForm form =
   , properties = form.properties
   }
 
-saveFlash : Form -> AnimalFlash
-saveFlash form =
-  case Namelike.isValidAddition form.tentativeTag form.tags of
-    True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
-    False -> AnimalFlash.NoFlash
+-- saveFlash : Form -> AnimalFlash
+-- saveFlash form =
+--   case Namelike.isValidAddition form.tentativeTag form.tags of
+--     True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
+--     False -> AnimalFlash.NoFlash

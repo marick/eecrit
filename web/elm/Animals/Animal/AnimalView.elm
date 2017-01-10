@@ -24,8 +24,8 @@ compactView animal flash =
          , AnimalFlash.showWithButton flash (WithAnimal animal RemoveFlash)
            ])
       , Icon.expand animal Bulma.tdIcon
-      -- , Icon.edit animal Bulma.tdIcon
-      -- , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.edit animal Bulma.tdIcon
+      , Icon.moreLikeThis animal Bulma.tdIcon
       ]
 
 expandedView : Animal -> AnimalFlash -> Html Msg      
@@ -38,8 +38,8 @@ expandedView animal flash =
           , AnimalFlash.showWithButton flash (WithAnimal animal RemoveFlash)
           ]
       , Icon.contract animal Bulma.tdIcon
-      -- , Icon.edit animal Bulma.tdIcon
-      -- , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.edit animal Bulma.tdIcon
+      , Icon.moreLikeThis animal Bulma.tdIcon
       ]
       
 -- Util
@@ -88,5 +88,3 @@ animalTags animal =
 parentheticalSpecies : Animal -> String
 parentheticalSpecies animal =
   " (" ++ animal.species ++ ")"
-
-

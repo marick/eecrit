@@ -81,12 +81,7 @@ updateWithClearedFlash msg model =
       animalOp op animal model
 
     WithForm form op ->
-      model |> noCmd
-      -- case Dict.get form.id model.animals of
-      --   Nothing ->
-      --     model |> noCmd -- Todo: a command to log the error
-      --   Just displayed ->
-      --     applyAfterRemovingFlash (formOp op form) displayed model 
+      formOp op form model
 
     Page op ->
       Page.update op model
@@ -126,89 +121,95 @@ animalOp op animal model =
         model |> upsertAnimal newAnimal |> noCmd
 
     StartEditing  ->
-      model |> noCmd
-      -- let
-      --   newAnimal = displayed |> displayedAnimal_format.set Animal.Editable
-      --   form = Form.extractForm displayed.animal
-      -- in
-      --   model |> upsertAnimal newAnimal |> upsertForm form |> noCmd
+      let
+        form = Form.extractForm animal
+      in
+        model |> upsertForm form |> noCmd
 
     MoreLikeThis ->
       model |> noCmd -- TODO
 
--- formOp : FormOperation -> Animal.Form -> Animal.DisplayedAnimal -> Model
---        -> (Model, Cmd Msg)
--- formOp op form displayed model =
---   case Debug.log "oop" op of 
---     CancelEdits ->
---       let
---         newDisplayed = displayed |> displayedAnimal_format.set Animal.Expanded
---       in
---         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
---     StartSavingEdits ->
---       model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
+formOp : FormOperation -> Animal.Form -> Model -> (Model, Cmd Msg)
+formOp op form model =
+  case op of 
+    CancelEdits ->
+      let
+        animal = form.originalAnimal
+      in
+        model |> upsertAnimal animal |> noCmd
+    StartSavingEdits ->
+      model |> noCmd
+      -- model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
 
---     CancelCreation ->
---       let
---         id = displayedAnimal_id.get displayed
---       in
---         model
---           |> deleteForm form
---           |> deleteAnimal displayed
---           |> model_addPageAnimals.update (Set.remove id)
---           |> noCmd
+    CancelCreation ->
+      model |> noCmd
+      -- let
+      --   id = displayedAnimal_id.get displayed
+      -- in
+      --   model
+      --     |> deleteForm form
+      --     |> deleteAnimal displayed
+      --     |> model_addPageAnimals.update (Set.remove id)
+      --     |> noCmd
           
---     StartCreating ->
---       model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
+    StartCreating ->
+      model |> noCmd
+      -- model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
 
---     NameFieldUpdate s ->
---       let
---         newForm =
---           form
---             |> form_name.set (Bulma.freshValue s)
---             |> Validation.validate (Validation.context model.animals displayed.animal)
---       in
---         model |> upsertForm newForm |> noCmd
+    NameFieldUpdate s ->
+      model |> noCmd
+      -- let
+      --   newForm =
+      --     form
+      --       |> form_name.set (Bulma.freshValue s)
+      --       |> Validation.validate (Validation.context model.animals displayed.animal)
+      -- in
+      --   model |> upsertForm newForm |> noCmd
 
---     TentativeTagUpdate s ->
---       let
---         newForm = form_tentativeTag.set s form
---       in
---         model |> upsertForm newForm |> noCmd
+    TentativeTagUpdate s ->
+      model |> noCmd
+      -- let
+      --   newForm = form_tentativeTag.set s form
+      -- in
+      --   model |> upsertForm newForm |> noCmd
 
---     CreateNewTag ->
---       let
---         newForm =
---           form 
---             |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
---             |> form_tentativeTag.set ""
---       in
---         model |> upsertForm newForm |> noCmd
+    CreateNewTag ->
+      model |> noCmd
+      -- let
+      --   newForm =
+      --     form 
+      --       |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
+      --       |> form_tentativeTag.set ""
+      -- in
+      --   model |> upsertForm newForm |> noCmd
 
---     DeleteTag name ->
---       let
---         newForm = form_tags.update (List.remove name) form
---       in
---         model |> upsertForm newForm |> noCmd
+    DeleteTag name ->
+      model |> noCmd
+      -- let
+      --   newForm = form_tags.update (List.remove name) form
+      -- in
+      --   model |> upsertForm newForm |> noCmd
 
---     NoticeSaveResults ->
---       let
---         newDisplayed = displayedAnimalFromForm form
---       in
---         model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
+    NoticeSaveResults ->
+      model |> noCmd
+      -- let
+      --   newDisplayed = displayedAnimalFromForm form
+      -- in
+      --   model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
 
---     NoticeCreationResults realId ->
---       let
---         originalId = form.id
---         newDisplayed = displayedAnimalFromForm form |> displayedAnimal_id.set realId
---       in
---         model
---           |> deleteAnimalById originalId |> deleteFormById originalId
---           |> upsertAnimal newDisplayed
---           |> model_addPageAnimals.update (Set.remove originalId)
---           |> model_allPageAnimals.update (Set.insert realId)
---           |> model_pageFlash.set Page.SavedAnimalFlash
---           |> noCmd
+    NoticeCreationResults realId ->
+      model |> noCmd
+      -- let
+      --   originalId = form.id
+      --   newDisplayed = displayedAnimalFromForm form |> displayedAnimal_id.set realId
+      -- in
+      --   model
+      --     |> deleteAnimalById originalId |> deleteFormById originalId
+      --     |> upsertAnimal newDisplayed
+      --     |> model_addPageAnimals.update (Set.remove originalId)
+      --     |> model_allPageAnimals.update (Set.insert realId)
+      --     |> model_pageFlash.set Page.SavedAnimalFlash
+      --     |> noCmd
 
 -- withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
 -- withSavedForm form model =

@@ -50,6 +50,7 @@ type alias Form =
   , tentativeTag : String
   , properties : Properties
   , status : FormStatus
+  , originalAnimal : Animal
   }
 
 type Format

@@ -16,13 +16,13 @@ view : Form -> AnimalFlash -> (FormOperation, FormOperation) -> Html Msg
 view form flash (saveOp, cancelOp) =
   Bulma.highlightedRow []
     [ td []
-        [ -- Bulma.controlRow "Name" <| nameEditControl displayed form
---        , Bulma.controlRow "Tags" <| deleteTagControl displayed form
---        , Bulma.controlRow "New Tag" <| newTagControl displayed form
+        [ Bulma.controlRow "Name" <| nameEditControl form
+       -- , Bulma.controlRow "Tags" <| deleteTagControl displayed form
+       -- , Bulma.controlRow "New Tag" <| newTagControl displayed form
           
-        -- , Bulma.leftwardSave form.status (WithForm form saveOp)
-        -- , Bulma.rightwardCancel form.status (WithForm form cancelOp)
---        , Flash.showWithButton flash (WithAnimal displayed RemoveFlash)
+        , Bulma.leftwardSave form.status (WithForm form saveOp)
+        , Bulma.rightwardCancel form.status (WithForm form cancelOp)
+       -- , Flash.showWithButton flash (WithAnimal displayed RemoveFlash)
         ]
     , td [] []
     , td [] []
@@ -32,12 +32,12 @@ view form flash (saveOp, cancelOp) =
 
 -- Controls
 
--- nameEditControl : DisplayedAnimal -> Form -> Html Msg
--- nameEditControl displayed form =
---   Bulma.soleTextInputInRow
---     form.status
---     form.name
---     [ Events.onInput (WithForm form << NameFieldUpdate) ]
+nameEditControl : Form -> Html Msg
+nameEditControl form =
+  Bulma.soleTextInputInRow
+    form.status
+    form.name
+    [ Events.onInput (WithForm form << NameFieldUpdate) ]
 
 -- deleteTagControl : DisplayedAnimal -> Form -> Html Msg
 -- deleteTagControl displayed form =

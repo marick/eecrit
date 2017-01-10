@@ -90,6 +90,16 @@ upsertAnimal animal model =
     model_displayables.set new model
 
       
+upsertForm : Animal.Form -> Model -> Model 
+upsertForm form model =
+  let
+    key = form_id.get (Debug.log "form" form)
+    display = Animal.formDisplay form
+    new = Dict.insert key display model.displayables
+  in
+    model_displayables.set new model
+
+      
 -- upsertForm : Animal.Form -> Model -> Model 
 -- upsertForm form model =
 --   let

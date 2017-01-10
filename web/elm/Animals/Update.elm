@@ -254,7 +254,7 @@ populateAllAnimalsPage animals model =
       List.map compactify animals
   in
     { model
-      | displayed = List.map2 (,) ids displayeds |> Dict.fromList
+      | displayables = List.map2 (,) ids displayeds |> Dict.fromList
       , allPageAnimals = List.map .id animals |> Set.fromList 
     }
 

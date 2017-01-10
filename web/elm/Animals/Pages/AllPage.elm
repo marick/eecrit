@@ -50,7 +50,7 @@ pageAnimals_v2 pageAnimalsGetter model =
   model
     |> pageAnimalsGetter
     |> Set.toList 
-    |> List.map (\ id -> Dict.get id model.displayed)
+    |> List.map (\ id -> Dict.get id model.displayables)
     |> List.filterMap identity
 
 individualAnimalView_v2 : Model -> (FormOperation, FormOperation) -> Displayed

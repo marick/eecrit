@@ -7,7 +7,7 @@ import Html.Events as Events
 import Set exposing (Set)
 
 import Pile.Bulma as Bulma
-import Pile.Namelike as Namelike
+import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.Calendar as Calendar
 
 import Animals.Model exposing (Model)
@@ -102,8 +102,13 @@ applyFilters model xs =
   in
     xs
       |> List.filter (aggregateFilter [rightSpecies, rightName, rightTag])
-      |> Namelike.sortByName displayed_name.get
+      |> Namelike.sortByName displaySortKey
 
+displaySortKey : Displayed -> Namelike
+displaySortKey displayed =
+  case displayed.view of
+    Writable form -> form_originalName.get form
+    Viewable animal -> animal_name.get animal
 
 aggregateFilter : List (Displayed -> Bool) -> Displayed -> Bool
 aggregateFilter preds animal =

@@ -160,8 +160,8 @@ formOp op form model =
       let
         newForm =
           form
-            |> form_name.set (Debug.log "value" (Bulma.freshValue s))
---            |> Validation.validate (Validation.context model.displayables form.originalAnimal)
+            |> form_name.set (Bulma.freshValue s)
+            |> Validation.validate (Validation.context model.displayables form.originalAnimal)
       in
         model |> upsertForm newForm |> noCmd
 

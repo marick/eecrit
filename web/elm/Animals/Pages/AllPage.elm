@@ -107,8 +107,8 @@ applyFilters model xs =
 displaySortKey : Displayed -> Namelike
 displaySortKey displayed =
   case displayed.view of
-    Writable form -> form_originalName.get form
-    Viewable animal -> animal_name.get animal
+    Writable form -> form.sortKey
+    Viewable animal -> animal.name 
 
 aggregateFilter : List (Displayed -> Bool) -> Displayed -> Bool
 aggregateFilter preds animal =

@@ -13,6 +13,7 @@ extractForm : Animal -> Form
 extractForm animal =
   { status = AllGood
   , id = animal.id
+  , sortKey = animal.name -- so stays sorted by original name
   , species = animal.species
   , intendedVersion = animal.version + 1
   , name = Bulma.freshValue animal.name

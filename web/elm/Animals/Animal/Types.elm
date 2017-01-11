@@ -43,6 +43,8 @@ type alias Properties = Dict String DictValue
   
 type alias Form = 
   { id : Id
+  , sortKey : String  -- Distinct from name so that changing the name
+                        -- doesn't cause list entries to change position
   , intendedVersion : Int
   , species : String
   , name : FormValue String

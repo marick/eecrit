@@ -20,7 +20,7 @@ extractForm animal =
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
-  , originalAnimal = animal
+  , originalAnimal = Just animal
   }
 
 assumeValid : Form -> Form 

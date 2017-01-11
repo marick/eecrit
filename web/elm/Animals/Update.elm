@@ -144,9 +144,13 @@ formOp op form model =
 
     CancelEdits ->
       let
-        animal = form.originalAnimal
+        original = form.originalAnimal
       in
-        model |> upsertAnimal animal |> noCmd
+        case original of
+          Nothing ->
+            model |> noCmd -- Todo: add error handling for impossible case
+          Just animal -> 
+            model |> upsertAnimal animal |> noCmd
 
     StartSavingEdits ->
       model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal

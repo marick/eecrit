@@ -16,11 +16,17 @@ animalNames displayables =
     |> List.map displayed_name.get
 
 
-context : Dict Id Displayed -> Animal -> ValidationContext 
-context displayables originalAnimal =
-  { disallowedNames =
-      animalNames displayables |> List.remove originalAnimal.name
-  }
+context : Dict Id Displayed -> Maybe Animal -> ValidationContext 
+context displayables origin =
+  let
+    augment xs =
+      case origin of
+        Nothing -> xs
+        Just animal -> xs |> List.remove animal.name
+  in
+    { disallowedNames =
+        animalNames displayables |> augment
+    }
 
 validate : ValidationContext -> Form -> Form
 validate context form =

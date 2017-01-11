@@ -70,12 +70,6 @@ form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 form_status : UpdatingLens Form FormStatus
 form_status = lens .status (\ p w -> { w | status = p })
 
-form_originalAnimal : UpdatingLens Form Animal
-form_originalAnimal = lens .originalAnimal (\ p w -> { w | originalAnimal = p })
-
-form_originalName : UpdatingLens Form Namelike
-form_originalName = Lens.compose form_originalAnimal animal_name
-              
 validationContext_disallowedNames : UpdatingLens ValidationContext (List String)
 validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disallowedNames = p })     
 

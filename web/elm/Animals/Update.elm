@@ -55,12 +55,7 @@ updateWithClearedFlash msg model =
       model |> model_speciesFilter.set s |> noCmd
 
     AnimalGotSaved (OutsideWorld.AnimalUpdated id) ->
-      model |> noCmd
-      -- case Dict.get id model.forms of
-      --   Nothing ->
-      --     model |> noCmd -- Todo: a command to log the error
-      --   Just form ->
-      --     updateWithClearedFlash (WithForm form NoticeSaveResults) model
+      forwardToForm id NoticeSaveResults model 
 
     AnimalGotCreated (OutsideWorld.AnimalCreated tempId realId) ->
       model |> noCmd
@@ -129,6 +124,18 @@ animalOp op animal model =
     MoreLikeThis ->
       model |> noCmd -- TODO
 
+forwardToForm : Animal.Id -> FormOperation -> Model -> (Model, Cmd Msg)
+forwardToForm id op model =
+  case Dict.get id model.displayables of 
+    Nothing ->
+      model |> noCmd -- Todo: a command to log the error
+    Just {view} ->
+      case view of
+        Animal.Viewable _ ->
+          model |> noCmd
+        Animal.Writable form ->
+          formOp op form model
+
 formOp : FormOperation -> Animal.Form -> Model -> (Model, Cmd Msg)
 formOp op form model =
   case op of 
@@ -142,8 +149,7 @@ formOp op form model =
         model |> upsertAnimal animal |> noCmd
 
     StartSavingEdits ->
-      model |> noCmd
-      -- model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
+      model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
 
     CancelCreation ->
       model |> noCmd
@@ -191,11 +197,10 @@ formOp op form model =
         model |> upsertForm newForm |> noCmd
 
     NoticeSaveResults ->
-      model |> noCmd
-      -- let
-      --   newDisplayed = displayedAnimalFromForm form
-      -- in
-      --   model |> upsertAnimal newDisplayed |> deleteForm form |> noCmd
+      let
+        displayed = Form.possiblyWithFlash form
+      in
+        model |> upsertDisplayed displayed |> noCmd
 
     NoticeCreationResults realId ->
       model |> noCmd
@@ -211,18 +216,11 @@ formOp op form model =
       --     |> model_pageFlash.set Page.SavedAnimalFlash
       --     |> noCmd
 
--- withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
--- withSavedForm form model =
---   ( model |> upsertForm (form_status.set BeingSaved form)
---   , Form.appliedForm form
---   )
-
--- displayedAnimalFromForm : Animal.Form -> Animal.DisplayedAnimal  
--- displayedAnimalFromForm form =
---   { animal = Form.appliedForm form
---   , format = Animal.Expanded
---   , animalFlash = Form.saveFlash form
---   }
+withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
+withSavedForm form model =
+  ( model |> upsertForm (form_status.set BeingSaved form)
+  , Form.appliedForm form
+  )
 
       
 

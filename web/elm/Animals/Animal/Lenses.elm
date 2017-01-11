@@ -98,11 +98,14 @@ makeLens_traversingDisplayView formLens animalLens  =
      }
   )
 
-displayed_tags : UpdatingLens Displayed (List Namelike)
-displayed_tags = makeLens_traversingDisplayView form_tags animal_tags
+displayed_id : UpdatingLens Displayed Id
+displayed_id = makeLens_traversingDisplayView form_id animal_id
 
 displayed_name : UpdatingLens Displayed Namelike
 displayed_name = makeLens_traversingDisplayView form_name_value animal_name
+
+displayed_tags : UpdatingLens Displayed (List Namelike)
+displayed_tags = makeLens_traversingDisplayView form_tags animal_tags
 
 displayed_species : UpdatingLens Displayed Namelike
 displayed_species = makeLens_traversingDisplayView form_species animal_species

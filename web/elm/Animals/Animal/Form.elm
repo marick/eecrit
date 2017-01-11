@@ -44,8 +44,17 @@ appliedForm form =
   , properties = form.properties
   }
 
--- saveFlash : Form -> AnimalFlash
--- saveFlash form =
---   case Namelike.isValidAddition form.tentativeTag form.tags of
---     True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
---     False -> AnimalFlash.NoFlash
+saveFlash : Form -> AnimalFlash
+saveFlash form =
+  case Namelike.isValidAddition form.tentativeTag form.tags of
+    True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
+    False -> AnimalFlash.NoFlash
+
+
+possiblyWithFlash : Form -> Displayed
+possiblyWithFlash form =
+  { view = Viewable <| appliedForm form
+  , animalFlash = saveFlash form
+  }
+
+             

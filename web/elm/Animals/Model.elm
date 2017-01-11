@@ -80,25 +80,22 @@ init flags location =
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
 
-upsertAnimal : Animal.Animal -> Model -> Model 
-upsertAnimal animal model =
+-- Todo: Figure out how to use lenses for this.      
+upsertDisplayed : Animal.Displayed -> Model -> Model       
+upsertDisplayed displayed model =
   let
-    key = animal_id.get animal
-    display = Animal.animalDisplay animal
-    new = Dict.insert key display model.displayables
+    key = displayed_id.get displayed
+    new = Dict.insert key displayed model.displayables
   in
     model_displayables.set new model
 
+upsertAnimal : Animal.Animal -> Model -> Model 
+upsertAnimal animal =
+  upsertDisplayed (Animal.animalDisplay animal)
       
 upsertForm : Animal.Form -> Model -> Model 
-upsertForm form model =
-  let
-    key = form_id.get (Debug.log "form" form)
-    display = Animal.formDisplay form
-    new = Dict.insert key display model.displayables
-  in
-    model_displayables.set new model
-
+upsertForm form =
+  upsertDisplayed (Animal.formDisplay form)
       
 -- upsertForm : Animal.Form -> Model -> Model 
 -- upsertForm form model =

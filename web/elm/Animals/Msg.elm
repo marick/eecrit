@@ -18,14 +18,15 @@ type OutsideLeakageOperation
 
 {-| A subtype of Msg. Always used as `WithAnimal <anAnimal> <submsg>` -}
 type AnimalOperation
-  = RemoveFlash
+  = RemoveAnimalFlash
   | SwitchToReadOnly Animal.Format
   | StartEditing
   | MoreLikeThis
 
 {-| A subtype of Msg. Always used as `WithForm <aForm> <submsg>` -}
 type FormOperation
-  = CancelEdits
+  = RemoveFormFlash
+  | CancelEdits
   | StartSavingEdits
   | NoticeSaveResults
   | NoticeCreationResults Animal.Id

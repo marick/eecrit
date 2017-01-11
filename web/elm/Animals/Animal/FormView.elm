@@ -22,11 +22,11 @@ view form flash (saveOp, cancelOp) =
           
         , Bulma.leftwardSave form.status (WithForm form saveOp)
         , Bulma.rightwardCancel form.status (WithForm form cancelOp)
-       -- , Flash.showWithButton flash (WithAnimal displayed RemoveFlash)
+       , Flash.showWithButton flash (WithForm form RemoveFormFlash)
         ]
     , td [] []
     , td [] []
-    -- , Icon.editHelp Bulma.tdIcon
+    , Icon.editHelp Bulma.tdIcon
     ]
     
 

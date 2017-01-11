@@ -111,7 +111,7 @@ updateWithClearedFlash msg model =
 animalOp : AnimalOperation -> Animal.Animal -> Model -> (Model, Cmd Msg)
 animalOp op animal model = 
   case op of
-    RemoveFlash ->
+    RemoveAnimalFlash -> -- this happens automatically, so this is effectively a NoOp
       model |> upsertAnimal animal |> noCmd
 
     SwitchToReadOnly format ->
@@ -132,11 +132,15 @@ animalOp op animal model =
 formOp : FormOperation -> Animal.Form -> Model -> (Model, Cmd Msg)
 formOp op form model =
   case op of 
+    RemoveFormFlash -> -- this happens automatically, so this is effectively a NoOp
+      model |> upsertForm form |> noCmd
+
     CancelEdits ->
       let
         animal = form.originalAnimal
       in
         model |> upsertAnimal animal |> noCmd
+
     StartSavingEdits ->
       model |> noCmd
       -- model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
@@ -172,21 +176,19 @@ formOp op form model =
         model |> upsertForm newForm |> noCmd
 
     CreateNewTag ->
-      model |> noCmd
-      -- let
-      --   newForm =
-      --     form 
-      --       |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
-      --       |> form_tentativeTag.set ""
-      -- in
-      --   model |> upsertForm newForm |> noCmd
+      let
+        newForm =
+          form 
+            |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
+            |> form_tentativeTag.set ""
+      in
+        model |> upsertForm newForm |> noCmd
 
     DeleteTag name ->
-      model |> noCmd
-      -- let
-      --   newForm = form_tags.update (List.remove name) form
-      -- in
-      --   model |> upsertForm newForm |> noCmd
+      let
+        newForm = form_tags.update (List.remove name) form
+      in
+        model |> upsertForm newForm |> noCmd
 
     NoticeSaveResults ->
       model |> noCmd

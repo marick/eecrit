@@ -1,7 +1,7 @@
 module Animals.Animal.Flash exposing (..)
 
 import Html exposing (..)
-import Pile.Bulma as Bulma 
+import Pile.Css.Bulma as Css
 
 
 type AnimalFlash
@@ -14,13 +14,13 @@ showWithButton flash msg =
     NoFlash -> 
       span [] []
     SavedIncompleteTag tagName -> 
-      Bulma.flashNotification msg
+      Css.flashNotification msg
         [ text "Excuse me for butting in, but I notice you clicked "
-        , Bulma.exampleSuccess
+        , Css.exampleSuccess
         , text " while there was text in the "
         , b [] [text "New Tag"]
         , text " field. So I've added the tag "
-        , Bulma.readOnlyTag tagName
+        , Css.readOnlyTag tagName
         , text " for you."
         , text " You can delete it if I goofed."
         ]

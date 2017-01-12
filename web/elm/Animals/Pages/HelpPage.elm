@@ -1,8 +1,8 @@
 module Animals.Pages.HelpPage exposing (..)
 
 import Html exposing (..)
-import Pile.Bulma as Bulma
+import Pile.Css.Bulma as Css
 
 view : model -> Html msg
 view model =
-  Bulma.infoMessage "Unfinished" "The help page hasn't been written yet."
+  Css.infoMessage "Unfinished" "The help page hasn't been written yet."

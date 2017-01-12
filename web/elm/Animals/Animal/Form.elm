@@ -2,20 +2,19 @@ module Animals.Animal.Form exposing (..)
 
 import Pile.Namelike as Namelike
 
-import Pile.Bulma as Bulma exposing
-  (FormStatus(..), FormValue, Urgency(..), Validity(..))
+import Pile.Css.H as Css
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
 
 extractForm : Animal -> Form
 extractForm animal =
-  { status = AllGood
+  { status = Css.AllGood
   , id = animal.id
   , sortKey = animal.name -- so stays sorted by original name
   , species = animal.species
   , intendedVersion = animal.version + 1
-  , name = Bulma.freshValue animal.name
+  , name = Css.freshValue animal.name
   , tags = animal.tags
   , tentativeTag = ""
   , properties = animal.properties
@@ -25,8 +24,8 @@ extractForm animal =
 assumeValid : Form -> Form 
 assumeValid form =
   { form
-    | status = AllGood
-    , name = Bulma.freshValue form.name.value
+    | status = Css.AllGood
+    , name = Css.freshValue form.name.value
   } 
 
   

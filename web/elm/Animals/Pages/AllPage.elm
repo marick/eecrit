@@ -11,7 +11,7 @@ import Animals.Model exposing (Model)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import Pile.Bulma as Bulma
+import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.Calendar as Calendar
 
@@ -20,7 +20,7 @@ view model =
   div []
     [ filterView model
     , PageFlash.show model.pageFlash
-    , Bulma.headerlessTable <| animalViews model
+    , Css.headerlessTable <| animalViews model
     ]
 
 animalViews : Model -> List (Html Msg)    
@@ -36,21 +36,21 @@ animalViews model =
 
 filterView : Model -> Html Msg
 filterView model =
-  Bulma.centeredColumns
-    [ Bulma.column 3
-        [ Bulma.messageView
+  Css.centeredColumns
+    [ Css.column 3
+        [ Css.messageView
             [ text "Animals as of..."
-            , calendarHelp Bulma.rightIcon
+            , calendarHelp Css.rightIcon
             ]
             [ Calendar.view dateControl ToggleDatePicker SelectDate model
             ] 
         ]                  
-    , Bulma.column 8
-      [ Bulma.messageView 
+    , Css.column 8
+      [ Css.messageView 
           [ text "Filter by..."
-          , filterHelp Bulma.rightIcon
+          , filterHelp Css.rightIcon
           ]
-          [ Bulma.distributeHorizontally
+          [ Css.distributeHorizontally
               [ nameFilter model
               , speciesFilter model
               , tagsFilter model 
@@ -100,8 +100,8 @@ dateControl hasOpenPicker displayString calendarToggleMsg =
   let
     iconF =
       case hasOpenPicker of
-        False -> Bulma.plainIcon "fa-caret-down" "Pick a date from a calendar" 
-        True -> Bulma.plainIcon "fa-caret-up" "Close the calendar"
+        False -> Css.plainIcon "fa-caret-down" "Pick a date from a calendar" 
+        True -> Css.plainIcon "fa-caret-up" "Close the calendar"
   in
     p [class "has-text-centered"]
       [ text displayString
@@ -112,16 +112,16 @@ dateControl hasOpenPicker displayString calendarToggleMsg =
 
 nameFilter : Model -> Html Msg
 nameFilter model =
-  Bulma.centeredLevelItem
-    [ Bulma.headingP "Name"
-    , Bulma.simpleTextInput model.nameFilter SetNameFilter
+  Css.centeredLevelItem
+    [ Css.headingP "Name"
+    , Css.simpleTextInput model.nameFilter SetNameFilter
     ]
 
 tagsFilter : Model -> Html Msg
 tagsFilter model =
-  Bulma.centeredLevelItem
-    [ Bulma.headingP "Tag"
-    , Bulma.simpleTextInput model.tagFilter SetTagFilter
+  Css.centeredLevelItem
+    [ Css.headingP "Tag"
+    , Css.simpleTextInput model.tagFilter SetTagFilter
     ]
 
 speciesFilter : Model -> Html Msg
@@ -134,9 +134,9 @@ speciesFilter model =
       ]
       [ text display ]
   in
-    Bulma.centeredLevelItem
-      [ Bulma.headingP "Species" 
-      , Bulma.simpleSelect
+    Css.centeredLevelItem
+      [ Css.headingP "Species" 
+      , Css.simpleSelect
         [ textOption "" "Any"
         , textOption "bovine" "bovine"
         , textOption "equine" "equine"
@@ -147,11 +147,11 @@ speciesFilter model =
 
 -- -- Various icons
     
-calendarHelp : Bulma.IconExpander Msg -> Html Msg
+calendarHelp : Css.IconExpander Msg -> Html Msg
 calendarHelp iconType = 
   iconType "fa-question-circle" "Help on animals and dates" NoOp
 
-filterHelp : Bulma.IconExpander Msg -> Html Msg
+filterHelp : Css.IconExpander Msg -> Html Msg
 filterHelp iconType = 
   iconType "fa-question-circle" "Help on filtering" NoOp    
 

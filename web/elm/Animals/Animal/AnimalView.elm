@@ -2,7 +2,7 @@ module Animals.Animal.AnimalView exposing (compactView, expandedView)
 
 import Html exposing (..)
 
-import Pile.Bulma as Bulma 
+import Pile.Css.Bulma as Css
 
 import Animals.Msg exposing (..)
 
@@ -23,23 +23,23 @@ compactView animal flash =
          [ p [] ( animalSalutation animal  :: animalTags animal)
          , AnimalFlash.showWithButton flash (WithAnimal animal RemoveAnimalFlash)
            ])
-      , Icon.expand animal Bulma.tdIcon
-      , Icon.edit animal Bulma.tdIcon
-      , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.expand animal Css.tdIcon
+      , Icon.edit animal Css.tdIcon
+      , Icon.moreLikeThis animal Css.tdIcon
       ]
 
 expandedView : Animal -> AnimalFlash -> Html Msg      
 expandedView animal flash =
-    Bulma.highlightedRow []
+    Css.highlightedRow []
       [ td []
           [ p [] [ animalSalutation animal ]
           , p [] (animalTags animal)
-          , animalProperties animal |> Bulma.propertyTable
+          , animalProperties animal |> Css.propertyTable
           , AnimalFlash.showWithButton flash (WithAnimal animal RemoveAnimalFlash)
           ]
-      , Icon.contract animal Bulma.tdIcon
-      , Icon.edit animal Bulma.tdIcon
-      , Icon.moreLikeThis animal Bulma.tdIcon
+      , Icon.contract animal Css.tdIcon
+      , Icon.edit animal Css.tdIcon
+      , Icon.moreLikeThis animal Css.tdIcon
       ]
       
 -- Util
@@ -67,8 +67,8 @@ boolExplanation : Bool -> String -> List (Html msg)
 boolExplanation b explanation = 
   let
     icon = case b of
-             True -> Bulma.trueIcon
-             False -> Bulma.falseIcon
+             True -> Css.trueIcon
+             False -> Css.falseIcon
     suffix = case explanation of
                "" -> ""
                s -> " (" ++ s ++ ")"
@@ -83,7 +83,7 @@ animalSalutation animal =
 
 animalTags : Animal -> List (Html Msg)
 animalTags animal =
-  List.map Bulma.readOnlyTag animal.tags
+  List.map Css.readOnlyTag animal.tags
 
 parentheticalSpecies : Animal -> String
 parentheticalSpecies animal =

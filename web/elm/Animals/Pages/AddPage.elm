@@ -9,7 +9,7 @@ import Animals.Msg exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
-import Pile.Bulma as Bulma
+import Pile.Css.Bulma as Css
 
 view : Model -> Html Msg
 view model =
@@ -27,7 +27,7 @@ view model =
             , p [class "level-item"]
               [ text "new" ]
             , p [class "level-item"]
-              [ Bulma.disabledSelect
+              [ Css.disabledSelect
                   [ option [value "bovine"] [ text "bovine" ]
                   , option [value "equine"] [ text "equine" ]
                   ]
@@ -43,7 +43,7 @@ view model =
             ]
         ]
     , PageFlash.show model.pageFlash
-    , Bulma.headerlessTable <| animalViews model
+    , Css.headerlessTable <| animalViews model
     ]
 
 animalViews : Model -> List (Html Msg)    

@@ -20,8 +20,8 @@ import Animals.Animal.Flash as AnimalFlash
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.Namelike as Namelike exposing (Namelike)
-import Pile.Bulma as Bulma exposing
-  (FormStatus(..), FormValue, Urgency(..), Validity(..))
+import Pile.Css.H as Css
+import Pile.Css.Bulma as Css
 
 import Set exposing (Set)
 import List
@@ -158,7 +158,7 @@ formOp op form model =
       let
         newForm =
           form
-            |> form_name.set (Bulma.freshValue s)
+            |> form_name.set (Css.freshValue s)
             |> Validation.validate (Validation.context model.displayables form.originalAnimal)
       in
         model |> upsertForm newForm |> noCmd
@@ -207,7 +207,7 @@ formOp op form model =
 
 withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
 withSavedForm form model =
-  ( model |> upsertForm (form_status.set BeingSaved form)
+  ( model |> upsertForm (form_status.set Css.BeingSaved form)
   , Form.appliedForm form
   )
 

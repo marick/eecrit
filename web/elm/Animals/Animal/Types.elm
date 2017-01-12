@@ -4,7 +4,8 @@ module Animals.Animal.Types exposing
   )
 
 import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
-import Pile.Bulma as Bulma exposing (FormValue, FormStatus(..), Validity(..))
+import Pile.Css.H as Css
+import Pile.Css.Bulma as Css
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Pile.Namelike exposing (Namelike)
@@ -37,11 +38,11 @@ type alias Form =
                         -- doesn't cause list entries to change position
   , intendedVersion : Int
   , species : Namelike
-  , name : FormValue Namelike
+  , name : Css.FormValue Namelike
   , tags : List Namelike
   , tentativeTag : String
   , properties : Properties
-  , status : FormStatus
+  , status : Css.FormStatus
   , originalAnimal : Maybe Animal
   }
 
@@ -78,11 +79,11 @@ freshForm species id =
   , sortKey = id -- Causes forms to stay in original order
   , intendedVersion = 1
   , species = species
-  , name = Bulma.freshValue "" |> Bulma.invalidate "Give the animal a name."
+  , name = Css.freshValue "" |> Css.invalidate "Give the animal a name."
   , tags = []
   , tentativeTag = ""
   , properties = Dict.empty
-  , status = SomeBad
+  , status = Css.SomeBad
   , originalAnimal = Nothing
   }
   

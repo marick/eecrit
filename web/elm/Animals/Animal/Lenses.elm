@@ -1,11 +1,11 @@
 module Animals.Animal.Lenses exposing (..)
 
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
-import Pile.Bulma as Bulma exposing (FormValue, FormStatus)
+import Pile.Css.H as Css
 import Pile.Namelike exposing (Namelike)
 import Animals.Animal.Types exposing (..)
 
-type alias FormLens field = UpdatingLens Form (FormValue field)
+type alias FormLens field = UpdatingLens Form (Css.FormValue field)
 
 animal_id : UpdatingLens Animal Id
 animal_id = lens .id (\ p w -> { w | id = p })
@@ -29,14 +29,14 @@ animal_displayFormat : UpdatingLens Animal Format
 animal_displayFormat = lens .displayFormat (\ p w -> { w | displayFormat = p })
                     
 
-formValue_value : UpdatingLens (FormValue t) t
+formValue_value : UpdatingLens (Css.FormValue t) t
 formValue_value = lens .value (\ p w -> { w | value = p })
 
                        
 form_id : UpdatingLens Form Id
 form_id = lens .id (\ p w -> { w | id = p })
 
-form_name : UpdatingLens Form (FormValue Namelike)
+form_name : UpdatingLens Form (Css.FormValue Namelike)
 form_name = lens .name (\ p w -> { w | name = p })
 
 form_name_value : UpdatingLens Form Namelike
@@ -51,7 +51,7 @@ form_species = lens .species (\ p w -> { w | species = p })
 form_tentativeTag : UpdatingLens Form String
 form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 
-form_status : UpdatingLens Form FormStatus
+form_status : UpdatingLens Form Css.FormStatus
 form_status = lens .status (\ p w -> { w | status = p })
 
 validationContext_disallowedNames : UpdatingLens ValidationContext (List String)

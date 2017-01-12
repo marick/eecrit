@@ -2,8 +2,8 @@ module Animals.Animal.Validation exposing (..)
 
 import Dict exposing (Dict)
 import List.Extra as List
-import Pile.Bulma as Bulma exposing
-  (FormStatus(..), FormValue, Urgency(..), Validity(..))
+import Pile.Css.H as Css
+import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
@@ -52,8 +52,8 @@ validator errorMessage lens pred form =
   in
     case pred formValue.value of
       True -> 
-        lens.set (Bulma.invalidate errorMessage formValue) form
-          |> form_status.set SomeBad
+        lens.set (Css.invalidate errorMessage formValue) form
+          |> form_status.set Css.SomeBad
       False ->
         form
 

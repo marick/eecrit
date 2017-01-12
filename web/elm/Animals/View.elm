@@ -8,13 +8,13 @@ import Animals.Pages.AllPage as AllPage
 import Animals.Pages.AddPage as AddPage
 import Animals.Pages.HelpPage as HelpPage
 
-import Pile.Bulma as Bulma
+import Pile.Css.Bulma as Css
 import Html exposing (..)
 
 view : Model -> Html Msg
 view model =
   div []
-    [ Bulma.tabs model.page
+    [ Css.tabs model.page
         [ (AllPage, "View Animals", Page <| StartChange AllPage)
         , (AddPage, "Add Animals", Page <| StartChange AddPage)
         , (HelpPage, "Help", Page <| StartChange HelpPage)

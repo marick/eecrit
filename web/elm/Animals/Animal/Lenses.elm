@@ -4,7 +4,6 @@ import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.Bulma as Bulma exposing (FormValue, FormStatus)
 import Pile.Namelike exposing (Namelike)
 import Animals.Animal.Types exposing (..)
-import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
 
 type alias FormLens field = UpdatingLens Form (FormValue field)
 
@@ -29,21 +28,6 @@ animal_properties = lens .properties (\ p w -> { w | properties = p })
 animal_displayFormat : UpdatingLens Animal Format
 animal_displayFormat = lens .displayFormat (\ p w -> { w | displayFormat = p })
                     
--- displayedAnimal_animal : UpdatingLens DisplayedAnimal Animal
--- displayedAnimal_animal = lens .animal (\ p w -> { w | animal = p })
-
--- displayedAnimal_format : UpdatingLens DisplayedAnimal Format
--- displayedAnimal_format = lens .format (\ p w -> { w | format = p })
-
--- displayedAnimal_flash : UpdatingLens DisplayedAnimal AnimalFlash
--- displayedAnimal_flash = lens .animalFlash (\ p w -> { w | animalFlash = p })
-
--- displayedAnimal_id : UpdatingLens DisplayedAnimal Id
--- displayedAnimal_id = Lens.compose displayedAnimal_animal animal_id
-
--- displayedAnimal_name : UpdatingLens DisplayedAnimal String
--- displayedAnimal_name = Lens.compose displayedAnimal_animal animal_name
-
 
 formValue_value : UpdatingLens (FormValue t) t
 formValue_value = lens .value (\ p w -> { w | value = p })

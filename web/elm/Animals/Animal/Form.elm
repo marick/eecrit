@@ -1,6 +1,5 @@
 module Animals.Animal.Form exposing (..)
 
-import Dict
 import Pile.Namelike as Namelike
 
 import Pile.Bulma as Bulma exposing

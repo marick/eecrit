@@ -1,15 +1,15 @@
 module Animals.Pages.AddPage exposing (view)
 
-import Animals.Pages.AllPage as Common
+import Animals.Pages.Common as Common
+import Animals.Pages.PageFlash as PageFlash
+
+import Animals.Model exposing (Model)
+import Animals.Msg exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 import Pile.Bulma as Bulma
-
-import Animals.Model exposing (Model)
-import Animals.Pages.PageFlash as PageFlash
-import Animals.Msg exposing (..)
 
 view : Model -> Html Msg
 view model =

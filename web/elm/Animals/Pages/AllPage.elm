@@ -1,27 +1,19 @@
-module Animals.Pages.AllPage exposing (..)
+module Animals.Pages.AllPage exposing (view)
 
-import Dict
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events as Events
-import Set exposing (Set)
-
-import Pile.Bulma as Bulma
-import Pile.Namelike as Namelike exposing (Namelike)
-import Pile.Calendar as Calendar
-
-import Animals.Model exposing (Model)
+import Animals.Pages.Common as Common
+import Animals.Pages.PageFlash as PageFlash
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
-import Animals.Animal.Form as Form
 import Animals.Msg exposing (..)
+import Animals.Model exposing (Model)
 
-import Animals.Animal.FormView as FormView
-import Animals.Animal.AnimalView as AnimalView
-
-import Animals.Pages.PageFlash as PageFlash
-
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events as Events
+import Pile.Bulma as Bulma
+import Pile.Namelike as Namelike exposing (Namelike)
+import Pile.Calendar as Calendar
 
 view : Model -> Html Msg
 view model =
@@ -34,35 +26,14 @@ view model =
 animalViews : Model -> List (Html Msg)    
 animalViews model =
   let
-    displayed = pageAnimals .allPageAnimals model
-    animalViewer = individualAnimalView model (StartSavingEdits, CancelEdits)
+    displayed = Common.pageAnimals .allPageAnimals model
+    animalViewer = Common.individualAnimalView model (StartSavingEdits, CancelEdits)
   in
     displayed
       |> applyFilters model
       |> List.map animalViewer
 
 
-pageAnimals : (Model -> Set Id) -> Model -> List Displayed
-pageAnimals pageAnimalsGetter model =
-  model
-    |> pageAnimalsGetter
-    |> Set.toList 
-    |> List.map (\ id -> Dict.get id model.displayables)
-    |> List.filterMap identity
-
-individualAnimalView : Model -> (FormOperation, FormOperation) -> Displayed
-                     -> Html Msg
-individualAnimalView model formActions displayed =
-  case displayed.view of
-    Writable form ->
-      FormView.view form displayed.animalFlash formActions 
-    Viewable animal ->
-      case animal.displayFormat of
-        Compact ->
-          AnimalView.compactView animal displayed.animalFlash
-        Expanded ->
-          AnimalView.expandedView animal displayed.animalFlash
-         
 filterView : Model -> Html Msg
 filterView model =
   Bulma.centeredColumns

@@ -97,6 +97,7 @@ deleteDisplayedById : Animal.Id -> Model -> Model
 deleteDisplayedById id model =
   model_displayables.update (Dict.remove id) model
 
+deleteFromPage : UpdatingLens Model (Set Animal.Id) -> Animal.Id -> Model -> Model
 deleteFromPage lens id = lens.update (Set.remove id)
 
 upsertAnimal : Animal.Animal -> Model -> Model 

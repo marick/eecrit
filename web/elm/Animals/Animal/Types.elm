@@ -7,6 +7,7 @@ import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
 import Pile.Bulma as Bulma exposing (FormValue, FormStatus(..), Validity(..))
 import Dict exposing (Dict)
 import Date exposing (Date)
+import Pile.Namelike exposing (Namelike)
 
 type alias Id = String
 
@@ -35,9 +36,9 @@ type alias Form =
   , sortKey : String  -- Distinct from name so that changing the name
                         -- doesn't cause list entries to change position
   , intendedVersion : Int
-  , species : String
-  , name : FormValue String
-  , tags : List String
+  , species : Namelike
+  , name : FormValue Namelike
+  , tags : List Namelike
   , tentativeTag : String
   , properties : Properties
   , status : FormStatus
@@ -50,7 +51,7 @@ type Format
 
 
 type alias ValidationContext =
-  { disallowedNames : List String
+  { disallowedNames : List Namelike
   }
 
 type Affordance
@@ -62,12 +63,16 @@ type alias Displayed =
   , animalFlash : AnimalFlash
   }
 
+formDisplay : Form -> Displayed
 formDisplay form =
   Displayed (Writable form) NoFlash
-    
+
+animalDisplay : Animal -> Displayed
 animalDisplay animal =
   Displayed (Viewable animal) NoFlash
 
+
+freshForm : Namelike -> Id -> Form
 freshForm species id =
   { id = id
   , sortKey = id -- Causes forms to stay in original order

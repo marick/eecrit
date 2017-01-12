@@ -1,8 +1,7 @@
-module Animals.Animal.Flash exposing (..)
+module Animals.View.AnimalFlash exposing (..)
 
 import Html exposing (..)
 import Pile.Css.Bulma as Css
-
 
 type AnimalFlash
   = NoFlash

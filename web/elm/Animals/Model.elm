@@ -3,11 +3,11 @@ module Animals.Model exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Pages.H as Page
-import Animals.Pages.PageFlash as Page
 import Animals.Pages.Navigation as Page
 
 import Animals.Animal.Types as Animal
 import Animals.Animal.Lenses exposing (..)
+import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 
 import Animals.OutsideWorld.Cmd as OutsideWorld
 
@@ -30,7 +30,7 @@ type alias IdSet =
     
 type alias Model = 
   { page : Page.PageChoice
-  , pageFlash : Page.Flash
+  , pageFlash : PageFlash
   , csrfToken : String
   , displayables : DisplayDict
 
@@ -59,7 +59,7 @@ init flags location =
   let
     model =
       { page = Page.fromLocation(location)
-      , pageFlash = Page.NoFlash
+      , pageFlash = PageFlash.NoFlash
       , csrfToken = flags.csrfToken
       , displayables = Dict.empty
 
@@ -167,6 +167,6 @@ model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 model_datePickerOpen : UpdatingLens Model Bool
 model_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p })
 
-model_pageFlash : UpdatingLens Model Page.Flash
+model_pageFlash : UpdatingLens Model PageFlash
 model_pageFlash = lens .pageFlash (\ p w -> { w | pageFlash = p })
 

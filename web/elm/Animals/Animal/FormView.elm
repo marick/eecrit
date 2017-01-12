@@ -9,20 +9,20 @@ import Pile.Css.Bulma as Css
 import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
-import Animals.Animal.Icons as Icon
-import Animals.Animal.Flash as Flash exposing (AnimalFlash)
+import Animals.View.Icons as Icon
+import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 view : Form -> AnimalFlash -> (FormOperation, FormOperation) -> Html Msg
 view form flash (saveOp, cancelOp) =
   Css.highlightedRow []
     [ td []
         [ Css.controlRow "Name" <| nameEditControl form
-       , Css.controlRow "Tags" <| deleteTagControl form
-       , Css.controlRow "New Tag" <| newTagControl form
+        , Css.controlRow "Tags" <| deleteTagControl form
+        , Css.controlRow "New Tag" <| newTagControl form
           
         , Css.leftwardSave form.status (WithForm form saveOp)
         , Css.rightwardCancel form.status (WithForm form cancelOp)
-       , Flash.showWithButton flash (WithForm form RemoveFormFlash)
+        , AnimalFlash.showWithButton flash (WithForm form RemoveFormFlash)
         ]
     , td [] []
     , td [] []

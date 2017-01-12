@@ -7,8 +7,6 @@
 
 module Animals.Pages.H exposing (..)
 
--- Declare and Define are separate because of circular dependencies.
-
 type PageChoice 
   = AllPage
   | AddPage

@@ -1,4 +1,4 @@
-module Animals.Pages.PageFlash exposing (..)
+module Animals.View.PageFlash exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -7,12 +7,12 @@ import Animals.Msg exposing (Msg(..))
 import Http exposing (..)
 import Animals.Pages.H as Pages
 
-type Flash
+type PageFlash
   = NoFlash
   | SavedAnimalFlash
   | HttpErrorFlash String Http.Error
 
-show : Flash -> Html Msg
+show : PageFlash -> Html Msg
 show flash =
   case flash of 
     NoFlash -> 

@@ -5,7 +5,7 @@ import Pile.Namelike as Namelike
 import Pile.Css.H as Css
 
 import Animals.Animal.Types exposing (..)
-import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
+import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 extractForm : Animal -> Form
 extractForm animal =

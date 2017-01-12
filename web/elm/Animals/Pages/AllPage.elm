@@ -1,7 +1,7 @@
 module Animals.Pages.AllPage exposing (view)
 
 import Animals.Pages.Common as Common
-import Animals.Pages.PageFlash as PageFlash
+import Animals.View.PageFlash as PageFlash
 
 import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)

@@ -3,7 +3,7 @@ module Animals.Animal.Types exposing
   ..
   )
 
-import Animals.Animal.Flash as Flash exposing (AnimalFlash(..))
+import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash(..))
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Dict exposing (Dict)

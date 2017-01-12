@@ -6,8 +6,8 @@ import Pile.Css.Bulma as Css
 
 import Animals.Msg exposing (..)
 
-import Animals.Animal.Icons as Icon
-import Animals.Animal.Flash as AnimalFlash exposing (AnimalFlash)
+import Animals.View.Icons as Icon
+import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 import Dict
 import List

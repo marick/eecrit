@@ -8,13 +8,13 @@ import Animals.OutsideWorld.Cmd as OutsideWorld
 import Animals.OutsideWorld.Update as OutsideWorld
 
 import Animals.Pages.Update as Page
-import Animals.Pages.PageFlash as Page
+import Animals.View.PageFlash as PageFlash
 
 import Animals.Animal.Types as Animal
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
 import Animals.Animal.Validation as Validation
-import Animals.Animal.Flash as AnimalFlash
+import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
@@ -31,7 +31,7 @@ import Dict exposing (Dict)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  updateWithClearedFlash msg (model_pageFlash.set Page.NoFlash model)
+  updateWithClearedFlash msg (model_pageFlash.set PageFlash.NoFlash model)
 
 updateWithClearedFlash : Msg -> Model -> ( Model, Cmd Msg )
 updateWithClearedFlash msg model =
@@ -201,7 +201,7 @@ formOp op form model =
           |> deleteDisplayedById idDuringCreation
           |> model_addPageAnimals.update (Set.remove idDuringCreation)
 
-          |> model_pageFlash.set Page.SavedAnimalFlash
+          |> model_pageFlash.set PageFlash.SavedAnimalFlash
           |> noCmd
 
 withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)

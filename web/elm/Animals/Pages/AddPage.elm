@@ -1,7 +1,7 @@
 module Animals.Pages.AddPage exposing (view)
 
 import Animals.Pages.Common as Common
-import Animals.Pages.PageFlash as PageFlash
+import Animals.View.PageFlash as PageFlash
 
 import Animals.Model exposing (Model)
 import Animals.Msg exposing (..)

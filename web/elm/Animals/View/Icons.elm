@@ -1,4 +1,4 @@
-module Animals.Animal.Icons exposing (..)
+module Animals.View.Icons exposing (..)
 
 import Html exposing (Html)
 import Animals.Animal.Types exposing (..)

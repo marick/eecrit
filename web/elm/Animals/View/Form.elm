@@ -1,4 +1,4 @@
-module Animals.Animal.FormView exposing (view)
+module Animals.View.Form exposing (view)
 
 import Html exposing (..)
 import Html.Events as Events

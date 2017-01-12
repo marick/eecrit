@@ -1,4 +1,4 @@
-module Animals.Animal.AnimalView exposing (compactView, expandedView)
+module Animals.View.Animal exposing (compactView, expandedView)
 
 import Html exposing (..)
 

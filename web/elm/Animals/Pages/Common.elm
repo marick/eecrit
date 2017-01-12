@@ -1,10 +1,10 @@
 module Animals.Pages.Common exposing (..)
 
 import Animals.Animal.Types exposing (..)
-import Animals.Animal.FormView as FormView
-import Animals.Animal.AnimalView as AnimalView
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
+import Animals.View.Animal as AnimalView
+import Animals.View.Form as FormView
 
 import Dict
 import Html exposing (Html)

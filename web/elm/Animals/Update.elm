@@ -11,7 +11,6 @@ import Animals.Pages.Update as Page
 import Animals.Pages.PageFlash as Page
 
 import Animals.Animal.Types as Animal
--- import Animals.Animal.Constructors as Animal exposing (noFlash, andFlash)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
 import Animals.Animal.Validation as Validation

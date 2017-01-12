@@ -58,12 +58,7 @@ updateWithClearedFlash msg model =
       forwardToForm id NoticeSaveResults model 
 
     AnimalGotCreated (OutsideWorld.AnimalCreated tempId realId) ->
-      model |> noCmd
-      -- case Dict.get tempId model.forms of
-      --   Nothing ->
-      --     model |> noCmd -- Todo: a command to log the error
-      --   Just form ->
-      --     updateWithClearedFlash (WithForm form <| NoticeCreationResults realId) model
+      forwardToForm tempId (NoticeCreationResults realId) model
 
     AddNewAnimals count species ->
       model |> addFreshForms count species |> noCmd
@@ -195,19 +190,20 @@ formOp op form model =
       in
         model |> upsertDisplayed displayed |> noCmd
 
-    NoticeCreationResults realId ->
-      model |> noCmd
-      -- let
-      --   originalId = form.id
-      --   newDisplayed = displayedAnimalFromForm form |> displayedAnimal_id.set realId
-      -- in
-      --   model
-      --     |> deleteAnimalById originalId |> deleteFormById originalId
-      --     |> upsertAnimal newDisplayed
-      --     |> model_addPageAnimals.update (Set.remove originalId)
-      --     |> model_allPageAnimals.update (Set.insert realId)
-      --     |> model_pageFlash.set Page.SavedAnimalFlash
-      --     |> noCmd
+    NoticeCreationResults persistedId ->
+      let
+        idDuringCreation = form.id
+        displayed = Form.possiblyWithFlash (form_id.set persistedId form)
+      in
+        model
+          |> upsertDisplayed displayed
+          |> model_allPageAnimals.update (Set.insert persistedId)
+
+          |> deleteDisplayedById idDuringCreation
+          |> model_addPageAnimals.update (Set.remove idDuringCreation)
+
+          |> model_pageFlash.set Page.SavedAnimalFlash
+          |> noCmd
 
 withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
 withSavedForm form model =

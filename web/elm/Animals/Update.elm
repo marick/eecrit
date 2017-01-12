@@ -19,7 +19,7 @@ import Animals.Animal.Flash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
-import Pile.Namelike as Namelike
+import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.Bulma as Bulma exposing
   (FormStatus(..), FormValue, Urgency(..), Validity(..))
 
@@ -66,11 +66,7 @@ updateWithClearedFlash msg model =
       --     updateWithClearedFlash (WithForm form <| NoticeCreationResults realId) model
 
     AddNewAnimals count species ->
-      model |> noCmd
-      -- let
-      --   template = Animal.empty species
-      -- in
-      --   model |> addAnimalsLikeThis count template |> noCmd
+      model |> addFreshForms count species |> noCmd
           
     WithAnimal animal op ->
       animalOp op animal model
@@ -155,19 +151,13 @@ formOp op form model =
       model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
 
     CancelCreation ->
-      model |> noCmd
-      -- let
-      --   id = displayedAnimal_id.get displayed
-      -- in
-      --   model
-      --     |> deleteForm form
-      --     |> deleteAnimal displayed
-      --     |> model_addPageAnimals.update (Set.remove id)
-      --     |> noCmd
+      model
+        |> deleteDisplayedById form.id
+        |> deleteFromPage model_addPageAnimals form.id
+        |> noCmd
           
     StartCreating ->
-      model |> noCmd
-      -- model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
+      model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
 
     NameFieldUpdate s ->
       let
@@ -226,7 +216,21 @@ withSavedForm form model =
   )
 
       
-
+addFreshForms : Int -> Namelike -> Model -> Model
+addFreshForms count species model = 
+  let
+    (ids, newModel) =
+      freshIds count model
+      
+    displayables =
+      ids 
+        |> List.map (Animal.freshForm species)
+        |> List.map Animal.formDisplay
+  in
+    newModel
+      |> model_displayables.update (addDisplayables displayables)
+      |> model_addPageAnimals.update (addDisplayableIds displayables)
+    
 -- addAnimalsLikeThis : Int -> Animal.Animal -> Model -> Model
 -- addAnimalsLikeThis count templateAnimal model = 
 --   let
@@ -257,14 +261,29 @@ populateAllAnimalsPage animals model =
       List.map .id animals
     compactify animal =
       Animal.Displayed (Animal.Viewable animal) AnimalFlash.NoFlash
-    displayeds =
+    displayables =
       List.map compactify animals
   in
     { model
-      | displayables = List.map2 (,) ids displayeds |> Dict.fromList
-      , allPageAnimals = List.map .id animals |> Set.fromList 
+      | displayables = displayableDict displayables
+      , allPageAnimals = displayableIdSet displayables
     }
 
+displayableDict displayables =
+  let
+    ids = List.map displayed_id.get displayables
+  in
+    List.map2 (,) ids displayables |> Dict.fromList
+
+displayableIdSet displayables =
+  List.map displayed_id.get displayables |> Set.fromList 
+
+addDisplayables displayables existingDict =
+  displayables |> displayableDict |> Dict.union existingDict
+    
+addDisplayableIds displayables existingSet =
+  displayables |> displayableIdSet |> Set.union existingSet
+    
 -- displayedAnimalDict : List Animal.Animal -> (Animal.Animal -> Animal.DisplayedAnimal) -> Dict Animal.Id Animal.DisplayedAnimal
 -- displayedAnimalDict animals displayedMaker =
 --   let
@@ -275,23 +294,17 @@ populateAllAnimalsPage animals model =
 --   in
 --     List.map2 (,) ids displayedAnimals |> Dict.fromList
 
--- formDict : List Animal.Form -> Dict Animal.Id Animal.Form
--- formDict forms = 
---   let
---     ids = List.map .id forms
---   in
---     List.map2 (,) ids forms |> Dict.fromList
              
 
--- freshIds : Int -> Model -> (List Animal.Id, Model)    
--- freshIds n model =
---   let 
---     uniquePrefix = "New_animal_"
---     name i = uniquePrefix ++ toString i
---     ids =
---       List.range (model.animalsEverAdded + 1) (model.animalsEverAdded + n)
---         |> List.map name
---     newModel = model_animalsEverAdded.update ((+) n) model
---   in
---     (ids, newModel)
+freshIds : Int -> Model -> (List Animal.Id, Model)    
+freshIds n model =
+  let 
+    uniquePrefix = "New_animal_"
+    name i = uniquePrefix ++ toString i
+    ids =
+      List.range (model.animalsEverAdded + 1) (model.animalsEverAdded + n)
+        |> List.map name
+    newModel = model_animalsEverAdded.update ((+) n) model
+  in
+    (ids, newModel)
 

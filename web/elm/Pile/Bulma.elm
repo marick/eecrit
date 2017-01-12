@@ -27,6 +27,10 @@ type alias FormValue t =
 freshValue : t -> FormValue t
 freshValue v =
   FormValue Valid v []
+    
+invalidate : String -> FormValue t -> FormValue t
+invalidate msg formValue =
+  FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
 
 adjustClassForStatus : FormStatus -> String -> String
 adjustClassForStatus status classes =

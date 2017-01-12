@@ -52,12 +52,8 @@ validator errorMessage lens pred form =
   in
     case pred formValue.value of
       True -> 
-        lens.set (invalidate formValue errorMessage) form
+        lens.set (Bulma.invalidate errorMessage formValue) form
           |> form_status.set SomeBad
       False ->
         form
-
-invalidate : FormValue t -> String -> FormValue t
-invalidate formValue msg =
-  FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
 

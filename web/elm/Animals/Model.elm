@@ -89,6 +89,16 @@ upsertDisplayed displayed model =
   in
     model_displayables.set new model
 
+deleteDisplayed : Animal.Displayed -> Model -> Model
+deleteDisplayed displayed model =
+  deleteDisplayedById (displayed_id.get displayed) model
+  
+deleteDisplayedById : Animal.Id -> Model -> Model
+deleteDisplayedById id model =
+  model_displayables.update (Dict.remove id) model
+
+deleteFromPage lens id = lens.update (Set.remove id)
+
 upsertAnimal : Animal.Animal -> Model -> Model 
 upsertAnimal animal =
   upsertDisplayed (Animal.animalDisplay animal)

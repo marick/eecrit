@@ -5,7 +5,10 @@ import Animals.Msg exposing (..)
 import Animals.Pages.H as Page
 import Animals.Pages.Navigation as Page
 
-import Animals.Animal.Types as Animal
+import Animals.Types.Basic exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Animal.Lenses exposing (..)
 import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 
@@ -20,13 +23,7 @@ import Set exposing (Set)
 import Date exposing (Date)
 
 type alias DisplayDict =
-  Dict Animal.Id Animal.Displayed
-
-type alias FormDict =     
-  Dict Animal.Id Animal.Form
-
-type alias IdSet = 
-  Set Animal.Id
+  Dict Id Displayed
     
 type alias Model = 
   { page : Page.PageChoice
@@ -35,7 +32,7 @@ type alias Model =
   , displayables : DisplayDict
 
   -- AllPage
-  , allPageAnimals : IdSet
+  , allPageAnimals : Set Id
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
@@ -44,7 +41,7 @@ type alias Model =
   , datePickerOpen : Bool
 
   -- AddPage
-  , addPageAnimals : IdSet
+  , addPageAnimals : Set Id
   , animalsEverAdded : Int -- This is dumb, but probably easiest way to add a
                            --  a guaranteed-unique id in the absence of reliable
                            --  UUIDs. (I don't trust only 32 bits, which is paranoid.)
@@ -81,7 +78,7 @@ init flags location =
 
 
 -- Todo: Figure out how to use lenses for this.      
-upsertDisplayed : Animal.Displayed -> Model -> Model       
+upsertDisplayed : Displayed -> Model -> Model       
 upsertDisplayed displayed model =
   let
     key = displayed_id.get displayed
@@ -89,48 +86,25 @@ upsertDisplayed displayed model =
   in
     model_displayables.set new model
 
-deleteDisplayed : Animal.Displayed -> Model -> Model
+deleteDisplayed : Displayed -> Model -> Model
 deleteDisplayed displayed model =
   deleteDisplayedById (displayed_id.get displayed) model
   
-deleteDisplayedById : Animal.Id -> Model -> Model
+deleteDisplayedById : Id -> Model -> Model
 deleteDisplayedById id model =
   model_displayables.update (Dict.remove id) model
 
-deleteFromPage : UpdatingLens Model (Set Animal.Id) -> Animal.Id -> Model -> Model
+deleteFromPage : UpdatingLens Model (Set Id) -> Id -> Model -> Model
 deleteFromPage lens id = lens.update (Set.remove id)
 
 upsertAnimal : Animal.Animal -> Model -> Model 
 upsertAnimal animal =
-  upsertDisplayed (Animal.animalDisplay animal)
+  upsertDisplayed (Displayed.fromAnimal animal)
       
-upsertForm : Animal.Form -> Model -> Model 
+upsertForm : Form -> Model -> Model 
 upsertForm form =
-  upsertDisplayed (Animal.formDisplay form)
+  upsertDisplayed (Displayed.fromForm form)
       
--- upsertForm : Animal.Form -> Model -> Model 
--- upsertForm form model =
---   let
---     key = form_id.get form
---     newForms = Dict.insert key form model.forms
---   in
---     model_forms.set newForms model
-
--- deleteAnimal : Animal.DisplayedAnimal -> Model -> Model
--- deleteAnimal displayed model =
---   deleteAnimalById (displayedAnimal_id.get displayed) model
-  
--- deleteAnimalById : Animal.Id -> Model -> Model
--- deleteAnimalById id model =
---   model_animals.update (Dict.remove id) model
-  
--- deleteForm : Animal.Form -> Model -> Model
--- deleteForm form model =
---   deleteFormById (form_id.get form) model
-
--- deleteFormById : Animal.Id -> Model -> Model
--- deleteFormById id model =
---     model_forms.update (Dict.remove id) model
 
 -- Boilerplate Lenses
       
@@ -143,10 +117,10 @@ model_today = lens .today (\ p w -> { w | today = p })
 model_displayables : UpdatingLens Model DisplayDict
 model_displayables = lens .displayables (\ p w -> { w | displayables = p })
 
-model_allPageAnimals : UpdatingLens Model IdSet
+model_allPageAnimals : UpdatingLens Model (Set Id)
 model_allPageAnimals = lens .allPageAnimals (\ p w -> { w | allPageAnimals = p })
 
-model_addPageAnimals : UpdatingLens Model IdSet
+model_addPageAnimals : UpdatingLens Model (Set Id)
 model_addPageAnimals = lens .addPageAnimals (\ p w -> { w | addPageAnimals = p })
 
 model_animalsEverAdded : UpdatingLens Model Int

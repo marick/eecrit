@@ -1,6 +1,6 @@
 module Animals.OutsideWorld.H exposing (..)
 
-import Animals.Animal.Types exposing (..)
+import Animals.Types.Basic exposing (..)
 
 -- TODO: This is a pointless indirection. Rather than have
 -- pass `AnimalGotSaved (AnimalSaveResults 5)`, just pass

@@ -3,8 +3,8 @@ module Animals.Pages.AllPage exposing (view)
 import Animals.Pages.Common as Common
 import Animals.View.PageFlash as PageFlash
 
-import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
 
@@ -78,8 +78,8 @@ applyFilters model xs =
 displaySortKey : Displayed -> Namelike
 displaySortKey displayed =
   case displayed.view of
-    Writable form -> form.sortKey
-    Viewable animal -> animal.name 
+    Displayed.Writable form -> form.sortKey
+    Displayed.Viewable animal -> animal.name 
 
 aggregateFilter : List (Displayed -> Bool) -> Displayed -> Bool
 aggregateFilter preds animal =

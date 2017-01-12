@@ -1,10 +1,12 @@
 module Animals.Pages.Common exposing (..)
 
-import Animals.Animal.Types exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
 import Animals.View.Animal as AnimalView
 import Animals.View.Form as FormView
+import Animals.Types.Basic exposing (..)
 
 import Dict
 import Html exposing (Html)
@@ -23,12 +25,12 @@ individualAnimalView : Model -> (FormOperation, FormOperation) -> Displayed
                      -> Html Msg
 individualAnimalView model formActions displayed =
   case displayed.view of
-    Writable form ->
+    Displayed.Writable form ->
       FormView.view form displayed.animalFlash formActions 
-    Viewable animal ->
+    Displayed.Viewable animal ->
       case animal.displayFormat of
-        Compact ->
+        Animal.Compact ->
           AnimalView.compactView animal displayed.animalFlash
-        Expanded ->
+        Animal.Expanded ->
           AnimalView.expandedView animal displayed.animalFlash
          

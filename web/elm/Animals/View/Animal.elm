@@ -1,6 +1,8 @@
 module Animals.View.Animal exposing (compactView, expandedView)
 
 import Html exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Basic exposing (..)
 
 import Pile.Css.Bulma as Css
 
@@ -12,7 +14,6 @@ import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 import Dict
 import List
 
-import Animals.Animal.Types exposing (..)
 import Animals.Msg exposing (..)
 
 

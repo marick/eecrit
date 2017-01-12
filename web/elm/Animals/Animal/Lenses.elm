@@ -1,9 +1,12 @@
 module Animals.Animal.Lenses exposing (..)
 
+import Animals.Types.Animal exposing (..)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
+import Animals.Types.Basic exposing (..)
 import Pile.Css.H as Css
 import Pile.Namelike exposing (Namelike)
-import Animals.Animal.Types exposing (..)
 
 type alias FormLens field = UpdatingLens Form (Css.FormValue field)
 
@@ -54,7 +57,7 @@ form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 form_status : UpdatingLens Form Css.FormStatus
 form_status = lens .status (\ p w -> { w | status = p })
 
-validationContext_disallowedNames : UpdatingLens ValidationContext (List String)
+validationContext_disallowedNames : UpdatingLens Form.ValidationContext (List String)
 validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disallowedNames = p })     
 
 
@@ -65,14 +68,14 @@ makeLens_traversingDisplayView formLens animalLens  =
   lens
   (\ w ->
      case w.view of
-       Writable form -> formLens.get form
-       Viewable animal -> animalLens.get animal
+       Displayed.Writable form -> formLens.get form
+       Displayed.Viewable animal -> animalLens.get animal
   )
   (\ p w ->
      { w | view =
          case w.view of
-           Writable form -> formLens.set p form |> Writable
-           Viewable animal -> animalLens.set p animal |> Viewable
+           Displayed.Writable form -> formLens.set p form |> Displayed.Writable
+           Displayed.Viewable animal -> animalLens.set p animal |> Displayed.Viewable
      }
   )
 

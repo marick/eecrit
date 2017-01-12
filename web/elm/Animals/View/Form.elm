@@ -6,7 +6,7 @@ import Html.Events as Events
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 
-import Animals.Animal.Types exposing (..)
+import Animals.Types.Form as Form exposing (Form)
 import Animals.Msg exposing (..)
 
 import Animals.View.Icons as Icon

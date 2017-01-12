@@ -2,10 +2,13 @@ module Animals.Animal.Validation exposing (..)
 
 import Dict exposing (Dict)
 import List.Extra as List
+import Animals.Types.Basic exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike 
-import Animals.Animal.Types exposing (..)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form
 
@@ -16,7 +19,7 @@ animalNames displayables =
     |> List.map displayed_name.get
 
 
-context : Dict Id Displayed -> Maybe Animal -> ValidationContext 
+context : Dict Id Displayed -> Maybe Animal -> Form.ValidationContext 
 context displayables origin =
   let
     augment xs =
@@ -28,14 +31,14 @@ context displayables origin =
         animalNames displayables |> augment
     }
 
-validate : ValidationContext -> Form -> Form
+validate : Form.ValidationContext -> Form -> Form
 validate context form =
   Form.assumeValid form 
     |> validateName context
 
 --  Validators
   
-validateName : ValidationContext -> Form -> Form
+validateName : Form.ValidationContext -> Form -> Form
 validateName context form =
   form 
     |> validator "The animal has to have a name!" form_name 

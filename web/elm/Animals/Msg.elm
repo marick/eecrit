@@ -2,7 +2,9 @@ module Animals.Msg exposing (..)
 
 import Animals.Pages.H exposing (PageChoice)
 import Animals.OutsideWorld.H as OutsideWorld
-import Animals.Animal.Types as Animal exposing (Animal)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Basic exposing (..)
 import Date exposing (Date)
 import Navigation
 import Http
@@ -29,7 +31,7 @@ type FormOperation
   | CancelEdits
   | StartSavingEdits
   | NoticeSaveResults
-  | NoticeCreationResults Animal.Id
+  | NoticeCreationResults Id
 
   | CancelCreation
   | StartCreating
@@ -44,7 +46,7 @@ type Msg
   = NoOp
 
   | WithAnimal Animal.Animal AnimalOperation
-  | WithForm Animal.Form FormOperation
+  | WithForm Form FormOperation
   | Page PageOperation
   | Incoming OutsideLeakageOperation 
 

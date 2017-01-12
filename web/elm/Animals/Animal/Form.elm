@@ -4,7 +4,9 @@ import Pile.Namelike as Namelike
 
 import Pile.Css.H as Css
 
-import Animals.Animal.Types exposing (..)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 extractForm : Animal -> Form
@@ -35,7 +37,7 @@ assumeValid form =
 appliedForm : Form -> Animal
 appliedForm form =
   { id = form.id
-  , displayFormat = Expanded
+  , displayFormat = Animal.Expanded
   , version = form.intendedVersion
   , name = form.name.value
   , species = form.species
@@ -52,7 +54,7 @@ saveFlash form =
 
 possiblyWithFlash : Form -> Displayed
 possiblyWithFlash form =
-  { view = Viewable <| appliedForm form
+  { view = Displayed.Viewable <| appliedForm form
   , animalFlash = saveFlash form
   }
 

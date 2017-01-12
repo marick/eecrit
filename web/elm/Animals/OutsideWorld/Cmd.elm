@@ -5,7 +5,7 @@ module Animals.OutsideWorld.Cmd exposing
   , createAnimal
   )
 
-import Animals.Animal.Types exposing (Animal)
+import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.OutsideWorld.Json as Json
 import Animals.Msg exposing (..)
 import Date

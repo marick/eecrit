@@ -10,7 +10,10 @@ import Animals.OutsideWorld.Update as OutsideWorld
 import Animals.Pages.Update as Page
 import Animals.View.PageFlash as PageFlash
 
-import Animals.Animal.Types as Animal
+import Animals.Types.Basic exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Form as Form exposing (Form)
+import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Animal.Lenses exposing (..)
 import Animals.Animal.Form as Form 
 import Animals.Animal.Validation as Validation
@@ -78,22 +81,8 @@ updateWithClearedFlash msg model =
       model ! []
 
 
--- Add some inefficiency to make sure that flashes are always removed.
--- (Inefficiency: many ops will change the displayed animal, so the `upsert`
--- is duplicative.)
--- applyAfterRemovingFlash
---   : (Animal.DisplayedAnimal -> Model -> (Model, Cmd msg))
---   -> Animal.DisplayedAnimal -> Model
---   -> (Model, Cmd msg)
--- applyAfterRemovingFlash f displayed model =
---   let
---     newAnimal = noFlash displayed
---     newModel = upsertAnimal newAnimal model
---   in
---     f newAnimal newModel
-  
         
-animalOp : AnimalOperation -> Animal.Animal -> Model -> (Model, Cmd Msg)
+animalOp : AnimalOperation -> Animal -> Model -> (Model, Cmd Msg)
 animalOp op animal model = 
   case op of
     RemoveAnimalFlash -> -- this happens automatically, so this is effectively a NoOp
@@ -114,18 +103,18 @@ animalOp op animal model =
     MoreLikeThis ->
       model |> noCmd -- TODO
 
-forwardToForm : Animal.Id -> FormOperation -> Model -> (Model, Cmd Msg)
+forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)
 forwardToForm id op model =
   -- Todo: this should be an idiom
   case Dict.get id model.displayables |> Maybe.map .view of 
     Nothing ->
       model |> noCmd -- Todo: a command to log the error
-    Just (Animal.Viewable _) ->
+    Just (Displayed.Viewable _) ->
       model |> noCmd
-    Just (Animal.Writable form) ->
+    Just (Displayed.Writable form) ->
       formOp op form model
 
-formOp : FormOperation -> Animal.Form -> Model -> (Model, Cmd Msg)
+formOp : FormOperation -> Form -> Model -> (Model, Cmd Msg)
 formOp op form model =
   case op of 
     RemoveFormFlash -> -- this happens automatically, so this is effectively a NoOp
@@ -204,7 +193,7 @@ formOp op form model =
           |> model_pageFlash.set PageFlash.SavedAnimalFlash
           |> noCmd
 
-withSavedForm : Animal.Form -> Model -> (Model, Animal.Animal)
+withSavedForm : Form -> Model -> (Model, Animal)
 withSavedForm form model =
   ( model |> upsertForm (form_status.set Css.BeingSaved form)
   , Form.appliedForm form
@@ -219,14 +208,14 @@ addFreshForms count species model =
       
     displayables =
       ids 
-        |> List.map (Animal.freshForm species)
-        |> List.map Animal.formDisplay
+        |> List.map (Form.fresh species)
+        |> List.map Displayed.fromForm
   in
     newModel
       |> model_displayables.update (addDisplayables displayables)
       |> model_addPageAnimals.update (addDisplayableIds displayables)
     
--- addAnimalsLikeThis : Int -> Animal.Animal -> Model -> Model
+-- addAnimalsLikeThis : Int -> Animal -> Model -> Model
 -- addAnimalsLikeThis count templateAnimal model = 
 --   let
 --     (ids, newModel) =
@@ -249,13 +238,13 @@ addFreshForms count species model =
 --       |> model_addPageAnimals.update addIds
 --       |> model_forms.update addForms
 
-populateAllAnimalsPage : List Animal.Animal -> Model -> Model 
+populateAllAnimalsPage : List Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
   let
     ids =
       List.map .id animals
     compactify animal =
-      Animal.Displayed (Animal.Viewable animal) AnimalFlash.NoFlash
+      Displayed (Displayed.Viewable animal) AnimalFlash.NoFlash
     displayables =
       List.map compactify animals
   in
@@ -279,19 +268,9 @@ addDisplayables displayables existingDict =
 addDisplayableIds displayables existingSet =
   displayables |> displayableIdSet |> Set.union existingSet
     
--- displayedAnimalDict : List Animal.Animal -> (Animal.Animal -> Animal.DisplayedAnimal) -> Dict Animal.Id Animal.DisplayedAnimal
--- displayedAnimalDict animals displayedMaker =
---   let
---     ids =
---       List.map .id animals
---     displayedAnimals =
---       List.map displayedMaker animals
---   in
---     List.map2 (,) ids displayedAnimals |> Dict.fromList
-
              
 
-freshIds : Int -> Model -> (List Animal.Id, Model)    
+freshIds : Int -> Model -> (List Id, Model)    
 freshIds n model =
   let 
     uniquePrefix = "New_animal_"

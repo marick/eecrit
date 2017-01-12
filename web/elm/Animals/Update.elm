@@ -126,15 +126,14 @@ animalOp op animal model =
 
 forwardToForm : Animal.Id -> FormOperation -> Model -> (Model, Cmd Msg)
 forwardToForm id op model =
-  case Dict.get id model.displayables of 
+  -- Todo: this should be an idiom
+  case Dict.get id model.displayables |> Maybe.map .view of 
     Nothing ->
       model |> noCmd -- Todo: a command to log the error
-    Just {view} ->
-      case view of
-        Animal.Viewable _ ->
-          model |> noCmd
-        Animal.Writable form ->
-          formOp op form model
+    Just (Animal.Viewable _) ->
+      model |> noCmd
+    Just (Animal.Writable form) ->
+      formOp op form model
 
 formOp : FormOperation -> Animal.Form -> Model -> (Model, Cmd Msg)
 formOp op form model =

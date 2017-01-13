@@ -3,7 +3,6 @@ module Animals.View.Form exposing (view)
 import Html exposing (..)
 import Html.Events as Events
 
-import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 
 import Animals.Types.Form as Form exposing (Form)

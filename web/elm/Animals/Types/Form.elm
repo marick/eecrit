@@ -5,7 +5,6 @@ import Animals.Types.Animal exposing (Animal)
 
 import Pile.Namelike exposing (Namelike)
 import Pile.Css.H as Css
-import Pile.Css.Bulma as Css
 
 import Dict exposing (Dict)
 

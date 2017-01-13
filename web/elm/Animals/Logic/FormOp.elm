@@ -17,10 +17,8 @@ import Animals.Types.Lenses exposing (..)
 
 import Animals.Logic.Validation as Validation
 
-import Animals.OutsideWorld.H as OutsideWorld
 import Animals.OutsideWorld.Cmd as OutsideWorld
 
-import Animals.View.AnimalFlash as AnimalFlash
 import Animals.View.PageFlash as PageFlash
 
 import Pile.Css.H as Css

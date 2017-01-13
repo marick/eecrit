@@ -2,7 +2,6 @@ module Animals.OutsideWorld.Update exposing (..)
 
 import Animals.Msg exposing (..)
 import Animals.Model exposing (..)
-import Animals.Types.Basic exposing (..)
 import Animals.View.PageFlash as PageFlash
 import Pile.UpdateHelpers exposing (..)
 

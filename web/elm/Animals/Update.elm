@@ -4,7 +4,6 @@ import Animals.Model exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.OutsideWorld.H as OutsideWorld
-import Animals.OutsideWorld.Cmd as OutsideWorld
 import Animals.OutsideWorld.Update as OutsideWorld
 
 import Animals.Pages.Update as Page
@@ -13,27 +12,15 @@ import Animals.View.PageFlash as PageFlash
 import Animals.Logic.AnimalOp as AnimalOp
 import Animals.Logic.FormOp as FormOp
 
-import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
-import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.DisplayedCollections as Displayable
-import Animals.Types.Lenses exposing (..)
-import Animals.Types.Conversions as Convert
-import Animals.Logic.Validation as Validation
 import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar exposing (EffectiveDate(..))
-import Pile.Namelike as Namelike exposing (Namelike)
-import Pile.Css.H as Css
-import Pile.Css.Bulma as Css
 
-import Set exposing (Set)
 import List
-import List.Extra as List
-import Dict exposing (Dict)
--- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -42,6 +29,18 @@ update msg model =
 updateWithClearedPageFlash : Msg -> Model -> ( Model, Cmd Msg )
 updateWithClearedPageFlash msg model =
   case msg of
+    WithAnimal animal op ->
+      AnimalOp.update op animal model
+
+    WithForm form op ->
+      FormOp.update op form model
+
+    Page op ->
+      Page.update op model
+
+    Incoming op ->
+      OutsideWorld.update op model
+        
     SetToday value ->
       model |> model_today.set value |> noCmd
     SetAnimals animals ->
@@ -68,21 +67,8 @@ updateWithClearedPageFlash msg model =
     AddNewAnimals count species ->
       model |> FormOp.addFreshForms count species |> noCmd
           
-    WithAnimal animal op ->
-      AnimalOp.update op animal model
-
-    WithForm form op ->
-      FormOp.update op form model
-
-    Page op ->
-      Page.update op model
-
-    Incoming op ->
-      OutsideWorld.update op model
-        
     NoOp ->
       model ! []
-
 
         
 populateAllAnimalsPage : List Animal -> Model -> Model 

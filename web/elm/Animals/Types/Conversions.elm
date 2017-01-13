@@ -1,10 +1,8 @@
 module Animals.Types.Conversions exposing (..)
 
-import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Types.Lenses exposing (..)
 
 import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 import Pile.Css.H as Css

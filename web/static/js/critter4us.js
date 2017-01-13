@@ -19925,6 +19925,275 @@ var _user$project$Animals_Pages_H$HelpPage = {ctor: 'HelpPage'};
 var _user$project$Animals_Pages_H$AddPage = {ctor: 'AddPage'};
 var _user$project$Animals_Pages_H$AllPage = {ctor: 'AllPage'};
 
+var _user$project$Animals_Types_Basic$AsBool = F2(
+	function (a, b) {
+		return {ctor: 'AsBool', _0: a, _1: b};
+	});
+var _user$project$Animals_Types_Basic$AsDate = F2(
+	function (a, b) {
+		return {ctor: 'AsDate', _0: a, _1: b};
+	});
+var _user$project$Animals_Types_Basic$AsString = F2(
+	function (a, b) {
+		return {ctor: 'AsString', _0: a, _1: b};
+	});
+var _user$project$Animals_Types_Basic$AsFloat = F2(
+	function (a, b) {
+		return {ctor: 'AsFloat', _0: a, _1: b};
+	});
+var _user$project$Animals_Types_Basic$AsInt = F2(
+	function (a, b) {
+		return {ctor: 'AsInt', _0: a, _1: b};
+	});
+
+var _user$project$Animals_OutsideWorld_H$AnimalUpdated = function (a) {
+	return {ctor: 'AnimalUpdated', _0: a};
+};
+var _user$project$Animals_OutsideWorld_H$AnimalCreated = F2(
+	function (a, b) {
+		return {ctor: 'AnimalCreated', _0: a, _1: b};
+	});
+
+var _user$project$Animals_Types_Animal$Animal = F7(
+	function (a, b, c, d, e, f, g) {
+		return {id: a, displayFormat: b, version: c, name: d, species: e, tags: f, properties: g};
+	});
+var _user$project$Animals_Types_Animal$Expanded = {ctor: 'Expanded'};
+var _user$project$Animals_Types_Animal$Compact = {ctor: 'Compact'};
+
+var _user$project$Pile_Namelike$sortByName = F2(
+	function (f, xs) {
+		return A2(
+			_elm_lang$core$List$sortBy,
+			function (_p0) {
+				return _elm_lang$core$String$toLower(
+					f(_p0));
+			},
+			xs);
+	});
+var _user$project$Pile_Namelike$canonicalize = function (string) {
+	return _elm_lang$core$String$toLower(
+		_elm_community$string_extra$String_Extra$clean(string));
+};
+var _user$project$Pile_Namelike$isMember = F2(
+	function (candidate, existing) {
+		return A2(
+			_elm_lang$core$List$member,
+			_user$project$Pile_Namelike$canonicalize(candidate),
+			A2(_elm_lang$core$List$map, _user$project$Pile_Namelike$canonicalize, existing));
+	});
+var _user$project$Pile_Namelike$isPrefix = F2(
+	function (desiredPrefix, existingName) {
+		return A2(
+			_elm_lang$core$String$startsWith,
+			_user$project$Pile_Namelike$canonicalize(desiredPrefix),
+			_user$project$Pile_Namelike$canonicalize(existingName));
+	});
+var _user$project$Pile_Namelike$isBlank = _elm_community$string_extra$String_Extra$isBlank;
+var _user$project$Pile_Namelike$isPresent = function (_p1) {
+	return !_user$project$Pile_Namelike$isBlank(_p1);
+};
+var _user$project$Pile_Namelike$isValidAddition = F2(
+	function (candidate, existing) {
+		return _user$project$Pile_Namelike$isPresent(candidate) && (!A2(_user$project$Pile_Namelike$isMember, candidate, existing));
+	});
+var _user$project$Pile_Namelike$perhapsAdd = F2(
+	function (candidate, existing) {
+		var _p2 = A2(_user$project$Pile_Namelike$isValidAddition, candidate, existing);
+		if (_p2 === true) {
+			return A2(
+				_elm_lang$core$List$append,
+				existing,
+				{
+					ctor: '::',
+					_0: candidate,
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return existing;
+		}
+	});
+var _user$project$Pile_Namelike$isTagListAllowed = F2(
+	function (desiredPrefix, tags) {
+		return _user$project$Pile_Namelike$isBlank(desiredPrefix) || A2(
+			_elm_lang$core$List$any,
+			_user$project$Pile_Namelike$isPrefix(desiredPrefix),
+			tags);
+	});
+
+var _user$project$Pile_Css_H$FormValue = F3(
+	function (a, b, c) {
+		return {validity: a, value: b, commentary: c};
+	});
+var _user$project$Pile_Css_H$BeingSaved = {ctor: 'BeingSaved'};
+var _user$project$Pile_Css_H$SomeBad = {ctor: 'SomeBad'};
+var _user$project$Pile_Css_H$AllGood = {ctor: 'AllGood'};
+var _user$project$Pile_Css_H$Error = {ctor: 'Error'};
+var _user$project$Pile_Css_H$Info = {ctor: 'Info'};
+var _user$project$Pile_Css_H$Invalid = {ctor: 'Invalid'};
+var _user$project$Pile_Css_H$invalidate = F2(
+	function (msg, formValue) {
+		return A3(
+			_user$project$Pile_Css_H$FormValue,
+			_user$project$Pile_Css_H$Invalid,
+			formValue.value,
+			{
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: _user$project$Pile_Css_H$Error, _1: msg},
+				_1: formValue.commentary
+			});
+	});
+var _user$project$Pile_Css_H$Valid = {ctor: 'Valid'};
+var _user$project$Pile_Css_H$freshValue = function (v) {
+	return A3(
+		_user$project$Pile_Css_H$FormValue,
+		_user$project$Pile_Css_H$Valid,
+		v,
+		{ctor: '[]'});
+};
+
+var _user$project$Animals_Types_Form$fresh = F2(
+	function (species, id) {
+		return {
+			id: id,
+			sortKey: id,
+			intendedVersion: 1,
+			species: species,
+			name: A2(
+				_user$project$Pile_Css_H$invalidate,
+				'Give the animal a name.',
+				_user$project$Pile_Css_H$freshValue('')),
+			tags: {ctor: '[]'},
+			tentativeTag: '',
+			properties: _elm_lang$core$Dict$empty,
+			status: _user$project$Pile_Css_H$SomeBad,
+			originalAnimal: _elm_lang$core$Maybe$Nothing
+		};
+	});
+var _user$project$Animals_Types_Form$Form = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {id: a, sortKey: b, intendedVersion: c, species: d, name: e, tags: f, tentativeTag: g, properties: h, status: i, originalAnimal: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$Animals_Types_Form$ValidationContext = function (a) {
+	return {disallowedNames: a};
+};
+
+var _user$project$Animals_Msg$StartChange = function (a) {
+	return {ctor: 'StartChange', _0: a};
+};
+var _user$project$Animals_Msg$NoticeChange = function (a) {
+	return {ctor: 'NoticeChange', _0: a};
+};
+var _user$project$Animals_Msg$HttpError = F2(
+	function (a, b) {
+		return {ctor: 'HttpError', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$MoreLikeThis = {ctor: 'MoreLikeThis'};
+var _user$project$Animals_Msg$StartEditing = {ctor: 'StartEditing'};
+var _user$project$Animals_Msg$SwitchToReadOnly = function (a) {
+	return {ctor: 'SwitchToReadOnly', _0: a};
+};
+var _user$project$Animals_Msg$RemoveAnimalFlash = {ctor: 'RemoveAnimalFlash'};
+var _user$project$Animals_Msg$DeleteTag = function (a) {
+	return {ctor: 'DeleteTag', _0: a};
+};
+var _user$project$Animals_Msg$CreateNewTag = {ctor: 'CreateNewTag'};
+var _user$project$Animals_Msg$TentativeTagUpdate = function (a) {
+	return {ctor: 'TentativeTagUpdate', _0: a};
+};
+var _user$project$Animals_Msg$NameFieldUpdate = function (a) {
+	return {ctor: 'NameFieldUpdate', _0: a};
+};
+var _user$project$Animals_Msg$StartCreating = {ctor: 'StartCreating'};
+var _user$project$Animals_Msg$CancelCreation = {ctor: 'CancelCreation'};
+var _user$project$Animals_Msg$NoticeCreationResults = function (a) {
+	return {ctor: 'NoticeCreationResults', _0: a};
+};
+var _user$project$Animals_Msg$NoticeSaveResults = {ctor: 'NoticeSaveResults'};
+var _user$project$Animals_Msg$StartSavingEdits = {ctor: 'StartSavingEdits'};
+var _user$project$Animals_Msg$CancelEdits = {ctor: 'CancelEdits'};
+var _user$project$Animals_Msg$RemoveFormFlash = {ctor: 'RemoveFormFlash'};
+var _user$project$Animals_Msg$AddNewAnimals = F2(
+	function (a, b) {
+		return {ctor: 'AddNewAnimals', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$AnimalGotCreated = function (a) {
+	return {ctor: 'AnimalGotCreated', _0: a};
+};
+var _user$project$Animals_Msg$AnimalGotSaved = function (a) {
+	return {ctor: 'AnimalGotSaved', _0: a};
+};
+var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
+	return {ctor: 'SetSpeciesFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetTagFilter = function (a) {
+	return {ctor: 'SetTagFilter', _0: a};
+};
+var _user$project$Animals_Msg$SetNameFilter = function (a) {
+	return {ctor: 'SetNameFilter', _0: a};
+};
+var _user$project$Animals_Msg$SelectDate = function (a) {
+	return {ctor: 'SelectDate', _0: a};
+};
+var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
+var _user$project$Animals_Msg$SetAnimals = function (a) {
+	return {ctor: 'SetAnimals', _0: a};
+};
+var _user$project$Animals_Msg$SetToday = function (a) {
+	return {ctor: 'SetToday', _0: a};
+};
+var _user$project$Animals_Msg$Incoming = function (a) {
+	return {ctor: 'Incoming', _0: a};
+};
+var _user$project$Animals_Msg$Page = function (a) {
+	return {ctor: 'Page', _0: a};
+};
+var _user$project$Animals_Msg$WithForm = F2(
+	function (a, b) {
+		return {ctor: 'WithForm', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$WithAnimal = F2(
+	function (a, b) {
+		return {ctor: 'WithAnimal', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
+
+var _user$project$Animals_Pages_Navigation$fromLocation = function (location) {
+	var path = location.pathname;
+	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_H$addPagePath, path) ? _user$project$Animals_Pages_H$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_H$helpPagePath, path) ? _user$project$Animals_Pages_H$HelpPage : _user$project$Animals_Pages_H$AllPage);
+};
+var _user$project$Animals_Pages_Navigation$toPageChangeCmd = function (page) {
+	var url = function () {
+		var _p0 = page;
+		switch (_p0.ctor) {
+			case 'AllPage':
+				return _user$project$Animals_Pages_H$allPagePath;
+			case 'AddPage':
+				return _user$project$Animals_Pages_H$addPagePath;
+			default:
+				return _user$project$Animals_Pages_H$helpPagePath;
+		}
+	}();
+	return _elm_lang$navigation$Navigation$newUrl(url);
+};
+
 var _user$project$Pile_HtmlShorthand$onEnter = function (msg) {
 	var isEnter = function (code) {
 		return _elm_lang$core$Native_Utils.eq(code, 13) ? _elm_lang$core$Json_Decode$succeed(msg) : _elm_lang$core$Json_Decode$fail('not ENTER');
@@ -19942,7 +20211,7 @@ var _user$project$Pile_HtmlShorthand$onClickPreventingDefault = function (msg) {
 		_elm_lang$core$Json_Decode$succeed(msg));
 };
 
-var _user$project$Pile_Bulma$deleteButton = function (msg) {
+var _user$project$Pile_Css_Bulma$deleteButton = function (msg) {
 	return A2(
 		_elm_lang$html$Html$button,
 		{
@@ -19956,7 +20225,7 @@ var _user$project$Pile_Bulma$deleteButton = function (msg) {
 		},
 		{ctor: '[]'});
 };
-var _user$project$Pile_Bulma$flashNotification = F2(
+var _user$project$Pile_Css_Bulma$flashNotification = F2(
 	function (msg, contentList) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -19967,11 +20236,11 @@ var _user$project$Pile_Bulma$flashNotification = F2(
 			},
 			{
 				ctor: '::',
-				_0: _user$project$Pile_Bulma$deleteButton(msg),
+				_0: _user$project$Pile_Css_Bulma$deleteButton(msg),
 				_1: contentList
 			});
 	});
-var _user$project$Pile_Bulma$leftwardSave = F2(
+var _user$project$Pile_Css_Bulma$leftwardSave = F2(
 	function (status, msg) {
 		var universalClasses = 'button is-success pull-left';
 		var attributes = function () {
@@ -20041,7 +20310,7 @@ var _user$project$Pile_Bulma$leftwardSave = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$exampleSuccess = A2(
+var _user$project$Pile_Css_Bulma$exampleSuccess = A2(
 	_elm_lang$html$Html$a,
 	{
 		ctor: '::',
@@ -20075,7 +20344,7 @@ var _user$project$Pile_Bulma$exampleSuccess = A2(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Pile_Bulma$oneTextInputInRow = function (extraAttributes) {
+var _user$project$Pile_Css_Bulma$oneTextInputInRow = function (extraAttributes) {
 	return A2(
 		_elm_lang$html$Html$p,
 		{
@@ -20103,7 +20372,7 @@ var _user$project$Pile_Bulma$oneTextInputInRow = function (extraAttributes) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$horizontalControls = function (controls) {
+var _user$project$Pile_Css_Bulma$horizontalControls = function (controls) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20113,7 +20382,7 @@ var _user$project$Pile_Bulma$horizontalControls = function (controls) {
 		},
 		controls);
 };
-var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
+var _user$project$Pile_Css_Bulma$oneReasonablySizedControl = function (control) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20138,7 +20407,7 @@ var _user$project$Pile_Bulma$oneReasonablySizedControl = function (control) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$controlRow = F2(
+var _user$project$Pile_Css_Bulma$controlRow = F2(
 	function (labelText, controlPart) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -20179,7 +20448,7 @@ var _user$project$Pile_Bulma$controlRow = F2(
 				}
 			});
 	});
-var _user$project$Pile_Bulma$distributeHorizontally = function (contents) {
+var _user$project$Pile_Css_Bulma$distributeHorizontally = function (contents) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20189,7 +20458,7 @@ var _user$project$Pile_Bulma$distributeHorizontally = function (contents) {
 		},
 		contents);
 };
-var _user$project$Pile_Bulma$highlightedRow = F2(
+var _user$project$Pile_Css_Bulma$highlightedRow = F2(
 	function (attributes, cells) {
 		var emphasis = _elm_lang$html$Html_Attributes$style(
 			{
@@ -20206,7 +20475,7 @@ var _user$project$Pile_Bulma$highlightedRow = F2(
 			{ctor: '::', _0: emphasis, _1: attributes},
 			cells);
 	});
-var _user$project$Pile_Bulma$propertyTable = function (body) {
+var _user$project$Pile_Css_Bulma$propertyTable = function (body) {
 	return A2(
 		_elm_lang$html$Html$table,
 		{
@@ -20232,7 +20501,7 @@ var _user$project$Pile_Bulma$propertyTable = function (body) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$headerlessTable = function (body) {
+var _user$project$Pile_Css_Bulma$headerlessTable = function (body) {
 	return A2(
 		_elm_lang$html$Html$table,
 		{
@@ -20249,7 +20518,7 @@ var _user$project$Pile_Bulma$headerlessTable = function (body) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$column = F2(
+var _user$project$Pile_Css_Bulma$column = F2(
 	function (n, contents) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -20264,7 +20533,7 @@ var _user$project$Pile_Bulma$column = F2(
 			},
 			contents);
 	});
-var _user$project$Pile_Bulma$centeredColumns = function (contents) {
+var _user$project$Pile_Css_Bulma$centeredColumns = function (contents) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20274,7 +20543,7 @@ var _user$project$Pile_Bulma$centeredColumns = function (contents) {
 		},
 		contents);
 };
-var _user$project$Pile_Bulma$simpleTextInput = F2(
+var _user$project$Pile_Css_Bulma$simpleTextInput = F2(
 	function (val, msg) {
 		return A2(
 			_elm_lang$html$Html$p,
@@ -20308,7 +20577,7 @@ var _user$project$Pile_Bulma$simpleTextInput = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$headingP = function (heading) {
+var _user$project$Pile_Css_Bulma$headingP = function (heading) {
 	return A2(
 		_elm_lang$html$Html$p,
 		{
@@ -20322,7 +20591,7 @@ var _user$project$Pile_Bulma$headingP = function (heading) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$disabledSelect = function (content) {
+var _user$project$Pile_Css_Bulma$disabledSelect = function (content) {
 	return A2(
 		_elm_lang$html$Html$span,
 		{
@@ -20343,7 +20612,7 @@ var _user$project$Pile_Bulma$disabledSelect = function (content) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$simpleSelect = function (content) {
+var _user$project$Pile_Css_Bulma$simpleSelect = function (content) {
 	return A2(
 		_elm_lang$html$Html$span,
 		{
@@ -20360,7 +20629,7 @@ var _user$project$Pile_Bulma$simpleSelect = function (content) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$centeredLevelItem = function (content) {
+var _user$project$Pile_Css_Bulma$centeredLevelItem = function (content) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20370,7 +20639,7 @@ var _user$project$Pile_Bulma$centeredLevelItem = function (content) {
 		},
 		content);
 };
-var _user$project$Pile_Bulma$messageView = F2(
+var _user$project$Pile_Css_Bulma$messageView = F2(
 	function (headerList, contentList) {
 		return A2(
 			_elm_lang$html$Html$article,
@@ -20403,7 +20672,7 @@ var _user$project$Pile_Bulma$messageView = F2(
 				}
 			});
 	});
-var _user$project$Pile_Bulma$readOnlyTag = function (tagText) {
+var _user$project$Pile_Css_Bulma$readOnlyTag = function (tagText) {
 	return A2(
 		_elm_lang$html$Html$span,
 		{
@@ -20417,7 +20686,38 @@ var _user$project$Pile_Bulma$readOnlyTag = function (tagText) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$coloredIcon = F2(
+var _user$project$Pile_Css_Bulma$deletableTag = F3(
+	function (status, msg, tagText) {
+		return _elm_lang$core$Native_Utils.eq(status, _user$project$Pile_Css_H$BeingSaved) ? _user$project$Pile_Css_Bulma$readOnlyTag(tagText) : A2(
+			_elm_lang$html$Html$p,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('tag is-primary control'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(tagText),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('delete'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									msg(tagText)),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Pile_Css_Bulma$coloredIcon = F2(
 	function (iconName, color) {
 		return A2(
 			_elm_lang$html$Html$i,
@@ -20438,9 +20738,9 @@ var _user$project$Pile_Bulma$coloredIcon = F2(
 			},
 			{ctor: '[]'});
 	});
-var _user$project$Pile_Bulma$trueIcon = A2(_user$project$Pile_Bulma$coloredIcon, 'fa-check', 'green');
-var _user$project$Pile_Bulma$falseIcon = A2(_user$project$Pile_Bulma$coloredIcon, 'fa-times', 'red');
-var _user$project$Pile_Bulma$rightIcon = F3(
+var _user$project$Pile_Css_Bulma$trueIcon = A2(_user$project$Pile_Css_Bulma$coloredIcon, 'fa-check', 'green');
+var _user$project$Pile_Css_Bulma$falseIcon = A2(_user$project$Pile_Css_Bulma$coloredIcon, 'fa-times', 'red');
+var _user$project$Pile_Css_Bulma$rightIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
 			_elm_lang$html$Html$a,
@@ -20475,7 +20775,7 @@ var _user$project$Pile_Bulma$rightIcon = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$plainIcon = F3(
+var _user$project$Pile_Css_Bulma$plainIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
 			_elm_lang$html$Html$a,
@@ -20510,7 +20810,7 @@ var _user$project$Pile_Bulma$plainIcon = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$tdIcon = F3(
+var _user$project$Pile_Css_Bulma$tdIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
 			_elm_lang$html$Html$td,
@@ -20552,7 +20852,7 @@ var _user$project$Pile_Bulma$tdIcon = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$shortenWidth = function (content) {
+var _user$project$Pile_Css_Bulma$shortenWidth = function (content) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -20573,9 +20873,9 @@ var _user$project$Pile_Bulma$shortenWidth = function (content) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Pile_Bulma$message = F3(
+var _user$project$Pile_Css_Bulma$message = F3(
 	function (kind, header, body) {
-		return _user$project$Pile_Bulma$shortenWidth(
+		return _user$project$Pile_Css_Bulma$shortenWidth(
 			{
 				ctor: '::',
 				_0: A2(
@@ -20620,8 +20920,8 @@ var _user$project$Pile_Bulma$message = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$infoMessage = _user$project$Pile_Bulma$message('is-info');
-var _user$project$Pile_Bulma$tab = F2(
+var _user$project$Pile_Css_Bulma$infoMessage = _user$project$Pile_Css_Bulma$message('is-info');
+var _user$project$Pile_Css_Bulma$tab = F2(
 	function (selectedPage, _p1) {
 		var _p2 = _p1;
 		var _p3 = _elm_lang$core$Native_Utils.eq(selectedPage, _p2._0) ? {
@@ -20704,7 +21004,7 @@ var _user$project$Pile_Bulma$tab = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$tabs = F2(
+var _user$project$Pile_Css_Bulma$tabs = F2(
 	function (selectedPage, tabList) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -20720,21 +21020,16 @@ var _user$project$Pile_Bulma$tabs = F2(
 					{ctor: '[]'},
 					A2(
 						_elm_lang$core$List$map,
-						_user$project$Pile_Bulma$tab(selectedPage),
+						_user$project$Pile_Css_Bulma$tab(selectedPage),
 						tabList)),
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$FormValue = F3(
-	function (a, b, c) {
-		return {validity: a, value: b, commentary: c};
-	});
-var _user$project$Pile_Bulma$BeingSaved = {ctor: 'BeingSaved'};
-var _user$project$Pile_Bulma$adjustClassForStatus = F2(
+var _user$project$Pile_Css_Bulma$adjustClassForStatus = F2(
 	function (status, classes) {
-		return _elm_lang$core$Native_Utils.eq(status, _user$project$Pile_Bulma$BeingSaved) ? A2(_elm_lang$core$Basics_ops['++'], classes, ' is-disabled') : classes;
+		return _elm_lang$core$Native_Utils.eq(status, _user$project$Pile_Css_H$BeingSaved) ? A2(_elm_lang$core$Basics_ops['++'], classes, ' is-disabled') : classes;
 	});
-var _user$project$Pile_Bulma$soleTextInputInRow = F3(
+var _user$project$Pile_Css_Bulma$soleTextInputInRow = F3(
 	function (status, fieldValue, extraAttributes) {
 		var _p4 = function () {
 			var _p5 = fieldValue.validity;
@@ -20790,7 +21085,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F3(
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$class(
-						A2(_user$project$Pile_Bulma$adjustClassForStatus, status, fieldClasses)),
+						A2(_user$project$Pile_Css_Bulma$adjustClassForStatus, status, fieldClasses)),
 					_1: {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$type_('text'),
@@ -20814,7 +21109,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F3(
 				_elm_lang$core$Basics_ops['++'],
 				fieldIcons,
 				A2(_elm_lang$core$List$map, oneCommentary, fieldValue.commentary)));
-		return _user$project$Pile_Bulma$oneReasonablySizedControl(
+		return _user$project$Pile_Css_Bulma$oneReasonablySizedControl(
 			A2(
 				_elm_lang$html$Html$p,
 				{
@@ -20824,7 +21119,7 @@ var _user$project$Pile_Bulma$soleTextInputInRow = F3(
 				},
 				contents));
 	});
-var _user$project$Pile_Bulma$textInputWithSubmit = F5(
+var _user$project$Pile_Css_Bulma$textInputWithSubmit = F5(
 	function (status, buttonLabel, fieldValue, inputMsg, submitMsg) {
 		return A2(
 			_elm_lang$html$Html$div,
@@ -20849,7 +21144,7 @@ var _user$project$Pile_Bulma$textInputWithSubmit = F5(
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$class(
-									A2(_user$project$Pile_Bulma$adjustClassForStatus, status, 'input')),
+									A2(_user$project$Pile_Css_Bulma$adjustClassForStatus, status, 'input')),
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html_Attributes$type_('text'),
@@ -20878,7 +21173,7 @@ var _user$project$Pile_Bulma$textInputWithSubmit = F5(
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$class(
-								A2(_user$project$Pile_Bulma$adjustClassForStatus, status, 'button is-success')),
+								A2(_user$project$Pile_Css_Bulma$adjustClassForStatus, status, 'button is-success')),
 							_1: {
 								ctor: '::',
 								_0: _user$project$Pile_HtmlShorthand$onClickPreventingDefault(submitMsg),
@@ -20894,7 +21189,7 @@ var _user$project$Pile_Bulma$textInputWithSubmit = F5(
 				}
 			});
 	});
-var _user$project$Pile_Bulma$rightwardCancel = F2(
+var _user$project$Pile_Css_Bulma$rightwardCancel = F2(
 	function (status, msg) {
 		return A2(
 			_elm_lang$html$Html$p,
@@ -20906,7 +21201,7 @@ var _user$project$Pile_Bulma$rightwardCancel = F2(
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$class(
-							A2(_user$project$Pile_Bulma$adjustClassForStatus, status, 'button is-danger pull-right')),
+							A2(_user$project$Pile_Css_Bulma$adjustClassForStatus, status, 'button is-danger pull-right')),
 						_1: {
 							ctor: '::',
 							_0: _user$project$Pile_HtmlShorthand$onClickPreventingDefault(msg),
@@ -20943,52 +21238,8 @@ var _user$project$Pile_Bulma$rightwardCancel = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Pile_Bulma$deletableTag = F3(
-	function (status, msg, tagText) {
-		return _elm_lang$core$Native_Utils.eq(status, _user$project$Pile_Bulma$BeingSaved) ? _user$project$Pile_Bulma$readOnlyTag(tagText) : A2(
-			_elm_lang$html$Html$p,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('tag is-primary control'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(tagText),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$button,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('delete'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onClick(
-									msg(tagText)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Pile_Bulma$SomeBad = {ctor: 'SomeBad'};
-var _user$project$Pile_Bulma$AllGood = {ctor: 'AllGood'};
-var _user$project$Pile_Bulma$Error = {ctor: 'Error'};
-var _user$project$Pile_Bulma$Info = {ctor: 'Info'};
-var _user$project$Pile_Bulma$Invalid = {ctor: 'Invalid'};
-var _user$project$Pile_Bulma$Valid = {ctor: 'Valid'};
-var _user$project$Pile_Bulma$freshValue = function (v) {
-	return A3(
-		_user$project$Pile_Bulma$FormValue,
-		_user$project$Pile_Bulma$Valid,
-		v,
-		{ctor: '[]'});
-};
 
-var _user$project$Animals_Animal_Flash$showWithButton = F2(
+var _user$project$Animals_View_AnimalFlash$showWithButton = F2(
 	function (flash, msg) {
 		var _p0 = flash;
 		if (_p0.ctor === 'NoFlash') {
@@ -20998,14 +21249,14 @@ var _user$project$Animals_Animal_Flash$showWithButton = F2(
 				{ctor: '[]'});
 		} else {
 			return A2(
-				_user$project$Pile_Bulma$flashNotification,
+				_user$project$Pile_Css_Bulma$flashNotification,
 				msg,
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text('Excuse me for butting in, but I notice you clicked '),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Pile_Bulma$exampleSuccess,
+						_0: _user$project$Pile_Css_Bulma$exampleSuccess,
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(' while there was text in the '),
@@ -21024,7 +21275,7 @@ var _user$project$Animals_Animal_Flash$showWithButton = F2(
 									_0: _elm_lang$html$Html$text(' field. So I\'ve added the tag '),
 									_1: {
 										ctor: '::',
-										_0: _user$project$Pile_Bulma$readOnlyTag(_p0._0),
+										_0: _user$project$Pile_Css_Bulma$readOnlyTag(_p0._0),
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html$text(' for you.'),
@@ -21042,166 +21293,308 @@ var _user$project$Animals_Animal_Flash$showWithButton = F2(
 				});
 		}
 	});
-var _user$project$Animals_Animal_Flash$SavedIncompleteTag = function (a) {
+var _user$project$Animals_View_AnimalFlash$SavedIncompleteTag = function (a) {
 	return {ctor: 'SavedIncompleteTag', _0: a};
 };
-var _user$project$Animals_Animal_Flash$NoFlash = {ctor: 'NoFlash'};
+var _user$project$Animals_View_AnimalFlash$NoFlash = {ctor: 'NoFlash'};
 
-var _user$project$Animals_Animal_Types$Animal = F7(
-	function (a, b, c, d, e, f, g) {
-		return {id: a, displayFormat: b, version: c, name: d, species: e, tags: f, properties: g};
-	});
-var _user$project$Animals_Animal_Types$Form = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {id: a, intendedVersion: b, species: c, name: d, tags: e, tentativeTag: f, properties: g, status: h, originalAnimal: i};
-	});
-var _user$project$Animals_Animal_Types$ValidationContext = function (a) {
-	return {disallowedNames: a};
-};
-var _user$project$Animals_Animal_Types$Displayed = F2(
+var _user$project$Animals_Types_Displayed$Displayed = F2(
 	function (a, b) {
 		return {view: a, animalFlash: b};
 	});
-var _user$project$Animals_Animal_Types$AsBool = F2(
-	function (a, b) {
-		return {ctor: 'AsBool', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$AsDate = F2(
-	function (a, b) {
-		return {ctor: 'AsDate', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$AsString = F2(
-	function (a, b) {
-		return {ctor: 'AsString', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$AsFloat = F2(
-	function (a, b) {
-		return {ctor: 'AsFloat', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$AsInt = F2(
-	function (a, b) {
-		return {ctor: 'AsInt', _0: a, _1: b};
-	});
-var _user$project$Animals_Animal_Types$Expanded = {ctor: 'Expanded'};
-var _user$project$Animals_Animal_Types$Compact = {ctor: 'Compact'};
-var _user$project$Animals_Animal_Types$empty = function (species) {
-	return {
-		id: 'This id MUST be replaced',
-		displayFormat: _user$project$Animals_Animal_Types$Compact,
-		version: 0,
-		name: '',
-		species: species,
-		tags: {ctor: '[]'},
-		properties: _elm_lang$core$Dict$empty
-	};
-};
-var _user$project$Animals_Animal_Types$Viewable = function (a) {
+var _user$project$Animals_Types_Displayed$Viewable = function (a) {
 	return {ctor: 'Viewable', _0: a};
 };
-var _user$project$Animals_Animal_Types$animalDisplay = function (animal) {
-	return A2(
-		_user$project$Animals_Animal_Types$Displayed,
-		_user$project$Animals_Animal_Types$Viewable(animal),
-		_user$project$Animals_Animal_Flash$NoFlash);
-};
-var _user$project$Animals_Animal_Types$Writable = function (a) {
+var _user$project$Animals_Types_Displayed$Writable = function (a) {
 	return {ctor: 'Writable', _0: a};
 };
-var _user$project$Animals_Animal_Types$formDisplay = function (form) {
+
+var _user$project$Animals_Types_Conversions$formToFlash = function (form) {
+	var _p0 = A2(_user$project$Pile_Namelike$isValidAddition, form.tentativeTag, form.tags);
+	if (_p0 === true) {
+		return _user$project$Animals_View_AnimalFlash$SavedIncompleteTag(form.tentativeTag);
+	} else {
+		return _user$project$Animals_View_AnimalFlash$NoFlash;
+	}
+};
+var _user$project$Animals_Types_Conversions$formToAnimal = function (form) {
+	return {
+		id: form.id,
+		displayFormat: _user$project$Animals_Types_Animal$Expanded,
+		version: form.intendedVersion,
+		name: form.name.value,
+		species: form.species,
+		tags: A2(_user$project$Pile_Namelike$perhapsAdd, form.tentativeTag, form.tags),
+		properties: form.properties
+	};
+};
+var _user$project$Animals_Types_Conversions$checkedFormToDisplayed = function (form) {
 	return A2(
-		_user$project$Animals_Animal_Types$Displayed,
-		_user$project$Animals_Animal_Types$Writable(form),
-		_user$project$Animals_Animal_Flash$NoFlash);
+		_user$project$Animals_Types_Displayed$Displayed,
+		_user$project$Animals_Types_Displayed$Writable(form),
+		_user$project$Animals_View_AnimalFlash$NoFlash);
+};
+var _user$project$Animals_Types_Conversions$finishedFormToDisplayed = function (form) {
+	return {
+		view: _user$project$Animals_Types_Displayed$Viewable(
+			_user$project$Animals_Types_Conversions$formToAnimal(form)),
+		animalFlash: _user$project$Animals_Types_Conversions$formToFlash(form)
+	};
+};
+var _user$project$Animals_Types_Conversions$animalToDisplayed = function (animal) {
+	return A2(
+		_user$project$Animals_Types_Displayed$Displayed,
+		_user$project$Animals_Types_Displayed$Viewable(animal),
+		_user$project$Animals_View_AnimalFlash$NoFlash);
+};
+var _user$project$Animals_Types_Conversions$animalToForm = function (animal) {
+	return {
+		status: _user$project$Pile_Css_H$AllGood,
+		id: animal.id,
+		sortKey: animal.name,
+		species: animal.species,
+		intendedVersion: animal.version + 1,
+		name: _user$project$Pile_Css_H$freshValue(animal.name),
+		tags: animal.tags,
+		tentativeTag: '',
+		properties: animal.properties,
+		originalAnimal: _elm_lang$core$Maybe$Just(animal)
+	};
 };
 
-var _user$project$Animals_OutsideWorld_H$AnimalUpdated = function (a) {
-	return {ctor: 'AnimalUpdated', _0: a};
+var _user$project$Pile_UpdatingLens$lensUpdate = F4(
+	function (getPart, setPart, partTransformer, whole) {
+		return A2(
+			setPart,
+			partTransformer(
+				getPart(whole)),
+			whole);
+	});
+var _user$project$Pile_UpdatingLens$toMonocle = function (u) {
+	return {get: u.get, set: u.set};
 };
-var _user$project$Animals_OutsideWorld_H$AnimalCreated = F2(
-	function (a, b) {
-		return {ctor: 'AnimalCreated', _0: a, _1: b};
+var _user$project$Pile_UpdatingLens$lens = F2(
+	function (getPart, setPart) {
+		return {
+			get: getPart,
+			set: setPart,
+			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
+		};
+	});
+var _user$project$Pile_UpdatingLens$compose = F2(
+	function (left, right) {
+		var right_ = _user$project$Pile_UpdatingLens$toMonocle(right);
+		var left_ = _user$project$Pile_UpdatingLens$toMonocle(left);
+		var composed = A2(_arturopala$elm_monocle$Monocle_Lens$compose, left_, right_);
+		return A2(_user$project$Pile_UpdatingLens$lens, composed.get, composed.set);
+	});
+var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
+	function (a, b, c) {
+		return {get: a, set: b, update: c};
 	});
 
-var _user$project$Animals_Msg$StartChange = function (a) {
-	return {ctor: 'StartChange', _0: a};
-};
-var _user$project$Animals_Msg$NoticeChange = function (a) {
-	return {ctor: 'NoticeChange', _0: a};
-};
-var _user$project$Animals_Msg$HttpError = F2(
-	function (a, b) {
-		return {ctor: 'HttpError', _0: a, _1: b};
+var _user$project$Animals_Types_Lenses$makeLens_traversingDisplayView = F2(
+	function (formLens, animalLens) {
+		return A2(
+			_user$project$Pile_UpdatingLens$lens,
+			function (w) {
+				var _p0 = w.view;
+				if (_p0.ctor === 'Writable') {
+					return formLens.get(_p0._0);
+				} else {
+					return animalLens.get(_p0._0);
+				}
+			},
+			F2(
+				function (p, w) {
+					return _elm_lang$core$Native_Utils.update(
+						w,
+						{
+							view: function () {
+								var _p1 = w.view;
+								if (_p1.ctor === 'Writable') {
+									return _user$project$Animals_Types_Displayed$Writable(
+										A2(formLens.set, p, _p1._0));
+								} else {
+									return _user$project$Animals_Types_Displayed$Viewable(
+										A2(animalLens.set, p, _p1._0));
+								}
+							}()
+						});
+				}));
 	});
-var _user$project$Animals_Msg$MoreLikeThis = {ctor: 'MoreLikeThis'};
-var _user$project$Animals_Msg$StartEditing = {ctor: 'StartEditing'};
-var _user$project$Animals_Msg$SwitchToReadOnly = function (a) {
-	return {ctor: 'SwitchToReadOnly', _0: a};
-};
-var _user$project$Animals_Msg$RemoveFlash = {ctor: 'RemoveFlash'};
-var _user$project$Animals_Msg$DeleteTag = function (a) {
-	return {ctor: 'DeleteTag', _0: a};
-};
-var _user$project$Animals_Msg$CreateNewTag = {ctor: 'CreateNewTag'};
-var _user$project$Animals_Msg$TentativeTagUpdate = function (a) {
-	return {ctor: 'TentativeTagUpdate', _0: a};
-};
-var _user$project$Animals_Msg$NameFieldUpdate = function (a) {
-	return {ctor: 'NameFieldUpdate', _0: a};
-};
-var _user$project$Animals_Msg$StartCreating = {ctor: 'StartCreating'};
-var _user$project$Animals_Msg$CancelCreation = {ctor: 'CancelCreation'};
-var _user$project$Animals_Msg$NoticeCreationResults = function (a) {
-	return {ctor: 'NoticeCreationResults', _0: a};
-};
-var _user$project$Animals_Msg$NoticeSaveResults = {ctor: 'NoticeSaveResults'};
-var _user$project$Animals_Msg$StartSavingEdits = {ctor: 'StartSavingEdits'};
-var _user$project$Animals_Msg$CancelEdits = {ctor: 'CancelEdits'};
-var _user$project$Animals_Msg$AddNewAnimals = F2(
-	function (a, b) {
-		return {ctor: 'AddNewAnimals', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$AnimalGotCreated = function (a) {
-	return {ctor: 'AnimalGotCreated', _0: a};
-};
-var _user$project$Animals_Msg$AnimalGotSaved = function (a) {
-	return {ctor: 'AnimalGotSaved', _0: a};
-};
-var _user$project$Animals_Msg$SetSpeciesFilter = function (a) {
-	return {ctor: 'SetSpeciesFilter', _0: a};
-};
-var _user$project$Animals_Msg$SetTagFilter = function (a) {
-	return {ctor: 'SetTagFilter', _0: a};
-};
-var _user$project$Animals_Msg$SetNameFilter = function (a) {
-	return {ctor: 'SetNameFilter', _0: a};
-};
-var _user$project$Animals_Msg$SelectDate = function (a) {
-	return {ctor: 'SelectDate', _0: a};
-};
-var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
-var _user$project$Animals_Msg$SetAnimals = function (a) {
-	return {ctor: 'SetAnimals', _0: a};
-};
-var _user$project$Animals_Msg$SetToday = function (a) {
-	return {ctor: 'SetToday', _0: a};
-};
-var _user$project$Animals_Msg$Incoming = function (a) {
-	return {ctor: 'Incoming', _0: a};
-};
-var _user$project$Animals_Msg$Page = function (a) {
-	return {ctor: 'Page', _0: a};
-};
-var _user$project$Animals_Msg$WithForm = F2(
-	function (a, b) {
-		return {ctor: 'WithForm', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$WithAnimal = F2(
-	function (a, b) {
-		return {ctor: 'WithAnimal', _0: a, _1: b};
-	});
-var _user$project$Animals_Msg$NoOp = {ctor: 'NoOp'};
+var _user$project$Animals_Types_Lenses$validationContext_disallowedNames = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.disallowedNames;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{disallowedNames: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_status = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.status;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{status: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_tentativeTag = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tentativeTag;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tentativeTag: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_species = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.species;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{species: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_tags = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_id = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.id;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{id: p});
+		}));
+var _user$project$Animals_Types_Lenses$formValue_value = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.value;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{value: p});
+		}));
+var _user$project$Animals_Types_Lenses$form_name_value = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Types_Lenses$form_name, _user$project$Animals_Types_Lenses$formValue_value);
+var _user$project$Animals_Types_Lenses$animal_displayFormat = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.displayFormat;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{displayFormat: p});
+		}));
+var _user$project$Animals_Types_Lenses$animal_properties = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.properties;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{properties: p});
+		}));
+var _user$project$Animals_Types_Lenses$animal_tags = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.tags;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{tags: p});
+		}));
+var _user$project$Animals_Types_Lenses$displayed_tags = A2(_user$project$Animals_Types_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Types_Lenses$form_tags, _user$project$Animals_Types_Lenses$animal_tags);
+var _user$project$Animals_Types_Lenses$animal_name = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.name;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{name: p});
+		}));
+var _user$project$Animals_Types_Lenses$displayed_name = A2(_user$project$Animals_Types_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Types_Lenses$form_name_value, _user$project$Animals_Types_Lenses$animal_name);
+var _user$project$Animals_Types_Lenses$animal_version = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.version;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{version: p});
+		}));
+var _user$project$Animals_Types_Lenses$animal_species = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.species;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{species: p});
+		}));
+var _user$project$Animals_Types_Lenses$displayed_species = A2(_user$project$Animals_Types_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Types_Lenses$form_species, _user$project$Animals_Types_Lenses$animal_species);
+var _user$project$Animals_Types_Lenses$animal_id = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.id;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{id: p});
+		}));
+var _user$project$Animals_Types_Lenses$displayed_id = A2(_user$project$Animals_Types_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Types_Lenses$form_id, _user$project$Animals_Types_Lenses$animal_id);
 
-var _user$project$Animals_Pages_PageFlash$httpError = F2(
+var _user$project$Animals_View_PageFlash$httpError = F2(
 	function (contextString, err) {
 		var paddedContext = A2(_elm_lang$core$Basics_ops['++'], contextString, ' ');
 		var errText = function () {
@@ -21285,7 +21678,7 @@ var _user$project$Animals_Pages_PageFlash$httpError = F2(
 			}
 		}();
 		return A2(
-			_user$project$Pile_Bulma$flashNotification,
+			_user$project$Pile_Css_Bulma$flashNotification,
 			_user$project$Animals_Msg$NoOp,
 			{
 				ctor: '::',
@@ -21293,7 +21686,7 @@ var _user$project$Animals_Pages_PageFlash$httpError = F2(
 				_1: errText
 			});
 	});
-var _user$project$Animals_Pages_PageFlash$show = function (flash) {
+var _user$project$Animals_View_PageFlash$show = function (flash) {
 	var _p1 = flash;
 	switch (_p1.ctor) {
 		case 'NoFlash':
@@ -21303,7 +21696,7 @@ var _user$project$Animals_Pages_PageFlash$show = function (flash) {
 				{ctor: '[]'});
 		case 'SavedAnimalFlash':
 			return A2(
-				_user$project$Pile_Bulma$flashNotification,
+				_user$project$Pile_Css_Bulma$flashNotification,
 				_user$project$Animals_Msg$NoOp,
 				{
 					ctor: '::',
@@ -21330,325 +21723,15 @@ var _user$project$Animals_Pages_PageFlash$show = function (flash) {
 					}
 				});
 		default:
-			return A2(_user$project$Animals_Pages_PageFlash$httpError, _p1._0, _p1._1);
+			return A2(_user$project$Animals_View_PageFlash$httpError, _p1._0, _p1._1);
 	}
 };
-var _user$project$Animals_Pages_PageFlash$HttpErrorFlash = F2(
+var _user$project$Animals_View_PageFlash$HttpErrorFlash = F2(
 	function (a, b) {
 		return {ctor: 'HttpErrorFlash', _0: a, _1: b};
 	});
-var _user$project$Animals_Pages_PageFlash$SavedAnimalFlash = {ctor: 'SavedAnimalFlash'};
-var _user$project$Animals_Pages_PageFlash$NoFlash = {ctor: 'NoFlash'};
-
-var _user$project$Animals_Pages_Navigation$fromLocation = function (location) {
-	var path = location.pathname;
-	return A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_H$addPagePath, path) ? _user$project$Animals_Pages_H$AddPage : (A2(_elm_lang$core$String$startsWith, _user$project$Animals_Pages_H$helpPagePath, path) ? _user$project$Animals_Pages_H$HelpPage : _user$project$Animals_Pages_H$AllPage);
-};
-var _user$project$Animals_Pages_Navigation$toPageChangeCmd = function (page) {
-	var url = function () {
-		var _p0 = page;
-		switch (_p0.ctor) {
-			case 'AllPage':
-				return _user$project$Animals_Pages_H$allPagePath;
-			case 'AddPage':
-				return _user$project$Animals_Pages_H$addPagePath;
-			default:
-				return _user$project$Animals_Pages_H$helpPagePath;
-		}
-	}();
-	return _elm_lang$navigation$Navigation$newUrl(url);
-};
-
-var _user$project$Pile_UpdatingLens$lensUpdate = F4(
-	function (getPart, setPart, partTransformer, whole) {
-		return A2(
-			setPart,
-			partTransformer(
-				getPart(whole)),
-			whole);
-	});
-var _user$project$Pile_UpdatingLens$toMonocle = function (u) {
-	return {get: u.get, set: u.set};
-};
-var _user$project$Pile_UpdatingLens$lens = F2(
-	function (getPart, setPart) {
-		return {
-			get: getPart,
-			set: setPart,
-			update: A2(_user$project$Pile_UpdatingLens$lensUpdate, getPart, setPart)
-		};
-	});
-var _user$project$Pile_UpdatingLens$compose = F2(
-	function (left, right) {
-		var right_ = _user$project$Pile_UpdatingLens$toMonocle(right);
-		var left_ = _user$project$Pile_UpdatingLens$toMonocle(left);
-		var composed = A2(_arturopala$elm_monocle$Monocle_Lens$compose, left_, right_);
-		return A2(_user$project$Pile_UpdatingLens$lens, composed.get, composed.set);
-	});
-var _user$project$Pile_UpdatingLens$UpdatingLens = F3(
-	function (a, b, c) {
-		return {get: a, set: b, update: c};
-	});
-
-var _user$project$Pile_Namelike$sortByName = F2(
-	function (f, xs) {
-		return A2(
-			_elm_lang$core$List$sortBy,
-			function (_p0) {
-				return _elm_lang$core$String$toLower(
-					f(_p0));
-			},
-			xs);
-	});
-var _user$project$Pile_Namelike$canonicalize = function (string) {
-	return _elm_lang$core$String$toLower(
-		_elm_community$string_extra$String_Extra$clean(string));
-};
-var _user$project$Pile_Namelike$isMember = F2(
-	function (candidate, existing) {
-		return A2(
-			_elm_lang$core$List$member,
-			_user$project$Pile_Namelike$canonicalize(candidate),
-			A2(_elm_lang$core$List$map, _user$project$Pile_Namelike$canonicalize, existing));
-	});
-var _user$project$Pile_Namelike$isPrefix = F2(
-	function (desiredPrefix, existingName) {
-		return A2(
-			_elm_lang$core$String$startsWith,
-			_user$project$Pile_Namelike$canonicalize(desiredPrefix),
-			_user$project$Pile_Namelike$canonicalize(existingName));
-	});
-var _user$project$Pile_Namelike$isBlank = _elm_community$string_extra$String_Extra$isBlank;
-var _user$project$Pile_Namelike$isPresent = function (_p1) {
-	return !_user$project$Pile_Namelike$isBlank(_p1);
-};
-var _user$project$Pile_Namelike$isValidAddition = F2(
-	function (candidate, existing) {
-		return _user$project$Pile_Namelike$isPresent(candidate) && (!A2(_user$project$Pile_Namelike$isMember, candidate, existing));
-	});
-var _user$project$Pile_Namelike$perhapsAdd = F2(
-	function (candidate, existing) {
-		var _p2 = A2(_user$project$Pile_Namelike$isValidAddition, candidate, existing);
-		if (_p2 === true) {
-			return A2(
-				_elm_lang$core$List$append,
-				existing,
-				{
-					ctor: '::',
-					_0: candidate,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return existing;
-		}
-	});
-var _user$project$Pile_Namelike$isTagListAllowed = F2(
-	function (desiredPrefix, tags) {
-		return _user$project$Pile_Namelike$isBlank(desiredPrefix) || A2(
-			_elm_lang$core$List$any,
-			_user$project$Pile_Namelike$isPrefix(desiredPrefix),
-			tags);
-	});
-
-var _user$project$Animals_Animal_Lenses$makeLens_traversingDisplayView = F2(
-	function (formLens, animalLens) {
-		return A2(
-			_user$project$Pile_UpdatingLens$lens,
-			function (w) {
-				var _p0 = w.view;
-				if (_p0.ctor === 'Writable') {
-					return formLens.get(_p0._0);
-				} else {
-					return animalLens.get(_p0._0);
-				}
-			},
-			F2(
-				function (p, w) {
-					return _elm_lang$core$Native_Utils.update(
-						w,
-						{
-							view: function () {
-								var _p1 = w.view;
-								if (_p1.ctor === 'Writable') {
-									return _user$project$Animals_Animal_Types$Writable(
-										A2(formLens.set, p, _p1._0));
-								} else {
-									return _user$project$Animals_Animal_Types$Viewable(
-										A2(animalLens.set, p, _p1._0));
-								}
-							}()
-						});
-				}));
-	});
-var _user$project$Animals_Animal_Lenses$validationContext_disallowedNames = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.disallowedNames;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{disallowedNames: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_status = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.status;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{status: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_tentativeTag = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tentativeTag;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tentativeTag: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_species = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.species;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{species: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_tags = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tags;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tags: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_name = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.name;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{name: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_id = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.id;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{id: p});
-		}));
-var _user$project$Animals_Animal_Lenses$formValue_value = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.value;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{value: p});
-		}));
-var _user$project$Animals_Animal_Lenses$form_name_value = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Animal_Lenses$form_name, _user$project$Animals_Animal_Lenses$formValue_value);
-var _user$project$Animals_Animal_Lenses$animal_displayFormat = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.displayFormat;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{displayFormat: p});
-		}));
-var _user$project$Animals_Animal_Lenses$animal_properties = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.properties;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{properties: p});
-		}));
-var _user$project$Animals_Animal_Lenses$animal_tags = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.tags;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{tags: p});
-		}));
-var _user$project$Animals_Animal_Lenses$displayed_tags = A2(_user$project$Animals_Animal_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Animal_Lenses$form_tags, _user$project$Animals_Animal_Lenses$animal_tags);
-var _user$project$Animals_Animal_Lenses$animal_name = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.name;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{name: p});
-		}));
-var _user$project$Animals_Animal_Lenses$displayed_name = A2(_user$project$Animals_Animal_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Animal_Lenses$form_name_value, _user$project$Animals_Animal_Lenses$animal_name);
-var _user$project$Animals_Animal_Lenses$animal_version = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.version;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{version: p});
-		}));
-var _user$project$Animals_Animal_Lenses$animal_species = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.species;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{species: p});
-		}));
-var _user$project$Animals_Animal_Lenses$displayed_species = A2(_user$project$Animals_Animal_Lenses$makeLens_traversingDisplayView, _user$project$Animals_Animal_Lenses$form_species, _user$project$Animals_Animal_Lenses$animal_species);
-var _user$project$Animals_Animal_Lenses$animal_id = A2(
-	_user$project$Pile_UpdatingLens$lens,
-	function (_) {
-		return _.id;
-	},
-	F2(
-		function (p, w) {
-			return _elm_lang$core$Native_Utils.update(
-				w,
-				{id: p});
-		}));
+var _user$project$Animals_View_PageFlash$SavedAnimalFlash = {ctor: 'SavedAnimalFlash'};
+var _user$project$Animals_View_PageFlash$NoFlash = {ctor: 'NoFlash'};
 
 var _user$project$Animals_OutsideWorld_Json$encodeProperties = function (valueEncoder) {
 	var encodeKV = function (_p0) {
@@ -21698,9 +21781,9 @@ var _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_Animal = fun
 					}),
 				data);
 		});
-	var strings = A2(dictify, _user$project$Animals_Animal_Types$AsString, incoming.string_properties);
-	var bools = A2(dictify, _user$project$Animals_Animal_Types$AsBool, incoming.bool_properties);
-	var ints = A2(dictify, _user$project$Animals_Animal_Types$AsInt, incoming.int_properties);
+	var strings = A2(dictify, _user$project$Animals_Types_Basic$AsString, incoming.string_properties);
+	var bools = A2(dictify, _user$project$Animals_Types_Basic$AsBool, incoming.bool_properties);
+	var ints = A2(dictify, _user$project$Animals_Types_Basic$AsInt, incoming.int_properties);
 	var combine = function (dicts) {
 		return A3(
 			_elm_lang$core$List$foldl,
@@ -21727,7 +21810,7 @@ var _user$project$Animals_OutsideWorld_Json$animalTransferFormat_to_Animal = fun
 		});
 	return {
 		id: _elm_lang$core$Basics$toString(incoming.id),
-		displayFormat: _user$project$Animals_Animal_Types$Compact,
+		displayFormat: _user$project$Animals_Types_Animal$Compact,
 		version: incoming.version,
 		name: incoming.name,
 		species: incoming.species,
@@ -22230,26 +22313,44 @@ var _user$project$Animals_Model$model_page = A2(
 				w,
 				{page: p});
 		}));
-var _user$project$Animals_Model$upsertForm = F2(
-	function (form, model) {
-		var display = _user$project$Animals_Animal_Types$formDisplay(form);
-		var key = _user$project$Animals_Animal_Lenses$form_id.get(
-			A2(_elm_lang$core$Debug$log, 'form', form));
-		var $new = A3(_elm_lang$core$Dict$insert, key, display, model.displayables);
+var _user$project$Animals_Model$deleteFromPage = F2(
+	function (lens, id) {
+		return lens.update(
+			_elm_lang$core$Set$remove(id));
+	});
+var _user$project$Animals_Model$deleteDisplayedById = F2(
+	function (id, model) {
+		return A2(
+			_user$project$Animals_Model$model_displayables.update,
+			_elm_lang$core$Dict$remove(id),
+			model);
+	});
+var _user$project$Animals_Model$deleteDisplayed = F2(
+	function (displayed, model) {
+		return A2(
+			_user$project$Animals_Model$deleteDisplayedById,
+			_user$project$Animals_Types_Lenses$displayed_id.get(displayed),
+			model);
+	});
+var _user$project$Animals_Model$upsertDisplayed = F2(
+	function (displayed, model) {
+		var key = _user$project$Animals_Types_Lenses$displayed_id.get(displayed);
+		var $new = A3(_elm_lang$core$Dict$insert, key, displayed, model.displayables);
 		return A2(_user$project$Animals_Model$model_displayables.set, $new, model);
 	});
-var _user$project$Animals_Model$upsertAnimal = F2(
-	function (animal, model) {
-		var display = _user$project$Animals_Animal_Types$animalDisplay(animal);
-		var key = _user$project$Animals_Animal_Lenses$animal_id.get(animal);
-		var $new = A3(_elm_lang$core$Dict$insert, key, display, model.displayables);
-		return A2(_user$project$Animals_Model$model_displayables.set, $new, model);
-	});
+var _user$project$Animals_Model$upsertAnimal = function (animal) {
+	return _user$project$Animals_Model$upsertDisplayed(
+		_user$project$Animals_Types_Conversions$animalToDisplayed(animal));
+};
+var _user$project$Animals_Model$upsertCheckedForm = function (form) {
+	return _user$project$Animals_Model$upsertDisplayed(
+		_user$project$Animals_Types_Conversions$checkedFormToDisplayed(form));
+};
 var _user$project$Animals_Model$init = F2(
 	function (flags, location) {
 		var model = {
 			page: _user$project$Animals_Pages_Navigation$fromLocation(location),
-			pageFlash: _user$project$Animals_Pages_PageFlash$NoFlash,
+			pageFlash: _user$project$Animals_View_PageFlash$NoFlash,
 			csrfToken: flags.csrfToken,
 			displayables: _elm_lang$core$Dict$empty,
 			allPageAnimals: _elm_lang$core$Set$empty,
@@ -22328,7 +22429,7 @@ var _user$project$Animals_OutsideWorld_Update$update = F2(
 		return _user$project$Pile_UpdateHelpers$noCmd(
 			A2(
 				_user$project$Animals_Model$model_pageFlash.set,
-				A2(_user$project$Animals_Pages_PageFlash$HttpErrorFlash, _p0._0, _p0._1),
+				A2(_user$project$Animals_View_PageFlash$HttpErrorFlash, _p0._0, _p0._1),
 				model));
 	});
 
@@ -22350,50 +22451,290 @@ var _user$project$Animals_Pages_Update$update = F2(
 		}
 	});
 
-var _user$project$Animals_Animal_Form$appliedForm = function (form) {
-	return {
-		id: form.id,
-		displayFormat: _user$project$Animals_Animal_Types$Expanded,
-		version: form.intendedVersion,
-		name: form.name.value,
-		species: form.species,
-		tags: A2(_user$project$Pile_Namelike$perhapsAdd, form.tentativeTag, form.tags),
-		properties: form.properties
-	};
+var _user$project$Animals_Logic_AnimalOp$update = F3(
+	function (op, animal, model) {
+		var _p0 = op;
+		switch (_p0.ctor) {
+			case 'RemoveAnimalFlash':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertAnimal, animal, model));
+			case 'SwitchToReadOnly':
+				var newAnimal = A2(_user$project$Animals_Types_Lenses$animal_displayFormat.set, _p0._0, animal);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertAnimal, newAnimal, model));
+			case 'StartEditing':
+				var form = _user$project$Animals_Types_Conversions$animalToForm(animal);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, form, model));
+			default:
+				return _user$project$Pile_UpdateHelpers$noCmd(model);
+		}
+	});
+
+var _user$project$Animals_Types_DisplayedCollections$idSet = function (displayables) {
+	return _elm_lang$core$Set$fromList(
+		A2(_elm_lang$core$List$map, _user$project$Animals_Types_Lenses$displayed_id.get, displayables));
 };
-var _user$project$Animals_Animal_Form$assumeValid = function (form) {
+var _user$project$Animals_Types_DisplayedCollections$addReferences = F2(
+	function (displayables, existingSet) {
+		return A2(
+			_elm_lang$core$Set$union,
+			existingSet,
+			_user$project$Animals_Types_DisplayedCollections$idSet(displayables));
+	});
+var _user$project$Animals_Types_DisplayedCollections$dict = function (displayables) {
+	var ids = A2(_elm_lang$core$List$map, _user$project$Animals_Types_Lenses$displayed_id.get, displayables);
+	return _elm_lang$core$Dict$fromList(
+		A3(
+			_elm_lang$core$List$map2,
+			F2(
+				function (v0, v1) {
+					return {ctor: '_Tuple2', _0: v0, _1: v1};
+				}),
+			ids,
+			displayables));
+};
+var _user$project$Animals_Types_DisplayedCollections$add = F2(
+	function (displayables, existingDict) {
+		return A2(
+			_elm_lang$core$Dict$union,
+			existingDict,
+			_user$project$Animals_Types_DisplayedCollections$dict(displayables));
+	});
+
+var _user$project$Animals_Logic_Validation$validator = F4(
+	function (errorMessage, lens, pred, form) {
+		var formValue = lens.get(form);
+		var _p0 = pred(formValue.value);
+		if (_p0 === true) {
+			return A2(
+				_user$project$Animals_Types_Lenses$form_status.set,
+				_user$project$Pile_Css_H$SomeBad,
+				A2(
+					lens.set,
+					A2(_user$project$Pile_Css_H$invalidate, errorMessage, formValue),
+					form));
+		} else {
+			return form;
+		}
+	});
+var _user$project$Animals_Logic_Validation$validateName = F2(
+	function (context, form) {
+		return A4(
+			_user$project$Animals_Logic_Validation$validator,
+			'There is already an animal with that name!',
+			_user$project$Animals_Types_Lenses$form_name,
+			A2(_elm_lang$core$Basics$flip, _user$project$Pile_Namelike$isMember, context.disallowedNames),
+			A4(_user$project$Animals_Logic_Validation$validator, 'The animal has to have a name!', _user$project$Animals_Types_Lenses$form_name, _user$project$Pile_Namelike$isBlank, form));
+	});
+var _user$project$Animals_Logic_Validation$forceValid = function (form) {
 	return _elm_lang$core$Native_Utils.update(
 		form,
 		{
-			status: _user$project$Pile_Bulma$AllGood,
-			name: _user$project$Pile_Bulma$freshValue(form.name.value)
+			status: _user$project$Pile_Css_H$AllGood,
+			name: _user$project$Pile_Css_H$freshValue(form.name.value)
 		});
 };
-var _user$project$Animals_Animal_Form$extractForm = function (animal) {
-	return {
-		status: _user$project$Pile_Bulma$AllGood,
-		id: animal.id,
-		species: animal.species,
-		intendedVersion: animal.version + 1,
-		name: _user$project$Pile_Bulma$freshValue(animal.name),
-		tags: animal.tags,
-		tentativeTag: '',
-		properties: animal.properties,
-		originalAnimal: animal
+var _user$project$Animals_Logic_Validation$validate = function (context) {
+	return function (_p1) {
+		return A2(
+			_user$project$Animals_Logic_Validation$validateName,
+			context,
+			_user$project$Animals_Logic_Validation$forceValid(_p1));
 	};
 };
+var _user$project$Animals_Logic_Validation$animalNames = function (displayables) {
+	return A2(
+		_elm_lang$core$List$map,
+		_user$project$Animals_Types_Lenses$displayed_name.get,
+		_elm_lang$core$Dict$values(displayables));
+};
+var _user$project$Animals_Logic_Validation$context = F2(
+	function (displayables, origin) {
+		var augment = function (xs) {
+			var _p2 = origin;
+			if (_p2.ctor === 'Nothing') {
+				return xs;
+			} else {
+				return A2(_elm_community$list_extra$List_Extra$remove, _p2._0.name, xs);
+			}
+		};
+		return {
+			disallowedNames: augment(
+				_user$project$Animals_Logic_Validation$animalNames(displayables))
+		};
+	});
 
-var _user$project$Animals_Animal_Validation$x = 3;
+var _user$project$Animals_Logic_FormOp$freshIds = F2(
+	function (n, model) {
+		var newModel = A2(
+			_user$project$Animals_Model$model_animalsEverAdded.update,
+			F2(
+				function (x, y) {
+					return x + y;
+				})(n),
+			model);
+		var uniquePrefix = 'New_animal_';
+		var name = function (i) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				uniquePrefix,
+				_elm_lang$core$Basics$toString(i));
+		};
+		var ids = A2(
+			_elm_lang$core$List$map,
+			name,
+			A2(_elm_lang$core$List$range, model.animalsEverAdded + 1, model.animalsEverAdded + n));
+		return {ctor: '_Tuple2', _0: ids, _1: newModel};
+	});
+var _user$project$Animals_Logic_FormOp$addFreshForms = F3(
+	function (count, species, model) {
+		var _p0 = A2(_user$project$Animals_Logic_FormOp$freshIds, count, model);
+		var ids = _p0._0;
+		var newModel = _p0._1;
+		var displayables = A2(
+			_elm_lang$core$List$map,
+			_user$project$Animals_Types_Conversions$checkedFormToDisplayed,
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Animals_Types_Form$fresh(species),
+				ids));
+		return A2(
+			_user$project$Animals_Model$model_addPageAnimals.update,
+			_user$project$Animals_Types_DisplayedCollections$addReferences(displayables),
+			A2(
+				_user$project$Animals_Model$model_displayables.update,
+				_user$project$Animals_Types_DisplayedCollections$add(displayables),
+				newModel));
+	});
+var _user$project$Animals_Logic_FormOp$withSavedForm = F2(
+	function (form, model) {
+		return {
+			ctor: '_Tuple2',
+			_0: A2(
+				_user$project$Animals_Model$upsertCheckedForm,
+				A2(_user$project$Animals_Types_Lenses$form_status.set, _user$project$Pile_Css_H$BeingSaved, form),
+				model),
+			_1: _user$project$Animals_Types_Conversions$formToAnimal(form)
+		};
+	});
+var _user$project$Animals_Logic_FormOp$update = F3(
+	function (op, form, model) {
+		var _p1 = op;
+		switch (_p1.ctor) {
+			case 'RemoveFormFlash':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, form, model));
+			case 'CancelEdits':
+				var original = form.originalAnimal;
+				var _p2 = original;
+				if (_p2.ctor === 'Nothing') {
+					return _user$project$Pile_UpdateHelpers$noCmd(model);
+				} else {
+					return _user$project$Pile_UpdateHelpers$noCmd(
+						A2(_user$project$Animals_Model$upsertAnimal, _p2._0, model));
+				}
+			case 'StartSavingEdits':
+				return A2(
+					_user$project$Pile_UpdateHelpers$makeCmd,
+					_user$project$Animals_OutsideWorld_Cmd$saveAnimal,
+					A2(_user$project$Animals_Logic_FormOp$withSavedForm, form, model));
+			case 'CancelCreation':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A3(
+						_user$project$Animals_Model$deleteFromPage,
+						_user$project$Animals_Model$model_addPageAnimals,
+						form.id,
+						A2(_user$project$Animals_Model$deleteDisplayedById, form.id, model)));
+			case 'StartCreating':
+				return A2(
+					_user$project$Pile_UpdateHelpers$makeCmd,
+					_user$project$Animals_OutsideWorld_Cmd$createAnimal,
+					A2(_user$project$Animals_Logic_FormOp$withSavedForm, form, model));
+			case 'NameFieldUpdate':
+				var newForm = A2(
+					_user$project$Animals_Logic_Validation$validate,
+					A2(_user$project$Animals_Logic_Validation$context, model.displayables, form.originalAnimal),
+					A2(
+						_user$project$Animals_Types_Lenses$form_name.set,
+						_user$project$Pile_Css_H$freshValue(_p1._0),
+						form));
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
+			case 'TentativeTagUpdate':
+				var newForm = A2(_user$project$Animals_Types_Lenses$form_tentativeTag.set, _p1._0, form);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
+			case 'CreateNewTag':
+				var newForm = A2(
+					_user$project$Animals_Types_Lenses$form_tentativeTag.set,
+					'',
+					A2(
+						_user$project$Animals_Types_Lenses$form_tags.update,
+						_user$project$Pile_Namelike$perhapsAdd(form.tentativeTag),
+						form));
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
+			case 'DeleteTag':
+				var newForm = A2(
+					_user$project$Animals_Types_Lenses$form_tags.update,
+					_elm_community$list_extra$List_Extra$remove(_p1._0),
+					form);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
+			case 'NoticeSaveResults':
+				var displayed = _user$project$Animals_Types_Conversions$finishedFormToDisplayed(form);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertDisplayed, displayed, model));
+			default:
+				var _p3 = _p1._0;
+				var displayed = _user$project$Animals_Types_Conversions$finishedFormToDisplayed(
+					A2(_user$project$Animals_Types_Lenses$form_id.set, _p3, form));
+				var idDuringCreation = form.id;
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(
+						_user$project$Animals_Model$model_pageFlash.set,
+						_user$project$Animals_View_PageFlash$SavedAnimalFlash,
+						A2(
+							_user$project$Animals_Model$model_addPageAnimals.update,
+							_elm_lang$core$Set$remove(idDuringCreation),
+							A2(
+								_user$project$Animals_Model$deleteDisplayedById,
+								idDuringCreation,
+								A2(
+									_user$project$Animals_Model$model_allPageAnimals.update,
+									_elm_lang$core$Set$insert(_p3),
+									A2(_user$project$Animals_Model$upsertDisplayed, displayed, model))))));
+		}
+	});
+var _user$project$Animals_Logic_FormOp$forwardToForm = F3(
+	function (id, op, model) {
+		var _p4 = A2(
+			_elm_lang$core$Maybe$map,
+			function (_) {
+				return _.view;
+			},
+			A2(_elm_lang$core$Dict$get, id, model.displayables));
+		if (_p4.ctor === 'Nothing') {
+			return _user$project$Pile_UpdateHelpers$noCmd(model);
+		} else {
+			if (_p4._0.ctor === 'Viewable') {
+				return _user$project$Pile_UpdateHelpers$noCmd(model);
+			} else {
+				return A3(_user$project$Animals_Logic_FormOp$update, op, _p4._0._0, model);
+			}
+		}
+	});
 
 var _user$project$Animals_Update$populateAllAnimalsPage = F2(
 	function (animals, model) {
 		var compactify = function (animal) {
 			return A2(
-				_user$project$Animals_Animal_Types$Displayed,
-				_user$project$Animals_Animal_Types$Viewable(animal),
-				_user$project$Animals_Animal_Flash$NoFlash);
+				_user$project$Animals_Types_Displayed$Displayed,
+				_user$project$Animals_Types_Displayed$Viewable(animal),
+				_user$project$Animals_View_AnimalFlash$NoFlash);
 		};
-		var displayeds = A2(_elm_lang$core$List$map, compactify, animals);
+		var displayables = A2(_elm_lang$core$List$map, compactify, animals);
 		var ids = A2(
 			_elm_lang$core$List$map,
 			function (_) {
@@ -22403,81 +22744,28 @@ var _user$project$Animals_Update$populateAllAnimalsPage = F2(
 		return _elm_lang$core$Native_Utils.update(
 			model,
 			{
-				displayables: _elm_lang$core$Dict$fromList(
-					A3(
-						_elm_lang$core$List$map2,
-						F2(
-							function (v0, v1) {
-								return {ctor: '_Tuple2', _0: v0, _1: v1};
-							}),
-						ids,
-						displayeds)),
-				allPageAnimals: _elm_lang$core$Set$fromList(
-					A2(
-						_elm_lang$core$List$map,
-						function (_) {
-							return _.id;
-						},
-						animals))
+				displayables: _user$project$Animals_Types_DisplayedCollections$dict(displayables),
+				allPageAnimals: _user$project$Animals_Types_DisplayedCollections$idSet(displayables)
 			});
 	});
-var _user$project$Animals_Update$formOp = F3(
-	function (op, form, model) {
-		var _p0 = op;
-		switch (_p0.ctor) {
-			case 'CancelEdits':
-				var animal = form.originalAnimal;
-				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$upsertAnimal, animal, model));
-			case 'StartSavingEdits':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'CancelCreation':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'StartCreating':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'NameFieldUpdate':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'TentativeTagUpdate':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'CreateNewTag':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'DeleteTag':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'NoticeSaveResults':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			default:
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-		}
-	});
-var _user$project$Animals_Update$animalOp = F3(
-	function (op, animal, model) {
-		var _p1 = op;
-		switch (_p1.ctor) {
-			case 'RemoveFlash':
-				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$upsertAnimal, animal, model));
-			case 'SwitchToReadOnly':
-				var newAnimal = A2(_user$project$Animals_Animal_Lenses$animal_displayFormat.set, _p1._0, animal);
-				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$upsertAnimal, newAnimal, model));
-			case 'StartEditing':
-				var form = _user$project$Animals_Animal_Form$extractForm(animal);
-				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$upsertForm, form, model));
-			default:
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-		}
-	});
-var _user$project$Animals_Update$updateWithClearedFlash = F2(
+var _user$project$Animals_Update$updateWithClearedPageFlash = F2(
 	function (msg, model) {
-		var _p2 = msg;
-		switch (_p2.ctor) {
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'WithAnimal':
+				return A3(_user$project$Animals_Logic_AnimalOp$update, _p0._1, _p0._0, model);
+			case 'WithForm':
+				return A3(_user$project$Animals_Logic_FormOp$update, _p0._1, _p0._0, model);
+			case 'Page':
+				return A2(_user$project$Animals_Pages_Update$update, _p0._0, model);
+			case 'Incoming':
+				return A2(_user$project$Animals_OutsideWorld_Update$update, _p0._0, model);
 			case 'SetToday':
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$model_today.set, _p2._0, model));
+					A2(_user$project$Animals_Model$model_today.set, _p0._0, model));
 			case 'SetAnimals':
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Update$populateAllAnimalsPage, _p2._0, model));
+					A2(_user$project$Animals_Update$populateAllAnimalsPage, _p0._0, model));
 			case 'ToggleDatePicker':
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(_user$project$Animals_Model$model_datePickerOpen.update, _elm_lang$core$Basics$not, model));
@@ -22485,31 +22773,28 @@ var _user$project$Animals_Update$updateWithClearedFlash = F2(
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(
 						_user$project$Animals_Model$model_effectiveDate.set,
-						_user$project$Pile_Calendar$At(_p2._0),
+						_user$project$Pile_Calendar$At(_p0._0),
 						model));
 			case 'SetNameFilter':
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$model_nameFilter.set, _p2._0, model));
+					A2(_user$project$Animals_Model$model_nameFilter.set, _p0._0, model));
 			case 'SetTagFilter':
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$model_tagFilter.set, _p2._0, model));
+					A2(_user$project$Animals_Model$model_tagFilter.set, _p0._0, model));
 			case 'SetSpeciesFilter':
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$model_speciesFilter.set, _p2._0, model));
+					A2(_user$project$Animals_Model$model_speciesFilter.set, _p0._0, model));
 			case 'AnimalGotSaved':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
+				return A3(_user$project$Animals_Logic_FormOp$forwardToForm, _p0._0._0, _user$project$Animals_Msg$NoticeSaveResults, model);
 			case 'AnimalGotCreated':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
+				return A3(
+					_user$project$Animals_Logic_FormOp$forwardToForm,
+					_p0._0._0,
+					_user$project$Animals_Msg$NoticeCreationResults(_p0._0._1),
+					model);
 			case 'AddNewAnimals':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
-			case 'WithAnimal':
-				return A3(_user$project$Animals_Update$animalOp, _p2._1, _p2._0, model);
-			case 'WithForm':
-				return A3(_user$project$Animals_Update$formOp, _p2._1, _p2._0, model);
-			case 'Page':
-				return A2(_user$project$Animals_Pages_Update$update, _p2._0, model);
-			case 'Incoming':
-				return A2(_user$project$Animals_OutsideWorld_Update$update, _p2._0, model);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A3(_user$project$Animals_Logic_FormOp$addFreshForms, _p0._0, _p0._1, model));
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -22520,15 +22805,15 @@ var _user$project$Animals_Update$updateWithClearedFlash = F2(
 var _user$project$Animals_Update$update = F2(
 	function (msg, model) {
 		return A2(
-			_user$project$Animals_Update$updateWithClearedFlash,
+			_user$project$Animals_Update$updateWithClearedPageFlash,
 			msg,
-			A2(_user$project$Animals_Model$model_pageFlash.set, _user$project$Animals_Pages_PageFlash$NoFlash, model));
+			A2(_user$project$Animals_Model$model_pageFlash.set, _user$project$Animals_View_PageFlash$NoFlash, model));
 	});
 
-var _user$project$Animals_Animal_Icons$editHelp = function (iconType) {
+var _user$project$Animals_View_Icons$editHelp = function (iconType) {
 	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Msg$NoOp);
 };
-var _user$project$Animals_Animal_Icons$moreLikeThis = F2(
+var _user$project$Animals_View_Icons$moreLikeThis = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -22536,7 +22821,7 @@ var _user$project$Animals_Animal_Icons$moreLikeThis = F2(
 			'Copy: make more animals like this one',
 			A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$MoreLikeThis));
 	});
-var _user$project$Animals_Animal_Icons$edit = F2(
+var _user$project$Animals_View_Icons$edit = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -22544,7 +22829,7 @@ var _user$project$Animals_Animal_Icons$edit = F2(
 			'Edit: make changes to this animal',
 			A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$StartEditing));
 	});
-var _user$project$Animals_Animal_Icons$contract = F2(
+var _user$project$Animals_View_Icons$contract = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -22553,9 +22838,9 @@ var _user$project$Animals_Animal_Icons$contract = F2(
 			A2(
 				_user$project$Animals_Msg$WithAnimal,
 				animal,
-				_user$project$Animals_Msg$SwitchToReadOnly(_user$project$Animals_Animal_Types$Compact)));
+				_user$project$Animals_Msg$SwitchToReadOnly(_user$project$Animals_Types_Animal$Compact)));
 	});
-var _user$project$Animals_Animal_Icons$expand = F2(
+var _user$project$Animals_View_Icons$expand = F2(
 	function (animal, iconType) {
 		return A3(
 			iconType,
@@ -22564,94 +22849,26 @@ var _user$project$Animals_Animal_Icons$expand = F2(
 			A2(
 				_user$project$Animals_Msg$WithAnimal,
 				animal,
-				_user$project$Animals_Msg$SwitchToReadOnly(_user$project$Animals_Animal_Types$Expanded)));
+				_user$project$Animals_Msg$SwitchToReadOnly(_user$project$Animals_Types_Animal$Expanded)));
 	});
 
-var _user$project$Animals_Animal_FormView$nameEditControl = function (form) {
-	return A3(
-		_user$project$Pile_Bulma$soleTextInputInRow,
-		form.status,
-		form.name,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onInput(
-				function (_p0) {
-					return A2(
-						_user$project$Animals_Msg$WithForm,
-						form,
-						_user$project$Animals_Msg$NameFieldUpdate(_p0));
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$Animals_Animal_FormView$view = F3(
-	function (form, flash, _p1) {
-		var _p2 = _p1;
-		return A2(
-			_user$project$Pile_Bulma$highlightedRow,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$td,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_user$project$Pile_Bulma$controlRow,
-							'Name',
-							_user$project$Animals_Animal_FormView$nameEditControl(form)),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_user$project$Pile_Bulma$leftwardSave,
-								form.status,
-								A2(_user$project$Animals_Msg$WithForm, form, _p2._0)),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_user$project$Pile_Bulma$rightwardCancel,
-									form.status,
-									A2(_user$project$Animals_Msg$WithForm, form, _p2._1)),
-								_1: {ctor: '[]'}
-							}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$td,
-						{ctor: '[]'},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$td,
-							{ctor: '[]'},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-	});
-
-var _user$project$Animals_Animal_AnimalView$parentheticalSpecies = function (animal) {
+var _user$project$Animals_View_Animal$parentheticalSpecies = function (animal) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		' (',
 		A2(_elm_lang$core$Basics_ops['++'], animal.species, ')'));
 };
-var _user$project$Animals_Animal_AnimalView$animalTags = function (animal) {
-	return A2(_elm_lang$core$List$map, _user$project$Pile_Bulma$readOnlyTag, animal.tags);
+var _user$project$Animals_View_Animal$animalTags = function (animal) {
+	return A2(_elm_lang$core$List$map, _user$project$Pile_Css_Bulma$readOnlyTag, animal.tags);
 };
-var _user$project$Animals_Animal_AnimalView$animalSalutation = function (animal) {
+var _user$project$Animals_View_Animal$animalSalutation = function (animal) {
 	return _elm_lang$html$Html$text(
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			animal.name,
-			_user$project$Animals_Animal_AnimalView$parentheticalSpecies(animal)));
+			_user$project$Animals_View_Animal$parentheticalSpecies(animal)));
 };
-var _user$project$Animals_Animal_AnimalView$boolExplanation = F2(
+var _user$project$Animals_View_Animal$boolExplanation = F2(
 	function (b, explanation) {
 		var suffix = function () {
 			var _p0 = explanation;
@@ -22667,9 +22884,9 @@ var _user$project$Animals_Animal_AnimalView$boolExplanation = F2(
 		var icon = function () {
 			var _p1 = b;
 			if (_p1 === true) {
-				return _user$project$Pile_Bulma$trueIcon;
+				return _user$project$Pile_Css_Bulma$trueIcon;
 			} else {
-				return _user$project$Pile_Bulma$falseIcon;
+				return _user$project$Pile_Css_Bulma$falseIcon;
 			}
 		}();
 		return {
@@ -22682,11 +22899,11 @@ var _user$project$Animals_Animal_AnimalView$boolExplanation = F2(
 			}
 		};
 	});
-var _user$project$Animals_Animal_AnimalView$propertyDisplayValue = function (value) {
+var _user$project$Animals_View_Animal$propertyDisplayValue = function (value) {
 	var _p2 = value;
 	switch (_p2.ctor) {
 		case 'AsBool':
-			return A2(_user$project$Animals_Animal_AnimalView$boolExplanation, _p2._0, _p2._1);
+			return A2(_user$project$Animals_View_Animal$boolExplanation, _p2._0, _p2._1);
 		case 'AsString':
 			return {
 				ctor: '::',
@@ -22701,7 +22918,7 @@ var _user$project$Animals_Animal_AnimalView$propertyDisplayValue = function (val
 			};
 	}
 };
-var _user$project$Animals_Animal_AnimalView$animalProperties = function (animal) {
+var _user$project$Animals_View_Animal$animalProperties = function (animal) {
 	var propertyPairs = _elm_lang$core$Dict$toList(animal.properties);
 	var row = function (_p3) {
 		var _p4 = _p3;
@@ -22723,17 +22940,17 @@ var _user$project$Animals_Animal_AnimalView$animalProperties = function (animal)
 					_0: A2(
 						_elm_lang$html$Html$td,
 						{ctor: '[]'},
-						_user$project$Animals_Animal_AnimalView$propertyDisplayValue(_p4._1)),
+						_user$project$Animals_View_Animal$propertyDisplayValue(_p4._1)),
 					_1: {ctor: '[]'}
 				}
 			});
 	};
 	return A2(_elm_lang$core$List$map, row, propertyPairs);
 };
-var _user$project$Animals_Animal_AnimalView$expandedView = F2(
+var _user$project$Animals_View_Animal$expandedView = F2(
 	function (animal, flash) {
 		return A2(
-			_user$project$Pile_Bulma$highlightedRow,
+			_user$project$Pile_Css_Bulma$highlightedRow,
 			{ctor: '[]'},
 			{
 				ctor: '::',
@@ -22747,7 +22964,7 @@ var _user$project$Animals_Animal_AnimalView$expandedView = F2(
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _user$project$Animals_Animal_AnimalView$animalSalutation(animal),
+								_0: _user$project$Animals_View_Animal$animalSalutation(animal),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
@@ -22755,17 +22972,17 @@ var _user$project$Animals_Animal_AnimalView$expandedView = F2(
 							_0: A2(
 								_elm_lang$html$Html$p,
 								{ctor: '[]'},
-								_user$project$Animals_Animal_AnimalView$animalTags(animal)),
+								_user$project$Animals_View_Animal$animalTags(animal)),
 							_1: {
 								ctor: '::',
-								_0: _user$project$Pile_Bulma$propertyTable(
-									_user$project$Animals_Animal_AnimalView$animalProperties(animal)),
+								_0: _user$project$Pile_Css_Bulma$propertyTable(
+									_user$project$Animals_View_Animal$animalProperties(animal)),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_user$project$Animals_Animal_Flash$showWithButton,
+										_user$project$Animals_View_AnimalFlash$showWithButton,
 										flash,
-										A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$RemoveFlash)),
+										A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$RemoveAnimalFlash)),
 									_1: {ctor: '[]'}
 								}
 							}
@@ -22773,20 +22990,20 @@ var _user$project$Animals_Animal_AnimalView$expandedView = F2(
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Animals_Animal_Icons$contract, animal, _user$project$Pile_Bulma$tdIcon),
+					_0: A2(_user$project$Animals_View_Icons$contract, animal, _user$project$Pile_Css_Bulma$tdIcon),
 					_1: {
 						ctor: '::',
-						_0: A2(_user$project$Animals_Animal_Icons$edit, animal, _user$project$Pile_Bulma$tdIcon),
+						_0: A2(_user$project$Animals_View_Icons$edit, animal, _user$project$Pile_Css_Bulma$tdIcon),
 						_1: {
 							ctor: '::',
-							_0: A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon),
+							_0: A2(_user$project$Animals_View_Icons$moreLikeThis, animal, _user$project$Pile_Css_Bulma$tdIcon),
 							_1: {ctor: '[]'}
 						}
 					}
 				}
 			});
 	});
-var _user$project$Animals_Animal_AnimalView$compactView = F2(
+var _user$project$Animals_View_Animal$compactView = F2(
 	function (animal, flash) {
 		return A2(
 			_elm_lang$html$Html$tr,
@@ -22803,32 +23020,177 @@ var _user$project$Animals_Animal_AnimalView$compactView = F2(
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _user$project$Animals_Animal_AnimalView$animalSalutation(animal),
-								_1: _user$project$Animals_Animal_AnimalView$animalTags(animal)
+								_0: _user$project$Animals_View_Animal$animalSalutation(animal),
+								_1: _user$project$Animals_View_Animal$animalTags(animal)
 							}),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_user$project$Animals_Animal_Flash$showWithButton,
+								_user$project$Animals_View_AnimalFlash$showWithButton,
 								flash,
-								A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$RemoveFlash)),
+								A2(_user$project$Animals_Msg$WithAnimal, animal, _user$project$Animals_Msg$RemoveAnimalFlash)),
 							_1: {ctor: '[]'}
 						}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$Animals_Animal_Icons$expand, animal, _user$project$Pile_Bulma$tdIcon),
+					_0: A2(_user$project$Animals_View_Icons$expand, animal, _user$project$Pile_Css_Bulma$tdIcon),
 					_1: {
 						ctor: '::',
-						_0: A2(_user$project$Animals_Animal_Icons$edit, animal, _user$project$Pile_Bulma$tdIcon),
+						_0: A2(_user$project$Animals_View_Icons$edit, animal, _user$project$Pile_Css_Bulma$tdIcon),
 						_1: {
 							ctor: '::',
-							_0: A2(_user$project$Animals_Animal_Icons$moreLikeThis, animal, _user$project$Pile_Bulma$tdIcon),
+							_0: A2(_user$project$Animals_View_Icons$moreLikeThis, animal, _user$project$Pile_Css_Bulma$tdIcon),
 							_1: {ctor: '[]'}
 						}
 					}
 				}
 			});
+	});
+
+var _user$project$Animals_View_Form$newTagControl = function (form) {
+	var onSubmit = A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$CreateNewTag);
+	var onInput = function (_p0) {
+		return A2(
+			_user$project$Animals_Msg$WithForm,
+			form,
+			_user$project$Animals_Msg$TentativeTagUpdate(_p0));
+	};
+	return A5(_user$project$Pile_Css_Bulma$textInputWithSubmit, form.status, 'Add', form.tentativeTag, onInput, onSubmit);
+};
+var _user$project$Animals_View_Form$deleteTagControl = function (form) {
+	var onDelete = function (name) {
+		return A2(
+			_user$project$Animals_Msg$WithForm,
+			form,
+			_user$project$Animals_Msg$DeleteTag(name));
+	};
+	return _user$project$Pile_Css_Bulma$horizontalControls(
+		A2(
+			_elm_lang$core$List$map,
+			A2(_user$project$Pile_Css_Bulma$deletableTag, form.status, onDelete),
+			form.tags));
+};
+var _user$project$Animals_View_Form$nameEditControl = function (form) {
+	return A3(
+		_user$project$Pile_Css_Bulma$soleTextInputInRow,
+		form.status,
+		form.name,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onInput(
+				function (_p1) {
+					return A2(
+						_user$project$Animals_Msg$WithForm,
+						form,
+						_user$project$Animals_Msg$NameFieldUpdate(_p1));
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Animals_View_Form$view = F3(
+	function (form, flash, _p2) {
+		var _p3 = _p2;
+		return A2(
+			_user$project$Pile_Css_Bulma$highlightedRow,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_user$project$Pile_Css_Bulma$controlRow,
+							'Name',
+							_user$project$Animals_View_Form$nameEditControl(form)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_user$project$Pile_Css_Bulma$controlRow,
+								'Tags',
+								_user$project$Animals_View_Form$deleteTagControl(form)),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_user$project$Pile_Css_Bulma$controlRow,
+									'New Tag',
+									_user$project$Animals_View_Form$newTagControl(form)),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_user$project$Pile_Css_Bulma$leftwardSave,
+										form.status,
+										A2(_user$project$Animals_Msg$WithForm, form, _p3._0)),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_user$project$Pile_Css_Bulma$rightwardCancel,
+											form.status,
+											A2(_user$project$Animals_Msg$WithForm, form, _p3._1)),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_user$project$Animals_View_AnimalFlash$showWithButton,
+												flash,
+												A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$RemoveFormFlash)),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{ctor: '[]'},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$td,
+							{ctor: '[]'},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Animals_View_Icons$editHelp(_user$project$Pile_Css_Bulma$tdIcon),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+	});
+
+var _user$project$Animals_Pages_Common$individualAnimalView = F3(
+	function (model, formActions, displayed) {
+		var _p0 = displayed.view;
+		if (_p0.ctor === 'Writable') {
+			return A3(_user$project$Animals_View_Form$view, _p0._0, displayed.animalFlash, formActions);
+		} else {
+			var _p2 = _p0._0;
+			var _p1 = _p2.displayFormat;
+			if (_p1.ctor === 'Compact') {
+				return A2(_user$project$Animals_View_Animal$compactView, _p2, displayed.animalFlash);
+			} else {
+				return A2(_user$project$Animals_View_Animal$expandedView, _p2, displayed.animalFlash);
+			}
+		}
+	});
+var _user$project$Animals_Pages_Common$pageAnimals = F2(
+	function (pageAnimalsGetter, model) {
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$map,
+				function (id) {
+					return A2(_elm_lang$core$Dict$get, id, model.displayables);
+				},
+				_elm_lang$core$Set$toList(
+					pageAnimalsGetter(model))));
 	});
 
 var _user$project$Animals_Pages_AllPage$filterHelp = function (iconType) {
@@ -22858,13 +23220,13 @@ var _user$project$Animals_Pages_AllPage$speciesFilter = function (model) {
 					_1: {ctor: '[]'}
 				});
 		});
-	return _user$project$Pile_Bulma$centeredLevelItem(
+	return _user$project$Pile_Css_Bulma$centeredLevelItem(
 		{
 			ctor: '::',
-			_0: _user$project$Pile_Bulma$headingP('Species'),
+			_0: _user$project$Pile_Css_Bulma$headingP('Species'),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Pile_Bulma$simpleSelect(
+				_0: _user$project$Pile_Css_Bulma$simpleSelect(
 					{
 						ctor: '::',
 						_0: A2(textOption, '', 'Any'),
@@ -22883,25 +23245,25 @@ var _user$project$Animals_Pages_AllPage$speciesFilter = function (model) {
 		});
 };
 var _user$project$Animals_Pages_AllPage$tagsFilter = function (model) {
-	return _user$project$Pile_Bulma$centeredLevelItem(
+	return _user$project$Pile_Css_Bulma$centeredLevelItem(
 		{
 			ctor: '::',
-			_0: _user$project$Pile_Bulma$headingP('Tag'),
+			_0: _user$project$Pile_Css_Bulma$headingP('Tag'),
 			_1: {
 				ctor: '::',
-				_0: A2(_user$project$Pile_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Msg$SetTagFilter),
+				_0: A2(_user$project$Pile_Css_Bulma$simpleTextInput, model.tagFilter, _user$project$Animals_Msg$SetTagFilter),
 				_1: {ctor: '[]'}
 			}
 		});
 };
 var _user$project$Animals_Pages_AllPage$nameFilter = function (model) {
-	return _user$project$Pile_Bulma$centeredLevelItem(
+	return _user$project$Pile_Css_Bulma$centeredLevelItem(
 		{
 			ctor: '::',
-			_0: _user$project$Pile_Bulma$headingP('Name'),
+			_0: _user$project$Pile_Css_Bulma$headingP('Name'),
 			_1: {
 				ctor: '::',
-				_0: A2(_user$project$Pile_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Msg$SetNameFilter),
+				_0: A2(_user$project$Pile_Css_Bulma$simpleTextInput, model.nameFilter, _user$project$Animals_Msg$SetNameFilter),
 				_1: {ctor: '[]'}
 			}
 		});
@@ -22911,9 +23273,9 @@ var _user$project$Animals_Pages_AllPage$dateControl = F3(
 		var iconF = function () {
 			var _p0 = hasOpenPicker;
 			if (_p0 === false) {
-				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
+				return A2(_user$project$Pile_Css_Bulma$plainIcon, 'fa-caret-down', 'Pick a date from a calendar');
 			} else {
-				return A2(_user$project$Pile_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
+				return A2(_user$project$Pile_Css_Bulma$plainIcon, 'fa-caret-up', 'Close the calendar');
 			}
 		}();
 		return A2(
@@ -22953,29 +23315,37 @@ var _user$project$Animals_Pages_AllPage$aggregateFilter = F2(
 			}
 		}
 	});
+var _user$project$Animals_Pages_AllPage$displaySortKey = function (displayed) {
+	var _p2 = displayed.view;
+	if (_p2.ctor === 'Writable') {
+		return _p2._0.sortKey;
+	} else {
+		return _p2._0.name;
+	}
+};
 var _user$project$Animals_Pages_AllPage$applyFilters = F2(
 	function (model, xs) {
-		var rightTag = function (_p2) {
+		var rightTag = function (_p3) {
 			return A2(
 				_user$project$Pile_Namelike$isTagListAllowed,
 				model.tagFilter,
-				_user$project$Animals_Animal_Lenses$displayed_tags.get(_p2));
+				_user$project$Animals_Types_Lenses$displayed_tags.get(_p3));
 		};
-		var rightName = function (_p3) {
+		var rightName = function (_p4) {
 			return A2(
 				_user$project$Pile_Namelike$isPrefix,
 				model.nameFilter,
-				_user$project$Animals_Animal_Lenses$displayed_name.get(_p3));
+				_user$project$Animals_Types_Lenses$displayed_name.get(_p4));
 		};
-		var rightSpecies = function (_p4) {
+		var rightSpecies = function (_p5) {
 			return A2(
 				_user$project$Pile_Namelike$isPrefix,
 				model.speciesFilter,
-				_user$project$Animals_Animal_Lenses$displayed_species.get(_p4));
+				_user$project$Animals_Types_Lenses$displayed_species.get(_p5));
 		};
 		return A2(
 			_user$project$Pile_Namelike$sortByName,
-			_user$project$Animals_Animal_Lenses$displayed_name.get,
+			_user$project$Animals_Pages_AllPage$displaySortKey,
 			A2(
 				_elm_lang$core$List$filter,
 				_user$project$Animals_Pages_AllPage$aggregateFilter(
@@ -22995,22 +23365,22 @@ var _user$project$Animals_Pages_AllPage$applyFilters = F2(
 				xs));
 	});
 var _user$project$Animals_Pages_AllPage$filterView = function (model) {
-	return _user$project$Pile_Bulma$centeredColumns(
+	return _user$project$Pile_Css_Bulma$centeredColumns(
 		{
 			ctor: '::',
 			_0: A2(
-				_user$project$Pile_Bulma$column,
+				_user$project$Pile_Css_Bulma$column,
 				3,
 				{
 					ctor: '::',
 					_0: A2(
-						_user$project$Pile_Bulma$messageView,
+						_user$project$Pile_Css_Bulma$messageView,
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text('Animals as of...'),
 							_1: {
 								ctor: '::',
-								_0: _user$project$Animals_Pages_AllPage$calendarHelp(_user$project$Pile_Bulma$rightIcon),
+								_0: _user$project$Animals_Pages_AllPage$calendarHelp(_user$project$Pile_Css_Bulma$rightIcon),
 								_1: {ctor: '[]'}
 							}
 						},
@@ -23024,24 +23394,24 @@ var _user$project$Animals_Pages_AllPage$filterView = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_user$project$Pile_Bulma$column,
+					_user$project$Pile_Css_Bulma$column,
 					8,
 					{
 						ctor: '::',
 						_0: A2(
-							_user$project$Pile_Bulma$messageView,
+							_user$project$Pile_Css_Bulma$messageView,
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text('Filter by...'),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Animals_Pages_AllPage$filterHelp(_user$project$Pile_Bulma$rightIcon),
+									_0: _user$project$Animals_Pages_AllPage$filterHelp(_user$project$Pile_Css_Bulma$rightIcon),
 									_1: {ctor: '[]'}
 								}
 							},
 							{
 								ctor: '::',
-								_0: _user$project$Pile_Bulma$distributeHorizontally(
+								_0: _user$project$Pile_Css_Bulma$distributeHorizontally(
 									{
 										ctor: '::',
 										_0: _user$project$Animals_Pages_AllPage$nameFilter(model),
@@ -23063,41 +23433,13 @@ var _user$project$Animals_Pages_AllPage$filterView = function (model) {
 			}
 		});
 };
-var _user$project$Animals_Pages_AllPage$individualAnimalView = F3(
-	function (model, formActions, displayed) {
-		var _p5 = displayed.view;
-		if (_p5.ctor === 'Writable') {
-			return A3(_user$project$Animals_Animal_FormView$view, _p5._0, displayed.animalFlash, formActions);
-		} else {
-			var _p7 = _p5._0;
-			var _p6 = _p7.displayFormat;
-			if (_p6.ctor === 'Compact') {
-				return A2(_user$project$Animals_Animal_AnimalView$compactView, _p7, displayed.animalFlash);
-			} else {
-				return A2(_user$project$Animals_Animal_AnimalView$expandedView, _p7, displayed.animalFlash);
-			}
-		}
-	});
-var _user$project$Animals_Pages_AllPage$pageAnimals = F2(
-	function (pageAnimalsGetter, model) {
-		return A2(
-			_elm_lang$core$List$filterMap,
-			_elm_lang$core$Basics$identity,
-			A2(
-				_elm_lang$core$List$map,
-				function (id) {
-					return A2(_elm_lang$core$Dict$get, id, model.displayables);
-				},
-				_elm_lang$core$Set$toList(
-					pageAnimalsGetter(model))));
-	});
 var _user$project$Animals_Pages_AllPage$animalViews = function (model) {
 	var animalViewer = A2(
-		_user$project$Animals_Pages_AllPage$individualAnimalView,
+		_user$project$Animals_Pages_Common$individualAnimalView,
 		model,
 		{ctor: '_Tuple2', _0: _user$project$Animals_Msg$StartSavingEdits, _1: _user$project$Animals_Msg$CancelEdits});
 	var displayed = A2(
-		_user$project$Animals_Pages_AllPage$pageAnimals,
+		_user$project$Animals_Pages_Common$pageAnimals,
 		function (_) {
 			return _.allPageAnimals;
 		},
@@ -23116,10 +23458,10 @@ var _user$project$Animals_Pages_AllPage$view = function (model) {
 			_0: _user$project$Animals_Pages_AllPage$filterView(model),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Animals_Pages_PageFlash$show(model.pageFlash),
+				_0: _user$project$Animals_View_PageFlash$show(model.pageFlash),
 				_1: {
 					ctor: '::',
-					_0: _user$project$Pile_Bulma$headerlessTable(
+					_0: _user$project$Pile_Css_Bulma$headerlessTable(
 						_user$project$Animals_Pages_AllPage$animalViews(model)),
 					_1: {ctor: '[]'}
 				}
@@ -23127,15 +23469,228 @@ var _user$project$Animals_Pages_AllPage$view = function (model) {
 		});
 };
 
+var _user$project$Animals_Pages_AddPage$animalViews = function (model) {
+	var animalViewer = A2(
+		_user$project$Animals_Pages_Common$individualAnimalView,
+		model,
+		{ctor: '_Tuple2', _0: _user$project$Animals_Msg$StartCreating, _1: _user$project$Animals_Msg$CancelCreation});
+	var displayedAnimals = A2(
+		_user$project$Animals_Pages_Common$pageAnimals,
+		function (_) {
+			return _.addPageAnimals;
+		},
+		model);
+	return A2(_elm_lang$core$List$map, animalViewer, displayedAnimals);
+};
 var _user$project$Animals_Pages_AddPage$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
-		{ctor: '[]'});
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$nav,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('level is-mobile'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('level-left'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('level-item'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Create'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('level-item'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('input'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('text'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value('1'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$disabled(true),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$style(
+																	{
+																		ctor: '::',
+																		_0: {ctor: '_Tuple2', _0: 'width', _1: '3em'},
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('level-item'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('new'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('level-item'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _user$project$Pile_Css_Bulma$disabledSelect(
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$option,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$value('bovine'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('bovine'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$option,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$value('equine'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('equine'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$p,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('level-item'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('animal to edit'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('level-item'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$a,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$href('#'),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$Pile_HtmlShorthand$onClickPreventingDefault(
+																			A2(_user$project$Animals_Msg$AddNewAnimals, 1, 'bovine')),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Now'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Animals_View_PageFlash$show(model.pageFlash),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Pile_Css_Bulma$headerlessTable(
+						_user$project$Animals_Pages_AddPage$animalViews(model)),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
 };
 
 var _user$project$Animals_Pages_HelpPage$view = function (model) {
-	return A2(_user$project$Pile_Bulma$infoMessage, 'Unfinished', 'The help page hasn\'t been written yet.');
+	return A2(_user$project$Pile_Css_Bulma$infoMessage, 'Unfinished', 'The help page hasn\'t been written yet.');
 };
 
 var _user$project$Animals_View$view = function (model) {
@@ -23145,7 +23700,7 @@ var _user$project$Animals_View$view = function (model) {
 		{
 			ctor: '::',
 			_0: A2(
-				_user$project$Pile_Bulma$tabs,
+				_user$project$Pile_Css_Bulma$tabs,
 				model.page,
 				{
 					ctor: '::',

@@ -25,7 +25,6 @@ import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.Css.H as Css
-import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike 
 import Animals.Types.Lenses exposing (..)
 

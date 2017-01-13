@@ -10,6 +10,8 @@ import Animals.OutsideWorld.Update as OutsideWorld
 import Animals.Pages.Update as Page
 import Animals.View.PageFlash as PageFlash
 
+import Animals.Logic.AnimalOp as AnimalOp
+
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
@@ -33,10 +35,10 @@ import Dict exposing (Dict)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  updateWithClearedFlash msg (model_pageFlash.set PageFlash.NoFlash model)
+  updateWithClearedPageFlash msg (model_pageFlash.set PageFlash.NoFlash model)
 
-updateWithClearedFlash : Msg -> Model -> ( Model, Cmd Msg )
-updateWithClearedFlash msg model =
+updateWithClearedPageFlash : Msg -> Model -> ( Model, Cmd Msg )
+updateWithClearedPageFlash msg model =
   case msg of
     SetToday value ->
       model |> model_today.set value |> noCmd
@@ -65,7 +67,7 @@ updateWithClearedFlash msg model =
       model |> addFreshForms count species |> noCmd
           
     WithAnimal animal op ->
-      animalOp op animal model
+      AnimalOp.update op animal model
 
     WithForm form op ->
       formOp op form model
@@ -81,27 +83,6 @@ updateWithClearedFlash msg model =
 
 
         
-animalOp : AnimalOperation -> Animal -> Model -> (Model, Cmd Msg)
-animalOp op animal model = 
-  case op of
-    RemoveAnimalFlash -> -- this happens automatically, so this is effectively a NoOp
-      model |> upsertAnimal animal |> noCmd
-
-    SwitchToReadOnly format ->
-      let
-        newAnimal = animal_displayFormat.set format animal
-      in
-        model |> upsertAnimal newAnimal |> noCmd
-
-    StartEditing  ->
-      let
-        form = Convert.animalToForm animal
-      in
-        model |> upsertForm form |> noCmd
-
-    MoreLikeThis ->
-      model |> noCmd -- TODO
-
 forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)
 forwardToForm id op model =
   -- Todo: this should be an idiom
@@ -214,28 +195,6 @@ addFreshForms count species model =
       |> model_displayables.update (addDisplayables displayables)
       |> model_addPageAnimals.update (addDisplayableIds displayables)
     
--- addAnimalsLikeThis : Int -> Animal -> Model -> Model
--- addAnimalsLikeThis count templateAnimal model = 
---   let
---     (ids, newModel) =
---       freshIds count model
---     animals =
---       List.map (flip animal_id.set <| templateAnimal) ids
---     addAnimals =
---       Dict.union (displayedAnimalDict animals Animal.editable)
---     addIds =
---       Set.union (Set.fromList ids)
---     validationContext =
---       Validation.context model.animals templateAnimal
---     forms =
---       List.map (Form.extractForm >> Validation.validate validationContext) animals
---     addForms =
---       Dict.union (formDict forms)
---   in
---     newModel
---       |> model_animals.update addAnimals
---       |> model_addPageAnimals.update addIds
---       |> model_forms.update addForms
 
 populateAllAnimalsPage : List Animal -> Model -> Model 
 populateAllAnimalsPage animals model =

@@ -15,7 +15,7 @@ import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.Lenses exposing (..)
-import Animals.Animal.Form as Form 
+import Animals.Types.Conversions as Convert
 import Animals.Logic.Validation as Validation
 import Animals.View.AnimalFlash as AnimalFlash
 
@@ -29,7 +29,6 @@ import Set exposing (Set)
 import List
 import List.Extra as List
 import Dict exposing (Dict)
-
 -- Update
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -96,7 +95,7 @@ animalOp op animal model =
 
     StartEditing  ->
       let
-        form = Form.extractForm animal
+        form = Convert.animalToForm animal
       in
         model |> upsertForm form |> noCmd
 
@@ -174,14 +173,14 @@ formOp op form model =
 
     NoticeSaveResults ->
       let
-        displayed = Form.possiblyWithFlash form
+        displayed = Convert.formToDisplayed form
       in
         model |> upsertDisplayed displayed |> noCmd
 
     NoticeCreationResults persistedId ->
       let
         idDuringCreation = form.id
-        displayed = Form.possiblyWithFlash (form_id.set persistedId form)
+        displayed = Convert.formToDisplayed (form_id.set persistedId form)
       in
         model
           |> upsertDisplayed displayed
@@ -196,7 +195,7 @@ formOp op form model =
 withSavedForm : Form -> Model -> (Model, Animal)
 withSavedForm form model =
   ( model |> upsertForm (form_status.set Css.BeingSaved form)
-  , Form.appliedForm form
+  , Convert.formToAnimal form
   )
 
       

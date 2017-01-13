@@ -28,7 +28,6 @@ import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike 
 import Animals.Types.Lenses exposing (..)
-import Animals.Animal.Form as Form
 
 animalNames : Dict Id Displayed -> List String
 animalNames displayables =
@@ -49,10 +48,16 @@ context displayables origin =
         animalNames displayables |> augment
     }
 
+forceValid : Form -> Form 
+forceValid form =
+  { form
+    | status = Css.AllGood
+    , name = Css.freshValue form.name.value
+  } 
+    
 validate : Form.ValidationContext -> Form -> Form
-validate context form =
-  Form.assumeValid form 
-    |> validateName context
+validate context =
+  forceValid >> validateName context
 
 --  Validators
   

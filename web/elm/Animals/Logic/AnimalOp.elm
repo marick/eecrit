@@ -15,19 +15,19 @@ update : AnimalOperation -> Animal -> Model -> (Model, Cmd Msg)
 update op animal model = 
   case op of
     RemoveAnimalFlash -> -- this happens automatically, so this is effectively a NoOp
-      model |> upsertAnimal animal |> noCmd
+      model |> Model.upsertAnimal animal |> noCmd
 
     SwitchToReadOnly format ->
       let
         newAnimal = animal_displayFormat.set format animal
       in
-        model |> upsertAnimal newAnimal |> noCmd
+        model |> Model.upsertAnimal newAnimal |> noCmd
 
     StartEditing  ->
       let
         form = Convert.animalToForm animal
       in
-        model |> upsertForm form |> noCmd
+        model |> Model.upsertForm form |> noCmd
 
     MoreLikeThis ->
       model |> noCmd -- TODO

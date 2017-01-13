@@ -3,7 +3,7 @@ module Animals.Pages.AllPage exposing (view)
 import Animals.Pages.Common as Common
 import Animals.View.PageFlash as PageFlash
 
-import Animals.Animal.Lenses exposing (..)
+import Animals.Types.Lenses exposing (..)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)

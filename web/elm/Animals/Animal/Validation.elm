@@ -9,7 +9,7 @@ import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Namelike as Namelike 
-import Animals.Animal.Lenses exposing (..)
+import Animals.Types.Lenses exposing (..)
 import Animals.Animal.Form as Form
 
 animalNames : Dict Id Displayed -> List String
@@ -48,7 +48,7 @@ validateName context form =
           
 -- Helpers
          
-validator : String -> FormLens field -> (field -> Bool) -> Form -> Form
+validator : String -> FormValueLens field -> (field -> Bool) -> Form -> Form
 validator errorMessage lens pred form =
   let
     formValue = lens.get form

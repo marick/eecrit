@@ -9,7 +9,7 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Animal.Lenses exposing (..)
+import Animals.Types.Lenses exposing (..)
 import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 
 import Animals.OutsideWorld.Cmd as OutsideWorld

@@ -10,7 +10,7 @@ update : PageOperation -> Model -> ( Model, Cmd Msg )
 update op model =
   case op of 
     NoticeChange location ->
-      model |> Model.model_page.set (Page.fromLocation location) |> noCmd
+      model |> model_page.set (Page.fromLocation location) |> noCmd
       
     StartChange page ->
       ( model, Page.toPageChangeCmd page )

@@ -1,4 +1,22 @@
-module Animals.Animal.Validation exposing (..)
+module Animals.Logic.Validation exposing
+  ( context
+  , validate
+  )
+
+{- The validation context is calculated from the entire model in order
+to constrain correct values for a particular field in a particular animal.
+
+Not sure yet how aggressive to be about validation. Right now, only the
+name field is validated and only when it actually changes. As a natural consequence, 
+that means that the starting message for a new form ("please fill in this empty field") can be different than an error message. But that's fragile. 
+
+TODO: Perhaps best to go for complete safety: revalidate every form upon every
+redisplay, then back off if that's too slow. 
+
+TODO: Name validation should somehow include current tentative names
+as well as the animal names. (Consider the case where two names are being
+edited at the same time, with various sequencings of Saves.)
+-}
 
 import Dict exposing (Dict)
 import List.Extra as List

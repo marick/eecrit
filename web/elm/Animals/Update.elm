@@ -16,7 +16,7 @@ import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.Lenses exposing (..)
 import Animals.Animal.Form as Form 
-import Animals.Animal.Validation as Validation
+import Animals.Logic.Validation as Validation
 import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)

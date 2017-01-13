@@ -9,6 +9,7 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.Types.Conversions as Convert 
 import Animals.Types.Lenses exposing (..)
 import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 
@@ -99,11 +100,11 @@ deleteFromPage lens id = lens.update (Set.remove id)
 
 upsertAnimal : Animal.Animal -> Model -> Model 
 upsertAnimal animal =
-  upsertDisplayed (Displayed.fromAnimal animal)
+  upsertDisplayed (Convert.animalToDisplayed animal)
       
-upsertForm : Form -> Model -> Model 
-upsertForm form =
-  upsertDisplayed (Displayed.fromForm form)
+upsertCheckedForm : Form -> Model -> Model 
+upsertCheckedForm form =
+  upsertDisplayed (Convert.checkedFormToDisplayed form)
       
 
 -- Boilerplate Lenses

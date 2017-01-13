@@ -10,6 +10,7 @@ import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike
 
+-- Starting from an Animal
 
 animalToForm : Animal -> Form
 animalToForm animal =
@@ -24,6 +25,22 @@ animalToForm animal =
   , properties = animal.properties
   , originalAnimal = Just animal
   }
+
+animalToDisplayed : Animal -> Displayed
+animalToDisplayed animal =
+  Displayed (Displayed.Viewable animal) AnimalFlash.NoFlash
+
+-- Starting from a form
+  
+finishedFormToDisplayed : Form -> Displayed
+finishedFormToDisplayed form =
+  { view = Displayed.Viewable <| formToAnimal form
+  , animalFlash = formToFlash form
+  }
+
+checkedFormToDisplayed : Form -> Displayed
+checkedFormToDisplayed form =
+  Displayed (Displayed.Writable form) AnimalFlash.NoFlash
 
 formToAnimal : Form -> Animal
 formToAnimal form =
@@ -42,8 +59,4 @@ formToFlash form =
     True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
     False -> AnimalFlash.NoFlash
 
-formToDisplayed : Form -> Displayed
-formToDisplayed form =
-  { view = Displayed.Viewable <| formToAnimal form
-  , animalFlash = formToFlash form
-  }
+

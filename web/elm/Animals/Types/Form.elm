@@ -7,7 +7,7 @@ import Pile.Namelike exposing (Namelike)
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 
-import Dict
+import Dict exposing (Dict)
 
 type alias Form = 
   { id : Id

@@ -48,7 +48,7 @@ update : FormOperation -> Form -> Model -> (Model, Cmd Msg)
 update op form model =
   case op of 
     RemoveFormFlash -> -- this happens automatically, so this is effectively a NoOp
-      model |> upsertForm form |> noCmd
+      model |> upsertCheckedForm form |> noCmd
 
     CancelEdits ->
       let
@@ -79,13 +79,13 @@ update op form model =
             |> form_name.set (Css.freshValue s)
             |> Validation.validate (Validation.context model.displayables form.originalAnimal)
       in
-        model |> upsertForm newForm |> noCmd
+        model |> upsertCheckedForm newForm |> noCmd
 
     TentativeTagUpdate s ->
       let
         newForm = form_tentativeTag.set s form
       in
-        model |> upsertForm newForm |> noCmd
+        model |> upsertCheckedForm newForm |> noCmd
 
     CreateNewTag ->
       let
@@ -94,24 +94,24 @@ update op form model =
             |> form_tags.update (Namelike.perhapsAdd form.tentativeTag)
             |> form_tentativeTag.set ""
       in
-        model |> upsertForm newForm |> noCmd
+        model |> upsertCheckedForm newForm |> noCmd
 
     DeleteTag name ->
       let
         newForm = form_tags.update (List.remove name) form
       in
-        model |> upsertForm newForm |> noCmd
+        model |> upsertCheckedForm newForm |> noCmd
 
     NoticeSaveResults ->
       let
-        displayed = Convert.formToDisplayed form
+        displayed = Convert.finishedFormToDisplayed form
       in
         model |> upsertDisplayed displayed |> noCmd
 
     NoticeCreationResults persistedId ->
       let
         idDuringCreation = form.id
-        displayed = Convert.formToDisplayed (form_id.set persistedId form)
+        displayed = Convert.finishedFormToDisplayed (form_id.set persistedId form)
       in
         model
           |> upsertDisplayed displayed
@@ -125,7 +125,7 @@ update op form model =
 
 withSavedForm : Form -> Model -> (Model, Animal)
 withSavedForm form model =
-  ( model |> upsertForm (form_status.set Css.BeingSaved form)
+  ( model |> upsertCheckedForm (form_status.set Css.BeingSaved form)
   , Convert.formToAnimal form
   )
 
@@ -139,7 +139,7 @@ addFreshForms count species model =
     displayables =
       ids 
         |> List.map (Form.fresh species)
-        |> List.map Displayed.fromForm
+        |> List.map (Convert.checkedFormToDisplayed)
   in
     newModel
       |> model_displayables.update (Displayables.add displayables)

@@ -44,6 +44,8 @@ type alias Model =
 
   -- AddPage
   , addPageAnimals : Set Id
+  , speciesToAdd : Namelike
+  , numberToAdd : String
   , animalsEverAdded : Int -- This is dumb, but probably easiest way to add a
                            --  a guaranteed-unique id in the absence of reliable
                            --  UUIDs. (I don't trust only 32 bits, which is paranoid.)
@@ -73,6 +75,8 @@ init flags location =
 
       -- Add Animals Page
       , addPageAnimals = Set.empty
+      , speciesToAdd = "bovine"
+      , numberToAdd = "1"
       , animalsEverAdded = 0
       }
   in
@@ -145,4 +149,10 @@ model_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p }
 
 model_pageFlash : UpdatingLens Model PageFlash
 model_pageFlash = lens .pageFlash (\ p w -> { w | pageFlash = p })
+
+model_speciesToAdd : UpdatingLens Model String
+model_speciesToAdd = lens .speciesToAdd (\ p w -> { w | speciesToAdd = p })
+
+model_numberToAdd : UpdatingLens Model String
+model_numberToAdd = lens .numberToAdd (\ p w -> { w | numberToAdd = p })
 

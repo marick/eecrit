@@ -23,6 +23,10 @@ type AllPageOperation
   | SetTagFilter String
   | SetSpeciesFilter String
     
+type AddPageOperation
+  = SetAddedSpecies String
+  | UpdateAddedCount String
+    
 {-| Outside operation leakage -}
 type OutsideLeakageOperation
   = HttpError String Http.Error
@@ -54,11 +58,12 @@ type FormOperation
 type Msg
   = NoOp
 
-  | OnAllPage AllPageOperation
-  | WithAnimal Animal.Animal AnimalOperation
-  | WithForm Form FormOperation
   | Navigate NavigationOperation
   | Incoming OutsideLeakageOperation 
+  | OnAllPage AllPageOperation
+  | OnAddPage AddPageOperation
+  | WithAnimal Animal.Animal AnimalOperation
+  | WithForm Form FormOperation
 
   | SetToday (Maybe Date)
   | SetAnimals (List Animal)

@@ -7,6 +7,7 @@ import Animals.Msg exposing (..)
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar as Calendar
+import Pile.ConstrainedStrings exposing (updateIfPotentialIntString)
 
 update : AddPageOperation -> Model -> (Model, Cmd Msg)
 update op model = 
@@ -15,4 +16,4 @@ update op model =
       model |> model_speciesToAdd.set species |> noCmd
 
     UpdateAddedCount countString ->
-      model |> noCmd
+      model |> updateIfPotentialIntString countString model_numberToAdd |> noCmd

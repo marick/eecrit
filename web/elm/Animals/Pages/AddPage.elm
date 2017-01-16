@@ -11,6 +11,7 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Pile.Css.Bulma as Css
+import Pile.ConstrainedStrings exposing (..)
 
 view : Model -> Html Msg
 view model =
@@ -61,21 +62,22 @@ countView : Model -> Html Msg
 countView model =
   Css.centeredLevelItem
     [ Css.headingP "How many?"
-    , Css.simpleTextInput model.nameFilter <| withArg UpdateAddedCount
+    , Css.simpleTextInput model.numberToAdd <| withArg UpdateAddedCount
     ]
 
 populateButton : Model -> Html Msg
 populateButton model =
   let
-    _ = Debug.log "model" model
-  in 
+    species = model.speciesToAdd
+    count = certainlyValidInt model.numberToAdd 0
+  in
     Css.centeredLevelItem
       [ Css.headingP " "
       , a [ class "button is-primary"
           , href "#"
-          , onClickPreventingDefault <| AddNewAnimals 1 "bovine"
+          , onClickPreventingDefault <| AddNewAnimals count species
           ]
-        [text "Click to add more information"]
+          [text "Click to add more information"]
       ]
          
   -- nav [class "level is-mobile"]

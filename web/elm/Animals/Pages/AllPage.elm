@@ -42,7 +42,10 @@ filterView model =
             [ text "Animals as of..."
             , calendarHelp Css.rightIcon
             ]
-            [ Calendar.view dateControl ToggleDatePicker SelectDate model
+            [ Calendar.view dateControl
+                (withoutArg ToggleDatePicker)
+                (withArg SelectDate)
+                model
             ] 
         ]                  
     , Css.column 8
@@ -114,14 +117,14 @@ nameFilter : Model -> Html Msg
 nameFilter model =
   Css.centeredLevelItem
     [ Css.headingP "Name"
-    , Css.simpleTextInput model.nameFilter SetNameFilter
+    , Css.simpleTextInput model.nameFilter <| withArg SetNameFilter
     ]
 
 tagsFilter : Model -> Html Msg
 tagsFilter model =
   Css.centeredLevelItem
     [ Css.headingP "Tag"
-    , Css.simpleTextInput model.tagFilter SetTagFilter
+    , Css.simpleTextInput model.tagFilter <| withArg SetTagFilter
     ]
 
 speciesFilter : Model -> Html Msg
@@ -130,9 +133,10 @@ speciesFilter model =
     textOption val display = 
       option
       [ value val
-      , Events.onClick (SetSpeciesFilter val)
+      , Events.onClick <| withArg SetSpeciesFilter val
       ]
       [ text display ]
+
   in
     Css.centeredLevelItem
       [ Css.headingP "Species" 
@@ -143,8 +147,6 @@ speciesFilter model =
         ]
       ]
       
-
-
 -- -- Various icons
     
 calendarHelp : Css.IconExpander Msg -> Html Msg
@@ -155,3 +157,10 @@ filterHelp : Css.IconExpander Msg -> Html Msg
 filterHelp iconType = 
   iconType "fa-question-circle" "Help on filtering" NoOp    
 
+-- Util
+    
+withArg op = 
+  op >> OnAllPage
+
+withoutArg = OnAllPage
+  

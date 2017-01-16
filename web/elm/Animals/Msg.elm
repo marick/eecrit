@@ -15,6 +15,14 @@ type NavigationOperation
   = NoticeChange Navigation.Location
   | StartChange PageChoice
 
+type AllPageOperation
+  = ToggleDatePicker
+  | SelectDate Date
+
+  | SetNameFilter String
+  | SetTagFilter String
+  | SetSpeciesFilter String
+    
 {-| Outside operation leakage -}
 type OutsideLeakageOperation
   = HttpError String Http.Error
@@ -46,6 +54,7 @@ type FormOperation
 type Msg
   = NoOp
 
+  | OnAllPage AllPageOperation
   | WithAnimal Animal.Animal AnimalOperation
   | WithForm Form FormOperation
   | Navigate NavigationOperation
@@ -53,13 +62,6 @@ type Msg
 
   | SetToday (Maybe Date)
   | SetAnimals (List Animal)
-
-  | ToggleDatePicker
-  | SelectDate Date
-
-  | SetNameFilter String
-  | SetTagFilter String
-  | SetSpeciesFilter String
 
   | AnimalGotSaved OutsideWorld.AnimalSaveResults
   | AnimalGotCreated OutsideWorld.AnimalCreationResults

@@ -17,6 +17,7 @@ import Animals.OutsideWorld.Cmd as OutsideWorld
 
 import Pile.Calendar exposing (EffectiveDate(..))
 import Pile.UpdatingLens exposing (UpdatingLens, lens)
+import Pile.Namelike exposing (Namelike)
 
 import Navigation
 import Dict exposing (Dict)

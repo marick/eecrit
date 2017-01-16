@@ -11,6 +11,7 @@ import Animals.View.PageFlash as PageFlash
 
 import Animals.Logic.AnimalOp as AnimalOp
 import Animals.Logic.FormOp as FormOp
+import Animals.Logic.AllPageOp as AllPageOp
 
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
@@ -18,7 +19,6 @@ import Animals.Types.DisplayedCollections as Displayable
 import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
-import Pile.Calendar exposing (EffectiveDate(..))
 
 import List
 
@@ -29,6 +29,9 @@ update msg model =
 updateWithClearedPageFlash : Msg -> Model -> ( Model, Cmd Msg )
 updateWithClearedPageFlash msg model =
   case msg of
+    OnAllPage op ->
+      AllPageOp.update op model
+    
     WithAnimal animal op ->
       AnimalOp.update op animal model
 
@@ -45,18 +48,6 @@ updateWithClearedPageFlash msg model =
       model |> model_today.set value |> noCmd
     SetAnimals animals ->
       model |> populateAllAnimalsPage animals |> noCmd
-
-    ToggleDatePicker ->
-      model |> model_datePickerOpen.update not |> noCmd
-    SelectDate date ->
-      model |> model_effectiveDate.set (At date) |> noCmd
-      
-    SetNameFilter s ->
-      model |> model_nameFilter.set s |> noCmd
-    SetTagFilter s ->
-      model |> model_tagFilter.set s |> noCmd
-    SetSpeciesFilter s ->
-      model |> model_speciesFilter.set s |> noCmd
 
     AnimalGotSaved (OutsideWorld.AnimalUpdated id) ->
       FormOp.forwardToForm id NoticeSaveResults model 

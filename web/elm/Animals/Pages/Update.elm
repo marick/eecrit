@@ -6,7 +6,7 @@ import Animals.Pages.Navigation as Page
 
 import Pile.UpdateHelpers exposing(..)
 
-update : PageOperation -> Model -> ( Model, Cmd Msg )
+update : NavigationOperation -> Model -> ( Model, Cmd Msg )
 update op model =
   case op of 
     NoticeChange location ->

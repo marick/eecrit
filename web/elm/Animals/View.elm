@@ -1,7 +1,7 @@
 module Animals.View exposing (view)
 
 import Animals.Model exposing (Model)
-import Animals.Msg exposing (Msg(Page), PageOperation(..))
+import Animals.Msg exposing (Msg(Navigate), NavigationOperation(..))
 
 import Animals.Pages.H exposing (PageChoice(..))
 import Animals.Pages.AllPage as AllPage
@@ -15,9 +15,9 @@ view : Model -> Html Msg
 view model =
   div []
     [ Css.tabs model.page
-        [ (AllPage, "View Animals", Page <| StartChange AllPage)
-        , (AddPage, "Add Animals", Page <| StartChange AddPage)
-        , (HelpPage, "Help", Page <| StartChange HelpPage)
+        [ (AllPage, "View Animals", goto AllPage)
+        , (AddPage, "Add Animals", goto AddPage)
+        , (HelpPage, "Help", goto HelpPage)
         ]
     , case model.page of
         AllPage -> AllPage.view model
@@ -25,3 +25,6 @@ view model =
         HelpPage -> HelpPage.view model
     ]
 
+goto : PageChoice -> Msg
+goto choice = 
+  Navigate <| StartChange choice

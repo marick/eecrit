@@ -35,7 +35,7 @@ updateWithClearedPageFlash msg model =
     WithForm form op ->
       FormOp.update op form model
 
-    Page op ->
+    Navigate op ->
       Page.update op model
 
     Incoming op ->

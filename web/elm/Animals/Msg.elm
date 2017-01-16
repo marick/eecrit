@@ -7,10 +7,11 @@ import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Basic exposing (..)
 import Date exposing (Date)
 import Navigation
+import Pile.Namelike exposing (Namelike)
 import Http
 
 {-| A subtype of Msg. Always used as `Page <submsg>` -}
-type PageOperation
+type NavigationOperation
   = NoticeChange Navigation.Location
   | StartChange PageChoice
 
@@ -47,7 +48,7 @@ type Msg
 
   | WithAnimal Animal.Animal AnimalOperation
   | WithForm Form FormOperation
-  | Page PageOperation
+  | Navigate NavigationOperation
   | Incoming OutsideLeakageOperation 
 
   | SetToday (Maybe Date)

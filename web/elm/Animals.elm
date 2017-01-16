@@ -8,7 +8,7 @@ import Animals.Msg as A
 
 main : Program A.Flags A.Model A.Msg
 main =
-    Navigation.programWithFlags (A.Page << A.NoticeChange)
+    Navigation.programWithFlags (A.Navigate << A.NoticeChange)
         { init = A.init
         , view = A.view
         , update = A.update

@@ -1,11 +1,15 @@
 module Animals.View.PageFlash exposing (..)
 
+import Animals.Msg exposing (Msg(..))
+import Animals.Pages.H exposing (PageChoice(..))
+import Animals.Pages.Navigation as Navigation
+
+import Pile.Css.Bulma as Css
+import Pile.HtmlShorthand exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Pile.Css.Bulma as Css
-import Animals.Msg exposing (Msg(..))
-import Http exposing (..)
-import Animals.Pages.H as Pages
+import Http
 
 type PageFlash
   = NoFlash
@@ -20,14 +24,17 @@ show flash =
     SavedAnimalFlash -> 
       Css.flashNotification NoOp
         [ text "The new animal can be seen on the "
-        , a [href Pages.allPagePath] [text "View Animals"]
+        , a [ href "#"
+            , onClickPreventingDefault <| Navigation.gotoMsg AllPage
+            ]
+            [text "View Animals"]
         , text " page."
         ]
 
     HttpErrorFlash contextString err ->
       httpError contextString err
 
-httpError : String -> Error -> Html Msg
+httpError : String -> Http.Error -> Html Msg
 httpError contextString err =
   let
     errText =

@@ -69,8 +69,6 @@ updateWithClearedPageFlash msg model =
 populateAllAnimalsPage : List Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
   let
-    ids =
-      List.map .id animals
     compactify animal =
       Displayed (Displayed.Viewable animal) AnimalFlash.NoFlash
     displayables =

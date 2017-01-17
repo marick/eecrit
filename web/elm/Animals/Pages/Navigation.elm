@@ -1,12 +1,18 @@
 module Animals.Pages.Navigation exposing
   ( fromLocation
+  , gotoMsg
   , toPageChangeCmd
   )
 
-import Animals.Pages.H exposing (..)
 import Animals.Msg exposing (..)
+import Animals.Pages.H exposing (..)
+
 import Navigation
 import String
+
+gotoMsg : PageChoice -> Msg
+gotoMsg choice = 
+  Navigate <| StartChange choice
 
 toPageChangeCmd : PageChoice -> Cmd Msg
 toPageChangeCmd page =
@@ -30,3 +36,5 @@ fromLocation location =
       HelpPage
     else
       AllPage
+
+        

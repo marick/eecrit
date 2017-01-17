@@ -159,8 +159,10 @@ filterHelp iconType =
 
 -- Util
     
-withArg op = 
-  op >> OnAllPage
+withArg : (opArg -> AllPageOperation) -> opArg -> Msg
+withArg opArg = 
+  opArg >> OnAllPage
 
+withoutArg : AllPageOperation -> Msg
 withoutArg = OnAllPage
   

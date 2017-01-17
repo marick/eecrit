@@ -3,11 +3,8 @@ module Pile.ConstrainedStrings exposing (..)
 import Pile.UpdatingLens exposing (UpdatingLens)
 import String
 
-isValidIntString = isValid String.toInt
-isPotentialIntString = hasPotential String.toInt
-updateIfPotentialIntString = updateIfPotential String.toInt
-certainlyValidInt = certainlyValid String.toInt                             
-                             
+-- Generic validation
+
 isValid : (String -> Result error value) -> String -> Bool
 isValid validator string = 
   case validator string of
@@ -34,3 +31,18 @@ updateIfPotential validator string lens =
     True -> lens.set string
     False -> identity
 
+
+-- String is intended to be an int
+
+isValidIntString : String -> Bool
+isValidIntString = isValid String.toInt
+
+isPotentialIntString : String -> Bool
+isPotentialIntString = hasPotential String.toInt
+
+updateIfPotentialIntString : String -> UpdatingLens model String -> model -> model
+updateIfPotentialIntString = updateIfPotential String.toInt
+
+certainlyValidInt : String -> Int -> Int
+certainlyValidInt = certainlyValid String.toInt                             
+                             

@@ -24,7 +24,7 @@ type AllPageOperation
   | SetSpeciesFilter String
     
 type AddPageOperation
-  = SetAddedSpecies String
+  = SetAddedSpecies Namelike
   | UpdateAddedCount String
     
 {-| Outside operation leakage -}
@@ -71,5 +71,5 @@ type Msg
   | AnimalGotSaved OutsideWorld.AnimalSaveResults
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
-  | AddNewAnimals Int String
+  | AddNewAnimals Int Namelike
 

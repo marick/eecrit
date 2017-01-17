@@ -21,6 +21,7 @@ view model =
     , Css.headerlessTable <| animalViews model
     ]
 
+startFormView : Model -> Html Msg
 startFormView model =
   Css.centeredColumns
     [ Css.column 11
@@ -122,8 +123,10 @@ startHelp iconType =
          
 -- Util
     
-withArg op = 
-  op >> OnAddPage
+withArg : (opArg -> AddPageOperation) -> opArg -> Msg
+withArg opArg = 
+  opArg >> OnAddPage
 
+withoutArg : AddPageOperation -> Msg
 withoutArg = OnAddPage
   

@@ -26,7 +26,7 @@ compactView animal flash =
            ])
       , Icon.expand animal Css.tdIcon
       , Icon.edit animal Css.tdIcon
-      , Icon.moreLikeThis animal Css.tdIcon
+      , Icon.moreLikeThis animal.id Css.tdIcon
       ]
 
 expandedView : Animal -> AnimalFlash -> Html Msg      
@@ -40,7 +40,7 @@ expandedView animal flash =
           ]
       , Icon.contract animal Css.tdIcon
       , Icon.edit animal Css.tdIcon
-      , Icon.moreLikeThis animal Css.tdIcon
+      , Icon.moreLikeThis animal.id Css.tdIcon
       ]
       
 -- Util

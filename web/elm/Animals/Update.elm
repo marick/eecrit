@@ -61,6 +61,9 @@ updateWithClearedPageFlash msg model =
 
     AddNewAnimals count species ->
       model |> FormOp.addFreshForms count species |> noCmd
+
+    MoreLikeThis id ->
+      model |> noCmd
           
     NoOp ->
       model ! []

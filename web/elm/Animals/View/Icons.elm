@@ -1,9 +1,11 @@
 module Animals.View.Icons exposing (..)
 
-import Html exposing (Html)
-import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Msg exposing (..)
+import Animals.Types.Basic exposing (..)
+import Animals.Types.Animal as Animal exposing (Animal)
+
 import Pile.Css.Bulma as Css
+import Html exposing (Html)
 
 expand : Animal -> Css.IconExpander Msg -> Html Msg
 expand animal iconType =
@@ -23,11 +25,11 @@ edit animal iconType =
     "Edit: make changes to this animal"
     (WithAnimal animal StartEditing)
       
-moreLikeThis : Animal -> Css.IconExpander Msg -> Html Msg
-moreLikeThis animal iconType =
+moreLikeThis : Id -> Css.IconExpander Msg -> Html Msg
+moreLikeThis id iconType =
   iconType "fa-plus"
     "Copy: make more animals like this one"
-    (WithAnimal animal MoreLikeThis)
+    (MoreLikeThis id)
 
 editHelp : Css.IconExpander Msg -> Html Msg
 editHelp iconType = 

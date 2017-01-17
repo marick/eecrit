@@ -134,19 +134,6 @@ animalTransferFormat_to_Animal incoming =
         , properties = properties
         }
 
--- 
-      
-
-
-
-
-
-
-
---- Representation translation
-
-
-          
 
 --- Util      
       

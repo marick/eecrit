@@ -28,7 +28,3 @@ update op animal model =
         form = Convert.animalToForm animal
       in
         model |> Model.upsertCheckedForm form |> noCmd
-
-    MoreLikeThis ->
-      model |> noCmd -- TODO
-

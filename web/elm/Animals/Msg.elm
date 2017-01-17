@@ -36,7 +36,6 @@ type AnimalOperation
   = RemoveAnimalFlash
   | SwitchToReadOnly Animal.Format
   | StartEditing
-  | MoreLikeThis
 
 {-| A subtype of Msg. Always used as `WithForm <aForm> <submsg>` -}
 type FormOperation
@@ -72,4 +71,5 @@ type Msg
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
   | AddNewAnimals Int Namelike
+  | MoreLikeThis Id
 

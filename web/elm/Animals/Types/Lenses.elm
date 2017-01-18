@@ -16,6 +16,7 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (..)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.View.AnimalFlash exposing (AnimalFlash)
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.Css.H as Css
 import Pile.Namelike exposing (Namelike)
@@ -83,6 +84,11 @@ validationContext_disallowedNames = lens .disallowedNames (\ p w -> { w | disall
 
 -- These are used to get fields that "mean the same thing" in either a
 -- Form or an Animal. This is quite likely a bad idea.
+
+
+displayed_flash : UpdatingLens Displayed AnimalFlash
+displayed_flash = lens .animalFlash (\ p w -> { w | animalFlash = p })
+
 
 makeLens_traversingDisplayView : UpdatingLens Form part ->
                                  UpdatingLens Animal part -> 

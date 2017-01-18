@@ -34,7 +34,7 @@ import Dict exposing (Dict)
 forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)
 forwardToForm id op model =
   -- Todo: this should be an idiom
-  case Dict.get id model.displayables |> Maybe.map .view of 
+  case getDisplayed id model |> Maybe.map .view of 
     Nothing ->
       model |> noCmd -- Todo: a command to log the error
     Just (Displayed.Viewable _) ->

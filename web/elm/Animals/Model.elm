@@ -83,7 +83,12 @@ init flags location =
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
 
--- Todo: Figure out how to use lenses for this.      
+-- Todo: Figure out how to use lenses for this.
+
+getDisplayed : Id -> Model -> Maybe Displayed
+getDisplayed id model =
+  Dict.get id model.displayables
+
 upsertDisplayed : Displayed -> Model -> Model       
 upsertDisplayed displayed model =
   let

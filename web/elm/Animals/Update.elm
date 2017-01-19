@@ -15,6 +15,8 @@ import Animals.Logic.DisplayedOp as DisplayedOp
 import Animals.Logic.AllPageOp as AllPageOp
 import Animals.Logic.AddPageOp as AddPageOp
 
+import Animals.Types.Basic exposing (..)
+import Animals.Types.Conversions as Convert
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.DisplayedCollections as Displayable
@@ -73,10 +75,8 @@ updateWithClearedPageFlash msg model =
 populateAllAnimalsPage : List Animal -> Model -> Model 
 populateAllAnimalsPage animals model =
   let
-    compactify animal =
-      Displayed (Displayed.Viewable animal) AnimalFlash.NoFlash
     displayables =
-      List.map compactify animals
+      List.map Convert.animalToDisplayed animals
   in
     { model
       | displayables = Displayable.dict displayables

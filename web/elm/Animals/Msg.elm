@@ -26,6 +26,7 @@ type AllPageOperation
 type AddPageOperation
   = SetAddedSpecies Namelike
   | UpdateAddedCount String
+  | AddFormsForBlankTemplate Int Namelike
     
 {-| Outside operation leakage -}
 type OutsideLeakageOperation
@@ -70,6 +71,5 @@ type Msg
   | AnimalGotSaved OutsideWorld.AnimalSaveResults
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
-  | AddNewAnimals Int Namelike
   | MoreLikeThis Id
 

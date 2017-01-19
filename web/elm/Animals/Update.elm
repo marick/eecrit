@@ -59,9 +59,6 @@ updateWithClearedPageFlash msg model =
     AnimalGotCreated (OutsideWorld.AnimalCreated tempId realId) ->
       FormOp.forwardToForm tempId (NoticeCreationResults realId) model
 
-    AddNewAnimals count species ->
-      model |> FormOp.addFreshForms count species |> noCmd
-
     MoreLikeThis id ->
       model |> noCmd
           

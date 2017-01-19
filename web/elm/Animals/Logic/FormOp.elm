@@ -1,7 +1,6 @@
 module Animals.Logic.FormOp exposing
   ( forwardToForm
   , update
-  , addFreshForms
   )
 
 import Animals.Model as Model exposing (..)
@@ -128,31 +127,3 @@ withSavedForm form model =
   )
 
       
-addFreshForms : Int -> Namelike -> Model -> Model
-addFreshForms count species model = 
-  let
-    (ids, newModel) =
-      freshIds count model
-      
-    displayables =
-      ids 
-        |> List.map (Form.fresh species)
-        |> List.map (Convert.checkedFormToDisplayed)
-  in
-    newModel
-      |> model_displayables.update (Displayables.add displayables)
-      |> model_addPageAnimals.update (Displayables.addReferences displayables)
-    
-
-freshIds : Int -> Model -> (List Id, Model)    
-freshIds n model =
-  let 
-    uniquePrefix = "New_animal_"
-    name i = uniquePrefix ++ toString i
-    ids =
-      List.range (model.animalsEverAdded + 1) (model.animalsEverAdded + n)
-        |> List.map name
-    newModel = model_animalsEverAdded.update ((+) n) model
-  in
-    (ids, newModel)
-

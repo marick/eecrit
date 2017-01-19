@@ -40,7 +40,7 @@ startFormView model =
 
 speciesView : Model -> Html Msg
 speciesView model =
-  let 
+  let
     textOption val display = 
       option
       [ value val
@@ -69,14 +69,17 @@ countView model =
 populateButton : Model -> Html Msg
 populateButton model =
   let
-    species = model.speciesToAdd
-    count = certainlyValidInt model.numberToAdd 0
+    onClick =
+      OnAddPage <| 
+        AddFormsForBlankTemplate
+        (certainlyValidInt model.numberToAdd 0)
+        (model.speciesToAdd)
   in
     Css.centeredLevelItem
       [ Css.headingP " "
       , a [ class "button is-primary"
           , href "#"
-          , onClickPreventingDefault <| AddNewAnimals count species
+          , onClickPreventingDefault onClick
           ]
           [text "Click to add more information"]
       ]

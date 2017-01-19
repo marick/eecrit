@@ -82,6 +82,19 @@ init flags location =
   in
     model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
 
+-- Ways of tweaking bits of this      
+
+freshIds : Int -> Model -> (List Id, Model)    
+freshIds n model =
+  let 
+    uniquePrefix = "New_animal_"
+    name i = uniquePrefix ++ toString i
+    ids =
+      List.range (model.animalsEverAdded + 1) (model.animalsEverAdded + n)
+        |> List.map name
+    newModel = model_animalsEverAdded.update ((+) n) model
+  in
+    (ids, newModel)
 
 -- Todo: Figure out how to use lenses for this.
 

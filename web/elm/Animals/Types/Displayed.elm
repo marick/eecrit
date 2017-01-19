@@ -12,5 +12,3 @@ type alias Displayed =
 type Affordance
   = Writable Form
   | Viewable Animal
-
-    

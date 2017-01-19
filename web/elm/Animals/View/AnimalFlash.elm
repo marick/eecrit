@@ -1,5 +1,6 @@
 module Animals.View.AnimalFlash exposing (..)
 
+import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (Animal)
 import Pile.Css.Bulma as Css
 import Html exposing (..)
@@ -7,7 +8,7 @@ import Html exposing (..)
 type AnimalFlash
   = NoFlash
   | SavedIncompleteTag String
-  | MoreLikeThis Animal
+  | CopyInfoNeeded Id
 
 showWithButton : AnimalFlash -> msg -> Html msg
 showWithButton flash flashRemovalMsg =
@@ -25,7 +26,7 @@ showWithButton flash flashRemovalMsg =
         , text " for you."
         , text " You can delete it if I goofed."
         ]
-    MoreLikeThis id ->
+    CopyInfoNeeded id ->
       Css.flashNotification flashRemovalMsg
         [ text "How many copies do you want?"
         ]

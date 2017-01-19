@@ -11,6 +11,7 @@ import Animals.View.PageFlash as PageFlash
 
 import Animals.Logic.AnimalOp as AnimalOp
 import Animals.Logic.FormOp as FormOp
+import Animals.Logic.DisplayedOp as DisplayedOp
 import Animals.Logic.AllPageOp as AllPageOp
 import Animals.Logic.AddPageOp as AddPageOp
 
@@ -41,6 +42,9 @@ updateWithClearedPageFlash msg model =
 
     WithForm form op ->
       FormOp.update op form model
+
+    WithDisplayedId id op ->
+      DisplayedOp.forwardToDisplayed id op model
 
     Navigate op ->
       Page.update op model

@@ -29,7 +29,7 @@ moreLikeThis : Id -> Css.IconExpander Msg -> Html Msg
 moreLikeThis id iconType =
   iconType "fa-plus"
     "Copy: make more animals like this one"
-    (MoreLikeThis id)
+    (WithDisplayedId id BeginGatheringCopyInfo)
 
 editHelp : Css.IconExpander Msg -> Html Msg
 editHelp iconType = 

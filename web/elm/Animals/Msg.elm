@@ -54,6 +54,10 @@ type FormOperation
   | CreateNewTag
   | DeleteTag String 
 
+{-| A subtype of Msg. Always used as `WithDisplayedId <Id> <submsg>` -}
+type DisplayedOperation
+  = BeginGatheringCopyInfo
+  | UpdateCopyCount String
 
 type Msg
   = NoOp
@@ -64,6 +68,7 @@ type Msg
   | OnAddPage AddPageOperation
   | WithAnimal Animal.Animal AnimalOperation
   | WithForm Form FormOperation
+  | WithDisplayedId Id DisplayedOperation
 
   | SetToday (Maybe Date)
   | SetAnimals (List Animal)

@@ -11,8 +11,11 @@ import Animals.Types.Lenses exposing (..)
 import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
-import Pile.ConstrainedStrings exposing (updateIfPotentialIntString)
+import Pile.ConstrainedStrings as Constrained
 
+{-| Note that displayed operations do NOT empty the flash. This is kind of a
+    kludge.
+-}
 
 forwardToDisplayed : Id -> DisplayedOperation -> Model -> (Model, Cmd Msg)
 forwardToDisplayed id op model =
@@ -26,10 +29,21 @@ update : DisplayedOperation -> Displayed -> Model -> (Model, Cmd Msg)
 update op displayed model =
   case op of
     BeginGatheringCopyInfo ->
-      let
-        flash = AnimalFlash.CopyInfoNeeded (displayed_id.get displayed)
-        new = displayed_flash.set flash displayed
-      in
-        model |> upsertDisplayed new |> noCmd
+        model
+          |> upsertDisplayed (withGatherFlash displayed "1")
+          |> noCmd
+
     UpdateCopyCount countString ->
-      model |> noCmd
+        model
+          |> upsertDisplayed (withValidatedGatherFlash displayed countString)
+          |> noCmd
+
+withGatherFlash displayed string = 
+  displayed_flash.set
+    (AnimalFlash.CopyInfoNeeded (displayed_id.get displayed) string)
+    displayed
+
+withValidatedGatherFlash displayed string = 
+  case Constrained.isPotentialIntString string of
+    True -> withGatherFlash displayed string
+    False -> displayed

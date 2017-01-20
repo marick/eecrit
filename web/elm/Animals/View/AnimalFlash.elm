@@ -1,5 +1,7 @@
 module Animals.View.AnimalFlash exposing (..)
 
+import Animals.Msg exposing (..)
+
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (Animal)
 import Pile.Css.Bulma as Css
@@ -8,9 +10,9 @@ import Html exposing (..)
 type AnimalFlash
   = NoFlash
   | SavedIncompleteTag String
-  | CopyInfoNeeded Id
+  | CopyInfoNeeded Id String
 
-showWithButton : AnimalFlash -> msg -> Html msg
+showWithButton : AnimalFlash -> Msg -> Html Msg
 showWithButton flash flashRemovalMsg =
   case flash of 
     NoFlash -> 
@@ -26,8 +28,11 @@ showWithButton flash flashRemovalMsg =
         , text " for you."
         , text " You can delete it if I goofed."
         ]
-    CopyInfoNeeded id ->
+    CopyInfoNeeded id currentCount ->
       Css.flashNotification flashRemovalMsg
         [ text "How many copies do you want?"
+        , Css.simpleTextInput
+            currentCount
+            (WithDisplayedId id << UpdateCopyCount)
         ]
 

@@ -26,7 +26,9 @@ animalToForm animal =
 
 animalToDisplayed : Animal -> Displayed
 animalToDisplayed animal =
-  Displayed (Displayed.Viewable animal) AnimalFlash.NoFlash
+  { view = Displayed.Viewable animal
+  , animalFlash = AnimalFlash.NoFlash
+  }
 
 -- Starting from a form
   
@@ -38,7 +40,9 @@ finishedFormToDisplayed form =
 
 checkedFormToDisplayed : Form -> Displayed
 checkedFormToDisplayed form =
-  Displayed (Displayed.Writable form) AnimalFlash.NoFlash
+  { view = Displayed.Writable form
+  , animalFlash = AnimalFlash.NoFlash
+  }
 
 formToAnimal : Form -> Animal
 formToAnimal form =

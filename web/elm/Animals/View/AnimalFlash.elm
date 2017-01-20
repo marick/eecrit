@@ -4,7 +4,9 @@ import Animals.Msg exposing (..)
 
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (Animal)
+import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
+import Pile.ConstrainedStrings as Constrained
 import Html exposing (..)
 
 type AnimalFlash
@@ -29,10 +31,20 @@ showWithButton flash flashRemovalMsg =
         , text " You can delete it if I goofed."
         ]
     CopyInfoNeeded id currentCount ->
-      Css.flashNotification flashRemovalMsg
-        [ text "How many copies do you want?"
-        , Css.simpleTextInput
-            currentCount
-            (WithDisplayedId id << UpdateCopyCount)
+      let
+        value = Constrained.certainlyValidInt currentCount 0
+        status = case value == 0 of  -- TODO: Must be a function that does this.
+                   True -> Css.SomeBad
+                   False -> Css.AllGood
+
+      in
+        Css.flashNotification flashRemovalMsg
+          [ text "How many copies do you want?"
+          , Css.textInputWithSubmit
+              status
+              "Create"
+              currentCount
+              (WithDisplayedId id << UpdateCopyCount)
+              (WithDisplayedId id <| AddFormsBasedOnAnimal value)
         ]
 

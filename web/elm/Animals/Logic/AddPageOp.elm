@@ -31,12 +31,12 @@ addFreshForms : Int -> Namelike -> Model -> Model
 addFreshForms count species model = 
   let
     (ids, newModel) =
-      freshIds count model
+      Model.freshIds count model
       
     displayables =
       ids 
         |> List.map (Form.fresh species)
-        |> List.map (Convert.checkedFormToDisplayed)
+        |> List.map Convert.checkedFormToDisplayed
   in
     newModel
       |> model_displayables.update (Displayables.add displayables)

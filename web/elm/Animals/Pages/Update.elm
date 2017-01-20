@@ -13,5 +13,4 @@ update op model =
       model |> model_page.set (Page.fromLocation location) |> noCmd
       
     StartChange page ->
-      ( model, Page.toPageChangeCmd page )
-      
+      model |> addCmd (Page.toPageChangeCmd page)

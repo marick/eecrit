@@ -58,6 +58,7 @@ type FormOperation
 type DisplayedOperation
   = BeginGatheringCopyInfo
   | UpdateCopyCount String
+  | AddFormsBasedOnAnimal Int
 
 type Msg
   = NoOp

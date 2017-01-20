@@ -5,9 +5,13 @@ import Animals.Msg exposing (..)
 
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.Types.DisplayedCollections as Displayables
 import Animals.Types.Conversions as Convert
+import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Lenses exposing (..)
 
+import Animals.Pages.H as Page
+import Animals.Pages.Navigation as Page
 import Animals.View.AnimalFlash as AnimalFlash
 
 import Pile.UpdateHelpers exposing (..)
@@ -38,6 +42,31 @@ update op displayed model =
           |> upsertDisplayed (withValidatedGatherFlash displayed countString)
           |> noCmd
 
+    AddFormsBasedOnAnimal count ->
+      model
+        |> addAnimalForms displayed count
+        |> addCmd (Page.toPageChangeCmd Page.AddPage)
+
+addAnimalForms source count model =
+  let
+    sourceForm =
+      source
+        |> Convert.displayedToForm
+        |> form_name.set (Form.emptyNameWithNotice)
+        |> form_intendedVersion.set 1
+
+    (ids, newModel) =
+      Model.freshIds count model
+                      
+    displayables = 
+      ids
+        |> List.map (\id -> form_id.set id sourceForm)
+        |> List.map Convert.checkedFormToDisplayed
+  in
+    newModel
+      |> model_displayables.update (Displayables.add displayables)
+      |> model_addPageAnimals.update (Displayables.addReferences displayables)
+             
 withGatherFlash displayed string = 
   displayed_flash.set
     (AnimalFlash.CopyInfoNeeded (displayed_id.get displayed) string)

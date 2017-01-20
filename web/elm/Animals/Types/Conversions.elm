@@ -24,6 +24,15 @@ animalToForm animal =
   , originalAnimal = Just animal
   }
 
+
+displayedToForm : Displayed -> Form
+displayedToForm displayed =
+  case displayed.view of
+    Displayed.Writable form ->
+      form
+    Displayed.Viewable animal ->
+      animalToForm animal
+
 animalToDisplayed : Animal -> Displayed
 animalToDisplayed animal =
   { view = Displayed.Viewable animal

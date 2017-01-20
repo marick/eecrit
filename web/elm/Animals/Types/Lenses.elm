@@ -74,6 +74,9 @@ form_tentativeTag = lens .tentativeTag (\ p w -> { w | tentativeTag = p })
 form_status : UpdatingLens Form Css.FormStatus
 form_status = lens .status (\ p w -> { w | status = p })
 
+form_intendedVersion : UpdatingLens Form Int
+form_intendedVersion = lens .intendedVersion (\ p w -> { w | intendedVersion = p })
+
 -- Validation contexts
               
 validationContext_disallowedNames : UpdatingLens Form.ValidationContext (List String)

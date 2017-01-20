@@ -32,7 +32,7 @@ fresh species id =
   , sortKey = id -- Causes forms to stay in original order
   , intendedVersion = 1
   , species = species
-  , name = Css.freshValue "" |> Css.invalidate "Give the animal a name."
+  , name = emptyNameWithNotice
   , tags = []
   , tentativeTag = ""
   , properties = Dict.empty
@@ -40,3 +40,5 @@ fresh species id =
   , originalAnimal = Nothing
   }
   
+emptyNameWithNotice =
+  Css.freshValue "" |> Css.invalidate "Give the animal a name."

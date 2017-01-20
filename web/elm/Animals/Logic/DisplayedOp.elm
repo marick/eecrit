@@ -34,17 +34,18 @@ update op displayed model =
   case op of
     BeginGatheringCopyInfo ->
         model
-          |> upsertDisplayed (withGatherFlash displayed "1")
+          |> Model.upsertDisplayed (withGatherFlash displayed "1")
           |> noCmd
 
     UpdateCopyCount countString ->
         model
-          |> upsertDisplayed (withValidatedGatherFlash displayed countString)
+          |> Model.upsertDisplayed (withValidatedGatherFlash displayed countString)
           |> noCmd
 
     AddFormsBasedOnAnimal count ->
       model
         |> addAnimalForms displayed count
+        |> Model.upsertDisplayed (displayed_flash.set AnimalFlash.NoFlash displayed)
         |> addCmd (Page.toPageChangeCmd Page.AddPage)
 
 addAnimalForms source count model =

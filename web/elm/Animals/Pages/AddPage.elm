@@ -11,7 +11,7 @@ import Html.Attributes exposing (..)
 import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Pile.Css.Bulma as Css
-import Pile.ConstrainedStrings exposing (..)
+import Pile.ConstrainedStrings as Constrained
 
 view : Model -> Html Msg
 view model =
@@ -66,13 +66,16 @@ countView model =
     , Css.simpleTextInput model.numberToAdd <| withArg UpdateAddedCount
     ]
 
+-- There is some implicit logic here:
+--  a 0 value is OK (it will just switch to the AddPage) -- TODO: Prevent that?
+--  negative values are disallowed by the text field.
 populateButton : Model -> Html Msg
 populateButton model =
   let
     onClick =
       OnAddPage <| 
         AddFormsForBlankTemplate
-        (certainlyValidInt model.numberToAdd 0)
+        (Constrained.certainlyValidInt model.numberToAdd 0)
         (model.speciesToAdd)
   in
     Css.centeredLevelItem

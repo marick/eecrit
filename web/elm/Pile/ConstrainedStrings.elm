@@ -11,11 +11,18 @@ isValid validator string =
     Ok _ -> True
     Err _ -> False
 
-certainlyValid: (String -> Result error val) -> String -> val -> val
-certainlyValid transformer string impossibleValue =
+convertWithDefault: (String -> Result error val) -> val -> String -> val
+convertWithDefault transformer default string =
   case transformer string of
     Ok valid -> valid
-    Err _ -> impossibleValue
+    Err _ -> default
+
+-- This is to be used in the case where you *know* the string will convert
+-- successfully, so the default should never be used (but should nevertheless
+-- be a safe value.
+certainlyValid: (String -> Result error val) -> String -> val -> val
+certainlyValid transformer string impossibleValue =
+  convertWithDefault transformer impossibleValue string 
              
 hasPotential : (String -> Result error value) -> String -> Bool
 hasPotential validator string =
@@ -43,6 +50,9 @@ isPotentialIntString = hasPotential String.toInt
 updateIfPotentialIntString : String -> UpdatingLens model String -> model -> model
 updateIfPotentialIntString = updateIfPotential String.toInt
 
+convertWithDefaultInt : Int -> String -> Int
+convertWithDefaultInt = convertWithDefault String.toInt                             
+                             
 certainlyValidInt : String -> Int -> Int
 certainlyValidInt = certainlyValid String.toInt                             
                              

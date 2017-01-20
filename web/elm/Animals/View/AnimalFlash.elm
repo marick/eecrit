@@ -32,7 +32,8 @@ showWithButton flash flashRemovalMsg =
         ]
     CopyInfoNeeded id currentCount ->
       let
-        value = Constrained.certainlyValidInt currentCount 0
+        -- Note: this does allow user create to 0 animals
+        value = Constrained.convertWithDefaultInt 0 currentCount
         status = case value == 0 of  -- TODO: Must be a function that does this.
                    True -> Css.SomeBad
                    False -> Css.AllGood
@@ -46,5 +47,5 @@ showWithButton flash flashRemovalMsg =
               currentCount
               (WithDisplayedId id << UpdateCopyCount)
               (WithDisplayedId id <| AddFormsBasedOnAnimal value)
-        ]
+          ]
 

@@ -6,6 +6,14 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
+import Maybe.Extra as Maybe
+
+formStatusClasses : FormStatus -> Maybe String
+formStatusClasses status = 
+  if status == BeingSaved then
+    Just "is-disabled"
+  else
+    Nothing
 
 adjustClassForStatus : FormStatus -> String -> String
 adjustClassForStatus status classes =
@@ -228,51 +236,72 @@ oneTextInputInRow extraAttributes =
         []
     ]
 
+
+validatedCommentary fieldValue =
+  let
+    oneCommentary (urgency, string) =
+      span [ class "help is-danger" ] [ text string ]
+  in
+    List.map oneCommentary fieldValue.commentary
+
+maybeErrorIcon fieldValue =
+  case fieldValue.validity of
+    Valid -> Nothing
+    Invalid -> Just "has-icon has-icon-right"
+
+maybeNoteDanger fieldValue =
+  case fieldValue.validity of
+    Valid -> Nothing
+    Invalid -> Just "is-danger"
+
+maybeWarningIcon fieldValue =
+  case fieldValue.validity of
+    Valid -> Nothing
+    Invalid -> Just <| i [class "fa fa-warning"] []
+
+fullClass base maybeExtras =
+  class <| String.join " " (base :: Maybe.values maybeExtras)
+
 soleTextInputInRow : FormStatus -> FormValue String -> List (Attribute msg) -> Html msg
-soleTextInputInRow status fieldValue extraAttributes =
+soleTextInputInRow formStatus fieldValue extraAttributes =
   let
     field =
       input
-        ([ class <| adjustClassForStatus status fieldClasses
+        ([ fullClass "input"
+             [ formStatusClasses formStatus
+             , maybeNoteDanger fieldValue
+             ]
         , type_ "text"
         , value fieldValue.value
         ] ++ extraAttributes)
         []
       
-    oneCommentary (urgency, string) =
-      span [ class "help is-danger" ] [ text string ]
-
-    (paragraphClasses, fieldClasses, fieldIcons) = 
-      case fieldValue.validity of
-        Valid -> ( "control"
-                 , "input"
-                 , []
-                 )
-        Invalid -> ( "control has-icon has-icon-right"
-                   , "input is-danger"
-                   , [i [class "fa fa-warning"] []]
-                   )
-
     contents =
-      [ field ] ++ fieldIcons ++ List.map oneCommentary fieldValue.commentary
+      List.concat
+        [ [field]
+        , Maybe.maybeToList <| maybeWarningIcon fieldValue
+        , validatedCommentary fieldValue
+        ]
   in
     oneReasonablySizedControl
-      (p [ class paragraphClasses ] contents)
+      (p
+       [ fullClass "control" [maybeErrorIcon fieldValue]]
+       contents)
 
 
 textInputWithSubmit : FormStatus -> String -> String -> (String -> msg) -> msg
                     -> Html msg
-textInputWithSubmit status buttonLabel fieldValue inputMsg submitMsg =
+textInputWithSubmit formStatus buttonLabel fieldValue inputMsg submitMsg =
   div [class "control has-addons"]
     [ p [class "control"]
-        [ input [ class <| adjustClassForStatus status "input"
+        [ input [ class <| adjustClassForStatus formStatus "input"
                 , type_ "text"
                 , value fieldValue
                 , Events.onInput inputMsg
                 , onEnter submitMsg
                 ] []
         ]
-    , a [ class <| adjustClassForStatus status "button is-success"
+    , a [ class <| adjustClassForStatus formStatus "button is-success"
         , onClickPreventingDefault submitMsg
         ]
         [ text buttonLabel ]

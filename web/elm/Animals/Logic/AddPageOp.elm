@@ -1,10 +1,12 @@
 module Animals.Logic.AddPageOp exposing
   ( update
+  , addFormsWithIds
   )
 
 import Animals.Model as Model exposing (..)
 import Animals.Msg exposing (..)
 
+import Animals.Types.Basic exposing (..)
 import Animals.Types.Conversions as Convert
 import Animals.Types.DisplayedCollections as Displayables
 import Animals.Types.Form as Form exposing (Form)
@@ -24,18 +26,18 @@ update op model =
       model |> updateIfPotentialIntString countString model_numberToAdd |> noCmd
 
     AddFormsForBlankTemplate count species ->
-      model |> addFreshForms count species |> noCmd
+      model |> addFormsWithIds count (Form.fresh species) |> noCmd
 
         
-addFreshForms : Int -> Namelike -> Model -> Model
-addFreshForms count species model = 
+addFormsWithIds : Int -> (Id -> Form) -> Model -> Model
+addFormsWithIds count formMaker model = 
   let
     (ids, newModel) =
       Model.freshIds count model
       
     displayables =
       ids 
-        |> List.map (Form.fresh species)
+        |> List.map formMaker
         |> List.map Convert.checkedFormToDisplayed
   in
     newModel

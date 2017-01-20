@@ -10,6 +10,8 @@ import Animals.Types.Conversions as Convert
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Lenses exposing (..)
 
+import Animals.Logic.AddPageOp as AddPage
+
 import Animals.Pages.H as Page
 import Animals.Pages.Navigation as Page
 import Animals.View.AnimalFlash as AnimalFlash
@@ -55,18 +57,8 @@ addAnimalForms source count model =
         |> Convert.displayedToForm
         |> form_name.set (Form.emptyNameWithNotice)
         |> form_intendedVersion.set 1
-
-    (ids, newModel) =
-      Model.freshIds count model
-                      
-    displayables = 
-      ids
-        |> List.map (\id -> form_id.set id sourceForm)
-        |> List.map Convert.checkedFormToDisplayed
   in
-    newModel
-      |> model_displayables.update (Displayables.add displayables)
-      |> model_addPageAnimals.update (Displayables.addReferences displayables)
+    AddPage.addFormsWithIds count (flip form_id.set <| sourceForm) model
              
 withGatherFlash displayed string = 
   displayed_flash.set

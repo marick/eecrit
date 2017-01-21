@@ -16,11 +16,13 @@ plainTextField string extraAttributes =
     input attributes []
 
 
-errorIndicatingTextInput fieldValue classAdjustments events =
+errorIndicatingTextInput fieldValue disabledJudgment events =
   let
     rawFieldClass =
       Util.fullClass "input"
-        [ classAdjustments, maybeShowDangerBorder fieldValue ]
+        [ disabledJudgment fieldValue.validity
+        , maybeShowDangerBorder fieldValue
+        ]
 
     rawField =
       plainTextField fieldValue.value (rawFieldClass :: events)
@@ -33,13 +35,13 @@ errorIndicatingTextInput fieldValue classAdjustments events =
       [maybeAllowProblemIconInField fieldValue] 
       (rawField :: errorIndicators)
 
-soleTextInputInRow formStatus fieldValue msg =
-  let
-    classAdjustments = Util.formStatusClasses formStatus
-    events = [Events.onInput msg]
-  in
-    errorIndicatingTextInput fieldValue classAdjustments events
-      |> Util.aShortControlOnItsOwnLine
+soleTextInputInRow disabledJudgment fieldValue eventHandlers =
+  errorIndicatingTextInput fieldValue disabledJudgment eventHandlers
+    |> Util.aShortControlOnItsOwnLine
+
+
+
+
 
 -- Helpers
 

@@ -9,18 +9,17 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
-errorIndicatingTextInput fieldValue classAdjustments whenUserTypes =
+errorIndicatingTextInput fieldValue classAdjustments events =
   let
     isolatedInput =
       input
-        [ fullClass "input"
-            [ classAdjustments
-            , maybeShowDangerBorder fieldValue
-            ]
-        , type_ "text"
-        , value fieldValue.value
-        , Events.onInput whenUserTypes
-        ]
+        ([ fullClass "input"
+             [ classAdjustments
+             , maybeShowDangerBorder fieldValue
+             ]
+         , type_ "text"
+         , value fieldValue.value
+         ] ++ events)
         []
   in      
     List.concat
@@ -46,7 +45,7 @@ soleTextInputInRow formStatus fieldValue msg =
       errorIndicatingTextInput
         fieldValue
         (Util.formStatusClasses formStatus)
-        msg
+        [Events.onInput msg]
   in
     aShortControlOnItsOwnLine <| p attributes content
 

@@ -8,13 +8,6 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
-formStatusClasses : FormStatus -> Maybe String
-formStatusClasses status = 
-  if status == BeingSaved then
-    Just "is-disabled"
-  else
-    Nothing
-
 adjustClassForStatus : FormStatus -> String -> String
 adjustClassForStatus status classes =
   if status == BeingSaved then
@@ -214,14 +207,6 @@ controlRow labelText controlPart =
     , controlPart
     ]
         
-oneReasonablySizedControl : Html msg -> Html msg
-oneReasonablySizedControl control = 
-  div [class "control is-grouped"]
-    [ p [class "control"]
-        [ control
-        ]
-    ]
-
 horizontalControls : List (Html msg) -> Html msg    
 horizontalControls controls =
   div [class "control is-grouped"]
@@ -236,57 +221,6 @@ oneTextInputInRow extraAttributes =
         []
     ]
 
-
-validatedCommentary fieldValue =
-  let
-    oneCommentary (urgency, string) =
-      span [ class "help is-danger" ] [ text string ]
-  in
-    List.map oneCommentary fieldValue.commentary
-
-maybeErrorIcon fieldValue =
-  case fieldValue.validity of
-    Valid -> Nothing
-    Invalid -> Just "has-icon has-icon-right"
-
-maybeNoteDanger fieldValue =
-  case fieldValue.validity of
-    Valid -> Nothing
-    Invalid -> Just "is-danger"
-
-maybeWarningIcon fieldValue =
-  case fieldValue.validity of
-    Valid -> Nothing
-    Invalid -> Just <| i [class "fa fa-warning"] []
-
-fullClass base maybeExtras =
-  class <| String.join " " (base :: Maybe.values maybeExtras)
-
-soleTextInputInRow : FormStatus -> FormValue String -> List (Attribute msg) -> Html msg
-soleTextInputInRow formStatus fieldValue extraAttributes =
-  let
-    field =
-      input
-        ([ fullClass "input"
-             [ formStatusClasses formStatus
-             , maybeNoteDanger fieldValue
-             ]
-        , type_ "text"
-        , value fieldValue.value
-        ] ++ extraAttributes)
-        []
-      
-    contents =
-      List.concat
-        [ [field]
-        , Maybe.maybeToList <| maybeWarningIcon fieldValue
-        , validatedCommentary fieldValue
-        ]
-  in
-    oneReasonablySizedControl
-      (p
-       [ fullClass "control" [maybeErrorIcon fieldValue]]
-       contents)
 
 
 textInputWithSubmit : FormStatus -> String -> String -> (String -> msg) -> msg

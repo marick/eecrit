@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Events as Events
 
 import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.TextInput as TextInput
 
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Msg exposing (..)
@@ -33,10 +34,10 @@ view form flash (saveOp, cancelOp) =
 
 nameEditControl : Form -> Html Msg
 nameEditControl form =
-  Css.soleTextInputInRow
+  TextInput.soleTextInputInRow
     form.status
     form.name
-    [ Events.onInput (WithForm form << NameFieldUpdate) ]
+    (WithForm form << NameFieldUpdate)
 
 deleteTagControl : Form -> Html Msg
 deleteTagControl form =

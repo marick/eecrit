@@ -9,45 +9,37 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
+plainTextField string extraAttributes =
+  let 
+    attributes = type_ "text" :: value string :: extraAttributes
+  in
+    input attributes []
+
+
 errorIndicatingTextInput fieldValue classAdjustments events =
   let
-    isolatedInput =
-      input
-        ([ fullClass "input"
-             [ classAdjustments
-             , maybeShowDangerBorder fieldValue
-             ]
-         , type_ "text"
-         , value fieldValue.value
-         ] ++ events)
-        []
-  in      
-    List.concat
-      [ [isolatedInput]
-      , Maybe.maybeToList <| maybePutDangerIconInField fieldValue
-      , validatedCommentary fieldValue
-      ]
-      
+    rawFieldClass =
+      Util.fullClass "input"
+        [ classAdjustments, maybeShowDangerBorder fieldValue ]
 
-aShortControlOnItsOwnLine : Html msg -> Html msg
-aShortControlOnItsOwnLine control = 
-  div [class "control is-grouped"]
-    [ p [class "control"]
-        [ control
-        ]
-    ]
-    
+    rawField =
+      plainTextField fieldValue.value (rawFieldClass :: events)
+
+    errorIndicators =
+      (Maybe.maybeToList <| maybePutDangerIconInField fieldValue) ++
+        validatedCommentary fieldValue
+  in      
+    Util.control
+      [maybeAllowProblemIconInField fieldValue] 
+      (rawField :: errorIndicators)
+
 soleTextInputInRow formStatus fieldValue msg =
   let
-    attributes =
-      [ fullClass "control" [maybeAllowProblemIconInField fieldValue]]
-    content =
-      errorIndicatingTextInput
-        fieldValue
-        (Util.formStatusClasses formStatus)
-        [Events.onInput msg]
+    classAdjustments = Util.formStatusClasses formStatus
+    events = [Events.onInput msg]
   in
-    aShortControlOnItsOwnLine <| p attributes content
+    errorIndicatingTextInput fieldValue classAdjustments events
+      |> Util.aShortControlOnItsOwnLine
 
 -- Helpers
 
@@ -72,7 +64,4 @@ maybeShowDangerBorder fieldValue =
   case fieldValue.validity of
     Valid -> Nothing
     Invalid -> Just "is-danger"
-
-fullClass base maybeExtras =
-  class <| String.join " " (base :: Maybe.values maybeExtras)
 

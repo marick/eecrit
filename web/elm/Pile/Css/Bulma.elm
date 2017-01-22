@@ -228,12 +228,15 @@ textInputWithSubmit : FormStatus -> String -> String -> (String -> msg) -> msg
 textInputWithSubmit formStatus buttonLabel fieldValue inputMsg submitMsg =
   div [class "control has-addons"]
     [ p [class "control"]
-        [ input [ class <| adjustClassForStatus formStatus "input"
-                , type_ "text"
-                , value fieldValue
-                , Events.onInput inputMsg
-                , onEnter submitMsg
-                ] []
+        [ input
+            ([ class <| adjustClassForStatus formStatus "input"
+             , type_ "text"
+             , value fieldValue
+             ] ++
+               [ Events.onInput inputMsg
+               , onEnter submitMsg
+               ])
+            []
         ]
     , a [ class <| adjustClassForStatus formStatus "button is-success"
         , onClickPreventingDefault submitMsg

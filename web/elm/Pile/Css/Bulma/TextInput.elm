@@ -16,9 +16,7 @@ plainTextField string extraAttributes =
   in
     input attributes []
 
-errorIndicatingTextInput : FormValue String
-                         -> Maybe String
-                         -> List (Attribute msg)
+errorIndicatingTextInput : FormValue String -> Maybe String -> List (Attribute msg)
                          -> Html msg
 errorIndicatingTextInput fieldValue disabledJudgment events =
   let
@@ -39,16 +37,6 @@ errorIndicatingTextInput fieldValue disabledJudgment events =
       [maybeAllowProblemIconInField fieldValue] 
       (rawField :: errorIndicators)
 
-       
--- textInputWithSubmit : (Validity -> Maybe String)
---                    -> FormValue String
---                    -> List (Attribute msg)
---                    -> List (Attribute msg)
---                    -> Html msg
--- textInputWithSubmit disabledJudgment fieldValue inputEvents buttonText buttonEvents =
---   let
---     input = errorIndicatingTextInput fieldValue disabledJudgment inputEvents
---     button = successButton disabledJudgment buttonText buttonEvents
 
 -- Helpers
 

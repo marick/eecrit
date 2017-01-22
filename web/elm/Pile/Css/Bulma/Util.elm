@@ -26,6 +26,9 @@ control maybeMoreClasses content =
 groupedControl maybeMoreClasses content =
   p [fullClass "control is-grouped" maybeMoreClasses] content
 
+controlWithAddons control addons = 
+  div [class "control has-addons"] (control :: addons)
+
 -- I don't actually know why this works    
 aShortControlOnItsOwnLine control =
   groupedControl [] [control]

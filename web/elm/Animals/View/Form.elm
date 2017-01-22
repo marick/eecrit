@@ -3,9 +3,12 @@ module Animals.View.Form exposing (view)
 import Html exposing (..)
 import Html.Events as Events
 
+import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Util as Css
 import Pile.Css.Bulma.TextInput as TextInput
+import Pile.Css.Bulma.Button as Button
+import Pile.HtmlShorthand exposing (..)
 
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Msg exposing (..)
@@ -57,11 +60,18 @@ newTagControl : Form -> Html Msg
 newTagControl form =
   let
     onInput = WithForm form << TentativeTagUpdate
-    onSubmit = WithForm form CreateNewTag 
+    onSubmit = WithForm form CreateNewTag
+
+    input = 
+      TextInput.errorIndicatingTextInput
+        (Css.freshValue form.tentativeTag)
+        (Css.disableWhenFormSaving form.status)
+        [ Events.onInput onInput , onEnter onSubmit ]
+
+    button =
+      Button.successButton
+        "Add"
+        (Css.disableWhenFormSaving form.status)
+        onSubmit
   in
-    Css.textInputWithSubmit
-      form.status
-      "Add"
-      form.tentativeTag
-      onInput
-      onSubmit
+    Css.controlWithAddons input [button]

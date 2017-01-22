@@ -35,10 +35,14 @@ view form flash (saveOp, cancelOp) =
 
 nameEditControl : Form -> Html Msg
 nameEditControl form =
-  TextInput.soleTextInputInRow
-    (Css.disableBasedOnForm form.status)
-    form.name
-    [Events.onInput <| WithForm form << NameFieldUpdate]
+  let
+    input = 
+      TextInput.errorIndicatingTextInput
+        form.name
+        (Css.disableWhenFormSaving form.status)
+        [Events.onInput <| WithForm form << NameFieldUpdate]
+  in
+    Css.aShortControlOnItsOwnLine input
 
 deleteTagControl : Form -> Html Msg
 deleteTagControl form =

@@ -10,12 +10,8 @@ import Maybe.Extra as Maybe
 
 type alias DisabledJudgment = Validity -> Maybe String
 
-disableBasedOnForm : FormStatus -> DisabledJudgment  
-disableBasedOnForm formStatus ignored =
-  formStatusClasses formStatus
-
-formStatusClasses : FormStatus -> Maybe String
-formStatusClasses status = 
+disableWhenFormSaving : FormStatus -> Maybe String
+disableWhenFormSaving status = 
   if status == BeingSaved then
     Just "is-disabled"
   else

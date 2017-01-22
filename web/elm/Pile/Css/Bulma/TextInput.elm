@@ -9,18 +9,22 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
+plainTextField : String -> List (Attribute msg) -> Html msg
 plainTextField string extraAttributes =
   let 
     attributes = type_ "text" :: value string :: extraAttributes
   in
     input attributes []
 
-
+errorIndicatingTextInput : FormValue String
+                         -> Maybe String
+                         -> List (Attribute msg)
+                         -> Html msg
 errorIndicatingTextInput fieldValue disabledJudgment events =
   let
     rawFieldClass =
       Util.fullClass "input"
-        [ disabledJudgment fieldValue.validity
+        [ disabledJudgment
         , maybeShowDangerBorder fieldValue
         ]
 
@@ -35,16 +39,20 @@ errorIndicatingTextInput fieldValue disabledJudgment events =
       [maybeAllowProblemIconInField fieldValue] 
       (rawField :: errorIndicators)
 
-soleTextInputInRow disabledJudgment fieldValue eventHandlers =
-  errorIndicatingTextInput fieldValue disabledJudgment eventHandlers
-    |> Util.aShortControlOnItsOwnLine
-
-
-
-
+       
+-- textInputWithSubmit : (Validity -> Maybe String)
+--                    -> FormValue String
+--                    -> List (Attribute msg)
+--                    -> List (Attribute msg)
+--                    -> Html msg
+-- textInputWithSubmit disabledJudgment fieldValue inputEvents buttonText buttonEvents =
+--   let
+--     input = errorIndicatingTextInput fieldValue disabledJudgment inputEvents
+--     button = successButton disabledJudgment buttonText buttonEvents
 
 -- Helpers
 
+validatedCommentary : FormValue t -> List (Html msg)
 validatedCommentary fieldValue =
   let
     oneCommentary (urgency, string) =
@@ -52,16 +60,19 @@ validatedCommentary fieldValue =
   in
     List.map oneCommentary fieldValue.commentary
 
+maybeAllowProblemIconInField : FormValue t -> Maybe String
 maybeAllowProblemIconInField fieldValue =
   case fieldValue.validity of
     Valid -> Nothing
     Invalid -> Just "has-icon has-icon-right"
 
+maybePutDangerIconInField : FormValue t -> Maybe (Html msg)
 maybePutDangerIconInField fieldValue =
   case fieldValue.validity of
     Valid -> Nothing
     Invalid -> Just <| i [class "fa fa-warning"] []
 
+maybeShowDangerBorder : FormValue t -> Maybe String
 maybeShowDangerBorder fieldValue =
   case fieldValue.validity of
     Valid -> Nothing

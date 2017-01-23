@@ -6,7 +6,10 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (Animal)
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.Util as Css
 import Pile.ConstrainedStrings as Constrained
+import Pile.Css.Bulma.TextInput as TextInput
+import Pile.Css.Bulma.Button as Button
 import Html exposing (..)
 
 type AnimalFlash
@@ -32,20 +35,34 @@ showWithButton flash flashRemovalMsg =
         ]
     CopyInfoNeeded id currentCount ->
       let
-        -- Note: this does allow user create to 0 animals
         value = Constrained.convertWithDefaultInt 0 currentCount
-        status = case value == 0 of  -- TODO: Must be a function that does this.
-                   True -> Css.SomeBad
-                   False -> Css.AllGood
+        onInput = WithDisplayedId id << UpdateCopyCount
+        onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal value
+                            
+        textEventControl =
+          if value == 0 then
+            TextInput.EditOnly onInput
+          else
+            TextInput.BothEditAndSubmit onInput onSubmit
 
+        buttonEventControl =
+          if value == 0 then
+            Button.Inactive
+          else
+            Button.Active onSubmit
+
+        input = 
+          TextInput.errorIndicatingTextInput
+            (Css.freshValue currentCount)
+            textEventControl
+
+        button =
+          Button.successButton
+            "Create"
+            buttonEventControl 
       in
         Css.flashNotification flashRemovalMsg
           [ text "How many copies do you want?"
-          , Css.textInputWithSubmit
-              status
-              "Create"
-              currentCount
-              (WithDisplayedId id << UpdateCopyCount)
-              (WithDisplayedId id <| AddFormsBasedOnAnimal value)
+          , Css.controlWithAddons input [button]
           ]
 

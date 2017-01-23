@@ -39,11 +39,13 @@ view form flash (saveOp, cancelOp) =
 nameEditControl : Form -> Html Msg
 nameEditControl form =
   let
+    eventControl =
+      if form.status == Css.BeingSaved then
+        TextInput.NeitherEditNorSubmit
+      else
+        TextInput.EditOnly (WithForm form << NameFieldUpdate)
     input = 
-      TextInput.errorIndicatingTextInput
-        form.name
-        (Css.disableWhenFormSaving form.status)
-        [Events.onInput <| WithForm form << NameFieldUpdate]
+      TextInput.errorIndicatingTextInput form.name eventControl
   in
     Css.aShortControlOnItsOwnLine input
 
@@ -62,16 +64,33 @@ newTagControl form =
     onInput = WithForm form << TentativeTagUpdate
     onSubmit = WithForm form CreateNewTag
 
+    textEventControl =
+      if form.status == Css.BeingSaved then
+        TextInput.NeitherEditNorSubmit
+      -- Todo: Should invalidity be marked for empty strings and already-existing
+      -- tags? Currently, those are just filtered out silently, which is perhaps
+      -- less annoying.
+      -- else if form.tentativeTag.validity == Invalid then
+      --   TextInput.EditOnly onInput
+      else
+        TextInput.BothEditAndSubmit onInput onSubmit
+
+    buttonEventControl =
+      if form.status == Css.BeingSaved then
+        Button.Inactive
+      -- else if form.tentativeTag.validity == Valid then
+      --   Button.Active onSubmit
+      else
+        Button.Active onSubmit
+          
     input = 
       TextInput.errorIndicatingTextInput
         (Css.freshValue form.tentativeTag)
-        (Css.disableWhenFormSaving form.status)
-        [ Events.onInput onInput , onEnter onSubmit ]
+        textEventControl
 
     button =
       Button.successButton
         "Add"
-        (Css.disableWhenFormSaving form.status)
-        onSubmit
+        buttonEventControl 
   in
     Css.controlWithAddons input [button]

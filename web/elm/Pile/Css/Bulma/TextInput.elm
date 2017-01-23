@@ -9,6 +9,27 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
+type EventControl msg
+  = NeitherEditNorSubmit
+  | EditOnly (String -> msg)
+  | BothEditAndSubmit (String -> msg) msg 
+
+maybeDisable eventControl =
+  if eventControl == NeitherEditNorSubmit then
+    Just "is-disabled"
+  else
+    Nothing
+
+eventAttributes : EventControl msg -> List (Attribute msg)      
+eventAttributes eventControl =
+  case eventControl of
+    NeitherEditNorSubmit ->
+      []
+    EditOnly msg ->
+      [Events.onInput msg]
+    BothEditAndSubmit editMsg submitMsg ->
+      [Events.onInput editMsg, onEnter submitMsg]
+      
 plainTextField : String -> List (Attribute msg) -> Html msg
 plainTextField string extraAttributes =
   let 
@@ -16,16 +37,18 @@ plainTextField string extraAttributes =
   in
     input attributes []
 
-errorIndicatingTextInput : FormValue String -> Maybe String -> List (Attribute msg)
-                         -> Html msg
-errorIndicatingTextInput fieldValue disabledJudgment events =
+errorIndicatingTextInput : FormValue String -> EventControl msg -> Html msg
+errorIndicatingTextInput fieldValue eventControl =
   let
     rawFieldClass =
       Util.fullClass "input"
-        [ disabledJudgment
+        [ maybeDisable eventControl
         , maybeShowDangerBorder fieldValue
         ]
 
+    events =
+      eventAttributes eventControl
+        
     rawField =
       plainTextField fieldValue.value (rawFieldClass :: events)
 

@@ -8,15 +8,6 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
-type alias DisabledJudgment = Validity -> Maybe String
-
-disableWhenFormSaving : FormStatus -> Maybe String
-disableWhenFormSaving status = 
-  if status == BeingSaved then
-    Just "is-disabled"
-  else
-    Nothing
-
 fullClass base maybeMoreClasses =
   class <| String.join " " (base :: Maybe.values maybeMoreClasses)
       

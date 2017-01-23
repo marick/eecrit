@@ -6,7 +6,7 @@ import Html.Events as Events
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Util as Css
-import Pile.Css.Bulma.TextInput as TextInput
+import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
 import Pile.HtmlShorthand exposing (..)
 
@@ -41,11 +41,11 @@ nameEditControl form =
   let
     eventControl =
       if form.status == Css.BeingSaved then
-        TextInput.NeitherEditNorSubmit
+        TextField.NeitherEditNorSubmit
       else
-        TextInput.EditOnly (WithForm form << NameFieldUpdate)
+        TextField.EditOnly (WithForm form << NameFieldUpdate)
     input = 
-      TextInput.errorIndicatingTextInput form.name eventControl
+      TextField.errorIndicatingTextField form.name eventControl
   in
     Css.aShortControlOnItsOwnLine input
 
@@ -66,14 +66,14 @@ newTagControl form =
 
     textEventControl =
       if form.status == Css.BeingSaved then
-        TextInput.NeitherEditNorSubmit
+        TextField.NeitherEditNorSubmit
       -- Todo: Should invalidity be marked for empty strings and already-existing
       -- tags? Currently, those are just filtered out silently, which is perhaps
       -- less annoying.
       -- else if form.tentativeTag.validity == Invalid then
-      --   TextInput.EditOnly onInput
+      --   TextField.EditOnly onInput
       else
-        TextInput.BothEditAndSubmit onInput onSubmit
+        TextField.BothEditAndSubmit onInput onSubmit
 
     buttonEventControl =
       if form.status == Css.BeingSaved then
@@ -84,7 +84,7 @@ newTagControl form =
         Button.Active onSubmit
           
     input = 
-      TextInput.errorIndicatingTextInput
+      TextField.errorIndicatingTextField
         (Css.freshValue form.tentativeTag)
         textEventControl
 

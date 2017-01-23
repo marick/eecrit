@@ -1,4 +1,4 @@
-module Pile.Css.Bulma.TextInput exposing (..)
+module Pile.Css.Bulma.TextField exposing (..)
 
 import Pile.Css.H exposing (..)
 import Pile.Css.Bulma.Util as Util
@@ -37,55 +37,55 @@ plainTextField string extraAttributes =
   in
     input attributes []
 
-errorIndicatingTextInput : FormValue String -> EventControl msg -> Html msg
-errorIndicatingTextInput fieldValue eventControl =
+errorIndicatingTextField : FormValue String -> EventControl msg -> Html msg
+errorIndicatingTextField formValue eventControl =
   let
     rawFieldClass =
       Util.fullClass "input"
         [ maybeDisable eventControl
-        , maybeShowDangerBorder fieldValue
+        , maybeShowDangerBorder formValue
         ]
 
     events =
       eventAttributes eventControl
         
     rawField =
-      plainTextField fieldValue.value (rawFieldClass :: events)
+      plainTextField formValue.value (rawFieldClass :: events)
 
     errorIndicators =
-      (Maybe.maybeToList <| maybePutDangerIconInField fieldValue) ++
-        validatedCommentary fieldValue
+      (Maybe.maybeToList <| maybePutDangerIconInField formValue) ++
+        validatedCommentary formValue
   in      
     Util.control
-      [maybeAllowProblemIconInField fieldValue] 
+      [maybeAllowProblemIconInField formValue] 
       (rawField :: errorIndicators)
 
 
 -- Helpers
 
 validatedCommentary : FormValue t -> List (Html msg)
-validatedCommentary fieldValue =
+validatedCommentary formValue =
   let
     oneCommentary (urgency, string) =
       span [ class "help is-danger" ] [ text string ]
   in
-    List.map oneCommentary fieldValue.commentary
+    List.map oneCommentary formValue.commentary
 
 maybeAllowProblemIconInField : FormValue t -> Maybe String
-maybeAllowProblemIconInField fieldValue =
-  case fieldValue.validity of
+maybeAllowProblemIconInField formValue =
+  case formValue.validity of
     Valid -> Nothing
     Invalid -> Just "has-icon has-icon-right"
 
 maybePutDangerIconInField : FormValue t -> Maybe (Html msg)
-maybePutDangerIconInField fieldValue =
-  case fieldValue.validity of
+maybePutDangerIconInField formValue =
+  case formValue.validity of
     Valid -> Nothing
     Invalid -> Just <| i [class "fa fa-warning"] []
 
 maybeShowDangerBorder : FormValue t -> Maybe String
-maybeShowDangerBorder fieldValue =
-  case fieldValue.validity of
+maybeShowDangerBorder formValue =
+  case formValue.validity of
     Valid -> Nothing
     Invalid -> Just "is-danger"
 

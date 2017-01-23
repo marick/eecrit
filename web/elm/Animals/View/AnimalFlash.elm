@@ -8,7 +8,7 @@ import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Util as Css
 import Pile.ConstrainedStrings as Constrained
-import Pile.Css.Bulma.TextInput as TextInput
+import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
 import Html exposing (..)
 
@@ -41,9 +41,9 @@ showWithButton flash flashRemovalMsg =
                             
         textEventControl =
           if value == 0 then
-            TextInput.EditOnly onInput
+            TextField.EditOnly onInput
           else
-            TextInput.BothEditAndSubmit onInput onSubmit
+            TextField.BothEditAndSubmit onInput onSubmit
 
         buttonEventControl =
           if value == 0 then
@@ -52,7 +52,7 @@ showWithButton flash flashRemovalMsg =
             Button.Active onSubmit
 
         input = 
-          TextInput.errorIndicatingTextInput
+          TextField.errorIndicatingTextField
             (Css.freshValue currentCount)
             textEventControl
 

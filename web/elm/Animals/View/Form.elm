@@ -41,7 +41,8 @@ view form flash (saveOp, cancelOp) =
 nameEditControl : Form -> Html Msg
 nameEditControl form =
   (WithForm form << NameFieldUpdate)
-    |> TextField.textField_noButton_withContext form.status
+    |> TextField.textField_noButton TextField.NeverSubmit
+    |> TextField.obeySavingForm form
     |> TextField.errorIndicatingTextField form.name   
     |> Css.aShortControlOnItsOwnLine
 

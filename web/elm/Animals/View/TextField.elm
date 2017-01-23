@@ -12,12 +12,17 @@ import Pile.HtmlShorthand exposing (..)
 
 import Animals.Msg exposing (..)
 
+type SubmitControl 
+  = NeverSubmit
 
-textField_noButton_withContext contextStatus msg =
-  if contextStatus == Css.BeingSaved then
+textField_noButton submitControl editMsg = 
+  TextField.EditOnly editMsg
+
+obeySavingForm form eventControl =
+  if form.status == Css.BeingSaved then
     TextField.NeitherEditNorSubmit
   else
-    TextField.EditOnly msg
+    eventControl
 
 textField_button_withContext contextStatus (inputMsg, submitMsg) =
   ( eventControl2 contextStatus (inputMsg, submitMsg)
@@ -31,7 +36,9 @@ textField_button_noContext bool (inputMsg, submitMsg) =
   
 
 
--- Private      
+-- Private
+
+
 
 eventControl2 contextStatus (inputMsg, submitMsg) =
   if contextStatus == Css.BeingSaved then

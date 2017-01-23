@@ -10,6 +10,7 @@ import Pile.Css.Bulma.Util as Css
 import Pile.ConstrainedStrings as Constrained
 import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
+import Animals.View.TextField as TextField
 import Html exposing (..)
 
 type AnimalFlash
@@ -39,17 +40,8 @@ showWithButton flash flashRemovalMsg =
         onInput = WithDisplayedId id << UpdateCopyCount
         onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal value
                             
-        textEventControl =
-          if value == 0 then
-            TextField.EditOnly onInput
-          else
-            TextField.BothEditAndSubmit onInput onSubmit
-
-        buttonEventControl =
-          if value == 0 then
-            Button.Inactive
-          else
-            Button.Active onSubmit
+        (textEventControl, buttonEventControl) =
+          TextField.textField_button_noContext (value == 0) (onInput, onSubmit)
 
         input = 
           TextField.errorIndicatingTextField

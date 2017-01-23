@@ -6,9 +6,11 @@ import Html.Events as Events
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Util as Css
-import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
 import Pile.HtmlShorthand exposing (..)
+
+import Pile.Css.Bulma.TextField as TextField
+import Animals.View.TextField as TextField
 
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Msg exposing (..)
@@ -38,16 +40,10 @@ view form flash (saveOp, cancelOp) =
 
 nameEditControl : Form -> Html Msg
 nameEditControl form =
-  let
-    eventControl =
-      if form.status == Css.BeingSaved then
-        TextField.NeitherEditNorSubmit
-      else
-        TextField.EditOnly (WithForm form << NameFieldUpdate)
-    input = 
-      TextField.errorIndicatingTextField form.name eventControl
-  in
-    Css.aShortControlOnItsOwnLine input
+  (WithForm form << NameFieldUpdate)
+    |> TextField.textField_noButton_withContext form.status
+    |> TextField.errorIndicatingTextField form.name   
+    |> Css.aShortControlOnItsOwnLine
 
 deleteTagControl : Form -> Html Msg
 deleteTagControl form =
@@ -64,24 +60,8 @@ newTagControl form =
     onInput = WithForm form << TentativeTagUpdate
     onSubmit = WithForm form CreateNewTag
 
-    textEventControl =
-      if form.status == Css.BeingSaved then
-        TextField.NeitherEditNorSubmit
-      -- Todo: Should invalidity be marked for empty strings and already-existing
-      -- tags? Currently, those are just filtered out silently, which is perhaps
-      -- less annoying.
-      -- else if form.tentativeTag.validity == Invalid then
-      --   TextField.EditOnly onInput
-      else
-        TextField.BothEditAndSubmit onInput onSubmit
-
-    buttonEventControl =
-      if form.status == Css.BeingSaved then
-        Button.Inactive
-      -- else if form.tentativeTag.validity == Valid then
-      --   Button.Active onSubmit
-      else
-        Button.Active onSubmit
+    (textEventControl, buttonEventControl) =
+      TextField.textField_button_withContext form.status (onInput, onSubmit)
           
     input = 
       TextField.errorIndicatingTextField

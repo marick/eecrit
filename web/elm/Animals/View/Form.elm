@@ -40,11 +40,27 @@ view form flash (saveOp, cancelOp) =
 
 nameEditControl : Form -> Html Msg
 nameEditControl form =
-  (WithForm form << NameFieldUpdate)
-    |> TextField.textField_noButton TextField.NeverSubmit
-    |> TextField.obeySavingForm form
-    |> TextField.errorIndicatingTextField form.name   
-    |> Css.aShortControlOnItsOwnLine
+  let
+    onInput = WithForm form << NameFieldUpdate
+  in
+    form.name
+      |> TextField.events onInput TextField.NeverSubmit
+      |> TextField.eventsObeyForm form
+      |> TextField.kind TextField.errorIndicatingTextField
+      |> TextField.build
+
+newTagControl : Form -> Html Msg
+newTagControl form =
+  let
+    onInput = WithForm form << TentativeTagUpdate
+    onSubmit = WithForm form CreateNewTag
+  in
+    Css.freshValue form.tentativeTag
+      |> TextField.events onInput (TextField.ClickAndEnterSubmits onSubmit)
+      |> TextField.eventsObeyForm form
+      |> TextField.kind TextField.errorIndicatingTextField
+      |> TextField.buttonKind (Button.successButton "Add")
+      |> TextField.build
 
 deleteTagControl : Form -> Html Msg
 deleteTagControl form =
@@ -53,27 +69,3 @@ deleteTagControl form =
   in
     Css.horizontalControls 
       (List.map (Css.deletableTag form.status onDelete) form.tags)
-
-
-newTagControl : Form -> Html Msg
-newTagControl form =
-  let
-    onInput = WithForm form << TentativeTagUpdate
-    onSubmit = WithForm form CreateNewTag
-
-    (textEventControl, buttonEventControl) =
-      TextField.textField_button (onInput, onSubmit)
-        |> TextField.obeySavingForm2 form
-          
-    input = 
-      TextField.errorIndicatingTextField
-        (Css.freshValue form.tentativeTag)
-        textEventControl
-
-    button =
-      Button.successButton
-        "Add"
-        buttonEventControl 
-  in
-    Css.controlWithAddons input [button]
-         

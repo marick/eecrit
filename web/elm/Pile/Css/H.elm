@@ -22,9 +22,13 @@ type alias FormValue t =
 freshValue : t -> FormValue t
 freshValue v =
   FormValue Valid v []
+
+silentlyInvalid : t -> FormValue t
+silentlyInvalid v = 
+  FormValue Invalid v []
     
 invalidate : String -> FormValue t -> FormValue t
-invalidate msg formValue =
-  FormValue Invalid formValue.value <| (Error, msg) :: formValue.commentary
+invalidate text formValue =
+  FormValue Invalid formValue.value <| (Error, text) :: formValue.commentary
 
 

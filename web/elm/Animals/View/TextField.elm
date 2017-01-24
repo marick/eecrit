@@ -23,7 +23,7 @@ type WhatFollows
   = EndsLine
 
 type alias Events msg =
-  { typing : Maybe msg
+  { typing : Maybe (String -> msg)
   , enter : Maybe msg
   , click : Maybe msg
   }
@@ -36,7 +36,7 @@ type alias Builder msg =
   }
 
  
-calculateEvents : msg -> SubmitControl msg -> Css.FormValue String
+calculateEvents : (String -> msg) -> SubmitControl msg -> Css.FormValue String
                   -> Events msg
 calculateEvents editMsg submitControl formValue = 
   case formValue.validity of
@@ -53,7 +53,7 @@ calculateEvents editMsg submitControl formValue =
         ClickAndEnterSubmits submitMsg ->
           { typing = Just editMsg,   enter = Just submitMsg, click = Just submitMsg }
     
-events : msg -> SubmitControl msg -> Css.FormValue String -> Builder msg
+events : (String -> msg) -> SubmitControl msg -> Css.FormValue String -> Builder msg
 events editMsg submitControl formValue =
   { events = calculateEvents editMsg submitControl formValue
   , formValue = formValue
@@ -102,81 +102,3 @@ build builder =
       span []
         -- Todo: General handing/logging of "impossible" errors.
         [ text "You've discovered a bug. Sorry!" ] 
-
-
-    
-      -- Css.freshValue form.tentativeTag
-      -- |> TextField.events onInput (ClickAndEnterSubmits onSubmit)
-      -- |> TextField.eventsObeyForm form
-      -- |> TextField.kind TextField.errorIndicatingTextField
-      -- |> TextField.buttonKind Button.successButton "Add"
-      -- |> TextField.build
-
-
-    
-
-
-    -- form.name
-    --   |> TextField.events onInput NeverSubmit
-    --   |> TextField.eventsObeyForm form
-    --   |> TextField.kind TextField.errorIndicatingTextField
-    --   |> TextField.build
-
-    
-    -- currentCount
-    --   |> TextField.events onInput (ClickAndEnterSubmits onSubmit)
-    --   |> TextField.kind TextField.plainTextField
-    --   |> TextField.buttonKind Button.successButton "Create"
-    --   |> TextField.build
-
-    
-    
-
-textField_noButton submitControl editMsg = 
-  TextField.EditOnly editMsg
-
-textField_button (inputMsg, submitMsg) =
-  ( fieldControl False (inputMsg, submitMsg)
-  , buttonControl False submitMsg
-  )
-  
-textField_button_noContext bool (inputMsg, submitMsg) =
-  ( fieldControl bool (inputMsg, submitMsg)
-  , buttonControl bool submitMsg
-  )
-  
-
-
--- Private
-
-changeIf shouldChange newValue default = 
-  if shouldChange then
-    newValue
-  else
-    default
-
-overrideIfSaving form newValue =
-  changeIf (form.status == Css.BeingSaved) newValue
-
-obeySavingForm form =
-  overrideIfSaving form TextField.NeitherEditNorSubmit
-
-obeySavingForm2 form =
-  overrideIfSaving form (TextField.NeitherEditNorSubmit, Button.Inactive)
-
-
-
-fieldControl bool (inputMsg, submitMsg) =
-  if bool then
-    TextField.EditOnly inputMsg
-  else
-    TextField.BothEditAndSubmit inputMsg submitMsg
-
-
-buttonControl bool submitMsg =
-  if bool then
-    Button.Inactive
-  -- else if form.tentativeTag.validity == Valid then
-  --   Button.Active onSubmit
-  else
-    Button.Active submitMsg

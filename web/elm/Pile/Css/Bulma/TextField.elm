@@ -9,38 +9,30 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
-type EventControl msg
-  = NeitherEditNorSubmit
-  | EditOnly (String -> msg)
-  | BothEditAndSubmit (String -> msg) msg 
-
 type alias Events msg =
-  { typing : Maybe msg
+  { typing : Maybe (String -> msg)
   , enter : Maybe msg
   }
     
-maybeDisable eventControl =
-  if eventControl == NeitherEditNorSubmit then
-    Just "is-disabled"
-  else
-    Nothing
+eventAttributes : Events msg -> List (Attribute msg)      
+eventAttributes events =
+  Maybe.values [ Maybe.map Events.onInput events.typing
+               , Maybe.map onEnter events.enter
+               ]
 
-eventAttributes : EventControl msg -> List (Attribute msg)      
-eventAttributes eventControl =
-  case eventControl of
-    NeitherEditNorSubmit ->
-      []
-    EditOnly msg ->
-      [Events.onInput msg]
-    BothEditAndSubmit editMsg submitMsg ->
-      [Events.onInput editMsg, onEnter submitMsg]
-      
-plainTextField : FormValue String -> EventControl msg -> Html msg
-plainTextField formValue eventControl =
+maybeDisable events =
+  case List.isEmpty (eventAttributes events) of
+    True -> Just "is-disabled"
+    False -> Nothing
+
+-- Note that this does show a danger boarder if the value is invalid.
+-- That's probably a good idea - a not IN YOUR FACE hint.
+plainTextField : FormValue String -> Events msg -> Html msg
+plainTextField formValue events =
   let 
     rawFieldClass =
       Util.fullClass "input"
-        [ maybeDisable eventControl
+        [ maybeDisable events
         , maybeShowDangerBorder formValue
         ]
 
@@ -48,16 +40,16 @@ plainTextField formValue eventControl =
       type_ "text"
         :: value formValue.value
         :: rawFieldClass
-        :: eventAttributes eventControl
+        :: eventAttributes events
           
   in
     Util.control [] [input attributes []]
 
-errorIndicatingTextField : FormValue String -> EventControl msg -> Html msg
-errorIndicatingTextField formValue eventControl =
+errorIndicatingTextField : FormValue String -> Events msg -> Html msg
+errorIndicatingTextField formValue events =
   let
     rawField =
-      plainTextField formValue eventControl
+      plainTextField formValue events
 
     errorIndicators =
       (Maybe.maybeToList <| maybePutDangerIconInField formValue) ++

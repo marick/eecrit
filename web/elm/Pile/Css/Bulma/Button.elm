@@ -9,33 +9,28 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
-type EventControl msg
-  = Inactive
-  | Active msg
-
 type alias Events msg =
   { click : Maybe msg
   }
 
-maybeDisable eventControl =
-  if eventControl == Inactive then
-    Just "is-disabled"
-  else
-    Nothing
+maybeDisable events =
+  case events.click of
+    Nothing -> Just "is-disabled"
+    Just _ -> Nothing
 
-eventAttributes : EventControl msg -> List (Attribute msg)
-eventAttributes eventControl =
-  case eventControl of
-    Inactive ->
+eventAttributes : Events msg -> List (Attribute msg)
+eventAttributes events =
+  case events.click of
+    Nothing ->
       []
-    Active msg ->
+    Just msg ->
       [onClickPreventingDefault msg]
 
-successButton : String -> EventControl msg -> Html msg    
-successButton buttonText eventControl  =
+successButton : String -> Events msg -> Html msg    
+successButton buttonText events  =
   let
     attributes =
-      (Util.fullClass "button is-success" [maybeDisable eventControl])
-        :: eventAttributes eventControl
+      (Util.fullClass "button is-success" [maybeDisable events])
+        :: eventAttributes events
   in
     a attributes [ text buttonText ]

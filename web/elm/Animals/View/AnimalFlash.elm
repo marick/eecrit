@@ -36,25 +36,25 @@ showWithButton flash flashRemovalMsg =
         ]
     CopyInfoNeeded id currentCount ->
       let
-        value = Constrained.convertWithDefaultInt 0 currentCount
+        intValue = Constrained.convertWithDefaultInt 0 currentCount
+        tempMaker =  -- Todo: use normal text field handling
+          if intValue == 0 then
+            Css.silentlyInvalid
+          else
+            Css.freshValue
+
         onInput = WithDisplayedId id << UpdateCopyCount
-        onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal value
-                            
-        (textEventControl, buttonEventControl) =
-          TextField.textField_button_noContext (value == 0) (onInput, onSubmit)
-
-        input = 
-          TextField.plainTextField
-            (Css.freshValue currentCount)
-            textEventControl
-
-        button =
-          Button.successButton
-            "Create"
-            buttonEventControl 
+        onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal intValue
+        form = 
+          tempMaker currentCount
+            |> TextField.events onInput (TextField.ClickAndEnterSubmits onSubmit)
+            |> TextField.kind TextField.plainTextField
+            |> TextField.buttonKind (Button.successButton "Create")
+            |> TextField.build
+             
       in
         Css.flashNotification flashRemovalMsg
           [ text "How many copies do you want?"
-          , Css.controlWithAddons input [button]
+          , form
           ]
 

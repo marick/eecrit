@@ -13,6 +13,10 @@ type EventControl msg
   = Inactive
   | Active msg
 
+type alias Events msg =
+  { click : Maybe msg
+  }
+
 maybeDisable eventControl =
   if eventControl == Inactive then
     Just "is-disabled"

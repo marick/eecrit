@@ -14,6 +14,11 @@ type EventControl msg
   | EditOnly (String -> msg)
   | BothEditAndSubmit (String -> msg) msg 
 
+type alias Events msg =
+  { typing : Maybe msg
+  , enter : Maybe msg
+  }
+    
 maybeDisable eventControl =
   if eventControl == NeitherEditNorSubmit then
     Just "is-disabled"
@@ -30,27 +35,29 @@ eventAttributes eventControl =
     BothEditAndSubmit editMsg submitMsg ->
       [Events.onInput editMsg, onEnter submitMsg]
       
-plainTextField : String -> List (Attribute msg) -> Html msg
-plainTextField string extraAttributes =
+plainTextField : FormValue String -> EventControl msg -> Html msg
+plainTextField formValue eventControl =
   let 
-    attributes = type_ "text" :: value string :: extraAttributes
-  in
-    input attributes []
-
-errorIndicatingTextField : FormValue String -> EventControl msg -> Html msg
-errorIndicatingTextField formValue eventControl =
-  let
     rawFieldClass =
       Util.fullClass "input"
         [ maybeDisable eventControl
         , maybeShowDangerBorder formValue
         ]
 
-    events =
-      eventAttributes eventControl
-        
+    attributes =
+      type_ "text"
+        :: value formValue.value
+        :: rawFieldClass
+        :: eventAttributes eventControl
+          
+  in
+    Util.control [] [input attributes []]
+
+errorIndicatingTextField : FormValue String -> EventControl msg -> Html msg
+errorIndicatingTextField formValue eventControl =
+  let
     rawField =
-      plainTextField formValue.value (rawFieldClass :: events)
+      plainTextField formValue eventControl
 
     errorIndicators =
       (Maybe.maybeToList <| maybePutDangerIconInField formValue) ++

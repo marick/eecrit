@@ -62,7 +62,8 @@ newTagControl form =
     onSubmit = WithForm form CreateNewTag
 
     (textEventControl, buttonEventControl) =
-      TextField.textField_button_withContext form.status (onInput, onSubmit)
+      TextField.textField_button (onInput, onSubmit)
+        |> TextField.obeySavingForm2 form
           
     input = 
       TextField.errorIndicatingTextField
@@ -75,3 +76,4 @@ newTagControl form =
         buttonEventControl 
   in
     Css.controlWithAddons input [button]
+         

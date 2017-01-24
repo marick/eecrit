@@ -44,7 +44,7 @@ showWithButton flash flashRemovalMsg =
           TextField.textField_button_noContext (value == 0) (onInput, onSubmit)
 
         input = 
-          TextField.errorIndicatingTextField
+          TextField.plainTextField
             (Css.freshValue currentCount)
             textEventControl
 

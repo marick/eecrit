@@ -4,20 +4,19 @@ import Pile.Css.H exposing (..)
 import Pile.Css.Bulma.Util as Util
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
-import Maybe.Extra as Maybe
 
 type alias Events msg =
   { click : Maybe msg
   }
 
+eventsFromValue : FormValue t -> msg -> Events msg
 eventsFromValue formValue submitMsg =
   case formValue.validity of
     Valid -> {click = Just submitMsg}
     Invalid -> {click = Nothing}
 
+maybeDisable : Events msg -> Maybe String
 maybeDisable events =
   case events.click of
     Nothing -> Just "is-disabled"

@@ -2,11 +2,11 @@ module Pile.Css.Bulma.TextField exposing (..)
 
 import Pile.Css.H exposing (..)
 import Pile.Css.Bulma.Util as Util
+import Pile.HtmlShorthand exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import Pile.HtmlShorthand exposing (..)
 import Maybe.Extra as Maybe
 
 type alias Events msg =
@@ -20,6 +20,7 @@ eventAttributes events =
                , Maybe.map onEnter events.enter
                ]
 
+maybeDisable : Events msg -> Maybe String
 maybeDisable events =
   case List.isEmpty (eventAttributes events) of
     True -> Just "is-disabled"

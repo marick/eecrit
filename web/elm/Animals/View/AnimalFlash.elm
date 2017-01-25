@@ -3,14 +3,13 @@ module Animals.View.AnimalFlash exposing (..)
 import Animals.Msg exposing (..)
 
 import Animals.Types.Basic exposing (..)
-import Animals.Types.Animal exposing (Animal)
+import Animals.View.TextField as TextField
+
 import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
-import Pile.Css.Bulma.Util as Css
-import Pile.ConstrainedStrings as Constrained
 import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
-import Animals.View.TextField as TextField
+
 import Html exposing (..)
 
 type AnimalFlash

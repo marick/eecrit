@@ -1,17 +1,13 @@
 module Animals.View.TextField exposing (..)
 
-import Html exposing (..)
-import Html.Events as Events
+import Animals.Types.Form exposing (Form)
 
 import Pile.Css.H as Css
-import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Util as Css
 import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
-import Pile.HtmlShorthand exposing (..)
 
-import Animals.Msg exposing (..)
-import Animals.Types.Form exposing (Form)
+import Html exposing (..)
 
 type SubmitControl submitMsg
   = NeverSubmit

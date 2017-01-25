@@ -5,7 +5,6 @@ import Animals.Msg exposing (..)
 
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Types.DisplayedCollections as Displayables
 import Animals.Types.Conversions as Convert
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Lenses exposing (..)
@@ -21,7 +20,8 @@ import Pile.UpdateHelpers exposing (..)
 import Pile.ConstrainedStrings as Constrained
 
 {-| Note that displayed operations do NOT empty the flash. This is kind of a
-    kludge.
+    kludge, but it allows forms in flash to store temporary data instead of
+    cluttering up the model.
 -}
 
 forwardToDisplayed : Id -> DisplayedOperation -> Model -> (Model, Cmd Msg)
@@ -51,6 +51,7 @@ update op displayed model =
         |> Model.upsertDisplayed (displayed_flash.set AnimalFlash.NoFlash displayed)
         |> addCmd (Page.toPageChangeCmd Page.AddPage)
 
+addAnimalForms : Displayed -> Int -> Model -> Model
 addAnimalForms source count model =
   let
     sourceForm =

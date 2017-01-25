@@ -1,20 +1,20 @@
 module Animals.Pages.AddPage exposing (view)
 
-import Animals.Pages.Common as Common
-import Animals.View.PageFlash as PageFlash
-
 import Animals.Model exposing (Model)
 import Animals.Msg exposing (..)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events as Events
-import Pile.HtmlShorthand exposing (..)
+import Animals.Pages.Common as Common
+import Animals.View.PageFlash as PageFlash
+import Animals.View.TextField as TextField
+
 import Pile.Css.Bulma as Css
 import Pile.ConstrainedStrings as Constrained
 import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
-import Animals.View.TextField as TextField
+
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events as Events
 
 view : Model -> Html Msg
 view model =

@@ -1,22 +1,18 @@
 module Animals.View.Form exposing (view)
 
-import Html exposing (..)
-import Html.Events as Events
-
-import Pile.Css.H as Css
-import Pile.Css.Bulma as Css
-import Pile.Css.Bulma.Util as Css
-import Pile.Css.Bulma.Button as Button
-import Pile.HtmlShorthand exposing (..)
-
-import Pile.Css.Bulma.TextField as TextField
-import Animals.View.TextField as TextField
-
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Msg exposing (..)
 
-import Animals.View.Icons as Icon
 import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
+import Animals.View.Icons as Icon
+import Animals.View.TextField as TextField
+
+import Pile.Css.H as Css
+import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.Button as Button
+import Pile.Css.Bulma.TextField as TextField
+
+import Html exposing (..)
 
 view : Form -> AnimalFlash -> (FormOperation, FormOperation) -> Html Msg
 view form flash (saveOp, cancelOp) =

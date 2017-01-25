@@ -12,9 +12,7 @@ import Animals.Types.DisplayedCollections as Displayables
 import Animals.Types.Form as Form exposing (Form)
 
 import Pile.UpdateHelpers exposing (..)
-import Pile.Calendar as Calendar
 import Pile.ConstrainedStrings as Constrained
-import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.Css.H as Css
 
 update : AddPageOperation -> Model -> (Model, Cmd Msg)
@@ -44,7 +42,8 @@ addFormsWithIds count formMaker model =
     newModel
       |> model_displayables.update (Displayables.add displayables)
       |> model_addPageAnimals.update (Displayables.addReferences displayables)
-    
+
+adjustCountString : String -> Model -> Model 
 adjustCountString string model =
   let
     formValue =

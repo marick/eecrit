@@ -2,11 +2,11 @@ module Pile.Css.Bulma exposing (..)
 
 import Pile.Css.H exposing (..)
 
+import Pile.HtmlShorthand exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
-import Pile.HtmlShorthand exposing (..)
-import Maybe.Extra as Maybe
 
 adjustClassForStatus : FormStatus -> String -> String
 adjustClassForStatus status classes =
@@ -153,6 +153,7 @@ headingP : String -> Html msg
 headingP heading = 
   p [class "heading"] [text heading]
 
+zeroWidthSpace : String
 zeroWidthSpace = "​" -- this is not an empty string. It's &#8203;
     
 emptyHeading : Html msg

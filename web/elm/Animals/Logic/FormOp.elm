@@ -10,7 +10,6 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Types.DisplayedCollections as Displayables
 import Animals.Types.Conversions as Convert
 import Animals.Types.Lenses exposing (..)
 
@@ -25,9 +24,7 @@ import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.UpdateHelpers exposing (..)
 
 import Set exposing (Set)
-import List
 import List.Extra as List
-import Dict exposing (Dict)
 
 
 forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)

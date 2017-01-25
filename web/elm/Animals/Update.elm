@@ -6,8 +6,9 @@ import Animals.Msg exposing (..)
 import Animals.OutsideWorld.H as OutsideWorld
 import Animals.OutsideWorld.Update as OutsideWorld
 
-import Animals.Pages.Update as Page
-import Animals.View.PageFlash as PageFlash
+import Animals.Types.Conversions as Convert
+import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.DisplayedCollections as Displayable
 
 import Animals.Logic.AnimalOp as AnimalOp
 import Animals.Logic.FormOp as FormOp
@@ -15,12 +16,8 @@ import Animals.Logic.DisplayedOp as DisplayedOp
 import Animals.Logic.AllPageOp as AllPageOp
 import Animals.Logic.AddPageOp as AddPageOp
 
-import Animals.Types.Basic exposing (..)
-import Animals.Types.Conversions as Convert
-import Animals.Types.Animal as Animal exposing (Animal)
-import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Types.DisplayedCollections as Displayable
-import Animals.View.AnimalFlash as AnimalFlash
+import Animals.Pages.Update as Page
+import Animals.View.PageFlash as PageFlash
 
 import Pile.UpdateHelpers exposing (..)
 

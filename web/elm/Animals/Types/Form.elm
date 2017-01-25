@@ -40,5 +40,6 @@ fresh species id =
   , originalAnimal = Nothing
   }
   
+emptyNameWithNotice : Css.FormValue String
 emptyNameWithNotice =
   Css.freshValue "" |> Css.invalidate "Give the animal a name."

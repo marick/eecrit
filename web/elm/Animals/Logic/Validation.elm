@@ -25,7 +25,7 @@ import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.Css.H as Css
-import Pile.Namelike as Namelike 
+import Pile.Namelike as Namelike exposing (Namelike)
 import Animals.Types.Lenses exposing (..)
 
 animalNames : Dict Id Displayed -> List String
@@ -56,18 +56,18 @@ forceValid form =
     
 validate : Form.ValidationContext -> Form -> Form
 validate context =
-  forceValid >> validateName context
+  forceValid >> validateName context.disallowedNames
 
 --  Validators
   
-validateName : Form.ValidationContext -> Form -> Form
-validateName context form =
+validateName : List Namelike -> Form -> Form
+validateName nameClashes form =
   form 
     |> validator "The animal has to have a name!" form_name 
        Namelike.isBlank
     |> validator "There is already an animal with that name!" form_name
-       (flip Namelike.isMember <| context.disallowedNames)
-          
+       (flip Namelike.isMember <| nameClashes)
+
 -- Helpers
          
 validator : String -> FormValueLens field -> (field -> Bool) -> Form -> Form
@@ -81,4 +81,3 @@ validator errorMessage lens pred form =
           |> form_status.set Css.SomeBad
       False ->
         form
-

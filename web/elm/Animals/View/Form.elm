@@ -27,8 +27,8 @@ view form flash (saveOp, cancelOp) =
         , AnimalFlash.showWithButton flash (WithForm form RemoveFormFlash)
         ]
     , td [] []
-    , td [] []
     , Icon.editHelp Css.tdIcon
+    , Icon.moreLikeThis form.id Css.tdIcon
     ]
     
 

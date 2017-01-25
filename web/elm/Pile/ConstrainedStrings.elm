@@ -2,6 +2,7 @@ module Pile.ConstrainedStrings exposing (..)
 
 import Pile.UpdatingLens exposing (UpdatingLens)
 import String
+import String.Extra as String
 
 -- Generic validation
 
@@ -26,7 +27,7 @@ certainlyValid transformer string impossibleValue =
              
 hasPotential : (String -> Result error value) -> String -> Bool
 hasPotential validator string =
-  case String.isEmpty string of 
+  case String.isBlank string of 
     True -> True
     False -> isValid validator string
 

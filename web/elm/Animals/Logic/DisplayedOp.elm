@@ -16,6 +16,7 @@ import Animals.Pages.H as Page
 import Animals.Pages.Navigation as Page
 import Animals.View.AnimalFlash as AnimalFlash
 
+import Pile.Css.H as Css
 import Pile.UpdateHelpers exposing (..)
 import Pile.ConstrainedStrings as Constrained
 
@@ -35,14 +36,14 @@ update : DisplayedOperation -> Displayed -> Model -> (Model, Cmd Msg)
 update op displayed model =
   case op of
     BeginGatheringCopyInfo ->
-        model
-          |> Model.upsertDisplayed (withGatherFlash displayed "1")
-          |> noCmd
+      model
+        |> Model.upsertDisplayed (withGatherFlash displayed "1")
+        |> noCmd
 
     UpdateCopyCount countString ->
-        model
-          |> Model.upsertDisplayed (withValidatedGatherFlash displayed countString)
-          |> noCmd
+      model
+        |> Model.upsertDisplayed (withGatherFlash displayed countString)
+        |> noCmd
 
     AddFormsBasedOnAnimal count ->
       model
@@ -59,13 +60,35 @@ addAnimalForms source count model =
         |> form_intendedVersion.set 1
   in
     AddPage.addFormsWithIds count (flip form_id.set <| sourceForm) model
-             
-withGatherFlash displayed string = 
-  displayed_flash.set
-    (AnimalFlash.CopyInfoNeeded (displayed_id.get displayed) string)
-    displayed
 
-withValidatedGatherFlash displayed string = 
-  case Constrained.isPotentialIntString string of
-    True -> withGatherFlash displayed string
-    False -> displayed
+withGatherFlash : Displayed -> String -> Displayed      
+withGatherFlash displayed string =
+  let
+    setWith valueMaker correspondingCount =
+      displayed_flash.set
+        (AnimalFlash.CopyInfoNeeded
+           (displayed_id.get displayed)
+           (valueMaker string)
+           correspondingCount)
+        displayed
+
+    -- There is logic that decides, based on a FormValue, whether a
+    -- field is submittable. It's not encoded in a type. That is, it's
+    -- possible for buggy code to mistakenly allow a bad value to be
+    -- submitted. The question is: where should it be decided what value
+    -- should be used if the "impossible" happens? It's not clear this
+    -- is the best place, but it's the place it's done. One is a good
+    -- value to use. Zero would be odd: the user presses a button, the
+    -- text field disappears, but nothing happens. Here, at least something
+    -- happens, and it's easily reversible. 
+    harmlessValue = 1
+  in  
+    case Constrained.classify_strictlyPositive string of
+      Constrained.Blank ->
+        setWith Css.silentlyInvalid harmlessValue
+      Constrained.DoesNotParse ->
+        displayed -- disallow new character
+      Constrained.ParsedButWrong _ ->
+        setWith Css.silentlyInvalid harmlessValue
+      Constrained.Parsed n ->
+        setWith Css.freshValue n

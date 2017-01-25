@@ -16,7 +16,7 @@ import Html exposing (..)
 type AnimalFlash
   = NoFlash
   | SavedIncompleteTag String
-  | CopyInfoNeeded Id String
+  | CopyInfoNeeded Id (Css.FormValue String) Int
 
 showWithButton : AnimalFlash -> Msg -> Html Msg
 showWithButton flash flashRemovalMsg =
@@ -34,19 +34,12 @@ showWithButton flash flashRemovalMsg =
         , text " for you."
         , text " You can delete it if I goofed."
         ]
-    CopyInfoNeeded id currentCount ->
+    CopyInfoNeeded id countString countValue ->
       let
-        intValue = Constrained.convertWithDefaultInt 0 currentCount
-        tempMaker =  -- Todo: use normal text field handling
-          if intValue == 0 then
-            Css.silentlyInvalid
-          else
-            Css.freshValue
-
         onInput = WithDisplayedId id << UpdateCopyCount
-        onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal intValue
+        onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal countValue
         form = 
-          tempMaker currentCount
+          countString
             |> TextField.events onInput (TextField.ClickAndEnterSubmits onSubmit)
             |> TextField.kind TextField.plainTextField
             |> TextField.buttonKind (Button.successButton "Create")

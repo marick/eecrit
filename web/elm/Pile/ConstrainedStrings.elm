@@ -39,6 +39,15 @@ updateIfPotential validator string lens =
     True -> lens.set string
     False -> identity
 
+-- Classification (details depend on parsed string type)
+
+type StringClassification parsedStringType
+  = Blank
+  | DoesNotParse
+  | ParsedButWrong parsedStringType
+  | Parsed parsedStringType
+                    
+
 
 -- String is intended to be an int
 
@@ -56,4 +65,14 @@ convertWithDefaultInt = convertWithDefault String.toInt
                              
 certainlyValidInt : String -> Int -> Int
 certainlyValidInt = certainlyValid String.toInt                             
-                             
+
+-- Note: this treats "    3" as a valid integer, which `String.toInt` does not.
+classify_strictlyPositive : String -> StringClassification Int
+classify_strictlyPositive string =
+  case (String.isBlank string, String.toInt <| String.trim string) of
+    (True, _) -> Blank
+    (_, Err _) -> DoesNotParse
+    (_, Ok n) -> if n <= 0 then
+                  ParsedButWrong n
+                 else
+                   Parsed n

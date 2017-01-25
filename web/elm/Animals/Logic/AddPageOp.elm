@@ -13,8 +13,9 @@ import Animals.Types.Form as Form exposing (Form)
 
 import Pile.UpdateHelpers exposing (..)
 import Pile.Calendar as Calendar
-import Pile.ConstrainedStrings exposing (updateIfPotentialIntString)
+import Pile.ConstrainedStrings as Constrained
 import Pile.Namelike as Namelike exposing (Namelike)
+import Pile.Css.H as Css
 
 update : AddPageOperation -> Model -> (Model, Cmd Msg)
 update op model = 
@@ -23,7 +24,7 @@ update op model =
       model |> model_speciesToAdd.set species |> noCmd
 
     UpdateAddedCount countString ->
-      model |> updateIfPotentialIntString countString model_numberToAdd |> noCmd
+      model |> adjustCountString countString |> noCmd
 
     AddFormsForBlankTemplate count species ->
       model |> addFormsWithIds count (Form.fresh species) |> noCmd
@@ -44,4 +45,17 @@ addFormsWithIds count formMaker model =
       |> model_displayables.update (Displayables.add displayables)
       |> model_addPageAnimals.update (Displayables.addReferences displayables)
     
-
+adjustCountString string model =
+  let
+    formValue =
+        case Constrained.classify_strictlyPositive string of
+          Constrained.Blank ->
+            Css.silentlyInvalid string
+          Constrained.DoesNotParse ->
+            model.numberToAdd -- disallow new character
+          Constrained.ParsedButWrong _ ->
+            Css.silentlyInvalid string
+          Constrained.Parsed _ ->
+            Css.freshValue string
+  in
+    model_numberToAdd.set formValue model

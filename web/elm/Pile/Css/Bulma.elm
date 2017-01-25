@@ -153,6 +153,11 @@ headingP : String -> Html msg
 headingP heading = 
   p [class "heading"] [text heading]
 
+zeroWidthSpace = "​" -- this is not an empty string. It's &#8203;
+    
+emptyHeading : Html msg
+emptyHeading = headingP zeroWidthSpace
+
 simpleTextInput : String -> (String -> msg) -> Html msg
 simpleTextInput val msg = 
   p [class "control"]

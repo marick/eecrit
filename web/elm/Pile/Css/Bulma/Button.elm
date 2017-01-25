@@ -13,6 +13,11 @@ type alias Events msg =
   { click : Maybe msg
   }
 
+eventsFromValue formValue submitMsg =
+  case formValue.validity of
+    Valid -> {click = Just submitMsg}
+    Invalid -> {click = Nothing}
+
 maybeDisable events =
   case events.click of
     Nothing -> Just "is-disabled"
@@ -26,11 +31,20 @@ eventAttributes events =
     Just msg ->
       [onClickPreventingDefault msg]
 
-successButton : String -> Events msg -> Html msg    
-successButton buttonText events  =
+rawButton : String -> String -> Events msg -> Html msg
+rawButton baseClass buttonText events = 
   let
     attributes =
-      (Util.fullClass "button is-success" [maybeDisable events])
+      (Util.fullClass baseClass [maybeDisable events])
         :: eventAttributes events
   in
     a attributes [ text buttonText ]
+            
+        
+successButton : String -> Events msg -> Html msg    
+successButton = rawButton "button is-success" 
+
+primaryButton : String -> Events msg -> Html msg    
+primaryButton = rawButton "button is-primary" 
+
+      

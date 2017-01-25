@@ -19,8 +19,9 @@ type SubmitControl submitMsg
   | ClickSubmits submitMsg
   | ClickAndEnterSubmits submitMsg
 
-type WhatFollows
-  = EndsLine
+type OtherControls
+  = VerticalForm
+  | HorizontalForm
 
 type alias Events msg =
   { typing : Maybe (String -> msg)
@@ -33,6 +34,7 @@ type alias Builder msg =
   , formValue : Css.FormValue String
   , field : Maybe (Html msg)
   , button : Maybe (Html msg)
+  , layout : OtherControls
   }
 
  
@@ -59,6 +61,7 @@ events editMsg submitControl formValue =
   , formValue = formValue
   , field = Nothing
   , button = Nothing
+  , layout = VerticalForm
   }
 
   
@@ -90,13 +93,18 @@ buttonKind buttonMaker builder =
       button = Just (buttonMaker {click = builder.events.click })
   }
 
+allowOtherControlsOnLine : Builder msg -> Builder msg
+allowOtherControlsOnLine builder =
+  { builder | layout = HorizontalForm }
   
 build : Builder msg -> Html msg  
 build builder =
-  case (builder.field, builder.button) of
-    (Just field, Nothing) ->
+  case (builder.field, builder.button, builder.layout) of
+    (Just field, Nothing, VerticalForm) ->
       Css.aShortControlOnItsOwnLine field
-    (Just field, Just button) ->
+    (Just field, Nothing, HorizontalForm) ->
+      field
+    (Just field, Just button, _) ->
       Css.controlWithAddons field [button]
     _ ->
       span []

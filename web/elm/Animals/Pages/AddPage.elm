@@ -12,6 +12,9 @@ import Html.Events as Events
 import Pile.HtmlShorthand exposing (..)
 import Pile.Css.Bulma as Css
 import Pile.ConstrainedStrings as Constrained
+import Pile.Css.Bulma.TextField as TextField
+import Pile.Css.Bulma.Button as Button
+import Animals.View.TextField as TextField
 
 view : Model -> Html Msg
 view model =
@@ -61,56 +64,35 @@ speciesView model =
         
 countView : Model -> Html Msg
 countView model =
-  Css.centeredLevelItem
-    [ Css.headingP "How many?"
-    , Css.simpleTextInput model.numberToAdd <| withArg UpdateAddedCount
-    ]
+  let
+    textField =
+      model.numberToAdd
+        |> TextField.events (OnAddPage << UpdateAddedCount) TextField.NeverSubmit
+        |> TextField.kind TextField.plainTextField
+        |> TextField.allowOtherControlsOnLine
+        |> TextField.build
+  in
+    Css.centeredLevelItem
+      [ Css.headingP "How many?"
+      , textField
+      ]
 
--- There is some implicit logic here:
---  a 0 value is OK (it will just switch to the AddPage) -- TODO: Prevent that?
---  negative values are disallowed by the text field.
 populateButton : Model -> Html Msg
 populateButton model =
   let
     onClick =
       OnAddPage <| 
         AddFormsForBlankTemplate
-        (Constrained.certainlyValidInt model.numberToAdd 0)
+        -- Note: if the impossible happens, creating a single animal is not
+        -- a bad default
+        (Constrained.certainlyValidInt model.numberToAdd.value 1)
         (model.speciesToAdd)
+    buttonEvent = Button.eventsFromValue model.numberToAdd onClick
   in
     Css.centeredLevelItem
-      [ Css.headingP " "
-      , a [ class "button is-primary"
-          , href "#"
-          , onClickPreventingDefault onClick
-          ]
-          [text "Click to add more information"]
+      [ Css.emptyHeading
+      , Button.primaryButton "Click to add more information" buttonEvent 
       ]
-         
-  -- nav [class "level is-mobile"]
-  --   [ div [class "level-left" ]
-  --       [ p [class "level-item"]
-  --           [ text "Create" ]
-  --       , p [class "level-item"]
-  --         [ input [ class "input", type_ "text", value "1"
-  --                 , disabled True
-  --                 , style [("width", "3em")]
-  --                 ] []
-  --         ]
-  --       , p [class "level-item"]
-  --         [ text "new" ]
-  --       , p [class "level-item"]
-  --         [ Css.disabledSelect
-  --             [ option [value "bovine"] [ text "bovine" ]
-  --             , option [value "equine"] [ text "equine" ]
-  --             ]
-  --         ]
-  --       , p [class "level-item"]
-  --         [ text "animal to edit" ]
-  --       , p [class "level-item"]
-  --         [ 
-  --       ]
---    ]
     
 animalViews : Model -> List (Html Msg)    
 animalViews model =

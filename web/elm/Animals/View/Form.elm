@@ -11,6 +11,7 @@ import Pile.Css.H as Css
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Button as Button
 import Pile.Css.Bulma.TextField as TextField
+import Pile.Calendar as Calendar
 
 import Html exposing (..)
 
@@ -21,6 +22,7 @@ view form flash (saveOp, cancelOp) =
         [ Css.controlRow "Name" <| nameEditControl form
         , Css.controlRow "Tags" <| deleteTagControl form
         , Css.controlRow "New Tag" <| newTagControl form
+        , Css.controlRow "Takes effect" <| effectiveDateControl form
           
         , Css.leftwardSave form.status (WithForm form saveOp)
         , Css.rightwardCancel form.status (WithForm form cancelOp)
@@ -65,3 +67,16 @@ deleteTagControl form =
   in
     Css.horizontalControls 
       (List.map (Css.deletableTag form.status onDelete) form.tags)
+
+effectiveDateControl : Form -> Html Msg
+effectiveDateControl form =
+  let
+    onInput = always NoOp -- WithForm form << TentativeTagUpdate
+  in
+    Css.freshValue "-- not working yet --"
+      |> TextField.events onInput TextField.NeverSubmit
+      |> TextField.eventsObeyForm form
+      |> TextField.kind TextField.plainTextField
+      |> TextField.build
+
+        

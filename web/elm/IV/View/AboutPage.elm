@@ -42,7 +42,7 @@ view =
         ]
     , hr [] []
     , p []
-        [ text "Copyright © 2016 Brian Marick" ]
+        [ text "Copyright © 2017 Brian Marick" ]
     , p []
         [ text """
                 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,

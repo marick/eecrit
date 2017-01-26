@@ -41,7 +41,7 @@
     <footer class="footer">
       <div class="level">
         <p class="level-item has-text-centered">
-            Copyright © 2016 Brian Marick
+            Copyright © 2017 Brian Marick
         </p>
         <p class="level-item has-text-centered">
           <%= Eecrit.Version.version %>

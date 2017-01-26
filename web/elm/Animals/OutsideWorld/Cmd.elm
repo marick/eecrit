@@ -14,7 +14,7 @@ import Http
 
 askTodaysDate : Cmd Msg
 askTodaysDate =
-  Task.perform (SetToday << Just) Date.now
+  Task.perform SetToday Date.now
 
 fetchAnimals : Cmd Msg
 fetchAnimals =

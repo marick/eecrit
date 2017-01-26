@@ -1,8 +1,11 @@
 module Pile.UpdatingOptional exposing
   ( UpdatingOptional
   , opt
-  , toMonocle
+  , compose 
   , composeLens
+  , fromLens
+    
+  , toMonocle
   )
 
 import Monocle.Optional as Optional exposing (Optional)
@@ -22,7 +25,14 @@ opt getPartMaybe setPart =
   , set = setPart
   , maybeUpdate = optionalUpdate getPartMaybe setPart
   }
-    
+
+fromLens : UpdatingLens whole part -> UpdatingOptional whole part
+fromLens lens = 
+  { getOption = Just << lens.get
+  , set = lens.set
+  , maybeUpdate = lens.update
+  }
+  
 toMonocle : UpdatingOptional whole part -> Optional whole part
 toMonocle u =
   { getOption = u.getOption
@@ -38,6 +48,14 @@ composeLens left right =
   in
     opt composed.getOption composed.set
 
+compose : UpdatingOptional whole part -> UpdatingOptional part subpart -> UpdatingOptional whole subpart
+compose left right =
+  let
+    left_ = toMonocle left
+    right_ = toMonocle right
+    composed = Optional.compose left_ right_
+  in
+    opt composed.getOption composed.set
 
 optionalUpdate : (whole -> Maybe part)       -- getOption
                -> (part -> whole -> whole)   -- set

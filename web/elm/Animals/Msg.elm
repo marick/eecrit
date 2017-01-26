@@ -71,7 +71,7 @@ type Msg
   | WithForm Form FormOperation
   | WithDisplayedId Id DisplayedOperation
 
-  | SetToday (Maybe Date)
+  | SetToday Date
   | SetAnimals (List Animal)
 
   | AnimalGotSaved OutsideWorld.AnimalSaveResults

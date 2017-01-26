@@ -45,7 +45,7 @@ filterView model =
             [ Calendar.view dateControl
                 (withoutArg ToggleDatePicker)
                 (withArg SelectDate)
-                model
+                model.effectiveDate
             ] 
         ]                  
     , Css.column 8

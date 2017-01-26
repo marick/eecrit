@@ -14,7 +14,7 @@ update op model =
     ToggleDatePicker ->
       model |> model_datePickerOpen.update not |> noCmd
     SelectDate date ->
-      model |> model_effectiveDate.set (Calendar.At date) |> noCmd
+      model |> model_effectiveDate.update (Calendar.choose date) |> noCmd
       
     SetNameFilter s ->
       model |> model_nameFilter.set s |> noCmd

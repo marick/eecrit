@@ -39,7 +39,7 @@ filterView model =
   Css.centeredColumns
     [ Css.column 3
         [ Css.messageView
-            [ text "Animals as of..."
+            [ text "Show animals as of..."
             , calendarHelp Css.rightIcon
             ]
             [ Calendar.view dateControl

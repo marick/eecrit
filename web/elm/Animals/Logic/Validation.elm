@@ -33,6 +33,7 @@ animalNames displayables =
   displayables
     |> Dict.values
     |> List.map displayed_name.get
+    |> List.filter Namelike.isPresent
 
 
 context : Dict Id Displayed -> Maybe Animal -> Form.ValidationContext 

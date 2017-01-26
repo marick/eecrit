@@ -7,13 +7,15 @@ import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike
+import Pile.Calendar as Calendar 
 
 -- Starting from an Animal
 
-animalToForm : Animal -> Form
-animalToForm animal =
+animalToForm : Calendar.DateHolder -> Animal -> Form
+animalToForm effectiveDate animal =
   { status = Css.AllGood
   , id = animal.id
+  , effectiveDate = effectiveDate
   , sortKey = animal.name -- so stays sorted by original name
   , species = animal.species
   , intendedVersion = animal.version + 1
@@ -25,13 +27,13 @@ animalToForm animal =
   }
 
 
-displayedToForm : Displayed -> Form
-displayedToForm displayed =
+displayedToForm : Calendar.DateHolder -> Displayed -> Form
+displayedToForm effectiveDate displayed =
   case displayed.view of
     Displayed.Writable form ->
       form
     Displayed.Viewable animal ->
-      animalToForm animal
+      animalToForm effectiveDate animal
 
 animalToDisplayed : Animal -> Displayed
 animalToDisplayed animal =

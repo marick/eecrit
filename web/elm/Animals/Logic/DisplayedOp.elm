@@ -56,7 +56,7 @@ addAnimalForms source count model =
   let
     sourceForm =
       source
-        |> Convert.displayedToForm
+        |> Convert.displayedToForm model.effectiveDate
         |> form_name.set (Form.emptyNameWithNotice)
         |> form_intendedVersion.set 1
   in

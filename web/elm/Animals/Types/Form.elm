@@ -5,6 +5,7 @@ import Animals.Types.Animal exposing (Animal)
 
 import Pile.Namelike exposing (Namelike)
 import Pile.Css.H as Css
+import Pile.Calendar as Calendar 
 
 import Dict exposing (Dict)
 
@@ -12,6 +13,7 @@ type alias Form =
   { id : Id
   , sortKey : String  -- Distinct from name so that changing the name
                         -- doesn't cause list entries to change position
+  , effectiveDate : Calendar.DateHolder
   , intendedVersion : Int
   , species : Namelike
   , name : Css.FormValue Namelike
@@ -26,12 +28,13 @@ type alias ValidationContext =
   { disallowedNames : List Namelike
   }
 
-fresh : Namelike -> Id -> Form
-fresh species id =
+fresh : Calendar.DateHolder -> Namelike -> Id -> Form
+fresh effectiveDate species id =
   { id = id
+  , species = species
+  , effectiveDate = effectiveDate
   , sortKey = id -- Causes forms to stay in original order
   , intendedVersion = 1
-  , species = species
   , name = emptyNameWithNotice
   , tags = []
   , tentativeTag = ""

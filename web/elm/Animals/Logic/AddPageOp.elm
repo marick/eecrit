@@ -25,7 +25,7 @@ update op model =
       model |> adjustCountString countString |> noCmd
 
     AddFormsForBlankTemplate count species ->
-      model |> addFormsWithIds count (Form.fresh species) |> noCmd
+      model |> addFormsWithIds count (Form.fresh model.effectiveDate species) |> noCmd
 
         
 addFormsWithIds : Int -> (Id -> Form) -> Model -> Model

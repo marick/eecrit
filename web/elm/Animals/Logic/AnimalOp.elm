@@ -25,6 +25,6 @@ update op animal model =
 
     StartEditing  ->
       let
-        form = Convert.animalToForm animal
+        form = Convert.animalToForm model.effectiveDate animal
       in
         model |> Model.upsertCheckedForm form |> noCmd

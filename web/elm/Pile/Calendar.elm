@@ -2,6 +2,8 @@ module Pile.Calendar exposing
   ( DisplayDate(..)
   , DateHolder
   , view
+
+  , enhancedDateString -- TEMP
     
   , startingState
   , choose

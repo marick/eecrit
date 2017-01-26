@@ -73,7 +73,7 @@ effectiveDateControl form =
   let
     onInput = always NoOp -- WithForm form << TentativeTagUpdate
   in
-    Css.freshValue "-- not working yet --"
+    Css.freshValue (Calendar.enhancedDateString form.effectiveDate)
       |> TextField.events onInput TextField.NeverSubmit
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.plainTextField

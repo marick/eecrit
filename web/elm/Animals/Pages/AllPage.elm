@@ -18,7 +18,10 @@ import Pile.Calendar as Calendar
 view : Model -> Html Msg
 view model =
   div []
-    [ filterView model
+    [ Css.centeredColumns
+        [ Css.column 3 <| effectiveDate model
+        , Css.column 8 <| filters model 
+        ]
     , PageFlash.show model.pageFlash
     , Css.headerlessTable <| animalViews model
     ]
@@ -34,33 +37,32 @@ animalViews model =
       |> List.map animalViewer
 
 
-filterView : Model -> Html Msg
-filterView model =
-  Css.centeredColumns
-    [ Css.column 3
-        [ Css.messageView
-            [ text "Show animals as of..."
-            , calendarHelp Css.rightIcon
-            ]
-            [ Calendar.view dateControl
-                (withoutArg ToggleDatePicker)
-                (withArg SelectDate)
-                model.effectiveDate
-            ] 
-        ]                  
-    , Css.column 8
-      [ Css.messageView 
-          [ text "Filter by..."
-          , filterHelp Css.rightIcon
-          ]
-          [ Css.distributeHorizontally
-              [ nameFilter model
-              , speciesFilter model
-              , tagsFilter model 
-              ]
+effectiveDate : Model -> List (Html Msg)
+effectiveDate model =
+  [ Css.messageView
+      [ text "Show animals as of..."
+      , calendarHelp Css.rightIcon
+      ]
+      [ Calendar.view dateControl
+          (withoutArg ToggleDatePicker)
+          (withArg SelectDate)
+          model.effectiveDate
+      ] 
+  ]                  
+  
+filters : Model -> List (Html Msg)
+filters model = 
+  [ Css.messageView 
+      [ text "Filter by..."
+      , filterHelp Css.rightIcon
+      ]
+      [ Css.distributeHorizontally
+          [ nameFilter model
+          , speciesFilter model
+          , tagsFilter model 
           ]
       ]
-    ]
+  ]
 
 applyFilters : Model -> List Displayed -> List Displayed
 applyFilters model xs = 

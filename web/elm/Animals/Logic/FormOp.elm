@@ -96,6 +96,12 @@ update op form model =
       in
         model |> upsertCheckedForm newForm |> noCmd
 
+    ToggleFormDatePicker ->
+      model |> noCmd
+
+    SelectFormDate date ->
+      model |> noCmd
+
     NoticeSaveResults ->
       let
         displayed = Convert.finishedFormToDisplayed form

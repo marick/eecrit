@@ -70,7 +70,6 @@ type alias Launcher msg =
   Bool -> String -> msg -> Html msg
 
 view : Launcher msg -> msg -> (Date.Date -> msg) -> DateHolder -> Html msg
-
 view launcher calendarToggleMsg dateSelectedMsg holder =
   let
     min = (bound (-) holder)

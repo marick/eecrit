@@ -69,15 +69,29 @@ choose date holder =
 type alias Launcher msg =
   Bool -> String -> msg -> Html msg
 
+type alias CalendarParams =
+  { min : Date.Date
+  , max : Date.Date
+  , selected : Maybe Date.Date
+  }
+
+calendarParams holder =
+  { min = (bound (-) holder)
+  , max = (bound (+) holder)
+  , selected = dateToShow holder
+  }
+  
+  
 view : Launcher msg -> msg -> (Date.Date -> msg) -> DateHolder -> Html msg
 view launcher calendarToggleMsg dateSelectedMsg holder =
   let
-    min = (bound (-) holder)
-    max = (bound (+) holder)
-    selected = dateToShow holder
+    params =
+      calendarParams holder
     calendarBodyView =
       if holder.datePickerOpen then
-        Just (DateSelector.view min max selected |> VirtualDom.map dateSelectedMsg)
+        DateSelector.view params.min params.max params.selected
+          |> VirtualDom.map dateSelectedMsg
+          |> Just
       else
         Nothing
   in
@@ -86,7 +100,7 @@ view launcher calendarToggleMsg dateSelectedMsg holder =
       (launcher holder.datePickerOpen (enhancedDateString holder) calendarToggleMsg)
       calendarBodyView
 
-  
+        
 enhancedDateString : DateHolder -> String
 enhancedDateString holder =
   let

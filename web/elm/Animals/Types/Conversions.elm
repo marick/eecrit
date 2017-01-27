@@ -7,11 +7,11 @@ import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike
-import Pile.Calendar as Calendar 
+import Pile.DateHolder as DateHolder exposing (DateHolder)
 
 -- Starting from an Animal
 
-animalToForm : Calendar.DateHolder -> Animal -> Form
+animalToForm : DateHolder -> Animal -> Form
 animalToForm effectiveDate animal =
   { status = Css.AllGood
   , id = animal.id
@@ -27,7 +27,7 @@ animalToForm effectiveDate animal =
   }
 
 
-displayedToForm : Calendar.DateHolder -> Displayed -> Form
+displayedToForm : DateHolder -> Displayed -> Form
 displayedToForm effectiveDate displayed =
   case displayed.view of
     Displayed.Writable form ->
@@ -71,5 +71,3 @@ formToFlash form =
   case Namelike.isValidAddition form.tentativeTag form.tags of
     True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
     False -> AnimalFlash.NoFlash
-
-

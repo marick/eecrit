@@ -16,6 +16,7 @@ import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 import Animals.OutsideWorld.Cmd as OutsideWorld
 
 import Pile.Calendar as Calendar 
+import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.UpdatingOptional as Optional exposing (UpdatingOptional, opt)
 import Pile.Namelike exposing (Namelike)
@@ -40,7 +41,7 @@ type alias Model =
   , nameFilter : String
   , tagFilter : String
   , speciesFilter : String
-  , effectiveDate : Calendar.DateHolder
+  , effectiveDate : DateHolder
 
   -- AddPage
   , addPageAnimals : Set Id
@@ -69,7 +70,7 @@ init flags location =
       , nameFilter = ""
       , tagFilter = ""
       , speciesFilter = ""
-      , effectiveDate = Calendar.startingState
+      , effectiveDate = DateHolder.startingState
 
       -- Add Animals Page
       , addPageAnimals = Set.empty
@@ -154,20 +155,20 @@ model_speciesFilter = lens .speciesFilter (\ p w -> { w | speciesFilter = p })
 model_nameFilter : UpdatingLens Model String
 model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
 
-model_effectiveDate : UpdatingLens Model Calendar.DateHolder
+model_effectiveDate : UpdatingLens Model DateHolder
 model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 
 model_datePickerOpen : UpdatingLens Model Bool
-model_datePickerOpen = Lens.compose model_effectiveDate Calendar.dateHolder_datePickerOpen
+model_datePickerOpen = Lens.compose model_effectiveDate DateHolder.dateHolder_datePickerOpen
 
-model_effectiveDate_chosen : UpdatingLens Model Calendar.DisplayDate
-model_effectiveDate_chosen = Lens.compose model_effectiveDate Calendar.dateHolder_chosen
+model_effectiveDate_chosen : UpdatingLens Model DisplayDate
+model_effectiveDate_chosen = Lens.compose model_effectiveDate DateHolder.dateHolder_chosen
 
 model_today : UpdatingOptional Model Date
 model_today =
   Optional.compose
     (Optional.fromLens model_effectiveDate)
-    Calendar.dateHolder_todayForReference
+    DateHolder.dateHolder_todayForReference
 
 model_pageFlash : UpdatingLens Model PageFlash
 model_pageFlash = lens .pageFlash (\ p w -> { w | pageFlash = p })

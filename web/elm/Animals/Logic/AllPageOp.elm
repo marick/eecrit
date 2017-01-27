@@ -6,7 +6,7 @@ import Animals.Model as Model exposing (..)
 import Animals.Msg exposing (..)
 
 import Pile.UpdateHelpers exposing (..)
-import Pile.Calendar as Calendar
+import Pile.DateHolder as DateHolder
 
 update : AllPageOperation -> Model -> (Model, Cmd Msg)
 update op model = 
@@ -14,7 +14,7 @@ update op model =
     ToggleDatePicker ->
       model |> model_datePickerOpen.update not |> noCmd
     SelectDate date ->
-      model |> model_effectiveDate.update (Calendar.choose date) |> noCmd
+      model |> model_effectiveDate.update (DateHolder.choose date) |> noCmd
       
     SetNameFilter s ->
       model |> model_nameFilter.set s |> noCmd

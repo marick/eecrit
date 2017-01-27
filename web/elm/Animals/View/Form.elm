@@ -12,8 +12,10 @@ import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Button as Button
 import Pile.Css.Bulma.TextField as TextField
 import Pile.Calendar as Calendar
+import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 
 view : Form -> AnimalFlash -> (FormOperation, FormOperation) -> Html Msg
 view form flash (saveOp, cancelOp) =
@@ -71,12 +73,28 @@ deleteTagControl form =
 effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
   let
-    onInput = always NoOp -- WithForm form << TentativeTagUpdate
+    onInput = always NoOp
+    toggle = WithForm form ToggleFormDatePicker
+    select = WithForm form << SelectFormDate 
   in
-    Css.freshValue (Calendar.enhancedDateString form.effectiveDate)
-      |> TextField.events onInput TextField.NeverSubmit
-      |> TextField.eventsObeyForm form
-      |> TextField.kind TextField.plainTextField
-      |> TextField.build
-
+    -- Css.freshValue (Calendar.enhancedDateString form.effectiveDate)
+    --   |> TextField.events onInput TextField.NeverSubmit
+    --   |> TextField.eventsObeyForm form
+    --   |> TextField.kind TextField.plainTextField
+    --   |> TextField.build
+    Calendar.view dateControl
+          toggle
+          select
+          form.effectiveDate
         
+dateControl : Bool -> String -> msg -> Html msg
+dateControl hasOpenPicker displayString calendarToggleMsg =
+  let
+    iconF =
+      case hasOpenPicker of
+        False -> Css.plainIcon "fa-caret-down" "Pick a date from a calendar" 
+        True -> Css.plainIcon "fa-caret-up" "Close the calendar"
+  in
+       text displayString
+      --  iconF calendarToggleMsg
+      -- ]

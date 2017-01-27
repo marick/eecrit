@@ -22,7 +22,13 @@ type OtherControls
 type alias Events msg =
   { typing : Maybe (String -> msg)
   , enter : Maybe msg
-  , click : Maybe msg
+  , submit : Maybe msg
+  }
+
+noEvents =   
+  { typing = Nothing
+  , enter = Nothing
+  , submit = Nothing
   }
 
 type alias Builder msg =
@@ -39,34 +45,48 @@ calculateEvents : (String -> msg) -> SubmitControl msg -> Css.FormValue String
 calculateEvents editMsg submitControl formValue = 
   case formValue.validity of
     Css.Invalid ->
-      { typing = Just editMsg, enter = Nothing, click = Nothing }
+      { noEvents
+        | typing = Just editMsg
+      }
     Css.Valid ->
       case submitControl of
         NeverSubmit ->
-          { typing = Just editMsg,   enter = Nothing,        click = Nothing }
+          { noEvents
+            | typing = Just editMsg
+          }
         EnterSubmits submitMsg ->
-          { typing = Just editMsg,   enter = Just submitMsg, click = Nothing }
+          { noEvents
+            | typing = Just editMsg
+            ,  enter = Just submitMsg
+          }
         ClickSubmits submitMsg ->
-          { typing = Just editMsg,   enter = Nothing,        click = Just submitMsg }
+          { noEvents
+            | typing = Just editMsg
+            , submit = Just submitMsg
+          }
         ClickAndEnterSubmits submitMsg ->
-          { typing = Just editMsg,   enter = Just submitMsg, click = Just submitMsg }
+          { noEvents
+            | typing = Just editMsg
+            , enter = Just submitMsg
+            , submit = Just submitMsg
+          }
     
-events : (String -> msg) -> SubmitControl msg -> Css.FormValue String -> Builder msg
-events editMsg submitControl formValue =
+editingEvents : (String -> msg) -> SubmitControl msg -> Css.FormValue String
+              -> Builder msg
+editingEvents editMsg submitControl formValue =
   { events = calculateEvents editMsg submitControl formValue
   , formValue = formValue
   , field = Nothing
   , button = Nothing
   , layout = VerticalForm
   }
-
   
 eventsObeyForm : Form -> Builder msg -> Builder msg
 eventsObeyForm form builder =
   let
     events = 
       if (form.status == Css.BeingSaved) then
-        { typing = Nothing,   enter = Nothing,  click = Nothing }
+        { typing = Nothing,   enter = Nothing,  submit = Nothing }
       else
         builder.events
   in
@@ -86,7 +106,7 @@ kind fieldMaker builder =
 buttonKind : (Button.Events msg -> Html msg) -> Builder msg -> Builder msg
 buttonKind buttonMaker builder =
   { builder |
-      button = Just (buttonMaker {click = builder.events.click })
+      button = Just (buttonMaker {click = builder.events.submit })
   }
 
 allowOtherControlsOnLine : Builder msg -> Builder msg

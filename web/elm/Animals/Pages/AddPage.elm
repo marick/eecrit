@@ -67,7 +67,9 @@ countView model =
   let
     textField =
       model.numberToAdd
-        |> TextField.events (OnAddPage << UpdateAddedCount) TextField.NeverSubmit
+        |> TextField.editingEvents
+             (OnAddPage << UpdateAddedCount)
+             TextField.NeverSubmit
         |> TextField.kind TextField.plainTextField
         |> TextField.allowOtherControlsOnLine
         |> TextField.build

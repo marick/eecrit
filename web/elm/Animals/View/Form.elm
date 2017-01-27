@@ -44,7 +44,7 @@ nameEditControl form =
     onInput = WithForm form << NameFieldUpdate
   in
     form.name
-      |> TextField.events onInput TextField.NeverSubmit
+      |> TextField.editingEvents onInput TextField.NeverSubmit
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.errorIndicatingTextField
       |> TextField.build
@@ -56,7 +56,7 @@ newTagControl form =
     onSubmit = WithForm form CreateNewTag
   in
     Css.freshValue form.tentativeTag
-      |> TextField.events onInput (TextField.ClickAndEnterSubmits onSubmit)
+      |> TextField.editingEvents onInput (TextField.ClickAndEnterSubmits onSubmit)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.errorIndicatingTextField
       |> TextField.buttonKind (Button.successButton "Add")
@@ -78,7 +78,7 @@ effectiveDateControl form =
     select = WithForm form << SelectFormDate 
   in
     -- Css.freshValue (Calendar.enhancedDateString form.effectiveDate)
-    --   |> TextField.events onInput TextField.NeverSubmit
+    --   |> TextField.editingEvents onInput TextField.NeverSubmit
     --   |> TextField.eventsObeyForm form
     --   |> TextField.kind TextField.plainTextField
     --   |> TextField.build

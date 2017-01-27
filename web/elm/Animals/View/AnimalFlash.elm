@@ -39,7 +39,9 @@ showWithButton flash flashRemovalMsg =
         onSubmit = WithDisplayedId id <| AddFormsBasedOnAnimal countValue
         form = 
           countString
-            |> TextField.events onInput (TextField.ClickAndEnterSubmits onSubmit)
+            |> TextField.editingEvents
+                 onInput
+                 (TextField.ClickAndEnterSubmits onSubmit)
             |> TextField.kind TextField.plainTextField
             |> TextField.buttonKind (Button.successButton "Create")
             |> TextField.build

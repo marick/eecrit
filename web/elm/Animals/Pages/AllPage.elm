@@ -12,8 +12,10 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events
 import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.Button as Css
 import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.Calendar as Calendar
+import Pile.DateHolder as DateHolder
 
 view : Model -> Html Msg
 view model =
@@ -39,16 +41,25 @@ animalViews model =
 
 effectiveDate : Model -> List (Html Msg)
 effectiveDate model =
-  [ Css.messageView
-      [ text "Show animals as of..."
-      , calendarHelp Css.rightIcon
-      ]
-      [ Calendar.view dateControl
-          (withoutArg ToggleDatePicker)
-          (withArg SelectDate)
-          model.effectiveDate
-      ] 
-  ]                  
+  let
+    specialistButton =
+      Css.rawButton "button is-primary is-small pull-right" 
+  in
+    [ Css.messageView
+        [ text "Show animals as of..."
+        , calendarHelp Css.rightIcon
+        ]
+        [ p [class "has-text-centered"]
+            [ span [class "control"]
+                [ text (DateHolder.enhancedDateString model.effectiveDate) ]
+            , specialistButton "Change" { click = Just (withoutArg ToggleDatePicker) }
+            ]
+        ]
+    ]
+    
+      
+
+
   
 filters : Model -> List (Html Msg)
 filters model = 

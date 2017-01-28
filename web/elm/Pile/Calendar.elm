@@ -1,4 +1,4 @@
-module Pile.Calendar exposing ( view )
+module Pile.Calendar exposing ( view, view2 )
 
 import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 
@@ -27,7 +27,14 @@ calendarParams holder =
   , max = (bound (+) holder)
   , selected = dateToShow holder
   }
-  
+
+view2 : DateHolder -> (Date.Date -> msg) -> Html msg
+view2 holder pickMsg =
+  let
+    params = calendarParams holder
+  in
+    DateSelector.view params.min params.max params.selected
+      |> Html.map pickMsg
   
 view : Launcher msg -> msg -> (Date.Date -> msg) -> DateHolder -> Html msg
 view launcher calendarToggleMsg dateSelectedMsg holder =

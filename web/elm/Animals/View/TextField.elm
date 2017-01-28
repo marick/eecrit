@@ -40,38 +40,38 @@ type alias Builder msg =
   }
 
  
-calculateEvents : (String -> msg) -> SubmitControl msg -> Css.FormValue String
+calculateEvents : Maybe (String -> msg) -> SubmitControl msg -> Css.FormValue String
                   -> Events msg
 calculateEvents editMsg submitControl formValue = 
   case formValue.validity of
     Css.Invalid ->
       { noEvents
-        | typing = Just editMsg
+        | typing = editMsg
       }
     Css.Valid ->
       case submitControl of
         NeverSubmit ->
           { noEvents
-            | typing = Just editMsg
+            | typing = editMsg
           }
         EnterSubmits submitMsg ->
           { noEvents
-            | typing = Just editMsg
+            | typing = editMsg
             ,  enter = Just submitMsg
           }
         ClickSubmits submitMsg ->
           { noEvents
-            | typing = Just editMsg
+            | typing = editMsg
             , submit = Just submitMsg
           }
         ClickAndEnterSubmits submitMsg ->
           { noEvents
-            | typing = Just editMsg
+            | typing = editMsg
             , enter = Just submitMsg
             , submit = Just submitMsg
           }
     
-editingEvents : (String -> msg) -> SubmitControl msg -> Css.FormValue String
+editingEvents : Maybe (String -> msg) -> SubmitControl msg -> Css.FormValue String
               -> Builder msg
 editingEvents editMsg submitControl formValue =
   { events = calculateEvents editMsg submitControl formValue
@@ -97,8 +97,8 @@ kind : (Css.FormValue String -> TextField.Events msg -> Html msg) -> Builder msg
 kind fieldMaker builder =
   let
     relevantEvents = { typing = builder.events.typing
-                       , enter = builder.events.enter
-                       }
+                     , enter = builder.events.enter
+                     }
   in
     { builder
       | field = Just (fieldMaker builder.formValue relevantEvents) }

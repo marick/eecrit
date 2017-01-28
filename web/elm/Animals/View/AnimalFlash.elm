@@ -40,7 +40,7 @@ showWithButton flash flashRemovalMsg =
         form = 
           countString
             |> TextField.editingEvents
-                 onInput
+                 (Just onInput)
                  (TextField.ClickAndEnterSubmits onSubmit)
             |> TextField.kind TextField.plainTextField
             |> TextField.buttonKind (Button.successButton "Create")

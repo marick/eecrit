@@ -65,10 +65,13 @@ speciesView model =
 countView : Model -> Html Msg
 countView model =
   let
+    onInput string
+      = OnAddPage <| UpdateAddedCount string
+
     textField =
       model.numberToAdd
         |> TextField.editingEvents
-             (OnAddPage << UpdateAddedCount)
+             (Just onInput)
              TextField.NeverSubmit
         |> TextField.kind TextField.plainTextField
         |> TextField.allowOtherControlsOnLine

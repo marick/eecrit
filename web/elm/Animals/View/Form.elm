@@ -44,7 +44,7 @@ nameEditControl form =
     onInput = WithForm form << NameFieldUpdate
   in
     form.name
-      |> TextField.editingEvents onInput TextField.NeverSubmit
+      |> TextField.editingEvents (Just onInput) TextField.NeverSubmit
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.errorIndicatingTextField
       |> TextField.build
@@ -56,7 +56,9 @@ newTagControl form =
     onSubmit = WithForm form CreateNewTag
   in
     Css.freshValue form.tentativeTag
-      |> TextField.editingEvents onInput (TextField.ClickAndEnterSubmits onSubmit)
+      |> TextField.editingEvents
+           (Just onInput)
+           (TextField.ClickAndEnterSubmits onSubmit)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.errorIndicatingTextField
       |> TextField.buttonKind (Button.successButton "Add")
@@ -73,28 +75,12 @@ deleteTagControl form =
 effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
   let
-    onInput = always NoOp
     toggle = WithForm form ToggleFormDatePicker
     select = WithForm form << SelectFormDate 
   in
-    -- Css.freshValue (Calendar.enhancedDateString form.effectiveDate)
-    --   |> TextField.editingEvents onInput TextField.NeverSubmit
-    --   |> TextField.eventsObeyForm form
-    --   |> TextField.kind TextField.plainTextField
-    --   |> TextField.build
-    Calendar.view dateControl
-          toggle
-          select
-          form.effectiveDate
-        
-dateControl : Bool -> String -> msg -> Html msg
-dateControl hasOpenPicker displayString calendarToggleMsg =
-  let
-    iconF =
-      case hasOpenPicker of
-        False -> Css.plainIcon "fa-caret-down" "Pick a date from a calendar" 
-        True -> Css.plainIcon "fa-caret-up" "Close the calendar"
-  in
-       text displayString
-      --  iconF calendarToggleMsg
-      -- ]
+    Css.freshValue (DateHolder.enhancedDateString form.effectiveDate)
+      |> TextField.editingEvents Nothing (TextField.ClickSubmits toggle)
+      |> TextField.eventsObeyForm form
+      |> TextField.kind TextField.plainTextField
+      |> TextField.buttonKind (Button.successButton "Change")
+      |> TextField.build

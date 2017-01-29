@@ -20,6 +20,9 @@ import Animals.View.AnimalFlash exposing (AnimalFlash)
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.Css.H as Css
 import Pile.Namelike exposing (Namelike)
+import Pile.UpdatingOptional as Optional exposing (UpdatingOptional, opt)
+import Date exposing (Date)
+import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 
 -- Animal
 
@@ -76,6 +79,25 @@ form_status = lens .status (\ p w -> { w | status = p })
 
 form_intendedVersion : UpdatingLens Form Int
 form_intendedVersion = lens .intendedVersion (\ p w -> { w | intendedVersion = p })
+
+
+-- TODO: Need to consolidate datepicker lenses for Model and individual forms.                       
+form_effectiveDate : UpdatingLens Form DateHolder
+form_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
+
+form_datePickerOpen : UpdatingLens Form Bool
+form_datePickerOpen = Lens.compose form_effectiveDate DateHolder.dateHolder_datePickerOpen
+
+form_effectiveDate_chosen : UpdatingLens Form DisplayDate
+form_effectiveDate_chosen = Lens.compose form_effectiveDate DateHolder.dateHolder_chosen
+
+form_today : UpdatingOptional Form Date
+form_today =
+  Optional.compose
+    (Optional.fromLens form_effectiveDate)
+    DateHolder.dateHolder_todayForReference
+
+
 
 -- Validation contexts
               

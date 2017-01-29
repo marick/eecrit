@@ -22,6 +22,7 @@ import Animals.View.PageFlash as PageFlash
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike exposing (Namelike)
 import Pile.UpdateHelpers exposing (..)
+import Pile.DateHolder as DateHolder exposing (DateHolder)
 
 import Set exposing (Set)
 import List.Extra as List
@@ -97,10 +98,16 @@ update op form model =
         model |> upsertCheckedForm newForm |> noCmd
 
     ToggleFormDatePicker ->
-      model |> noCmd
+      let
+        newForm = form |> form_datePickerOpen.update not
+      in
+        model |> upsertCheckedForm newForm |> noCmd
 
     SelectFormDate date ->
-      model |> noCmd
+      let
+        newForm = form |> form_effectiveDate_chosen.set (DateHolder.At date)
+      in 
+        model |> upsertCheckedForm newForm |> noCmd
 
     NoticeSaveResults ->
       let

@@ -25,6 +25,7 @@ view form flash (saveOp, cancelOp) =
         , Css.controlRow "Tags" <| deleteTagControl form
         , Css.controlRow "New Tag" <| newTagControl form
         , Css.controlRow "Takes effect" <| effectiveDateControl form
+        , calendar form
           
         , Css.leftwardSave form.status (WithForm form saveOp)
         , Css.rightwardCancel form.status (WithForm form cancelOp)
@@ -37,6 +38,14 @@ view form flash (saveOp, cancelOp) =
     
 
 -- Controls
+
+calendar : Form -> Html Msg
+calendar form =
+  if form.effectiveDate.datePickerOpen then
+    Calendar.view form.effectiveDate (WithForm form << SelectFormDate)
+  else
+    span [] []
+
 
 nameEditControl : Form -> Html Msg
 nameEditControl form =
@@ -76,11 +85,15 @@ effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
   let
     toggle = WithForm form ToggleFormDatePicker
-    select = WithForm form << SelectFormDate 
+    select = WithForm form << SelectFormDate
+    buttonText =
+      case form.effectiveDate.datePickerOpen of
+        True -> "Close Calendar"
+        False -> "Change"
   in
     Css.freshValue (DateHolder.enhancedDateString form.effectiveDate)
       |> TextField.editingEvents Nothing (TextField.ClickSubmits toggle)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.plainTextField
-      |> TextField.buttonKind (Button.successButton "Change")
+      |> TextField.buttonKind (Button.successButton buttonText)
       |> TextField.build

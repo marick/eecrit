@@ -70,7 +70,7 @@ newTagControl form =
            (TextField.ClickAndEnterSubmits onSubmit)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.errorIndicatingTextField
-      |> TextField.buttonKind (Button.successButton "Add")
+      |> TextField.buttonKind (Button.primaryButton "Add")
       |> TextField.build
 
 deleteTagControl : Form -> Html Msg
@@ -95,5 +95,5 @@ effectiveDateControl form =
       |> TextField.editingEvents Nothing (TextField.ClickSubmits toggle)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.plainTextField
-      |> TextField.buttonKind (Button.successButton buttonText)
+      |> TextField.buttonKind (Button.primaryButton buttonText)
       |> TextField.build

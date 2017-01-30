@@ -42,7 +42,20 @@ view form flash (saveOp, cancelOp) =
 calendar : Form -> Html Msg
 calendar form =
   if form.effectiveDate.datePickerOpen then
-    Calendar.view form.effectiveDate (WithForm form << SelectFormDate)
+    span []
+      [ p []
+          [ text """ It's confusing - maybe inherently confusing - to
+                  make changes to an animal in the past when the page
+                  displays animals as of a particular date. Which should
+                  be shown - the animal as of the date of the change?
+                  But what if some of the changes were overridden between
+                  that date and the effective date of the page? And what
+                  if the animal changes are made in the future of the page?
+                  """
+          ]
+
+      , Calendar.view form.effectiveDate (WithForm form << SelectFormDate)
+      ]
   else
     span [] []
 

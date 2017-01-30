@@ -4,8 +4,11 @@ import Animals.Types.Animal exposing (..)
 import Animals.Types.Basic exposing (..)
 import Animals.OutsideWorld.H exposing (..)
 import Dict exposing (Dict)
+import Date exposing (Date)
+import Date.Extra as Date
 import Json.Decode as Decode
 import Json.Encode as Encode
+import Json.Decode.Pipeline as Decode
 
 withinData : Decode.Decoder a -> Decode.Decoder a
 withinData =
@@ -67,21 +70,23 @@ type alias AnimalTransferFormat =
     , int_properties : Dict String ( Int, String )
     , bool_properties : Dict String ( Bool, String )
     , string_properties : Dict String ( String, String )
+    , creation_date : String
     }
 
 json_to_AnimalTransferFormat : Decode.Decoder AnimalTransferFormat
 json_to_AnimalTransferFormat =
-    Decode.map8 AnimalTransferFormat
-        (Decode.field "id" Decode.int)
-        (Decode.field "version" Decode.int)
-        (Decode.field "name" Decode.string)
-        (Decode.field "species" Decode.string)
-        (Decode.field "tags" (Decode.list Decode.string))
-        -- It's just easier to have the Elixir side separate the union types
-        
-        (Decode.field "int_properties" (decodeProperties Decode.int))
-        (Decode.field "bool_properties" (decodeProperties Decode.bool))
-        (Decode.field "string_properties" (decodeProperties Decode.string))
+  Decode.decode AnimalTransferFormat
+    |> Decode.required "id" Decode.int
+    |> Decode.required "version" Decode.int
+    |> Decode.required "name" Decode.string
+    |> Decode.required "species" Decode.string
+    |> Decode.required "tags" (Decode.list Decode.string)
+    -- It's just easier to have the Elixir side separate the union types
+      
+    |> Decode.required "int_properties" (decodeProperties Decode.int)
+    |> Decode.required "bool_properties" (decodeProperties Decode.bool)
+    |> Decode.required "string_properties" (decodeProperties Decode.string)
+    |> Decode.required "creation_date" Decode.string
 
 animalTransferFormat_to_json : AnimalTransferFormat -> Encode.Value
 animalTransferFormat_to_json xfer = 
@@ -108,6 +113,7 @@ animal_to_animalTransferFormat animal =
     , bool_properties = Dict.empty
     , int_properties = Dict.empty
     , string_properties = Dict.empty
+    , creation_date = "TEMP"
     }
           
 animalTransferFormat_to_Animal : AnimalTransferFormat -> Animal
@@ -124,6 +130,8 @@ animalTransferFormat_to_Animal incoming =
 
         dictify unionF data = 
           Dict.map (\_ tuple -> (uncurry unionF) tuple) data
+        _
+          = Debug.log "foo" incoming.creation_date
     in
         { id = toString incoming.id
         , displayFormat = Compact
@@ -132,8 +140,14 @@ animalTransferFormat_to_Animal incoming =
         , species = incoming.species
         , tags = incoming.tags
         , properties = properties
+        , creationDate = fromIsoString incoming.creation_date
         }
 
+
+fromIsoString s = 
+  case Date.fromIsoString s of
+    Just date -> date
+    Nothing -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
 
 --- Util      
       

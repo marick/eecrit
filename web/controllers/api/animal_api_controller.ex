@@ -1,11 +1,12 @@
 defmodule Eecrit.AnimalApiController do
   use Eecrit.Web, :controller
   alias Eecrit.Animals
+  alias Eecrit.V2Animal, as: Animal
 
   defp wrapper(stuff), do: %{data: stuff}
 
   def index(conn, _params) do
-    animals = Animals.all
+    animals = Animals.all |> Enum.map(&Animal.to_interchange_format/1)
     json conn, wrapper(animals)
   end
 

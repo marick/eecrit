@@ -1,45 +1,51 @@
 defmodule Eecrit.Animals do
   use GenServer
+  alias Eecrit.V2Animal, as: Animal
+  alias Eecrit.V2Animal.Base, as: Base
+  use Timex
 
-  @athena %{ id: 1,
-             version: 1,
-             name: "Athena", 
-             species: "bovine", 
-             tags: [ "cow" ],
-             int_properties: %{},
-             bool_properties: %{"Available" => [true, ""]},
-             string_properties: %{ "Primary billing" => ["CSR", ""]},
+  @athena %Animal{ version: 1,
+                   base: %Base{id: 1,
+                               name: "Athena", 
+                               species: "bovine", 
+                               tags: [ "cow" ],
+                               int_properties: %{},
+                               bool_properties: %{"Available" => [true, ""]},
+                               string_properties: %{ "Primary billing" => ["CSR", ""]},
+                               creation_date: Timex.to_date({2015, 12, 3})
+                   },
+                   deltas: []
   }
   
-  @jake %{ id: 2, 
-           version: 1,
-           name: "Jake", 
-           species: "equine", 
-           tags: [ "gelding" ],
-           int_properties: %{},
-           bool_properties: %{"Available" => [true, ""]},
-           string_properties: %{ },
-  }
+  # @jake %{ id: 2, 
+  #          version: 1,
+  #          name: "Jake", 
+  #          species: "equine", 
+  #          tags: [ "gelding" ],
+  #          int_properties: %{},
+  #          bool_properties: %{"Available" => [true, ""]},
+  #          string_properties: %{ },
+  # }
   
-  @ross %{ id: 3, 
-           version: 1,
-           name: "ross", 
-           species: "equine", 
-           tags: [ "stallion", "aggressive" ],
-           int_properties: %{},
-           bool_properties: %{"Available" => [true, ""]},
-           string_properties: %{ "Primary billing" => ["Marick", ""]},
-  }
+  # @ross %{ id: 3, 
+  #          version: 1,
+  #          name: "ross", 
+  #          species: "equine", 
+  #          tags: [ "stallion", "aggressive" ],
+  #          int_properties: %{},
+  #          bool_properties: %{"Available" => [true, ""]},
+  #          string_properties: %{ "Primary billing" => ["Marick", ""]},
+  # }
   
-  @xena %{ id: 4, 
-           version: 1,
-           name: "Xena", 
-           species: "equine", 
-           tags: [ "mare", "skittish" ],
-           int_properties: %{},
-           bool_properties: %{"Available" => [false, "off for the summer"]},
-           string_properties: %{ "Primary billing" => ["Marick", ""]},
-  }
+  # @xena %{ id: 4, 
+  #          version: 1,
+  #          name: "Xena", 
+  #          species: "equine", 
+  #          tags: [ "mare", "skittish" ],
+  #          int_properties: %{},
+  #          bool_properties: %{"Available" => [false, "off for the summer"]},
+  #          string_properties: %{ "Primary billing" => ["Marick", ""]},
+  # }
 
   use GenServer
 
@@ -59,10 +65,10 @@ defmodule Eecrit.Animals do
 
   def init(_) do
     animals = %{
-      @athena.id => @athena,
-      @jake.id => @jake,
-      @ross.id => @ross,
-      @xena.id => @xena,
+      @athena.base.id => @athena
+      # @jake.id => @jake,
+      # @ross.id => @ross,
+      # @xena.id => @xena,
     }
     
     {:ok, animals}

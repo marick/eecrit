@@ -57,14 +57,23 @@ checkedFormToDisplayed form =
 
 formToAnimal : Form -> Animal
 formToAnimal form =
-  { id = form.id
-  , displayFormat = Animal.Expanded
-  , version = form.intendedVersion
-  , name = form.name.value
-  , species = form.species
-  , tags = Namelike.perhapsAdd form.tentativeTag form.tags
-  , properties = form.properties
-  }
+  let
+    creationDate =
+      case form.originalAnimal of
+        Just animal ->
+          animal.creationDate
+        Nothing ->
+          DateHolder.convertToDate form.effectiveDate
+  in
+    { id = form.id
+    , displayFormat = Animal.Expanded
+    , version = form.intendedVersion
+    , name = form.name.value
+    , species = form.species
+    , tags = Namelike.perhapsAdd form.tentativeTag form.tags
+    , properties = form.properties
+    , creationDate = creationDate
+    }
 
 formToFlash : Form -> AnimalFlash
 formToFlash form =

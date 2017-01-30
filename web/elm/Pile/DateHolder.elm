@@ -2,6 +2,7 @@ module Pile.DateHolder exposing
   ( DisplayDate(..)
   , DateHolder
   , enhancedDateString
+  , convertToDate
     
   , startingState
   , choose
@@ -11,7 +12,7 @@ module Pile.DateHolder exposing
   , dateHolder_datePickerOpen
   )
 
-import Date
+import Date exposing (Date)
 import Date.Extra as Date
 import Pile.UpdatingLens exposing (UpdatingLens, lens)
 import Pile.UpdatingOptional exposing (UpdatingOptional, opt)
@@ -19,11 +20,11 @@ import Pile.UpdatingOptional exposing (UpdatingOptional, opt)
 
 type DisplayDate 
   = Today
-  | At Date.Date
+  | At Date
 
 type alias DateHolder =
   { chosen : DisplayDate
-  , todayForReference : Maybe Date.Date
+  , todayForReference : Maybe Date
   , datePickerOpen : Bool
   }
 
@@ -35,7 +36,7 @@ startingState =
   }
 
 -- If the chosen date is today, so note.
-choose : Date.Date -> DateHolder -> DateHolder
+choose : Date -> DateHolder -> DateHolder
 choose date holder =
   let 
     displayDate =
@@ -61,14 +62,20 @@ enhancedDateString holder =
       At date ->
         Date.toFormattedString "MMM d, y" date
 
-
+convertToDate : DateHolder -> Date
+convertToDate holder =
+  case (holder.chosen, holder.todayForReference) of
+    (Today, Just date) -> date
+    (Today, Nothing) -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
+    (At date, _) -> date
+  
 
 -- Lenses
 
 dateHolder_chosen : UpdatingLens DateHolder DisplayDate
 dateHolder_chosen = lens .chosen (\ p w -> { w | chosen = p })
 
-dateHolder_todayForReference : UpdatingOptional DateHolder Date.Date
+dateHolder_todayForReference : UpdatingOptional DateHolder Date
 dateHolder_todayForReference =
   opt .todayForReference (\ p w -> { w | todayForReference = Just p })
 

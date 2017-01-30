@@ -13,6 +13,7 @@ import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 import Dict
 import List
+import Date.Extra as Date
 
 import Animals.Msg exposing (..)
 
@@ -37,6 +38,7 @@ expandedView animal flash =
           , p [] (animalTags animal)
           , animalProperties animal |> Css.propertyTable
           , AnimalFlash.showWithButton flash (WithAnimal animal RemoveAnimalFlash)
+          , p [] [ creationDate animal ] 
           ]
       , Icon.contract animal Css.tdIcon
       , Icon.edit animal Css.tdIcon
@@ -82,6 +84,9 @@ animalSalutation : Animal -> Html msg
 animalSalutation animal =
   text <| animal.name ++ (parentheticalSpecies animal)
 
+creationDate animal =
+   text <| "Created on " ++ Date.toFormattedString "MMM d, y" animal.creationDate
+    
 animalTags : Animal -> List (Html Msg)
 animalTags animal =
   List.map Css.readOnlyTag animal.tags

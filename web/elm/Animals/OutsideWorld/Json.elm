@@ -98,6 +98,7 @@ animalTransferFormat_to_json xfer =
                     , ("bool_properties", encodeProperties Encode.bool xfer.bool_properties)
                     , ("int_properties", encodeProperties Encode.int xfer.int_properties)
                     , ("string_properties", encodeProperties Encode.string xfer.string_properties)
+                    , ("creation_date", Encode.string (xfer.creation_date))
                     ]
 
 animal_to_animalTransferFormat : Animal -> AnimalTransferFormat
@@ -113,7 +114,7 @@ animal_to_animalTransferFormat animal =
     , bool_properties = Dict.empty
     , int_properties = Dict.empty
     , string_properties = Dict.empty
-    , creation_date = "TEMP"
+    , creation_date = Date.toIsoString animal.creationDate
     }
           
 animalTransferFormat_to_Animal : AnimalTransferFormat -> Animal

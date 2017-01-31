@@ -17,40 +17,61 @@ defmodule Eecrit.Animals do
                    deltas: []
   }
   
-  # @jake %{ id: 2, 
-  #          version: 1,
-  #          name: "Jake", 
-  #          species: "equine", 
-  #          tags: [ "gelding" ],
-  #          int_properties: %{},
-  #          bool_properties: %{"Available" => [true, ""]},
-  #          string_properties: %{ },
-  # }
+  @jake %Animal{ version: 1,
+                 base: %Base{id: 2,
+                             name: "Jake", 
+                             species: "equine", 
+                             tags: [ "gelding" ],
+                             int_properties: %{},
+                             bool_properties: %{"Available" => [true, ""]},
+                             string_properties: %{ },
+                             creation_date: Timex.to_date({2016, 1, 3})
+                 },
+                 deltas: []
+  }
   
-  # @ross %{ id: 3, 
-  #          version: 1,
-  #          name: "ross", 
-  #          species: "equine", 
-  #          tags: [ "stallion", "aggressive" ],
-  #          int_properties: %{},
-  #          bool_properties: %{"Available" => [true, ""]},
-  #          string_properties: %{ "Primary billing" => ["Marick", ""]},
-  # }
+  @ross %Animal{ version: 1,
+                 base: %Base{id: 3,
+                             name: "ross", 
+                             species: "equine", 
+                             tags: [ "stallion", "aggressive" ],
+                             int_properties: %{},
+                             bool_properties: %{"Available" => [true, ""]},
+                             string_properties: %{ "Primary billing" => ["Marick", ""]},
+                             creation_date: Timex.to_date({2016, 1, 3})
+                 },
+                 deltas: []
+  }
   
-  # @xena %{ id: 4, 
-  #          version: 1,
-  #          name: "Xena", 
-  #          species: "equine", 
-  #          tags: [ "mare", "skittish" ],
-  #          int_properties: %{},
-  #          bool_properties: %{"Available" => [false, "off for the summer"]},
-  #          string_properties: %{ "Primary billing" => ["Marick", ""]},
-  # }
-
-  use GenServer
-
-  def all() do 
-    GenServer.call(__MODULE__, :all)
+  @xena %Animal{ version: 1,
+                 base: %Base{id: 4,
+                             name: "Xena", 
+                             species: "equine", 
+                             tags: [ "mare", "skittish" ],
+                             int_properties: %{},
+                             bool_properties: %{"Available" => [false, "off for the summer"]},
+                             string_properties: %{ "Primary billing" => ["Marick", ""]},
+                             creation_date: Timex.to_date({2016, 1, 3})
+                 },
+                 deltas: []
+  }
+  
+  @newbie %Animal{ version: 1,
+                   base: %Base{id: 5,
+                               name: "Newbie (as of 2018)", 
+                               species: "equine", 
+                               tags: [ "mare", "skittish" ],
+                               int_properties: %{},
+                               bool_properties: %{"Available" => [true, ""]},
+                               string_properties: %{ "Primary billing" => ["Marick", ""]},
+                               creation_date: Timex.to_date({2018, 1, 1})
+                   },
+                   deltas: []
+  }
+  
+  
+  def all(date) do
+    GenServer.call(__MODULE__, [:all, date])
   end
 
   def create(original_id, animal) do 
@@ -65,10 +86,11 @@ defmodule Eecrit.Animals do
 
   def init(_) do
     animals = %{
-      @athena.base.id => @athena
-      # @jake.id => @jake,
-      # @ross.id => @ross,
-      # @xena.id => @xena,
+      @athena.base.id => @athena,
+      @jake.base.id => @jake,
+      @ross.base.id => @ross,
+      @xena.base.id => @xena,
+      @newbie.base.id => @newbie
     }
     
     {:ok, animals}
@@ -78,8 +100,17 @@ defmodule Eecrit.Animals do
     GenServer.start_link(__MODULE__, :_ignore, name: name) 
   end
 
-  def handle_call(:all, _from, state) do 
-    {:reply, Map.values(state), state}
+  def handle_call([:all, show_as_of_date], _from, state) do
+    Apex.ap show_as_of_date
+    acceptable = fn (candidate) ->
+      Apex.ap candidate.base.creation_date
+      Apex.ap Date.compare(candidate.base.creation_date, show_as_of_date)
+      Date.compare(candidate.base.creation_date, show_as_of_date) != :gt
+    end
+
+    accepted = Map.values(state) |> Enum.filter(acceptable)
+    
+    {:reply, accepted, state}
   end
 
   def handle_call([:update, animal = %{"id" => id}],

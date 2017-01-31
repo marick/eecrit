@@ -9,6 +9,7 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.Types.DisplayedCollections as Displayable
 import Animals.Types.Conversions as Convert 
 import Animals.Types.Lenses exposing (..)
 import Animals.View.PageFlash as PageFlash exposing (PageFlash)
@@ -79,7 +80,7 @@ init flags location =
       , animalsEverAdded = 0
       }
   in
-    model ! [OutsideWorld.askTodaysDate, OutsideWorld.fetchAnimals]
+    ( model,  OutsideWorld.askTodaysDate ) -- Nothing starts until we have a date
 
 -- Ways of tweaking bits of this      
 
@@ -94,6 +95,7 @@ freshIds n model =
     newModel = model_animalsEverAdded.update ((+) n) model
   in
     (ids, newModel)
+
 
 -- Todo: Figure out how to use lenses for this.
 

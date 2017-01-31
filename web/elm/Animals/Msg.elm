@@ -18,11 +18,12 @@ type NavigationOperation
 type AllPageOperation
   = ToggleDatePicker
   | SelectDate Date
+  | SetAnimals (List Animal)
 
   | SetNameFilter String
   | SetTagFilter String
   | SetSpeciesFilter String
-    
+
 type AddPageOperation
   = SetAddedSpecies Namelike
   | UpdateAddedCount String
@@ -74,7 +75,6 @@ type Msg
   | WithDisplayedId Id DisplayedOperation
 
   | SetToday Date
-  | SetAnimals (List Animal)
 
   | AnimalGotSaved OutsideWorld.AnimalSaveResults
   | AnimalGotCreated OutsideWorld.AnimalCreationResults

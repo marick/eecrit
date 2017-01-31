@@ -8,7 +8,8 @@ module Animals.OutsideWorld.Cmd exposing
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.OutsideWorld.Json as Json
 import Animals.Msg exposing (..)
-import Date
+import Date exposing (Date)
+import Date.Extra as Date
 import Task
 import Http
 
@@ -16,14 +17,17 @@ askTodaysDate : Cmd Msg
 askTodaysDate =
   Task.perform SetToday Date.now
 
-fetchAnimals : Cmd Msg
-fetchAnimals =
+fetchAnimals : Date -> Cmd Msg
+fetchAnimals date =
   let
-    url = "/api/v2animals"
+    compactDate = Date.toFormattedString "yyyy-MM-dd" date
+    url = "/api/v2animals?date=" ++ compactDate -- TODO: Gotta be a better way.
     failureContext = "I could not retrieve animals."
     request = Http.get url (Json.withinData Json.decodeAnimals)
   in
-    Http.send (handleHtmlResult failureContext SetAnimals) request
+    Http.send
+      (handleHtmlResult failureContext (OnAllPage << SetAnimals))
+      request
 
 saveAnimal : Animal -> Cmd Msg
 saveAnimal animal =

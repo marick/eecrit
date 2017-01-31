@@ -27,5 +27,9 @@ addReferences: List Displayed -> Set String -> Set String
 addReferences displayables existingSet =
   displayables |> idSet |> Set.union existingSet
     
-             
-    
+removeMembers : Set Id -> Dict Id Displayed -> Dict Id Displayed
+removeMembers removables displayables =
+  let 
+    isKeeper id _ = not <| Set.member id removables
+  in
+    Dict.filter isKeeper displayables

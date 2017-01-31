@@ -9,6 +9,6 @@ defmodule Eecrit.AnimalsTest do
   end
 
   test "initialized", %{animals: animals} do
-    assert Enum.count(Animals.all) == 4
+    assert Enum.count(Animals.all(~D[2100-01-01])) == 5
   end
 end

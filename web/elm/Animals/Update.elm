@@ -2,8 +2,10 @@ module Animals.Update exposing (..)
 
 import Animals.Model exposing (..)
 import Animals.Msg exposing (..)
+import Animals.Types.Lenses exposing (..)
 
 import Animals.OutsideWorld.H as OutsideWorld
+import Animals.OutsideWorld.Cmd as OutsideWorld
 import Animals.OutsideWorld.Update as OutsideWorld
 
 import Animals.Types.Conversions as Convert
@@ -22,6 +24,8 @@ import Animals.View.PageFlash as PageFlash
 import Pile.UpdateHelpers exposing (..)
 
 import List
+import Set
+import Dict
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -52,9 +56,7 @@ updateWithClearedPageFlash msg model =
       OutsideWorld.update op model
         
     SetToday value ->
-      model |> model_today.set value |> noCmd
-    SetAnimals animals ->
-      model |> populateAllAnimalsPage animals |> noCmd
+      model |> model_today.set value |> addCmd (OutsideWorld.fetchAnimals value)
 
     AnimalGotSaved (OutsideWorld.AnimalUpdated id) ->
       FormOp.forwardToForm id NoticeSaveResults model 
@@ -69,14 +71,3 @@ updateWithClearedPageFlash msg model =
       model ! []
 
         
-populateAllAnimalsPage : List Animal -> Model -> Model 
-populateAllAnimalsPage animals model =
-  let
-    displayables =
-      List.map Convert.animalToDisplayed animals
-  in
-    { model
-      | displayables = Displayable.dict displayables
-      , allPageAnimals = Displayable.idSet displayables
-    }
-

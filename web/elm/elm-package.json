@@ -9,6 +9,7 @@
     ],
     "exposed-modules": [],
     "dependencies": {
+        "NoRedInk/elm-decode-pipeline": "3.0.0 <= v < 4.0.0",
         "arturopala/elm-monocle": "1.4.0 <= v < 2.0.0",
         "coreytrampe/elm-vendor": "2.0.3 <= v < 3.0.0",
         "danielnarey/elm-html-tree": "2.0.0 <= v < 3.0.0",

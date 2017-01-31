@@ -107,7 +107,7 @@ update op form model =
       let
         newForm = form |> form_effectiveDate_chosen.set (DateHolder.At date)
       in 
-        model |> upsertCheckedForm newForm |> noCmd
+        model |> upsertCheckedForm newForm |> addCmd (OutsideWorld.fetchAnimals date)
 
     NoticeSaveResults ->
       let

@@ -12,10 +12,3 @@ addCmd : Cmd msg -> model -> (model, Cmd msg)
 addCmd cmd model =
  (model, cmd)
 
-{-| Given a pair `(model, stuff)`, create a `(model, Cmd Msg)` by applying
-the given function to the `stuff`. 
--}
-makeCmd : (stuff -> Cmd msg) -> (model, stuff) -> (model, Cmd msg)
-makeCmd f (model, stuff) =
-  ( model, f stuff)
-

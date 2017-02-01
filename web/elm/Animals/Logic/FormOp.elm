@@ -51,12 +51,22 @@ update op form model =
       in
         case original of
           Nothing ->
-            model |> noCmd -- Todo: add error handling for impossible case
+            model |> noCmd -- Todo: add error handling for "impossible" case
           Just animal -> 
             model |> upsertAnimal animal |> noCmd
 
     StartSavingEdits ->
-      model |> withSavedForm form |> makeCmd OutsideWorld.saveAnimal
+      case form.originalAnimal of
+        Nothing ->  -- "impossible" 
+          model |> noCmd
+        Just originalAnimal ->
+          let
+            newAnimal =
+              Convert.formToAnimal form
+          in    
+            model
+              |> upsertCheckedForm (form_status.set Css.BeingSaved form)
+              |> addCmd (OutsideWorld.saveAnimal originalAnimal newAnimal)
 
     CancelCreation ->
       model
@@ -65,7 +75,12 @@ update op form model =
         |> noCmd
           
     StartCreating ->
-      model |> withSavedForm form |> makeCmd OutsideWorld.createAnimal
+      let
+        newAnimal = Convert.formToAnimal form
+      in
+        model
+          |> upsertCheckedForm (form_status.set Css.BeingSaved form)
+          |> addCmd (OutsideWorld.createAnimal newAnimal)
 
     NameFieldUpdate s ->
       let

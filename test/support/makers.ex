@@ -18,19 +18,19 @@ defmodule Eecrit.Test.Makers do
 
   ## Ability Groups
   def make_ability_group("superuser") do
-    %AbilityGroup{id: next_id, name: "superuser", is_superuser: true, is_admin: true}
+    %AbilityGroup{id: next_id(), name: "superuser", is_superuser: true, is_admin: true}
   end
 
   def make_ability_group("admin") do 
-    %AbilityGroup{id: next_id, name: "admin", is_superuser: false, is_admin: true}
+    %AbilityGroup{id: next_id(), name: "admin", is_superuser: false, is_admin: true}
   end
 
   def make_ability_group("user") do 
-    %AbilityGroup{id: next_id, name: "user", is_superuser: false, is_admin: false}
+    %AbilityGroup{id: next_id(), name: "user", is_superuser: false, is_admin: false}
   end
 
   def insert_ability_group(overrides \\ %{}) do
-    defaults = %{id: next_id, name: "org name",
+    defaults = %{id: next_id(), name: "org name",
                  is_superuser: true, is_admin: false}
     struct(AbilityGroup, Dict.merge(defaults, overrides))
     |> AbilityGroup.edit_action_changeset()
@@ -39,7 +39,7 @@ defmodule Eecrit.Test.Makers do
 
   ## Old animals
   def make_old_animal(overrides \\ %{}) do
-    defaults = %{id: next_id,
+    defaults = %{id: next_id(),
                  name: "Hayley",
                  kind: "gelding",
                  procedure_description_kind: "equine",
@@ -56,7 +56,7 @@ defmodule Eecrit.Test.Makers do
 
   ## Old Procedures
   def make_old_procedure(overrides \\ %{}) do
-    defaults = %{id: next_id,
+    defaults = %{id: next_id(),
                  name: "Bandage demonstration",
                  days_delay: 0}
     
@@ -72,7 +72,7 @@ defmodule Eecrit.Test.Makers do
   ## Old Procedure Descriptions
   def make_old_procedure_description(overrides \\ %{}) do
     owning_procedure = overrides[:procedure] || make_old_procedure()
-    defaults = %{id: next_id,
+    defaults = %{id: next_id(),
                  animal_kind: "bovine",
                  description: "<p>Some html</p>",
                  procedure: owning_procedure,
@@ -95,7 +95,7 @@ defmodule Eecrit.Test.Makers do
       |> Keyword.update(:first_date, Ecto.Date.cast!("2001-02-02"), &Ecto.Date.cast!/1)
       |> Keyword.update(:last_date, Ecto.Date.cast!("2021-12-12"), &Ecto.Date.cast!/1)
     
-    other_defaults = %{id: next_id,
+    other_defaults = %{id: next_id(),
                        course: "VCM333",
                        instructor: "Dr. Dawn",
                        time_bits: "011"}
@@ -110,7 +110,7 @@ defmodule Eecrit.Test.Makers do
 
   ## Organizations
   def make_organization(overrides \\ %{}) do
-    defaults = %{id: next_id,
+    defaults = %{id: next_id(),
                  short_name: "to",
                  full_name: "Test Organization"}
     struct(Organization, Dict.merge(defaults, overrides))
@@ -130,7 +130,7 @@ defmodule Eecrit.Test.Makers do
     do: make_user(ability_group: make_ability_group(kind))
 
   def make_user(overrides \\ %{}) do
-    defaults = %{id: next_id,
+    defaults = %{id: next_id(),
                  display_name: "Test User",
                  login_name: "user@example.com",
                  password: "password",

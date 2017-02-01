@@ -2,8 +2,8 @@ defmodule Eecrit.OldAnimalApiControllerTest do
   use Eecrit.ConnCase
 
   # alias Eecrit.OldAnimal
-  @valid_attrs %{}
-  @invalid_attrs %{}
+  # @valid_attrs %{}
+  # @invalid_attrs %{}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}

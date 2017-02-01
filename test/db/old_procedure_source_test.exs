@@ -12,7 +12,7 @@ defmodule Eecrit.OldProcedureSourceTest do
     insert_old_procedure(name: "m")
     insert_old_procedure(name: "12")
     
-    assert run == ["12", "AA", "ab", "m", "Z"]
+    assert run() == ["12", "AA", "ab", "m", "Z"]
   end
 
   test "can ask for a specific set of ids" do

@@ -32,13 +32,13 @@ defmodule Eecrit.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:comeonin, "~> 2.0"},
-     {:apex, "~>0.5.0"},
+    [{:comeonin, "~> 3.0"},
+     {:apex, "~>1.0"},
      {:timex, "~> 3.0"},
      # TODO: This should be only: :test, but I can't figure out where
      # to put the test support code.
      {:shouldi, ">= 0.3.2"},
-     {:floki, "~> 0.10.0"},
+     {:floki, "~> 0.13"},
      {:canada, "~> 1.0.0"},
      {:curtail, "~> 0.1"},
      

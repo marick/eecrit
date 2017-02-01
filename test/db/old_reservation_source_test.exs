@@ -18,14 +18,14 @@ defmodule Eecrit.OldReservationSourceTest do
 
   describe "tailoring of date ranges for query" do
     setup do
-      insert_ranged_reservation!({d.reservation_first_date, d.reservation_last_date})
+      insert_ranged_reservation!({d().reservation_first_date, d().reservation_last_date})
       :ok
     end
 
     def assert_found(reservation) do
       assert reservation
-      assert reservation.first_date == Ecto.Date.cast!(d.reservation_first_date)
-      assert reservation.last_date == Ecto.Date.cast!(d.reservation_last_date)
+      assert reservation.first_date == Ecto.Date.cast!(d().reservation_first_date)
+      assert reservation.last_date == Ecto.Date.cast!(d().reservation_last_date)
     end
 
     def reservations_within({query_first, query_last}) do
@@ -35,19 +35,19 @@ defmodule Eecrit.OldReservationSourceTest do
     end
     
     test "reservation lies entirely outside query period" do
-      assert reservations_within({d.way_before, d.day_before}) == nil
+      assert reservations_within({d().way_before, d().day_before}) == nil
     end
 
     test "reservation lies entirely inside query period" do
-      assert_found reservations_within({d.first_within, d.last_within})
+      assert_found reservations_within({d().first_within, d().last_within})
     end
 
     test "the start is inclusive (and overlaps are allowed)" do
-      assert_found reservations_within({d.reservation_last_date, d.day_after})
+      assert_found reservations_within({d().reservation_last_date, d().day_after})
     end
 
     test "the end is inclusive" do
-      assert_found reservations_within({d.day_before, d.reservation_first_date})
+      assert_found reservations_within({d().day_before, d().reservation_first_date})
     end
   end
 end

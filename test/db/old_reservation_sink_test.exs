@@ -41,7 +41,7 @@ defmodule Eecrit.OldReservationSinkTest do
   test "uses are NxM" do
     animals = [insert_old_animal(name: "a1"), insert_old_animal(name: "a2")]
     procedures = [insert_old_procedure(name: "p1"), insert_old_procedure(name: "p2")]
-    OldReservationSink.make_full!(make_old_reservation_fields, animals, procedures)
+    OldReservationSink.make_full!(make_old_reservation_fields(), animals, procedures)
 
     reservation =
       OldRepo.one(OldReservation)

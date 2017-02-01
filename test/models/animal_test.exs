@@ -1,9 +1,9 @@
 defmodule Eecrit.AnimalTest do
   use Eecrit.ModelCase
-  alias Eecrit.Animal
+  # alias Eecrit.Animal
 
-  @valid_attrs %{date_acquired: %{day: 17, month: 4, year: 2010}, date_removed: %{day: 17, month: 4, year: 2010}, kvs: "some content", name: "some content", tags: []}
-  @empty_attrs %{}
+  # @valid_attrs %{date_acquired: %{day: 17, month: 4, year: 2010}, date_removed: %{day: 17, month: 4, year: 2010}, kvs: "some content", name: "some content", tags: []}
+  # @empty_attrs %{}
 
   # test "a changeset for the `new` action" do
   #   changeset = Animal.new_action_changeset

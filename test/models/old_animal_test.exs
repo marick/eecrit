@@ -11,7 +11,7 @@ defmodule Eecrit.OldAnimalTest do
   @valid_attrs %{kind: "kind", name: "name",
                  procedure_description_kind: hd(S.valid_species)}
   @optional_attrs %{nickname: "nickname", date_removed_from_service: @valid_date}
-  @invalid_attrs %{}
+  # @invalid_attrs %{}
 
   test "a starting changeset" do
     changeset = S.new_action_changeset()

@@ -84,7 +84,7 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
   describe "allows_form!" do
     test "creation" do
-      two_forms = delete_form <> create_form
+      two_forms = delete_form() <> create_form()
       assert S.allows_form!(two_forms, :create, @model) =~ two_forms
       
       # No form
@@ -93,25 +93,25 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
         do: S.allows_form!(html, :create, @model)
       
       # Wrong kind
-      html = delete_form
+      html = delete_form()
       assert_exception "Found no :create <form> matching /animals",
         do: S.allows_form!(html, :create, @model)
     end
 
     test "update" do
-      assert S.allows_form!(update_form, :update, [@model, "id"]) =~ update_form
+      assert S.allows_form!(update_form(), :update, [@model, "id"]) =~ update_form()
 
       # Wrong kind
-      html = create_form
+      html = create_form()
       assert_exception "Found no :update <form> matching /animals/1",
         do: S.allows_form!(html, :update, [@model, 1])
     end
 
     test "deletion" do
-      assert S.allows_form!(delete_form, :delete, [@model, "id"]) =~ delete_form
+      assert S.allows_form!(delete_form(), :delete, [@model, "id"]) =~ delete_form()
 
       # Wrong kind
-      html = update_form
+      html = update_form()
       assert_exception "Found no :delete <form> matching /animals/1",
         do: S.allows_form!(html, :delete, [@model, 1])
     end
@@ -119,16 +119,16 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
 
   describe "disallows_form!" do
     test "creation" do
-      html = delete_form <> update_form
+      html = delete_form() <> update_form()
       assert S.disallows_form!(html, :create, @model) == html
 
-      html = delete_form <> create_form
+      html = delete_form() <> create_form()
       assert_exception "Found disallowed :create <form> for /animals",
         do: S.disallows_form!(html, :create, @model)
     end
 
     test "update" do
-      html = update_form
+      html = update_form()
 
       # Note different id
       assert S.disallows_form!(html, :update, [@model, "diff_id"]) == html
@@ -141,10 +141,10 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
       html = ""
       assert S.disallows_form!(html, :delete, [@model, "id"]) == html
 
-      html = update_form
+      html = update_form()
       assert S.disallows_form!(html, :delete, [@model, "id"]) == html
 
-      html = update_form <> delete_form
+      html = update_form() <> delete_form()
       assert_exception "Found disallowed :delete <form> for /animals/id",
         do: S.disallows_form!(html, :delete, [@model, "id"])
     end
@@ -157,14 +157,14 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
     end
     
     test "creation is no different than `disallows_form!`" do
-      html = delete_form <> update_form
+      html = delete_form() <> update_form()
       assert S.disallows_any_form!(html, :create, @model) == html
       
-      html = delete_form <> create_form
+      html = delete_form() <> create_form()
       assert_exception "Found disallowed :create <form> for /animals",
         do: S.disallows_any_form!(html, :create, @model)
 
-      html = delete_form <> create_form
+      html = delete_form() <> create_form()
       assert_exception "Found disallowed :create <form> for /animals",
         do: S.disallows_any_form!(html, :create, :old_animal_path)
     end
@@ -219,12 +219,12 @@ defmodule RoundingPegs.ExUnit.PhoenixView.AssertTest do
   end
     
   test "querying a form for the rest verb - allowing standard kludge" do
-    assert S.has_true_rest_verb?(create_form, "post")
-    assert S.has_true_rest_verb?(update_form, "put")
-    assert S.has_true_rest_verb?(delete_form, "delete")
+    assert S.has_true_rest_verb?(create_form(), "post")
+    assert S.has_true_rest_verb?(update_form(), "put")
+    assert S.has_true_rest_verb?(delete_form(), "delete")
     
-    refute S.has_true_rest_verb?(create_form, "put")
-    refute S.has_true_rest_verb?(update_form, "delete")
-    refute S.has_true_rest_verb?(delete_form, "post")
+    refute S.has_true_rest_verb?(create_form(), "put")
+    refute S.has_true_rest_verb?(update_form(), "delete")
+    refute S.has_true_rest_verb?(delete_form(), "post")
   end
 end

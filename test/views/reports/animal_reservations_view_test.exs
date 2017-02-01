@@ -9,7 +9,7 @@ defmodule Eecrit.AnimalReservationsViewTest do
     p1 = make_old_procedure(id: 111, name: "this-is-procedure-1")
     query_date_range = VM.date_range({"2016-05-16", "2016-06-15"})
     reservation =
-      make_old_reservation_fields
+      make_old_reservation_fields()
       |> Map.put(:procedures, [p1])
       |> VM.reservation
     

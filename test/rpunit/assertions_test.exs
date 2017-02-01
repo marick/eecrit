@@ -46,6 +46,7 @@ defmodule RoundingPegs.ExUnit.AssertionsTest do
       assert result == "exact match"
     end
 
+    @tag :skip
     test "fails with same information as ExUnix assert" do
       assert_exception [~s{code: actual =~ "ab" <> "cd"},
                         ~s{lhs:  "some string"},

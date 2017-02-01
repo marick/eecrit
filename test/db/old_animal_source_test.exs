@@ -54,7 +54,7 @@ defmodule Eecrit.OldAnimalSourceTest do
     end
   end
 
-  def d,
+  def d(),
     do: %{
           way_before: "2000-01-09",
           day_before: "2012-01-09",
@@ -72,7 +72,7 @@ defmodule Eecrit.OldAnimalSourceTest do
       other_animal = insert_old_animal(name: "some other animal")
       reserved_procedure = insert_old_procedure(name: "reserved procedure")
       insert_old_procedure(name: "some other procedure")
-      reservation_bounds = {d.reservation_first_date, d.reservation_last_date}
+      reservation_bounds = {d().reservation_first_date, d().reservation_last_date}
       reservation = insert_ranged_reservation!(
         reservation_bounds,
         [reserved_animal], [reserved_procedure])
@@ -109,7 +109,7 @@ defmodule Eecrit.OldAnimalSourceTest do
     end
 
     test "... and one that does not", c do
-      no_overlap = {d.way_before, d.day_before}
+      no_overlap = {d().way_before, d().day_before}
       actual = S.animal_with_reservations(c.reserved_animal.id, date_range: no_overlap)
       assert_same_identity(actual, c.reserved_animal)
       assert actual.reservations == []

@@ -3,8 +3,6 @@ defmodule Eecrit.OldUseSourceTest do
   alias Eecrit.OldUseSource, as: S
   alias Eecrit.OldReservationSink
 
-  @repo Eecrit.OldRepo
-
   def d,
     do: %{
           way_before: "2000-01-09",
@@ -24,8 +22,8 @@ defmodule Eecrit.OldUseSourceTest do
       p2 = insert_old_procedure(name: "p2")
 
       make_old_reservation_fields(
-        first_date: d.reservation_first_date,
-        last_date: d.reservation_last_date)
+        first_date: d().reservation_first_date,
+        last_date: d().reservation_last_date)
       |> OldReservationSink.make_full!([a1, a2], [p1, p2])
 
       provides([a1, a2, p1, p2])
@@ -39,30 +37,30 @@ defmodule Eecrit.OldUseSourceTest do
     end
 
     test "reservation outside of boundary" do
-      [] = S.use_counts({d.way_before, d.day_before})
+      [] = S.use_counts({d().way_before, d().day_before})
     end
 
     test "reservation is well within the bounds", c do
-      result = S.use_counts({d.day_before, d.day_after})
+      result = S.use_counts({d().day_before, d().day_after})
       assert_four_animals(result, c, 11)
     end
 
     test "reservation is exactly within the bounds", c do
-      result = S.use_counts({d.reservation_first_date, d.reservation_last_date})
+      result = S.use_counts({d().reservation_first_date, d().reservation_last_date})
       assert_four_animals(result, c, 11)
     end
 
     test "reservation overlaps the bounds", c do
-      result = S.use_counts({d.first_within, d.last_within})
+      result = S.use_counts({d().first_within, d().last_within})
       assert_four_animals(result, c, 9)
     end
 
     test "note that duplicates are NOT coalesced", c do
       make_old_reservation_fields(
-        first_date: d.first_within, last_date: d.first_within)
+        first_date: d().first_within, last_date: d().first_within)
       |> OldReservationSink.make_full!([c.a1], [c.p1])
 
-      result = S.use_counts({d.first_within, d.last_within})
+      result = S.use_counts({d().first_within, d().last_within})
       assert length(result) == 5
 
       assert {c.a1.id, c.p1.id, 9} in result

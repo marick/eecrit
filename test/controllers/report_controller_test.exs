@@ -1,9 +1,9 @@
 defmodule Eecrit.ReportControllerTest do
   use Eecrit.ConnCase
 
-  @valid_attrs %{is_admin: true, is_superuser: true, name: "some content"}
-  @invalid_attrs %{name: ""}
-  @intended_for "admin"
+  # @valid_attrs %{is_admin: true, is_superuser: true, name: "some content"}
+  # @invalid_attrs %{name: ""}
+  # @intended_for "admin"
 
   ### Authorization
 

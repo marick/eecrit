@@ -53,6 +53,10 @@ defmodule Eecrit.Animals do
     GenServer.call(__MODULE__, [:all, date])
   end
 
+  def get(id) do 
+    GenServer.call(__MODULE__, [:get, id])
+  end
+  
   def create(original_id, animal) do 
     GenServer.call(__MODULE__, [:create, original_id, animal])
   end
@@ -85,6 +89,11 @@ defmodule Eecrit.Animals do
     accepted = Map.values(state) |> Enum.filter(acceptable)
     
     {:reply, accepted, state}
+  end
+
+  def handle_call([:get, id], _from, state) do
+    animal = Map.fetch!(state, id)
+    {:reply, animal, state}
   end
 
   def handle_call([:update, animal = %{"id" => id}],

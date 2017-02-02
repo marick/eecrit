@@ -1,7 +1,7 @@
 defmodule Eecrit.Animals do
   use GenServer
-  alias Eecrit.V2Animal, as: Animal
-  alias Eecrit.V2Animal.Base, as: Base
+  alias Eecrit.VersionedAnimal
+  alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot
 
   @athena %{"name" => "Athena", 
             "species" => "bovine", 
@@ -94,13 +94,13 @@ defmodule Eecrit.Animals do
       Date.compare(candidate.base.creation_date, show_as_of_date) != :gt
     end
 
-    accepted = Map.values(state) |> Enum.filter(acceptable) |> Enum.map(&Animal.export/1)
+    accepted = Map.values(state) |> Enum.filter(acceptable) |> Enum.map(&VersionedAnimal.export/1)
     
     {:reply, accepted, state}
   end
 
   def handle_call([:get, id], _from, state) do
-    animal = Map.fetch!(state, id) |> Animal.export
+    animal = Map.fetch!(state, id) |> VersionedAnimal.export
     {:reply, animal, state}
   end
 
@@ -122,8 +122,8 @@ defmodule Eecrit.Animals do
   def create_and_add(state, base_animal) do
     new_id = Map.size(state) + 1
 
-    animal = %Animal{ version: 1,
-                      base: %Base{id: new_id,
+    animal = %VersionedAnimal{ version: 1,
+                      base: %Snapshot{id: new_id,
                                   name: base_animal["name"],
                                   species: base_animal["species"], 
                                   tags: base_animal["tags"], 

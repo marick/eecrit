@@ -1,9 +1,8 @@
-defmodule Eecrit.V2Animal do
+defmodule Eecrit.VersionedAnimal do
 
   defstruct version: 1, base: nil, deltas: []
 
-
-  defmodule Base do
+  defmodule Snapshot do
     defstruct id: nil,
       name: nil,
       species: nil,
@@ -24,5 +23,4 @@ defmodule Eecrit.V2Animal do
   def export(animal) do
     Map.put(animal.base, :version, animal.version)
   end
-
 end

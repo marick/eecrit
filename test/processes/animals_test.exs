@@ -4,11 +4,6 @@ defmodule Eecrit.AnimalsTest do
   alias Eecrit.AnimalDeltas
   use Timex
 
-  @browser_early_date  "2015-03-01T04:50:34-05:00Z"
-  @browser_middle_date "2016-03-01T04:50:34-05:00Z"
-  @browser_later_date  "2017-03-01T04:50:34-05:00Z"
-  @browser_latest_date "2018-03-01T04:50:34-05:00Z"
-
   @early_date ~D[2015-03-01]
   @middle_date ~D[2016-03-01]
   @later_date ~D[2017-03-01]
@@ -22,7 +17,7 @@ defmodule Eecrit.AnimalsTest do
                 "int_properties" => %{"val" => [1, "x"]},
                 "bool_properties" => %{"Available" => [true, ""]},
                 "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-                "creation_date" => @browser_early_date
+                "creation_date" => @early_date
   }
 
   # Setups
@@ -34,7 +29,7 @@ defmodule Eecrit.AnimalsTest do
 
   def add_animal %{pid: pid} do
     {:ok, %{originalId: "original", serverId: id}} =
-      GenServer.call(pid, [:create, "original", @new_animal])
+      GenServer.call(pid, [:create, @new_animal, "original"])
 
     {:ok, id: id}
   end
@@ -52,7 +47,7 @@ defmodule Eecrit.AnimalsTest do
   
     test "creation returns ids", %{pid: pid} do
       {:ok, %{originalId: "original", serverId: server_id}} =
-        GenServer.call(pid, [:create, "original", @new_animal])
+        GenServer.call(pid, [:create, @new_animal, "original"])
 
       assert server_id == 1
     end

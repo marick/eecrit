@@ -2,7 +2,6 @@ defmodule Eecrit.Animals do
   use GenServer
   alias Eecrit.V2Animal, as: Animal
   alias Eecrit.V2Animal.Base, as: Base
-  use Timex
 
   @athena %{"name" => "Athena", 
             "species" => "bovine", 
@@ -10,7 +9,7 @@ defmodule Eecrit.Animals do
             "int_properties" => %{},
             "bool_properties" => %{"Available" => [true, ""]},
             "string_properties" =>  %{ "Primary billing" => ["CSR", ""]},
-            "creation_date" => "2015-03-01T04:50:34-05:00Z"
+            "creation_date" => ~D[2015-03-01]
   }
   
   @jake %{"name" => "Jake", 
@@ -19,7 +18,7 @@ defmodule Eecrit.Animals do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [true, ""]},
           "string_properties" =>  %{ },
-          "creation_date" => "2015-03-01T04:50:34-05:00Z"
+          "creation_date" => ~D[2015-03-01]
   }
   
   @ross %{"name" => "ross", 
@@ -28,7 +27,7 @@ defmodule Eecrit.Animals do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [true, ""]},
           "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-          "creation_date" => "2015-03-01T04:50:34-05:00Z"
+          "creation_date" => ~D[2015-03-01]
   }
   
   @xena %{"name" => "Xena", 
@@ -37,7 +36,7 @@ defmodule Eecrit.Animals do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [false, "off for the summer"]},
           "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-          "creation_date" => "2015-03-01T04:50:34-05:00Z"
+          "creation_date" => ~D[2015-03-01]
   }
   
   @newbie %{"name" => "2018", 
@@ -46,7 +45,7 @@ defmodule Eecrit.Animals do
             "int_properties" =>  %{},
             "bool_properties" =>  %{"Available" => [true, ""]},
             "string_properties" => %{ "Primary billing" => ["Marick", ""]},
-            "creation_date" => "2018-01-01T04:50:34-05:00Z"
+            "creation_date" => ~D[2018-03-01]
   }
 
   def all(date) do
@@ -57,8 +56,8 @@ defmodule Eecrit.Animals do
     GenServer.call(__MODULE__, [:get, id])
   end
   
-  def create(original_id, animal) do 
-    GenServer.call(__MODULE__, [:create, original_id, animal])
+  def create(animal, original_id) do 
+    GenServer.call(__MODULE__, [:create, animal, original_id])
   end
 
   def update(animal) do 
@@ -91,6 +90,7 @@ defmodule Eecrit.Animals do
 
   def handle_call([:all, show_as_of_date], _from, state) do
     acceptable = fn (candidate) ->
+      Apex.ap {candidate.base.creation_date, show_as_of_date}
       Date.compare(candidate.base.creation_date, show_as_of_date) != :gt
     end
 
@@ -111,7 +111,7 @@ defmodule Eecrit.Animals do
     {:reply, {:ok, retval}, new_state}
   end
 
-  def handle_call([:create, original_id, base_animal], _from, state) do
+  def handle_call([:create, base_animal, original_id], _from, state) do
     {new_id, new_state} = create_and_add(state, base_animal)
     retval = %{originalId: original_id, serverId: new_id}
     {:reply, {:ok, retval}, new_state}
@@ -119,7 +119,7 @@ defmodule Eecrit.Animals do
 
   # Util
 
-  def create_and_add(state, base_animal) do 
+  def create_and_add(state, base_animal) do
     new_id = Map.size(state) + 1
 
     animal = %Animal{ version: 1,
@@ -130,17 +130,12 @@ defmodule Eecrit.Animals do
                                   int_properties: base_animal["int_properties"],
                                   bool_properties: base_animal["bool_properties"],
                                   string_properties: base_animal["string_properties"],
-                                  creation_date: to_date(base_animal["creation_date"])
-                      },
+                                  creation_date: base_animal["creation_date"]
+                      }, 
                       deltas: []
                     }
     new_state = Map.put(state, new_id, animal)
     
     {new_id, new_state}
-  end
-
-
-  def to_date(incoming) do
-    incoming |> Timex.parse!("{ISO:Extended}") |> Timex.to_date
   end
 end

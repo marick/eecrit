@@ -67,19 +67,27 @@ defmodule Eecrit.Animals do
 
   # Behind the scenes
 
-  def init(_) do
+  def init(how) do
     sources = [@athena, @jake, @ross, @xena, @newbie]
     reducer = fn(e, acc) ->
       {_, acc} = create_and_add(acc, e)
       acc
     end
-    
-    {:ok, Enum.reduce(sources, %{}, reducer)}
+
+    initial =
+      case how do
+        :with_examples ->
+          Enum.reduce(sources, %{}, reducer)
+        :empty ->
+          %{}
+      end
+    {:ok, initial}
   end
 
-  def start_link(name) do
-    GenServer.start_link(__MODULE__, :_ignore, name: name) 
+  def start_link(name, config) do
+    GenServer.start_link(__MODULE__, config, name: name)
   end
+
 
   def handle_call([:all, show_as_of_date], _from, state) do
     acceptable = fn (candidate) ->

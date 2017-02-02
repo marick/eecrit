@@ -15,7 +15,7 @@ defmodule Eecrit do
       supervisor(Eecrit.Endpoint, []),
       # Start your own worker by calling: Eecrit.Worker.start_link(arg1, arg2, arg3)
       # worker(Eecrit.Worker, [arg1, arg2, arg3]),
-      worker(Eecrit.Animals, [Eecrit.Animals])
+      worker(Eecrit.Animals, [Eecrit.Animals, :with_examples])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

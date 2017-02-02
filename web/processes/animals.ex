@@ -94,13 +94,13 @@ defmodule Eecrit.Animals do
       Date.compare(candidate.base.creation_date, show_as_of_date) != :gt
     end
 
-    accepted = Map.values(state) |> Enum.filter(acceptable)
+    accepted = Map.values(state) |> Enum.filter(acceptable) |> Enum.map(&Animal.export/1)
     
     {:reply, accepted, state}
   end
 
   def handle_call([:get, id], _from, state) do
-    animal = Map.fetch!(state, id)
+    animal = Map.fetch!(state, id) |> Animal.export
     {:reply, animal, state}
   end
 

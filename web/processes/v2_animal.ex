@@ -3,11 +3,6 @@ defmodule Eecrit.V2Animal do
   defstruct version: 1, base: nil, deltas: []
 
 
-  def to_interchange_format(animal) do
-    Apex.ap animal
-    Map.put(animal.base, :version, animal.version)
-  end
-  
   defmodule Base do
     defstruct id: nil,
       name: nil,
@@ -25,4 +20,9 @@ defmodule Eecrit.V2Animal do
       tag_additions: [],
       tag_subtractions: []
   end
+
+  def export(animal) do
+    Map.put(animal.base, :version, animal.version)
+  end
+
 end

@@ -6,6 +6,7 @@ module Animals.OutsideWorld.Cmd exposing
   )
 
 import Animals.Types.Animal as Animal exposing (Animal)
+import Json.Encode as Json
 import Animals.OutsideWorld.Json as Json
 import Animals.Msg exposing (..)
 import Date exposing (Date)
@@ -30,11 +31,16 @@ fetchAnimals date =
       request
 
 saveAnimal : Animal -> Animal -> Cmd Msg
-saveAnimal oldAnimal newAnimal =
+saveAnimal original newAnimal =
   let
     url = "/api/v2animals/"
     failureContext = "I could not save the animal."
-    body = newAnimal |> Json.encodeAnimal |> Json.asData |> Http.jsonBody
+    originalValue = original |> Json.encodeAnimal
+    newValue = newAnimal |> Json.encodeAnimal
+    body =
+      [("original", originalValue), ("newAnimal", newValue)]
+        |> Json.object
+        |> Http.jsonBody
     request = Http.post url body (Json.withinData Json.decodeSaveResult)
   in
     Http.send (handleHtmlResult failureContext AnimalGotSaved) request

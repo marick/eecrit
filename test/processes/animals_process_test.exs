@@ -1,7 +1,6 @@
-defmodule Eecrit.AnimalsTest do
+defmodule Eecrit.AnimalsProcessTest do
   use ExUnit.Case, async: true
-  alias Eecrit.Animals
-  alias Eecrit.AnimalDeltas
+  alias Eecrit.AnimalsProcess
   use Timex
 
   @early_date ~D[2015-03-01]
@@ -23,20 +22,20 @@ defmodule Eecrit.AnimalsTest do
   # Setups
   
   def create_empty(context \\ %{}) do
-    {:ok, pid} = Animals.start_link(:_private_to_animal_server_test, :empty)
+    {:ok, pid} = AnimalsProcess.start_link(:_private_to_animal_server_test, :empty)
     {:ok, pid: pid}
   end
 
   def add_animal %{pid: pid} do
-    Animals.create(@new_animal, "original", pid)
+    AnimalsProcess.create(@new_animal, "original", pid)
     :ok
   end
     
 
   describe "startup" do
     test "initialized empty" do
-      {:ok, pid} = Animals.start_link(:_private_to_animal_server_test, :empty)
-      [] = Animals.all(@latest_date, pid)
+      {:ok, pid} = AnimalsProcess.start_link(:_private_to_animal_server_test, :empty)
+      [] = AnimalsProcess.all(@latest_date, pid)
     end
   end
   
@@ -45,7 +44,7 @@ defmodule Eecrit.AnimalsTest do
   
     test "creation returns ids", %{pid: pid} do
       {:ok, %{originalId: "original", serverId: server_id}} =
-        Animals.create(@new_animal, "original", pid)
+        AnimalsProcess.create(@new_animal, "original", pid)
 
       assert server_id == 1
     end
@@ -56,7 +55,7 @@ defmodule Eecrit.AnimalsTest do
     # Note: other variants are tested elsewhere.
 
     test "what the retrieved animal looks like", %{pid: pid} do
-      [animal] = Animals.all(@latest_date, pid)
+      [animal] = AnimalsProcess.all(@latest_date, pid)
       
       assert animal.id == 1
       assert animal.version == 1
@@ -70,7 +69,7 @@ defmodule Eecrit.AnimalsTest do
     end
     
     test "that `all` obeys the date", %{pid: pid} do
-      assert [] == Animals.all(@early_date, pid)
+      assert [] == AnimalsProcess.all(@early_date, pid)
     end
   end
 end

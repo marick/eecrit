@@ -1,7 +1,6 @@
 defmodule Eecrit.AnimalApiController do
   use Eecrit.Web, :controller
-  alias Eecrit.Animals
-  alias Eecrit.V2Animal, as: Animal
+  alias Eecrit.AnimalsProcess
   use Timex
 
   defp wrapper(stuff), do: %{data: stuff}
@@ -10,7 +9,7 @@ defmodule Eecrit.AnimalApiController do
     animals =
       date_string
       |> Date.from_iso8601!
-      |> Animals.all
+      |> AnimalsProcess.all
       |> Enum.map(&animal_to_surface_format/1)
     
     json conn, wrapper(animals)
@@ -18,7 +17,7 @@ defmodule Eecrit.AnimalApiController do
 
   def update(conn, %{"data" => animal}) do
     # Process.sleep(10000)
-    case Animals.update(animal) do
+    case AnimalsProcess.update(animal) do
       {:ok, result} ->
         json conn, wrapper(result)
       _ ->
@@ -30,7 +29,7 @@ defmodule Eecrit.AnimalApiController do
     retval =
       raw_animal
       |> animal_from_surface_format
-      |> Animals.create(original_id)
+      |> AnimalsProcess.create(original_id)
     
     case retval do
       {:ok, animals} ->

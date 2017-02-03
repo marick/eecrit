@@ -1,4 +1,4 @@
-defmodule Eecrit.Animals do
+defmodule Eecrit.AnimalsProcess do
   use GenServer
   alias Eecrit.VersionedAnimal
   alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot

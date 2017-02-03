@@ -1,7 +1,7 @@
-defmodule Eecrit.AnimalsTest do
+defmodule Eecrit.V2AnimalTest do
   use ExUnit.Case, async: true
-  alias Eecrit.Animals
-  alias Eecrit.AnimalDeltas
+  alias Eecrit.VersionedAnimal
+  alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot
   use Timex
 
   @early_date ~D[2015-03-01]
@@ -20,43 +20,37 @@ defmodule Eecrit.AnimalsTest do
                 "creation_date" => @middle_date
   }
 
+  # API calls used in setup
+  def api_create(animals, new), do: VersionedAnimal.create(animals, new)
+
   # Setups
   
   def create_empty(context \\ %{}) do
-    {:ok, pid} = Animals.start_link(:_private_to_animal_server_test, :empty)
-    {:ok, pid: pid}
+    {:ok, animals: %{}}
   end
 
-  def add_animal %{pid: pid} do
-    Animals.create(@new_animal, "original", pid)
-    :ok
+  def add_animal %{animals: animals} do
+    {new_animals, _} = api_create(animals, @new_animal)
+    {:ok, animals: new_animals}
   end
-    
 
-  describe "startup" do
-    test "initialized empty" do
-      {:ok, pid} = Animals.start_link(:_private_to_animal_server_test, :empty)
-      [] = Animals.all(@latest_date, pid)
-    end
-  end
-  
+  # Test
+
   describe "empty" do 
     setup :create_empty
-  
-    test "creation returns ids", %{pid: pid} do
-      {:ok, %{originalId: "original", serverId: server_id}} =
-        Animals.create(@new_animal, "original", pid)
 
-      assert server_id == 1
+    test "creation returns id", %{animals: animals} do
+      {animals, id} = api_create(animals, @new_animal)
+      assert id  == 1
+      assert Map.size(animals) == 1
     end
   end
   
-  describe "creating a fresh animal" do
+  describe "a fresh animal" do
     setup [:create_empty, :add_animal]
-    # Note: other variants are tested elsewhere.
 
-    test "what the retrieved animal looks like", %{pid: pid} do
-      [animal] = Animals.all(@latest_date, pid)
+    test "what the retrieved animal looks like", %{animals: animals} do
+      [animal] = VersionedAnimal.all(animals, @middle_date)
       
       assert animal.id == 1
       assert animal.version == 1
@@ -68,9 +62,19 @@ defmodule Eecrit.AnimalsTest do
       assert animal.string_properties == @new_animal["string_properties"]
       assert animal.creation_date == @middle_date
     end
-    
-    test "that `all` obeys the date", %{pid: pid} do
-      assert [] == Animals.all(@early_date, pid)
+
+    test "doesn't return the animal if it hasn't been created yet", %{animals: animals} do
+      [] = VersionedAnimal.all(animals, @early_date)
+    end
+
+    test "boundaries", %{animals: animals} do
+      [] = VersionedAnimal.all(animals, Timex.shift(@middle_date, days: -1))
+      [animal] = VersionedAnimal.all(animals, Timex.shift(@middle_date, days: 0))
+      [animal] = VersionedAnimal.all(animals, Timex.shift(@middle_date, days: 1))
     end
   end
+
+  describe "updating an animal" do
+  end
+
 end

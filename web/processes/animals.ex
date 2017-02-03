@@ -48,20 +48,16 @@ defmodule Eecrit.Animals do
             "creation_date" => ~D[2018-03-01]
   }
 
-  def all(date) do
-    GenServer.call(__MODULE__, [:all, date])
+  def all(date, pid \\ __MODULE__) do
+    GenServer.call(pid, [:all, date])
   end
 
-  def get(id) do 
-    GenServer.call(__MODULE__, [:get, id])
-  end
-  
-  def create(animal, original_id) do 
-    GenServer.call(__MODULE__, [:create, animal, original_id])
+  def create(animal, original_id, pid \\ __MODULE__) do 
+    GenServer.call(pid, [:create, animal, original_id])
   end
 
-  def update(animal) do 
-    GenServer.call(__MODULE__, [:update, animal])
+  def update(animal, pid \\ __MODULE__) do 
+    GenServer.call(pid, [:update, animal])
   end
 
   # Behind the scenes
@@ -69,7 +65,7 @@ defmodule Eecrit.Animals do
   def init(how) do
     sources = [@athena, @jake, @ross, @xena, @newbie]
     reducer = fn(e, acc) ->
-      {_, acc} = create_and_add(acc, e)
+      {acc, _} = VersionedAnimal.create(acc, e)
       acc
     end
 
@@ -87,16 +83,9 @@ defmodule Eecrit.Animals do
     GenServer.start_link(__MODULE__, config, name: name)
   end
 
-
-  def handle_call([:all, show_as_of_date], _from, state) do
-    acceptable = fn (candidate) ->
-      Apex.ap {candidate.base.creation_date, show_as_of_date}
-      Date.compare(candidate.base.creation_date, show_as_of_date) != :gt
-    end
-
-    accepted = Map.values(state) |> Enum.filter(acceptable) |> Enum.map(&VersionedAnimal.export/1)
-    
-    {:reply, accepted, state}
+  def handle_call([:all, as_of_date], _from, state) do
+    animals = VersionedAnimal.all(state, as_of_date)
+    {:reply, animals, state}
   end
 
   def handle_call([:get, id], _from, state) do
@@ -112,30 +101,11 @@ defmodule Eecrit.Animals do
   end
 
   def handle_call([:create, base_animal, original_id], _from, state) do
-    {new_id, new_state} = create_and_add(state, base_animal)
+    {new_state, new_id} = VersionedAnimal.create(state, base_animal)
     retval = %{originalId: original_id, serverId: new_id}
     {:reply, {:ok, retval}, new_state}
   end
 
   # Util
 
-  def create_and_add(state, base_animal) do
-    new_id = Map.size(state) + 1
-
-    animal = %VersionedAnimal{ version: 1,
-                      base: %Snapshot{id: new_id,
-                                  name: base_animal["name"],
-                                  species: base_animal["species"], 
-                                  tags: base_animal["tags"], 
-                                  int_properties: base_animal["int_properties"],
-                                  bool_properties: base_animal["bool_properties"],
-                                  string_properties: base_animal["string_properties"],
-                                  creation_date: base_animal["creation_date"]
-                      }, 
-                      deltas: []
-                    }
-    new_state = Map.put(state, new_id, animal)
-    
-    {new_id, new_state}
-  end
 end

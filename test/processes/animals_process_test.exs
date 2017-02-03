@@ -27,7 +27,7 @@ defmodule Eecrit.AnimalsProcessTest do
   end
 
   def add_animal %{pid: pid} do
-    AnimalsProcess.create(@new_animal, "original", pid)
+    AnimalsProcess.create(@new_animal, pid)
     :ok
   end
     
@@ -43,8 +43,7 @@ defmodule Eecrit.AnimalsProcessTest do
     setup :create_empty
   
     test "creation returns ids", %{pid: pid} do
-      {:ok, %{originalId: "original", serverId: server_id}} =
-        AnimalsProcess.create(@new_animal, "original", pid)
+      {:ok, server_id} = AnimalsProcess.create(@new_animal, pid)
 
       assert server_id == 1
     end

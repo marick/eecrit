@@ -15,6 +15,20 @@ defmodule Eecrit.AnimalApiController do
     json conn, wrapper(animals)
   end
 
+  def create(conn, %{"data" => raw_animal, "original_id" => original_id}) do
+    retval =
+      raw_animal
+      |> animal_from_surface_format
+      |> AnimalsProcess.create
+    
+    case retval do
+      {:ok, id} ->
+        json conn, wrapper(%{originalId: original_id, serverId: id})
+      _ ->
+        json conn, %{error: "Creation failed for unknown reasons"}
+    end
+  end
+
   def update(conn, %{"data" => animal}) do
     # Process.sleep(10000)
     case AnimalsProcess.update(animal) do
@@ -22,20 +36,6 @@ defmodule Eecrit.AnimalApiController do
         json conn, wrapper(result)
       _ ->
         json conn, %{error: "Update failed for unknown reasons"}
-    end
-  end
-
-  def create(conn, %{"data" => raw_animal, "original_id" => original_id}) do
-    retval =
-      raw_animal
-      |> animal_from_surface_format
-      |> AnimalsProcess.create(original_id)
-    
-    case retval do
-      {:ok, animals} ->
-        json conn, wrapper(animals)
-      _ ->
-        json conn, %{error: "Creation failed for unknown reasons"}
     end
   end
 

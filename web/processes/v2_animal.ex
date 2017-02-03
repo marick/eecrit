@@ -1,5 +1,4 @@
 defmodule Eecrit.VersionedAnimal do
-
   defstruct version: 1, base: nil, deltas: []
 
   defmodule Snapshot do
@@ -30,7 +29,15 @@ defmodule Eecrit.VersionedAnimal do
     {new_animals, new_id}
   end
 
-  def all(animals, as_of_date) do 
+
+  def update(animals, original_params, updated_params) do
+    original = fresh_snapshot(original_params)
+    updated = fresh_snapshot(updated_params)
+
+    Map.put(animals, updated.id, updated)
+  end
+
+  def all(animals, as_of_date) do
     acceptable = fn (candidate) ->
       Date.compare(candidate.base.creation_date, as_of_date) != :gt
     end
@@ -42,7 +49,7 @@ defmodule Eecrit.VersionedAnimal do
 
 
   # Eventually, this will be done with changesets - and maybe in a different module.
-  defp fresh_snapshot(params, id) do
+  defp fresh_snapshot(params, id \\ "irrelevant") do
     %Snapshot{id: id,
               name: params["name"],
               species: params["species"], 

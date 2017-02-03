@@ -63,7 +63,7 @@ defmodule Eecrit.V2AnimalTest do
       assert animal.creation_date == @middle_date
     end
 
-    test "doesn't return the animal if it hasn't been created yet", %{animals: animals} do
+    test "`all` doesn't return the animal if it hasn't been created yet", %{animals: animals} do
       [] = VersionedAnimal.all(animals, @early_date)
     end
 

@@ -29,11 +29,11 @@ defmodule Eecrit.AnimalApiController do
     end
   end
 
-  def update(conn, %{"data" => animal}) do
+  def update(conn, %{"original" => original, "newAnimal" => updated}) do
     # Process.sleep(10000)
-    case AnimalsProcess.update(animal) do
+    case AnimalsProcess.update(original, updated) do
       {:ok, result} ->
-        json conn, wrapper(result)
+        json conn, wrapper(%{id: result})
       _ ->
         json conn, %{error: "Update failed for unknown reasons"}
     end

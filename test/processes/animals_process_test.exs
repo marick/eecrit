@@ -19,6 +19,8 @@ defmodule Eecrit.AnimalsProcessTest do
                 "creation_date" => @middle_date
   }
 
+  @expected_id 1
+
   # Setups
   
   def create_empty(context \\ %{}) do
@@ -45,7 +47,7 @@ defmodule Eecrit.AnimalsProcessTest do
     test "creation returns ids", %{pid: pid} do
       {:ok, server_id} = AnimalsProcess.create(@new_animal, pid)
 
-      assert server_id == 1
+      assert server_id == @expected_id
     end
   end
   
@@ -56,7 +58,7 @@ defmodule Eecrit.AnimalsProcessTest do
     test "what the retrieved animal looks like", %{pid: pid} do
       [animal] = AnimalsProcess.all(@latest_date, pid)
       
-      assert animal.id == 1
+      assert animal.id == @expected_id
       assert animal.version == 1
       assert animal.name == @new_animal["name"]
       assert animal.species == @new_animal["species"]
@@ -71,4 +73,18 @@ defmodule Eecrit.AnimalsProcessTest do
       assert [] == AnimalsProcess.all(@early_date, pid)
     end
   end
+
+  describe "adding an animal" do 
+    setup [:create_empty, :add_animal]
+
+    test "update returns the id of the updated animal" do
+      updated_animal =
+        @new_animal
+        |> Map.put("id", @expected_id)
+        |> Map.put("version", 2)
+        |> Map.put("creation_date", @later_date)
+
+      {:ok, @expected_id} = AnimalsProcess.update(@new_animal, updated_animal)
+    end
+  end    
 end

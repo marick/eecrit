@@ -56,8 +56,8 @@ defmodule Eecrit.AnimalsProcess do
     GenServer.call(pid, [:create, animal])
   end
 
-  def update(animal, pid \\ __MODULE__) do 
-    GenServer.call(pid, [:update, animal])
+  def update(original, updated, pid \\ __MODULE__) do 
+    GenServer.call(pid, [:update, original, updated])
   end
 
   # Behind the scenes
@@ -83,26 +83,20 @@ defmodule Eecrit.AnimalsProcess do
     GenServer.start_link(__MODULE__, config, name: name)
   end
 
-  def handle_call([:all, as_of_date], _from, state) do
-    animals = VersionedAnimal.all(state, as_of_date)
-    {:reply, animals, state}
-  end
-
-  def handle_call([:get, id], _from, state) do
-    animal = Map.fetch!(state, id) |> VersionedAnimal.export
-    {:reply, animal, state}
-  end
-
-  def handle_call([:update, animal = %{"id" => id}],
-                  _from, state) do
-    new_state = Map.put(state, id, animal)
-    retval = %{id: id}
-    {:reply, {:ok, retval}, new_state}
-  end
-
   def handle_call([:create, base_animal], _from, state) do
     {new_state, new_id} = VersionedAnimal.create(state, base_animal)
     {:reply, {:ok, new_id}, new_state}
+  end
+
+  def handle_call([:update, original, updated],
+                  _from, state) do
+    new_state = VersionedAnimal.update(state, original, updated)
+    {:reply, {:ok, updated["id"]}, new_state}
+  end
+
+  def handle_call([:all, as_of_date], _from, state) do
+    animals = VersionedAnimal.all(state, as_of_date)
+    {:reply, animals, state}
   end
 
   # Util

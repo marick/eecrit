@@ -1,6 +1,6 @@
 defmodule Eecrit.VersionedAnimal do
   defstruct version: 1, base: nil, deltas: []
-
+  
   defmodule Snapshot do
     defstruct id: nil,
       name: nil,
@@ -10,20 +10,46 @@ defmodule Eecrit.VersionedAnimal do
       bool_properties: %{},
       string_properties: %{},
       creation_date: nil
+    use ExConstructor
   end
 
   defmodule Delta do
     defstruct updated_at: nil,
       name_change: nil,
-      tag_additions: [],
-      tag_subtractions: []
+      tag_edits: []
   end
+
+  alias Private, as: P
+  defmodule Private do
+    def fresh_snapshot(params, id \\ "irrelevant") do
+      %Snapshot{id: id,
+                name: params["name"],
+                species: params["species"], 
+                tags: params["tags"], 
+                int_properties: params["int_properties"],
+                bool_properties: params["bool_properties"],
+                string_properties: params["string_properties"],
+                creation_date: params["creation_date"]
+      }
+    end
+
+    def generate_diffs(original, new) do
+      name_change = if original.name != new.name, do: new.name
+      tag_edits = List.myers_difference(original.tags, new.tags)
+      
+      %Delta{updated_at: new.creation_date,
+             name_change: name_change,
+             tag_edits: tag_edits
+      }
+    end
+  end
+  
 
   def create(animals, params) do
     new_id = Map.size(animals) + 1
     
     animal = %Eecrit.VersionedAnimal{version: 1,
-                                     base: fresh_snapshot(params, new_id),
+                                     base: P.fresh_snapshot(params, new_id),
                                      deltas: []}
     new_animals = Map.put(animals, new_id, animal)
     {new_animals, new_id}
@@ -31,8 +57,8 @@ defmodule Eecrit.VersionedAnimal do
 
 
   def update(animals, original_params, updated_params) do
-    original = fresh_snapshot(original_params)
-    updated = fresh_snapshot(updated_params)
+    original = P.fresh_snapshot(original_params)
+    updated = P.fresh_snapshot(updated_params)
 
     Map.put(animals, updated.id, updated)
   end
@@ -48,20 +74,9 @@ defmodule Eecrit.VersionedAnimal do
   end    
 
 
-  # Eventually, this will be done with changesets - and maybe in a different module.
-  defp fresh_snapshot(params, id \\ "irrelevant") do
-    %Snapshot{id: id,
-              name: params["name"],
-              species: params["species"], 
-              tags: params["tags"], 
-              int_properties: params["int_properties"],
-              bool_properties: params["bool_properties"],
-              string_properties: params["string_properties"],
-              creation_date: params["creation_date"]
-    }
-  end
-              
   def export(animal) do
     Map.put(animal.base, :version, animal.version)
   end
+
+
 end

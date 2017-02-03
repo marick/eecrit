@@ -18,7 +18,7 @@ defmodule Eecrit.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Eecrit, []},
-     applications: [:comeonin, :timex, :tzdata,
+     applications: [:comeonin, :timex, :tzdata, :exconstructor,
 
                     :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex]]
@@ -41,6 +41,7 @@ defmodule Eecrit.Mixfile do
      {:floki, "~> 0.13"},
      {:canada, "~> 1.0.0"},
      {:curtail, "~> 0.1"},
+     {:exconstructor, "~> 1.1.0"},
      
      {:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},

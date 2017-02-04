@@ -69,9 +69,9 @@ defmodule Eecrit.V2AnimalPrivateTest do
       name_change = Data.snapshot(id: 1, name: "change1", tags: ["keep", "delete"],
         creation_date: Data.middle_date)
       tag_change = Data.snapshot(id: 1, name: "change1", tags: ["keep"],
-        creation_date: Data.middle_date)
+        creation_date: Data.middle_latest_date)
       both_change = Data.snapshot(id: 1, name: "change_b", tags: ["keep", "add"],
-        creation_date: Data.middle_date)
+        creation_date: Data.latest_date)
 
       name_change_delta = P.generate_delta(original, name_change)
       tag_change_delta = P.generate_delta(name_change, tag_change)
@@ -102,7 +102,19 @@ defmodule Eecrit.V2AnimalPrivateTest do
       result = P.apply_deltas(base, all_deltas)
       assert result.name == "change_b"
       assert result.tags == ["keep", "add"]
-    end      
+    end
+
+    test "can select a subset of deltas", %{all_deltas: all_deltas} do
+      assert P.deltas_no_later_than(all_deltas, Data.early_date) == []
+      assert P.deltas_no_later_than(all_deltas, Data.early_middle_date) == []
+      # First delta created on middle date
+      assert P.deltas_no_later_than(all_deltas, Data.middle_date)
+      == Enum.take(all_deltas, 1)
+      assert P.deltas_no_later_than(all_deltas, Data.middle_latest_date)
+      == Enum.take(all_deltas, 2)
+      assert P.deltas_no_later_than(all_deltas, Data.latest_date)
+      == Enum.take(all_deltas, 3)
+    end
   end
 end
   

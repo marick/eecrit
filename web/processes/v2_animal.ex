@@ -70,6 +70,14 @@ defmodule Eecrit.VersionedAnimal do
         acc |> apply_name.(x) |> apply_tags.(x)
       end)
     end
+
+    def deltas_no_later_than(deltas, date) do
+      acceptable = fn (candidate) ->
+        Date.compare(candidate.date_of_change, date) != :gt
+      end
+
+      Enum.filter(deltas, acceptable)
+    end
   end
   
 
@@ -87,7 +95,6 @@ defmodule Eecrit.VersionedAnimal do
   def update(animals, original_params, updated_params) do
     original = P.fresh_snapshot(original_params)
     updated = P.fresh_snapshot(updated_params)
-
     Map.put(animals, updated.id, updated)
   end
 

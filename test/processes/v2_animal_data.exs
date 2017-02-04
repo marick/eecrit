@@ -3,10 +3,11 @@ defmodule Eecrit.V2AnimalData do
   alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot
   use Timex
 
-  def early_date, do: ~D[2015-03-01]
-  def middle_date, do: ~D[2016-03-01]
-  def later_date, do:  ~D[2017-03-01]
-  def latest_date, do: ~D[2018-03-01]
+  def early_date, do:         ~D[2015-03-01]
+  def early_middle_date, do:  ~D[2016-03-01]
+  def middle_date, do:        ~D[2017-03-01]
+  def middle_latest_date, do: ~D[2018-03-01]
+  def latest_date, do:        ~D[2019-03-01]
 
   def animal_params(overrides \\ %{}) do
     default = %{"id" => "ignored",

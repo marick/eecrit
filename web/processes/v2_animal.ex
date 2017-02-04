@@ -14,7 +14,7 @@ defmodule Eecrit.VersionedAnimal do
   end
 
   defmodule Delta do
-    defstruct updated_at: nil,
+    defstruct date_of_change: nil,
       name_change: nil,
       tag_edits: []
   end
@@ -33,14 +33,42 @@ defmodule Eecrit.VersionedAnimal do
       }
     end
 
-    def generate_diffs(original, new) do
+    def generate_delta(original, new) do
       name_change = if original.name != new.name, do: new.name
       tag_edits = List.myers_difference(original.tags, new.tags)
       
-      %Delta{updated_at: new.creation_date,
+      %Delta{date_of_change: new.creation_date,
              name_change: name_change,
              tag_edits: tag_edits
       }
+    end
+
+    def construct_tags(edits) do
+      Enum.reduce(edits, [], fn({instruction, value}, acc) ->
+        case instruction do
+          :eq -> acc ++ value    # O(n^2) yay
+          :ins -> acc ++ value
+          _ -> acc
+        end
+      end)
+    end
+
+    def apply_deltas(snapshot, deltas) do
+      apply_name = fn(snapshot, delta) ->
+          if delta.name_change do
+            %{ snapshot | name: delta.name_change }
+          else
+            snapshot
+          end
+        end
+
+      apply_tags = fn(snapshot, delta) ->
+        %{ snapshot | tags: construct_tags(delta.tag_edits) }
+      end
+
+      Enum.reduce(deltas, snapshot, fn(x, acc) ->
+        acc |> apply_name.(x) |> apply_tags.(x)
+      end)
     end
   end
   

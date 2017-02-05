@@ -49,7 +49,9 @@ defmodule Eecrit.AnimalApiController do
   end
 
   defp animal_from_surface_format(params) do
-    Map.update!(params, "creation_date", &date_from_surface_format/1)
+    params
+    |> Map.update!("creation_date", &date_from_surface_format/1)
+    |> Map.update!("effective_date", &date_from_surface_format/1)
   end
 
   defp animal_to_surface_format(animal) do

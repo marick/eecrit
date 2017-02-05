@@ -12,7 +12,7 @@ import Dict exposing (Dict)
 type alias Form = 
   { id : Id
   , sortKey : String  -- Distinct from name so that changing the name
-                        -- doesn't cause list entries to change position
+                      -- doesn't cause list entries to change position
   , effectiveDate : DateHolder
   , intendedVersion : Int
   , species : Namelike

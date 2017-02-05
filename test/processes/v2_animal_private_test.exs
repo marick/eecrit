@@ -14,24 +14,24 @@ defmodule Eecrit.V2AnimalPrivateTest do
     end
 
     test "all snapshots in the list are later than the date" do
-      no = Snapshot.new(creation_date: Data.latest_date)
+      no = Snapshot.new(effective_date: Data.latest_date)
       assert P.snapshot_no_later_than([no], Data.middle_latest_date) == nil
     end
 
     test "finds a snapshot that's just on the date" do
-      yes = Snapshot.new(creation_date: Data.middle_latest_date)
+      yes = Snapshot.new(effective_date: Data.middle_latest_date)
       assert P.snapshot_no_later_than([yes], Data.middle_latest_date) == yes
     end
 
     test "finds a snapshot that's earlier than the date" do
-      yes = Snapshot.new(creation_date: Data.middle_latest_date)
+      yes = Snapshot.new(effective_date: Data.middle_latest_date)
       assert P.snapshot_no_later_than([yes], Data.latest_date) == yes
     end
 
     test "find the MOST RECENT snapshot that's earlier than the date" do
-      earliest = Snapshot.new(creation_date: Data.early_date)
-      middlest = Snapshot.new(creation_date: Data.middle_date)
-      latest = Snapshot.new(creation_date: Data.latest_date)
+      earliest = Snapshot.new(effective_date: Data.early_date)
+      middlest = Snapshot.new(effective_date: Data.middle_date)
+      latest = Snapshot.new(effective_date: Data.latest_date)
 
       list = [latest, middlest, earliest]
       assert P.snapshot_no_later_than(list, Data.early_date) == earliest
@@ -49,9 +49,9 @@ defmodule Eecrit.V2AnimalPrivateTest do
     end
 
     test "snapshots are keyt in descending sorted order" do
-      later = Snapshot.new(creation_date: Data.latest_date)
-      early = Snapshot.new(creation_date: Data.early_date)
-      middle = Snapshot.new(creation_date: Data.middle_date)
+      later = Snapshot.new(effective_date: Data.latest_date)
+      early = Snapshot.new(effective_date: Data.early_date)
+      middle = Snapshot.new(effective_date: Data.middle_date)
 
       result =
         []
@@ -73,10 +73,10 @@ defmodule Eecrit.V2AnimalPrivateTest do
 
     test "a new snapshot from the same date replaces the existing one" do
       
-      later = Snapshot.new(creation_date: Data.latest_date)
-      early = Snapshot.new(creation_date: Data.early_date)
-      replaced = Snapshot.new(creation_date: Data.middle_date, name: "replaced")
-      replacer = Snapshot.new(creation_date: Data.middle_date, name: "replacer")
+      later = Snapshot.new(effective_date: Data.latest_date)
+      early = Snapshot.new(effective_date: Data.early_date)
+      replaced = Snapshot.new(effective_date: Data.middle_date, name: "replaced")
+      replacer = Snapshot.new(effective_date: Data.middle_date, name: "replacer")
 
       result =
         []

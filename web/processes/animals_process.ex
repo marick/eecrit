@@ -10,7 +10,8 @@ defmodule Eecrit.AnimalsProcess do
             "int_properties" => %{},
             "bool_properties" => %{"Available" => [true, ""]},
             "string_properties" =>  %{ "Primary billing" => ["CSR", ""]},
-            "creation_date" => ~D[2015-03-01]
+            "creation_date" => ~D[2015-03-01],
+            "effective_date" => ~D[2015-03-01],
   }
   
   @jake %{"name" => "Jake", 
@@ -20,7 +21,8 @@ defmodule Eecrit.AnimalsProcess do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [true, ""]},
           "string_properties" =>  %{ },
-          "creation_date" => ~D[2015-03-01]
+          "creation_date" => ~D[2015-03-01],
+          "effective_date" => ~D[2015-03-01],
   }
   
   @ross %{"name" => "ross", 
@@ -30,7 +32,8 @@ defmodule Eecrit.AnimalsProcess do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [true, ""]},
           "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-          "creation_date" => ~D[2015-03-01]
+          "creation_date" => ~D[2015-03-01],
+          "effective_date" => ~D[2015-03-01],
   }
   
   @xena %{"name" => "Xena", 
@@ -40,7 +43,8 @@ defmodule Eecrit.AnimalsProcess do
           "int_properties" => %{},
           "bool_properties" => %{"Available" => [false, "off for the summer"]},
           "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-          "creation_date" => ~D[2015-03-01]
+          "creation_date" => ~D[2015-03-01],
+          "effective_date" => ~D[2015-03-01],
   }
   
   @newbie %{"name" => "2018", 
@@ -50,7 +54,8 @@ defmodule Eecrit.AnimalsProcess do
             "int_properties" =>  %{},
             "bool_properties" =>  %{"Available" => [true, ""]},
             "string_properties" => %{ "Primary billing" => ["Marick", ""]},
-            "creation_date" => ~D[2018-03-01]
+            "creation_date" => ~D[2018-03-01],
+            "effective_date" => ~D[2018-03-01],
   }
 
   def all(date, pid \\ __MODULE__) do

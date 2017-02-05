@@ -55,27 +55,30 @@ update op form model =
           Just animal -> 
             model |> upsertAnimal animal |> noCmd
 
-    StartSavingEdits ->
-      let
-        updatedAnimal = Convert.formToAnimal form
-      in
-        model
-          |> upsertCheckedForm (form_status.set Css.BeingSaved form)
-          |> addCmd (OutsideWorld.saveAnimal updatedAnimal)
-
     CancelCreation ->
       model
         |> deleteDisplayedById form.id
         |> deleteFromPage model_addPageAnimals form.id
         |> noCmd
-          
-    StartCreating ->
+
+    -- Todo: Factor out similarities between the next two functions.
+    StartSavingEdits ->
       let
-        newAnimal = Convert.formToAnimal form
+        updatedAnimal = Convert.formToAnimal form
+        dateChosen = DateHolder.convertToDate form.effectiveDate
       in
         model
           |> upsertCheckedForm (form_status.set Css.BeingSaved form)
-          |> addCmd (OutsideWorld.createAnimal newAnimal)
+          |> addCmd (OutsideWorld.saveAnimal dateChosen updatedAnimal)
+
+    StartCreating ->
+      let
+        newAnimal = Convert.formToAnimal form
+        dateChosen = DateHolder.convertToDate form.effectiveDate
+      in
+        model
+          |> upsertCheckedForm (form_status.set Css.BeingSaved form)
+          |> addCmd (OutsideWorld.createAnimal dateChosen newAnimal)
 
     NameFieldUpdate s ->
       let

@@ -18,7 +18,8 @@ defmodule Eecrit.V2AnimalData do
                 "int_properties" => %{"val" => [1, "x"]},
                 "bool_properties" => %{"Available" => [true, ""]},
                 "string_properties" =>  %{ "Primary billing" => ["Marick", ""]},
-                "creation_date" => middle_date
+                "creation_date" => middle_date,
+                "effective_date" => middle_date
                }
     Enum.into(overrides, default)
   end

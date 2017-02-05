@@ -21,7 +21,8 @@ defmodule Eecrit.V2AnimalTest do
       {animals, 1} =
         VersionedAnimal.create(
           %{},
-          Data.animal_params(%{"creation_date" => Data.middle_date}))
+          Data.animal_params(%{"creation_date" => Data.middle_date,
+                               "effective_date" => Data.middle_date}))
       [animals: animals]
     end
     
@@ -52,9 +53,10 @@ defmodule Eecrit.V2AnimalTest do
 
   describe "updating an animal" do
     setup do
-      first = Data.animal_params(%{"creation_date" => Data.early_middle_date})
-      second = Data.animal_params(%{"creation_date" => Data.middle_latest_date, 
-                                    "tags" => ["early", "middle", "tags"],
+      first = Data.animal_params(%{"effective_date" => Data.early_middle_date,
+                                   "name" => "early middle"})
+      second = Data.animal_params(%{"effective_date" => Data.middle_latest_date, 
+                                    "name" => "middle latest",
                                     "id" => 1
                                    })
       
@@ -73,7 +75,7 @@ defmodule Eecrit.V2AnimalTest do
       [animal] = VersionedAnimal.all(animals, Data.early_middle_date)
       
       assert animal.id == 1
-      assert animal.creation_date == Data.early_middle_date
+      assert animal.name == "early middle"
     end
     
     test "note that the version is always the latest, for optimistic locking",
@@ -89,29 +91,29 @@ defmodule Eecrit.V2AnimalTest do
       
       assert animal.id == 1
       assert animal.version == 2
-      assert animal.creation_date == Data.middle_latest_date
+      assert animal.name == "middle latest"  # name change is seen
     end
     
     test "updates needn't be applied in order", %{animals: animals} do
-      between = Data.animal_params(%{"creation_date" => Data.middle_date,
+      between = Data.animal_params(%{"effective_date" => Data.middle_date,
+                                     "name" => "middle",
                                      "id" => 1})
       with_between = VersionedAnimal.update(animals, between)
 
       [animal] = VersionedAnimal.all(with_between, Data.middle_latest_date)
       assert animal.id == 1
       assert animal.version == 3
-      assert animal.creation_date == Data.middle_latest_date
+      assert animal.name == "middle latest"
 
       [animal] = VersionedAnimal.all(with_between, Data.middle_date)
       assert animal.id == 1
       assert animal.version == 3
-      assert animal.creation_date == Data.middle_date
-
+      assert animal.name == "middle"
       
       [animal] = VersionedAnimal.all(with_between, Data.early_middle_date)
       assert animal.id == 1
       assert animal.version == 3
-      assert animal.creation_date == Data.early_middle_date
+      assert animal.name == "early middle"
     end
 
     test "you can replace an existing animal" do

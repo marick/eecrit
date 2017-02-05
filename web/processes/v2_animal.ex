@@ -13,7 +13,8 @@ defmodule Eecrit.VersionedAnimal do
       int_properties: %{},
       bool_properties: %{},
       string_properties: %{},
-      creation_date: nil
+      creation_date: nil,
+      effective_date: nil
     use ExConstructor
   end
 
@@ -22,7 +23,7 @@ defmodule Eecrit.VersionedAnimal do
     def snapshot_no_later_than([], date), do: nil
 
     def snapshot_no_later_than([x | xs], date) do
-      if candidate_is_too_late(x.creation_date, date) do
+      if candidate_is_too_late(x.effective_date, date) do
         snapshot_no_later_than(xs, date)
       else
         x
@@ -43,7 +44,7 @@ defmodule Eecrit.VersionedAnimal do
 
     def add_snapshot(snapshots, new) do
       compare_by_date = fn(comparator) ->
-        fn(snapshot) -> comparator.(snapshot.creation_date, new.creation_date) end
+        fn(snapshot) -> comparator.(snapshot.effective_date, new.effective_date) end
       end
 
       {later, not_later} =
@@ -88,7 +89,7 @@ defmodule Eecrit.VersionedAnimal do
 
   def all(animals, as_of_date) do
     acceptable = fn (candidate) ->
-      P.candidate_exists_as_of_date(candidate.original.creation_date, as_of_date)
+      P.candidate_exists_as_of_date(candidate.original.effective_date, as_of_date)
     end
     Map.values(animals)
     |> Enum.filter(acceptable)

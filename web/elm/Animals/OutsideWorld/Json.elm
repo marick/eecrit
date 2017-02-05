@@ -26,9 +26,11 @@ decodeAnimal : Decode.Decoder Animal
 decodeAnimal =
   json_to_AnimalTransferFormat |> Decode.map animalTransferFormat_to_Animal 
   
-encodeAnimal : Animal -> Encode.Value
-encodeAnimal =
-  animal_to_animalTransferFormat >> animalTransferFormat_to_json
+encodeAnimal : Date -> Animal -> Encode.Value
+encodeAnimal effectiveDate animal =
+  animal
+    |> animal_to_animalTransferFormat effectiveDate
+    |> animalTransferFormat_to_json
 
 decodeSaveResult : Decode.Decoder AnimalSaveResults
 decodeSaveResult =
@@ -71,6 +73,7 @@ type alias AnimalTransferFormat =
     , bool_properties : Dict String ( Bool, String )
     , string_properties : Dict String ( String, String )
     , creation_date : String
+    , effective_date : String
     }
 
 json_to_AnimalTransferFormat : Decode.Decoder AnimalTransferFormat
@@ -87,6 +90,8 @@ json_to_AnimalTransferFormat =
     |> Decode.required "bool_properties" (decodeProperties Decode.bool)
     |> Decode.required "string_properties" (decodeProperties Decode.string)
     |> Decode.required "creation_date" Decode.string
+    -- Grr. Have to do following even though we don't use it.
+    |> Decode.required "effective_date" Decode.string
 
 animalTransferFormat_to_json : AnimalTransferFormat -> Encode.Value
 animalTransferFormat_to_json xfer = 
@@ -99,10 +104,11 @@ animalTransferFormat_to_json xfer =
                     , ("int_properties", encodeProperties Encode.int xfer.int_properties)
                     , ("string_properties", encodeProperties Encode.string xfer.string_properties)
                     , ("creation_date", Encode.string (xfer.creation_date))
+                    , ("effective_date", Encode.string (xfer.effective_date))
                     ]
 
-animal_to_animalTransferFormat : Animal -> AnimalTransferFormat
-animal_to_animalTransferFormat animal =
+animal_to_animalTransferFormat : Date -> Animal -> AnimalTransferFormat
+animal_to_animalTransferFormat effectiveDate animal =
   let
     intId = Result.withDefault -1 (String.toInt animal.id)
   in
@@ -115,6 +121,7 @@ animal_to_animalTransferFormat animal =
     , int_properties = Dict.empty
     , string_properties = Dict.empty
     , creation_date = Date.toIsoString animal.creationDate
+    , effective_date = Date.toIsoString effectiveDate
     }
           
 animalTransferFormat_to_Animal : AnimalTransferFormat -> Animal

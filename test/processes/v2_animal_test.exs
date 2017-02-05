@@ -3,7 +3,6 @@ Code.require_file("v2_animal_data.exs", __DIR__)
 defmodule Eecrit.V2AnimalTest do
   use ExUnit.Case, async: true
   alias Eecrit.VersionedAnimal
-  alias Eecrit.VersionedAnimal.Snapshot
   alias Eecrit.V2AnimalData, as: Data
   use Timex
 
@@ -46,14 +45,15 @@ defmodule Eecrit.V2AnimalTest do
 
     test "boundaries", %{animals: animals} do
       [] = VersionedAnimal.all(animals, Timex.shift(Data.middle_date, days: -1))
-      [animal] = VersionedAnimal.all(animals, Timex.shift(Data.middle_date, days: 0))
-      [animal] = VersionedAnimal.all(animals, Timex.shift(Data.middle_date, days: 1))
+      [_animal] = VersionedAnimal.all(animals, Timex.shift(Data.middle_date, days: 0))
+      [_animal] = VersionedAnimal.all(animals, Timex.shift(Data.middle_date, days: 1))
     end
   end
 
   describe "updating an animal" do
     setup do
       first = Data.animal_params(%{"effective_date" => Data.early_middle_date,
+                                   "creation_date" => Data.early_middle_date,
                                    "name" => "early middle"})
       second = Data.animal_params(%{"effective_date" => Data.middle_latest_date, 
                                     "name" => "middle latest",
@@ -116,12 +116,39 @@ defmodule Eecrit.V2AnimalTest do
       assert animal.name == "early middle"
     end
 
-    test "you can replace an existing animal" do
-      assert 1 == 2
+    test "you can replace an existing snapshot", %{animals: animals} do
+      changed = Data.animal_params(%{"effective_date" => Data.middle_latest_date,
+                                     "name" => "NEW MIDDLE CHANGED",
+                                     "id" => 1})
+      with_changed = VersionedAnimal.update(animals, changed)
+
+      [animal] = VersionedAnimal.all(with_changed, Data.middle_latest_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.name == "NEW MIDDLE CHANGED"
+
+      [animal] = VersionedAnimal.all(with_changed, Data.early_middle_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.name == "early middle"
     end
 
-    test "you can even replace the original" do
-      assert 1 == 2
+    test "you can even replace the original", %{animals: animals} do
+      changed = Data.animal_params(%{"effective_date" => Data.early_middle_date,
+                                     "name" => "NEW START",
+                                     "id" => 1})
+      with_changed = VersionedAnimal.update(animals, changed)
+
+      [animal] = VersionedAnimal.all(with_changed, Data.early_middle_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.name == "NEW START"
+
+      # Note that later edits are NOT overridden
+      [animal] = VersionedAnimal.all(with_changed, Data.middle_latest_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.name == "middle latest"
     end
   end
 end

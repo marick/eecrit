@@ -1,5 +1,5 @@
 defmodule Eecrit.VersionedAnimal do
-  defstruct original: nil, updates: nil, latest_version: 1
+  defstruct snapshots: [], latest_version: 1, creation_date: nil
 
   alias Eecrit.VersionedAnimal
   alias Eecrit.VersionedAnimal.Snapshot
@@ -20,7 +20,7 @@ defmodule Eecrit.VersionedAnimal do
 
   alias Eecrit.VersionedAnimal.Private, as: P
   defmodule Private do
-    def snapshot_no_later_than([], date), do: nil
+    def snapshot_no_later_than([], _date), do: nil
 
     def snapshot_no_later_than([x | xs], date) do
       if candidate_is_too_late(x.effective_date, date) do
@@ -66,9 +66,9 @@ defmodule Eecrit.VersionedAnimal do
       |> Snapshot.new
 
     versioned = %VersionedAnimal{
-      original: original,
-      updates: [],
-      latest_version: 1
+      snapshots: [original],
+      latest_version: 1,
+      creation_date: original.creation_date
     }
 
     new_animals = Map.put(animals, new_id, versioned)
@@ -80,7 +80,7 @@ defmodule Eecrit.VersionedAnimal do
     id = updated_params["id"]
     snapshot = Snapshot.new(updated_params)
 
-    with_update_applied = update_in animals[id].updates, fn(snapshots) ->
+    with_update_applied = update_in animals[id].snapshots, fn(snapshots) ->
       P.add_snapshot(snapshots, snapshot)
     end
 
@@ -89,7 +89,9 @@ defmodule Eecrit.VersionedAnimal do
 
   def all(animals, as_of_date) do
     acceptable = fn (candidate) ->
-      P.candidate_exists_as_of_date(candidate.original.effective_date, as_of_date)
+      # Note that all snapshots share the same creation date.
+      creation_date = candidate.creation_date
+      P.candidate_exists_as_of_date(creation_date, as_of_date)
     end
     Map.values(animals)
     |> Enum.filter(acceptable)
@@ -97,9 +99,8 @@ defmodule Eecrit.VersionedAnimal do
   end
 
   def select_snapshot(versioned_animal, as_of_date) do
-    suitable_update =
-      P.snapshot_no_later_than(versioned_animal.updates, as_of_date)
-    snapshot = suitable_update || versioned_animal.original
+    snapshot =
+      P.snapshot_no_later_than(versioned_animal.snapshots, as_of_date)
     Map.put(snapshot, :version, versioned_animal.latest_version)
   end
 end

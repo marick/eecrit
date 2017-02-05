@@ -68,7 +68,12 @@ convertToDate holder =
     (Today, Just date) -> date
     (Today, Nothing) -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
     (At date, _) -> date
-  
+
+todayDate: DateHolder -> Date
+todayDate holder = 
+  case holder.todayForReference of
+    Just date -> date
+    Nothing -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
 
 -- Lenses
 

@@ -56,17 +56,12 @@ update op form model =
             model |> upsertAnimal animal |> noCmd
 
     StartSavingEdits ->
-      case form.originalAnimal of
-        Nothing ->  -- "impossible" 
-          model |> noCmd
-        Just originalAnimal ->
-          let
-            newAnimal =
-              Convert.formToAnimal form
-          in    
-            model
-              |> upsertCheckedForm (form_status.set Css.BeingSaved form)
-              |> addCmd (OutsideWorld.saveAnimal originalAnimal newAnimal)
+      let
+        updatedAnimal = Convert.formToAnimal form
+      in
+        model
+          |> upsertCheckedForm (form_status.set Css.BeingSaved form)
+          |> addCmd (OutsideWorld.saveAnimal updatedAnimal)
 
     CancelCreation ->
       model

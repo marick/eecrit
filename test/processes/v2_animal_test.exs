@@ -114,5 +114,12 @@ defmodule Eecrit.V2AnimalTest do
       assert animal.creation_date == Data.early_middle_date
     end
 
+    test "you can replace an existing animal" do
+      assert 1 == 2
+    end
+
+    test "you can even replace the original" do
+      assert 1 == 2
+    end
   end
 end

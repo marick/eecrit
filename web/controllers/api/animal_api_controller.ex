@@ -29,11 +29,16 @@ defmodule Eecrit.AnimalApiController do
     end
   end
 
-  def update(conn, %{"original" => original, "newAnimal" => updated}) do
+  def update(conn, %{"data" => raw_animal}) do
     # Process.sleep(10000)
-    case AnimalsProcess.update(original, updated) do
-      {:ok, result} ->
-        json conn, wrapper(%{id: result})
+    retval =
+      raw_animal
+      |> animal_from_surface_format
+      |> AnimalsProcess.update
+    
+    case retval do
+      {:ok, id} ->
+        json conn, wrapper(%{id: id})
       _ ->
         json conn, %{error: "Update failed for unknown reasons"}
     end
@@ -44,7 +49,6 @@ defmodule Eecrit.AnimalApiController do
   end
 
   defp animal_from_surface_format(params) do
-    Apex.ap params
     Map.update!(params, "creation_date", &date_from_surface_format/1)
   end
 

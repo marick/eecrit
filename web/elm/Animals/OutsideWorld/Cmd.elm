@@ -30,17 +30,12 @@ fetchAnimals date =
       (handleHtmlResult failureContext (OnAllPage << SetAnimals))
       request
 
-saveAnimal : Animal -> Animal -> Cmd Msg
-saveAnimal original newAnimal =
+saveAnimal : Animal -> Cmd Msg
+saveAnimal animal =
   let
     url = "/api/v2animals/"
     failureContext = "I could not save the animal."
-    originalValue = original |> Json.encodeAnimal
-    newValue = newAnimal |> Json.encodeAnimal
-    body =
-      [("original", originalValue), ("newAnimal", newValue)]
-        |> Json.object
-        |> Http.jsonBody
+    body = animal |> Json.encodeAnimal |> Json.asData |> Http.jsonBody
     request = Http.post url body (Json.withinData Json.decodeSaveResult)
   in
     Http.send (handleHtmlResult failureContext AnimalGotSaved) request

@@ -61,8 +61,8 @@ defmodule Eecrit.AnimalsProcess do
     GenServer.call(pid, [:create, animal])
   end
 
-  def update(original, updated, pid \\ __MODULE__) do 
-    GenServer.call(pid, [:update, original, updated])
+  def update(updated, pid \\ __MODULE__) do 
+    GenServer.call(pid, [:update, updated])
   end
 
   # Behind the scenes
@@ -93,8 +93,7 @@ defmodule Eecrit.AnimalsProcess do
     {:reply, {:ok, new_id}, new_state}
   end
 
-  def handle_call([:update, original, updated],
-                  _from, state) do
+  def handle_call([:update, updated], _from, state) do
     new_state = VersionedAnimal.update(state, updated)
     {:reply, {:ok, updated["id"]}, new_state}
   end

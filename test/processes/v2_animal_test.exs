@@ -1,7 +1,9 @@
+Code.require_file("v2_animal_data.exs", __DIR__)
+
 defmodule Eecrit.V2AnimalTest do
   use ExUnit.Case, async: true
   alias Eecrit.VersionedAnimal
-  alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot
+  alias Eecrit.VersionedAnimal.Snapshot
   alias Eecrit.V2AnimalData, as: Data
   use Timex
 
@@ -13,13 +15,14 @@ defmodule Eecrit.V2AnimalTest do
       assert Map.size(animals) == 1
     end
   end
-  
+
   describe "a fresh animal" do
     setup do 
-      {animals, _} =
-        VersionedAnimal.create(%{},
+      {animals, 1} =
+        VersionedAnimal.create(
+          %{},
           Data.animal_params(%{"creation_date" => Data.middle_date}))
-      {:ok, animals: animals}
+      [animals: animals]
     end
     
     test "what the retrieved animal looks like", %{animals: animals} do
@@ -48,6 +51,82 @@ defmodule Eecrit.V2AnimalTest do
   end
 
   describe "updating an animal" do
+    setup do
+      first = Data.animal_params(%{"creation_date" => Data.early_middle_date})
+      second = Data.animal_params(%{"creation_date" => Data.middle_latest_date, 
+                                    "tags" => ["early", "middle", "tags"],
+                                    "id" => 1
+                                   })
+      
+      {with_first, 1} = VersionedAnimal.create(%{}, first)
+      with_second = VersionedAnimal.update(with_first, second)
+      [animals: with_second]
+    end
+
+    test "all still doesn't return an animal that hasn't been created yet",
+      %{animals: animals} do
+      [] = VersionedAnimal.all(animals, Data.early_date)
+    end
+
+    test "it returns the original if date is before the update", 
+      %{animals: animals} do
+      [animal] = VersionedAnimal.all(animals, Data.early_middle_date)
+      
+      assert animal.id == 1
+      assert animal.creation_date == Data.early_middle_date
+    end
+
+    test "note that the version is always the latest, for optimistic locking",
+      %{animals: animals} do
+        
+      [animal] = VersionedAnimal.all(animals, Data.early_middle_date)
+      assert animal.version == 2  
+    end
+
+    test "or it can return a newer one", 
+      %{animals: animals} do
+      [animal] = VersionedAnimal.all(animals, Data.middle_latest_date)
+      
+      assert animal.id == 1
+      assert animal.version == 2
+      assert animal.creation_date == Data.middle_latest_date
+    end
   end
 
+
+  alias Eecrit.VersionedAnimal.Private, as: P
+  describe "private functions" do
+    test "nothing to select" do
+      assert P.snapshot_no_later_than([], Data.early_date) == nil
+    end
+
+    test "all snapshots in the list are later than the date" do
+      no = Snapshot.new(creation_date: Data.latest_date)
+      assert P.snapshot_no_later_than([no], Data.middle_latest_date) == nil
+    end
+
+    test "finds a snapshot that's just on the date" do
+      yes = Snapshot.new(creation_date: Data.middle_latest_date)
+      assert P.snapshot_no_later_than([yes], Data.middle_latest_date) == yes
+    end
+
+    test "finds a snapshot that's earlier than the date" do
+      yes = Snapshot.new(creation_date: Data.middle_latest_date)
+      assert P.snapshot_no_later_than([yes], Data.latest_date) == yes
+    end
+
+    test "find the MOST RECENT snapshot that's earlier than the date" do
+      earliest = Snapshot.new(creation_date: Data.early_date)
+      middlest = Snapshot.new(creation_date: Data.middle_date)
+      latest = Snapshot.new(creation_date: Data.latest_date)
+
+      list = [latest, middlest, earliest]
+      assert P.snapshot_no_later_than(list, Data.early_date) == earliest
+      assert P.snapshot_no_later_than(list, Data.early_middle_date) == earliest
+      assert P.snapshot_no_later_than(list, Data.middle_date) == middlest
+      assert P.snapshot_no_later_than(list, Data.middle_latest_date) == middlest
+      assert P.snapshot_no_later_than(list, Data.latest_date) == latest
+    end
+    
+  end
 end

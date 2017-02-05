@@ -1,8 +1,12 @@
 defmodule Eecrit.VersionedAnimal do
-  defstruct version: 1, base: nil, deltas: []
+  defstruct original: nil, updates: nil, latest_version: 1
+
+  alias Eecrit.VersionedAnimal
+  alias Eecrit.VersionedAnimal.Snapshot
   
   defmodule Snapshot do
     defstruct id: nil,
+      version: 1, # Set only when snapshot is externalized
       name: nil,
       species: nil,
       tags: [],
@@ -13,105 +17,69 @@ defmodule Eecrit.VersionedAnimal do
     use ExConstructor
   end
 
-  defmodule Delta do
-    defstruct date_of_change: nil,
-      name_change: nil,
-      tag_edits: []
-  end
-
-  alias Private, as: P
+  alias Eecrit.VersionedAnimal.Private, as: P
   defmodule Private do
-    def fresh_snapshot(params, id \\ "irrelevant") do
-      %Snapshot{id: id,
-                name: params["name"],
-                species: params["species"], 
-                tags: params["tags"], 
-                int_properties: params["int_properties"],
-                bool_properties: params["bool_properties"],
-                string_properties: params["string_properties"],
-                creation_date: params["creation_date"]
-      }
-    end
+    def snapshot_no_later_than([], date), do: nil
 
-    def generate_delta(original, new) do
-      name_change = if original.name != new.name, do: new.name
-      tag_edits = List.myers_difference(original.tags, new.tags)
-      
-      %Delta{date_of_change: new.creation_date,
-             name_change: name_change,
-             tag_edits: tag_edits
-      }
-    end
-
-    def construct_tags(edits) do
-      Enum.reduce(edits, [], fn({instruction, value}, acc) ->
-        case instruction do
-          :eq -> acc ++ value    # O(n^2) yay
-          :ins -> acc ++ value
-          _ -> acc
-        end
-      end)
-    end
-
-    def apply_deltas(snapshot, deltas) do
-      apply_name = fn(snapshot, delta) ->
-          if delta.name_change do
-            %{ snapshot | name: delta.name_change }
-          else
-            snapshot
-          end
-        end
-
-      apply_tags = fn(snapshot, delta) ->
-        %{ snapshot | tags: construct_tags(delta.tag_edits) }
+    def snapshot_no_later_than([x | xs], date) do
+      if candidate_is_too_late(x.creation_date, date) do
+        snapshot_no_later_than(xs, date)
+      else
+        x
       end
-
-      Enum.reduce(deltas, snapshot, fn(x, acc) ->
-        acc |> apply_name.(x) |> apply_tags.(x)
-      end)
     end
 
-    def deltas_no_later_than(deltas, date) do
-      acceptable = fn (candidate) ->
-        Date.compare(candidate.date_of_change, date) != :gt
-      end
+    def candidate_is_too_late(candidate, date) do
+      Date.compare(candidate, date) == :gt
+    end
 
-      Enum.filter(deltas, acceptable)
+    def candidate_exists_as_of_date(candidate, date) do
+      Date.compare(candidate, date) != :gt
     end
   end
-  
 
   def create(animals, params) do
     new_id = Map.size(animals) + 1
-    
-    animal = %Eecrit.VersionedAnimal{version: 1,
-                                     base: P.fresh_snapshot(params, new_id),
-                                     deltas: []}
-    new_animals = Map.put(animals, new_id, animal)
+
+    original =
+      params
+      |> Map.merge(%{"id" => new_id})
+      |> Snapshot.new
+
+    versioned = %VersionedAnimal{
+      original: original,
+      updates: [],
+      latest_version: 1
+    }
+
+    new_animals = Map.put(animals, new_id, versioned)
     {new_animals, new_id}
   end
 
 
-  def update(animals, original_params, updated_params) do
-    original = P.fresh_snapshot(original_params)
-    updated = P.fresh_snapshot(updated_params)
-    Map.put(animals, updated.id, updated)
+  def update(animals, updated_params) do
+    id = updated_params["id"]
+
+    with_update_applied = update_in animals[id].updates, fn(updates) ->
+      [ Snapshot.new(updated_params) | updates ]
+    end
+
+    update_in with_update_applied[id].latest_version, &(&1 + 1)
   end
 
   def all(animals, as_of_date) do
     acceptable = fn (candidate) ->
-      Date.compare(candidate.base.creation_date, as_of_date) != :gt
+      P.candidate_exists_as_of_date(candidate.original.creation_date, as_of_date)
     end
-
     Map.values(animals)
     |> Enum.filter(acceptable)
-    |> Enum.map(&export/1)
-  end    
-
-
-  def export(animal) do
-    Map.put(animal.base, :version, animal.version)
+    |> Enum.map(&(select_snapshot(&1, as_of_date)))
   end
 
-
+  def select_snapshot(versioned_animal, as_of_date) do
+    suitable_update =
+      P.snapshot_no_later_than(versioned_animal.updates, as_of_date)
+    snapshot = suitable_update || versioned_animal.original
+    Map.put(snapshot, :version, versioned_animal.latest_version)
+  end
 end

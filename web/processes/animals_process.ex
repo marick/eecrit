@@ -3,7 +3,8 @@ defmodule Eecrit.AnimalsProcess do
   alias Eecrit.VersionedAnimal
   alias Eecrit.VersionedAnimal.Snapshot, as: Snapshot
 
-  @athena %{"name" => "Athena", 
+  @athena %{"name" => "Athena",
+            "version" => "irrelevant",
             "species" => "bovine", 
             "tags" => [ "cow" ],
             "int_properties" => %{},
@@ -13,6 +14,7 @@ defmodule Eecrit.AnimalsProcess do
   }
   
   @jake %{"name" => "Jake", 
+          "version" => "irrelevant",
           "species" => "equine", 
           "tags" => [ "gelding" ],
           "int_properties" => %{},
@@ -22,6 +24,7 @@ defmodule Eecrit.AnimalsProcess do
   }
   
   @ross %{"name" => "ross", 
+          "version" => "irrelevant",
           "species" => "equine", 
           "tags" => [ "stallion", "aggressive" ],
           "int_properties" => %{},
@@ -31,6 +34,7 @@ defmodule Eecrit.AnimalsProcess do
   }
   
   @xena %{"name" => "Xena", 
+          "version" => "irrelevant",
           "species" => "equine", 
           "tags" => [ "mare", "skittish" ],
           "int_properties" => %{},
@@ -40,6 +44,7 @@ defmodule Eecrit.AnimalsProcess do
   }
   
   @newbie %{"name" => "2018", 
+            "version" => "irrelevant",
             "species" =>  "equine", 
             "tags" =>  [ "mare", "skittish" ],
             "int_properties" =>  %{},
@@ -90,7 +95,7 @@ defmodule Eecrit.AnimalsProcess do
 
   def handle_call([:update, original, updated],
                   _from, state) do
-    new_state = VersionedAnimal.update(state, original, updated)
+    new_state = VersionedAnimal.update(state, updated)
     {:reply, {:ok, updated["id"]}, new_state}
   end
 

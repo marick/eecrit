@@ -33,8 +33,26 @@ defmodule Eecrit.VersionedAnimal do
       Date.compare(candidate, date) == :gt
     end
 
+    def candidate_is_at_date(candidate, date) do
+      Date.compare(candidate, date) == :eq
+    end
+
     def candidate_exists_as_of_date(candidate, date) do
       Date.compare(candidate, date) != :gt
+    end
+
+    def add_snapshot(snapshots, new) do
+      compare_by_date = fn(comparator) ->
+        fn(snapshot) -> comparator.(snapshot.creation_date, new.creation_date) end
+      end
+
+      {later, not_later} =
+        snapshots |> Enum.split_while(compare_by_date.(&candidate_is_too_late/2))
+
+      {_at_date, earlier} = 
+        not_later |> Enum.split_while(compare_by_date.(&candidate_is_at_date/2))
+
+      later ++ [new] ++ earlier
     end
   end
 
@@ -59,9 +77,10 @@ defmodule Eecrit.VersionedAnimal do
 
   def update(animals, updated_params) do
     id = updated_params["id"]
+    snapshot = Snapshot.new(updated_params)
 
-    with_update_applied = update_in animals[id].updates, fn(updates) ->
-      [ Snapshot.new(updated_params) | updates ]
+    with_update_applied = update_in animals[id].updates, fn(snapshots) ->
+      P.add_snapshot(snapshots, snapshot)
     end
 
     update_in with_update_applied[id].latest_version, &(&1 + 1)

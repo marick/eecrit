@@ -62,71 +62,57 @@ defmodule Eecrit.V2AnimalTest do
       with_second = VersionedAnimal.update(with_first, second)
       [animals: with_second]
     end
-
+    
     test "all still doesn't return an animal that hasn't been created yet",
       %{animals: animals} do
       [] = VersionedAnimal.all(animals, Data.early_date)
     end
-
+    
     test "it returns the original if date is before the update", 
-      %{animals: animals} do
+    %{animals: animals} do
       [animal] = VersionedAnimal.all(animals, Data.early_middle_date)
       
       assert animal.id == 1
       assert animal.creation_date == Data.early_middle_date
     end
-
+    
     test "note that the version is always the latest, for optimistic locking",
       %{animals: animals} do
-        
+      
       [animal] = VersionedAnimal.all(animals, Data.early_middle_date)
       assert animal.version == 2  
     end
-
+    
     test "or it can return a newer one", 
-      %{animals: animals} do
+    %{animals: animals} do
       [animal] = VersionedAnimal.all(animals, Data.middle_latest_date)
       
       assert animal.id == 1
       assert animal.version == 2
       assert animal.creation_date == Data.middle_latest_date
     end
-  end
-
-
-  alias Eecrit.VersionedAnimal.Private, as: P
-  describe "private functions" do
-    test "nothing to select" do
-      assert P.snapshot_no_later_than([], Data.early_date) == nil
-    end
-
-    test "all snapshots in the list are later than the date" do
-      no = Snapshot.new(creation_date: Data.latest_date)
-      assert P.snapshot_no_later_than([no], Data.middle_latest_date) == nil
-    end
-
-    test "finds a snapshot that's just on the date" do
-      yes = Snapshot.new(creation_date: Data.middle_latest_date)
-      assert P.snapshot_no_later_than([yes], Data.middle_latest_date) == yes
-    end
-
-    test "finds a snapshot that's earlier than the date" do
-      yes = Snapshot.new(creation_date: Data.middle_latest_date)
-      assert P.snapshot_no_later_than([yes], Data.latest_date) == yes
-    end
-
-    test "find the MOST RECENT snapshot that's earlier than the date" do
-      earliest = Snapshot.new(creation_date: Data.early_date)
-      middlest = Snapshot.new(creation_date: Data.middle_date)
-      latest = Snapshot.new(creation_date: Data.latest_date)
-
-      list = [latest, middlest, earliest]
-      assert P.snapshot_no_later_than(list, Data.early_date) == earliest
-      assert P.snapshot_no_later_than(list, Data.early_middle_date) == earliest
-      assert P.snapshot_no_later_than(list, Data.middle_date) == middlest
-      assert P.snapshot_no_later_than(list, Data.middle_latest_date) == middlest
-      assert P.snapshot_no_later_than(list, Data.latest_date) == latest
-    end
     
+    test "updates needn't be applied in order", %{animals: animals} do
+      between = Data.animal_params(%{"creation_date" => Data.middle_date,
+                                     "id" => 1})
+      with_between = VersionedAnimal.update(animals, between)
+
+      [animal] = VersionedAnimal.all(with_between, Data.middle_latest_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.creation_date == Data.middle_latest_date
+
+      [animal] = VersionedAnimal.all(with_between, Data.middle_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.creation_date == Data.middle_date
+
+      
+      [animal] = VersionedAnimal.all(with_between, Data.early_middle_date)
+      assert animal.id == 1
+      assert animal.version == 3
+      assert animal.creation_date == Data.early_middle_date
+    end
+
   end
 end

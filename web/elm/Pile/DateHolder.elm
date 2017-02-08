@@ -6,7 +6,10 @@ module Pile.DateHolder exposing
     
   , startingState
   , choose
-    
+  , chooseToday
+
+  , compare
+  , firstAfterSecond
   , dateHolder_chosen
   , dateHolder_todayForReference
   , dateHolder_datePickerOpen
@@ -74,6 +77,23 @@ todayDate holder =
   case holder.todayForReference of
     Just date -> date
     Nothing -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
+
+chooseToday: DateHolder -> DateHolder
+chooseToday holder =
+  { holder | chosen = Today}
+
+compare: DateHolder -> DateHolder -> Order
+compare one another =
+  let
+    actualOne = convertToDate one
+    actualOther = convertToDate another
+  in
+    Date.compare actualOne actualOther
+         
+    
+firstAfterSecond: DateHolder -> DateHolder -> Bool
+firstAfterSecond first second =
+  (compare first second) == GT
 
 -- Lenses
 

@@ -14,6 +14,7 @@ import Animals.Types.Form as Form exposing (Form)
 import Pile.UpdateHelpers exposing (..)
 import Pile.ConstrainedStrings as Constrained
 import Pile.Css.H as Css
+import Pile.DateHolder as DateHolder
 
 update : AddPageOperation -> Model -> (Model, Cmd Msg)
 update op model = 
@@ -25,9 +26,12 @@ update op model =
       model |> adjustCountString countString |> noCmd
 
     AddFormsForBlankTemplate count species ->
-      model |> addFormsWithIds count (Form.fresh model.effectiveDate species) |> noCmd
-
-        
+      let
+        today = DateHolder.chooseToday model.effectiveDate
+      in
+        model
+          |> addFormsWithIds count (Form.fresh today species)
+          |> noCmd
 addFormsWithIds : Int -> (Id -> Form) -> Model -> Model
 addFormsWithIds count formMaker model = 
   let

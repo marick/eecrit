@@ -24,7 +24,7 @@ view form flash (saveOp, cancelOp) =
         [ Css.controlRow "Name" <| nameEditControl form
         , Css.controlRow "Tags" <| deleteTagControl form
         , Css.controlRow "New Tag" <| newTagControl form
-        , Css.controlRow "Takes effect" <| effectiveDateControl form
+        , Css.controlRow "Created on" <| effectiveDateControl form
         , calendar form
           
         , Css.leftwardSave form.status (WithForm form saveOp)
@@ -43,19 +43,7 @@ calendar : Form -> Html Msg
 calendar form =
   if form.effectiveDate.datePickerOpen then
     span []
-      [ p []
-          [ text """ It's confusing - maybe inherently confusing - to
-                  make changes to an animal in the past when the page
-                  displays animals as of a particular date. Which should
-                  be shown - the animal as of the date of the change?
-                  But what if some of the changes were overridden between
-                  that date and the effective date of the page? And what
-                  if the animal changes are made in the future of the page?
-                  """
-          ]
-
-      , Calendar.view form.effectiveDate (WithForm form << SelectFormDate)
-      ]
+      [ Calendar.view form.effectiveDate (WithForm form << SelectFormDate) ]
   else
     span [] []
 
@@ -96,6 +84,12 @@ deleteTagControl form =
 
 effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
+  case form.originalAnimal of
+    Nothing -> activeDateControl form
+    Just _ -> passiveDateControl form
+
+activeDateControl : Form -> Html Msg
+activeDateControl form =
   let
     toggle = WithForm form ToggleFormDatePicker
     select = WithForm form << SelectFormDate
@@ -110,3 +104,11 @@ effectiveDateControl form =
       |> TextField.kind TextField.plainTextField
       |> TextField.buttonKind (Button.primaryButton buttonText)
       |> TextField.build
+
+passiveDateControl : Form -> Html Msg
+passiveDateControl form =
+  Css.freshValue (DateHolder.enhancedDateString form.effectiveDate)
+    |> TextField.editingEvents Nothing TextField.NeverSubmit
+    |> TextField.kind TextField.plainTextField
+    |> TextField.build
+       

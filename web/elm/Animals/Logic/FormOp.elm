@@ -120,7 +120,7 @@ update op form model =
       let
         newForm = form |> form_effectiveDate_chosen.set (DateHolder.At date)
       in 
-        model |> upsertCheckedForm newForm |> addCmd (OutsideWorld.fetchAnimals date)
+        model |> upsertCheckedForm newForm |> noCmd
 
     NoticeSaveResults ->
       let
@@ -132,16 +132,25 @@ update op form model =
       let
         idDuringCreation = form.id
         displayed = Convert.finishedFormToDisplayed (form_id.set persistedId form)
+        putOnAllPage = 
+          upsertDisplayed displayed
+            >> model_allPageAnimals.update (Set.insert persistedId)
+        removeFromAddPage = 
+          deleteDisplayedById idDuringCreation
+            >> model_addPageAnimals.update (Set.remove idDuringCreation)
       in
-        model
-          |> upsertDisplayed displayed
-          |> model_allPageAnimals.update (Set.insert persistedId)
-
-          |> deleteDisplayedById idDuringCreation
-          |> model_addPageAnimals.update (Set.remove idDuringCreation)
-
-          |> model_pageFlash.set PageFlash.SavedAnimalFlash
-          |> noCmd
+        case DateHolder.firstAfterSecond form.effectiveDate model.effectiveDate of
+          True -> 
+            model
+              |> removeFromAddPage
+              |> model_pageFlash.set PageFlash.SavedAnimalWillNotAppearFlash
+              |> noCmd
+          False ->
+            model
+              |> removeFromAddPage
+              |> putOnAllPage
+              |> model_pageFlash.set PageFlash.SavedAnimalFlash
+              |> noCmd
 
 withSavedForm : Form -> Model -> (Model, Animal)
 withSavedForm form model =

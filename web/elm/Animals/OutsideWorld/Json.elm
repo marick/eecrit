@@ -138,8 +138,6 @@ animalTransferFormat_to_Animal incoming =
 
         dictify unionF data = 
           Dict.map (\_ tuple -> (uncurry unionF) tuple) data
-        _
-          = Debug.log "foo" incoming.creation_date
     in
         { id = toString incoming.id
         , displayFormat = Compact

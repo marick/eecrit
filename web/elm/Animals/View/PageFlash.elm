@@ -14,6 +14,7 @@ import Http
 type PageFlash
   = NoFlash
   | SavedAnimalFlash
+  | SavedAnimalWillNotAppearFlash
   | HttpErrorFlash String Http.Error
 
 show : PageFlash -> Html Msg
@@ -30,6 +31,21 @@ show flash =
             [text "View Animals"]
         , text " page."
         ]
+
+    SavedAnimalWillNotAppearFlash ->
+      Css.flashNotification NoOp
+        [ text """ The new animal is being saved.
+                Because the creation date is later than the date on the 
+                """
+        , a [ href "#"
+            , onClickPreventingDefault <| Navigation.gotoMsg AllPage
+            ]
+            [text "View Animals"]
+        , text """ page, you won't see it there (unless you advance the
+                date on that page). 
+               """
+        ]
+      
 
     HttpErrorFlash contextString err ->
       httpError contextString err

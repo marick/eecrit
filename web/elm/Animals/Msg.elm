@@ -28,7 +28,7 @@ type AddPageOperation
   = SetAddedSpecies Namelike
   | UpdateAddedCount String
   | AddFormsForBlankTemplate Int Namelike
-    
+
 {-| Outside operation leakage -}
 type OutsideLeakageOperation
   = HttpError String Http.Error
@@ -79,5 +79,4 @@ type Msg
   | AnimalGotSaved OutsideWorld.AnimalSaveResults
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
-  | MoreLikeThis Id
-
+  | NewHistoryPage Animal

@@ -22,6 +22,7 @@ toPageChangeCmd page =
         AllPage -> allPagePath
         AddPage -> addPagePath
         HelpPage -> helpPagePath
+        _ -> "TBD"
   in
     Navigation.newUrl url
 

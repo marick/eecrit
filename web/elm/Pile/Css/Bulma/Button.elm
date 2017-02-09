@@ -47,3 +47,5 @@ primaryButton : String -> Events msg -> Html msg
 primaryButton = rawButton "button is-primary" 
 
       
+smallPrimaryButton : String -> Events msg -> Html msg
+smallPrimaryButton = rawButton "button is-primary is-small" 

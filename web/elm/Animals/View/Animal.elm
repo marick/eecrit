@@ -1,10 +1,12 @@
 module Animals.View.Animal exposing (compactView, expandedView)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Basic exposing (..)
 
 import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.Button as Css
 
 import Animals.Msg exposing (..)
 
@@ -34,11 +36,16 @@ expandedView : Animal -> AnimalFlash -> Html Msg
 expandedView animal flash =
     Css.highlightedRow []
       [ td []
-          [ p [] [ animalSalutation animal ]
+          [ p [] [ animalSalutation animal
+                 , text Css.emsp
+                 , Css.smallPrimaryButton
+                     "See History"
+                     { click = Just (NewHistoryPage animal) }
+                 ]
           , p [] (animalTags animal)
           , animalProperties animal |> Css.propertyTable
           , AnimalFlash.showWithButton flash (WithAnimal animal RemoveAnimalFlash)
-          , p [] [ creationDate animal ] 
+          , p [] [ creationDate animal ]
           ]
       , Icon.contract animal Css.tdIcon
       , Icon.edit animal Css.tdIcon

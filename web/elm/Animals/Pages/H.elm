@@ -7,11 +7,16 @@
 
 module Animals.Pages.H exposing (..)
 
+import Animals.Types.Basic exposing (..)
+
 type PageChoice 
   = AllPage
   | AddPage
   | HelpPage
+  | HistoryPage Id
 
+
+    
 allPagePath : String
 allPagePath = "/v2/animals"
 
@@ -21,4 +26,6 @@ addPagePath = "/v2/animals/new"
 helpPagePath : String
 helpPagePath = "/v2/animals/help"
 
+
+               
 

@@ -7,6 +7,7 @@ import Animals.Pages.Navigation as Page
 
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.AnimalHistory as AnimalHistory exposing (History)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.DisplayedCollections as Displayable
@@ -51,6 +52,9 @@ type alias Model =
   , animalsEverAdded : Int -- This is dumb, but probably easiest way to add a
                            --  a guaranteed-unique id in the absence of reliable
                            --  UUIDs. (I don't trust only 32 bits, which is paranoid.)
+  -- HistoryPages
+  , historyPages : Dict Id History
+  , historyOrder : List Id
   }
 
 type alias Flags =
@@ -78,6 +82,10 @@ init flags location =
       , speciesToAdd = "bovine"
       , numberToAdd = Css.freshValue "1"
       , animalsEverAdded = 0
+
+      -- History Pages
+      , historyPages = Dict.empty
+      , historyOrder = []
       }
   in
     ( model,  OutsideWorld.askTodaysDate ) -- Nothing starts until we have a date
@@ -129,7 +137,15 @@ upsertAnimal animal =
 upsertCheckedForm : Form -> Model -> Model 
 upsertCheckedForm form =
   upsertDisplayed (Convert.checkedFormToDisplayed form)
-      
+
+upsertHistoryPage : Id -> History -> Model -> Model
+upsertHistoryPage id history =
+  model_historyPages.update (Dict.insert id history)
+
+placeHistoryInOrder : Id -> Model -> Model
+placeHistoryInOrder id =
+  model_historyOrder.update (\order -> id :: order)
+
 
 -- Boilerplate Lenses
       
@@ -181,3 +197,9 @@ model_speciesToAdd = lens .speciesToAdd (\ p w -> { w | speciesToAdd = p })
 model_numberToAdd : UpdatingLens Model (Css.FormValue String)
 model_numberToAdd = lens .numberToAdd (\ p w -> { w | numberToAdd = p })
 
+model_historyPages : UpdatingLens Model (Dict Id History)
+model_historyPages = lens .historyPages (\ p w -> { w | historyPages = p })
+
+model_historyOrder : UpdatingLens Model (List Id)
+model_historyOrder = lens .historyOrder (\ p w -> { w | historyOrder = p })
+                                          

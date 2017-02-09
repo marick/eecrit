@@ -10,6 +10,7 @@ import Animals.OutsideWorld.Update as OutsideWorld
 
 import Animals.Types.Conversions as Convert
 import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.AnimalHistory as AnimalHistory
 import Animals.Types.DisplayedCollections as Displayable
 
 import Animals.Logic.AnimalOp as AnimalOp
@@ -64,9 +65,17 @@ updateWithClearedPageFlash msg model =
     AnimalGotCreated (OutsideWorld.AnimalCreated tempId realId) ->
       FormOp.forwardToForm tempId (NoticeCreationResults realId) model
 
-    MoreLikeThis id ->
-      model |> noCmd
-          
+    NewHistoryPage animal ->
+      let
+        upsert = upsertHistoryPage animal.id (AnimalHistory.fresh animal)
+        order = placeHistoryInOrder animal.id
+      in
+        case Dict.get animal.id model.historyPages of
+          Nothing ->
+            model |> upsert |> order |> noCmd
+          Just _ ->
+            model |> upsert |> noCmd
+        
     NoOp ->
       model ! []
 

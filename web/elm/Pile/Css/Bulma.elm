@@ -159,7 +159,13 @@ headingP heading =
 
 zeroWidthSpace : String
 zeroWidthSpace = "​" -- this is not an empty string. It's &#8203;
-    
+
+nbsp : String
+nbsp = " "
+
+emsp : String
+emsp = "  "
+       
 emptyHeading : Html msg
 emptyHeading = headingP zeroWidthSpace
 

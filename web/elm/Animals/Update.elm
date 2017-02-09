@@ -19,7 +19,9 @@ import Animals.Logic.DisplayedOp as DisplayedOp
 import Animals.Logic.AllPageOp as AllPageOp
 import Animals.Logic.AddPageOp as AddPageOp
 
+import Animals.Pages.H as Page
 import Animals.Pages.Update as Page
+import Animals.Pages.Navigation as Page
 import Animals.View.PageFlash as PageFlash
 
 import Pile.UpdateHelpers exposing (..)
@@ -67,14 +69,16 @@ updateWithClearedPageFlash msg model =
 
     NewHistoryPage animal ->
       let
-        upsert = upsertHistoryPage animal.id (AnimalHistory.fresh animal)
-        order = placeHistoryInOrder animal.id
+        id = animal.id
+        upsert = upsertHistoryPage id (AnimalHistory.fresh animal)
+        order = placeHistoryInOrder id
+        withCmd = addCmd (Page.toPageChangeCmd (Page.HistoryPage id))
       in
         case Dict.get animal.id model.historyPages of
           Nothing ->
-            model |> upsert |> order |> noCmd
+            model |> upsert |> order |> withCmd
           Just _ ->
-            model |> upsert |> noCmd
+            model |> upsert |> withCmd
         
     NoOp ->
       model ! []

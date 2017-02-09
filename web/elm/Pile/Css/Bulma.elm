@@ -139,15 +139,19 @@ centeredLevelItem content =
   div [class "level-item has-text-centered"]
     content
 
-simpleSelect : List (Html msg) -> Html msg
-simpleSelect content = 
-  span [ class "select" ]
-    [ select [] content ]
-
-disabledSelect : List (Html msg) -> Html msg
-disabledSelect content = 
-  span [ class "select" ]
-    [ select [disabled True] content ]
+simpleSelect tagger options selectedOption =
+  let 
+    textOption (key, word) =
+      option
+        [ value key
+        , selected (key == selectedOption)
+        ]
+        [ text word ]
+  in    
+    span [ class "select" ]
+      [ select [ Events.onInput tagger]
+          (List.map textOption options)
+      ]
 
 headingP : String -> Html msg
 headingP heading = 

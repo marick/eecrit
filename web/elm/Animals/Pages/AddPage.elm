@@ -43,24 +43,13 @@ startFormView model =
 
 speciesView : Model -> Html Msg
 speciesView model =
-  let
-    textOption val display = 
-      option
-      [ value val
-      , Events.onClick <| withArg SetAddedSpecies val
-      ]
-      [ text display ]
-  in
-    Css.centeredLevelItem
-      [ Css.headingP "Species?" 
-      , Css.simpleSelect
-        [ textOption "bovine" "bovine"
-        , textOption "equine" "equine"
-        ]
-      ]
-      
-
-
+  Css.centeredLevelItem
+    [ Css.headingP "Species?" 
+    , Css.simpleSelect
+        (OnAddPage << SetAddedSpecies)
+        [("bovine","bovine"), ("equine", "equine")]
+        model.speciesToAdd
+    ]
         
 countView : Model -> Html Msg
 countView model =

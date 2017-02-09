@@ -142,23 +142,16 @@ tagsFilter model =
 
 speciesFilter : Model -> Html Msg
 speciesFilter model =
-  let 
-    textOption val display = 
-      option
-      [ value val
-      , Events.onClick <| withArg SetSpeciesFilter val
-      ]
-      [ text display ]
-
-  in
-    Css.centeredLevelItem
-      [ Css.headingP "Species" 
-      , Css.simpleSelect
-        [ textOption "" "Any"
-        , textOption "bovine" "bovine"
-        , textOption "equine" "equine"
+  Css.centeredLevelItem
+    [ Css.headingP "Species" 
+    , Css.simpleSelect
+        (OnAllPage << SetSpeciesFilter)
+        [ (" ", "Any")  -- The space works around a possible VirtualDom bug.
+        , ("bovine", "bovine")
+        , ("equine", "equine")
         ]
-      ]
+        (Debug.log "species filter" model.speciesFilter)
+    ]
       
 -- -- Various icons
     

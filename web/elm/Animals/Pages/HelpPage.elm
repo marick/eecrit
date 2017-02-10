@@ -5,4 +5,5 @@ import Pile.Css.Bulma as Css
 
 view : model -> Html msg
 view model =
-  Css.infoMessage "Unfinished" "The help page hasn't been written yet."
+  Css.infoMessage [text "Unfinished"]
+    [ text "The help page hasn't been written yet."]

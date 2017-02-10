@@ -55,16 +55,16 @@ shortenWidth content =
         content
     ] 
 
-message : String -> String -> String -> Html msg
+message : String -> List (Html msg) -> List (Html msg) -> Html msg
 message kind header body =
   shortenWidth
     [ article [class <| "message " ++ kind ]
-        [ div [ class "message-header" ] [ text header ] 
-        , div [ class "message-body"] [ text body ]
+        [ div [ class "message-header" ] header 
+        , div [ class "message-body"] body
         ]
     ]
 
-infoMessage : String -> String -> Html msg
+infoMessage : List (Html msg) -> List (Html msg) -> Html msg
 infoMessage = message "is-info"
 
 type alias IconExpander msg = String -> String -> msg -> Html msg

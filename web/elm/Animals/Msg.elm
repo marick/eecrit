@@ -80,3 +80,4 @@ type Msg
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
   | NewHistoryPage Animal
+  | CloseHistoryPage Id

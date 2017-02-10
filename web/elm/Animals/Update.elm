@@ -79,7 +79,10 @@ updateWithClearedPageFlash msg model =
             model |> upsert |> order |> withCmd
           Just _ ->
             model |> upsert |> withCmd
-        
+
+    CloseHistoryPage id ->
+      model |> noCmd
+              
     NoOp ->
       model ! []
 

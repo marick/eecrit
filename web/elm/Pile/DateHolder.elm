@@ -17,6 +17,7 @@ module Pile.DateHolder exposing
 
 import Date exposing (Date)
 import Date.Extra as Date
+import Pile.Date as Date
 import Pile.UpdatingLens exposing (UpdatingLens, lens)
 import Pile.UpdatingOptional exposing (UpdatingOptional, opt)
 
@@ -57,13 +58,13 @@ enhancedDateString holder =
         Nothing ->
           ""
         Just date ->
-          Date.toFormattedString " (MMM d)" date
+          " (" ++ Date.terse date ++ ")"
   in
     case holder.chosen of
       Today -> 
         "Today" ++ todayIfKnown
       At date ->
-        Date.toFormattedString "MMM d, y" date
+        Date.humane date
 
 convertToDate : DateHolder -> Date
 convertToDate holder =

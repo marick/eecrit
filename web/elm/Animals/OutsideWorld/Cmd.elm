@@ -10,7 +10,7 @@ import Json.Encode as Json
 import Animals.OutsideWorld.Json as Json
 import Animals.Msg exposing (..)
 import Date exposing (Date)
-import Date.Extra as Date
+import Pile.Date as Date
 import Task
 import Http
 
@@ -21,7 +21,7 @@ askTodaysDate =
 fetchAnimals : Date -> Cmd Msg
 fetchAnimals date =
   let
-    compactDate = Date.toFormattedString "yyyy-MM-dd" date
+    compactDate = Date.logical date
     url = "/api/v2animals?date=" ++ compactDate -- TODO: Gotta be a better way.
     failureContext = "I could not retrieve animals."
     request = Http.get url (Json.withinData Json.decodeAnimals)

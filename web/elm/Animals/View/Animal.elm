@@ -7,6 +7,7 @@ import Animals.Types.Basic exposing (..)
 
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Button as Css
+import Pile.Date as Date
 
 import Animals.Msg exposing (..)
 
@@ -15,7 +16,6 @@ import Animals.View.AnimalFlash as AnimalFlash exposing (AnimalFlash)
 
 import Dict
 import List
-import Date.Extra as Date
 
 import Animals.Msg exposing (..)
 
@@ -92,7 +92,7 @@ animalSalutation animal =
   text <| animal.name ++ (parentheticalSpecies animal)
 
 creationDate animal =
-   text <| "Created on " ++ Date.toFormattedString "MMM d, y" animal.creationDate
+   text <| "Created on " ++ Date.humane animal.creationDate
     
 animalTags : Animal -> List (Html Msg)
 animalTags animal =

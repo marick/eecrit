@@ -47,7 +47,7 @@ defmodule Eecrit.V2AnimalPrivateTest do
       assert P.add_snapshot([], only) == [only]
     end
 
-    test "snapshots are keyt in descending sorted order" do
+    test "snapshots are kept in descending sorted order" do
       later = Snapshot.new(effective_date: Data.latest_date)
       early = Snapshot.new(effective_date: Data.early_date)
       middle = Snapshot.new(effective_date: Data.middle_date)

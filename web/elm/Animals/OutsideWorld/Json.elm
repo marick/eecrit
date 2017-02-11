@@ -9,13 +9,14 @@ import Date.Extra as Date
 import Json.Decode as Decode
 import Json.Encode as Encode
 import Json.Decode.Pipeline as Decode
+import Pile.DateHolder as DateHolder exposing (DateHolder)
 
 withinData : Decode.Decoder a -> Decode.Decoder a
 withinData =
   Decode.at ["data"]
 
-asData : Encode.Value -> Encode.Value
-asData v = 
+animalInstructions : DateHolder -> Encode.Value -> Encode.Value
+animalInstructions holder v = 
   Encode.object [("data", v)]    
 
 decodeAnimals : Decode.Decoder (List Animal)
@@ -24,13 +25,28 @@ decodeAnimals =
   
 decodeAnimal : Decode.Decoder Animal 
 decodeAnimal =
-  json_to_AnimalTransferFormat |> Decode.map animalTransferFormat_to_Animal 
+  json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal 
   
-encodeAnimal : Date -> Animal -> Encode.Value
-encodeAnimal effectiveDate animal =
-  animal
-    |> animal_to_animalTransferFormat effectiveDate
-    |> animalTransferFormat_to_json
+encodeOutgoingAnimal : Date -> Animal -> Encode.Value
+encodeOutgoingAnimal effectiveDate animal =
+  let
+    intId = Result.withDefault -1 (String.toInt animal.id)
+    creationDateString = Date.toIsoString animal.creationDate
+    effectiveDateString = Date.toIsoString effectiveDate
+  in
+    Encode.object [ ("id", Encode.int intId)
+                  , ("version", Encode.int animal.version)
+                  , ("name", Encode.string animal.name)
+                  , ("species", Encode.string animal.species)
+                  , ("tags", Encode.list (List.map Encode.string animal.tags))
+                  , ("bool_properties", encodeProperties Encode.bool Dict.empty)
+                  , ("int_properties", encodeProperties Encode.int Dict.empty)
+                  , ("string_properties", encodeProperties Encode.string Dict.empty)
+                  , ("creation_date", Encode.string creationDateString)
+                  , ("effective_date", Encode.string effectiveDateString)
+                  ]
+      
+
 
 decodeSaveResult : Decode.Decoder AnimalSaveResults
 decodeSaveResult =
@@ -58,12 +74,10 @@ decodeCreationResult =
     (to_transferFormat |> Decode.map from_transferFormat)
 
 
-
-
 --- Animal support
 
 
-type alias AnimalTransferFormat =
+type alias AnimalInputFormat =
     { id : Int
     , version : Int
     , name : String
@@ -73,12 +87,11 @@ type alias AnimalTransferFormat =
     , bool_properties : Dict String ( Bool, String )
     , string_properties : Dict String ( String, String )
     , creation_date : String
-    , effective_date : String
     }
 
-json_to_AnimalTransferFormat : Decode.Decoder AnimalTransferFormat
-json_to_AnimalTransferFormat =
-  Decode.decode AnimalTransferFormat
+json_to_AnimalInputFormat : Decode.Decoder AnimalInputFormat
+json_to_AnimalInputFormat =
+  Decode.decode AnimalInputFormat
     |> Decode.required "id" Decode.int
     |> Decode.required "version" Decode.int
     |> Decode.required "name" Decode.string
@@ -90,42 +103,9 @@ json_to_AnimalTransferFormat =
     |> Decode.required "bool_properties" (decodeProperties Decode.bool)
     |> Decode.required "string_properties" (decodeProperties Decode.string)
     |> Decode.required "creation_date" Decode.string
-    -- Grr. Have to do following even though we don't use it.
-    |> Decode.required "effective_date" Decode.string
-
-animalTransferFormat_to_json : AnimalTransferFormat -> Encode.Value
-animalTransferFormat_to_json xfer = 
-  Encode.object [ ("id", Encode.int xfer.id)
-                    , ("version", Encode.int xfer.version)
-                    , ("name", Encode.string xfer.name)
-                    , ("species", Encode.string xfer.species)
-                    , ("tags", Encode.list (List.map Encode.string xfer.tags))
-                    , ("bool_properties", encodeProperties Encode.bool xfer.bool_properties)
-                    , ("int_properties", encodeProperties Encode.int xfer.int_properties)
-                    , ("string_properties", encodeProperties Encode.string xfer.string_properties)
-                    , ("creation_date", Encode.string (xfer.creation_date))
-                    , ("effective_date", Encode.string (xfer.effective_date))
-                    ]
-
-animal_to_animalTransferFormat : Date -> Animal -> AnimalTransferFormat
-animal_to_animalTransferFormat effectiveDate animal =
-  let
-    intId = Result.withDefault -1 (String.toInt animal.id)
-  in
-    { id = intId
-    , version = animal.version
-    , name = animal.name
-    , species = animal.species
-    , tags = animal.tags
-    , bool_properties = Dict.empty
-    , int_properties = Dict.empty
-    , string_properties = Dict.empty
-    , creation_date = Date.toIsoString animal.creationDate
-    , effective_date = Date.toIsoString effectiveDate
-    }
           
-animalTransferFormat_to_Animal : AnimalTransferFormat -> Animal
-animalTransferFormat_to_Animal incoming =
+animalInputFormat_to_Animal : AnimalInputFormat -> Animal
+animalInputFormat_to_Animal incoming =
     let
         properties = combine [ints, bools, strings] 
                      

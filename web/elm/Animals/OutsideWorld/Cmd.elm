@@ -13,6 +13,8 @@ import Date exposing (Date)
 import Pile.Date as Date
 import Task
 import Http
+import Pile.DateHolder as DateHolder exposing (DateHolder)
+
 
 askTodaysDate : Cmd Msg
 askTodaysDate =
@@ -30,28 +32,34 @@ fetchAnimals date =
       (handleHtmlResult failureContext (OnAllPage << SetAnimals))
       request
 
-saveAnimal : Date -> Animal -> Cmd Msg
-saveAnimal date animal =
+saveAnimal : DateHolder -> Animal -> Cmd Msg
+saveAnimal effectiveDate animal =
   let
     url = "/api/v2animals/"
     failureContext = "I could not save the animal."
-    body = animal |> Json.encodeAnimal date |> Json.asData |> Http.jsonBody
+    body = animalInstructions effectiveDate animal
     request = Http.post url body (Json.withinData Json.decodeSaveResult)
   in
     Http.send (handleHtmlResult failureContext AnimalGotSaved) request
 
-createAnimal : Date -> Animal -> Cmd Msg
-createAnimal date animal =
+createAnimal : DateHolder -> Animal -> Cmd Msg
+createAnimal effectiveDate animal =
   let
     url = "/api/v2animals/create/" ++ animal.id
     failureContext = "I could not create the animal."
-    body = animal |> Json.encodeAnimal date |> Json.asData |> Http.jsonBody
+    body = animalInstructions effectiveDate animal
     request = Http.post url body (Json.withinData Json.decodeCreationResult)
   in
     Http.send (handleHtmlResult failureContext AnimalGotCreated) request
 
 -- Private
-      
+
+animalInstructions effectiveDate animal = 
+  animal
+    |> Json.encodeOutgoingAnimal (DateHolder.convertToDate effectiveDate)
+    |> Json.animalInstructions effectiveDate
+    |> Http.jsonBody
+
 handleHtmlResult : String -> (a -> Msg) -> Result Http.Error a -> Msg
 handleHtmlResult failureContext msgMaker result =
   case result of

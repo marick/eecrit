@@ -65,20 +65,18 @@ update op form model =
     StartSavingEdits ->
       let
         updatedAnimal = Convert.formToAnimal form
-        dateChosen = DateHolder.convertToDate form.effectiveDate
       in
         model
           |> upsertCheckedForm (form_status.set Css.BeingSaved form)
-          |> addCmd (OutsideWorld.saveAnimal dateChosen updatedAnimal)
+          |> addCmd (OutsideWorld.saveAnimal form.effectiveDate updatedAnimal)
 
     StartCreating ->
       let
         newAnimal = Convert.formToAnimal form
-        dateChosen = DateHolder.convertToDate form.effectiveDate
       in
         model
           |> upsertCheckedForm (form_status.set Css.BeingSaved form)
-          |> addCmd (OutsideWorld.createAnimal dateChosen newAnimal)
+          |> addCmd (OutsideWorld.createAnimal form.effectiveDate newAnimal)
 
     NameFieldUpdate s ->
       let

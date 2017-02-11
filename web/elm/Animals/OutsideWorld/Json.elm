@@ -16,8 +16,23 @@ withinData =
   Decode.at ["data"]
 
 animalInstructions : DateHolder -> Encode.Value -> Encode.Value
-animalInstructions holder v = 
-  Encode.object [("data", v)]    
+animalInstructions holder v =
+  let
+    effective_date =
+      holder |> DateHolder.convertToDate |> Date.toIsoString |> Encode.string
+    audit_date =
+      holder |> DateHolder.todayDate |> Date.toIsoString |> Encode.string
+        
+    metadata =
+      Encode.object
+        [ ("effective_date", effective_date)
+        , ("audit_date", audit_date)
+        ]
+  in
+    Encode.object
+      [ ("data", v)
+      , ("metadata", metadata)
+      ]    
 
 decodeAnimals : Decode.Decoder (List Animal)
 decodeAnimals =
@@ -27,12 +42,11 @@ decodeAnimal : Decode.Decoder Animal
 decodeAnimal =
   json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal 
   
-encodeOutgoingAnimal : Date -> Animal -> Encode.Value
-encodeOutgoingAnimal effectiveDate animal =
+encodeOutgoingAnimal : Animal -> Encode.Value
+encodeOutgoingAnimal animal =
   let
     intId = Result.withDefault -1 (String.toInt animal.id)
     creationDateString = Date.toIsoString animal.creationDate
-    effectiveDateString = Date.toIsoString effectiveDate
   in
     Encode.object [ ("id", Encode.int intId)
                   , ("version", Encode.int animal.version)
@@ -43,7 +57,6 @@ encodeOutgoingAnimal effectiveDate animal =
                   , ("int_properties", encodeProperties Encode.int Dict.empty)
                   , ("string_properties", encodeProperties Encode.string Dict.empty)
                   , ("creation_date", Encode.string creationDateString)
-                  , ("effective_date", Encode.string effectiveDateString)
                   ]
       
 

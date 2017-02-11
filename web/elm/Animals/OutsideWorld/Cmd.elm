@@ -56,7 +56,7 @@ createAnimal effectiveDate animal =
 
 animalInstructions effectiveDate animal = 
   animal
-    |> Json.encodeOutgoingAnimal (DateHolder.convertToDate effectiveDate)
+    |> Json.encodeOutgoingAnimal
     |> Json.animalInstructions effectiveDate
     |> Http.jsonBody
 

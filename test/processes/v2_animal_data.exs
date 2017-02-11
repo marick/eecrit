@@ -23,6 +23,14 @@ defmodule Eecrit.V2AnimalData do
     Enum.into(overrides, default)
   end
 
+  def metadata_params(overrides \\ %{}) do
+    default = %{"audit_date" => middle_date(),
+                "audit_author" => "marick",
+                "effective_date" => middle_date()
+               }
+    Enum.into(overrides, default)
+  end
+
   def snapshot(overrides \\ []) do
     Enum.reduce(overrides,
       Snapshot.new(animal_params()),

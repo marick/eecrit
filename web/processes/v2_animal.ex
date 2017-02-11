@@ -14,7 +14,10 @@ defmodule Eecrit.VersionedAnimal do
       bool_properties: %{},
       string_properties: %{},
       creation_date: nil,
-      effective_date: nil
+      
+      effective_date: nil,
+      audit_date: nil,
+      audit_author: nil
     use ExConstructor
   end
 
@@ -55,14 +58,18 @@ defmodule Eecrit.VersionedAnimal do
 
       later ++ [new] ++ earlier
     end
+
+    def snapshot_to_history_entry(_snapshot) do
+    end
   end
 
-  def create(animals, params) do
+  def create(animals, animal_params, metadata_params) do
     new_id = Map.size(animals) + 1
 
     original =
-      params
+      animal_params
       |> Map.merge(%{"id" => new_id})
+      |> Map.merge(metadata_params)
       |> Snapshot.new
 
     versioned = %VersionedAnimal{
@@ -76,10 +83,14 @@ defmodule Eecrit.VersionedAnimal do
   end
 
 
-  def update(animals, updated_params) do
+  def update(animals, updated_params, metadata) do
     id = updated_params["id"]
-    snapshot = Snapshot.new(updated_params)
 
+    snapshot = 
+      updated_params
+      |> Map.merge(metadata)
+      |> Snapshot.new
+    
     with_update_applied = update_in animals[id].snapshots, fn(snapshots) ->
       P.add_snapshot(snapshots, snapshot)
     end

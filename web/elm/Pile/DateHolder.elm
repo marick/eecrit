@@ -3,6 +3,7 @@ module Pile.DateHolder exposing
   , DateHolder
   , enhancedDateString
   , convertToDate
+  , todayDate
     
   , startingState
   , choose

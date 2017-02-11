@@ -9,7 +9,9 @@ defmodule Eecrit.V2AnimalTest do
   describe "empty" do 
     test "creation returns id" do
       {animals, id} =
-        VersionedAnimal.create(%{}, Data.animal_params(%{"id" => "not 1"}))
+        VersionedAnimal.create(%{},
+          Data.animal_params(%{"id" => "not 1"}),
+          Data.metadata_params)
       assert id  == 1
       assert Map.size(animals) == 1
     end
@@ -20,8 +22,9 @@ defmodule Eecrit.V2AnimalTest do
       {animals, 1} =
         VersionedAnimal.create(
           %{},
-          Data.animal_params(%{"creation_date" => Data.middle_date,
-                               "effective_date" => Data.middle_date}))
+          Data.animal_params(%{"creation_date" => Data.middle_date}),
+          Data.metadata_params(%{"effective_date" => Data.middle_date}))
+                               
       [animals: animals]
     end
     
@@ -37,6 +40,7 @@ defmodule Eecrit.V2AnimalTest do
       assert animal.bool_properties == Data.animal_params["bool_properties"]
       assert animal.string_properties == Data.animal_params["string_properties"]
       assert animal.creation_date == Data.middle_date
+      assert animal.effective_date == Data.middle_date
     end
 
     test "`all` doesn't return the animal if it hasn't been created yet", %{animals: animals} do
@@ -52,16 +56,16 @@ defmodule Eecrit.V2AnimalTest do
 
   describe "updating an animal" do
     setup do
-      first = Data.animal_params(%{"effective_date" => Data.early_middle_date,
-                                   "creation_date" => Data.early_middle_date,
+      first = Data.animal_params(%{"creation_date" => Data.early_middle_date,
                                    "name" => "early middle"})
-      second = Data.animal_params(%{"effective_date" => Data.middle_latest_date, 
-                                    "name" => "middle latest",
+      metafirst = Data.metadata_params(%{"effective_date" => Data.early_middle_date})
+      second = Data.animal_params(%{"name" => "middle latest",
                                     "id" => 1
                                    })
+      metasecond = Data.metadata_params(%{"effective_date" => Data.middle_latest_date})
       
-      {with_first, 1} = VersionedAnimal.create(%{}, first)
-      with_second = VersionedAnimal.update(with_first, second)
+      {with_first, 1} = VersionedAnimal.create(%{}, first, metafirst)
+      with_second = VersionedAnimal.update(with_first, second, metasecond)
       [animals: with_second]
     end
     
@@ -95,10 +99,10 @@ defmodule Eecrit.V2AnimalTest do
     end
     
     test "updates needn't be applied in order", %{animals: animals} do
-      between = Data.animal_params(%{"effective_date" => Data.middle_date,
-                                     "name" => "middle",
+      between = Data.animal_params(%{"name" => "middle",
                                      "id" => 1})
-      with_between = VersionedAnimal.update(animals, between)
+      metabetween = Data.metadata_params(%{"effective_date" => Data.middle_date})
+      with_between = VersionedAnimal.update(animals, between, metabetween)
 
       [animal] = VersionedAnimal.all(with_between, Data.middle_latest_date)
       assert animal.id == 1
@@ -117,10 +121,10 @@ defmodule Eecrit.V2AnimalTest do
     end
 
     test "you can replace an existing snapshot", %{animals: animals} do
-      changed = Data.animal_params(%{"effective_date" => Data.middle_latest_date,
-                                     "name" => "NEW MIDDLE CHANGED",
+      changed = Data.animal_params(%{"name" => "NEW MIDDLE CHANGED",
                                      "id" => 1})
-      with_changed = VersionedAnimal.update(animals, changed)
+      metachanged = Data.metadata_params(%{"effective_date" => Data.middle_latest_date})
+      with_changed = VersionedAnimal.update(animals, changed, metachanged)
 
       [animal] = VersionedAnimal.all(with_changed, Data.middle_latest_date)
       assert animal.id == 1
@@ -134,10 +138,10 @@ defmodule Eecrit.V2AnimalTest do
     end
 
     test "you can even replace the original", %{animals: animals} do
-      changed = Data.animal_params(%{"effective_date" => Data.early_middle_date,
-                                     "name" => "NEW START",
+      changed = Data.animal_params(%{"name" => "NEW START",
                                      "id" => 1})
-      with_changed = VersionedAnimal.update(animals, changed)
+      metachanged = Data.metadata_params(%{"effective_date" => Data.early_middle_date})
+      with_changed = VersionedAnimal.update(animals, changed, metachanged)
 
       [animal] = VersionedAnimal.all(with_changed, Data.early_middle_date)
       assert animal.id == 1

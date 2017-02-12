@@ -106,7 +106,109 @@ defmodule Eecrit.V2AnimalPrivateTest do
       assert result == [later, replacer, early]
 
     end
-    
   end
-  
+
+  describe "converting an initial snapshot into a history entry" do
+    test "it contains the initial name" do
+      snapshot = Data.snapshot(name: "name")
+      result = P.snapshot_to_history_entry(snapshot)
+      assert result[:name_change] == snapshot.name
+    end
+
+    test "it shows all tags as additions" do
+      snapshot = Data.snapshot(tags: ["1", "2"])
+      result = P.snapshot_to_history_entry(snapshot)
+      assert result[:new_tags] == snapshot.tags
+    end
+    
+    test "there are no deletions" do
+      snapshot = Data.snapshot
+      result = P.snapshot_to_history_entry(snapshot)
+      assert result[:deleted_tags] == []
+    end
+
+    test "the effective date is included" do
+      snapshot = Data.snapshot(effective_date: Data.middle_date)
+      result = P.snapshot_to_history_entry(snapshot)
+      assert result[:effective_date] == snapshot.effective_date
+    end
+
+    test "audit data is included" do
+      snapshot = Data.snapshot(audit_date: Data.middle_date, audit_author: "m")
+      result = P.snapshot_to_history_entry(snapshot)
+      assert result[:audit_stamp] == %{audit_date: snapshot.audit_date,
+                                       audit_author: snapshot.audit_author}
+    end
+  end
+
+  describe "diffing snapshots" do
+    test "names can differ" do 
+      one = Data.snapshot(name: "one")
+      two = Data.snapshot(name: "two")
+      
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:name_change] == two.name
+    end
+    
+    test "... or names can be unchanged" do 
+      one = Data.snapshot(name: "same")
+      two = Data.snapshot(name: "same")
+      
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:name_change] == nil
+    end
+
+    test "tags will often be unchanged" do
+      one = Data.snapshot(tags: ["a"])
+      two = Data.snapshot(tags: ["a"])
+
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:new_tags] == [] 
+      assert result[:deleted_tags] == []
+    end
+
+    test "tags can be added" do
+      one = Data.snapshot(tags: ["c"])
+      two = Data.snapshot(tags: ["z", "m", "c", "a", "f"])
+
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:new_tags] == ["z", "m", "a", "f"] 
+      assert result[:deleted_tags] == []
+    end
+
+    test "tags can be removed" do
+      one = Data.snapshot(tags: ["c", "d"])
+      two = Data.snapshot(tags: ["c"])
+
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:new_tags] == [] 
+      assert result[:deleted_tags] == ["d"]
+    end
+
+    test "... or both" do
+      one = Data.snapshot(tags: ["c", "d"])
+      two = Data.snapshot(tags: ["c", "e"])
+
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:new_tags] == ["e"] 
+      assert result[:deleted_tags] == ["d"]
+    end
+
+
+    test "the effective date of the diff is that of the second snapshot" do
+      one = Data.snapshot(effective_date: Data.early_date)
+      two = Data.snapshot(effective_date: Data.middle_date)
+
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:effective_date] == Data.middle_date
+    end
+
+    test "ditto for the audit material" do
+      one = Data.snapshot(audit_date: Data.early_date, audit_author: "early")
+      two = Data.snapshot(audit_date: Data.middle_date, audit_author: "later")
+      result = P.snapshot_diffs_to_history_entry(one, two)
+      assert result[:audit_stamp] == %{audit_date: two.audit_date,
+                                       audit_author: two.audit_author}
+    end
+  end
 end

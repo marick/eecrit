@@ -59,7 +59,39 @@ defmodule Eecrit.VersionedAnimal do
       later ++ [new] ++ earlier
     end
 
-    def snapshot_to_history_entry(_snapshot) do
+    def select_snapshot(versioned_animal, as_of_date) do
+      snapshot =
+        snapshot_no_later_than(versioned_animal.snapshots, as_of_date)
+      Map.put(snapshot, :version, versioned_animal.latest_version)
+    end
+    
+    def snapshot_to_history_entry(snapshot) do
+      %{name_change: snapshot.name,
+        new_tags: snapshot.tags,
+        deleted_tags: [],
+        effective_date: snapshot.effective_date,
+        audit_stamp: %{audit_date: snapshot.audit_date,
+                       audit_author: snapshot.audit_author
+        }
+      }
+    end
+
+
+    def snapshot_diffs_to_history_entry(one, two) do
+      edit = List.myers_difference(one.tags, two.tags)
+
+      new_tags = Keyword.get_values(edit, :ins) |> Enum.concat
+      deleted_tags = Keyword.get_values(edit, :del) |> Enum.concat
+
+      name_change = if one.name != two.name, do: two.name
+
+      %{name_change: name_change,
+        new_tags: new_tags,
+        deleted_tags: deleted_tags,
+        effective_date: two.effective_date,
+        audit_stamp: %{audit_date: two.audit_date,
+                       audit_author: two.audit_author}
+      }
     end
   end
 
@@ -106,12 +138,17 @@ defmodule Eecrit.VersionedAnimal do
     end
     Map.values(animals)
     |> Enum.filter(acceptable)
-    |> Enum.map(&(select_snapshot(&1, as_of_date)))
+    |> Enum.map(&(P.select_snapshot(&1, as_of_date)))
   end
 
-  def select_snapshot(versioned_animal, as_of_date) do
-    snapshot =
-      P.snapshot_no_later_than(versioned_animal.snapshots, as_of_date)
-    Map.put(snapshot, :version, versioned_animal.latest_version)
+  def history(versioned_animal) do
+    [initial | deltas] = snapshots = Enum.reverse(versioned_animal.snapshots)
+    first_history = P.snapshot_to_history_entry(initial)
+    rest_history =
+      Enum.zip(snapshots, deltas)
+      |> Enum.map(fn {one, two} -> P.snapshot_diffs_to_history_entry(one, two) end)
+    
+    [first_history | rest_history]
   end
+
 end

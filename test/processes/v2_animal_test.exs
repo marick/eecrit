@@ -155,4 +155,65 @@ defmodule Eecrit.V2AnimalTest do
       assert animal.name == "middle latest"
     end
   end
+
+  describe "fetching an animal history" do
+    setup do
+      first = Data.animal_params(%{"creation_date" => Data.early_date,
+                                   "name" => "first name",
+                                   "tags" => ["first"]})
+      metafirst = Data.metadata_params(%{"effective_date" => Data.early_date,
+                                         "audit_date" => Data.early_date,
+                                         "audit_author" => "person"})
+
+      second = Data.animal_params(%{"name" => "second name",
+                                    "tags" => ["first", "second"],
+                                    "id" => 1
+                                   })
+      metasecond = Data.metadata_params(%{"effective_date" => Data.middle_latest_date,
+                                          "audit_date" => Data.middle_date,
+                                          "audit_author" => "new person"})
+
+      # Note that this is slotted *before* the second.
+      third = Data.animal_params(%{"name" => first["name"],
+                                   "tags" => ["first", "third"],
+                                   "id" => 1,
+                                   })
+      metathird = Data.metadata_params(%{"effective_date" => Data.middle_date,
+                                         "audit_date" => Data.latest_date
+                                        })
+
+      {with_first, 1} = VersionedAnimal.create(%{}, first, metafirst)
+      animals =
+        with_first
+        |> VersionedAnimal.update(second, metasecond)
+        |> VersionedAnimal.update(third, metathird)
+        
+      [animal: animals[1]]
+    end
+
+    test "complete value", %{animal: animal} do
+      [one, two, three] = VersionedAnimal.history(animal)
+
+      assert one.name_change == "first name"
+      assert one.new_tags == ["first"]
+      assert one.deleted_tags == []
+      assert one.effective_date == Data.early_date
+      assert one.audit_stamp.audit_date == Data.early_date
+      assert one.audit_stamp.audit_author == "person"
+
+      # Note that this comes from difference between "first" and "third" above.
+      assert two.name_change == nil
+      assert two.new_tags == ["third"]
+      assert two.deleted_tags == []
+      assert two.effective_date == Data.middle_date
+      assert two.audit_stamp.audit_date == Data.latest_date
+
+      assert three.name_change == "second name"
+      assert three.new_tags == ["second"]
+      assert three.deleted_tags == ["third"]
+      assert three.effective_date == Data.middle_latest_date
+      assert three.audit_stamp.audit_date == Data.middle_date
+    end
+  end
+  
 end

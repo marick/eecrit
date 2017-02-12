@@ -2,9 +2,10 @@ module Animals.Msg exposing (..)
 
 import Animals.Pages.H exposing (PageChoice)
 import Animals.OutsideWorld.H as OutsideWorld
+import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
-import Animals.Types.Basic exposing (..)
+import Animals.Types.AnimalHistory as AnimalHistory
 import Date exposing (Date)
 import Navigation
 import Pile.Namelike exposing (Namelike)
@@ -28,6 +29,10 @@ type AddPageOperation
   = SetAddedSpecies Namelike
   | UpdateAddedCount String
   | AddFormsForBlankTemplate Int Namelike
+
+type HistoryPageOperation
+  = SetHistory (List AnimalHistory.Entry)
+  | CloseHistoryPage
 
 {-| Outside operation leakage -}
 type OutsideLeakageOperation
@@ -70,6 +75,8 @@ type Msg
   | Incoming OutsideLeakageOperation 
   | OnAllPage AllPageOperation
   | OnAddPage AddPageOperation
+  | OnHistoryPage Id HistoryPageOperation
+    
   | WithAnimal Animal.Animal AnimalOperation
   | WithForm Form FormOperation
   | WithDisplayedId Id DisplayedOperation
@@ -80,4 +87,3 @@ type Msg
   | AnimalGotCreated OutsideWorld.AnimalCreationResults
 
   | NewHistoryPage Animal
-  | CloseHistoryPage Id

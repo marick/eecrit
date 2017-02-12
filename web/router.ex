@@ -96,5 +96,6 @@ defmodule Eecrit.Router do
     post "/v2animals/create/:original_id", AnimalApiController, :create
     get "/v2animals", AnimalApiController, :index
     post "/v2animals", AnimalApiController, :update
+    get "/v2animals/:id/history", AnimalApiController, :history
   end
 end

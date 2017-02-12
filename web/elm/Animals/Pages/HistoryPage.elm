@@ -1,5 +1,8 @@
 module Animals.Pages.HistoryPage exposing (..)
 
+import Animals.Msg exposing (..)
+import Animals.Model exposing (Model)
+
 import Animals.Pages.H exposing (PageChoice(..))
 import Animals.Pages.Navigation as Navigation
 import Html exposing (..)
@@ -12,34 +15,21 @@ import Date.Extra as Date
 import Pile.HtmlShorthand exposing (..)
 import Animals.Types.Basic exposing (..)
 import Animals.Types.AnimalHistory as AnimalHistory
-import Animals.Msg exposing (..)
+import Dict
 
-sample =
-  { id = "irrelevant"
-  , name = "irrelevant"
-  , entries =
-      [ { audit = {author = "dmorin", date = Date.fromCalendarDate 2016 Date.Dec 12 }
-        , effectiveDate = Date.fromCalendarDate 2017 Date.Jan 1
-        , nameChange = Just "bossie"
-        , newTags = [ "foo", "bar" ]
-        , deletedTags = []
-        }
-      , { audit = {author = "smith", date = Date.fromCalendarDate 2017 Date.Feb 6 }
-        , effectiveDate = Date.fromCalendarDate 2017 Date.Feb 6
-        , nameChange = Nothing
-        , newTags = [ ]
-        , deletedTags = ["foo"]
-        }
-      ]
-  }
-
-view : Id -> model -> Html Msg
+view : Id -> Model -> Html Msg
 view id model =
-  div []
-    [ controls id
-    , historyTable sample
-    , updateWarning
-    ]
+  case Dict.get id model.historyPages of
+    Nothing ->
+      div [] [ text "A supposedly impossible error happened. Boo!"
+             , text <| "Could not find animal with id " ++ toString id
+             ] -- TODO: more
+    Just history -> 
+      div []
+        [ controls id
+        , historyTable history
+        , updateWarning
+        ]
 
 
 controls id =
@@ -62,7 +52,7 @@ pageHelp iconType =
 
 pageCloseButton id =
   a [ class "button is-danger"
-    , onClickPreventingDefault (CloseHistoryPage id)
+    , onClickPreventingDefault (OnHistoryPage id CloseHistoryPage)
     ]
     [ span [] [ text "Close tab" ] 
     , span [class "icon is-small"] [i [class "fa fa-times"] []]
@@ -74,7 +64,7 @@ historyTable history =
   table [class "table is-striped is-narrow"]
     [ thead []
         [ tr []
-           [ th [] [text "Date"]
+           [ th [] [text "Effective date"]
            , th [] [text "Name"]
            , th [] [text "New tags"]
            , th [] [text "Removed tags"]

@@ -198,21 +198,21 @@ defmodule Eecrit.V2AnimalTest do
       assert one.new_tags == ["first"]
       assert one.deleted_tags == []
       assert one.effective_date == Data.early_date
-      assert one.audit_stamp.audit_date == Data.early_date
-      assert one.audit_stamp.audit_author == "person"
+      assert one.audit_date == Data.early_date
+      assert one.audit_author == "person"
 
       # Note that this comes from difference between "first" and "third" above.
       assert two.name_change == nil
       assert two.new_tags == ["third"]
       assert two.deleted_tags == []
       assert two.effective_date == Data.middle_date
-      assert two.audit_stamp.audit_date == Data.latest_date
+      assert two.audit_date == Data.latest_date
 
       assert three.name_change == "second name"
       assert three.new_tags == ["second"]
       assert three.deleted_tags == ["third"]
       assert three.effective_date == Data.middle_latest_date
-      assert three.audit_stamp.audit_date == Data.middle_date
+      assert three.audit_date == Data.middle_date
     end
   end
   

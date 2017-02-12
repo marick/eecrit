@@ -18,6 +18,7 @@ import Animals.Logic.FormOp as FormOp
 import Animals.Logic.DisplayedOp as DisplayedOp
 import Animals.Logic.AllPageOp as AllPageOp
 import Animals.Logic.AddPageOp as AddPageOp
+import Animals.Logic.HistoryPageOp as HistoryPageOp
 
 import Animals.Pages.H as Page
 import Animals.Pages.Update as Page
@@ -36,12 +37,15 @@ update msg model =
 
 updateWithClearedPageFlash : Msg -> Model -> ( Model, Cmd Msg )
 updateWithClearedPageFlash msg model =
-  case msg of
+  case Debug.log "msg" msg of
     OnAllPage op ->
       AllPageOp.update op model
     
     OnAddPage op ->
       AddPageOp.update op model
+
+    OnHistoryPage id op ->
+      HistoryPageOp.forwardToPageOp id op model
     
     WithAnimal animal op ->
       AnimalOp.update op animal model
@@ -72,7 +76,8 @@ updateWithClearedPageFlash msg model =
         id = animal.id
         upsert = upsertHistoryPage id (AnimalHistory.fresh animal)
         order = placeHistoryInOrder id
-        withCmd = addCmd (Page.toPageChangeCmd (Page.HistoryPage id))
+        withCmd = addCmds [ Page.toPageChangeCmd (Page.HistoryPage id)
+                          , OutsideWorld.animalHistory id animal.name ]
       in
         case Dict.get animal.id model.historyPages of
           Nothing ->
@@ -80,9 +85,6 @@ updateWithClearedPageFlash msg model =
           Just _ ->
             model |> upsert |> withCmd
 
-    CloseHistoryPage id ->
-      model |> noCmd
-              
     NoOp ->
       model ! []
 

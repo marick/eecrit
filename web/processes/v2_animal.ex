@@ -70,9 +70,8 @@ defmodule Eecrit.VersionedAnimal do
         new_tags: snapshot.tags,
         deleted_tags: [],
         effective_date: snapshot.effective_date,
-        audit_stamp: %{audit_date: snapshot.audit_date,
-                       audit_author: snapshot.audit_author
-        }
+        audit_date: snapshot.audit_date,
+        audit_author: snapshot.audit_author,
       }
     end
 
@@ -89,8 +88,8 @@ defmodule Eecrit.VersionedAnimal do
         new_tags: new_tags,
         deleted_tags: deleted_tags,
         effective_date: two.effective_date,
-        audit_stamp: %{audit_date: two.audit_date,
-                       audit_author: two.audit_author}
+        audit_date: two.audit_date,
+        audit_author: two.audit_author
       }
     end
   end

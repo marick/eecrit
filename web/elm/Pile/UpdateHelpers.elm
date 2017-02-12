@@ -12,3 +12,9 @@ addCmd : Cmd msg -> model -> (model, Cmd msg)
 addCmd cmd model =
  (model, cmd)
 
+{-| Given a list of commands and a model, create a `(model, batched-cmds)`.
+-}
+addCmds : List (Cmd msg) -> model -> (model, Cmd msg)
+addCmds cmds model =
+ addCmd (Cmd.batch cmds) model
+

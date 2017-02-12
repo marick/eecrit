@@ -136,8 +136,8 @@ defmodule Eecrit.V2AnimalPrivateTest do
     test "audit data is included" do
       snapshot = Data.snapshot(audit_date: Data.middle_date, audit_author: "m")
       result = P.snapshot_to_history_entry(snapshot)
-      assert result[:audit_stamp] == %{audit_date: snapshot.audit_date,
-                                       audit_author: snapshot.audit_author}
+      assert result[:audit_date] == snapshot.audit_date
+      assert result[:audit_author] == snapshot.audit_author
     end
   end
 
@@ -207,8 +207,8 @@ defmodule Eecrit.V2AnimalPrivateTest do
       one = Data.snapshot(audit_date: Data.early_date, audit_author: "early")
       two = Data.snapshot(audit_date: Data.middle_date, audit_author: "later")
       result = P.snapshot_diffs_to_history_entry(one, two)
-      assert result[:audit_stamp] == %{audit_date: two.audit_date,
-                                       audit_author: two.audit_author}
+      assert result[:audit_date] == two.audit_date
+      assert result[:audit_author] == two.audit_author
     end
   end
 end

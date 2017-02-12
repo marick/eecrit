@@ -1,10 +1,12 @@
 module Animals.OutsideWorld.Cmd exposing
   ( fetchAnimals
+  , animalHistory
   , askTodaysDate
   , saveAnimal
   , createAnimal
   )
 
+import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Json.Encode as Json
 import Animals.OutsideWorld.Json as Json
@@ -14,6 +16,7 @@ import Pile.Date as Date
 import Task
 import Http
 import Pile.DateHolder as DateHolder exposing (DateHolder)
+import Pile.Namelike as Namelike exposing (Namelike)
 
 
 askTodaysDate : Cmd Msg
@@ -51,6 +54,17 @@ createAnimal effectiveDate animal =
     request = Http.post url body (Json.withinData Json.decodeCreationResult)
   in
     Http.send (handleHtmlResult failureContext AnimalGotCreated) request
+
+animalHistory : Id -> Namelike -> Cmd Msg
+animalHistory id name = 
+  let
+    url = "/api/v2animals/" ++ id ++ "/history"
+    failureContext = "I could not retrieve the history for animal " ++ name ++ "."
+    request = Http.get url (Json.withinData Json.decodeHistory)
+  in
+    Http.send
+      (handleHtmlResult failureContext (OnHistoryPage id << SetHistory))
+      request
 
 -- Private
 

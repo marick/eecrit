@@ -2,6 +2,7 @@ module Animals.OutsideWorld.Json exposing (..)
 
 import Animals.Types.Animal exposing (..)
 import Animals.Types.Basic exposing (..)
+import Animals.Types.AnimalHistory as AnimalHistory
 import Animals.OutsideWorld.H exposing (..)
 import Dict exposing (Dict)
 import Date exposing (Date)
@@ -40,7 +41,17 @@ decodeAnimals =
   
 decodeAnimal : Decode.Decoder Animal 
 decodeAnimal =
-  json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal 
+  json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal
+
+
+decodeHistory : Decode.Decoder (List AnimalHistory.Entry)
+decodeHistory =
+  Decode.list decodeHistoryEntry
+
+decodeHistoryEntry : Decode.Decoder AnimalHistory.Entry
+decodeHistoryEntry =
+  json_to_HistoryEntryInputFormat |> Decode.map historyEntryInputFormat_to_Entry
+    
   
 encodeOutgoingAnimal : Animal -> Encode.Value
 encodeOutgoingAnimal animal =
@@ -86,6 +97,38 @@ decodeCreationResult =
   in
     (to_transferFormat |> Decode.map from_transferFormat)
 
+
+--- History entries
+
+type alias HistoryEntryInputFormat =
+    { name_change : Maybe String
+    , new_tags : List String
+    , deleted_tags : List String
+    , effective_date : String
+    , audit_date : String
+    , audit_author : String
+    }
+
+json_to_HistoryEntryInputFormat : Decode.Decoder HistoryEntryInputFormat
+json_to_HistoryEntryInputFormat =
+  Decode.decode HistoryEntryInputFormat
+    |> Decode.required "name_change" (Decode.nullable Decode.string)
+    |> Decode.required "new_tags" (Decode.list Decode.string)
+    |> Decode.required "deleted_tags" (Decode.list Decode.string)
+    |> Decode.required "effective_date" (Decode.string)
+    |> Decode.required "audit_date" Decode.string
+    |> Decode.required "audit_author" Decode.string
+          
+historyEntryInputFormat_to_Entry : HistoryEntryInputFormat -> AnimalHistory.Entry
+historyEntryInputFormat_to_Entry incoming = 
+  { nameChange = incoming.name_change
+  , newTags = incoming.new_tags
+  , deletedTags = incoming.deleted_tags
+  , effectiveDate = fromIsoString incoming.effective_date
+  , audit = { author = incoming.audit_author
+            , date = fromIsoString incoming.audit_date
+            }
+  }
 
 --- Animal support
 

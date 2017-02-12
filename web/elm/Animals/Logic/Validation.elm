@@ -27,6 +27,7 @@ import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike exposing (Namelike)
 import Animals.Types.Lenses exposing (..)
+import Set
 
 animalNames : Dict Id Displayed -> List String
 animalNames displayables =
@@ -36,16 +37,14 @@ animalNames displayables =
     |> List.filter Namelike.isPresent
 
 
-context : Dict Id Displayed -> Maybe Animal -> Form.ValidationContext 
-context displayables origin =
+context : Dict Id Displayed -> List Namelike -> Form.ValidationContext 
+context displayables notDuplicates =
   let
-    augment xs =
-      case origin of
-        Nothing -> xs
-        Just animal -> xs |> List.remove animal.name
+    nameSet = animalNames displayables |> Set.fromList
+    safeSet = notDuplicates |> Set.fromList
+    disallowedSet = Set.diff nameSet safeSet
   in
-    { disallowedNames =
-        animalNames displayables |> augment
+    { disallowedNames = Set.toList disallowedSet
     }
 
 forceValid : Form -> Form 

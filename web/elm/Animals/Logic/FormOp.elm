@@ -26,6 +26,7 @@ import Pile.DateHolder as DateHolder exposing (DateHolder)
 
 import Set exposing (Set)
 import List.Extra as List
+import Maybe.Extra as Maybe
 
 
 forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)
@@ -80,10 +81,12 @@ update op form model =
 
     NameFieldUpdate s ->
       let
+        notDuplicates =
+          Maybe.values [ Maybe.map .name form.originalAnimal, Just form.name.value ]
         newForm =
           form
             |> form_name.set (Css.freshValue s)
-            |> Validation.validate (Validation.context model.displayables form.originalAnimal)
+            |> Validation.validate (Validation.context model.displayables notDuplicates)
       in
         model |> upsertCheckedForm newForm |> noCmd
 

@@ -47,6 +47,17 @@ defmodule Eecrit.AnimalApiController do
     end
   end
 
+  def history(conn, %{"id" => idstring}) do
+    retval = AnimalsProcess.history(String.to_integer(idstring))
+    
+    case retval do
+      {:ok, history} ->
+        json conn, wrapper(history)
+      _ ->
+        json conn, %{error: "Update failed for unknown reasons"}
+    end
+  end
+  
   defp date_from_surface_format(date_string) do
     date_string |> Timex.parse!("{ISO:Extended}") |> Timex.to_date
   end

@@ -84,6 +84,10 @@ defmodule Eecrit.AnimalsProcess do
     GenServer.call(pid, [:all, date])
   end
 
+  def history(id, pid \\ __MODULE__) do
+    GenServer.call(pid, [:history, id])
+  end
+
   def create(animal, metadata, pid \\ __MODULE__) do 
     GenServer.call(pid, [:create, animal, metadata])
   end
@@ -129,6 +133,11 @@ defmodule Eecrit.AnimalsProcess do
   def handle_call([:all, as_of_date], _from, state) do
     animals = VersionedAnimal.all(state, as_of_date)
     {:reply, animals, state}
+  end
+
+  def handle_call([:history, animal_id], _from, state) do
+    history = VersionedAnimal.history(state[animal_id])
+    {:reply, {:ok, history}, state}
   end
 
   # Util

@@ -52,7 +52,7 @@ effectiveDate model =
         [ p [class "has-text-centered"]
             [ span [class "control"]
                 [ text (DateHolder.enhancedDateString model.effectiveDate) ]
-            , specialistButton "Change" { click = Just (withoutArg ToggleDatePicker) }
+            , specialistButton "Change" { click = Just (withoutArg OpenDatePicker) }
             ]
         ]
     ]

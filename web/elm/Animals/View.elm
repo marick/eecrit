@@ -61,10 +61,11 @@ modal model =
   if model.effectiveDate.datePickerOpen then
     let
       body = [ warning
-             , Calendar.view model.effectiveDate (OnAllPage << SelectDate)
+             , Calendar.view model.effectiveDate (OnAllPage << CalendarClick)
              ]
     in
-      Just <| Css.modal "Change the Date" body (OnAllPage ToggleDatePicker)
+      Just <| Css.modal "Change the Date" body
+        (OnAllPage SaveCalendarDate) (OnAllPage DiscardCalendarDate)
   else
     Nothing
 

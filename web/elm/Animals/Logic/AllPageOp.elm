@@ -16,14 +16,37 @@ import Set exposing (Set)
 update : AllPageOperation -> Model -> (Model, Cmd Msg)
 update op model = 
   case op of
-    ToggleDatePicker ->
-      model |> model_datePickerOpen.update not |> noCmd
-    SelectDate date ->
+    OpenDatePicker ->
+      let
+        startingPickerDate =
+          DateHolder.convertToDate model.effectiveDate
+      in 
+        model
+          |> model_datePickerOpen.set True
+          |> model_datePickerState.set (DateHolder.PickerOpen startingPickerDate)
+          |> noCmd
+
+    CalendarClick date ->
       model
-        |> model_effectiveDate.update (DateHolder.choose date)
-        -- erase page now to give faster feedback.
-        |> erasePage
-        |> addCmd (OutsideWorld.fetchAnimals date)
+        |> model_datePickerState.set (DateHolder.PickerOpen date)
+        |> noCmd
+           
+    SaveCalendarDate ->
+      let 
+        newEffectiveDate =
+          DateHolder.destructivelyChooseCalendarDate model.effectiveDate
+        rawDate =
+          DateHolder.convertToDate newEffectiveDate
+      in 
+        model
+          |> model_effectiveDate.set newEffectiveDate
+          |> model_datePickerOpen.set False
+          -- erase page now to give faster feedback.
+          |> erasePage
+          |> addCmd (OutsideWorld.fetchAnimals rawDate)
+             
+    DiscardCalendarDate ->
+      model |> model_datePickerOpen.set False |> noCmd
       
     SetAnimals animals ->
       model

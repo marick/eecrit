@@ -1,12 +1,14 @@
 module Pile.DateHolder exposing
   ( DisplayDate(..)
   , DateHolder
+  , DatePickerState(..)
   , enhancedDateString
   , convertToDate
   , todayDate
     
   , startingState
   , choose
+  , destructivelyChooseCalendarDate
   , chooseToday
 
   , compare
@@ -14,6 +16,7 @@ module Pile.DateHolder exposing
   , dateHolder_chosen
   , dateHolder_todayForReference
   , dateHolder_datePickerOpen
+  , dateHolder_pickerState
   )
 
 import Date exposing (Date)
@@ -27,10 +30,15 @@ type DisplayDate
   = Today
   | At Date
 
+type DatePickerState
+  = PickerOpen Date
+  | PickerClosed
+
 type alias DateHolder =
   { chosen : DisplayDate
   , todayForReference : Maybe Date
   , datePickerOpen : Bool
+  , pickerState : DatePickerState
   }
 
 startingState : DateHolder
@@ -38,6 +46,7 @@ startingState =
   { chosen = Today
   , todayForReference = Nothing -- It needs to be fetched from outside world
   , datePickerOpen = False
+  , pickerState = PickerClosed
   }
 
 -- If the chosen date is today, so note.
@@ -50,6 +59,16 @@ choose date holder =
         _ -> At date
   in 
      dateHolder_chosen.set displayDate holder
+
+
+destructivelyChooseCalendarDate : DateHolder -> DateHolder
+destructivelyChooseCalendarDate holder = 
+  case holder.pickerState of
+    PickerClosed ->
+      holder |> dateHolder_pickerState.set PickerClosed
+    PickerOpen date ->
+      holder |> choose date |> dateHolder_pickerState.set PickerClosed
+        
   
 enhancedDateString : DateHolder -> String
 enhancedDateString holder =
@@ -108,4 +127,7 @@ dateHolder_todayForReference =
 
 dateHolder_datePickerOpen : UpdatingLens DateHolder Bool
 dateHolder_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p })
+
+dateHolder_pickerState : UpdatingLens DateHolder DatePickerState
+dateHolder_pickerState = lens .pickerState (\ p w -> { w | pickerState = p })
 

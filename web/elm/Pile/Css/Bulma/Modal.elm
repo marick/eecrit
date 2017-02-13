@@ -8,19 +8,19 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import Pile.HtmlShorthand exposing (..)
 
-modal : String -> List (Html msg) -> msg -> Html msg
-modal title body closeMsg =
+modal : String -> List (Html msg) -> msg -> msg -> Html msg
+modal title body saveMsg cancelMsg =
   div [class "modal is-active"]
     [ div [class "modal-background"] []
     , div [class "modal-card" ]
       [ header [class "modal-card-head"]
           [ p [class "modal-card-title"] [text title]
-          , xCancel closeMsg
+          , xCancel cancelMsg
           ]
       , section [class "modal-card-body"] body
       , footer [class "modal-card-foot"]
-        [ save closeMsg
-        , cancel closeMsg
+        [ save saveMsg
+        , cancel cancelMsg
         ]
       ]
     ]

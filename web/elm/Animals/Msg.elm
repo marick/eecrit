@@ -17,8 +17,11 @@ type NavigationOperation
   | StartChange PageChoice
 
 type AllPageOperation
-  = ToggleDatePicker
-  | SelectDate Date
+  = OpenDatePicker
+  | CalendarClick Date
+  | SaveCalendarDate
+  | DiscardCalendarDate 
+
   | SetAnimals (List Animal)
 
   | SetNameFilter String

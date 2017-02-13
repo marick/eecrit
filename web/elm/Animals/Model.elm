@@ -179,6 +179,9 @@ model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 model_datePickerOpen : UpdatingLens Model Bool
 model_datePickerOpen = Lens.compose model_effectiveDate DateHolder.dateHolder_datePickerOpen
 
+model_datePickerState : UpdatingLens Model DateHolder.DatePickerState
+model_datePickerState = Lens.compose model_effectiveDate DateHolder.dateHolder_pickerState
+
 model_effectiveDate_chosen : UpdatingLens Model DisplayDate
 model_effectiveDate_chosen = Lens.compose model_effectiveDate DateHolder.dateHolder_chosen
 

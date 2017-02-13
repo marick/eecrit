@@ -62,7 +62,9 @@ type FormOperation
   | TentativeTagUpdate String
   | CreateNewTag
   | DeleteTag String
-  | ToggleFormDatePicker
+    
+  | OpenFormDatePicker
+  | CloseFormDatePicker
   | SelectFormDate Date
 
 {-| A subtype of Msg. Always used as `WithDisplayedId <Id> <submsg>` -}

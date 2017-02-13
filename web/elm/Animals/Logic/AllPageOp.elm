@@ -22,13 +22,12 @@ update op model =
           DateHolder.convertToDate model.effectiveDate
       in 
         model
-          |> model_datePickerOpen.set True
-          |> model_datePickerState.set (DateHolder.PickerOpen startingPickerDate)
+          |> model_datePickerState.set (DateHolder.ModalPickerOpen startingPickerDate)
           |> noCmd
 
     CalendarClick date ->
       model
-        |> model_datePickerState.set (DateHolder.PickerOpen date)
+        |> model_datePickerState.set (DateHolder.ModalPickerOpen date)
         |> noCmd
            
     SaveCalendarDate ->
@@ -40,13 +39,12 @@ update op model =
       in 
         model
           |> model_effectiveDate.set newEffectiveDate
-          |> model_datePickerOpen.set False
           -- erase page now to give faster feedback.
           |> erasePage
           |> addCmd (OutsideWorld.fetchAnimals rawDate)
              
     DiscardCalendarDate ->
-      model |> model_datePickerOpen.set False |> noCmd
+      model |> model_datePickerState.set DateHolder.PickerClosed |> noCmd
       
     SetAnimals animals ->
       model

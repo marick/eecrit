@@ -176,9 +176,6 @@ model_nameFilter = lens .nameFilter (\ p w -> { w | nameFilter = p })
 model_effectiveDate : UpdatingLens Model DateHolder
 model_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 
-model_datePickerOpen : UpdatingLens Model Bool
-model_datePickerOpen = Lens.compose model_effectiveDate DateHolder.dateHolder_datePickerOpen
-
 model_datePickerState : UpdatingLens Model DateHolder.DatePickerState
 model_datePickerState = Lens.compose model_effectiveDate DateHolder.dateHolder_pickerState
 

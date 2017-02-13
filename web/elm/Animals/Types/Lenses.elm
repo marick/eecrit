@@ -85,8 +85,8 @@ form_intendedVersion = lens .intendedVersion (\ p w -> { w | intendedVersion = p
 form_effectiveDate : UpdatingLens Form DateHolder
 form_effectiveDate = lens .effectiveDate (\ p w -> { w | effectiveDate = p })
 
-form_datePickerOpen : UpdatingLens Form Bool
-form_datePickerOpen = Lens.compose form_effectiveDate DateHolder.dateHolder_datePickerOpen
+form_datePickerState : UpdatingLens Form DateHolder.DatePickerState
+form_datePickerState = Lens.compose form_effectiveDate DateHolder.dateHolder_pickerState
 
 form_effectiveDate_chosen : UpdatingLens Form DisplayDate
 form_effectiveDate_chosen = Lens.compose form_effectiveDate DateHolder.dateHolder_chosen

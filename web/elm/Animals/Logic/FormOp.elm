@@ -111,9 +111,15 @@ update op form model =
       in
         model |> upsertCheckedForm newForm |> noCmd
 
-    ToggleFormDatePicker ->
+    OpenFormDatePicker ->
       let
-        newForm = form |> form_datePickerOpen.update not
+        newForm = form |> form_datePickerState.set DateHolder.PickerOpen
+      in
+        model |> upsertCheckedForm newForm |> noCmd
+
+    CloseFormDatePicker ->
+      let
+        newForm = form |> form_datePickerState.set DateHolder.PickerClosed
       in
         model |> upsertCheckedForm newForm |> noCmd
 

@@ -13,10 +13,11 @@ import Animals.Pages.HistoryPage as HistoryPage
 
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Modal as Css
+import Pile.Calendar as Calendar
+import Pile.DateHolder as DateHolder
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Maybe.Extra as Maybe
-import Pile.Calendar as Calendar
 import Dict
 
 view : Model -> Html Msg
@@ -58,7 +59,7 @@ page model  =
     HistoryPage id -> HistoryPage.view id model
 
 modal model =
-  if model.effectiveDate.datePickerOpen then
+  if DateHolder.datePickerOpen model.effectiveDate then
     let
       body = [ warning
              , Calendar.view model.effectiveDate (OnAllPage << CalendarClick)

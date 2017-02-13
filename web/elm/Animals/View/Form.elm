@@ -41,7 +41,7 @@ view form flash (saveOp, cancelOp) =
 
 calendar : Form -> Html Msg
 calendar form =
-  if form.effectiveDate.datePickerOpen then
+  if DateHolder.datePickerOpen form.effectiveDate then
     span []
       [ Calendar.view form.effectiveDate (WithForm form << SelectFormDate) ]
   else
@@ -91,15 +91,15 @@ effectiveDateControl form =
 activeDateControl : Form -> Html Msg
 activeDateControl form =
   let
-    toggle = WithForm form ToggleFormDatePicker
+    (buttonMsg, buttonText) =
+      case DateHolder.datePickerOpen form.effectiveDate of
+        True -> (WithForm form CloseFormDatePicker, "Close Calendar")
+        False -> (WithForm form OpenFormDatePicker, "Change")
+      
     select = WithForm form << SelectFormDate
-    buttonText =
-      case form.effectiveDate.datePickerOpen of
-        True -> "Close Calendar"
-        False -> "Change"
   in
     Css.freshValue (DateHolder.enhancedDateString form.effectiveDate)
-      |> TextField.editingEvents Nothing (TextField.ClickSubmits toggle)
+      |> TextField.editingEvents Nothing (TextField.ClickSubmits buttonMsg)
       |> TextField.eventsObeyForm form
       |> TextField.kind TextField.plainTextField
       |> TextField.buttonKind (Button.primaryButton buttonText)

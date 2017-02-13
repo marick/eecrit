@@ -10,12 +10,12 @@ module Pile.DateHolder exposing
   , choose
   , destructivelyChooseCalendarDate
   , chooseToday
+  , datePickerOpen
 
   , compare
   , firstAfterSecond
   , dateHolder_chosen
   , dateHolder_todayForReference
-  , dateHolder_datePickerOpen
   , dateHolder_pickerState
   )
 
@@ -31,21 +31,26 @@ type DisplayDate
   | At Date
 
 type DatePickerState
-  = PickerOpen Date
+  -- The holder stashes the date until it replaces the chosen date.
+  = ModalPickerOpen Date
+  -- Changes to the selected date must update the effective date immediately.
+  | PickerOpen
   | PickerClosed
+
 
 type alias DateHolder =
   { chosen : DisplayDate
   , todayForReference : Maybe Date
-  , datePickerOpen : Bool
   , pickerState : DatePickerState
   }
+
+datePickerOpen holder =
+  holder.pickerState /= PickerClosed
 
 startingState : DateHolder
 startingState = 
   { chosen = Today
   , todayForReference = Nothing -- It needs to be fetched from outside world
-  , datePickerOpen = False
   , pickerState = PickerClosed
   }
 
@@ -62,12 +67,17 @@ choose date holder =
 
 
 destructivelyChooseCalendarDate : DateHolder -> DateHolder
-destructivelyChooseCalendarDate holder = 
-  case holder.pickerState of
-    PickerClosed ->
-      holder |> dateHolder_pickerState.set PickerClosed
-    PickerOpen date ->
-      holder |> choose date |> dateHolder_pickerState.set PickerClosed
+destructivelyChooseCalendarDate holder =
+  let
+    close = dateHolder_pickerState.set PickerClosed
+  in
+    case holder.pickerState of
+      PickerClosed ->
+        close holder
+      PickerOpen ->
+        close holder
+      ModalPickerOpen date ->
+        holder |> choose date |> close
         
   
 enhancedDateString : DateHolder -> String
@@ -124,9 +134,6 @@ dateHolder_chosen = lens .chosen (\ p w -> { w | chosen = p })
 dateHolder_todayForReference : UpdatingOptional DateHolder Date
 dateHolder_todayForReference =
   opt .todayForReference (\ p w -> { w | todayForReference = Just p })
-
-dateHolder_datePickerOpen : UpdatingLens DateHolder Bool
-dateHolder_datePickerOpen = lens .datePickerOpen (\ p w -> { w | datePickerOpen = p })
 
 dateHolder_pickerState : UpdatingLens DateHolder DatePickerState
 dateHolder_pickerState = lens .pickerState (\ p w -> { w | pickerState = p })

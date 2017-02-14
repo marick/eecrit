@@ -32,7 +32,8 @@ view model =
     div [] (Maybe.values parts)
 
 -- Private
-      
+
+tabs : Model -> Html Msg
 tabs model =
   Css.tabs model.page
     ([ (AllPage, "View Animals", Navigation.gotoMsg AllPage)
@@ -40,6 +41,7 @@ tabs model =
     , (HelpPage, "Help", Navigation.gotoMsg HelpPage)
     ] ++ historyPages model)
 
+historyPages : Model -> List (PageChoice, String, Msg)    
 historyPages model =
   model.historyOrder
     |> List.map ((flip Dict.get) model.historyPages)
@@ -51,6 +53,7 @@ historyPages model =
                    )
                 )
 
+page : Model -> Html Msg
 page model  = 
   case model.page of
     AllPage -> AllPage.view model
@@ -58,6 +61,7 @@ page model  =
     HelpPage -> HelpPage.view model
     HistoryPage id -> HistoryPage.view id model
 
+modal : Model -> Maybe (Html Msg)                      
 modal model =
   if DateHolder.datePickerOpen model.effectiveDate then
     let
@@ -73,6 +77,7 @@ modal model =
     Nothing
 
 
+warning : Html msg
 warning =
   p []
     [ span [class "icon is-danger"] [i [class "fa fa-exclamation-triangle"] []]

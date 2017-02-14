@@ -3,18 +3,19 @@ module Animals.Pages.HistoryPage exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
 
-import Animals.Pages.H exposing (PageChoice(..))
-import Animals.Pages.Navigation as Navigation
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Pile.Css.Bulma as Css
-import Pile.Css.Bulma.Button as Css
-import Date
-import Pile.Date as Date
-import Date.Extra as Date
-import Pile.HtmlShorthand exposing (..)
 import Animals.Types.Basic exposing (..)
 import Animals.Types.AnimalHistory as AnimalHistory
+
+import Animals.Pages.H exposing (PageChoice(..))
+import Animals.Pages.Navigation as Navigation
+
+import Pile.Css.Bulma as Css
+import Pile.Css.Bulma.Button as Css
+import Pile.Date as Date
+import Pile.HtmlShorthand exposing (..)
+
+import Html exposing (..)
+import Html.Attributes exposing (..)
 import Dict
 
 view : Id -> Model -> Html Msg
@@ -31,7 +32,7 @@ view id model =
         , updateWarning
         ]
 
-
+controls : Id -> Html Msg
 controls id =
   Css.centeredColumns
     [ Css.column 11
@@ -47,9 +48,12 @@ controls id =
         ]
     ]
 
+    
+pageHelp : Css.IconExpander Msg -> Html Msg
 pageHelp iconType = 
   iconType "fa-question-circle" "Help for this page" NoOp
 
+pageCloseButton : Id -> Html Msg    
 pageCloseButton id =
   a [ class "button is-danger"
     , onClickPreventingDefault (OnHistoryPage id CloseHistoryPage)
@@ -59,7 +63,7 @@ pageCloseButton id =
     ]
 
 
-
+historyTable : AnimalHistory.History -> Html Msg
 historyTable history =
   table [class "table is-striped is-narrow"]
     [ thead []
@@ -75,6 +79,7 @@ historyTable history =
         (List.map historyRow history.entries)
     ]
 
+historyRow : AnimalHistory.Entry -> Html Msg
 historyRow entry =
   let
     dash = hr [style [("width", "50%")]] []
@@ -104,6 +109,7 @@ historyRow entry =
       ]
       
     
+updateWarning : Html Msg
 updateWarning =
   div [class "card"]
     [ header [class "card-header"]

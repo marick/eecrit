@@ -139,6 +139,7 @@ centeredLevelItem content =
   div [class "level-item has-text-centered"]
     content
 
+simpleSelect : (String -> msg) -> List ( String, String ) -> String -> Html msg
 simpleSelect tagger options selectedOption =
   let 
     textOption (key, word) =

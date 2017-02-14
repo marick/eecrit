@@ -1,7 +1,6 @@
 module Animals.View.Animal exposing (compactView, expandedView)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Basic exposing (..)
 
@@ -91,6 +90,7 @@ animalSalutation : Animal -> Html msg
 animalSalutation animal =
   text <| animal.name ++ (parentheticalSpecies animal)
 
+creationDate : Animal -> Html msg    
 creationDate animal =
    text <| "Created on " ++ Date.humane animal.creationDate
     

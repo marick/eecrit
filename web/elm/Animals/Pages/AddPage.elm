@@ -13,8 +13,6 @@ import Pile.Css.Bulma.TextField as TextField
 import Pile.Css.Bulma.Button as Button
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events as Events
 
 view : Model -> Html Msg
 view model =

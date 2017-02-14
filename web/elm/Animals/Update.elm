@@ -2,16 +2,12 @@ module Animals.Update exposing (..)
 
 import Animals.Model exposing (..)
 import Animals.Msg exposing (..)
-import Animals.Types.Lenses exposing (..)
 
 import Animals.OutsideWorld.H as OutsideWorld
 import Animals.OutsideWorld.Cmd as OutsideWorld
 import Animals.OutsideWorld.Update as OutsideWorld
 
-import Animals.Types.Conversions as Convert
-import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.AnimalHistory as AnimalHistory
-import Animals.Types.DisplayedCollections as Displayable
 
 import Animals.Logic.AnimalOp as AnimalOp
 import Animals.Logic.FormOp as FormOp
@@ -27,8 +23,6 @@ import Animals.View.PageFlash as PageFlash
 
 import Pile.UpdateHelpers exposing (..)
 
-import List
-import Set
 import Dict
 
 update : Msg -> Model -> ( Model, Cmd Msg )

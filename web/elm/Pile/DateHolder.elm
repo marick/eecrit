@@ -45,6 +45,7 @@ type alias DateHolder =
   , pickerState : DatePickerState
   }
 
+datePickerOpen : DateHolder -> Bool  
 datePickerOpen holder =
   holder.pickerState /= PickerClosed
 

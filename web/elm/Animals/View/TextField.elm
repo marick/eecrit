@@ -25,6 +25,7 @@ type alias Events msg =
   , submit : Maybe msg
   }
 
+noEvents : Events msg  
 noEvents =   
   { typing = Nothing
   , enter = Nothing

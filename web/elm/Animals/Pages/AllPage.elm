@@ -10,11 +10,9 @@ import Animals.Model exposing (Model)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events as Events
 import Pile.Css.Bulma as Css
 import Pile.Css.Bulma.Button as Css
 import Pile.Namelike as Namelike exposing (Namelike)
-import Pile.Calendar as Calendar
 import Pile.DateHolder as DateHolder
 
 view : Model -> Html Msg

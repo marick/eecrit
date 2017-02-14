@@ -1,8 +1,6 @@
 module Pile.Calendar exposing ( view )
 
 import Html exposing (Html, div)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
 import Date exposing (Date)
 import Date.Extra as Date
 import DateSelector
@@ -24,6 +22,7 @@ view chosenDate pickMsg =
 
 -- Util
          
+calendarParams : Date -> { max : Date, min : Date, selected : Date }
 calendarParams chosenDate =
   { min = (bound (-) chosenDate)
   , max = (bound (+) chosenDate)

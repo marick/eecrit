@@ -15,7 +15,6 @@ import Pile.Calendar as Calendar
 import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 
 view : Form -> AnimalFlash -> (FormOperation, FormOperation) -> Html Msg
 view form flash (saveOp, cancelOp) =

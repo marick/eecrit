@@ -9,19 +9,22 @@ import Animals.Pages.H exposing (..)
 
 import Navigation
 import String
-import Dict
 import Maybe.Extra as Maybe
-import Tuple
 
+defaultPath : String
 defaultPath = "/v2/animals"
+
+defaultPage : PageChoice
 defaultPage = AllPage
 
+constants : List ( String, PageChoice )
 constants =
   [ (defaultPath, defaultPage)
   ]
 
 -- So annoying you can't use type values as Dict keys
 
+convertPath : String -> Maybe PageChoice
 convertPath from =
   case from of
     "/v2/animals" -> Just AllPage
@@ -29,6 +32,7 @@ convertPath from =
     "/v2/animals/help" -> Just HelpPage
     _ -> Nothing
                      
+convertChoice : PageChoice -> Maybe String
 convertChoice from =
   case from of
     AllPage -> Just "/v2/animals"
@@ -36,6 +40,7 @@ convertChoice from =
     HelpPage -> Just "/v2/animals/help"
     _ -> Nothing
 
+parsePath : String -> Maybe PageChoice
 parsePath from =
   case String.split "/" from of
     ["", "v2", "animals", id, "history"] ->
@@ -43,6 +48,7 @@ parsePath from =
     _ ->
       Nothing
 
+unparseChoice : PageChoice -> Maybe String
 unparseChoice choice =
   case choice of
     HistoryPage id ->

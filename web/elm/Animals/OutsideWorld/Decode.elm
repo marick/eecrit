@@ -1,4 +1,4 @@
-module Animals.OutsideWorld.Json exposing (..)
+module Animals.OutsideWorld.Decode exposing (..)
 
 import Animals.Types.Animal exposing (..)
 import Animals.Types.Basic exposing (..)
@@ -7,73 +7,26 @@ import Animals.OutsideWorld.H exposing (..)
 import Dict exposing (Dict)
 import Date exposing (Date)
 import Date.Extra as Date
-import Json.Decode as Decode
-import Json.Encode as Encode
+import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
-import Pile.DateHolder as DateHolder exposing (DateHolder)
 
-withinData : Decode.Decoder a -> Decode.Decoder a
+--- Aggregates
+
+withinData : Decoder a -> Decoder a
 withinData =
   Decode.at ["data"]
 
-animalInstructions : DateHolder -> Encode.Value -> Encode.Value
-animalInstructions holder v =
-  let
-    effective_date =
-      holder |> DateHolder.convertToDate |> Date.toIsoString |> Encode.string
-    audit_date =
-      holder |> DateHolder.todayDate |> Date.toIsoString |> Encode.string
-        
-    metadata =
-      Encode.object
-        [ ("effective_date", effective_date)
-        , ("audit_date", audit_date)
-        ]
-  in
-    Encode.object
-      [ ("data", v)
-      , ("metadata", metadata)
-      ]    
-
-decodeAnimals : Decode.Decoder (List Animal)
-decodeAnimals =
-  Decode.list decodeAnimal
+animals : Decoder (List Animal)
+animals =
+  Decode.list animal
   
-decodeAnimal : Decode.Decoder Animal 
-decodeAnimal =
-  json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal
+history : Decoder (List AnimalHistory.Entry)
+history =
+  Decode.list historyEntry
 
-
-decodeHistory : Decode.Decoder (List AnimalHistory.Entry)
-decodeHistory =
-  Decode.list decodeHistoryEntry
-
-decodeHistoryEntry : Decode.Decoder AnimalHistory.Entry
-decodeHistoryEntry =
-  json_to_HistoryEntryInputFormat |> Decode.map historyEntryInputFormat_to_Entry
     
-  
-encodeOutgoingAnimal : Animal -> Encode.Value
-encodeOutgoingAnimal animal =
-  let
-    intId = Result.withDefault -1 (String.toInt animal.id)
-    creationDateString = Date.toIsoString animal.creationDate
-  in
-    Encode.object [ ("id", Encode.int intId)
-                  , ("version", Encode.int animal.version)
-                  , ("name", Encode.string animal.name)
-                  , ("species", Encode.string animal.species)
-                  , ("tags", Encode.list (List.map Encode.string animal.tags))
-                  , ("bool_properties", encodeProperties Encode.bool Dict.empty)
-                  , ("int_properties", encodeProperties Encode.int Dict.empty)
-                  , ("string_properties", encodeProperties Encode.string Dict.empty)
-                  , ("creation_date", Encode.string creationDateString)
-                  ]
-      
-
-
-decodeSaveResult : Decode.Decoder AnimalSaveResults
-decodeSaveResult =
+saveResponse : Decoder AnimalSaveResults
+saveResponse =
   let 
     to_transferFormat =
       (Decode.field "id" Decode.int)
@@ -84,8 +37,8 @@ decodeSaveResult =
     (to_transferFormat |> Decode.map from_transferFormat)
 
 
-decodeCreationResult : Decode.Decoder AnimalCreationResults
-decodeCreationResult =
+creationResponse : Decoder AnimalCreationResults
+creationResponse =
   let 
     to_transferFormat =
       (Decode.map2 (,)
@@ -100,6 +53,11 @@ decodeCreationResult =
 
 --- History entries
 
+historyEntry : Decoder AnimalHistory.Entry
+historyEntry =
+  json_to_HistoryEntryInputFormat |> Decode.map historyEntryInputFormat_to_Entry
+    
+  
 type alias HistoryEntryInputFormat =
     { name_change : Maybe String
     , new_tags : List String
@@ -109,7 +67,7 @@ type alias HistoryEntryInputFormat =
     , audit_author : String
     }
 
-json_to_HistoryEntryInputFormat : Decode.Decoder HistoryEntryInputFormat
+json_to_HistoryEntryInputFormat : Decoder HistoryEntryInputFormat
 json_to_HistoryEntryInputFormat =
   Decode.decode HistoryEntryInputFormat
     |> Decode.required "name_change" (Decode.nullable Decode.string)
@@ -130,7 +88,11 @@ historyEntryInputFormat_to_Entry incoming =
             }
   }
 
---- Animal support
+--- Animal 
+
+animal : Decoder Animal 
+animal =
+  json_to_AnimalInputFormat |> Decode.map animalInputFormat_to_Animal
 
 
 type alias AnimalInputFormat =
@@ -145,7 +107,7 @@ type alias AnimalInputFormat =
     , creation_date : String
     }
 
-json_to_AnimalInputFormat : Decode.Decoder AnimalInputFormat
+json_to_AnimalInputFormat : Decoder AnimalInputFormat
 json_to_AnimalInputFormat =
   Decode.decode AnimalInputFormat
     |> Decode.required "id" Decode.int
@@ -185,29 +147,17 @@ animalInputFormat_to_Animal incoming =
         , creationDate = fromIsoString incoming.creation_date
         }
 
+--- Util      
 
+fromIsoString : String -> Date
 fromIsoString s = 
   case Date.fromIsoString s of
     Just date -> date
     Nothing -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
 
---- Util      
       
-decodeProperties : Decode.Decoder t -> Decode.Decoder (Dict String (t, String))
+decodeProperties : Decoder t -> Decoder (Dict String (t, String))
 decodeProperties valueDecoder =
   Decode.dict (Decode.map2 (,)
                  (Decode.index 0 valueDecoder)
                  (Decode.index 1 Decode.string))
-
-encodeProperties : (t -> Encode.Value) ->
-                   Dict String (t, String) -> Encode.Value
-encodeProperties valueEncoder =
-  let 
-    encodeKV (k, (v, comment)) =
-      (k, Encode.list [ valueEncoder v, Encode.string comment ])
-  in
-    Dict.toList >> List.map encodeKV >> Encode.object 
-
-
-
-      

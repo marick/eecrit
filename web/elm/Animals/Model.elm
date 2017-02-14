@@ -10,14 +10,12 @@ import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.AnimalHistory as AnimalHistory exposing (History)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
-import Animals.Types.DisplayedCollections as Displayable
 import Animals.Types.Conversions as Convert 
 import Animals.Types.Lenses exposing (..)
 import Animals.View.PageFlash as PageFlash exposing (PageFlash)
 
 import Animals.OutsideWorld.Cmd as OutsideWorld
 
-import Pile.Calendar as Calendar 
 import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
 import Pile.UpdatingLens as Lens exposing (UpdatingLens, lens)
 import Pile.UpdatingOptional as Optional exposing (UpdatingOptional, opt)

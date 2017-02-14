@@ -18,15 +18,15 @@ as well as the animal names. (Consider the case where two names are being
 edited at the same time, with various sequencings of Saves.)
 -}
 
-import Dict exposing (Dict)
-import List.Extra as List
 import Animals.Types.Basic exposing (..)
-import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.Lenses exposing (..)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+
 import Pile.Css.H as Css
 import Pile.Namelike as Namelike exposing (Namelike)
-import Animals.Types.Lenses exposing (..)
+
+import Dict exposing (Dict)
 import Set
 
 animalNames : Dict Id Displayed -> List String

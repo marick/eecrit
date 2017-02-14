@@ -1,9 +1,5 @@
 module Pile.Css.Bulma.Modal exposing (..)
 
-import Pile.Css.H exposing (..)
-import Pile.Css.Bulma.Util as Util
-import Pile.Css.Bulma as Bulma
-
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Pile.HtmlShorthand exposing (..)
@@ -25,6 +21,7 @@ modal title body saveMsg cancelMsg =
       ]
     ]
     
+save : msg -> Html msg
 save msg =
   a [ class "button is-success pull-left"
     , onClickPreventingDefault msg

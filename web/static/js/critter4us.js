@@ -20884,16 +20884,16 @@ var _user$project$Pile_UpdatingOptional$UpdatingOptional = F3(
 		return {getOption: a, set: b, maybeUpdate: c};
 	});
 
-var _user$project$Pile_DateHolder$dateHolder_datePickerOpen = A2(
+var _user$project$Pile_DateHolder$dateHolder_pickerState = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
-		return _.datePickerOpen;
+		return _.pickerState;
 	},
 	F2(
 		function (p, w) {
 			return _elm_lang$core$Native_Utils.update(
 				w,
-				{datePickerOpen: p});
+				{pickerState: p});
 		}));
 var _user$project$Pile_DateHolder$dateHolder_todayForReference = A2(
 	_user$project$Pile_UpdatingOptional$opt,
@@ -20939,6 +20939,17 @@ var _user$project$Pile_DateHolder$convertToDate = function (holder) {
 		return _p1._0._0;
 	}
 };
+var _user$project$Pile_DateHolder$modalPickerDate = function (holder) {
+	var _p2 = holder.pickerState;
+	switch (_p2.ctor) {
+		case 'PickerClosed':
+			return _user$project$Pile_DateHolder$convertToDate(holder);
+		case 'PickerOpen':
+			return _user$project$Pile_DateHolder$convertToDate(holder);
+		default:
+			return _p2._0;
+	}
+};
 var _user$project$Pile_DateHolder$compare = F2(
 	function (one, another) {
 		var actualOther = _user$project$Pile_DateHolder$convertToDate(another);
@@ -20953,8 +20964,8 @@ var _user$project$Pile_DateHolder$firstAfterSecond = F2(
 	});
 var _user$project$Pile_DateHolder$enhancedDateString = function (holder) {
 	var todayIfKnown = function () {
-		var _p2 = holder.todayForReference;
-		if (_p2.ctor === 'Nothing') {
+		var _p3 = holder.todayForReference;
+		if (_p3.ctor === 'Nothing') {
 			return '';
 		} else {
 			return A2(
@@ -20962,34 +20973,33 @@ var _user$project$Pile_DateHolder$enhancedDateString = function (holder) {
 				' (',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_user$project$Pile_Date$terse(_p2._0),
+					_user$project$Pile_Date$terse(_p3._0),
 					')'));
 		}
 	}();
-	var _p3 = holder.chosen;
-	if (_p3.ctor === 'Today') {
+	var _p4 = holder.chosen;
+	if (_p4.ctor === 'Today') {
 		return A2(_elm_lang$core$Basics_ops['++'], 'Today', todayIfKnown);
 	} else {
-		return _user$project$Pile_Date$humane(_p3._0);
+		return _user$project$Pile_Date$humane(_p4._0);
 	}
 };
 var _user$project$Pile_DateHolder$DateHolder = F3(
 	function (a, b, c) {
-		return {chosen: a, todayForReference: b, datePickerOpen: c};
+		return {chosen: a, todayForReference: b, pickerState: c};
 	});
 var _user$project$Pile_DateHolder$At = function (a) {
 	return {ctor: 'At', _0: a};
 };
 var _user$project$Pile_DateHolder$Today = {ctor: 'Today'};
-var _user$project$Pile_DateHolder$startingState = {chosen: _user$project$Pile_DateHolder$Today, todayForReference: _elm_lang$core$Maybe$Nothing, datePickerOpen: false};
 var _user$project$Pile_DateHolder$choose = F2(
 	function (date, holder) {
 		var displayDate = function () {
-			var _p4 = A2(
+			var _p5 = A2(
 				_elm_lang$core$Maybe$map,
 				A2(_justinmimbs$elm_date_extra$Date_Extra$equalBy, _justinmimbs$elm_date_extra$Date_Extra$Day, date),
 				holder.todayForReference);
-			if ((_p4.ctor === 'Just') && (_p4._0 === true)) {
+			if ((_p5.ctor === 'Just') && (_p5._0 === true)) {
 				return _user$project$Pile_DateHolder$Today;
 			} else {
 				return _user$project$Pile_DateHolder$At(date);
@@ -21001,6 +21011,28 @@ var _user$project$Pile_DateHolder$chooseToday = function (holder) {
 	return _elm_lang$core$Native_Utils.update(
 		holder,
 		{chosen: _user$project$Pile_DateHolder$Today});
+};
+var _user$project$Pile_DateHolder$PickerClosed = {ctor: 'PickerClosed'};
+var _user$project$Pile_DateHolder$datePickerOpen = function (holder) {
+	return !_elm_lang$core$Native_Utils.eq(holder.pickerState, _user$project$Pile_DateHolder$PickerClosed);
+};
+var _user$project$Pile_DateHolder$startingState = {chosen: _user$project$Pile_DateHolder$Today, todayForReference: _elm_lang$core$Maybe$Nothing, pickerState: _user$project$Pile_DateHolder$PickerClosed};
+var _user$project$Pile_DateHolder$destructivelyChooseCalendarDate = function (holder) {
+	var close = _user$project$Pile_DateHolder$dateHolder_pickerState.set(_user$project$Pile_DateHolder$PickerClosed);
+	var _p6 = holder.pickerState;
+	switch (_p6.ctor) {
+		case 'PickerClosed':
+			return close(holder);
+		case 'PickerOpen':
+			return close(holder);
+		default:
+			return close(
+				A2(_user$project$Pile_DateHolder$choose, _p6._0, holder));
+	}
+};
+var _user$project$Pile_DateHolder$PickerOpen = {ctor: 'PickerOpen'};
+var _user$project$Pile_DateHolder$ModalPickerOpen = function (a) {
+	return {ctor: 'ModalPickerOpen', _0: a};
 };
 
 var _user$project$Animals_Types_Form$emptyNameWithNotice = A2(
@@ -21050,6 +21082,26 @@ var _user$project$Animals_Types_Form$ValidationContext = function (a) {
 	return {disallowedNames: a};
 };
 
+var _user$project$Animals_Types_AnimalHistory$fresh = function (animal) {
+	return {
+		id: animal.id,
+		name: animal.name,
+		entries: {ctor: '[]'}
+	};
+};
+var _user$project$Animals_Types_AnimalHistory$AuditStamp = F2(
+	function (a, b) {
+		return {author: a, date: b};
+	});
+var _user$project$Animals_Types_AnimalHistory$Entry = F5(
+	function (a, b, c, d, e) {
+		return {audit: a, effectiveDate: b, nameChange: c, newTags: d, deletedTags: e};
+	});
+var _user$project$Animals_Types_AnimalHistory$History = F3(
+	function (a, b, c) {
+		return {id: a, name: b, entries: c};
+	});
+
 var _user$project$Animals_Msg$StartChange = function (a) {
 	return {ctor: 'StartChange', _0: a};
 };
@@ -21068,10 +21120,12 @@ var _user$project$Animals_Msg$SetNameFilter = function (a) {
 var _user$project$Animals_Msg$SetAnimals = function (a) {
 	return {ctor: 'SetAnimals', _0: a};
 };
-var _user$project$Animals_Msg$SelectDate = function (a) {
-	return {ctor: 'SelectDate', _0: a};
+var _user$project$Animals_Msg$DiscardCalendarDate = {ctor: 'DiscardCalendarDate'};
+var _user$project$Animals_Msg$SaveCalendarDate = {ctor: 'SaveCalendarDate'};
+var _user$project$Animals_Msg$CalendarClick = function (a) {
+	return {ctor: 'CalendarClick', _0: a};
 };
-var _user$project$Animals_Msg$ToggleDatePicker = {ctor: 'ToggleDatePicker'};
+var _user$project$Animals_Msg$OpenDatePicker = {ctor: 'OpenDatePicker'};
 var _user$project$Animals_Msg$AddFormsForBlankTemplate = F2(
 	function (a, b) {
 		return {ctor: 'AddFormsForBlankTemplate', _0: a, _1: b};
@@ -21081,6 +21135,10 @@ var _user$project$Animals_Msg$UpdateAddedCount = function (a) {
 };
 var _user$project$Animals_Msg$SetAddedSpecies = function (a) {
 	return {ctor: 'SetAddedSpecies', _0: a};
+};
+var _user$project$Animals_Msg$CloseHistoryPage = {ctor: 'CloseHistoryPage'};
+var _user$project$Animals_Msg$SetHistory = function (a) {
+	return {ctor: 'SetHistory', _0: a};
 };
 var _user$project$Animals_Msg$HttpError = F2(
 	function (a, b) {
@@ -21094,7 +21152,8 @@ var _user$project$Animals_Msg$RemoveAnimalFlash = {ctor: 'RemoveAnimalFlash'};
 var _user$project$Animals_Msg$SelectFormDate = function (a) {
 	return {ctor: 'SelectFormDate', _0: a};
 };
-var _user$project$Animals_Msg$ToggleFormDatePicker = {ctor: 'ToggleFormDatePicker'};
+var _user$project$Animals_Msg$CloseFormDatePicker = {ctor: 'CloseFormDatePicker'};
+var _user$project$Animals_Msg$OpenFormDatePicker = {ctor: 'OpenFormDatePicker'};
 var _user$project$Animals_Msg$DeleteTag = function (a) {
 	return {ctor: 'DeleteTag', _0: a};
 };
@@ -21121,9 +21180,6 @@ var _user$project$Animals_Msg$UpdateCopyCount = function (a) {
 	return {ctor: 'UpdateCopyCount', _0: a};
 };
 var _user$project$Animals_Msg$BeginGatheringCopyInfo = {ctor: 'BeginGatheringCopyInfo'};
-var _user$project$Animals_Msg$CloseHistoryPage = function (a) {
-	return {ctor: 'CloseHistoryPage', _0: a};
-};
 var _user$project$Animals_Msg$NewHistoryPage = function (a) {
 	return {ctor: 'NewHistoryPage', _0: a};
 };
@@ -21147,6 +21203,10 @@ var _user$project$Animals_Msg$WithForm = F2(
 var _user$project$Animals_Msg$WithAnimal = F2(
 	function (a, b) {
 		return {ctor: 'WithAnimal', _0: a, _1: b};
+	});
+var _user$project$Animals_Msg$OnHistoryPage = F2(
+	function (a, b) {
+		return {ctor: 'OnHistoryPage', _0: a, _1: b};
 	});
 var _user$project$Animals_Msg$OnAddPage = function (a) {
 	return {ctor: 'OnAddPage', _0: a};
@@ -21260,26 +21320,6 @@ var _user$project$Animals_Pages_Navigation$toPageChangeCmd = function (choice) {
 			_user$project$Animals_Pages_Navigation$convertChoice(choice)));
 	return _elm_lang$navigation$Navigation$newUrl(url);
 };
-
-var _user$project$Animals_Types_AnimalHistory$fresh = function (animal) {
-	return {
-		id: animal.id,
-		name: animal.name,
-		entries: {ctor: '[]'}
-	};
-};
-var _user$project$Animals_Types_AnimalHistory$AuditStamp = F2(
-	function (a, b) {
-		return {author: a, date: b};
-	});
-var _user$project$Animals_Types_AnimalHistory$Entry = F5(
-	function (a, b, c, d, e) {
-		return {audit: a, effectiveDate: b, nameChange: c, newTags: d, deletedTags: e};
-	});
-var _user$project$Animals_Types_AnimalHistory$History = F3(
-	function (a, b, c) {
-		return {id: a, name: b, entries: c};
-	});
 
 var _user$project$Pile_Css_Bulma_Util$controlWithAddons = F2(
 	function (control, addons) {
@@ -22699,7 +22739,7 @@ var _user$project$Animals_Types_Lenses$form_effectiveDate = A2(
 				w,
 				{effectiveDate: p});
 		}));
-var _user$project$Animals_Types_Lenses$form_datePickerOpen = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Types_Lenses$form_effectiveDate, _user$project$Pile_DateHolder$dateHolder_datePickerOpen);
+var _user$project$Animals_Types_Lenses$form_datePickerState = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Types_Lenses$form_effectiveDate, _user$project$Pile_DateHolder$dateHolder_pickerState);
 var _user$project$Animals_Types_Lenses$form_effectiveDate_chosen = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Types_Lenses$form_effectiveDate, _user$project$Pile_DateHolder$dateHolder_chosen);
 var _user$project$Animals_Types_Lenses$form_today = A2(
 	_user$project$Pile_UpdatingOptional$compose,
@@ -23260,6 +23300,18 @@ var _user$project$Animals_OutsideWorld_Json$animalInputFormat_to_Animal = functi
 		creationDate: _user$project$Animals_OutsideWorld_Json$fromIsoString(incoming.creation_date)
 	};
 };
+var _user$project$Animals_OutsideWorld_Json$historyEntryInputFormat_to_Entry = function (incoming) {
+	return {
+		nameChange: incoming.name_change,
+		newTags: incoming.new_tags,
+		deletedTags: incoming.deleted_tags,
+		effectiveDate: _user$project$Animals_OutsideWorld_Json$fromIsoString(incoming.effective_date),
+		audit: {
+			author: incoming.audit_author,
+			date: _user$project$Animals_OutsideWorld_Json$fromIsoString(incoming.audit_date)
+		}
+	};
+};
 var _user$project$Animals_OutsideWorld_Json$decodeCreationResult = function () {
 	var from_transferFormat = function (_p5) {
 		var _p6 = _p5;
@@ -23403,6 +23455,37 @@ var _user$project$Animals_OutsideWorld_Json$withinData = _elm_lang$core$Json_Dec
 		_0: 'data',
 		_1: {ctor: '[]'}
 	});
+var _user$project$Animals_OutsideWorld_Json$HistoryEntryInputFormat = F6(
+	function (a, b, c, d, e, f) {
+		return {name_change: a, new_tags: b, deleted_tags: c, effective_date: d, audit_date: e, audit_author: f};
+	});
+var _user$project$Animals_OutsideWorld_Json$json_to_HistoryEntryInputFormat = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'audit_author',
+	_elm_lang$core$Json_Decode$string,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'audit_date',
+		_elm_lang$core$Json_Decode$string,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'effective_date',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'deleted_tags',
+				_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string),
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'new_tags',
+					_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string),
+					A3(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+						'name_change',
+						_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Animals_OutsideWorld_Json$HistoryEntryInputFormat)))))));
+var _user$project$Animals_OutsideWorld_Json$decodeHistoryEntry = A2(_elm_lang$core$Json_Decode$map, _user$project$Animals_OutsideWorld_Json$historyEntryInputFormat_to_Entry, _user$project$Animals_OutsideWorld_Json$json_to_HistoryEntryInputFormat);
+var _user$project$Animals_OutsideWorld_Json$decodeHistory = _elm_lang$core$Json_Decode$list(_user$project$Animals_OutsideWorld_Json$decodeHistoryEntry);
 var _user$project$Animals_OutsideWorld_Json$AnimalInputFormat = F9(
 	function (a, b, c, d, e, f, g, h, i) {
 		return {id: a, version: b, name: c, species: d, tags: e, int_properties: f, bool_properties: g, string_properties: h, creation_date: i};
@@ -23465,6 +23548,33 @@ var _user$project$Animals_OutsideWorld_Cmd$animalInstructions = F2(
 				effectiveDate,
 				_user$project$Animals_OutsideWorld_Json$encodeOutgoingAnimal(animal)));
 	});
+var _user$project$Animals_OutsideWorld_Cmd$animalHistory = F2(
+	function (id, name) {
+		var failureContext = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'I could not retrieve the history for animal ',
+			A2(_elm_lang$core$Basics_ops['++'], name, '.'));
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'/api/v2animals/',
+			A2(_elm_lang$core$Basics_ops['++'], id, '/history'));
+		var request = A2(
+			_elm_lang$http$Http$get,
+			url,
+			_user$project$Animals_OutsideWorld_Json$withinData(_user$project$Animals_OutsideWorld_Json$decodeHistory));
+		return A2(
+			_elm_lang$http$Http$send,
+			A2(
+				_user$project$Animals_OutsideWorld_Cmd$handleHtmlResult,
+				failureContext,
+				function (_p1) {
+					return A2(
+						_user$project$Animals_Msg$OnHistoryPage,
+						id,
+						_user$project$Animals_Msg$SetHistory(_p1));
+				}),
+			request);
+	});
 var _user$project$Animals_OutsideWorld_Cmd$createAnimal = F2(
 	function (effectiveDate, animal) {
 		var body = A2(_user$project$Animals_OutsideWorld_Cmd$animalInstructions, effectiveDate, animal);
@@ -23508,113 +23618,23 @@ var _user$project$Animals_OutsideWorld_Cmd$fetchAnimals = function (date) {
 		A2(
 			_user$project$Animals_OutsideWorld_Cmd$handleHtmlResult,
 			failureContext,
-			function (_p1) {
+			function (_p2) {
 				return _user$project$Animals_Msg$OnAllPage(
-					_user$project$Animals_Msg$SetAnimals(_p1));
+					_user$project$Animals_Msg$SetAnimals(_p2));
 			}),
 		request);
 };
 var _user$project$Animals_OutsideWorld_Cmd$askTodaysDate = A2(_elm_lang$core$Task$perform, _user$project$Animals_Msg$SetToday, _elm_lang$core$Date$now);
 
-var _user$project$Pile_Calendar$visibilityController = F3(
-	function (calendarToggleMsg, control, maybeContent) {
-		var controlContainer = A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('dropdown--button-container'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: control,
-				_1: {ctor: '[]'}
-			});
-		var _p0 = maybeContent;
-		if (_p0.ctor === 'Nothing') {
-			return A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('dropdown'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: controlContainer,
-					_1: {ctor: '[]'}
-				});
-		} else {
-			return A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('dropdown-open'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('dropdown--page-cover'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onClick(calendarToggleMsg),
-								_1: {ctor: '[]'}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: controlContainer,
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('dropdown--content-container'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _p0._0,
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				});
-		}
-	});
-var _user$project$Pile_Calendar$defaultDate = A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2018, _elm_lang$core$Date$Jan, 1);
-var _user$project$Pile_Calendar$dateToShow = function (holder) {
-	var _p1 = holder.chosen;
-	if (_p1.ctor === 'Today') {
-		return holder.todayForReference;
-	} else {
-		return _elm_lang$core$Maybe$Just(_p1._0);
-	}
-};
 var _user$project$Pile_Calendar$bound = F2(
-	function (shiftFunction, holder) {
-		var shiftByYears = function (date) {
-			return A3(
-				_justinmimbs$elm_date_extra$Date_Extra$add,
-				_justinmimbs$elm_date_extra$Date_Extra$Year,
-				A2(shiftFunction, 0, 5),
-				date);
-		};
-		var _p2 = _user$project$Pile_Calendar$dateToShow(holder);
-		if (_p2.ctor === 'Nothing') {
-			return shiftByYears(_user$project$Pile_Calendar$defaultDate);
-		} else {
-			return shiftByYears(_p2._0);
-		}
+	function (shiftFunction, date) {
+		return A3(
+			_justinmimbs$elm_date_extra$Date_Extra$add,
+			_justinmimbs$elm_date_extra$Date_Extra$Year,
+			A2(shiftFunction, 0, 5),
+			date);
 	});
-var _user$project$Pile_Calendar$calendarParams = function (holder) {
+var _user$project$Pile_Calendar$calendarParams = function (chosenDate) {
 	return {
 		min: A2(
 			_user$project$Pile_Calendar$bound,
@@ -23622,42 +23642,28 @@ var _user$project$Pile_Calendar$calendarParams = function (holder) {
 				function (x, y) {
 					return x - y;
 				}),
-			holder),
+			chosenDate),
 		max: A2(
 			_user$project$Pile_Calendar$bound,
 			F2(
 				function (x, y) {
 					return x + y;
 				}),
-			holder),
-		selected: _user$project$Pile_Calendar$dateToShow(holder)
+			chosenDate),
+		selected: chosenDate
 	};
 };
-var _user$project$Pile_Calendar$oldView = F4(
-	function (launcher, calendarToggleMsg, dateSelectedMsg, holder) {
-		var params = _user$project$Pile_Calendar$calendarParams(holder);
-		var calendarBodyView = holder.datePickerOpen ? _elm_lang$core$Maybe$Just(
-			A2(
-				_elm_lang$html$Html$map,
-				dateSelectedMsg,
-				A3(_justinmimbs$elm_date_selector$DateSelector$view, params.min, params.max, params.selected))) : _elm_lang$core$Maybe$Nothing;
-		return A3(
-			_user$project$Pile_Calendar$visibilityController,
-			calendarToggleMsg,
-			A3(
-				launcher,
-				holder.datePickerOpen,
-				_user$project$Pile_DateHolder$enhancedDateString(holder),
-				calendarToggleMsg),
-			calendarBodyView);
-	});
 var _user$project$Pile_Calendar$view = F2(
-	function (holder, pickMsg) {
-		var params = _user$project$Pile_Calendar$calendarParams(holder);
+	function (chosenDate, pickMsg) {
+		var params = _user$project$Pile_Calendar$calendarParams(chosenDate);
 		return A2(
 			_elm_lang$html$Html$map,
 			pickMsg,
-			A3(_justinmimbs$elm_date_selector$DateSelector$view, params.min, params.max, params.selected));
+			A3(
+				_justinmimbs$elm_date_selector$DateSelector$view,
+				params.min,
+				params.max,
+				_elm_lang$core$Maybe$Just(params.selected)));
 	});
 var _user$project$Pile_Calendar$CalendarParams = F3(
 	function (a, b, c) {
@@ -23730,7 +23736,7 @@ var _user$project$Animals_Model$model_effectiveDate = A2(
 				w,
 				{effectiveDate: p});
 		}));
-var _user$project$Animals_Model$model_datePickerOpen = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Model$model_effectiveDate, _user$project$Pile_DateHolder$dateHolder_datePickerOpen);
+var _user$project$Animals_Model$model_datePickerState = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Model$model_effectiveDate, _user$project$Pile_DateHolder$dateHolder_pickerState);
 var _user$project$Animals_Model$model_effectiveDate_chosen = A2(_user$project$Pile_UpdatingLens$compose, _user$project$Animals_Model$model_effectiveDate, _user$project$Pile_DateHolder$dateHolder_chosen);
 var _user$project$Animals_Model$model_today = A2(
 	_user$project$Pile_UpdatingOptional$compose,
@@ -23954,6 +23960,13 @@ var _user$project$Pile_UpdateHelpers$addCmd = F2(
 	function (cmd, model) {
 		return {ctor: '_Tuple2', _0: model, _1: cmd};
 	});
+var _user$project$Pile_UpdateHelpers$addCmds = F2(
+	function (cmds, model) {
+		return A2(
+			_user$project$Pile_UpdateHelpers$addCmd,
+			_elm_lang$core$Platform_Cmd$batch(cmds),
+			model);
+	});
 var _user$project$Pile_UpdateHelpers$noCmd = function (model) {
 	return A2(
 		_elm_lang$core$Platform_Cmd_ops['!'],
@@ -24040,18 +24053,13 @@ var _user$project$Animals_Logic_Validation$animalNames = function (displayables)
 			_elm_lang$core$Dict$values(displayables)));
 };
 var _user$project$Animals_Logic_Validation$context = F2(
-	function (displayables, origin) {
-		var augment = function (xs) {
-			var _p2 = origin;
-			if (_p2.ctor === 'Nothing') {
-				return xs;
-			} else {
-				return A2(_elm_community$list_extra$List_Extra$remove, _p2._0.name, xs);
-			}
-		};
+	function (displayables, notDuplicates) {
+		var safeSet = _elm_lang$core$Set$fromList(notDuplicates);
+		var nameSet = _elm_lang$core$Set$fromList(
+			_user$project$Animals_Logic_Validation$animalNames(displayables));
+		var disallowedSet = A2(_elm_lang$core$Set$diff, nameSet, safeSet);
 		return {
-			disallowedNames: augment(
-				_user$project$Animals_Logic_Validation$animalNames(displayables))
+			disallowedNames: _elm_lang$core$Set$toList(disallowedSet)
 		};
 	});
 
@@ -24108,9 +24116,24 @@ var _user$project$Animals_Logic_FormOp$update = F3(
 						A2(_user$project$Animals_Types_Lenses$form_status.set, _user$project$Pile_Css_H$BeingSaved, form),
 						model));
 			case 'NameFieldUpdate':
+				var notDuplicates = _elm_community$maybe_extra$Maybe_Extra$values(
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$Maybe$map,
+							function (_) {
+								return _.name;
+							},
+							form.originalAnimal),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$core$Maybe$Just(form.name.value),
+							_1: {ctor: '[]'}
+						}
+					});
 				var newForm = A2(
 					_user$project$Animals_Logic_Validation$validate,
-					A2(_user$project$Animals_Logic_Validation$context, model.displayables, form.originalAnimal),
+					A2(_user$project$Animals_Logic_Validation$context, model.displayables, notDuplicates),
 					A2(
 						_user$project$Animals_Types_Lenses$form_name.set,
 						_user$project$Pile_Css_H$freshValue(_p0._0),
@@ -24138,8 +24161,12 @@ var _user$project$Animals_Logic_FormOp$update = F3(
 					form);
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
-			case 'ToggleFormDatePicker':
-				var newForm = A2(_user$project$Animals_Types_Lenses$form_datePickerOpen.update, _elm_lang$core$Basics$not, form);
+			case 'OpenFormDatePicker':
+				var newForm = A2(_user$project$Animals_Types_Lenses$form_datePickerState.set, _user$project$Pile_DateHolder$PickerOpen, form);
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
+			case 'CloseFormDatePicker':
+				var newForm = A2(_user$project$Animals_Types_Lenses$form_datePickerState.set, _user$project$Pile_DateHolder$PickerClosed, form);
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(_user$project$Animals_Model$upsertCheckedForm, newForm, model));
 			case 'SelectFormDate':
@@ -24443,19 +24470,30 @@ var _user$project$Animals_Logic_AllPageOp$update = F2(
 	function (op, model) {
 		var _p0 = op;
 		switch (_p0.ctor) {
-			case 'ToggleDatePicker':
+			case 'OpenDatePicker':
+				var startingPickerDate = _user$project$Pile_DateHolder$convertToDate(model.effectiveDate);
 				return _user$project$Pile_UpdateHelpers$noCmd(
-					A2(_user$project$Animals_Model$model_datePickerOpen.update, _elm_lang$core$Basics$not, model));
-			case 'SelectDate':
-				var _p1 = _p0._0;
+					A2(
+						_user$project$Animals_Model$model_datePickerState.set,
+						_user$project$Pile_DateHolder$ModalPickerOpen(startingPickerDate),
+						model));
+			case 'CalendarClick':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(
+						_user$project$Animals_Model$model_datePickerState.set,
+						_user$project$Pile_DateHolder$ModalPickerOpen(_p0._0),
+						model));
+			case 'SaveCalendarDate':
+				var newEffectiveDate = _user$project$Pile_DateHolder$destructivelyChooseCalendarDate(model.effectiveDate);
+				var rawDate = _user$project$Pile_DateHolder$convertToDate(newEffectiveDate);
 				return A2(
 					_user$project$Pile_UpdateHelpers$addCmd,
-					_user$project$Animals_OutsideWorld_Cmd$fetchAnimals(_p1),
+					_user$project$Animals_OutsideWorld_Cmd$fetchAnimals(rawDate),
 					_user$project$Animals_Logic_AllPageOp$erasePage(
-						A2(
-							_user$project$Animals_Model$model_effectiveDate.update,
-							_user$project$Pile_DateHolder$choose(_p1),
-							model)));
+						A2(_user$project$Animals_Model$model_effectiveDate.set, newEffectiveDate, model)));
+			case 'DiscardCalendarDate':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$model_datePickerState.set, _user$project$Pile_DateHolder$PickerClosed, model));
 			case 'SetAnimals':
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(
@@ -24471,6 +24509,29 @@ var _user$project$Animals_Logic_AllPageOp$update = F2(
 			default:
 				return _user$project$Pile_UpdateHelpers$noCmd(
 					A2(_user$project$Animals_Model$model_speciesFilter.set, _p0._0, model));
+		}
+	});
+
+var _user$project$Animals_Logic_HistoryPageOp$update = F3(
+	function (op, history, model) {
+		var _p0 = op;
+		if (_p0.ctor === 'SetHistory') {
+			var improvedHistory = _elm_lang$core$Native_Utils.update(
+				history,
+				{entries: _p0._0});
+			return _user$project$Pile_UpdateHelpers$noCmd(
+				A3(_user$project$Animals_Model$upsertHistoryPage, history.id, improvedHistory, model));
+		} else {
+			return _user$project$Pile_UpdateHelpers$noCmd(model);
+		}
+	});
+var _user$project$Animals_Logic_HistoryPageOp$forwardToPageOp = F3(
+	function (id, op, model) {
+		var _p1 = A2(_elm_lang$core$Dict$get, id, model.historyPages);
+		if (_p1.ctor === 'Nothing') {
+			return _user$project$Pile_UpdateHelpers$noCmd(model);
+		} else {
+			return A3(_user$project$Animals_Logic_HistoryPageOp$update, op, _p1._0, model);
 		}
 	});
 
@@ -24493,12 +24554,14 @@ var _user$project$Animals_Pages_Update$update = F2(
 
 var _user$project$Animals_Update$updateWithClearedPageFlash = F2(
 	function (msg, model) {
-		var _p0 = msg;
+		var _p0 = A2(_elm_lang$core$Debug$log, 'msg', msg);
 		switch (_p0.ctor) {
 			case 'OnAllPage':
 				return A2(_user$project$Animals_Logic_AllPageOp$update, _p0._0, model);
 			case 'OnAddPage':
 				return A2(_user$project$Animals_Logic_AddPageOp$update, _p0._0, model);
+			case 'OnHistoryPage':
+				return A3(_user$project$Animals_Logic_HistoryPageOp$forwardToPageOp, _p0._0, _p0._1, model);
 			case 'WithAnimal':
 				return A3(_user$project$Animals_Logic_AnimalOp$update, _p0._1, _p0._0, model);
 			case 'WithForm':
@@ -24531,9 +24594,17 @@ var _user$project$Animals_Update$updateWithClearedPageFlash = F2(
 					id,
 					_user$project$Animals_Types_AnimalHistory$fresh(_p3));
 				var order = _user$project$Animals_Model$placeHistoryInOrder(id);
-				var withCmd = _user$project$Pile_UpdateHelpers$addCmd(
-					_user$project$Animals_Pages_Navigation$toPageChangeCmd(
-						_user$project$Animals_Pages_H$HistoryPage(id)));
+				var withCmd = _user$project$Pile_UpdateHelpers$addCmds(
+					{
+						ctor: '::',
+						_0: _user$project$Animals_Pages_Navigation$toPageChangeCmd(
+							_user$project$Animals_Pages_H$HistoryPage(id)),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Animals_OutsideWorld_Cmd$animalHistory, id, _p3.name),
+							_1: {ctor: '[]'}
+						}
+					});
 				var _p2 = A2(_elm_lang$core$Dict$get, _p3.id, model.historyPages);
 				if (_p2.ctor === 'Nothing') {
 					return withCmd(
@@ -24543,8 +24614,6 @@ var _user$project$Animals_Update$updateWithClearedPageFlash = F2(
 					return withCmd(
 						upsert(model));
 				}
-			case 'CloseHistoryPage':
-				return _user$project$Pile_UpdateHelpers$noCmd(model);
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -24843,21 +24912,30 @@ var _user$project$Animals_View_Form$passiveDateControl = function (form) {
 					_user$project$Pile_DateHolder$enhancedDateString(form.effectiveDate)))));
 };
 var _user$project$Animals_View_Form$activeDateControl = function (form) {
-	var buttonText = function () {
-		var _p0 = form.effectiveDate.datePickerOpen;
-		if (_p0 === true) {
-			return 'Close Calendar';
-		} else {
-			return 'Change';
-		}
-	}();
-	var select = function (_p1) {
+	var select = function (_p0) {
 		return A2(
 			_user$project$Animals_Msg$WithForm,
 			form,
-			_user$project$Animals_Msg$SelectFormDate(_p1));
+			_user$project$Animals_Msg$SelectFormDate(_p0));
 	};
-	var toggle = A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$ToggleFormDatePicker);
+	var _p1 = function () {
+		var _p2 = _user$project$Pile_DateHolder$datePickerOpen(form.effectiveDate);
+		if (_p2 === true) {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$CloseFormDatePicker),
+				_1: 'Close Calendar'
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$OpenFormDatePicker),
+				_1: 'Change'
+			};
+		}
+	}();
+	var buttonMsg = _p1._0;
+	var buttonText = _p1._1;
 	return _user$project$Animals_View_TextField$build(
 		A2(
 			_user$project$Animals_View_TextField$buttonKind,
@@ -24871,13 +24949,13 @@ var _user$project$Animals_View_Form$activeDateControl = function (form) {
 					A3(
 						_user$project$Animals_View_TextField$editingEvents,
 						_elm_lang$core$Maybe$Nothing,
-						_user$project$Animals_View_TextField$ClickSubmits(toggle),
+						_user$project$Animals_View_TextField$ClickSubmits(buttonMsg),
 						_user$project$Pile_Css_H$freshValue(
 							_user$project$Pile_DateHolder$enhancedDateString(form.effectiveDate)))))));
 };
 var _user$project$Animals_View_Form$effectiveDateControl = function (form) {
-	var _p2 = form.originalAnimal;
-	if (_p2.ctor === 'Nothing') {
+	var _p3 = form.originalAnimal;
+	if (_p3.ctor === 'Nothing') {
 		return _user$project$Animals_View_Form$activeDateControl(form);
 	} else {
 		return _user$project$Animals_View_Form$passiveDateControl(form);
@@ -24898,11 +24976,11 @@ var _user$project$Animals_View_Form$deleteTagControl = function (form) {
 };
 var _user$project$Animals_View_Form$newTagControl = function (form) {
 	var onSubmit = A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$CreateNewTag);
-	var onInput = function (_p3) {
+	var onInput = function (_p4) {
 		return A2(
 			_user$project$Animals_Msg$WithForm,
 			form,
-			_user$project$Animals_Msg$TentativeTagUpdate(_p3));
+			_user$project$Animals_Msg$TentativeTagUpdate(_p4));
 	};
 	return _user$project$Animals_View_TextField$build(
 		A2(
@@ -24921,11 +24999,11 @@ var _user$project$Animals_View_Form$newTagControl = function (form) {
 						_user$project$Pile_Css_H$freshValue(form.tentativeTag))))));
 };
 var _user$project$Animals_View_Form$nameEditControl = function (form) {
-	var onInput = function (_p4) {
+	var onInput = function (_p5) {
 		return A2(
 			_user$project$Animals_Msg$WithForm,
 			form,
-			_user$project$Animals_Msg$NameFieldUpdate(_p4));
+			_user$project$Animals_Msg$NameFieldUpdate(_p5));
 	};
 	return _user$project$Animals_View_TextField$build(
 		A2(
@@ -24941,19 +25019,19 @@ var _user$project$Animals_View_Form$nameEditControl = function (form) {
 					form.name))));
 };
 var _user$project$Animals_View_Form$calendar = function (form) {
-	return form.effectiveDate.datePickerOpen ? A2(
+	return _user$project$Pile_DateHolder$datePickerOpen(form.effectiveDate) ? A2(
 		_elm_lang$html$Html$span,
 		{ctor: '[]'},
 		{
 			ctor: '::',
 			_0: A2(
 				_user$project$Pile_Calendar$view,
-				form.effectiveDate,
-				function (_p5) {
+				_user$project$Pile_DateHolder$convertToDate(form.effectiveDate),
+				function (_p6) {
 					return A2(
 						_user$project$Animals_Msg$WithForm,
 						form,
-						_user$project$Animals_Msg$SelectFormDate(_p5));
+						_user$project$Animals_Msg$SelectFormDate(_p6));
 				}),
 			_1: {ctor: '[]'}
 		}) : A2(
@@ -24962,8 +25040,8 @@ var _user$project$Animals_View_Form$calendar = function (form) {
 		{ctor: '[]'});
 };
 var _user$project$Animals_View_Form$view = F3(
-	function (form, flash, _p6) {
-		var _p7 = _p6;
+	function (form, flash, _p7) {
+		var _p8 = _p7;
 		return A2(
 			_user$project$Pile_Css_Bulma$highlightedRow,
 			{ctor: '[]'},
@@ -25004,13 +25082,13 @@ var _user$project$Animals_View_Form$view = F3(
 											_0: A2(
 												_user$project$Pile_Css_Bulma$leftwardSave,
 												form.status,
-												A2(_user$project$Animals_Msg$WithForm, form, _p7._0)),
+												A2(_user$project$Animals_Msg$WithForm, form, _p8._0)),
 											_1: {
 												ctor: '::',
 												_0: A2(
 													_user$project$Pile_Css_Bulma$rightwardCancel,
 													form.status,
-													A2(_user$project$Animals_Msg$WithForm, form, _p7._1)),
+													A2(_user$project$Animals_Msg$WithForm, form, _p8._1)),
 												_1: {
 													ctor: '::',
 													_0: A2(
@@ -25482,7 +25560,7 @@ var _user$project$Animals_Pages_AllPage$effectiveDate = function (model) {
 								'Change',
 								{
 									click: _elm_lang$core$Maybe$Just(
-										_user$project$Animals_Pages_AllPage$withoutArg(_user$project$Animals_Msg$ToggleDatePicker))
+										_user$project$Animals_Pages_AllPage$withoutArg(_user$project$Animals_Msg$OpenDatePicker))
 								}),
 							_1: {ctor: '[]'}
 						}
@@ -25793,7 +25871,7 @@ var _user$project$Animals_Pages_HistoryPage$historyTable = function (history) {
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Date'),
+									_0: _elm_lang$html$Html$text('Effective date'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -25863,7 +25941,7 @@ var _user$project$Animals_Pages_HistoryPage$pageCloseButton = function (id) {
 			_1: {
 				ctor: '::',
 				_0: _user$project$Pile_HtmlShorthand$onClickPreventingDefault(
-					_user$project$Animals_Msg$CloseHistoryPage(id)),
+					A2(_user$project$Animals_Msg$OnHistoryPage, id, _user$project$Animals_Msg$CloseHistoryPage)),
 				_1: {ctor: '[]'}
 			}
 		},
@@ -25949,67 +26027,44 @@ var _user$project$Animals_Pages_HistoryPage$controls = function (id) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Animals_Pages_HistoryPage$sample = {
-	id: 'irrelevant',
-	name: 'irrelevant',
-	entries: {
-		ctor: '::',
-		_0: {
-			audit: {
-				author: 'dmorin',
-				date: A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2016, _elm_lang$core$Date$Dec, 12)
-			},
-			effectiveDate: A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2017, _elm_lang$core$Date$Jan, 1),
-			nameChange: _elm_lang$core$Maybe$Just('bossie'),
-			newTags: {
-				ctor: '::',
-				_0: 'foo',
-				_1: {
-					ctor: '::',
-					_0: 'bar',
-					_1: {ctor: '[]'}
-				}
-			},
-			deletedTags: {ctor: '[]'}
-		},
-		_1: {
-			ctor: '::',
-			_0: {
-				audit: {
-					author: 'smith',
-					date: A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2017, _elm_lang$core$Date$Feb, 6)
-				},
-				effectiveDate: A3(_justinmimbs$elm_date_extra$Date_Extra$fromCalendarDate, 2017, _elm_lang$core$Date$Feb, 6),
-				nameChange: _elm_lang$core$Maybe$Nothing,
-				newTags: {ctor: '[]'},
-				deletedTags: {
-					ctor: '::',
-					_0: 'foo',
-					_1: {ctor: '[]'}
-				}
-			},
-			_1: {ctor: '[]'}
-		}
-	}
-};
 var _user$project$Animals_Pages_HistoryPage$view = F2(
 	function (id, model) {
-		return A2(
-			_elm_lang$html$Html$div,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _user$project$Animals_Pages_HistoryPage$controls(id),
-				_1: {
+		var _p2 = A2(_elm_lang$core$Dict$get, id, model.historyPages);
+		if (_p2.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
 					ctor: '::',
-					_0: _user$project$Animals_Pages_HistoryPage$historyTable(_user$project$Animals_Pages_HistoryPage$sample),
+					_0: _elm_lang$html$Html$text('A supposedly impossible error happened. Boo!'),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Animals_Pages_HistoryPage$updateWarning,
+						_0: _elm_lang$html$Html$text(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Could not find animal with id ',
+								_elm_lang$core$Basics$toString(id))),
 						_1: {ctor: '[]'}
 					}
-				}
-			});
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _user$project$Animals_Pages_HistoryPage$controls(id),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Animals_Pages_HistoryPage$historyTable(_p2._0),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Animals_Pages_HistoryPage$updateWarning,
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+		}
 	});
 
 var _user$project$Pile_Css_Bulma_Modal$xCancel = function (msg) {
@@ -26113,8 +26168,8 @@ var _user$project$Pile_Css_Bulma_Modal$save = function (msg) {
 			}
 		});
 };
-var _user$project$Pile_Css_Bulma_Modal$modal = F3(
-	function (title, body, closeMsg) {
+var _user$project$Pile_Css_Bulma_Modal$modal = F4(
+	function (title, body, saveMsg, cancelMsg) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -26166,7 +26221,7 @@ var _user$project$Pile_Css_Bulma_Modal$modal = F3(
 										}),
 									_1: {
 										ctor: '::',
-										_0: _user$project$Pile_Css_Bulma_Modal$xCancel(closeMsg),
+										_0: _user$project$Pile_Css_Bulma_Modal$xCancel(cancelMsg),
 										_1: {ctor: '[]'}
 									}
 								}),
@@ -26191,10 +26246,10 @@ var _user$project$Pile_Css_Bulma_Modal$modal = F3(
 										},
 										{
 											ctor: '::',
-											_0: _user$project$Pile_Css_Bulma_Modal$save(closeMsg),
+											_0: _user$project$Pile_Css_Bulma_Modal$save(saveMsg),
 											_1: {
 												ctor: '::',
-												_0: _user$project$Pile_Css_Bulma_Modal$cancel(closeMsg),
+												_0: _user$project$Pile_Css_Bulma_Modal$cancel(cancelMsg),
 												_1: {ctor: '[]'}
 											}
 										}),
@@ -26238,7 +26293,7 @@ var _user$project$Animals_View$warning = A2(
 		}
 	});
 var _user$project$Animals_View$modal = function (model) {
-	if (model.effectiveDate.datePickerOpen) {
+	if (_user$project$Pile_DateHolder$datePickerOpen(model.effectiveDate)) {
 		var body = {
 			ctor: '::',
 			_0: _user$project$Animals_View$warning,
@@ -26246,20 +26301,21 @@ var _user$project$Animals_View$modal = function (model) {
 				ctor: '::',
 				_0: A2(
 					_user$project$Pile_Calendar$view,
-					model.effectiveDate,
+					_user$project$Pile_DateHolder$modalPickerDate(model.effectiveDate),
 					function (_p0) {
 						return _user$project$Animals_Msg$OnAllPage(
-							_user$project$Animals_Msg$SelectDate(_p0));
+							_user$project$Animals_Msg$CalendarClick(_p0));
 					}),
 				_1: {ctor: '[]'}
 			}
 		};
 		return _elm_lang$core$Maybe$Just(
-			A3(
+			A4(
 				_user$project$Pile_Css_Bulma_Modal$modal,
 				'Change the Date',
 				body,
-				_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$ToggleDatePicker)));
+				_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$SaveCalendarDate),
+				_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$DiscardCalendarDate)));
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}

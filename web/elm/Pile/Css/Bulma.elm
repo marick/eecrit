@@ -88,6 +88,10 @@ plainIcon iconSymbolName tooltip msg =
     ]
     [i [class ("fa " ++ iconSymbolName)] []]
 
+helpTextIcon : String -> Html msg
+helpTextIcon iconSymbolName =
+  i [class ("fa " ++ iconSymbolName)] []
+
     
 rightIcon : String -> String -> msg -> Html msg
 rightIcon iconSymbolName tooltip msg =

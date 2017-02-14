@@ -4,6 +4,22 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import Pile.HtmlShorthand exposing (..)
 
+dismissableModal : String -> List (Html msg) -> msg -> Html msg
+dismissableModal title body dismissMsg =
+  div [class "modal is-active"]
+    [ div [ class "modal-background"
+          , onClickPreventingDefault dismissMsg
+          ] []
+    , div [class "modal-card" ]
+      [ header [class "modal-card-head"]
+          [ p [class "modal-card-title"] [text title]
+          , xCancel dismissMsg
+          ]
+      , section [class "modal-card-body"] body
+      , footer [class "modal-card-foot"] []
+      ]
+    ]
+    
 saveCancelModal : String -> List (Html msg) -> msg -> msg -> Html msg
 saveCancelModal title body saveMsg cancelMsg =
   div [class "modal is-active"]

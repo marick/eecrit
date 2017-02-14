@@ -6,6 +6,7 @@ import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.AnimalHistory as AnimalHistory
+import Animals.Types.ModalOverlay exposing (ModalOverlay)
 import Date exposing (Date)
 import Navigation
 import Pile.Namelike exposing (Namelike)
@@ -81,6 +82,7 @@ type Msg
   | OnAllPage AllPageOperation
   | OnAddPage AddPageOperation
   | OnHistoryPage Id HistoryPageOperation
+  | SetOverlay ModalOverlay
     
   | WithAnimal Animal.Animal AnimalOperation
   | WithForm Form FormOperation

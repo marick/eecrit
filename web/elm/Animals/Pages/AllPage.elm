@@ -5,6 +5,7 @@ import Animals.View.PageFlash as PageFlash
 
 import Animals.Types.Lenses exposing (..)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
+import Animals.Types.ModalOverlay as Overlay
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
 
@@ -155,7 +156,8 @@ speciesFilter model =
     
 calendarHelp : Css.IconExpander Msg -> Html Msg
 calendarHelp iconType = 
-  iconType "fa-question-circle" "Help on animals and dates" NoOp
+  iconType "fa-question-circle" "Help on animals and dates"
+    (SetOverlay Overlay.AllPageCalendarHelp)
 
 filterHelp : Css.IconExpander Msg -> Html Msg
 filterHelp iconType = 

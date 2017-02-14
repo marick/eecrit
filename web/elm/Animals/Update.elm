@@ -40,7 +40,7 @@ updateWithClearedPageFlash msg model =
 
     OnHistoryPage id op ->
       HistoryPageOp.forwardToPageOp id op model
-    
+
     WithAnimal animal op ->
       AnimalOp.update op animal model
 
@@ -79,6 +79,9 @@ updateWithClearedPageFlash msg model =
           Just _ ->
             model |> upsert |> withCmd
 
+    SetOverlay overlay ->
+      model |> model_overlay.set overlay |> noCmd
+    
     NoOp ->
       model ! []
 

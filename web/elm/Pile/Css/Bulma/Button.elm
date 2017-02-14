@@ -4,11 +4,14 @@ import Pile.Css.H exposing (..)
 import Pile.Css.Bulma.Util as Util
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Pile.HtmlShorthand exposing (..)
 
 type alias Events msg =
   { click : Maybe msg
   }
+
+justForShow = { click = Nothing }
 
 eventsFromValue : FormValue t -> msg -> Events msg
 eventsFromValue formValue submitMsg =
@@ -49,3 +52,12 @@ primaryButton = rawButton "button is-primary"
       
 smallPrimaryButton : String -> Events msg -> Html msg
 smallPrimaryButton = rawButton "button is-primary is-small" 
+
+
+
+rawDisplayButton : String -> String -> Html msg
+rawDisplayButton classString buttonText =                    
+  a [class classString][ text buttonText ]
+
+helpTextPrimaryButton : String -> Html msg
+helpTextPrimaryButton = rawDisplayButton "button is-primary is-small"

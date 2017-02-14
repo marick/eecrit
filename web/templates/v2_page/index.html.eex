@@ -31,7 +31,7 @@
           <p>
             <a class="button is-small"
                title="Go to a page where you can customize your dashboard."
-               href="<%= unfinished_path(@conn, :index) %>"
+               href=""
                >
               <span class="icon">
                 <i class="fa fa-plus-circle"></i>
@@ -63,26 +63,31 @@
           </p>
           <aside class="menu">
             <p class="menu-label">
-              Work with animals
+              Reservations
+            </p>
+            <p class="menu-label">
+              Reports
+            </p>
+            <p class="menu-label">
+              Animals
             </p>
             <ul class="menu-list">
               <li>
-                <a href="<%= unfinished_path(@conn, :index) %>">
-                  Add an animal
-                </a>
-              </li>
-              <li>
-                <a href="<%= unfinished_path(@conn, :index) %>">
-                  View animals currently in service
+                <a href="/v2/animals">
+                  View and edit animals
                   <span class="icon is-small"> <i class="fa fa-check"></i> </span>
                 </a>
               </li>
               <li>
-                <a href="<%= unfinished_path(@conn, :index) %>">
-                  View all animals
+                <a href="/v2/animals/new">
+                  Add animals
+                  <span class="icon is-small"> <i class="fa fa-check"></i> </span>
                 </a>
               </li>
             </ul>
+            <p class="menu-label">
+              Procedures and protocols
+            </p>
           </aside>
         </div>
       </div>

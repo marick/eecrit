@@ -5,6 +5,7 @@ module Pile.DateHolder exposing
   , enhancedDateString
   , convertToDate
   , todayDate
+  , modalPickerDate
     
   , startingState
   , choose
@@ -109,6 +110,17 @@ todayDate holder =
     Just date -> date
     Nothing -> Date.fromCalendarDate 2000 Date.Jan 1 -- impossible
 
+modalPickerDate: DateHolder -> Date
+modalPickerDate holder =
+  case holder.pickerState of
+    PickerClosed -> -- impossible
+      convertToDate holder
+    PickerOpen -> -- ditto
+      convertToDate holder
+    ModalPickerOpen date ->
+      date
+
+               
 chooseToday: DateHolder -> DateHolder
 chooseToday holder =
   { holder | chosen = Today}

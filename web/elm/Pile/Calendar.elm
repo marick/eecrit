@@ -1,53 +1,36 @@
 module Pile.Calendar exposing ( view )
 
-import Pile.DateHolder as DateHolder exposing (DateHolder, DisplayDate(..))
-
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Date
+import Date exposing (Date)
 import Date.Extra as Date
 import DateSelector
 
 type alias CalendarParams =
-  { min : Date.Date
-  , max : Date.Date
-  , selected : Maybe Date.Date
+  { min : Date
+  , max : Date
+  , selected : Maybe Date
   }
 
-view : DateHolder -> (Date.Date -> msg) -> Html msg
-view holder pickMsg =
+view : Date -> (Date -> msg) -> Html msg
+view chosenDate pickMsg =
   let
-    params = calendarParams holder
+    params = calendarParams chosenDate
   in
-    DateSelector.view params.min params.max params.selected
+    DateSelector.view params.min params.max (Just params.selected)
       |> Html.map pickMsg
 
 
 -- Util
          
-calendarParams holder =
-  { min = (bound (-) holder)
-  , max = (bound (+) holder)
-  , selected = dateToShow holder
+calendarParams chosenDate =
+  { min = (bound (-) chosenDate)
+  , max = (bound (+) chosenDate)
+  , selected = chosenDate
   }
 
-bound : (number -> number -> Int) -> DateHolder -> Date.Date
-bound shiftFunction holder =
-  let
-    shiftByYears date =
-      Date.add Date.Year (shiftFunction 0 5) date
-  in
-    case dateToShow holder of
-      Nothing -> shiftByYears defaultDate
-      Just date -> shiftByYears date
-
-dateToShow : DateHolder -> Maybe Date.Date
-dateToShow holder =
-  case holder.chosen of 
-    Today -> holder.todayForReference
-    At date -> Just date
-        
-defaultDate : Date.Date
-defaultDate = Date.fromCalendarDate 2018 Date.Jan 1
+bound : (number -> number -> Int) -> Date -> Date
+bound shiftFunction date =
+  Date.add Date.Year (shiftFunction 0 5) date
 

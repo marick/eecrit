@@ -43,7 +43,10 @@ calendar : Form -> Html Msg
 calendar form =
   if DateHolder.datePickerOpen form.effectiveDate then
     span []
-      [ Calendar.view form.effectiveDate (WithForm form << SelectFormDate) ]
+      [ Calendar.view
+          (DateHolder.convertToDate form.effectiveDate)
+          (WithForm form << SelectFormDate)
+      ]
   else
     span [] []
 

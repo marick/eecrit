@@ -7,10 +7,11 @@ type alias Id = String
 
 type DictValue
   = AsInt Int String
-  | AsFloat Float String
   | AsString String String
-  | AsDate Date String
   | AsBool Bool String
+  -- These will probably be added eventually
+--  | AsFloat Float String
+--  | AsDate Date String
 
 type alias Properties = Dict String DictValue
   

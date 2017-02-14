@@ -1,10 +1,29 @@
 module Animals.OutsideWorld.Encode exposing (..)
 
+import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal exposing (..)
 import Dict exposing (Dict)
 import Date.Extra as Date
 import Json.Encode as Encode
 import Pile.DateHolder as DateHolder exposing (DateHolder)
+
+animal : Animal -> Encode.Value
+animal animal =
+  let
+    intId = Result.withDefault -1 (String.toInt animal.id)
+    creationDateString = Date.toIsoString animal.creationDate
+    outProps = separate animal.properties
+  in
+    Encode.object [ ("id", Encode.int intId)
+                  , ("version", Encode.int animal.version)
+                  , ("name", Encode.string animal.name)
+                  , ("species", Encode.string animal.species)
+                  , ("tags", Encode.list (List.map Encode.string animal.tags))
+                  , ("bool_properties", properties Encode.bool outProps.bools)
+                  , ("int_properties", properties Encode.int outProps.ints)
+                  , ("string_properties", properties Encode.string outProps.strings)
+                  , ("creation_date", Encode.string creationDateString)
+                  ]
 
 addingMetadata : DateHolder -> Encode.Value -> Encode.Value
 addingMetadata holder v =
@@ -25,23 +44,6 @@ addingMetadata holder v =
       , ("metadata", metadata)
       ]    
 
-animal : Animal -> Encode.Value
-animal animal =
-  let
-    intId = Result.withDefault -1 (String.toInt animal.id)
-    creationDateString = Date.toIsoString animal.creationDate
-  in
-    Encode.object [ ("id", Encode.int intId)
-                  , ("version", Encode.int animal.version)
-                  , ("name", Encode.string animal.name)
-                  , ("species", Encode.string animal.species)
-                  , ("tags", Encode.list (List.map Encode.string animal.tags))
-                  , ("bool_properties", properties Encode.bool Dict.empty)
-                  , ("int_properties", properties Encode.int Dict.empty)
-                  , ("string_properties", properties Encode.string Dict.empty)
-                  , ("creation_date", Encode.string creationDateString)
-                  ]
-
 -- Util
 
       
@@ -52,3 +54,27 @@ properties valueEncoder =
       (k, Encode.list [ valueEncoder v, Encode.string comment ])
   in
     Dict.toList >> List.map encodeKV >> Encode.object 
+
+
+
+type alias SeparatedProperties =
+  { ints : Dict String (Int, String)
+  , strings: Dict String (String, String)
+  , bools: Dict String (Bool, String)
+  }
+      
+separate : Properties -> SeparatedProperties
+separate properties = 
+  let
+    empty = { ints = Dict.empty, strings = Dict.empty, bools = Dict.empty }
+    step key sumValue building =
+      case sumValue of
+        AsInt v s ->
+          { building | ints = Dict.insert key (v, s) building.ints}
+        AsString  v s -> 
+          { building | strings = Dict.insert key (v, s) building.strings}
+        AsBool v s -> 
+          { building | bools = Dict.insert key (v, s) building.bools}
+  in
+    Dict.foldl step empty properties
+      

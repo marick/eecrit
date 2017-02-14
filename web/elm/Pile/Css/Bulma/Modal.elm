@@ -4,8 +4,8 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import Pile.HtmlShorthand exposing (..)
 
-modal : String -> List (Html msg) -> msg -> msg -> Html msg
-modal title body saveMsg cancelMsg =
+saveCancelModal : String -> List (Html msg) -> msg -> msg -> Html msg
+saveCancelModal title body saveMsg cancelMsg =
   div [class "modal is-active"]
     [ div [class "modal-background"] []
     , div [class "modal-card" ]

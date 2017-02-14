@@ -8,6 +8,7 @@ import Animals.Pages.Navigation as Page
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
 import Animals.Types.AnimalHistory as AnimalHistory exposing (History)
+import Animals.Types.ModalOverlay as ModalOverlay exposing (ModalOverlay)
 import Animals.Types.Form as Form exposing (Form)
 import Animals.Types.Displayed as Displayed exposing (Displayed)
 import Animals.Types.Conversions as Convert 
@@ -29,10 +30,11 @@ import Date exposing (Date)
 
 type alias DisplayDict =
   Dict Id Displayed
-    
+
 type alias Model = 
   { page : Page.PageChoice
   , pageFlash : PageFlash
+  , overlay : ModalOverlay
   , csrfToken : String
   , displayables : DisplayDict
 
@@ -65,6 +67,7 @@ init flags location =
     model =
       { page = Page.fromLocation(location)
       , pageFlash = PageFlash.NoFlash
+      , overlay = ModalOverlay.None
       , csrfToken = flags.csrfToken
       , displayables = Dict.empty
 
@@ -149,6 +152,9 @@ placeHistoryInOrder id =
       
 model_page : UpdatingLens Model Page.PageChoice
 model_page = lens .page (\ p w -> { w | page = p })
+
+model_overlay : UpdatingLens Model ModalOverlay
+model_overlay = lens .overlay (\ p w -> { w | overlay = p })
 
 model_displayables : UpdatingLens Model DisplayDict
 model_displayables = lens .displayables (\ p w -> { w | displayables = p })

@@ -1,6 +1,5 @@
 module Animals.Types.Basic exposing (..)
 
-import Date exposing (Date)
 import Dict exposing (Dict)
 
 type alias Id = String

@@ -2,8 +2,6 @@ module Animals.View exposing (view)
 
 import Animals.Msg exposing (..)
 import Animals.Model exposing (Model)
-import Animals.Msg exposing (Msg(Navigate), NavigationOperation(..))
-
 import Animals.Pages.H exposing (PageChoice(..))
 import Animals.Pages.Navigation as Navigation
 import Animals.Pages.AddPage as AddPage
@@ -11,12 +9,11 @@ import Animals.Pages.AllPage as AllPage
 import Animals.Pages.HelpPage as HelpPage
 import Animals.Pages.HistoryPage as HistoryPage
 
+import Animals.View.Overlay as Overlay
+
+
 import Pile.Css.Bulma as Css
-import Pile.Css.Bulma.Modal as Css
-import Pile.Calendar as Calendar
-import Pile.DateHolder as DateHolder
 import Html exposing (..)
-import Html.Attributes exposing (..)
 import Maybe.Extra as Maybe
 import Dict
 
@@ -26,7 +23,7 @@ view model =
     parts =
       [ Just (tabs model)
       , Just (page model)
-      , modal model
+      , Overlay.view model
       ]
   in
     div [] (Maybe.values parts)
@@ -61,29 +58,3 @@ page model  =
     HelpPage -> HelpPage.view model
     HistoryPage id -> HistoryPage.view id model
 
-modal : Model -> Maybe (Html Msg)                      
-modal model =
-  if DateHolder.datePickerOpen model.effectiveDate then
-    let
-      body = [ warning
-             , Calendar.view
-                 (DateHolder.modalPickerDate model.effectiveDate)
-                 (OnAllPage << CalendarClick)
-             ]
-    in
-      Just <| Css.modal "Change the Date" body
-        (OnAllPage SaveCalendarDate) (OnAllPage DiscardCalendarDate)
-  else
-    Nothing
-
-
-warning : Html msg
-warning =
-  p []
-    [ span [class "icon is-danger"] [i [class "fa fa-exclamation-triangle"] []]
-    , text """ Note: Changing the date will reload the animals.
-            If you are in the middle of editing any animals, those changes
-            will be lost. (Todo: Only show this message when animals are being
-            edited.)
-            """
-    ]

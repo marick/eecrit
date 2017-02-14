@@ -5,7 +5,8 @@ module Animals.Logic.AllPageOp exposing
 import Animals.Model as Model exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
-import Animals.Types.Conversions as Convert 
+import Animals.Types.Conversions as Convert
+import Animals.Types.ModalOverlay as ModalOverlay
 import Animals.Types.DisplayedCollections as Displayable
 import Animals.OutsideWorld.Cmd as OutsideWorld
 
@@ -22,6 +23,7 @@ update op model =
           DateHolder.convertToDate model.effectiveDate
       in 
         model
+          |> model_overlay.set ModalOverlay.AllPageCalendar
           |> model_datePickerState.set (DateHolder.ModalPickerOpen startingPickerDate)
           |> noCmd
 
@@ -38,13 +40,17 @@ update op model =
           DateHolder.convertToDate newEffectiveDate
       in 
         model
+          |> model_overlay.set ModalOverlay.None
           |> model_effectiveDate.set newEffectiveDate
           -- erase page now to give faster feedback.
           |> erasePage
           |> addCmd (OutsideWorld.fetchAnimals rawDate)
              
     DiscardCalendarDate ->
-      model |> model_datePickerState.set DateHolder.PickerClosed |> noCmd
+      model
+        |> model_overlay.set ModalOverlay.None
+        |> model_datePickerState.set DateHolder.PickerClosed
+        |> noCmd
       
     SetAnimals animals ->
       model

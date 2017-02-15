@@ -7,4 +7,5 @@ type ModalOverlay
   | AllPageFilterByHelp
   | FormHelp
   | AddAnimalsHelp
+  | AnimalHistoryHelp
   | Unimplemented

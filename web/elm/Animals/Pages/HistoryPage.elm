@@ -23,9 +23,19 @@ view : Id -> Model -> Html Msg
 view id model =
   case Dict.get id model.historyPages of
     Nothing ->
-      div [] [ text "A supposedly impossible error happened. Boo!"
-             , text <| "Could not find animal with id " ++ toString id
-             ] -- TODO: more
+      div [class "card"]
+        [ div [class "card-content"]
+            [ Css.contentP
+                [ text """In this stage of development, there's a technical 
+                        limitation that breaks certain ways of "returning"
+                        to an animal's history.
+                        """
+                ]
+            , Css.contentP
+              [ text "Sorry about that." ]
+            ]
+        ]
+        
     Just history -> 
       div []
         [ controls id
@@ -54,7 +64,8 @@ unimplemented = {click = Just <| SetOverlay Overlay.Unimplemented}
     
 pageHelp : Css.IconExpander Msg -> Html Msg
 pageHelp iconType = 
-  iconType "fa-question-circle" "Help for this page" NoOp
+  iconType "fa-question-circle" "Help for this page"
+    (SetOverlay Overlay.AnimalHistoryHelp)
 
 pageCloseButton : Id -> Html Msg    
 pageCloseButton id =

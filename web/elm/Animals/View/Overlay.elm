@@ -23,6 +23,7 @@ view model =
     AllPageCalendarHelp -> allPageCalendarHelp model
     AllPageFilterByHelp -> allPageFilterByHelp model
     AddAnimalsHelp -> addAnimalsHelp model
+    AnimalHistoryHelp -> animalHistoryHelp model
     FormHelp -> formHelp model
     Unimplemented -> unimplemented model
 
@@ -58,6 +59,40 @@ unimplemented model =
     ]
 
 --- Help
+
+animalHistoryHelp model =
+  help "About Animal History"
+    [ Css.contentP
+        [ text """This page is only a sketch of how one kind of reporting will work.
+                It shows that you'll be able to observe not only how animals
+                have changed over time, but who made the changes and when.
+                """
+        ]
+    , Css.contentP
+        [ text """Importantly, this page or one like it will let you look
+                at all the times an animal has been used (reserved). It will
+                also make it easy to calculate particular totals and aggregate
+                statistics, such as how many days per month an animal was used.
+                """
+        ]
+    , Css.contentP
+        [ text """However, in this sort of application, it's almost always the case
+                that 
+                """
+        , i [] [text "someone"]
+        , text """ will want a report the app can't generate. For that reason,
+                it's important to allow data export so that data can be crunched
+                with spreadsheets and similar tools. (Exporting for a spreadsheet
+                doesn't work yet.)
+                """
+        ]
+    , Css.contentP
+        [ text """Given that a major use of the app will be demonstrating
+                regulatory compliance, there will be a way to produce better
+                (clearer, better looking) reports in PDF format.
+                """
+        ]
+    ]
 
 addAnimalsHelp model =
   help "About Adding Animals"

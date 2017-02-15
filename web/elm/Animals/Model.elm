@@ -27,6 +27,7 @@ import Navigation
 import Dict exposing (Dict)
 import Set exposing (Set)
 import Date exposing (Date)
+import List.Extra as List
 
 type alias DisplayDict =
   Dict Id Displayed
@@ -146,6 +147,12 @@ upsertHistoryPage id history =
 placeHistoryInOrder : Id -> Model -> Model
 placeHistoryInOrder id =
   model_historyOrder.update (\order -> id :: order)
+
+forgetHistoryPage : Id -> Model -> Model
+forgetHistoryPage id model =
+  model
+    |> model_historyPages.update (Dict.remove id)
+    |> model_historyOrder.update (List.remove id)
 
 
 -- Boilerplate Lenses

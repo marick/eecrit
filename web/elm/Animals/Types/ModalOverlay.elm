@@ -6,3 +6,4 @@ type ModalOverlay
   | AllPageCalendarHelp
   | AllPageFilterByHelp
   | FormHelp
+  | AddAnimalsHelp

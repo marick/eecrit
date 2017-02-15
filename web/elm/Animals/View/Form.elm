@@ -97,8 +97,8 @@ activeDateControl form =
   let
     (buttonMsg, buttonText) =
       case DateHolder.datePickerOpen form.effectiveDate of
-        True -> (WithForm form CloseFormDatePicker, "Close Calendar")
-        False -> (WithForm form OpenFormDatePicker, "Change")
+        True -> (WithForm form CloseFormDatePicker, "Close calendar")
+        False -> (WithForm form OpenFormDatePicker, "Change date")
       
     select = WithForm form << SelectFormDate
   in

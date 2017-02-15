@@ -22,6 +22,7 @@ view model =
     AllPageCalendar -> viewCalendar model
     AllPageCalendarHelp -> allPageCalendarHelp model
     AllPageFilterByHelp -> allPageFilterByHelp model
+    AddAnimalsHelp -> addAnimalsHelp model
     FormHelp -> formHelp model
 
 viewCalendar model =                        
@@ -50,6 +51,57 @@ calendarWarning =
 
 
 --- Help
+
+addAnimalsHelp model =
+  help "About Adding Animals"
+    [ Css.contentP
+       [ text "The simplest way to add an animal is to select its species, then click "
+        , Css.helpTextPrimaryButton "Click to add more information"
+       , text """. You must then add a name. Optionally, you can add tags.
+               (Later, you'll be able to add more than just tags.)
+               """
+       ]
+    , Css.contentP
+       [ text """By default, the animal will be created effective immediately.
+               You can change the creation date with the 
+               """
+       , Css.helpTextPrimaryButton "Change date"
+       , text " button. You're allowed to create animals in the past."
+       ]
+    , Css.contentP
+      [ text """You'll often want to add several similar animals at once,
+              perhaps five horses. 
+              You can avoid having to re-enter the same information several times.
+              Like this:
+              """
+      , ol []
+        [li []
+           [ text "Pick the desired species and click "
+           , Css.helpTextPrimaryButton "Click to add more information"
+           , text "."
+           ]
+        , li []
+           [ text """Add the information common to all or most of the animals.
+                   For example, you might add the tag "mare" and set the
+                   creation date to next week.
+                   """
+           ]
+        , li []
+           [ text "Click the "
+           , Css.helpTextIcon "fa-plus"
+             , text " (copy) icon on the right side of the form, and create four copies. "
+           ]
+
+        , li []
+           [ text """Now you can make the changes specific to each animal. You'll
+                   have to give each its own name. You might also delete the "mare"
+                   tag from one of them and change it to "gelding". 
+                   """
+           ]
+        ]
+      ]
+    ]
+
 
 formHelp model =
   help "About Editing Animals"

@@ -6,6 +6,7 @@ import Animals.Msg exposing (..)
 import Animals.Pages.Common as Common
 import Animals.View.PageFlash as PageFlash
 import Animals.View.TextField as TextField
+import Animals.Types.ModalOverlay as Overlay
 
 import Pile.Css.Bulma as Css
 import Pile.ConstrainedStrings as Constrained
@@ -98,7 +99,8 @@ animalViews model =
 
 startHelp : Css.IconExpander Msg -> Html Msg
 startHelp iconType = 
-  iconType "fa-question-circle" "Help for this form" NoOp    
+  iconType "fa-question-circle" "Help for this form"
+    (SetOverlay Overlay.AddAnimalsHelp)
 
          
 -- Util

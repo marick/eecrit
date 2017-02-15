@@ -3,6 +3,7 @@ module Animals.View.Icons exposing (..)
 import Animals.Msg exposing (..)
 import Animals.Types.Basic exposing (..)
 import Animals.Types.Animal as Animal exposing (Animal)
+import Animals.Types.ModalOverlay as Overlay
 
 import Pile.Css.Bulma as Css
 import Html exposing (Html)
@@ -33,4 +34,5 @@ moreLikeThis id iconType =
 
 editHelp : Css.IconExpander Msg -> Html Msg
 editHelp iconType = 
-  iconType "fa-question-circle" "Help on editing" NoOp    
+  iconType "fa-question-circle" "Help on editing"
+    (SetOverlay Overlay.FormHelp)

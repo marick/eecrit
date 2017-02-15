@@ -4,4 +4,5 @@ type ModalOverlay
   = None
   | AllPageCalendar
   | AllPageCalendarHelp
-    
+  | AllPageFilterByHelp
+  | FormHelp

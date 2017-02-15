@@ -162,6 +162,11 @@ headingP : String -> Html msg
 headingP heading = 
   p [class "heading"] [text heading]
 
+contentP : List (Html msg) -> Html msg
+contentP body = 
+  p [class "content"] body
+    
+
 zeroWidthSpace : String
 zeroWidthSpace = "​" -- this is not an empty string. It's &#8203;
 

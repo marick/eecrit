@@ -149,7 +149,7 @@ speciesFilter model =
         , ("bovine", "bovine")
         , ("equine", "equine")
         ]
-        (Debug.log "species filter" model.speciesFilter)
+        model.speciesFilter
     ]
       
 -- -- Various icons
@@ -161,7 +161,9 @@ calendarHelp iconType =
 
 filterHelp : Css.IconExpander Msg -> Html Msg
 filterHelp iconType = 
-  iconType "fa-question-circle" "Help on filtering" NoOp    
+  iconType "fa-question-circle" "Help on filtering"
+    (SetOverlay Overlay.AllPageFilterByHelp)
+
 
 -- Util
     

@@ -21,8 +21,8 @@ view model =
     None -> Nothing
     AllPageCalendar -> viewCalendar model
     AllPageCalendarHelp -> allPageCalendarHelp model
-
-
+    AllPageFilterByHelp -> allPageFilterByHelp model
+    FormHelp -> formHelp model
 
 viewCalendar model =                        
   let
@@ -51,9 +51,64 @@ calendarWarning =
 
 --- Help
 
+formHelp model =
+  help "About Editing Animals"
+    [ Css.contentP
+       [ text "Please "
+       , a [href "mailto:marick@exampler.com"] [text "let me know"]
+       , text " what questions you have that should be answered here."
+       ]
+    ]
+
+
+allPageFilterByHelp model =
+  help "About Filtering Animals"
+    [ Css.contentP
+       [ text """You can reduce the number of animals shown on the page with
+               these three filters.
+               """
+       ]
+    , Css.contentP
+       [ text """
+               If you want to see only animals of a particular species, pick
+               that species from the Species dropdown.
+               """
+       ]
+    , Css.contentP
+       [ text """
+               If you want to see a particular animal, begin typing its name in
+               the Name box. You don't have to worry about capital or lower-case
+               letters. As you'll see if you try it, you don't have to type the
+               full name, only the first few characters.
+               """
+       ]
+    , Css.contentP
+       [ text """
+               To see only animals with particular tags, use the Tag box. Like
+               the Name box, you'll only need to type a few characters. For example,
+               if you type "s", you'll see an animal tagged 
+               """
+       , Css.readOnlyTag "skittish"
+       , text " and one tagged "
+       , Css.readOnlyTag "stallion"
+       , text """. If you then add a "k", only the first animal will remain.
+               """
+       ]
+
+    , Css.contentP
+       [ text """You can use more than one filter. Only animals that pass all
+               the filters will be shown. For example, selecting "bovine" and
+               typing "skit" in the Tags field will show you only skittish cattle.
+               
+               """
+       ]
+
+    ]
+  
+
 allPageCalendarHelp model =
   help "About the Effective Date"
-    [ p [class "content"]
+    [ Css.contentP
         [ text "The View Animals page shows animals as of a particular day, called the "
         , i [] [text "effective date" ]
         , text ". If you "
@@ -62,15 +117,15 @@ allPageCalendarHelp model =
                 added, that animal won't appear in the list.
                 """
         ]
-    , p [class "content"]
-      [ text "You can edit an animal by clicking on the pencil icon "
-      , Css.helpTextIcon "fa-pencil"
-      , text """ . If you haven't changed the effective date, the change
-              takes place today. But you can make a change retroactive by
-              changing the effective date to the past, or you can schedule
-              it for the future by changing the effective date to the future.
-              """
-      ]
+    , Css.contentP
+        [ text "You can edit an animal by clicking on the pencil icon "
+        , Css.helpTextIcon "fa-pencil"
+        , text """ . If you haven't changed the effective date, the change
+                takes place today. But you can make a change retroactive by
+                changing the effective date to the past, or you can schedule
+                it for the future by changing the effective date to the future.
+                """
+        ]
     ]
         
 help title body =

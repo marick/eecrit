@@ -5,6 +5,7 @@ import Animals.Model exposing (Model)
 
 import Animals.Types.Basic exposing (..)
 import Animals.Types.AnimalHistory as AnimalHistory
+import Animals.Types.ModalOverlay as Overlay
 
 import Animals.Pages.H exposing (PageChoice(..))
 import Animals.Pages.Navigation as Navigation
@@ -41,13 +42,15 @@ controls id =
             , pageHelp Css.rightIcon
             ]
             [ Css.distributeHorizontally
-                [ Css.primaryButton "Export for spreadsheet" {click = Just NoOp}
+                [ Css.primaryButton "Export for spreadsheet" unimplemented
+                , Css.primaryButton "PDF report" unimplemented
                 , pageCloseButton id                    
                 ]
             ]
         ]
     ]
 
+unimplemented = {click = Just <| SetOverlay Overlay.Unimplemented}
     
 pageHelp : Css.IconExpander Msg -> Html Msg
 pageHelp iconType = 

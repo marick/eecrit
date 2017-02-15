@@ -24,6 +24,7 @@ view model =
     AllPageFilterByHelp -> allPageFilterByHelp model
     AddAnimalsHelp -> addAnimalsHelp model
     FormHelp -> formHelp model
+    Unimplemented -> unimplemented model
 
 viewCalendar model =                        
   let
@@ -49,6 +50,12 @@ calendarWarning =
     ]
 
 
+unimplemented model =
+  help "That Feature Isn't Implemented Yet"
+    [ text """ The button is only there to suggest the sorts of things this app
+            will eventually do.
+            """
+    ]
 
 --- Help
 

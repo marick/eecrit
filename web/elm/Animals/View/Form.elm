@@ -84,6 +84,8 @@ deleteTagControl form =
     Css.horizontalControls 
       (List.map (Css.deletableTag form.status onDelete) form.tags)
 
+-- TODO: This is an annoyingly indirect way of detecting the difference
+-- between a first-time form and an edit-form.
 effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
   case form.originalAnimal of

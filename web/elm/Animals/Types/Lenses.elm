@@ -80,6 +80,9 @@ form_status = lens .status (\ p w -> { w | status = p })
 form_intendedVersion : UpdatingLens Form Int
 form_intendedVersion = lens .intendedVersion (\ p w -> { w | intendedVersion = p })
 
+form_originalAnimal : UpdatingLens Form (Maybe Animal)
+form_originalAnimal = lens .originalAnimal (\ p w -> { w | originalAnimal = p })
+
 
 -- TODO: Need to consolidate datepicker lenses for Model and individual forms.                       
 form_effectiveDate : UpdatingLens Form DateHolder

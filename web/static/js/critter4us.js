@@ -21094,6 +21094,15 @@ var _user$project$Animals_Types_AnimalHistory$History = F3(
 		return {id: a, name: b, entries: c};
 	});
 
+var _user$project$Animals_Types_ModalOverlay$Unimplemented = {ctor: 'Unimplemented'};
+var _user$project$Animals_Types_ModalOverlay$AnimalHistoryHelp = {ctor: 'AnimalHistoryHelp'};
+var _user$project$Animals_Types_ModalOverlay$AddAnimalsHelp = {ctor: 'AddAnimalsHelp'};
+var _user$project$Animals_Types_ModalOverlay$FormHelp = {ctor: 'FormHelp'};
+var _user$project$Animals_Types_ModalOverlay$AllPageFilterByHelp = {ctor: 'AllPageFilterByHelp'};
+var _user$project$Animals_Types_ModalOverlay$AllPageCalendarHelp = {ctor: 'AllPageCalendarHelp'};
+var _user$project$Animals_Types_ModalOverlay$AllPageCalendar = {ctor: 'AllPageCalendar'};
+var _user$project$Animals_Types_ModalOverlay$None = {ctor: 'None'};
+
 var _user$project$Animals_Msg$StartChange = function (a) {
 	return {ctor: 'StartChange', _0: a};
 };
@@ -21196,6 +21205,9 @@ var _user$project$Animals_Msg$WithAnimal = F2(
 	function (a, b) {
 		return {ctor: 'WithAnimal', _0: a, _1: b};
 	});
+var _user$project$Animals_Msg$SetOverlay = function (a) {
+	return {ctor: 'SetOverlay', _0: a};
+};
 var _user$project$Animals_Msg$OnHistoryPage = F2(
 	function (a, b) {
 		return {ctor: 'OnHistoryPage', _0: a, _1: b};
@@ -21312,9 +21324,6 @@ var _user$project$Animals_Pages_Navigation$toPageChangeCmd = function (choice) {
 			_user$project$Animals_Pages_Navigation$convertChoice(choice)));
 	return _elm_lang$navigation$Navigation$newUrl(url);
 };
-
-var _user$project$Animals_Types_ModalOverlay$AllPageCalendar = {ctor: 'AllPageCalendar'};
-var _user$project$Animals_Types_ModalOverlay$None = {ctor: 'None'};
 
 var _user$project$Pile_Css_Bulma_Util$controlWithAddons = F2(
 	function (control, addons) {
@@ -21521,6 +21530,22 @@ var _user$project$Pile_Css_Bulma_TextField$Events = F2(
 		return {typing: a, enter: b};
 	});
 
+var _user$project$Pile_Css_Bulma_Button$rawDisplayButton = F2(
+	function (classString, buttonText) {
+		return A2(
+			_elm_lang$html$Html$a,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(classString),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(buttonText),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Pile_Css_Bulma_Button$helpTextPrimaryButton = _user$project$Pile_Css_Bulma_Button$rawDisplayButton('button is-primary is-small');
 var _user$project$Pile_Css_Bulma_Button$eventAttributes = function (events) {
 	var _p0 = events.click;
 	if (_p0.ctor === 'Nothing') {
@@ -21578,6 +21603,7 @@ var _user$project$Pile_Css_Bulma_Button$eventsFromValue = F2(
 			return {click: _elm_lang$core$Maybe$Nothing};
 		}
 	});
+var _user$project$Pile_Css_Bulma_Button$justForShow = {click: _elm_lang$core$Maybe$Nothing};
 var _user$project$Pile_Css_Bulma_Button$Events = function (a) {
 	return {click: a};
 };
@@ -22060,6 +22086,16 @@ var _user$project$Pile_Css_Bulma$simpleTextInput = F2(
 var _user$project$Pile_Css_Bulma$emsp = '  ';
 var _user$project$Pile_Css_Bulma$nbsp = ' ';
 var _user$project$Pile_Css_Bulma$zeroWidthSpace = '​';
+var _user$project$Pile_Css_Bulma$contentP = function (body) {
+	return A2(
+		_elm_lang$html$Html$p,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('content'),
+			_1: {ctor: '[]'}
+		},
+		body);
+};
 var _user$project$Pile_Css_Bulma$headingP = function (heading) {
 	return A2(
 		_elm_lang$html$Html$p,
@@ -22264,6 +22300,17 @@ var _user$project$Pile_Css_Bulma$rightIcon = F3(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Pile_Css_Bulma$helpTextIcon = function (iconSymbolName) {
+	return A2(
+		_elm_lang$html$Html$i,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'fa ', iconSymbolName)),
+			_1: {ctor: '[]'}
+		},
+		{ctor: '[]'});
+};
 var _user$project$Pile_Css_Bulma$plainIcon = F3(
 	function (iconSymbolName, tooltip, msg) {
 		return A2(
@@ -22341,6 +22388,49 @@ var _user$project$Pile_Css_Bulma$tdIcon = F3(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Pile_Css_Bulma$plainMessage = function (body) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('columns is-mobile is-centered'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('column is-10'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$article,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('message'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('message-body'),
+									_1: {ctor: '[]'}
+								},
+								body),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$Pile_Css_Bulma$shortenWidth = function (content) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -22813,6 +22903,17 @@ var _user$project$Animals_Types_Lenses$form_today = A2(
 	_user$project$Pile_UpdatingOptional$compose,
 	_user$project$Pile_UpdatingOptional$fromLens(_user$project$Animals_Types_Lenses$form_effectiveDate),
 	_user$project$Pile_DateHolder$dateHolder_todayForReference);
+var _user$project$Animals_Types_Lenses$form_originalAnimal = A2(
+	_user$project$Pile_UpdatingLens$lens,
+	function (_) {
+		return _.originalAnimal;
+	},
+	F2(
+		function (p, w) {
+			return _elm_lang$core$Native_Utils.update(
+				w,
+				{originalAnimal: p});
+		}));
 var _user$project$Animals_Types_Lenses$form_intendedVersion = A2(
 	_user$project$Pile_UpdatingLens$lens,
 	function (_) {
@@ -23799,6 +23900,16 @@ var _user$project$Animals_Model$model_page = A2(
 				w,
 				{page: p});
 		}));
+var _user$project$Animals_Model$forgetHistoryPage = F2(
+	function (id, model) {
+		return A2(
+			_user$project$Animals_Model$model_historyOrder.update,
+			_elm_community$list_extra$List_Extra$remove(id),
+			A2(
+				_user$project$Animals_Model$model_historyPages.update,
+				_elm_lang$core$Dict$remove(id),
+				model));
+	});
 var _user$project$Animals_Model$placeHistoryInOrder = function (id) {
 	return _user$project$Animals_Model$model_historyOrder.update(
 		function (order) {
@@ -24411,9 +24522,12 @@ var _user$project$Animals_Logic_DisplayedOp$addAnimalForms = F3(
 			_user$project$Animals_Types_Lenses$form_intendedVersion.set,
 			1,
 			A2(
-				_user$project$Animals_Types_Lenses$form_name.set,
-				_user$project$Animals_Types_Form$emptyNameWithNotice,
-				A2(_user$project$Animals_Types_Conversions$displayedToForm, model.effectiveDate, source)));
+				_user$project$Animals_Types_Lenses$form_originalAnimal.set,
+				_elm_lang$core$Maybe$Nothing,
+				A2(
+					_user$project$Animals_Types_Lenses$form_name.set,
+					_user$project$Animals_Types_Form$emptyNameWithNotice,
+					A2(_user$project$Animals_Types_Conversions$displayedToForm, model.effectiveDate, source))));
 		return A3(
 			_user$project$Animals_Logic_AddPageOp$addFormsWithIds,
 			count,
@@ -24529,26 +24643,61 @@ var _user$project$Animals_Logic_AllPageOp$update = F2(
 		}
 	});
 
+var _user$project$Animals_Logic_HistoryPageOp$nextPage = F2(
+	function (id, list) {
+		var _p0 = A2(_elm_community$list_extra$List_Extra$elemIndex, id, list);
+		if (_p0.ctor === 'Nothing') {
+			return _user$project$Animals_Pages_H$AllPage;
+		} else {
+			var _p2 = _p0._0;
+			var _p1 = {
+				ctor: '_Tuple2',
+				_0: A2(_elm_community$list_extra$List_Extra$getAt, _p2 - 1, list),
+				_1: A2(_elm_community$list_extra$List_Extra$getAt, _p2 + 1, list)
+			};
+			_v1_2:
+			do {
+				if (_p1.ctor === '_Tuple2') {
+					if (_p1._1.ctor === 'Just') {
+						return _user$project$Animals_Pages_H$HistoryPage(_p1._1._0);
+					} else {
+						if (_p1._0.ctor === 'Just') {
+							return _user$project$Animals_Pages_H$HistoryPage(_p1._0._0);
+						} else {
+							break _v1_2;
+						}
+					}
+				} else {
+					break _v1_2;
+				}
+			} while(false);
+			return _user$project$Animals_Pages_H$AllPage;
+		}
+	});
 var _user$project$Animals_Logic_HistoryPageOp$update = F3(
 	function (op, history, model) {
-		var _p0 = op;
-		if (_p0.ctor === 'SetHistory') {
+		var _p3 = op;
+		if (_p3.ctor === 'SetHistory') {
 			var improvedHistory = _elm_lang$core$Native_Utils.update(
 				history,
-				{entries: _p0._0});
+				{entries: _p3._0});
 			return _user$project$Pile_UpdateHelpers$noCmd(
 				A3(_user$project$Animals_Model$upsertHistoryPage, history.id, improvedHistory, model));
 		} else {
-			return _user$project$Pile_UpdateHelpers$noCmd(model);
+			var next = A2(_user$project$Animals_Logic_HistoryPageOp$nextPage, history.id, model.historyOrder);
+			return A2(
+				_user$project$Pile_UpdateHelpers$addCmd,
+				_user$project$Animals_Pages_Navigation$toPageChangeCmd(next),
+				A2(_user$project$Animals_Model$forgetHistoryPage, history.id, model));
 		}
 	});
 var _user$project$Animals_Logic_HistoryPageOp$forwardToPageOp = F3(
 	function (id, op, model) {
-		var _p1 = A2(_elm_lang$core$Dict$get, id, model.historyPages);
-		if (_p1.ctor === 'Nothing') {
+		var _p4 = A2(_elm_lang$core$Dict$get, id, model.historyPages);
+		if (_p4.ctor === 'Nothing') {
 			return _user$project$Pile_UpdateHelpers$noCmd(model);
 		} else {
-			return A3(_user$project$Animals_Logic_HistoryPageOp$update, op, _p1._0, model);
+			return A3(_user$project$Animals_Logic_HistoryPageOp$update, op, _p4._0, model);
 		}
 	});
 
@@ -24631,6 +24780,9 @@ var _user$project$Animals_Update$updateWithClearedPageFlash = F2(
 					return withCmd(
 						upsert(model));
 				}
+			case 'SetOverlay':
+				return _user$project$Pile_UpdateHelpers$noCmd(
+					A2(_user$project$Animals_Model$model_overlay.set, _p0._0, model));
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -24647,7 +24799,11 @@ var _user$project$Animals_Update$update = F2(
 	});
 
 var _user$project$Animals_View_Icons$editHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on editing', _user$project$Animals_Msg$NoOp);
+	return A3(
+		iconType,
+		'fa-question-circle',
+		'Help on editing',
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$FormHelp));
 };
 var _user$project$Animals_View_Icons$moreLikeThis = F2(
 	function (id, iconType) {
@@ -24985,13 +25141,13 @@ var _user$project$Animals_View_Form$activeDateControl = function (form) {
 			return {
 				ctor: '_Tuple2',
 				_0: A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$CloseFormDatePicker),
-				_1: 'Close Calendar'
+				_1: 'Close calendar'
 			};
 		} else {
 			return {
 				ctor: '_Tuple2',
 				_0: A2(_user$project$Animals_Msg$WithForm, form, _user$project$Animals_Msg$OpenFormDatePicker),
-				_1: 'Change'
+				_1: 'Change date'
 			};
 		}
 	}();
@@ -25221,7 +25377,11 @@ var _user$project$Animals_Pages_AddPage$withArg = function (opArg) {
 	};
 };
 var _user$project$Animals_Pages_AddPage$startHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help for this form', _user$project$Animals_Msg$NoOp);
+	return A3(
+		iconType,
+		'fa-question-circle',
+		'Help for this form',
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$AddAnimalsHelp));
 };
 var _user$project$Animals_Pages_AddPage$animalViews = function (model) {
 	var animalViewer = A2(
@@ -25378,10 +25538,18 @@ var _user$project$Animals_Pages_AllPage$withArg = function (opArg) {
 	};
 };
 var _user$project$Animals_Pages_AllPage$filterHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on filtering', _user$project$Animals_Msg$NoOp);
+	return A3(
+		iconType,
+		'fa-question-circle',
+		'Help on filtering',
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$AllPageFilterByHelp));
 };
 var _user$project$Animals_Pages_AllPage$calendarHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help on animals and dates', _user$project$Animals_Msg$NoOp);
+	return A3(
+		iconType,
+		'fa-question-circle',
+		'Help on animals and dates',
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$AllPageCalendarHelp));
 };
 var _user$project$Animals_Pages_AllPage$speciesFilter = function (model) {
 	return _user$project$Pile_Css_Bulma$centeredLevelItem(
@@ -25409,7 +25577,7 @@ var _user$project$Animals_Pages_AllPage$speciesFilter = function (model) {
 							}
 						}
 					},
-					A2(_elm_lang$core$Debug$log, 'species filter', model.speciesFilter)),
+					model.speciesFilter),
 				_1: {ctor: '[]'}
 			}
 		});
@@ -25683,17 +25851,172 @@ var _user$project$Animals_Pages_AllPage$view = function (model) {
 };
 
 var _user$project$Animals_Pages_HelpPage$view = function (model) {
-	return A2(
-		_user$project$Pile_Css_Bulma$infoMessage,
+	return _user$project$Pile_Css_Bulma$plainMessage(
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text('Unfinished'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('The help page hasn\'t been written yet.'),
-			_1: {ctor: '[]'}
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('\n                This part of the app works with animals. Animals are added to\n                the system (\"created\") as of a particular date. After that,\n                everything that\n                happens to an animal, whether it be a name change, a use in\n                a classroom, or putting it out on pasture, is tracked.\n                That makes it easy to create all kinds of reports for things\n                like regulatory compliance.\n                '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Pile_Css_Bulma$contentP(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('\n                Every animal is different, and those differences are described\n                in three ways.\n                '),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$ol,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('An animal has a '),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$i,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('species'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('. That never changes.'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$p,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('An animal has '),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$i,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('tags'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('. Those are just words. They can be used when working with\n                         animals. For example, when working with horses, you might\n                         want to look only at mares.\n                         '),
+																_1: {ctor: '[]'}
+															}
+														}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$p,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Tags can change over time. For example, a particular\n                        animal might be a calf one year, a heifer calf the next,\n                        and then a cow. Which she is might figure into reports\n                        or into what procedures she can be used to teach.\n                        '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$li,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$p,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('An animal can also have '),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$i,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('properties'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('. Whereas tags either apply or not - and that\'s it -\n                        properties both apply and have \n                        '),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(
+																			_elm_lang$html$Html$i,
+																			{ctor: '[]'},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text('values'),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html$text('. For example, a particular animal may \"belong to\"\n                        (be paid for) by a particular department.\n                        So the property \"billing authority\" would have that\n                        department as its value.\n                        '),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																}
+															}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$p,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Or a\n                      particular mare may be marked as \"on pasture\" as of a\n                      particular date. That means she won\'t be able to be used\n                      in classes until she\'s not on pasture.\n                      '),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$p,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('In this early version, there\'s no way to create or\n                      change properties. I need to collaborate with real users\n                      to see how to best do that.\n                      '),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 
@@ -26042,7 +26365,15 @@ var _user$project$Animals_Pages_HistoryPage$pageCloseButton = function (id) {
 		});
 };
 var _user$project$Animals_Pages_HistoryPage$pageHelp = function (iconType) {
-	return A3(iconType, 'fa-question-circle', 'Help for this page', _user$project$Animals_Msg$NoOp);
+	return A3(
+		iconType,
+		'fa-question-circle',
+		'Help for this page',
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$AnimalHistoryHelp));
+};
+var _user$project$Animals_Pages_HistoryPage$unimplemented = {
+	click: _elm_lang$core$Maybe$Just(
+		_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$Unimplemented))
 };
 var _user$project$Animals_Pages_HistoryPage$controls = function (id) {
 	return _user$project$Pile_Css_Bulma$centeredColumns(
@@ -26069,16 +26400,15 @@ var _user$project$Animals_Pages_HistoryPage$controls = function (id) {
 							_0: _user$project$Pile_Css_Bulma$distributeHorizontally(
 								{
 									ctor: '::',
-									_0: A2(
-										_user$project$Pile_Css_Bulma_Button$primaryButton,
-										'Export for spreadsheet',
-										{
-											click: _elm_lang$core$Maybe$Just(_user$project$Animals_Msg$NoOp)
-										}),
+									_0: A2(_user$project$Pile_Css_Bulma_Button$primaryButton, 'Export for spreadsheet', _user$project$Animals_Pages_HistoryPage$unimplemented),
 									_1: {
 										ctor: '::',
-										_0: _user$project$Animals_Pages_HistoryPage$pageCloseButton(id),
-										_1: {ctor: '[]'}
+										_0: A2(_user$project$Pile_Css_Bulma_Button$primaryButton, 'PDF report', _user$project$Animals_Pages_HistoryPage$unimplemented),
+										_1: {
+											ctor: '::',
+											_0: _user$project$Animals_Pages_HistoryPage$pageCloseButton(id),
+											_1: {ctor: '[]'}
+										}
 									}
 								}),
 							_1: {ctor: '[]'}
@@ -26094,19 +26424,40 @@ var _user$project$Animals_Pages_HistoryPage$view = F2(
 		if (_p2.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
-				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('A supposedly impossible error happened. Boo!'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								'Could not find animal with id ',
-								_elm_lang$core$Basics$toString(id))),
-						_1: {ctor: '[]'}
-					}
+					_0: _elm_lang$html$Html_Attributes$class('card'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('card-content'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _user$project$Pile_Css_Bulma$contentP(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('In this stage of development, there\'s a technical \n                        limitation that breaks certain ways of \"returning\"\n                        to an animal\'s history.\n                        '),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _user$project$Pile_Css_Bulma$contentP(
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Sorry about that.'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
 				});
 		} else {
 			return A2(
@@ -26322,8 +26673,445 @@ var _user$project$Pile_Css_Bulma_Modal$saveCancelModal = F4(
 				}
 			});
 	});
+var _user$project$Pile_Css_Bulma_Modal$dismissableModal = F3(
+	function (title, body, dismissMsg) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('modal is-active'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('modal-background'),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Pile_HtmlShorthand$onClickPreventingDefault(dismissMsg),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('modal-card'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$header,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('modal-card-head'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('modal-card-title'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(title),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _user$project$Pile_Css_Bulma_Modal$xCancel(dismissMsg),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$section,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('modal-card-body'),
+										_1: {ctor: '[]'}
+									},
+									body),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$footer,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('modal-card-foot'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
 
-var _user$project$Animals_View_Overlay$warning = A2(
+var _user$project$Animals_View_Overlay$help = F2(
+	function (title, body) {
+		return _elm_lang$core$Maybe$Just(
+			A3(
+				_user$project$Pile_Css_Bulma_Modal$dismissableModal,
+				title,
+				body,
+				_user$project$Animals_Msg$SetOverlay(_user$project$Animals_Types_ModalOverlay$None)));
+	});
+var _user$project$Animals_View_Overlay$allPageCalendarHelp = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'About the Effective Date',
+		{
+			ctor: '::',
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('The View Animals page shows animals as of a particular day, called the '),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$i,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('effective date'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('. If you '),
+							_1: {
+								ctor: '::',
+								_0: _user$project$Pile_Css_Bulma_Button$helpTextPrimaryButton('Change'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(' the effective date back to before a particular animal was\n                added, that animal won\'t appear in the list.\n                '),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Pile_Css_Bulma$contentP(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('You can edit an animal by clicking on the pencil icon '),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Pile_Css_Bulma$helpTextIcon('fa-pencil'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(' . If you haven\'t changed the effective date, the change\n                takes place today. But you can make a change retroactive by\n                changing the effective date to the past, or you can schedule\n                it for the future by changing the effective date to the future.\n                '),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Animals_View_Overlay$allPageFilterByHelp = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'About Filtering Animals',
+		{
+			ctor: '::',
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('You can reduce the number of animals shown on the page with\n               these three filters.\n               '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Pile_Css_Bulma$contentP(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('\n               If you want to see only animals of a particular species, pick\n               that species from the Species dropdown.\n               '),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Pile_Css_Bulma$contentP(
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('\n               If you want to see a particular animal, begin typing its name in\n               the Name box. You don\'t have to worry about capital or lower-case\n               letters. As you\'ll see if you try it, you don\'t have to type the\n               full name, only the first few characters.\n               '),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Pile_Css_Bulma$contentP(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('\n               To see only animals with particular tags, use the Tag box. Like\n               the Name box, you\'ll only need to type a few characters. For example,\n               if you type \"s\", you\'ll see an animal tagged \n               '),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Pile_Css_Bulma$readOnlyTag('skittish'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(' and one tagged '),
+										_1: {
+											ctor: '::',
+											_0: _user$project$Pile_Css_Bulma$readOnlyTag('stallion'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('. If you then add a \"k\", only the first animal will remain.\n               '),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Pile_Css_Bulma$contentP(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('You can use more than one filter. Only animals that pass all\n               the filters will be shown. For example, selecting \"bovine\" and\n               typing \"skit\" in the Tags field will show you only skittish cattle.\n               \n               '),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Animals_View_Overlay$formHelp = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'About Editing Animals',
+		{
+			ctor: '::',
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Please '),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href('mailto:marick@exampler.com'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('let me know'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(' what questions you have that should be answered here.'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Animals_View_Overlay$addAnimalsHelp = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'About Adding Animals',
+		{
+			ctor: '::',
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('The simplest way to add an animal is to select its species, then click '),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Pile_Css_Bulma_Button$helpTextPrimaryButton('Click to add more information'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('. You must then add a name. Optionally, you can add tags.\n               (Later, you\'ll be able to add more than just tags.)\n               '),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Pile_Css_Bulma$contentP(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('By default, the animal will be created effective immediately.\n               You can change the creation date with the \n               '),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Pile_Css_Bulma_Button$helpTextPrimaryButton('Change date'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(' button. You\'re allowed to create animals in the past.'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Pile_Css_Bulma$contentP(
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('You\'ll often want to add several similar animals at once,\n              perhaps five horses. \n              You can avoid having to re-enter the same information several times.\n              Like this:\n              '),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$ol,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Pick the desired species and click '),
+												_1: {
+													ctor: '::',
+													_0: _user$project$Pile_Css_Bulma_Button$helpTextPrimaryButton('Click to add more information'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('.'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$li,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Add the information common to all or most of the animals.\n                   For example, you might add the tag \"mare\" and set the\n                   creation date to next week.\n                   '),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$li,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Click the '),
+														_1: {
+															ctor: '::',
+															_0: _user$project$Pile_Css_Bulma$helpTextIcon('fa-plus'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(' (copy) icon on the right side of the form, and create four copies. '),
+																_1: {ctor: '[]'}
+															}
+														}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$li,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Now you can make the changes specific to each animal. You\'ll\n                   have to give each its own name. You might also delete the \"mare\"\n                   tag from one of them and change it to \"gelding\". \n                   '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Animals_View_Overlay$animalHistoryHelp = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'About Animal History',
+		{
+			ctor: '::',
+			_0: _user$project$Pile_Css_Bulma$contentP(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('This page is only a sketch of how one kind of reporting will work.\n                It shows that you\'ll be able to observe not only how animals\n                have changed over time, but who made the changes and when.\n                '),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$Pile_Css_Bulma$contentP(
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Importantly, this page or one like it will let you look\n                at all the times an animal has been used (reserved). It will\n                also make it easy to calculate particular totals and aggregate\n                statistics, such as how many days per month an animal was used.\n                '),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Pile_Css_Bulma$contentP(
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('However, in this sort of application, it\'s almost always the case\n                that \n                '),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$i,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('someone'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(' will want a report the app can\'t generate. For that reason,\n                it\'s important to allow data export so that data can be crunched\n                with spreadsheets and similar tools. (Exporting for a spreadsheet\n                doesn\'t work yet.)\n                '),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Pile_Css_Bulma$contentP(
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Given that a major use of the app will be demonstrating\n                regulatory compliance, there will be a way to produce better\n                (clearer, better looking) reports in PDF format.\n                '),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Animals_View_Overlay$unimplemented = function (model) {
+	return A2(
+		_user$project$Animals_View_Overlay$help,
+		'That Feature Isn\'t Implemented Yet',
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(' The button is only there to suggest the sorts of things this app\n            will eventually do.\n            '),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Animals_View_Overlay$calendarWarning = A2(
 	_elm_lang$html$Html$p,
 	{ctor: '[]'},
 	{
@@ -26353,33 +27141,49 @@ var _user$project$Animals_View_Overlay$warning = A2(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Animals_View_Overlay$view = function (model) {
-	var _p0 = model.overlay;
-	if (_p0.ctor === 'None') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		var body = {
+var _user$project$Animals_View_Overlay$viewCalendar = function (model) {
+	var body = {
+		ctor: '::',
+		_0: _user$project$Animals_View_Overlay$calendarWarning,
+		_1: {
 			ctor: '::',
-			_0: _user$project$Animals_View_Overlay$warning,
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_user$project$Pile_Calendar$view,
-					_user$project$Pile_DateHolder$modalPickerDate(model.effectiveDate),
-					function (_p1) {
-						return _user$project$Animals_Msg$OnAllPage(
-							_user$project$Animals_Msg$CalendarClick(_p1));
-					}),
-				_1: {ctor: '[]'}
-			}
-		};
-		return _elm_lang$core$Maybe$Just(
-			A4(
-				_user$project$Pile_Css_Bulma_Modal$saveCancelModal,
-				'Change the Date',
-				body,
-				_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$SaveCalendarDate),
-				_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$DiscardCalendarDate)));
+			_0: A2(
+				_user$project$Pile_Calendar$view,
+				_user$project$Pile_DateHolder$modalPickerDate(model.effectiveDate),
+				function (_p0) {
+					return _user$project$Animals_Msg$OnAllPage(
+						_user$project$Animals_Msg$CalendarClick(_p0));
+				}),
+			_1: {ctor: '[]'}
+		}
+	};
+	return _elm_lang$core$Maybe$Just(
+		A4(
+			_user$project$Pile_Css_Bulma_Modal$saveCancelModal,
+			'Change the Date',
+			body,
+			_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$SaveCalendarDate),
+			_user$project$Animals_Msg$OnAllPage(_user$project$Animals_Msg$DiscardCalendarDate)));
+};
+var _user$project$Animals_View_Overlay$view = function (model) {
+	var _p1 = model.overlay;
+	switch (_p1.ctor) {
+		case 'None':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'AllPageCalendar':
+			return _user$project$Animals_View_Overlay$viewCalendar(model);
+		case 'AllPageCalendarHelp':
+			return _user$project$Animals_View_Overlay$allPageCalendarHelp(model);
+		case 'AllPageFilterByHelp':
+			return _user$project$Animals_View_Overlay$allPageFilterByHelp(model);
+		case 'AddAnimalsHelp':
+			return _user$project$Animals_View_Overlay$addAnimalsHelp(model);
+		case 'AnimalHistoryHelp':
+			return _user$project$Animals_View_Overlay$animalHistoryHelp(model);
+		case 'FormHelp':
+			return _user$project$Animals_View_Overlay$formHelp(model);
+		default:
+			return _user$project$Animals_View_Overlay$unimplemented(model);
 	}
 };
 
@@ -26441,7 +27245,7 @@ var _user$project$Animals_View$tabs = function (model) {
 						_0: {
 							ctor: '_Tuple3',
 							_0: _user$project$Animals_Pages_H$HelpPage,
-							_1: 'Help',
+							_1: 'About Animals',
 							_2: _user$project$Animals_Pages_Navigation$gotoMsg(_user$project$Animals_Pages_H$HelpPage)
 						},
 						_1: {ctor: '[]'}

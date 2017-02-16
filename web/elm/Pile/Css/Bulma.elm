@@ -67,6 +67,15 @@ message kind header body =
 infoMessage : List (Html msg) -> List (Html msg) -> Html msg
 infoMessage = message "is-info"
 
+plainMessage : List (Html msg) -> Html msg
+plainMessage body =
+  div [class "columns is-mobile is-centered"]
+    [ div [class "column is-10"]
+        [ article [class "message"]
+            [div [ class "message-body"] body]
+        ]
+    ]
+
 type alias IconExpander msg = String -> String -> msg -> Html msg
               
 tdIcon : String -> String -> msg -> Html msg

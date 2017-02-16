@@ -35,7 +35,7 @@ tabs model =
   Css.tabs model.page
     ([ (AllPage, "View Animals", Navigation.gotoMsg AllPage)
     , (AddPage, "Add Animals", Navigation.gotoMsg AddPage)
-    , (HelpPage, "Help", Navigation.gotoMsg HelpPage)
+    , (HelpPage, "About Animals", Navigation.gotoMsg HelpPage)
     ] ++ historyPages model)
 
 historyPages : Model -> List (PageChoice, String, Msg)    

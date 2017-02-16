@@ -29424,8 +29424,8 @@ var _user$project$IV_Pile_HtmlShorthand$rowSimple = function (string) {
 		});
 };
 
-var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v894/web/elm/IV';
-var _user$project$IV_Version$text = 'Version v894 of 2017-Feb-16';
+var _user$project$IV_Version$source = 'https://github.com/marick/eecrit/tree/v895/web/elm/IV';
+var _user$project$IV_Version$text = 'Version v895 of 2017-Feb-16';
 
 var _user$project$IV_View_Layout$defaultFooterNav = {
 	ctor: '::',

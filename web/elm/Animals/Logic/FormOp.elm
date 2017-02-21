@@ -47,14 +47,7 @@ update op form model =
       model |> upsertCheckedForm form |> noCmd
 
     CancelEdits ->
-      let
-        original = form.originalAnimal
-      in
-        case original of
-          Nothing ->
-            model |> noCmd -- Todo: add error handling for "impossible" case
-          Just animal -> 
-            model |> upsertAnimal animal |> noCmd
+      model |> Form.givenOriginalAnimal form upsertAnimal |> noCmd
 
     CancelCreation ->
       model
@@ -81,12 +74,12 @@ update op form model =
 
     NameFieldUpdate s ->
       let
-        notDuplicates =
-          Maybe.values [ Maybe.map .name form.originalAnimal, Just form.name.value ]
+        okNames = 
+          Form.names form -- fine to update to name already attached to this form
         newForm =
           form
             |> form_name.set (Css.freshValue s)
-            |> Validation.validate (Validation.context model.displayables notDuplicates)
+            |> Validation.validate (Validation.context model.displayables okNames)
       in
         model |> upsertCheckedForm newForm |> noCmd
 

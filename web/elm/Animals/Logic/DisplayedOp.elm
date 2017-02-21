@@ -58,9 +58,7 @@ addAnimalForms source count model =
       source
         |> Convert.displayedToForm model.effectiveDate
         |> form_name.set (Form.emptyNameWithNotice)
-        -- This is a kludge to signal that the form is "creational".
-        -- TODO: Probably really do need two types of forms.
-        |> form_originalAnimal.set Nothing
+        |> Form.makeCreational
         |> form_intendedVersion.set 1
   in
     AddPage.addFormsWithIds count (flip form_id.set <| sourceForm) model

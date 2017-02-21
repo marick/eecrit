@@ -9,6 +9,8 @@ import Pile.Css.H as Css
 import Pile.Namelike as Namelike
 import Pile.DateHolder as DateHolder exposing (DateHolder)
 
+import Maybe.Extra as Maybe
+
 -- Starting from an Animal
 
 animalToForm : DateHolder -> Animal -> Form
@@ -57,26 +59,19 @@ checkedFormToDisplayed form =
 
 formToAnimal : Form -> Animal
 formToAnimal form =
-  let
-    creationDate =
-      case form.originalAnimal of
-        Just animal ->
-          animal.creationDate
-        Nothing ->
-          DateHolder.convertToDate form.effectiveDate
-  in
-    { id = form.id
-    , displayFormat = Animal.Expanded
-    , version = form.intendedVersion
-    , name = form.name.value
-    , species = form.species
-    , tags = Namelike.perhapsAdd form.tentativeTag form.tags
-    , properties = form.properties
-    , creationDate = creationDate
-    }
+  { id = form.id
+  , displayFormat = Animal.Expanded
+  , version = form.intendedVersion
+  , name = form.name.value
+  , species = form.species
+  , tags = Namelike.perhapsAdd form.tentativeTag form.tags
+  , properties = form.properties
+  , creationDate = Form.animalCreationDate form
+  }
 
 formToFlash : Form -> AnimalFlash
 formToFlash form =
   case Namelike.isValidAddition form.tentativeTag form.tags of
     True -> AnimalFlash.SavedIncompleteTag form.tentativeTag
     False -> AnimalFlash.NoFlash
+

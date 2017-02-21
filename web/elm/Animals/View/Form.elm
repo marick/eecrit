@@ -88,12 +88,12 @@ deleteTagControl form =
 -- between a first-time form and an edit-form.
 effectiveDateControl : Form -> Html Msg
 effectiveDateControl form =
-  case form.originalAnimal of
-    Nothing -> activeDateControl form
-    Just _ -> passiveDateControl form
+  case Form.isCreational form of
+    True -> editableDateControl form
+    False -> displayOnlyDateControl form
 
-activeDateControl : Form -> Html Msg
-activeDateControl form =
+editableDateControl : Form -> Html Msg
+editableDateControl form =
   let
     (buttonMsg, buttonText) =
       case DateHolder.datePickerOpen form.effectiveDate of
@@ -109,8 +109,8 @@ activeDateControl form =
       |> TextField.buttonKind (Button.primaryButton buttonText)
       |> TextField.build
 
-passiveDateControl : Form -> Html Msg
-passiveDateControl form =
+displayOnlyDateControl : Form -> Html Msg
+displayOnlyDateControl form =
   Css.freshValue (DateHolder.enhancedDateString form.effectiveDate)
     |> TextField.editingEvents Nothing TextField.NeverSubmit
     |> TextField.kind TextField.plainTextField

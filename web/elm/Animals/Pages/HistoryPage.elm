@@ -60,6 +60,7 @@ controls id =
         ]
     ]
 
+unimplemented : Css.Events Msg
 unimplemented = {click = Just <| SetOverlay Overlay.Unimplemented}
     
 pageHelp : Css.IconExpander Msg -> Html Msg

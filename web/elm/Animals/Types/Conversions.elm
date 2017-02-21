@@ -9,8 +9,6 @@ import Pile.Css.H as Css
 import Pile.Namelike as Namelike
 import Pile.DateHolder as DateHolder exposing (DateHolder)
 
-import Maybe.Extra as Maybe
-
 -- Starting from an Animal
 
 animalToForm : DateHolder -> Animal -> Form

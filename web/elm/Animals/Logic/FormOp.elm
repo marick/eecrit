@@ -26,7 +26,6 @@ import Pile.DateHolder as DateHolder exposing (DateHolder)
 
 import Set exposing (Set)
 import List.Extra as List
-import Maybe.Extra as Maybe
 
 
 forwardToForm : Id -> FormOperation -> Model -> (Model, Cmd Msg)

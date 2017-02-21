@@ -40,6 +40,7 @@ update op history model =
           |> forgetHistoryPage history.id
           |> addCmd (Navigation.toPageChangeCmd next)
       
+nextPage : Id -> List Id -> PageChoice
 nextPage id list = 
   case List.elemIndex id list of
     Nothing -> -- impossible

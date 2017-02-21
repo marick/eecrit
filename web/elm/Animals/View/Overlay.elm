@@ -27,6 +27,7 @@ view model =
     FormHelp -> formHelp model
     Unimplemented -> unimplemented model
 
+viewCalendar : Model -> Maybe (Html Msg)                     
 viewCalendar model =                        
   let
     body = [ calendarWarning
@@ -50,7 +51,7 @@ calendarWarning =
             """
     ]
 
-
+unimplemented : Model -> Maybe (Html Msg)
 unimplemented model =
   help "That Feature Isn't Implemented Yet"
     [ text """ The button is only there to suggest the sorts of things this app
@@ -60,6 +61,7 @@ unimplemented model =
 
 --- Help
 
+animalHistoryHelp : Model -> Maybe (Html Msg)                     
 animalHistoryHelp model =
   help "About Animal History"
     [ Css.contentP
@@ -94,6 +96,7 @@ animalHistoryHelp model =
         ]
     ]
 
+addAnimalsHelp : Model -> Maybe (Html Msg)                     
 addAnimalsHelp model =
   help "About Adding Animals"
     [ Css.contentP
@@ -144,7 +147,7 @@ addAnimalsHelp model =
       ]
     ]
 
-
+formHelp : Model -> Maybe (Html Msg)
 formHelp model =
   help "About Editing Animals"
     [ Css.contentP
@@ -155,6 +158,7 @@ formHelp model =
     ]
 
 
+allPageFilterByHelp : Model -> Maybe (Html Msg)
 allPageFilterByHelp model =
   help "About Filtering Animals"
     [ Css.contentP
@@ -200,6 +204,7 @@ allPageFilterByHelp model =
     ]
   
 
+allPageCalendarHelp : Model -> Maybe (Html Msg)
 allPageCalendarHelp model =
   help "About the Effective Date"
     [ Css.contentP
@@ -222,5 +227,6 @@ allPageCalendarHelp model =
         ]
     ]
         
+help : String -> List (Html Msg) -> Maybe (Html Msg)
 help title body =
   Just <| Css.dismissableModal title body (SetOverlay None)

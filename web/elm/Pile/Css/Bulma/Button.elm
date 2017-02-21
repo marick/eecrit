@@ -11,6 +11,7 @@ type alias Events msg =
   { click : Maybe msg
   }
 
+justForShow : Events msg  
 justForShow = { click = Nothing }
 
 eventsFromValue : FormValue t -> msg -> Events msg

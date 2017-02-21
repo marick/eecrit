@@ -85,6 +85,7 @@ animalCreationDate form =
 {-! At any given moment, a form's animal can have two names: the name of
     the animal being edited (if any), and the current name on the form.
 -}
+names : Form -> List Namelike
 names form =
   Maybe.values [ Maybe.map .name form.originalAnimal, Just form.name.value ]
   
